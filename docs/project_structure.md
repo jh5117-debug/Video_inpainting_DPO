@@ -28,6 +28,17 @@ archives/            compressed data archives, ignored by Git
 ```
 
 These directories should be treated as read-only inputs during training.
+Compressed dataset and weight archives are stored on Hugging Face instead of
+GitHub:
+
+```text
+JiaHuang01/DPO_Finetune_Data/DPO_Finetune_data.tar.gz
+JiaHuang01/DPO_Finetune_Data/DiffuEraser_DAVIS_YouTubeVOS_datasets_20260418.tar.zst
+JiaHuang01/DPO_Finetune_Data/DiffuEraser_runtime_weights_20260418.tar.zst
+```
+
+Local `archives/` is only a temporary staging area for compression or restore.
+It may be empty after a successful HF upload.
 
 ## Outputs
 

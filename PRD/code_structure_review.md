@@ -1,201 +1,275 @@
-# H20_Video_inpainting_DPO 代码结构审查
+# H20_Video_inpainting_DPO 代码结构审查（重构后 v2）
 
-> 2026-04-18 更新：已按本文指出的问题做第一轮结构整理。当前实现代码已迁移到
-> `training/sft/`、`training/dpo/`、`training/common/`；历史根目录脚本和
-> `DPO_finetune/` 脚本保留为兼容 wrapper。实验输出默认进入
-> `experiments/<family>/<stage>/<version>_<run_name>/`，并写入 `run_manifest.json`。
+> 基于 2026-04-18 04:24 代码快照
 
-## 重构后目标结构
+## ✅ 重构改进总结
 
-```text
-H20_Video_inpainting_DPO/
-├── training/
-│   ├── sft/                    # SFT Stage 1/2 真实实现
-│   ├── dpo/                    # DPO Stage 1/2 真实实现 + DPO dataset
-│   └── common/                 # experiment manifest / validation helpers
-├── scripts/                    # SFT 兼容入口
-├── DPO_finetune/               # DPO 兼容入口 + 历史文档
-├── dataset/                    # SFT dataset；旧 dpo_dataset 仅兼容转发
-├── data/                       # 输入数据，gitignored
-├── data_val/                   # 验证输入，gitignored
-├── weights/                    # 外部权重，gitignored
-└── experiments/                # 实验输出，gitignored + 弱版本管理
-```
+**你做了一件正确的事：把代码组织从"文件堆叠"迁移到了模块化的 `training/` 结构。** 核心改进：
 
-下面保留的是重构前问题记录，方便追溯。
-
-## 当前目录拓扑
-
-```
-H20_Video_inpainting_DPO/
-├── train_DiffuEraser_stage1.py    ← 🆕 SFT Stage1 (1210行)
-├── train_DiffuEraser_stage2.py    ← 🆕 SFT Stage2 (1245行)
-├── validation_metrics.py          ← 🆕 轻量 PSNR/SSIM (121行)
-│
-├── DPO_finetune/                  ← DPO 子目录
-│   ├── train_dpo_stage1.py        ← DPO Stage1 (1334行)
-│   ├── train_dpo_stage2.py        ← DPO Stage2 (979行)
-│   ├── dataset/
-│   │   └── dpo_dataset.py         ← DPO 专用 Dataset (545行)
-│   └── scripts/
-│       ├── run_dpo_stage1.py
-│       └── run_dpo_stage2.py
-│
-├── dataset/                       ← 根级别 dataset
-│   ├── finetune_dataset.py        ← SFT 用 Dataset
-│   ├── dpo_dataset.py             ← ⚠️ 旧版 DPO Dataset (194行)
-│   ├── utils.py
-│   └── ...
-│
-├── diffueraser/
-│   ├── pipeline_diffueraser.py         ← 推理 pipeline (1349行)
-│   ├── pipeline_diffueraser_stage1.py  ← SFT Stage1 训练用 pipeline (1290行)
-│   ├── pipeline_diffueraser_stage2.py  ← SFT Stage2 训练用 pipeline (1280行)
-│   ├── diffueraser.py                  ← BR 推理入口
-│   ├── diffueraser_OR.py               ← OR 推理入口
-│   └── diffueraser_OR_DPO.py           ← DPO neg 生成用 OR 变体
-│
-├── scripts/                       ← SFT 训练 launcher
-│   ├── run_train_stage1.py
-│   ├── run_train_stage2.py
-│   └── *.sbatch
-│
-├── inference/                     ← 推理 & 评估
-│   ├── run_BR.py / run_OR.py
-│   └── metrics.py
-│
-└── libs/                          ← 模型定义
-    ├── unet_motion_model.py
-    ├── unet_2d_condition.py
-    ├── brushnet_CA.py
-    └── ...
-```
+| 维度 | 重构前 | 重构后 |
+|------|--------|--------|
+| SFT 训练脚本位置 | 根目录 `train_DiffuEraser_stage{1,2}.py` (1200+行) | `training/sft/train_stage{1,2}.py`，根目录改为 stub |
+| DPO 训练脚本位置 | `DPO_finetune/train_dpo_stage{1,2}.py` | `training/dpo/train_stage{1,2}.py`，旧目录改为 stub |
+| DPO Dataset | `dataset/dpo_dataset.py` (死文件) + `DPO_finetune/dataset/` | `training/dpo/dataset/dpo_dataset.py`，旧路径改为 deprecation stub |
+| 公共工具 | 每个文件重复定义 | `training/common/experiment.py` + `validation_metrics.py` |
+| DPO loss | stage1/stage2 各自复制 | **stage2 import stage1**：`from training.dpo.train_stage1 import compute_dpo_loss, ...` ✅ |
+| 工具脚本 | 根目录 `convert_checkpoint.py` | `tools/convert_checkpoint.py` + `save_checkpoint_stage{1,2}.py` |
+| 向后兼容 | 无 | 旧位置全部改为 `runpy`/`import *` stub |
 
 ---
 
-## 🔴 核心问题
-
-### 1. `dpo_dataset.py` 存在两份，且功能完全不同
-
-| 文件 | 行数 | 功能 | 被谁 import |
-|------|------|------|------------|
-| `dataset/dpo_dataset.py` | 194 | 旧版/简化版 | ❌ 当前无人 import |
-| `DPO_finetune/dataset/dpo_dataset.py` | 545 | 新版（完整性检查、无放回采样等） | DPO train scripts |
-
-> [!WARNING]
-> 根目录 `dataset/dpo_dataset.py` (194行) 是个死文件。它和 `DPO_finetune/dataset/dpo_dataset.py` (545行) 没有继承关系，只会造成混淆。**应删除或明确标记为 deprecated。**
-
-### 2. `pipeline_diffueraser*.py` — 3 份 1300 行的巨型文件，95%+ 代码重复
-
-| 文件 | 行数 | 用途 |
-|------|------|------|
-| `pipeline_diffueraser.py` | 1349 | 推理 |
-| `pipeline_diffueraser_stage1.py` | 1290 | SFT Stage1 训练 |
-| `pipeline_diffueraser_stage2.py` | 1280 | SFT Stage2 训练 |
-
-> [!CAUTION]
-> **3919 行代码中至少 3000 行是 copy-paste 重复。** 任何 bug fix 或改动都要同步 3 份文件，极易出现不一致。
-> 
-> 推荐方案：用一个基类 `PipelineDiffuEraserBase` + stage-specific 子类覆盖差异部分。
-
-### 3. `diffueraser_*.py` — 3 份 600 行的 wrapper，90%+ 重复
-
-| 文件 | 行数 | 和 `diffueraser_OR.py` 的区别 |
-|------|------|------------------------------|
-| `diffueraser.py` | 606 | BR 模式推理 |
-| `diffueraser_OR.py` | 592 | OR 模式推理 |
-| `diffueraser_OR_DPO.py` | 612 | OR + DPO neg 生成（`priori=None` 支持） |
-
-> [!WARNING]
-> `diffueraser_OR_DPO.py` 相对 `diffueraser_OR.py` 仅在 `read_priori` 和 `latents` 初始化处有微量差异。应合并为一个文件，用参数控制行为。
-
-### 4. SFT 训练脚本 (`train_DiffuEraser_stage{1,2}.py`) vs DPO 训练脚本 (`train_dpo_stage{1,2}.py`) — 大量重复
-
-| 维度 | SFT Stage1 | DPO Stage1 | 重复部分 |
-|------|-----------|-----------|---------|
-| `parse_args` | ~380行 | ~350行 | ~300行完全相同 |
-| `collate_fn` | 相同 | 相同 | 100% |
-| `log_validation` | 相同结构 | 增加了 DPO diagnostics | 80% |
-| `main()` 训练循环 | SFT loss | DPO loss | 70% |
-| 模型加载 | 多种初始化路径 | 多种初始化路径 | 90% |
-
-> [!WARNING]
-> 4 个训练脚本总计 **~4770 行**，其中至少 3000 行是 copy-paste。共享逻辑应提取到公共模块。
-
-### 5. `validation_metrics.py` 位置混乱
-
-- 根目录有 `validation_metrics.py`（121行，仅 PSNR/SSIM wrapper）
-- 但 `inference/metrics.py`（35110行！）才是核心指标实现
-- SFT/DPO 训练脚本都在内部 inline 定义了 `format_metrics_table`，没有复用 `validation_metrics.py`
-
-> [!NOTE]
-> `validation_metrics.py` 被创建但未被任何训练脚本实际 import，是个悬空文件。
-
-### 6. 两个仓库完全同步 (`H20_Video_inpainting_DPO` ≈ `Reg_DPO_Inpainting`)
-
-`diff --brief` 结果显示两个仓库仅 `.gitignore` 不同。`Reg_DPO_Inpainting` 额外有 `data/`、`tools/`、`logs/` 目录和 `tree_proj.txt`。
-
-> [!CAUTION]
-> 两个仓库维护同一份代码是 **同步灾难**。任一边改动都不会自动同步到另一边。应选择其中一个作为主仓库、另一个用 git branch 或 symlink。
-
----
-
-## 📊 重复度矩阵
+## 🔀 完整流水线追踪（SFT → DPO → Test）
 
 ```mermaid
 graph TD
-    subgraph "3x pipeline ~3900行"
-        P1[pipeline_diffueraser.py<br/>1349行]
-        P2[pipeline_diffueraser_stage1.py<br/>1290行]
-        P3[pipeline_diffueraser_stage2.py<br/>1280行]
-        P1 ---|"~95% 重复"| P2
-        P2 ---|"~98% 重复"| P3
+    subgraph "Phase 1: SFT (Supervised Fine-Tuning)"
+        S1["training/sft/train_stage1.py<br/>训练 UNet2D + BrushNet<br/>MSE loss, 冻结 VAE/TextEnc"]
+        S1_L["training/sft/scripts/run_stage1.py<br/>+ 02_train_stage1.sbatch"]
+        S1_CK["tools/save_checkpoint_stage1.py<br/>accelerator ckpt → HF format"]
+        S1_L --> S1 --> S1_CK
+
+        S2["training/sft/train_stage2.py<br/>训练 MotionModule<br/>MSE loss, 冻结 2D+BrushNet"]
+        S2_L["training/sft/scripts/run_stage2.py<br/>+ 02_train_stage2.sbatch"]
+        S2_CK["tools/save_checkpoint_stage2.py<br/>accelerator ckpt → HF format"]
+        S2_L --> S2 --> S2_CK
+        S1_CK --> S2
     end
-    
-    subgraph "3x wrapper ~1810行"
-        W1[diffueraser.py<br/>606行]
-        W2[diffueraser_OR.py<br/>592行]
-        W3[diffueraser_OR_DPO.py<br/>612行]
-        W1 ---|"~85% 重复"| W2
-        W2 ---|"~95% 重复"| W3
+
+    subgraph "Phase 2: DPO (Preference Optimization)"
+        D1["training/dpo/train_stage1.py<br/>训练 UNet2D + BrushNet<br/>DPO loss, ref=SFT权重"]
+        D1_L["training/dpo/scripts/run_stage1.py<br/>+ 03_dpo_stage1.sbatch"]
+        D1_L --> D1
+
+        D2["training/dpo/train_stage2.py<br/>训练 MotionModule<br/>DPO loss, ref=SFT权重"]
+        D2_L["training/dpo/scripts/run_stage2.py<br/>+ 03_dpo_stage2.sbatch"]
+        D2_L --> D2
+        D1 --> D2
     end
-    
-    subgraph "4x train scripts ~4770行"
-        T1[train_DiffuEraser_stage1.py<br/>1210行]
-        T2[train_DiffuEraser_stage2.py<br/>1245行]
-        T3[train_dpo_stage1.py<br/>1334行]
-        T4[train_dpo_stage2.py<br/>979行]
-        T1 ---|"~70% 重复"| T2
-        T1 ---|"~60% 重复"| T3
-        T2 ---|"~60% 重复"| T4
+
+    subgraph "Phase 3: Test (Inference & Metrics)"
+        INF_OR["inference/run_OR.py<br/>Object Removal 推理"]
+        INF_BR["inference/run_BR.py<br/>Background Restoration 推理"]
+        METRICS["inference/metrics.py<br/>PSNR/SSIM/LPIPS/VFID/Ewarp/TC"]
+        REPORT["inference/generate_report.py<br/>+ compare_all.py"]
+        INF_OR --> METRICS --> REPORT
+        INF_BR --> METRICS --> REPORT
     end
-    
-    subgraph "2x dpo_dataset ~739行"
-        D1["dataset/dpo_dataset.py<br/>194行 (死文件)"]
-        D2["DPO_finetune/dataset/dpo_dataset.py<br/>545行"]
+
+    subgraph "Runtime Dependencies"
+        PIPE["diffueraser/pipeline_diffueraser*.py<br/>推理 pipeline (Stage1/Stage2/Full)"]
+        WRAPPER["diffueraser/diffueraser*.py<br/>推理 wrapper (BR/OR/DPO)"]
+        MODELS["libs/<br/>UNet2D, UNetMotionModel,<br/>BrushNet, temporal transformer"]
+        DATASET_SFT["dataset/finetune_dataset.py"]
+        DATASET_DPO["training/dpo/dataset/dpo_dataset.py"]
     end
-    
-    style D1 fill:#f66
-    style P2 fill:#ff9
-    style P3 fill:#ff9
-    style W3 fill:#ff9
+
+    S1 --> PIPE
+    S2 --> PIPE
+    D1 --> PIPE
+    D2 --> PIPE
+    INF_OR --> WRAPPER --> PIPE --> MODELS
+
+    S1 -.-> DATASET_SFT
+    S2 -.-> DATASET_SFT
+    D1 -.-> DATASET_DPO
+    D2 -.-> DATASET_DPO
+
+    S2_CK -->|"SFT 权重<br/>(ref_model)"| D1
+    S2_CK -->|"SFT 权重<br/>(ref_model)"| D2
+    D1 -->|"DPO Stage1 权重<br/>(2D+BrushNet)"| D2
+
+    style S1 fill:#4caf50,color:#fff
+    style S2 fill:#4caf50,color:#fff
+    style D1 fill:#2196f3,color:#fff
+    style D2 fill:#2196f3,color:#fff
+    style INF_OR fill:#ff9800,color:#fff
+    style INF_BR fill:#ff9800,color:#fff
 ```
 
-**估算**：仓库约 **10,500 行核心 Python 代码**中，约 **5,500 行 (52%) 是 copy-paste 重复**。
+---
+
+## 📦 权重流转详解
+
+### SFT Stage 1 → Stage 2
+```
+Stage1 输出: experiments/sft/stage1/<version>/
+  ├── unet_main/    (UNet2DConditionModel)
+  └── brushnet/     (BrushNetModel)
+
+Stage2 加载:
+  ├── UNetMotionModel ← baseline (含 MotionModule)
+  ├── 2D 权重 ← Stage1 输出 (逐层拷贝 conv_in/down_blocks/mid_block/up_blocks/conv_out)
+  └── BrushNet ← Stage1 输出 (冻结)
+  → 仅训练 MotionModule (temporal layers)
+```
+
+### SFT → DPO
+```
+DPO Stage1 加载:
+  ├── policy: UNet2D + BrushNet (待训练)
+  └── ref:    UNet2D_ref + BrushNet_ref (SFT 权重，冻结)
+
+DPO Stage2 加载:
+  ├── policy: UNetMotionModel (2D from DPO-S1 + Motion from baseline)
+  ├── policy BrushNet: DPO-S1 (冻结)
+  ├── ref:    UNetMotionModel (SFT 完整权重，冻结)
+  └── ref BrushNet: SFT 权重 (冻结)
+  → 仅训练 MotionModule
+```
 
 ---
 
-## ✅ 推荐整改优先级
+## 🔍 DPO Loss 审查
 
-| 优先级 | 改动 | 风险 | 工作量 |
-|--------|------|------|--------|
-| 🔴 P0 | 删除 `dataset/dpo_dataset.py` (194行旧版) | 0 | 5分钟 |
-| 🔴 P0 | 选择一个主仓库，另一个做 branch | 0 | 10分钟 |
-| 🟡 P1 | 合并 `diffueraser_OR.py` + `diffueraser_OR_DPO.py` 为一个文件 | 低 | 30分钟 |
-| 🟡 P1 | 提取 `parse_args` / `collate_fn` / `log_validation` 公共模块 | 中 | 2小时 |
-| 🟢 P2 | 重构 3 个 `pipeline_diffueraser*.py` 为基类+子类 | 高 | 4小时 |
-| 🟢 P2 | 删除或整合 `validation_metrics.py` | 低 | 15分钟 |
+[training/dpo/train_stage1.py](file:///home/hj/H20_Video_inpainting_DPO/training/dpo/train_stage1.py#L238-L322) 中的 `compute_dpo_loss` 实现正确：
+
+```python
+# 核心公式
+scale_term = -0.5 * beta_dpo                         # effective β = β/2
+inside_term = scale_term * (model_diff - ref_diff)    # DPO 判别项
+loss = (-1.0 * F.logsigmoid(inside_term)).mean()      # DPO loss
+```
+
+**关键复用**: Stage 2 通过 `from training.dpo.train_stage1 import compute_dpo_loss, ...` 直接复用，避免了复制粘贴。这是一个 ✅ 正确做法。
+
+### 诊断指标 (Reg-DPO 风格) ✅
+- `win_gap` / `lose_gap`: policy vs ref 的 MSE 差异
+- `reward_margin`: ref 在 win/lose 上的差异
+- `loser_degrade_ratio`: 靠 loser 退化获胜的比例 (核心 Reg-DPO 指标)
+- `inside_term` 统计: mean/min/max，支持跨卡 gather
 
 ---
 
-*结构审查基于 2026-04-18 代码快照*
+## 📂 当前文件拓扑
+
+```
+H20_Video_inpainting_DPO/
+│
+├── training/                          ← 🆕 核心训练模块
+│   ├── common/
+│   │   ├── experiment.py              ← 实验目录版本化 + manifest
+│   │   └── validation_metrics.py      ← PSNR/SSIM wrapper
+│   ├── sft/
+│   │   ├── train_stage1.py            ← SFT Stage1 (1217行)
+│   │   ├── train_stage2.py            ← SFT Stage2 (1252行)
+│   │   └── scripts/                   ← launcher + sbatch
+│   └── dpo/
+│       ├── train_stage1.py            ← DPO Stage1 (1340行)
+│       ├── train_stage2.py            ← DPO Stage2 (985行)
+│       ├── dataset/dpo_dataset.py     ← DPO 偏好对数据集
+│       └── scripts/                   ← launcher + sbatch
+│
+├── tools/                             ← 🆕 工具脚本
+│   ├── convert_checkpoint.py          ← accelerator ckpt → HF format
+│   ├── save_checkpoint_stage{1,2}.py  ← stage-specific 快捷入口
+│   └── score_inpainting_quality.py    ← VBench-based InpaintingScore
+│
+├── diffueraser/                       ← 推理 pipeline + wrapper
+│   ├── pipeline_diffueraser.py        ← 全功能推理 pipeline (1349行)
+│   ├── pipeline_diffueraser_stage1.py ← SFT Stage1 训练用 (1290行)
+│   ├── pipeline_diffueraser_stage2.py ← SFT Stage2 训练用 (1280行)
+│   ├── diffueraser.py                 ← BR 推理 wrapper
+│   ├── diffueraser_OR.py              ← OR 推理 wrapper
+│   └── diffueraser_OR_DPO.py          ← OR+DPO neg 生成 wrapper
+│
+├── libs/                              ← 模型架构定义
+│   ├── unet_2d_condition.py / unet_motion_model.py
+│   ├── brushnet_CA.py
+│   └── unet_2d_blocks.py / unet_3d_blocks.py / transformer_temporal.py
+│
+├── dataset/                           ← SFT 数据加载
+│   ├── finetune_dataset.py            ← SFT 训练用 Dataset
+│   ├── dpo_dataset.py                 ← ⚠️ deprecation stub → training/dpo/dataset/
+│   └── utils.py / file_client.py / img_util.py
+│
+├── inference/                         ← 推理 & 评估
+│   ├── run_OR.py / run_BR.py
+│   ├── metrics.py                     ← 全量指标 (PSNR/SSIM/LPIPS/VFID/Ewarp/TC)
+│   ├── compare_all.py / generate_report.py
+│   └── configs/                       ← 推理配置
+│
+├── propainter/                        ← ProPainter priori 模型 (外部依赖)
+│
+├── ─── 向后兼容 stubs ───
+│   ├── train_DiffuEraser_stage{1,2}.py  ← runpy → training/sft/
+│   ├── validation_metrics.py            ← import * → training/common/
+│   └── convert_checkpoint.py            ← → tools/convert_checkpoint.py
+│
+├── DPO_finetune/                      ← ⚠️ 旧目录 (stub化但保留)
+│   ├── train_dpo_stage{1,2}.py        ← runpy → training/dpo/
+│   ├── dataset/dpo_dataset.py         ← 已不再被直接使用
+│   └── scripts/                       ← 旧 sbatch (仍可用)
+│
+└── scripts/                           ← ⚠️ 旧 SFT launcher (stub化)
+```
+
+---
+
+## ⚠️ 遗留问题（按优先级）
+
+### 🟡 P1: `training/common/` 没有被训练脚本实际 import
+
+| 文件 | 行数 | 被谁 import? |
+|------|------|-------------|
+| `training/common/experiment.py` | 133 | ❌ 无人 import |
+| `training/common/validation_metrics.py` | 128 | ❌ 仅根目录 stub 导出，训练脚本各自 inline 定义 `format_metrics_table` |
+
+> [!NOTE]
+> `experiment.py` 的 `resolve_output_dir()` / `prepare_experiment_dir()` 设计得不错，但 SFT/DPO 训练脚本都没用。`validation_metrics.py` 的 `compute_batch_metrics` 也没被训练脚本的 `log_validation()` 调用——训练脚本内部各自重新写了 PSNR/SSIM 循环。
+>
+> **建议：** 如果短期不打算让训练脚本调用 common，可以先不管。但记录在案，避免以为已经去重。
+
+### 🟡 P2: `diffueraser/pipeline_diffueraser*.py` — 3 份 1300 行文件仍 95% 重复
+
+这是初次审查时就指出的问题，重构没有触及这个层面。
+
+| 文件 | 行数 |
+|------|------|
+| `pipeline_diffueraser.py` | 1349 |
+| `pipeline_diffueraser_stage1.py` | 1290 |
+| `pipeline_diffueraser_stage2.py` | 1280 |
+
+> 任何 bug fix 仍需同步 3 份文件。
+
+### 🟡 P3: `diffueraser_*.py` wrapper — 3 份 600 行文件仍 90% 重复
+
+| 文件 | 行数 |
+|------|------|
+| `diffueraser.py` | 606 |
+| `diffueraser_OR.py` | 592 |
+| `diffueraser_OR_DPO.py` | 612 |
+
+### 🟢 P4: 旧目录可进一步清理
+
+- `DPO_finetune/` 目录已 stub 化，但仍保留 `.md` 文档和 `dataset/dpo_dataset.py`（23KB 旧代码）
+- `scripts/` 目录已 stub 化
+- 这些目录的 `__pycache__/` 还在
+
+> **建议：** 如果确认没有外部 CI/CD 或脚本引用旧路径，可以考虑删除 `DPO_finetune/` 和 `scripts/` 的旧代码体（保留 stub 即可）。
+
+### 🟢 P5: SFT 训练脚本之间仍有大量重复
+
+`training/sft/train_stage1.py` vs `training/sft/train_stage2.py` 之间 `parse_args`/`collate_fn`/`log_validation` 等函数 **~600 行 80%+ 重复**。DPO stage2 已经通过 `from training.dpo.train_stage1 import ...` 实现了部分去重，但 SFT 侧还没做这个。
+
+### 🟢 P6: `PROJECT_ROOT` 在 DPO 训练脚本中重复定义
+
+`training/dpo/train_stage1.py` 中有两次 `PROJECT_ROOT` 定义：
+- Line 33: `PROJECT_ROOT = Path(__file__).resolve().parents[2]`
+- Line 66: `PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))`
+
+第二次使用 `os.path` 会指向 `training/` 而非项目根目录（`parents[1]` = `training/dpo/` 的父级 = `training/`）。虽然 `sys.path` 已经被 Line 17 正确设置了，路径不影响运行，但代码容易误读。
+
+---
+
+## ✅ 结论
+
+**重构质量 7/10**。核心逻辑正确，模块化方向正确，向后兼容 stub 处理得体。主要不足是：
+1. `training/common/` 写好了但没被实际调用
+2. `diffueraser/` 层的重复代码没有触及（这个改动风险确实最高，合理推迟）
+3. SFT 侧还没有做 DPO 侧那样的跨模块 import 去重
+
+**如果你的目标是先跑通 Reg-DPO 实验，当前代码结构已经足够支撑，不需要再重构了。**
+
+---
+
+*审查基于 2026-04-18 04:24 代码快照*

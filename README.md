@@ -108,3 +108,26 @@ WEIGHTS_DIR=/path/to/weights
 ```
 
 Weights and datasets are intentionally not managed by this repo.
+
+## External Assets
+
+Large datasets, pretrained weights, and compressed backups are kept out of Git.
+Use the project-local ignored directories for runtime:
+
+```text
+data/external/     unpacked datasets
+weights/           model weights
+archives/          temporary compressed archives before/after HF transfer
+```
+
+The canonical compressed archives live on Hugging Face:
+
+```text
+https://huggingface.co/datasets/JiaHuang01/DPO_Finetune_Data/blob/main/DPO_Finetune_data.tar.gz
+https://huggingface.co/datasets/JiaHuang01/DPO_Finetune_Data/blob/main/DiffuEraser_DAVIS_YouTubeVOS_datasets_20260418.tar.zst
+https://huggingface.co/datasets/JiaHuang01/DPO_Finetune_Data/blob/main/DiffuEraser_runtime_weights_20260418.tar.zst
+```
+
+Do not commit unpacked data, weights, generated experiments, or local archives to
+GitHub. The repository should contain only code, launchers, lightweight docs, and
+small configuration files.
