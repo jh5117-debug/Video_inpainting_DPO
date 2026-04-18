@@ -18,7 +18,8 @@ H20_Video_inpainting_DPO/
 ├── dataset/                    # SFT dataset code only
 ├── diffueraser/                # DiffuEraser pipelines and inference wrappers
 ├── libs/                       # model definitions
-├── inference/                  # evaluation and inference tools
+├── propainter/                 # local ProPainter support code for evaluation
+├── inference/                  # visualization, metrics, report, and sweep tools
 ├── tools/                      # repository tools
 ├── docs/                       # engineering notes
 ├── PRD/                        # reports and project notes
@@ -69,6 +70,25 @@ python DPO_finetune/scripts/run_dpo_stage1.py --chunk_aligned
 python DPO_finetune/scripts/run_dpo_stage2.py --chunk_aligned
 ```
 
+Evaluation / visualization after a new weight is exported:
+
+```bash
+bash inference/run_weight_sweep.sh
+bash inference/start_weight_sweep.sh
+```
+
+The historical entrypoints are kept as wrappers:
+
+```bash
+bash run_24exp.sh
+bash start_24exp.sh
+```
+
+The sweep runner reads DAVIS inputs from `data/external/`, model assets from `weights/`,
+and writes generated videos, metrics, logs, and reports to
+`experiments/evaluation/weight_sweep/`. BR runs compute pixel metrics by default;
+OR runs generate videos by default and can enable VBench with `OR_ENABLE_VBENCH=1`.
+
 SLURM compatibility entrypoints are still available:
 
 ```bash
@@ -88,4 +108,3 @@ WEIGHTS_DIR=/path/to/weights
 ```
 
 Weights and datasets are intentionally not managed by this repo.
-

@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-generate_report.py — 12 实验结果汇总报告生成器
+generate_report.py — Experiment results report generator
 
-用法:
-    python generate_report.py dir1 dir2 ... dir12
+Usage:
+    python generate_report.py dir1 dir2 ... dirN
 
-从每个实验目录的 summary.json 中读取数据，
-输出 experiment_report.md，包含 OR/BR 分类表格 + 实验总结。
+Reads summary.json from each experiment directory,
+outputs experiment_report.md with OR/BR tables grouped by weight type.
 """
 import json
 import os
@@ -29,6 +29,9 @@ VBENCH_LABELS = {
     "aesthetic_quality": "Aesth_Q↑", "imaging_quality": "Img_Q↑",
 }
 
+# Weight prefix patterns (order matters: longest prefix first)
+WEIGHT_PREFIXES = ["FT_S2_48K", "FT_S2_34K", "FT_S2_26K", "FT_S2_8K", "Finetune", "Orign"]
+
 
 def _is_dual_mode(per_video):
     """Check if per_video entries use baseline_/text_ prefixed keys."""
@@ -39,7 +42,6 @@ def _is_dual_mode(per_video):
 
 
 def _get_vbench(entry, mode_prefix=None):
-    """Get vbench dict from a per_video entry, with fallback."""
     if mode_prefix:
         d = entry.get(f"{mode_prefix}_vbench")
         if d:
@@ -48,7 +50,6 @@ def _get_vbench(entry, mode_prefix=None):
 
 
 def _get_metrics(entry, mode_prefix=None):
-    """Get metrics dict from a per_video entry, with fallback."""
     if mode_prefix:
         d = entry.get(f"{mode_prefix}_metrics")
         if d:
@@ -57,7 +58,6 @@ def _get_metrics(entry, mode_prefix=None):
 
 
 def load_summary(exp_dir):
-    """Load summary.json from experiment directory."""
     p = Path(exp_dir) / "summary.json"
     if not p.exists():
         return None
@@ -66,9 +66,6 @@ def load_summary(exp_dir):
 
 
 def avg_metric(per_video, mode_prefix, key):
-    """Compute average of a metric across all videos.
-    mode_prefix: 'baseline', 'text', or None (single-mode fallback).
-    """
     vals = []
     for v in per_video:
         val = _get_metrics(v, mode_prefix).get(key)
@@ -86,32 +83,63 @@ def fmt(v, prec=4):
 
 
 def parse_exp_name(name):
-    """Parse experiment dir name to extract metadata."""
-    parts = name.split("_")
-    info = {"name": name, "cfg_type": "", "steps": "", "dataset": "",
-            "blend": "", "dilation": "", "gs": ""}
+    """Parse experiment dir name to extract metadata.
 
-    if name.startswith("smallcfg"):
+    Supports naming: {Weight}_{steps}_{Dataset}_{blend}_{dil}_{gs}
+    Also supports the older smallcfg_*/normalcfg_* experiment names.
+    """
+    info = {"name": name, "weight": "", "cfg_type": "", "steps": "",
+            "dataset": "", "blend": "", "dilation": "", "gs": ""}
+
+    # 解析权重前缀
+    name_rest = name
+    for prefix in WEIGHT_PREFIXES:
+        if name.startswith(prefix + "_"):
+            info["weight"] = prefix
+            name_rest = name[len(prefix) + 1:]
+            break
+
+    if not info["weight"]:
+        info["weight"] = "Default" if name.startswith(("smallcfg_", "normalcfg_")) else "Unknown"
+
+    parts = name_rest.split("_")
+
+    # 解析 steps/cfg: s2=2-Step, s4=4-Step, n4=Normal CFG 4-Step
+    if name_rest.startswith("s2_"):
+        info["steps"] = "2-Step"
+        info["cfg_type"] = "PCM"
+    elif name_rest.startswith("s4_"):
+        info["steps"] = "4-Step"
+        info["cfg_type"] = "PCM"
+    elif name_rest.startswith("n4_"):
+        info["steps"] = "NormalCFG-4Step"
+        info["cfg_type"] = "NormalCFG"
+    elif name_rest.startswith("smallcfg"):
         info["cfg_type"] = "smallcfg"
-    elif name.startswith("normalcfg"):
+    elif name_rest.startswith("normalcfg"):
         info["cfg_type"] = "normalcfg"
 
+    # 解析 dataset
     for p in parts:
-        if p.endswith("step"):
-            info["steps"] = p
         if p in ("OR", "BR"):
             info["dataset"] = p
+        elif p == "2step":
+            info["steps"] = "2-Step"
+        elif p == "4step":
+            info["steps"] = "4-Step"
 
-    if "noblend" in name:
+    # 解析 blend/dilation
+    if "noblend" in name_rest:
         info["blend"] = "No"
         info["dilation"] = "0"
-    elif "blend" in name:
+    elif "blend" in name_rest:
         info["blend"] = "Yes"
-    if "dil8" in name:
+    if "dil8" in name_rest:
         info["dilation"] = "8"
-    if "nodil" in name:
+    if "nodil" in name_rest:
         info["dilation"] = "0"
 
+    # 解析 gs
     for p in parts:
         if p.startswith("gs"):
             info["gs"] = p[2:]
@@ -119,33 +147,36 @@ def parse_exp_name(name):
     return info
 
 
+def _vbench_avg_val(per_video, mode_prefix):
+    """Compute average VBench score across all dimensions."""
+    vs = [avg_metric(per_video, mode_prefix, d) for d in VBENCH_DIMS]
+    vs = [x for x in vs if x is not None]
+    return sum(vs) / len(vs) if vs else 0
+
+
 def generate_detailed_table(experiments, dataset_filter, has_gt):
     """Generate markdown table for one dataset type (OR or BR)."""
-    filtered = [(name, data) for name, data in experiments if parse_exp_name(name)["dataset"] == dataset_filter]
+    filtered = [(name, data) for name, data in experiments
+                if parse_exp_name(name)["dataset"] == dataset_filter]
     if not filtered:
         return ""
 
     lines = []
 
-    # Detect if data uses dual mode (baseline/text) or single mode
     dual_mode = any(_is_dual_mode(data.get("per_video", [])) for _, data in filtered)
     if dual_mode:
         modes = [("baseline", "BL"), ("text", "TG")]
     else:
         modes = [(None, None)]
 
-    # Sort by VBench average descending (best first)
-    def _vbench_avg(nd):
-        pv = nd[1].get("per_video", [])
-        vs = [avg_metric(pv, modes[0][0], d) for d in VBENCH_DIMS]
-        vs = [x for x in vs if x is not None]
-        return sum(vs) / len(vs) if vs else 0
-    filtered.sort(key=_vbench_avg, reverse=True)
+    # Sort by VBench average descending
+    filtered.sort(key=lambda nd: _vbench_avg_val(nd[1].get("per_video", []), modes[0][0]),
+                  reverse=True)
 
     # VBench table
     lines.append(f"### VBench Scores ({dataset_filter})")
     lines.append("")
-    header = "| Experiment |"
+    header = "| Weight | Config |"
     if dual_mode:
         header += " Mode |"
     for dim in VBENCH_DIMS:
@@ -153,17 +184,17 @@ def generate_detailed_table(experiments, dataset_filter, has_gt):
     header += " **Avg** |"
     lines.append(header)
 
-    n_cols = len(VBENCH_DIMS) + (3 if dual_mode else 2)
+    n_cols = len(VBENCH_DIMS) + (4 if dual_mode else 3)
     sep = "|" + "|".join(["---"] * n_cols) + "|"
     lines.append(sep)
 
     for name, data in filtered:
         info = parse_exp_name(name)
         per_video = data.get("per_video", [])
-        short = f"{info['cfg_type']}_{info['steps']}_{'blend' if info['blend']=='Yes' else 'noblend'}_gs{info['gs']}"
+        config_short = f"{info['steps']}_{'blend' if info['blend']=='Yes' else 'noblend'}_gs{info['gs']}"
 
         for mode_prefix, mode_label in modes:
-            row = f"| {short} |"
+            row = f"| **{info['weight']}** | {config_short} |"
             if dual_mode:
                 row += f" {mode_label} |"
             vals = []
@@ -182,26 +213,27 @@ def generate_detailed_table(experiments, dataset_filter, has_gt):
     if has_gt:
         lines.append(f"### Pixel Metrics ({dataset_filter}, GT available)")
         lines.append("")
-        header = "| Experiment |"
+        header = "| Weight | Config |"
         if dual_mode:
             header += " Mode |"
         for pk in PIXEL_KEYS:
             header += f" {PIXEL_LABELS[pk]} |"
         lines.append(header)
 
-        n_cols = len(PIXEL_KEYS) + (2 if dual_mode else 1)
+        n_cols = len(PIXEL_KEYS) + (3 if dual_mode else 2)
         sep = "|" + "|".join(["---"] * n_cols) + "|"
         lines.append(sep)
 
-        # Sort pixel metrics by PSNR descending
-        px_sorted = sorted(filtered, key=lambda nd: avg_metric(nd[1].get("per_video", []), modes[0][0], "psnr_mean") or 0, reverse=True)
+        px_sorted = sorted(filtered,
+                           key=lambda nd: avg_metric(nd[1].get("per_video", []), modes[0][0], "psnr_mean") or 0,
+                           reverse=True)
         for name, data in px_sorted:
             info = parse_exp_name(name)
             per_video = data.get("per_video", [])
-            short = f"{info['cfg_type']}_{info['steps']}_{'blend' if info['blend']=='Yes' else 'noblend'}_gs{info['gs']}"
+            config_short = f"{info['steps']}_{'blend' if info['blend']=='Yes' else 'noblend'}_gs{info['gs']}"
 
             for mode_prefix, mode_label in modes:
-                row = f"| {short} |"
+                row = f"| **{info['weight']}** | {config_short} |"
                 if dual_mode:
                     row += f" {mode_label} |"
                 for pk in PIXEL_KEYS:
@@ -215,7 +247,7 @@ def generate_detailed_table(experiments, dataset_filter, has_gt):
 
 
 def generate_cross_exp_comparison(experiments):
-    """Generate cross-experiment comparison summary."""
+    """Generate cross-experiment comparison summary, sorted by VBench average."""
     lines = []
     dual_mode = any(_is_dual_mode(data.get("per_video", [])) for _, data in experiments)
 
@@ -227,7 +259,7 @@ def generate_cross_exp_comparison(experiments):
         lines.append("Average VBench score across all videos:")
     lines.append("")
 
-    header = "| Experiment | Dataset | Blend | Dil | Steps | GS |"
+    header = "| Weight | Dataset | Blend | Dil | Steps | GS |"
     for dim in VBENCH_DIMS:
         header += f" {VBENCH_LABELS[dim]} |"
     header += " **Avg** |"
@@ -239,20 +271,16 @@ def generate_cross_exp_comparison(experiments):
 
     mode_prefix = "text" if dual_mode else None
 
-    # Sort by VBench average descending
-    def _cross_avg(nd):
-        pv = nd[1].get("per_video", [])
-        vs = [avg_metric(pv, mode_prefix, d) for d in VBENCH_DIMS]
-        vs = [x for x in vs if x is not None]
-        return sum(vs) / len(vs) if vs else 0
-    sorted_exps = sorted(experiments, key=_cross_avg, reverse=True)
+    sorted_exps = sorted(experiments,
+                         key=lambda nd: _vbench_avg_val(nd[1].get("per_video", []), mode_prefix),
+                         reverse=True)
 
     for name, data in sorted_exps:
         info = parse_exp_name(name)
         per_video = data.get("per_video", [])
-        short = f"{info['cfg_type']}_{info['steps']}"
 
-        row = f"| {short} | {info['dataset']} | {info['blend']} | {info['dilation']} | {info['steps']} | {info['gs']} |"
+        row = (f"| **{info['weight']}** | {info['dataset']} | {info['blend']} | "
+               f"{info['dilation']} | {info['steps']} | {info['gs']} |")
         vals = []
         for dim in VBENCH_DIMS:
             v = avg_metric(per_video, mode_prefix, dim)
@@ -267,40 +295,54 @@ def generate_cross_exp_comparison(experiments):
     return "\n".join(lines)
 
 
-def generate_delta_table(experiments):
-    """Generate TG - BL delta table. Only applicable for dual-mode data."""
-    # Skip entirely when data is single-mode (no baseline/text distinction)
-    dual_mode = any(_is_dual_mode(data.get("per_video", [])) for _, data in experiments)
-    if not dual_mode:
+def generate_weight_comparison(experiments):
+    """Generate weight-vs-weight comparison for the same config."""
+    lines = []
+    lines.append("## Weight Comparison (Same Config)")
+    lines.append("")
+
+    # 动态发现所有权重类型
+    all_weights = sorted(set(parse_exp_name(name)["weight"] for name, _ in experiments))
+    if not all_weights:
         return ""
 
-    lines = []
-    lines.append("## Prompt Effect Analysis (TG − BL Delta)")
-    lines.append("")
-    lines.append("Positive delta = prompt improved the metric.")
+    lines.append(f"Compare {' vs '.join(all_weights)} on the same config/dataset:")
     lines.append("")
 
-    header = "| Experiment | Dataset |"
-    for dim in VBENCH_DIMS:
-        header += f" Δ{VBENCH_LABELS[dim]} |"
-    lines.append(header)
-
-    n_cols = len(VBENCH_DIMS) + 2
-    sep = "|" + "|".join(["---"] * n_cols) + "|"
-    lines.append(sep)
-
+    # Group experiments by (steps, dataset, blend, dilation, gs)
+    config_groups = {}
     for name, data in experiments:
         info = parse_exp_name(name)
-        per_video = data.get("per_video", [])
-        short = f"{info['cfg_type']}_{info['steps']}_{'blend' if info['blend']=='Yes' else 'noblend'}_gs{info['gs']}"
+        key = (info["steps"], info["dataset"], info["blend"], info["dilation"], info["gs"])
+        if key not in config_groups:
+            config_groups[key] = {}
+        config_groups[key][info["weight"]] = (name, data)
 
-        row = f"| {short} | {info['dataset']} |"
-        for dim in VBENCH_DIMS:
-            bl_v = avg_metric(per_video, "baseline", dim)
-            tg_v = avg_metric(per_video, "text", dim)
-            if bl_v is not None and tg_v is not None:
-                d = tg_v - bl_v
-                row += f" {d:+.4f} |"
+    if not config_groups:
+        return ""
+
+    dual_mode = any(_is_dual_mode(data.get("per_video", [])) for _, data in experiments)
+    mode_prefix = "text" if dual_mode else None
+
+    header = "| Config | Dataset |"
+    for w in all_weights:
+        header += f" {w} Avg |"
+    lines.append(header)
+    sep = "|---|---|"
+    for _ in all_weights:
+        sep += "---|"
+    lines.append(sep)
+
+    for (steps, dataset, blend, dil, gs), weight_dict in sorted(config_groups.items()):
+        blend_str = "blend" if blend == "Yes" else "noblend"
+        config_str = f"{steps}_{blend_str}_gs{gs}"
+        row = f"| {config_str} | {dataset} |"
+        for w in all_weights:
+            if w in weight_dict:
+                _, d = weight_dict[w]
+                pv = d.get("per_video", [])
+                avg = _vbench_avg_val(pv, mode_prefix)
+                row += f" **{fmt(avg)}** |"
             else:
                 row += " N/A |"
         lines.append(row)
@@ -331,21 +373,32 @@ def main():
 
     print(f"Loaded {len(experiments)} experiment(s).")
 
+    # Count weight types
+    weight_counts = {}
+    for name, _ in experiments:
+        w = parse_exp_name(name)["weight"]
+        weight_counts[w] = weight_counts.get(w, 0) + 1
+    weight_summary = ", ".join(f"{k}: {v}" for k, v in sorted(weight_counts.items()))
+
     report = []
-    report.append(f"# 12-Experiment Comparison Report")
+    report.append(f"# Experiment Comparison Report")
     report.append(f"")
     report.append(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     report.append(f"")
+    report.append(f"**{len(experiments)} experiments** — {weight_summary}")
+    report.append(f"")
     report.append(f"## Experiment Configuration")
     report.append(f"")
-    report.append(f"| # | Directory | ckpt | GS | Dataset | Blend | Dilation | Videos |")
-    report.append(f"|---|-----------|------|----|---------|-------|----------|--------|")
+    report.append(f"| # | Weight | Directory | ckpt | GS | Dataset | Blend | Dilation | Videos |")
+    report.append(f"|---|--------|-----------|------|----|---------|-------|----------|--------|")
 
     for i, (name, data) in enumerate(experiments, 1):
         cfg = data.get("config", {})
         info = parse_exp_name(name)
         n = data.get("num_videos", 0)
-        report.append(f"| {i} | `{name}` | {cfg.get('ckpt', '?')} | {cfg.get('text_guidance_scale', '?')} | {info['dataset']} | {info['blend']} | {info['dilation']} | {n} |")
+        report.append(f"| {i} | **{info['weight']}** | `{name}` | {cfg.get('ckpt', '?')} | "
+                       f"{cfg.get('text_guidance_scale', '?')} | {info['dataset']} | "
+                       f"{info['blend']} | {info['dilation']} | {n} |")
 
     report.append("")
 
@@ -372,10 +425,10 @@ def main():
     report.append("")
     report.append(generate_cross_exp_comparison(experiments))
 
-    # Delta analysis
+    # Weight comparison table
     report.append("---")
     report.append("")
-    report.append(generate_delta_table(experiments))
+    report.append(generate_weight_comparison(experiments))
 
     # Summary
     report.append("---")
@@ -386,10 +439,13 @@ def main():
     report.append("")
     report.append("| Comparison | Question |")
     report.append("|-----------|----------|")
-    report.append("| smallcfg_2step vs smallcfg_4step | Does increasing steps improve quality? |")
-    report.append("| smallcfg_4step vs normalcfg_4step | Does the CFG-trained LoRA produce better text-guided results? |")
+    report.append("| Orign vs FT_S2_26K | Does Stage2 26K-step finetuning improve quality? |")
+    report.append("| Orign vs FT_S2_8K | Does Stage2 8K-step finetuning improve quality? |")
+    report.append("| Orign vs FT_S2_34K | Does Stage2 34K-step finetuning improve quality? |")
+    report.append("| Orign vs FT_S2_48K | Does Stage2 48K-step finetuning improve quality? |")
+    report.append("| FT_S2_8K vs FT_S2_26K vs FT_S2_34K vs FT_S2_48K | Which training step count is optimal? |")
+    report.append("| 2-Step vs 4-Step | Does increasing inference steps improve quality? |")
     report.append("| noblend vs blend+dil8 | Does mask blending improve visual quality? |")
-    report.append("| BL vs TG (all configs) | Does text guidance consistently help across ckpts? |")
     report.append("")
     report.append("> Review the tables above to answer these questions based on your metric priorities.")
     report.append("")

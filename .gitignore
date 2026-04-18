@@ -13,9 +13,12 @@ venv/
 data/
 data_val/
 weights/
+archives/
+diffuEraser_weights/
 
 # Experiment outputs. New runs should live under experiments/.
 experiments/
+exp_result/
 finetune-stage1/
 finetune-stage2/
 dpo-finetune-stage1/

@@ -70,7 +70,7 @@ import torch
 # ---------------------------------------------------------------------------
 # 0)  Ensure repo root is on sys.path
 # ---------------------------------------------------------------------------
-REPO_ROOT = Path(__file__).resolve().parent
+REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
 # VBench — 视频质量评估（位于 /home/hj/VBench，非 pip 安装）

@@ -43,6 +43,9 @@ import cv2
 import numpy as np
 import torch
 
+REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
 from propainter.inference import Propainter
 from diffueraser.diffueraser import DiffuEraser
 
@@ -90,7 +93,7 @@ def _gpu_mem_info():
 # ---------------------------------------------------------------------------
 def load_prompt_from_yaml(yaml_path: str):
     """从 YAML 加载 prompt 和 n_prompt 配置。
-    
+
     YAML 格式:
         prompt:
           - "a sunlit park path with green grass"
@@ -100,19 +103,19 @@ def load_prompt_from_yaml(yaml_path: str):
     """
     with open(yaml_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f) or {}
-    
+
     prompt = ""
     if 'prompt' in config and config['prompt']:
         p = config['prompt']
         prompt = p[0] if isinstance(p, list) else str(p)
-    
+
     n_prompt = ""
     if 'n_prompt' in config and config['n_prompt']:
         np_ = config['n_prompt']
         n_prompt = np_[0] if isinstance(np_, list) else str(np_)
-    
+
     text_guidance_scale = config.get('text_guidance_scale', 2.0)
-    
+
     return prompt, n_prompt, text_guidance_scale
 
 def parse_input_size(size_str):
@@ -132,13 +135,13 @@ def parse_input_size(size_str):
     raise ValueError(f"Invalid input_size format: '{size_str}'. Use 'WxH' (e.g., '432x240')")
 
 def list_video_names(video_root: Path):
-    return [p.name for p in sorted(video_root.iterdir()) 
+    return [p.name for p in sorted(video_root.iterdir())
             if p.is_dir() and any(f.suffix.lower() in IMG_EXTS for f in p.iterdir())]
 
 def load_rgb_frames(frames_dir: Path, max_frames: int = -1):
     files = sorted([p for p in frames_dir.iterdir() if p.suffix.lower() in IMG_EXTS])
     if max_frames and max_frames > 0: files = files[:max_frames]
-    frames = [cv2.cvtColor(cv2.imread(str(fp)), cv2.COLOR_BGR2RGB).astype(np.uint8) 
+    frames = [cv2.cvtColor(cv2.imread(str(fp)), cv2.COLOR_BGR2RGB).astype(np.uint8)
               for fp in files if cv2.imread(str(fp)) is not None]
     if not frames: raise ValueError(f"No frames found in {frames_dir}")
     return frames
@@ -146,7 +149,7 @@ def load_rgb_frames(frames_dir: Path, max_frames: int = -1):
 def load_gray_masks(masks_dir: Path, max_frames: int = -1):
     files = sorted([p for p in masks_dir.iterdir() if p.suffix.lower() in IMG_EXTS])
     if max_frames and max_frames > 0: files = files[:max_frames]
-    masks = [cv2.imread(str(fp), cv2.IMREAD_GRAYSCALE).astype(np.uint8) 
+    masks = [cv2.imread(str(fp), cv2.IMREAD_GRAYSCALE).astype(np.uint8)
              for fp in files if cv2.imread(str(fp), cv2.IMREAD_GRAYSCALE) is not None]
     if not masks: raise ValueError(f"No masks found in {masks_dir}")
     return masks
@@ -173,7 +176,7 @@ def save_frames_to_dir(frames, out_dir: Path, prefix="frame", ext=".png"):
 
 def save_masks_to_dir(masks, out_dir: Path, prefix="mask", ext=".png", invert=False):
     """Save masks to a directory for model input.
-    
+
     Args:
         invert: If True, invert the mask (0->255, 255->0) before saving.
                 Use this when source mask has BLACK=hole but model expects WHITE=hole.
@@ -200,9 +203,9 @@ def ensure_same_hw(rgb_frames, gt_frames, masks):
 
 def composite_with_gt(pred_frames, gt_frames, masks, mask_inverse=False):
     """comp = pred * mask + gt * (1-mask), where mask==1 is HOLE
-    
+
     Hard binary mask — no blur, no feathering. Best for PSNR/SSIM.
-    
+
     Args:
         mask_inverse: If True, treat BLACK (0) as hole. Default False (WHITE as hole).
     """
@@ -668,14 +671,14 @@ def main():
                     loaded_from = os.path.basename(yaml_path)
                 else:
                     print(f"  [Text Guidance] WARN: YAML not found at {yaml_path}")
-            
+
             if loaded_from:
                 # Prioritize CLI argument if provided
                 if args.text_guidance_scale is not None:
                     text_guidance_scale = args.text_guidance_scale
                 else:
                     text_guidance_scale = yaml_scale
-                
+
                 print(f"  [Text Guidance] Loaded prompt from {loaded_from}")
                 print(f"    Content: {prompt[:60]}...")
                 print(f"    Scale:   {text_guidance_scale} (Source: {'CLI' if args.text_guidance_scale is not None else 'YAML'})")
@@ -683,30 +686,30 @@ def main():
                 print(f"  [Text Guidance] Enabled but no prompt source specified. Using empty prompt.")
                 if args.text_guidance_scale is not None:
                     text_guidance_scale = args.text_guidance_scale
-        
+
         orig_h, orig_w = in_frames[0].shape[:2]
-        
+
         # Temp directories for resized frames
         temp_dir = None
         model_vdir, model_mdir = vdir, mdir
         need_temp_dir = (target_w and target_h) or args.mask_inverse
-        
+
         # Resize if input_size is specified
         if target_w and target_h:
             in_frames = resize_frames(in_frames, target_w, target_h)
             gt_frames = resize_frames(gt_frames, target_w, target_h)
             masks = resize_masks(masks, target_w, target_h)
-        
+
         # Create temp directory if needed
         if need_temp_dir:
             temp_dir = Path(tempfile.mkdtemp(prefix=f"diffueraser_{name}_"))
             model_vdir = save_frames_to_dir(in_frames, temp_dir / "frames")
             model_mdir = save_masks_to_dir(masks, temp_dir / "masks", invert=args.mask_inverse)
-        
+
         n = min(len(in_frames), len(gt_frames), len(masks))
         in_frames, gt_frames, masks = in_frames[:n], gt_frames[:n], normalize_length(masks[:n], n)
         in_frames, gt_frames, masks = ensure_same_hw(in_frames, gt_frames, masks)
-        
+
         proc_h, proc_w = in_frames[0].shape[:2]
 
         # ---- GPU Offloading: ensure correct state ----
@@ -719,7 +722,7 @@ def main():
         t0 = time()
         pp_frames = pp.forward(
             video=str(model_vdir), mask=str(model_mdir), output_path=str(save_root / name / "propainter.mp4"),
-            resize_ratio=1.0, video_length=args.video_length, 
+            resize_ratio=1.0, video_length=args.video_length,
             height=-1, width=-1,
             mask_dilation=args.mask_dilation_iter, ref_stride=args.ref_stride,
             neighbor_length=args.neighbor_length, subvideo_length=args.subvideo_length,
@@ -755,7 +758,7 @@ def main():
                 _offload_to_cpu(de, "DiffuEraser")
         else:
             de_comp = pp_comp
-        
+
         # Cleanup temp directory
         if temp_dir and temp_dir.exists():
             shutil.rmtree(temp_dir)

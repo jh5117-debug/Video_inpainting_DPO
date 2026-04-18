@@ -1,38 +1,44 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -uo pipefail
 
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate diffueraser
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+
+if [[ "${AUTO_CONDA:-1}" == "1" ]] && command -v conda >/dev/null 2>&1; then
+    # shellcheck disable=SC1091
+    source "$(conda info --base)/etc/profile.d/conda.sh"
+    conda activate "${CONDA_ENV:-diffueraser}"
+fi
 
 trap 'echo ""; echo "[!] Ctrl+C detected, killing all child processes..."; kill $(jobs -p) 2>/dev/null; wait 2>/dev/null; rm -f /tmp/gpu_lock_*.lock; echo "[!] All experiments stopped."; exit 1' INT TERM
 
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-EXP_ROOT="/home/hj/DiffuEraser_Project/exp_result"
-LOG_DIR="${EXP_ROOT}/logs_${TIMESTAMP}"
+EXP_ROOT="${EXP_ROOT:-${PROJECT_ROOT}/experiments/evaluation/20exp}"
+LOG_DIR="${LOG_DIR:-${EXP_ROOT}/logs_${TIMESTAMP}}"
 mkdir -p "$LOG_DIR"
 
-BASE_MODEL=/home/hj/DiffuEraser_new/weights/stable-diffusion-v1-5
-VAE=/home/hj/DiffuEraser_new/weights/sd-vae-ft-mse
-DIFFUERASER=/home/hj/DiffuEraser_new/weights/diffuEraser
-PROPAINTER=/home/hj/DiffuEraser_new/weights/propainter
-PCM=/home/hj/DiffuEraser_new/weights/PCM_Weights
-I3D=/home/hj/DiffuEraser_new/weights/i3d_rgb_imagenet.pt
-RAFT=/home/hj/DiffuEraser_new/weights/propainter/raft-things.pth
+BASE_MODEL="${BASE_MODEL:-${PROJECT_ROOT}/weights/stable-diffusion-v1-5}"
+VAE="${VAE:-${PROJECT_ROOT}/weights/sd-vae-ft-mse}"
+DIFFUERASER="${DIFFUERASER:-${PROJECT_ROOT}/weights/diffuEraser}"
+PROPAINTER="${PROPAINTER:-${PROJECT_ROOT}/weights/propainter}"
+PCM="${PCM:-${PROJECT_ROOT}/weights/PCM_Weights}"
+I3D="${I3D:-${PROJECT_ROOT}/weights/i3d_rgb_imagenet.pt}"
+RAFT="${RAFT:-${PROJECT_ROOT}/weights/propainter/raft-things.pth}"
 
-OR_VIDEO=/home/hj/DiffuEraser_new/DAVIS-2017-trainval-Full-Resolution/DAVIS/JPEGImages/Full-Resolution
-OR_MASK=/home/hj/DiffuEraser_new/DAVIS-2017-trainval-Full-Resolution/DAVIS/Annotations/Full-Resolution
-OR_CAPTION=/home/hj/DiffuEraser_Project/prompt_caption/all_captions_OR.yaml
+OR_VIDEO="${OR_VIDEO:-${PROJECT_ROOT}/data/external/davis_2017_full_resolution/DAVIS/JPEGImages/Full-Resolution}"
+OR_MASK="${OR_MASK:-${PROJECT_ROOT}/data/external/davis_2017_full_resolution/DAVIS/Annotations/Full-Resolution}"
+OR_CAPTION="${OR_CAPTION:-${PROJECT_ROOT}/inference/prompt_cache/all_captions_OR.yaml}"
 
-BR_VIDEO=/home/hj/DiffuEraser_new/dataset/davis/JPEGImages_432_240/
-BR_MASK=/home/hj/DiffuEraser_new/dataset/davis/test_masks/
-BR_GT=/home/hj/DiffuEraser_new/dataset/davis/JPEGImages_432_240/
-BR_CAPTION=/home/hj/DiffuEraser_Project/prompt_caption/all_captions_BR.yaml
+BR_VIDEO="${BR_VIDEO:-${PROJECT_ROOT}/data/external/davis_432_240/JPEGImages_432_240}"
+BR_MASK="${BR_MASK:-${PROJECT_ROOT}/data/external/davis_432_240/test_masks}"
+BR_GT="${BR_GT:-${PROJECT_ROOT}/data/external/davis_432_240/JPEGImages_432_240}"
+BR_CAPTION="${BR_CAPTION:-${PROJECT_ROOT}/inference/prompt_cache/all_captions_BR.yaml}"
 
-INFERENCE_DIR=/home/hj/DiffuEraser_Project/inference
-MAX_VIDEOS=50
-ALL_GPUS=(1 2 3 4 5 6)
-MIN_FREE_MB=18000
-POLL_INTERVAL=30
+INFERENCE_DIR="${PROJECT_ROOT}/inference"
+MAX_VIDEOS="${MAX_VIDEOS:-50}"
+read -r -a ALL_GPUS <<< "${GPUS:-1 2 3 4 5 6}"
+MIN_FREE_MB="${MIN_FREE_MB:-18000}"
+POLL_INTERVAL="${POLL_INTERVAL:-30}"
 
 acquire_gpu() {
     while true; do

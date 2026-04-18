@@ -646,6 +646,8 @@ def parse_args():
     ]
     p.add_argument("--eval", action="store_true",
                    help="Enable evaluation. With --gt_root: VBench + pixel metrics. Without: VBench only.")
+    p.add_argument("--no_vbench", action="store_true",
+                   help="Skip VBench evaluation even when --eval is on. Only compute pixel metrics.")
     p.add_argument("--vbench_dimensions", nargs="+", default=VBENCH_DEFAULT)
 
     # Output
@@ -689,7 +691,10 @@ def main():
     # Determine eval mode
     eval_mode = "OFF"
     if args.eval:
-        eval_mode = "VBench + Pixel Metrics (GT available)" if has_gt else "VBench only (no GT)"
+        if args.no_vbench:
+            eval_mode = "Pixel Metrics only (no VBench)" if has_gt else "OFF (no GT, no VBench)"
+        else:
+            eval_mode = "VBench + Pixel Metrics (GT available)" if has_gt else "VBench only (no GT)"
 
     print(f"\n{'═' * 60}")
     print(f"  GT vs Experiment  (single inference)")
@@ -718,9 +723,9 @@ def main():
     # Metrics (auto-enabled when --eval + GT)
     metrics_calc = get_metrics_calc(args, device, has_gt)
 
-    # VBench (auto-enabled when --eval)
+    # VBench (auto-enabled when --eval, skipped with --no_vbench)
     vbench_ctx = None
-    if args.eval:
+    if args.eval and not args.no_vbench:
         try:
             vbench_ctx = init_vbench(args, device)
         except Exception as e:

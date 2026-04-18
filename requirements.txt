@@ -10,6 +10,13 @@ numpy
 Pillow
 tqdm
 imageio
+imageio-ffmpeg
 safetensors
 ftfy
 regex
+PyYAML
+scikit-image
+torchmetrics
+pandas
+decord
+lmdb
