@@ -711,9 +711,9 @@ def parse_args(input_args=None):
 
     # Validation
     parser.add_argument("--validation_prompt", type=str, default=["clean background", "clean background"])
-    parser.add_argument("--validation_image", type=str, default=["data_val/JPEGImages_432_240/bear", "data_val/JPEGImages_432_240/boat"])
-    parser.add_argument("--validation_mask", type=str, default=["data_val/test_masks/bear", "data_val/test_masks/boat"])
-    parser.add_argument("--val_data_dir", type=str, default="data_val")
+    parser.add_argument("--validation_image", type=str, default=["data/external/davis_432_240/JPEGImages_432_240/bear", "data/external/davis_432_240/JPEGImages_432_240/boat"])
+    parser.add_argument("--validation_mask", type=str, default=["data/external/davis_432_240/test_masks/bear", "data/external/davis_432_240/test_masks/boat"])
+    parser.add_argument("--val_data_dir", type=str, default="data/external/davis_432_240")
     parser.add_argument("--validation_steps", type=int, default=300)
     parser.add_argument("--logging_steps", type=int, default=300,
                         help="每隔多少步输出详细 DPO 诊断日志")
@@ -723,7 +723,7 @@ def parse_args(input_args=None):
     parser.add_argument("--wandb_entity", type=str, default=None)
 
     # ===== DPO 特有参数 =====
-    parser.add_argument("--dpo_data_root", type=str, default="data/DPO_Finetune_data",
+    parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data",
                         help="DPO 偏好对数据集根目录")
     parser.add_argument("--ref_model_path", type=str, default=None,
                         help="Ref model 权重路径 (SFT 后的 DiffuEraser 权重，含 unet_main/ 和 brushnet/)")

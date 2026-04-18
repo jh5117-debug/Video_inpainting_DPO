@@ -15,7 +15,8 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && 
 
 NUM_GPUS=${NUM_GPUS:-8}
 WEIGHTS_DIR=${WEIGHTS_DIR:-${PROJECT_ROOT}/weights}
-DPO_DATA_ROOT=${DPO_DATA_ROOT:-${PROJECT_ROOT}/data/DPO_Finetune_data}
+DPO_DATA_ROOT=${DPO_DATA_ROOT:-${PROJECT_ROOT}/data/external/DPO_Finetune_data}
+VAL_DATA_DIR=${VAL_DATA_DIR:-${PROJECT_ROOT}/data/external/davis_432_240}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
 BATCH_SIZE=${BATCH_SIZE:-1}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
@@ -74,6 +75,7 @@ python training/dpo/scripts/run_stage1.py \
   --num_gpus ${NUM_GPUS} \
   --weights_dir ${WEIGHTS_DIR} \
   --dpo_data_root ${DPO_DATA_ROOT} \
+  --val_data_dir ${VAL_DATA_DIR} \
   --experiments_dir ${EXPERIMENTS_DIR} \
   --run_name ${RUN_NAME} \
   --batch_size ${BATCH_SIZE} \

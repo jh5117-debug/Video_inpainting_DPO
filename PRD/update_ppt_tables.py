@@ -1,11 +1,16 @@
 from copy import deepcopy
+import os
+from pathlib import Path
 import re
 
 from pptx import Presentation
 from pptx.util import Pt
 
 
-PPT_PATH = "/home/hj/Reg_DPO_Inpainting/PRD/PPT.pptx"
+PPT_PATH = os.environ.get(
+    "PPT_PATH",
+    str(Path(__file__).resolve().parent / "PPT.pptx"),
+)
 
 
 TABLES = {

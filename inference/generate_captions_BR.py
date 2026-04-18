@@ -20,8 +20,8 @@ VLM Captioning Script for OR Scene (独立环境运行)
 
     # 批量处理整个 DAVIS 数据集:
 CUDA_VISIBLE_DEVICES=1 python generate_captions.py \
-    --dataset_root /home/hj/Train_Diffueraser/dataset/DAVIS \
-    --model_path /home/hj/DiffuEraser_new/weights/Qwen2.5-VL-7B-Instruct \
+    --dataset_root /home/nvme01/H20_Video_inpainting_DPO/data/external/davis_2017_full_resolution/DAVIS \
+    --model_path /home/nvme01/H20_Video_inpainting_DPO/weights/Qwen2.5-VL-7B-Instruct \
     --batch_output_dir prompt_cache \
     --device cuda \
     --force

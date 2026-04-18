@@ -50,8 +50,8 @@ INFERENCE_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(INFERENCE_DIR))
 
-# VBench
-VBENCH_ROOT = Path("/home/hj/VBench")
+# VBench is optional and not managed by this repo.
+VBENCH_ROOT = Path(os.environ.get("VBENCH_ROOT", str(REPO_ROOT / "VBench")))
 if str(VBENCH_ROOT) not in sys.path:
     sys.path.insert(0, str(VBENCH_ROOT))
 

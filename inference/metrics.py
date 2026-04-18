@@ -6,6 +6,7 @@ Supports: PSNR, SSIM, LPIPS, AS, IS, VFID
 """
 
 import os
+from pathlib import Path
 import numpy as np
 import torch
 import torch.nn as nn
@@ -14,6 +15,12 @@ import torchvision.transforms as T
 from PIL import Image
 from scipy import linalg
 import cv2
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+DEFAULT_WEIGHTS_DIR = PROJECT_ROOT / "weights"
+DEFAULT_AESTHETIC_CKPT = DEFAULT_WEIGHTS_DIR / "metrics" / "sa_0_4_vit_l_14_linear.pth"
+DEFAULT_I3D_MODEL = DEFAULT_WEIGHTS_DIR / "i3d_rgb_imagenet.pt"
+DEFAULT_RAFT_MODEL = DEFAULT_WEIGHTS_DIR / "propainter" / "raft-things.pth"
 
 # =========================
 # PSNR
@@ -77,7 +84,7 @@ class AestheticScoreMetric:
     _instance, _device = None, None
     
     @classmethod
-    def get_instance(cls, device="cuda", ckpt_path="/home/hj/DiffuEraser1/weights/metrics/sa_0_4_vit_l_14_linear.pth"):
+    def get_instance(cls, device="cuda", ckpt_path=str(DEFAULT_AESTHETIC_CKPT)):
         if cls._instance is None or cls._device != device:
             import open_clip
             clip_model, _, clip_preprocess = open_clip.create_model_and_transforms("ViT-L-14", pretrained="openai")
@@ -100,7 +107,7 @@ class AestheticScoreMetric:
     
     @staticmethod
     @torch.no_grad()
-    def compute(pil_img, device="cuda", ckpt_path="/home/hj/DiffuEraser1/weights/metrics/sa_0_4_vit_l_14_linear.pth"):
+    def compute(pil_img, device="cuda", ckpt_path=str(DEFAULT_AESTHETIC_CKPT)):
         clip_model, clip_preprocess, head = AestheticScoreMetric.get_instance(device, ckpt_path)
         if isinstance(pil_img, np.ndarray):
             pil_img = Image.fromarray(pil_img.astype(np.uint8))
@@ -345,8 +352,7 @@ class RAFTFlowComputer:
                     import sys
                     # Try different possible RAFT locations
                     possible_paths = [
-                        "/home/hj/DiffuEraser/propainter",      # Current project
-                        "/home/hj/DiffuEraser1/propainter",     # Alternative project
+                        str(PROJECT_ROOT / "propainter"),
                         os.path.dirname(os.path.dirname(raft_model_path)),  # Infer from weights path
                     ]
                     
@@ -542,9 +548,9 @@ class EwarpMetric:
 # =========================
 class MetricsCalculator:
     def __init__(self, device="cuda", 
-                 i3d_model_path="/home/hj/DiffuEraser1/weights/i3d_rgb_imagenet.pt",
-                 aesthetic_ckpt_path="/home/hj/DiffuEraser1/weights/metrics/sa_0_4_vit_l_14_linear.pth",
-                 raft_model_path="/home/hj/DiffuEraser1/weights/propainter/raft-things.pth",
+                 i3d_model_path=str(DEFAULT_I3D_MODEL),
+                 aesthetic_ckpt_path=str(DEFAULT_AESTHETIC_CKPT),
+                 raft_model_path=str(DEFAULT_RAFT_MODEL),
                  **kwargs):
         self.device = device
         self.i3d_model_path = i3d_model_path
@@ -554,7 +560,7 @@ class MetricsCalculator:
         self._ewarp_metric = None
         
         # Handle legacy propainter_model_dir argument
-        if 'propainter_model_dir' in kwargs and raft_model_path == "/home/hj/DiffuEraser1/weights/propainter/raft-things.pth":
+        if 'propainter_model_dir' in kwargs and raft_model_path == str(DEFAULT_RAFT_MODEL):
             propainter_dir = kwargs['propainter_model_dir']
             potential_raft_path = os.path.join(propainter_dir, "raft-things.pth")
             if os.path.exists(potential_raft_path):

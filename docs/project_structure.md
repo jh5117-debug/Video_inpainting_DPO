@@ -83,3 +83,32 @@ The runner compares available weights named `Orign`, `FT_S2_8K`, `FT_S2_26K`,
 test workspace. Missing weight directories are skipped, outputs stay under
 `experiments/evaluation/weight_sweep/`, and `inference/generate_report.py`
 aggregates completed `summary.json` files into an experiment report.
+
+## H20 Runtime
+
+The H20 server uses the full project under:
+
+```text
+/home/nvme01/H20_Video_inpainting_DPO
+```
+
+It does not require SLURM. DPO training should use the plain shell launchers:
+
+```bash
+cd /home/nvme01/H20_Video_inpainting_DPO
+CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage1.sh
+CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage2.sh
+```
+
+The launcher defaults are path-only adaptations:
+
+```text
+DPO data root:  data/external/DPO_Finetune_data
+val data root:  data/external/davis_432_240
+weights root:   weights/
+outputs root:   experiments/dpo/
+```
+
+Training logic remains in `training/dpo/train_stage1.py` and
+`training/dpo/train_stage2.py`; the H20 scripts only choose paths, GPUs, cache
+locations, and command-line arguments.

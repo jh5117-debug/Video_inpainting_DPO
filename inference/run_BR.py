@@ -45,6 +45,7 @@ import torch
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
+DEFAULT_WEIGHTS_DIR = REPO_ROOT / "weights"
 
 from propainter.inference import Propainter
 from diffueraser.diffueraser import DiffuEraser
@@ -509,13 +510,13 @@ def main():
     parser.add_argument('--compute_metrics', action='store_true')
     parser.add_argument('--no_metrics', action='store_true',
                         help="Disable metrics computation (overrides --compute_metrics)")
-    parser.add_argument('--base_model_path', type=str, default='/home/hj/DiffuEraser1/weights/stable-diffusion-v1-5')
-    parser.add_argument('--vae_path', type=str, default='/home/hj/DiffuEraser1/weights/sd-vae-ft-mse')
-    parser.add_argument('--diffueraser_path', type=str, default='/home/hj/DiffuEraser1/weights/diffuEraser')
-    parser.add_argument('--propainter_model_dir', type=str, default='/home/hj/DiffuEraser1/weights/propainter')
-    parser.add_argument('--pcm_weights_path', type=str, default='/home/hj/DiffuEraser1/weights/PCM_Weights')
-    parser.add_argument('--i3d_model_path', type=str, default='/home/hj/DiffuEraser1/weights/i3d_rgb_imagenet.pt')
-    parser.add_argument('--raft_model_path', type=str, default='/home/hj/DiffuEraser1/weights/propainter/raft-things.pth')
+    parser.add_argument('--base_model_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'stable-diffusion-v1-5'))
+    parser.add_argument('--vae_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'sd-vae-ft-mse'))
+    parser.add_argument('--diffueraser_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'diffuEraser'))
+    parser.add_argument('--propainter_model_dir', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'propainter'))
+    parser.add_argument('--pcm_weights_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'PCM_Weights'))
+    parser.add_argument('--i3d_model_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'i3d_rgb_imagenet.pt'))
+    parser.add_argument('--raft_model_path', type=str, default=str(DEFAULT_WEIGHTS_DIR / 'propainter' / 'raft-things.pth'))
 
     # ========== Anchor Frame Strategy ==========
 

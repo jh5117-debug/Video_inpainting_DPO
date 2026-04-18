@@ -2,7 +2,7 @@
 set -euo pipefail
 
 export PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
-export DATA_ROOT="${DATA_ROOT:-$PROJECT_ROOT/data/DPO_Finetune_data}"
+export DATA_ROOT="${DATA_ROOT:-$PROJECT_ROOT/data/external/DPO_Finetune_data}"
 export STAGE_ROOT="${STAGE_ROOT:-$PROJECT_ROOT/.hf_repair_stage_dirs}"
 export HF_HOME="${HF_HOME:-$PROJECT_ROOT/.hf_cache_repair}"
 export HF_HUB_DISABLE_TELEMETRY=1

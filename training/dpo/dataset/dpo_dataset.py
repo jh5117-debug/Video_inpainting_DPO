@@ -48,7 +48,7 @@ class DPODataset(torch.utils.data.Dataset):
         self.nframes = args.nframes
         self.size = args.resolution
         self.tokenizer = tokenizer
-        self.dpo_data_root = dpo_data_root or getattr(args, "dpo_data_root", "data/DPO_Finetune_data")
+        self.dpo_data_root = dpo_data_root or getattr(args, "dpo_data_root", "data/external/DPO_Finetune_data")
         self.davis_oversample = getattr(args, "davis_oversample", 10)
         self.chunk_aligned = getattr(args, "chunk_aligned", False)
         self.base_seed = int(getattr(args, "seed", 0) or 0)

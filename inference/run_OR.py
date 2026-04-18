@@ -73,8 +73,8 @@ import torch
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-# VBench — 视频质量评估（位于 /home/hj/VBench，非 pip 安装）
-VBENCH_ROOT = Path("/home/hj/VBench")
+# VBench is optional and not managed by this repo.
+VBENCH_ROOT = Path(os.environ.get("VBENCH_ROOT", str(REPO_ROOT / "VBench")))
 if str(VBENCH_ROOT) not in sys.path:
     sys.path.insert(0, str(VBENCH_ROOT))
 

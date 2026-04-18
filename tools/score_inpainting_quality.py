@@ -30,13 +30,14 @@ import json
 import logging
 import os
 import sys
+from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 import torch
 
 # VBench 路径
-VBENCH_ROOT = "/home/hj/VBench"
+VBENCH_ROOT = os.environ.get("VBENCH_ROOT", str(Path(__file__).resolve().parents[1] / "VBench"))
 if VBENCH_ROOT not in sys.path:
     sys.path.insert(0, VBENCH_ROOT)
 

@@ -33,7 +33,10 @@ def get_project_root():
 
 def build_cmd(project_root, args):
     weights_dir = args.weights_dir or os.path.join(project_root, "weights")
-    dpo_data_root = args.dpo_data_root or os.path.join(project_root, "data", "DPO_Finetune_data")
+    dpo_data_root = args.dpo_data_root or first_existing(
+        os.path.join(project_root, "data", "external", "DPO_Finetune_data"),
+        os.path.join(project_root, "data", "DPO_Finetune_data"),
+    )
 
     latest_dpo_stage1 = latest_dir(
         project_root, "dpo", "stage1", args.experiments_dir
@@ -47,10 +50,15 @@ def build_cmd(project_root, args):
     ) / "converted_weights"
     ref_model_path = args.ref_model_path or first_existing(
         latest_sft_stage2,
+        os.path.join(weights_dir, "diffuEraser", "converted_weights_step34000"),
+        os.path.join(weights_dir, "diffuEraser", "converted_weights_step48000"),
         os.path.join(project_root, "finetune-stage2", "converted_weights_step34000"),
     )
     baseline_unet_path = args.baseline_unet_path or os.path.join(weights_dir, "diffuEraser")
-    eval_dir = args.val_data_dir or os.path.join(project_root, "data_val")
+    eval_dir = args.val_data_dir or first_existing(
+        os.path.join(project_root, "data_val"),
+        os.path.join(project_root, "data", "external", "davis_432_240"),
+    )
     output_dir = resolve_output_dir(
         project_root,
         "dpo",
