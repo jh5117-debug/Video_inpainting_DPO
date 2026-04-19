@@ -1,9 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
-if [[ -z "${CONDA_ENV:-}" && -d "/home/nvme01/conda_envs/diffueraser" ]]; then
-  CONDA_ENV="/home/nvme01/conda_envs/diffueraser"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DEFAULT_PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-${PROJECT_HOME:-${DEFAULT_PROJECT_ROOT}}}"
+PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+PROJECT_PARENT="$(dirname "${PROJECT_ROOT}")"
+DEFAULT_CONDA_ENV_PREFIX="${PROJECT_PARENT}/conda_envs/diffueraser"
+
+if [[ -n "${CONDA_ENV_PREFIX:-}" ]]; then
+  CONDA_ENV="${CONDA_ENV_PREFIX}"
+elif [[ -z "${CONDA_ENV:-}" && -d "${DEFAULT_CONDA_ENV_PREFIX}" ]]; then
+  CONDA_ENV="${DEFAULT_CONDA_ENV_PREFIX}"
 else
   CONDA_ENV="${CONDA_ENV:-diffueraser}"
 fi
@@ -20,12 +28,14 @@ if [[ -z "${NUM_GPUS:-}" ]]; then
   fi
 fi
 
-if [[ -n "${CONDA_EXE:-}" ]]; then
+if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
+  :
+elif [[ -n "${CONDA_EXE:-}" ]]; then
   CONDA_BASE="$("${CONDA_EXE}" info --base)"
 elif command -v conda >/dev/null 2>&1; then
   CONDA_BASE="$(conda info --base)"
-elif [[ -x "/home/nvme01/miniconda3/bin/conda" ]]; then
-  CONDA_BASE="/home/nvme01/miniconda3"
+elif [[ -x "${PROJECT_PARENT}/miniconda3/bin/conda" ]]; then
+  CONDA_BASE="${PROJECT_PARENT}/miniconda3"
 else
   echo "conda not found; set CONDA_EXE or install Miniconda." >&2
   exit 1

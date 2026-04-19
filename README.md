@@ -70,28 +70,43 @@ python DPO_finetune/scripts/run_dpo_stage1.py --chunk_aligned
 python DPO_finetune/scripts/run_dpo_stage2.py --chunk_aligned
 ```
 
-H20 server, no SLURM:
+Single-node server, no SLURM:
 
 ```bash
-cd /home/nvme01/H20_Video_inpainting_DPO
+export PROJECT_HOME=/home/nvme01/H20_Video_inpainting_DPO
+cd "${PROJECT_HOME}"
 CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage1.sh
 CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage2.sh
 ```
 
-The H20 launchers keep all caches and generated files inside the project by
-default. Runtime paths resolve to:
+The launchers infer `PROJECT_ROOT` from their location by default. For another
+server, set `PROJECT_HOME` to that checkout and optionally override asset/env
+locations:
+
+```bash
+export PROJECT_HOME=/path/to/H20_Video_inpainting_DPO
+export CONDA_BASE=/path/to/miniconda3
+export CONDA_ENV_PREFIX=/path/to/conda_envs/diffueraser
+export WEIGHTS_DIR="${PROJECT_HOME}/weights"
+export DPO_DATA_ROOT="${PROJECT_HOME}/data/external/DPO_Finetune_data"
+export VAL_DATA_DIR="${PROJECT_HOME}/data/external/davis_432_240"
+export EXPERIMENTS_DIR="${PROJECT_HOME}/experiments"
+```
+
+The launchers keep caches and generated files inside the project by default.
+Runtime paths resolve to:
 
 ```text
-project root:   /home/nvme01/H20_Video_inpainting_DPO
+project root:   ${PROJECT_HOME}
 DPO data:       data/external/DPO_Finetune_data
 validation:     data/external/davis_432_240
 weights:        weights/
 outputs:        experiments/dpo/
 ```
 
-Override `CUDA_VISIBLE_DEVICES`, `NUM_GPUS`, `DPO_DATA_ROOT`, `WEIGHTS_DIR`,
-`VAL_DATA_DIR`, `EXPERIMENTS_DIR`, `RUN_NAME`, or `RUN_VERSION` from the shell
-when needed.
+Override `PROJECT_HOME`, `CONDA_BASE`, `CONDA_ENV_PREFIX`, `CUDA_VISIBLE_DEVICES`,
+`NUM_GPUS`, `DPO_DATA_ROOT`, `WEIGHTS_DIR`, `VAL_DATA_DIR`, `EXPERIMENTS_DIR`,
+`RUN_NAME`, or `RUN_VERSION` from the shell when needed.
 
 Evaluation / visualization after a new weight is exported:
 
