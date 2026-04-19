@@ -169,8 +169,7 @@ H20_Video_inpainting_DPO/
 │   ├── pipeline_diffueraser_stage1.py ← SFT Stage1 训练用 (1290行)
 │   ├── pipeline_diffueraser_stage2.py ← SFT Stage2 训练用 (1280行)
 │   ├── diffueraser.py                 ← BR 推理 wrapper
-│   ├── diffueraser_OR.py              ← OR 推理 wrapper
-│   └── diffueraser_OR_DPO.py          ← OR+DPO neg 生成 wrapper
+│   └── diffueraser_OR.py              ← OR 推理 wrapper
 │
 ├── libs/                              ← 模型架构定义
 │   ├── unet_2d_condition.py / unet_motion_model.py
@@ -231,13 +230,12 @@ H20_Video_inpainting_DPO/
 
 > 任何 bug fix 仍需同步 3 份文件。
 
-### 🟡 P3: `diffueraser_*.py` wrapper — 3 份 600 行文件仍 90% 重复
+### 🟡 P3: `diffueraser_*.py` wrapper — 2 份 600 行文件仍高度重复
 
 | 文件 | 行数 |
 |------|------|
 | `diffueraser.py` | 606 |
 | `diffueraser_OR.py` | 592 |
-| `diffueraser_OR_DPO.py` | 612 |
 
 ### 🟢 P4: 旧目录可进一步清理
 

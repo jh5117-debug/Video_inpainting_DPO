@@ -98,12 +98,12 @@ flowchart LR
 
 | 特征       | 说明                                                         |
 |------------|--------------------------------------------------------------|
-| **模型**   | 仅 DiffuEraser（DPO 变体 `diffueraser_OR_DPO.py`）           |
+| **模型**   | 仅 DiffuEraser（无先验变体；当前实现未接入代码链路，已移除） |
 | **输入**   | GT 帧 + Mask，**不提供 ProPainter 先验** (`priori=None`)      |
 | **输出**   | 全长度修复帧                                                  |
 | **Seed**   | 单一固定 Seed，保证时序连贯                                    |
 | **缺陷特征** | Mask 区域内生成**与真实背景完全无关的幻觉内容**（如凭空出现建筑物、草地等），空间上不合理 |
-| **关键实现** | `diffueraser_OR_DPO.py` 中当 `priori=None` 时，跳过 VAE 编码先验，直接用 `randn_tensor` 初始化纯随机噪声作为 latents |
+| **关键实现** | 历史方案是在 DiffuEraser wrapper 中处理 `priori=None` 并以随机噪声初始化 latents；当前训练链路使用已构建好的 DPO pair 数据集，不再保留未接线 wrapper |
 
 ### 4.3 管线 ③：Flicker（时序闪烁退化 — 交错拼接策略）
 
@@ -216,9 +216,9 @@ DataLoader 随机抽取 [40:56] → 命中 neg_frames_1 的 [32:48]+[48:64] 段
 
 ---
 
-## 六、DiffuEraser DPO 变体 (`diffueraser_OR_DPO.py`)
+## 六、已移除的 DiffuEraser 无先验变体
 
-为了支持"无先验纯幻觉生成"，对原始 DiffuEraser 做了以下关键修改：
+历史方案为了支持"无先验纯幻觉生成"，曾计划对原始 DiffuEraser wrapper 做以下修改。但该 wrapper 没有被任何实际 Python 入口 import，当前训练链路也只消费已构建好的 DPO pair 数据集，因此代码文件已移除，仅保留设计记录：
 
 | 修改点                   | 原始行为                              | DPO 变体行为                                        |
 |--------------------------|---------------------------------------|-----------------------------------------------------|
