@@ -88,12 +88,14 @@ def build_cmd(project_root, args):
         "--seed", str(args.seed),
         "--report_to", "wandb",
         "--tracker_project_name", args.wandb_project,
-        "--enable_xformers_memory_efficient_attention",
-        "--gradient_checkpointing",
         "--set_grads_to_none",
         "--resume_from_checkpoint", "latest",
     ]
 
+    if args.enable_xformers:
+        cmd.append("--enable_xformers_memory_efficient_attention")
+    if not args.disable_gradient_checkpointing:
+        cmd.append("--gradient_checkpointing")
     if args.checkpoints_total_limit:
         cmd.extend(["--checkpoints_total_limit", str(args.checkpoints_total_limit)])
     if args.wandb_entity:
@@ -251,6 +253,9 @@ def run(args=None):
     print(f"  Max Steps:       {args.max_train_steps}")
     print(f"  Beta DPO:        {args.beta_dpo}")
     print(f"  LR:              {args.learning_rate}")
+    print(f"  Mixed Precision: {args.mixed_precision}")
+    print(f"  XFormers:        {args.enable_xformers}")
+    print(f"  Grad Ckpt:       {not args.disable_gradient_checkpointing}")
     print("=" * 60)
     print(f"\n  Command:\n  {' '.join(cmd[:6])} \\\n    " + " \\\n    ".join(cmd[6:]))
     print()
@@ -289,6 +294,8 @@ def parse_args():
     parser.add_argument("--beta_dpo", type=float, default=500.0)
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--chunk_aligned", action="store_true")
+    parser.add_argument("--enable_xformers", action="store_true")
+    parser.add_argument("--disable_gradient_checkpointing", action="store_true")
     return parser.parse_args()
 
 

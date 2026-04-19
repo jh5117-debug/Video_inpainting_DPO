@@ -109,6 +109,10 @@ weights root:   weights/
 outputs root:   experiments/dpo/
 ```
 
+For H20 stability, the shell launchers default to `MIXED_PRECISION=bf16`,
+`XFORMERS=0`, and `GRADIENT_CHECKPOINTING=1`. These are command-line/runtime
+switches only; set the environment variables before a run to override them.
+
 Training logic remains in `training/dpo/train_stage1.py` and
 `training/dpo/train_stage2.py`; the H20 scripts only choose paths, GPUs, cache
 locations, and command-line arguments.

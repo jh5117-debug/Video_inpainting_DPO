@@ -79,6 +79,14 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage1.sh
 CUDA_VISIBLE_DEVICES=4,5,6,7 bash scripts/h20_run_dpo_stage2.sh
 ```
 
+For H20 stability, these launchers default to `MIXED_PRECISION=bf16` and
+`XFORMERS=0`. You can override them per run:
+
+```bash
+MIXED_PRECISION=fp16 XFORMERS=1 CUDA_VISIBLE_DEVICES=4,5,6,7 \
+  bash scripts/h20_run_dpo_stage1.sh
+```
+
 The launchers infer `PROJECT_ROOT` from their location by default. For another
 server, set `PROJECT_HOME` to that checkout and optionally override asset/env
 locations:

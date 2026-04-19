@@ -66,6 +66,8 @@ PRETRAINED_DPO_S1="${PRETRAINED_DPO_S1:-}"
 REF_MODEL_PATH="${REF_MODEL_PATH:-}"
 BASELINE_UNET_PATH="${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser}"
 CHUNK_ALIGNED="${CHUNK_ALIGNED:-1}"
+XFORMERS="${XFORMERS:-0}"
+GRADIENT_CHECKPOINTING="${GRADIENT_CHECKPOINTING:-1}"
 
 PRETRAINED_DPO_S1_ARG=()
 if [[ -n "${PRETRAINED_DPO_S1}" ]]; then
@@ -87,6 +89,20 @@ if [[ "${CHUNK_ALIGNED}" == "1" || "${CHUNK_ALIGNED}" == "true" ]]; then
   CHUNK_ARG=(--chunk_aligned)
 fi
 
+XFORMERS_ARG=()
+case "${XFORMERS,,}" in
+  1|true|yes|on)
+    XFORMERS_ARG=(--enable_xformers)
+    ;;
+esac
+
+GRADIENT_CHECKPOINTING_ARG=()
+case "${GRADIENT_CHECKPOINTING,,}" in
+  0|false|no|off)
+    GRADIENT_CHECKPOINTING_ARG=(--disable_gradient_checkpointing)
+    ;;
+esac
+
 python training/dpo/scripts/run_stage2.py \
   --num_gpus "${NUM_GPUS}" \
   --weights_dir "${WEIGHTS_DIR}" \
@@ -106,11 +122,13 @@ python training/dpo/scripts/run_stage2.py \
   --validation_steps "${VAL_STEPS:-2000}" \
   --nframes "${NFRAMES:-16}" \
   --seed "${SEED:-42}" \
-  --mixed_precision "${MIXED_PRECISION:-fp16}" \
+  --mixed_precision "${MIXED_PRECISION:-bf16}" \
   --wandb_project "${WANDB_PROJECT:-DPO_Diffueraser}" \
   --beta_dpo "${BETA_DPO:-500.0}" \
   --davis_oversample "${DAVIS_OVERSAMPLE:-10}" \
   "${CHUNK_ARG[@]}" \
+  "${XFORMERS_ARG[@]}" \
+  "${GRADIENT_CHECKPOINTING_ARG[@]}" \
   "${PRETRAINED_DPO_S1_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}" \
