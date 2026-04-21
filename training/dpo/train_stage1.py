@@ -1132,6 +1132,29 @@ def main(args):
                 )
                 encoder_hidden_states_all = torch.cat([encoder_hidden_states_expanded, encoder_hidden_states_expanded], dim=0)
 
+                # === Ref forward (no_grad) ===
+                # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
+                with torch.no_grad():
+                    ref_down, ref_mid, ref_up = brushnet_ref(
+                        noisy_all, timesteps_all,
+                        encoder_hidden_states=encoder_hidden_states_all,
+                        brushnet_cond=brushnet_cond_all,
+                        return_dict=False,
+                    )
+                    ref_pred = unet_ref(
+                        noisy_all, timesteps_all,
+                        encoder_hidden_states=encoder_hidden_states_all,
+                        down_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_down],
+                        mid_block_add_sample=ref_mid.to(dtype=weight_dtype),
+                        up_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_up],
+                        return_dict=True,
+                    ).sample
+
+                # Ref BrushNet 输出已被消费，立即释放
+                del ref_down, ref_mid, ref_up
+                torch.cuda.empty_cache()
+                gc.collect()
+
                 # === Policy forward ===
                 down_samples, mid_sample, up_samples = brushnet(
                     noisy_all, timesteps_all,
@@ -1154,28 +1177,6 @@ def main(args):
 
                 # Policy BrushNet 输出已被 UNet 消费，立即释放
                 del down_samples, mid_sample, up_samples
-                torch.cuda.empty_cache()
-                gc.collect()
-
-                # === Ref forward (no_grad) ===
-                with torch.no_grad():
-                    ref_down, ref_mid, ref_up = brushnet_ref(
-                        noisy_all, timesteps_all,
-                        encoder_hidden_states=encoder_hidden_states_all,
-                        brushnet_cond=brushnet_cond_all,
-                        return_dict=False,
-                    )
-                    ref_pred = unet_ref(
-                        noisy_all, timesteps_all,
-                        encoder_hidden_states=encoder_hidden_states_all,
-                        down_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_down],
-                        mid_block_add_sample=ref_mid.to(dtype=weight_dtype),
-                        up_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_up],
-                        return_dict=True,
-                    ).sample
-
-                # Ref BrushNet 输出已被消费，立即释放
-                del ref_down, ref_mid, ref_up
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(

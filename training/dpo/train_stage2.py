@@ -779,37 +779,10 @@ def main(args):
                     [encoder_hidden_states_expanded, encoder_hidden_states_expanded], dim=0
                 )
 
-                # === Policy forward ===
-                # BrushNet forward (2D encoder, 冻结)
-                down_samples, mid_sample, up_samples = brushnet(
-                    noisy_all, timesteps_all_2d,
-                    encoder_hidden_states=encoder_hidden_states_all,
-                    brushnet_cond=brushnet_cond_all,
-                    return_dict=False,
-                )
-
-                torch.cuda.empty_cache()
-                gc.collect()
-
-                # UNetMotionModel forward (MotionModule 可训练)
-                # DPO concat 后 noisy_all batch 翻倍，encoder_hidden_states 也需要翻倍
                 encoder_hidden_states_motion = encoder_hidden_states.repeat(2, 1, 1)
-                model_pred = unet_main(
-                    noisy_all, timesteps_all_motion,
-                    encoder_hidden_states=encoder_hidden_states_motion,
-                    down_block_add_samples=[s.to(dtype=weight_dtype) for s in down_samples],
-                    mid_block_add_sample=mid_sample.to(dtype=weight_dtype),
-                    up_block_add_samples=[s.to(dtype=weight_dtype) for s in up_samples],
-                    return_dict=True,
-                    num_frames=args.nframes,
-                ).sample
-
-                # Policy BrushNet 输出已被 UNet 消费，立即释放
-                del down_samples, mid_sample, up_samples
-                torch.cuda.empty_cache()
-                gc.collect()
 
                 # === Ref forward (no_grad) ===
+                # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
                 with torch.no_grad():
                     ref_down, ref_mid, ref_up = brushnet_ref(
                         noisy_all, timesteps_all_2d,
@@ -829,6 +802,35 @@ def main(args):
 
                 # Ref BrushNet 输出已被消费，立即释放
                 del ref_down, ref_mid, ref_up
+                torch.cuda.empty_cache()
+                gc.collect()
+
+                # === Policy forward ===
+                # BrushNet forward (2D encoder, 冻结)
+                down_samples, mid_sample, up_samples = brushnet(
+                    noisy_all, timesteps_all_2d,
+                    encoder_hidden_states=encoder_hidden_states_all,
+                    brushnet_cond=brushnet_cond_all,
+                    return_dict=False,
+                )
+
+                torch.cuda.empty_cache()
+                gc.collect()
+
+                # UNetMotionModel forward (MotionModule 可训练)
+                # DPO concat 后 noisy_all batch 翻倍，encoder_hidden_states 也需要翻倍
+                model_pred = unet_main(
+                    noisy_all, timesteps_all_motion,
+                    encoder_hidden_states=encoder_hidden_states_motion,
+                    down_block_add_samples=[s.to(dtype=weight_dtype) for s in down_samples],
+                    mid_block_add_sample=mid_sample.to(dtype=weight_dtype),
+                    up_block_add_samples=[s.to(dtype=weight_dtype) for s in up_samples],
+                    return_dict=True,
+                    num_frames=args.nframes,
+                ).sample
+
+                # Policy BrushNet 输出已被 UNet 消费，立即释放
+                del down_samples, mid_sample, up_samples
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(
