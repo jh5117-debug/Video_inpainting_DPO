@@ -88,6 +88,41 @@ check_min_version("0.27.0.dev0")
 logger = get_logger(__name__)
 
 
+def forward_stage2_pair_member(
+    brushnet,
+    unet,
+    noisy_latents,
+    timesteps_2d,
+    timesteps_motion,
+    encoder_hidden_states_2d,
+    encoder_hidden_states_motion,
+    brushnet_cond,
+    weight_dtype,
+    nframes,
+):
+    down_samples, mid_sample, up_samples = brushnet(
+        noisy_latents,
+        timesteps_2d,
+        encoder_hidden_states=encoder_hidden_states_2d,
+        brushnet_cond=brushnet_cond,
+        return_dict=False,
+    )
+
+    model_pred = unet(
+        noisy_latents,
+        timesteps_motion,
+        encoder_hidden_states=encoder_hidden_states_motion,
+        down_block_add_samples=[s.to(dtype=weight_dtype) for s in down_samples],
+        mid_block_add_sample=mid_sample.to(dtype=weight_dtype),
+        up_block_add_samples=[s.to(dtype=weight_dtype) for s in up_samples],
+        return_dict=True,
+        num_frames=nframes,
+    ).sample
+
+    del down_samples, mid_sample, up_samples
+    return model_pred
+
+
 # ============================================================
 # Validation (Stage 2: PSNR + SSIM + Ewarp + TC)
 # ============================================================
@@ -397,6 +432,8 @@ def parse_args(input_args=None):
                         help="DPO 温度系数 beta (推荐 500~1000，过大导致 sigmoid 饱和)")
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--chunk_aligned", action="store_true")
+    parser.add_argument("--split_pos_neg_forward", action="store_true",
+                        help="分别 forward positive/negative，降低显存峰值，DPO loss 保持不变")
 
     # Metric model paths
     parser.add_argument("--raft_model_path", type=str, default=None)
@@ -763,74 +800,78 @@ def main(args):
                     neg_latents, noise, timesteps_expanded
                 )
 
-                noisy_all = torch.cat([noisy_pos, noisy_neg], dim=0)
-                brushnet_cond_all = torch.cat([brushnet_cond, brushnet_cond], dim=0)
-                # BrushNet (2D) 需要 per-frame timesteps: (2*bsz*nframes,)
-                timesteps_all_2d = timesteps_expanded.repeat(2)
-                # UNetMotionModel 内部自己 repeat_interleave(num_frames)，只需要 per-batch: (2*bsz,)
-                timesteps_all_motion = timesteps.repeat(2)
-
                 encoder_hidden_states = text_encoder(batch["input_ids"], return_dict=False)[0]
                 encoder_hidden_states_expanded = rearrange(
                     repeat(encoder_hidden_states, "b c d -> b t c d", t=args.nframes),
                     'b t c d -> (b t) c d'
                 )
-                encoder_hidden_states_all = torch.cat(
-                    [encoder_hidden_states_expanded, encoder_hidden_states_expanded], dim=0
-                )
 
-                encoder_hidden_states_motion = encoder_hidden_states.repeat(2, 1, 1)
+                if args.split_pos_neg_forward:
+                    # 顺序跑 win/lose，保持 DPO 数学等价，同时避免 pos+neg concat 的激活峰值。
+                    with torch.no_grad():
+                        ref_pred_pos = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_pos, timesteps_expanded, timesteps,
+                            encoder_hidden_states_expanded, encoder_hidden_states,
+                            brushnet_cond, weight_dtype, args.nframes,
+                        )
+                        torch.cuda.empty_cache()
+                        gc.collect()
+                        ref_pred_neg = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_neg, timesteps_expanded, timesteps,
+                            encoder_hidden_states_expanded, encoder_hidden_states,
+                            brushnet_cond, weight_dtype, args.nframes,
+                        )
+                        ref_pred = torch.cat([ref_pred_pos, ref_pred_neg], dim=0)
+                    del ref_pred_pos, ref_pred_neg
+                    torch.cuda.empty_cache()
+                    gc.collect()
 
-                # === Ref forward (no_grad) ===
-                # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
-                with torch.no_grad():
-                    ref_down, ref_mid, ref_up = brushnet_ref(
-                        noisy_all, timesteps_all_2d,
-                        encoder_hidden_states=encoder_hidden_states_all,
-                        brushnet_cond=brushnet_cond_all,
-                        return_dict=False,
+                    model_pred_pos = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_pos, timesteps_expanded, timesteps,
+                        encoder_hidden_states_expanded, encoder_hidden_states,
+                        brushnet_cond, weight_dtype, args.nframes,
                     )
-                    ref_pred = unet_ref(
-                        noisy_all, timesteps_all_motion,
-                        encoder_hidden_states=encoder_hidden_states_motion,
-                        down_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_down],
-                        mid_block_add_sample=ref_mid.to(dtype=weight_dtype),
-                        up_block_add_samples=[s.to(dtype=weight_dtype) for s in ref_up],
-                        return_dict=True,
-                        num_frames=args.nframes,
-                    ).sample
+                    torch.cuda.empty_cache()
+                    gc.collect()
+                    model_pred_neg = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_neg, timesteps_expanded, timesteps,
+                        encoder_hidden_states_expanded, encoder_hidden_states,
+                        brushnet_cond, weight_dtype, args.nframes,
+                    )
+                    model_pred = torch.cat([model_pred_pos, model_pred_neg], dim=0)
+                    del model_pred_pos, model_pred_neg
+                else:
+                    noisy_all = torch.cat([noisy_pos, noisy_neg], dim=0)
+                    brushnet_cond_all = torch.cat([brushnet_cond, brushnet_cond], dim=0)
+                    # BrushNet (2D) 需要 per-frame timesteps: (2*bsz*nframes,)
+                    timesteps_all_2d = timesteps_expanded.repeat(2)
+                    # UNetMotionModel 内部自己 repeat_interleave(num_frames)，只需要 per-batch: (2*bsz,)
+                    timesteps_all_motion = timesteps.repeat(2)
+                    encoder_hidden_states_all = torch.cat(
+                        [encoder_hidden_states_expanded, encoder_hidden_states_expanded], dim=0
+                    )
+                    encoder_hidden_states_motion = encoder_hidden_states.repeat(2, 1, 1)
 
-                # Ref BrushNet 输出已被消费，立即释放
-                del ref_down, ref_mid, ref_up
-                torch.cuda.empty_cache()
-                gc.collect()
+                    # === Ref forward (no_grad) ===
+                    # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
+                    with torch.no_grad():
+                        ref_pred = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_all, timesteps_all_2d, timesteps_all_motion,
+                            encoder_hidden_states_all, encoder_hidden_states_motion,
+                            brushnet_cond_all, weight_dtype, args.nframes,
+                        )
 
-                # === Policy forward ===
-                # BrushNet forward (2D encoder, 冻结)
-                down_samples, mid_sample, up_samples = brushnet(
-                    noisy_all, timesteps_all_2d,
-                    encoder_hidden_states=encoder_hidden_states_all,
-                    brushnet_cond=brushnet_cond_all,
-                    return_dict=False,
-                )
+                    torch.cuda.empty_cache()
+                    gc.collect()
 
-                torch.cuda.empty_cache()
-                gc.collect()
-
-                # UNetMotionModel forward (MotionModule 可训练)
-                # DPO concat 后 noisy_all batch 翻倍，encoder_hidden_states 也需要翻倍
-                model_pred = unet_main(
-                    noisy_all, timesteps_all_motion,
-                    encoder_hidden_states=encoder_hidden_states_motion,
-                    down_block_add_samples=[s.to(dtype=weight_dtype) for s in down_samples],
-                    mid_block_add_sample=mid_sample.to(dtype=weight_dtype),
-                    up_block_add_samples=[s.to(dtype=weight_dtype) for s in up_samples],
-                    return_dict=True,
-                    num_frames=args.nframes,
-                ).sample
-
-                # Policy BrushNet 输出已被 UNet 消费，立即释放
-                del down_samples, mid_sample, up_samples
+                    # === Policy forward ===
+                    model_pred = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_all, timesteps_all_2d, timesteps_all_motion,
+                        encoder_hidden_states_all, encoder_hidden_states_motion,
+                        brushnet_cond_all, weight_dtype, args.nframes,
+                    )
+                    del noisy_all, brushnet_cond_all, timesteps_all_2d
+                    del timesteps_all_motion, encoder_hidden_states_all, encoder_hidden_states_motion
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(

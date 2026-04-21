@@ -106,6 +106,8 @@ def build_cmd(project_root, args):
         cmd.extend(["--wandb_entity", args.wandb_entity])
     if args.chunk_aligned:
         cmd.append("--chunk_aligned")
+    if args.split_pos_neg_forward:
+        cmd.append("--split_pos_neg_forward")
 
     prepare_experiment_dir(
         output_dir,
@@ -261,6 +263,7 @@ def run(args=None):
     print(f"  Main Port:       {args.main_process_port}")
     print(f"  XFormers:        {args.enable_xformers}")
     print(f"  Grad Ckpt:       {not args.disable_gradient_checkpointing}")
+    print(f"  Split Pos/Neg:   {args.split_pos_neg_forward}")
     print("=" * 60)
     print(f"\n  Command:\n  {' '.join(cmd[:6])} \\\n    " + " \\\n    ".join(cmd[6:]))
     print()
@@ -302,6 +305,7 @@ def parse_args():
     parser.add_argument("--chunk_aligned", action="store_true")
     parser.add_argument("--enable_xformers", action="store_true")
     parser.add_argument("--disable_gradient_checkpointing", action="store_true")
+    parser.add_argument("--split_pos_neg_forward", action="store_true")
     return parser.parse_args()
 
 

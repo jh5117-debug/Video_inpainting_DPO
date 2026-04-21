@@ -69,6 +69,7 @@ CHUNK_ALIGNED="${CHUNK_ALIGNED:-1}"
 XFORMERS="${XFORMERS:-0}"
 GRADIENT_CHECKPOINTING="${GRADIENT_CHECKPOINTING:-1}"
 MAIN_PROCESS_PORT="${MAIN_PROCESS_PORT:-0}"
+SPLIT_POS_NEG_FORWARD="${SPLIT_POS_NEG_FORWARD:-1}"
 
 PRETRAINED_DPO_S1_ARG=()
 if [[ -n "${PRETRAINED_DPO_S1}" ]]; then
@@ -104,6 +105,13 @@ case "${GRADIENT_CHECKPOINTING,,}" in
     ;;
 esac
 
+SPLIT_POS_NEG_FORWARD_ARG=()
+case "${SPLIT_POS_NEG_FORWARD,,}" in
+  1|true|yes|on)
+    SPLIT_POS_NEG_FORWARD_ARG=(--split_pos_neg_forward)
+    ;;
+esac
+
 python training/dpo/scripts/run_stage2.py \
   --num_gpus "${NUM_GPUS}" \
   --weights_dir "${WEIGHTS_DIR}" \
@@ -131,6 +139,7 @@ python training/dpo/scripts/run_stage2.py \
   "${CHUNK_ARG[@]}" \
   "${XFORMERS_ARG[@]}" \
   "${GRADIENT_CHECKPOINTING_ARG[@]}" \
+  "${SPLIT_POS_NEG_FORWARD_ARG[@]}" \
   "${PRETRAINED_DPO_S1_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}" \
