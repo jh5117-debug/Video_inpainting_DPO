@@ -25,7 +25,7 @@ MINIMAX_HF_REPO="${MINIMAX_HF_REPO:-zibojia/minimax-remover}"
 PYTHON_BIN="${PYTHON_BIN:-}"
 if [[ -z "${PYTHON_BIN}" ]]; then
   if [[ -x "/home/nvme01/miniconda3/bin/conda" && -d "${DIFFUERASER_ENV}" ]]; then
-    PYTHON_RUN=(/home/nvme01/miniconda3/bin/conda run -p "${DIFFUERASER_ENV}" python)
+    PYTHON_RUN=(/home/nvme01/miniconda3/bin/conda run --no-capture-output -p "${DIFFUERASER_ENV}" python)
   else
     PYTHON_RUN=(python)
   fi
@@ -41,7 +41,13 @@ echo "[weights] project=${PROJECT_ROOT}"
 echo "[weights] root=${WEIGHTS_ROOT}"
 echo "[weights] python=${PYTHON_RUN[*]}"
 
-"${PYTHON_RUN[@]}" - <<'PY'
+PY_SCRIPT="$(mktemp "${DOWNLOAD_ROOT}/download_multimodel_weights.XXXXXX.py")"
+cleanup() {
+  rm -f "${PY_SCRIPT}"
+}
+trap cleanup EXIT
+
+cat > "${PY_SCRIPT}" <<'PY'
 import json
 import os
 import shutil
@@ -214,6 +220,8 @@ manifest = {
 )
 print(f"[done] manifest: {weights_root / 'multimodel_weights_manifest.json'}")
 PY
+
+"${PYTHON_RUN[@]}" "${PY_SCRIPT}"
 
 cat <<EOF
 
