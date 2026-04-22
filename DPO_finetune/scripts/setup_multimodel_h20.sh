@@ -40,21 +40,25 @@ if [[ -x "/home/nvme01/miniconda3/bin/conda" ]]; then
   /home/nvme01/miniconda3/bin/conda run -p "${DIFFUERASER_ENV}" python -m pip freeze > "${THIRD_PARTY_ROOT}/manifests/diffueraser_h20_pip_freeze.txt" || true
 fi
 
-echo "[env] create lightweight env placeholders when requirements.txt exists"
-for pair in "COCOCO:cococo" "MiniMax-Remover:minimax" "ProPainter:propainter" "VBench:vbench"; do
-  repo="${pair%%:*}"
-  env_name="${pair##*:}"
-  repo_dir="${REPOS_ROOT}/${repo}"
-  env_dir="${ENVS_ROOT}/${env_name}"
-  if [[ ! -d "${env_dir}" && -f "${repo_dir}/requirements.txt" ]]; then
-    echo "  create ${env_name}: ${env_dir}"
-    /home/nvme01/miniconda3/bin/conda create -p "${env_dir}" python=3.10 -y
-    /home/nvme01/miniconda3/bin/conda run -p "${env_dir}" python -m pip install -U pip wheel setuptools
-    /home/nvme01/miniconda3/bin/conda run -p "${env_dir}" python -m pip install -r "${repo_dir}/requirements.txt" || true
-  else
-    echo "  skip ${env_name} (exists or no requirements.txt)"
-  fi
-done
+if [[ "${CREATE_THIRD_PARTY_ENVS:-0}" == "1" ]]; then
+  echo "[env] create third-party envs when requirements.txt exists"
+  for pair in "COCOCO:cococo" "MiniMax-Remover:minimax" "ProPainter:propainter" "VBench:vbench"; do
+    repo="${pair%%:*}"
+    env_name="${pair##*:}"
+    repo_dir="${REPOS_ROOT}/${repo}"
+    env_dir="${ENVS_ROOT}/${env_name}"
+    if [[ ! -d "${env_dir}" && -f "${repo_dir}/requirements.txt" ]]; then
+      echo "  create ${env_name}: ${env_dir}"
+      /home/nvme01/miniconda3/bin/conda create -p "${env_dir}" python=3.10 -y
+      PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${env_dir}" python -m pip install -U pip wheel setuptools
+      PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${env_dir}" python -m pip install -r "${repo_dir}/requirements.txt" || true
+    else
+      echo "  skip ${env_name} (exists or no requirements.txt)"
+    fi
+  done
+else
+  echo "[env] skip third-party env creation (set CREATE_THIRD_PARTY_ENVS=1 to enable)"
+fi
 
 echo "[weights] create weight directories and copy any local known weights"
 mkdir -p "${WEIGHTS_ROOT}/propainter" "${WEIGHTS_ROOT}/cococo" "${WEIGHTS_ROOT}/minimax" "${WEIGHTS_ROOT}/diffueraser" "${WEIGHTS_ROOT}/vbench"
@@ -67,11 +71,10 @@ fi
 if [[ -d "${PROJECT_ROOT}/weights/metrics" ]]; then
   rsync -a "${PROJECT_ROOT}/weights/metrics/" "${WEIGHTS_ROOT}/metrics/" || true
 fi
-if command -v huggingface-cli >/dev/null 2>&1; then
+if [[ -x "/home/nvme01/miniconda3/bin/conda" ]]; then
   echo "[weights] try MiniMax-Remover Hugging Face download"
-  huggingface-cli download zibojia/minimax-remover \
-    --include vae transformer scheduler \
-    --local-dir "${WEIGHTS_ROOT}/minimax" || true
+  /home/nvme01/miniconda3/bin/conda run -p "${DIFFUERASER_ENV}" python -c \
+    "from huggingface_hub import snapshot_download; snapshot_download(repo_id='zibojia/minimax-remover', allow_patterns=['vae/**','transformer/**','scheduler/**'], local_dir='${WEIGHTS_ROOT}/minimax')" || true
 fi
 
 cat > "${THIRD_PARTY_ROOT}/WEIGHTS_TODO.md" <<'EOF'

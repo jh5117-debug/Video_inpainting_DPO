@@ -49,6 +49,9 @@ fi
 if [[ "${ENABLE_VBENCH:-0}" == "1" ]]; then
   ARGS+=(--enable_vbench)
 fi
+if [[ "${SAVE_PREVIEWS:-0}" == "1" ]]; then
+  ARGS+=(--save_previews)
+fi
 if [[ "${SKIP_INFERENCE:-0}" == "1" ]]; then
   ARGS+=(--skip_inference)
 fi

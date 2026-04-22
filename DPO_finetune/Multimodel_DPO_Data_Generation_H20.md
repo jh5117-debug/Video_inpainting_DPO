@@ -123,6 +123,25 @@ ENABLE_VBENCH=0 \
 bash DPO_finetune/scripts/run_multimodel_dpo_generation_h20.sh
 ```
 
+更推荐先按模型逐个 smoke，并生成可直接打开的 mp4 预览：
+
+```bash
+CUDA_VISIBLE_DEVICES=1,2,3 \
+GPUS=1,2,3 \
+METHODS=propainter,cococo,minimax \
+NUM_VIDEOS=1 \
+MAX_FRAMES=32 \
+bash DPO_finetune/scripts/smoke_multimodel_h20.sh
+```
+
+看这些文件：
+
+```text
+<SMOKE_ROOT>/<method>/<video>/candidates/<method>/previews/gt_mask_raw_comp.mp4
+```
+
+四栏分别是 `GT / mask overlay / raw model output / composited candidate`。
+
 如果只想先测试 ProPainter：
 
 ```bash

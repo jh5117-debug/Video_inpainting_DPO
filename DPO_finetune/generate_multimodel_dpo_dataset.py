@@ -516,6 +516,68 @@ def encode_mp4(frame_dir: Path, out_path: Path, fps: int = 8) -> Path:
     return out_path
 
 
+def make_side_by_side_preview(
+    gt_dir: Path,
+    mask_dir: Path,
+    raw_dir: Path,
+    comp_dir: Path,
+    out_path: Path,
+    fps: int = 8,
+) -> Path:
+    gt_files = image_files(gt_dir)
+    mask_files = image_files(mask_dir)
+    raw_files = image_files(raw_dir)
+    comp_files = image_files(comp_dir)
+    n = min(len(gt_files), len(mask_files), len(raw_files), len(comp_files))
+    if n == 0:
+        raise RuntimeError("no frames to preview")
+
+    first = read_rgb(gt_files[0])
+    h, w = first.shape[:2]
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    writer = cv2.VideoWriter(str(out_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w * 4, h))
+
+    for i in range(n):
+        gt = read_rgb(gt_files[i])
+        raw = read_rgb(raw_files[i])
+        comp = read_rgb(comp_files[i])
+        mask = cv2.imread(str(mask_files[i]), cv2.IMREAD_GRAYSCALE)
+        if mask is None:
+            raise RuntimeError(f"failed to read mask {mask_files[i]}")
+        if raw.shape[:2] != (h, w):
+            raw = cv2.resize(raw, (w, h), interpolation=cv2.INTER_LINEAR)
+        if comp.shape[:2] != (h, w):
+            comp = cv2.resize(comp, (w, h), interpolation=cv2.INTER_LINEAR)
+        if mask.shape[:2] != (h, w):
+            mask = cv2.resize(mask, (w, h), interpolation=cv2.INTER_NEAREST)
+
+        mask_overlay = gt.copy()
+        red = np.zeros_like(gt)
+        red[:, :, 0] = 255
+        m = (mask > 0)[:, :, None]
+        mask_overlay = np.where(m, (0.55 * gt + 0.45 * red).astype(np.uint8), mask_overlay)
+
+        panels = [gt, mask_overlay, raw, comp]
+        labels = ["GT", "MASK", "RAW_OUT", "COMPOSITED"]
+        labeled = []
+        for panel, label in zip(panels, labels):
+            bgr = cv2.cvtColor(panel, cv2.COLOR_RGB2BGR)
+            cv2.putText(
+                bgr,
+                label,
+                (12, 28),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.8,
+                (255, 255, 255),
+                2,
+                cv2.LINE_AA,
+            )
+            labeled.append(bgr)
+        writer.write(np.concatenate(labeled, axis=1))
+    writer.release()
+    return out_path
+
+
 def maybe_vbench_score(frame_dir: Path, name: str, device: str, work_dir: Path) -> Dict[str, Any]:
     try:
         from tools.score_inpainting_quality import InpaintingScorer
@@ -713,6 +775,24 @@ def run_method(
         composite_candidate(normalized_raw_dir, gt_dir, mask_dir, comp_dir)
 
         score = score_candidate(method, gt_dir, comp_dir, mask_dir, args, gpu)
+        if args.save_previews:
+            preview_dir = method_root / "previews"
+            previews = {}
+            try:
+                previews["raw_mp4"] = str(encode_mp4(normalized_raw_dir, preview_dir / "raw_output.mp4"))
+                previews["composited_mp4"] = str(encode_mp4(comp_dir, preview_dir / "composited.mp4"))
+                previews["side_by_side_mp4"] = str(
+                    make_side_by_side_preview(
+                        gt_dir,
+                        mask_dir,
+                        normalized_raw_dir,
+                        comp_dir,
+                        preview_dir / "gt_mask_raw_comp.mp4",
+                    )
+                )
+                score["previews"] = previews
+            except Exception as exc:
+                score["preview_error"] = str(exc)
         result.ok = True
         result.raw_dir = str(normalized_raw_dir)
         result.comp_dir = str(comp_dir)
@@ -899,6 +979,7 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=20260422)
     parser.add_argument("--enable_lpips", action="store_true")
     parser.add_argument("--enable_vbench", action="store_true")
+    parser.add_argument("--save_previews", action="store_true")
     parser.add_argument("--skip_inference", action="store_true")
     parser.add_argument("--resume", action="store_true")
     return parser
