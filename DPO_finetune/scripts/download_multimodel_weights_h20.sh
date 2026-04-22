@@ -27,6 +27,10 @@ SD_INPAINT_LOCAL_DIR="${SD_INPAINT_LOCAL_DIR:-}"
 MINIMAX_LOCAL_DIR="${MINIMAX_LOCAL_DIR:-}"
 HF_LOCAL_FILES_ONLY="${HF_LOCAL_FILES_ONLY:-0}"
 HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+HF_HUB_DOWNLOAD_TIMEOUT="${HF_HUB_DOWNLOAD_TIMEOUT:-120}"
+HF_HUB_ETAG_TIMEOUT="${HF_HUB_ETAG_TIMEOUT:-60}"
+HF_SNAPSHOT_MAX_WORKERS="${HF_SNAPSHOT_MAX_WORKERS:-1}"
 USE_H20_PROXY="${USE_H20_PROXY:-0}"
 START_H20_CLASH="${START_H20_CLASH:-0}"
 CLASH_ROOT="${CLASH_ROOT:-/home/nvme01/clash-for-linux}"
@@ -64,12 +68,15 @@ mkdir -p "${WEIGHTS_ROOT}" "${DOWNLOAD_ROOT}"
 export PROJECT_ROOT THIRD_PARTY_ROOT WEIGHTS_ROOT DOWNLOAD_ROOT
 export COCOCO_HF_REPO COCOCO_HF_REPO_TYPE COCOCO_HF_FILENAME SD_INPAINT_REPO SD_INPAINT_REPOS MINIMAX_HF_REPO
 export COCOCO_LOCAL_ZIP SD_INPAINT_LOCAL_DIR MINIMAX_LOCAL_DIR HF_LOCAL_FILES_ONLY
-export HF_ENDPOINT
+export HF_ENDPOINT HF_HUB_DISABLE_XET HF_HUB_DOWNLOAD_TIMEOUT HF_HUB_ETAG_TIMEOUT HF_SNAPSHOT_MAX_WORKERS
 
 echo "[weights] project=${PROJECT_ROOT}"
 echo "[weights] root=${WEIGHTS_ROOT}"
 echo "[weights] python=${PYTHON_RUN[*]}"
 echo "[weights] HF_ENDPOINT=${HF_ENDPOINT}"
+echo "[weights] HF_HUB_DISABLE_XET=${HF_HUB_DISABLE_XET}"
+echo "[weights] HF_HUB_DOWNLOAD_TIMEOUT=${HF_HUB_DOWNLOAD_TIMEOUT}"
+echo "[weights] HF_SNAPSHOT_MAX_WORKERS=${HF_SNAPSHOT_MAX_WORKERS}"
 
 PY_SCRIPT="$(mktemp "${DOWNLOAD_ROOT}/download_multimodel_weights.XXXXXX.py")"
 cleanup() {
@@ -157,6 +164,7 @@ cococo_local_zip = os.environ.get("COCOCO_LOCAL_ZIP", "").strip()
 sd_inpaint_local_dir = os.environ.get("SD_INPAINT_LOCAL_DIR", "").strip()
 minimax_local_dir = os.environ.get("MINIMAX_LOCAL_DIR", "").strip()
 local_files_only = os.environ.get("HF_LOCAL_FILES_ONLY", "0") == "1"
+hf_snapshot_max_workers = int(os.environ.get("HF_SNAPSHOT_MAX_WORKERS", "1"))
 
 hf_hub_download, snapshot_download = ensure_hf_hub()
 
@@ -228,9 +236,23 @@ else:
             print(f"[sd] download {repo_id}")
             snapshot_download(
                 repo_id=repo_id,
+                allow_patterns=[
+                    "model_index.json",
+                    "scheduler/**",
+                    "tokenizer/**",
+                    "text_encoder/**",
+                    "vae/**",
+                    "unet/**",
+                ],
+                ignore_patterns=[
+                    "*.fp16.*",
+                    "*.onnx",
+                    "*.msgpack",
+                ],
                 local_dir=str(sd_target),
                 local_dir_use_symlinks=False,
                 local_files_only=local_files_only,
+                max_workers=hf_snapshot_max_workers,
             )
             last_error = None
             break
@@ -261,6 +283,7 @@ else:
         local_dir=str(minimax_target),
         local_dir_use_symlinks=False,
         local_files_only=local_files_only,
+        max_workers=hf_snapshot_max_workers,
     )
 for child in ["vae", "transformer", "scheduler"]:
     if not (minimax_target / child).exists():
