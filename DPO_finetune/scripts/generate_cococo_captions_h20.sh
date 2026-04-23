@@ -12,13 +12,17 @@ CAPTION_GPU="${CAPTION_GPU:-7}"
 CAPTION_NUM_VIDEOS="${CAPTION_NUM_VIDEOS:-0}"
 CAPTION_MAX_FRAMES="${CAPTION_MAX_FRAMES:-48}"
 CAPTION_FRAMES="${CAPTION_FRAMES:-4}"
-CAPTION_DTYPE="${CAPTION_DTYPE:-bfloat16}"
+CAPTION_TILE_SIZE="${CAPTION_TILE_SIZE:-256}"
+CAPTION_MAX_NEW_TOKENS="${CAPTION_MAX_NEW_TOKENS:-48}"
+CAPTION_DTYPE="${CAPTION_DTYPE:-float16}"
 CAPTION_DEVICE_MAP="${CAPTION_DEVICE_MAP:-auto}"
 CAPTION_CREATE_ENV="${CAPTION_CREATE_ENV:-0}"
 CAPTION_INSTALL_DEPS="${CAPTION_INSTALL_DEPS:-0}"
-CAPTION_TRANSFORMERS_SPEC="${CAPTION_TRANSFORMERS_SPEC:-transformers>=4.49.0,<4.58}"
+CAPTION_TRANSFORMERS_SPEC="${CAPTION_TRANSFORMERS_SPEC:-transformers==4.51.3}"
 CAPTION_HF_HUB_SPEC="${CAPTION_HF_HUB_SPEC:-huggingface_hub<1.0}"
 CAPTION_ACCELERATE_SPEC="${CAPTION_ACCELERATE_SPEC:-accelerate>=0.30}"
+CAPTION_USE_FAST_PROCESSOR="${CAPTION_USE_FAST_PROCESSOR:-0}"
+CAPTION_FALLBACK_ON_ERROR="${CAPTION_FALLBACK_ON_ERROR:-0}"
 FALLBACK_ONLY="${FALLBACK_ONLY:-0}"
 
 pick_first_dir() {
@@ -102,10 +106,15 @@ ARGS=(
   --num_videos "${CAPTION_NUM_VIDEOS}"
   --max_frames "${CAPTION_MAX_FRAMES}"
   --caption_frames "${CAPTION_FRAMES}"
+  --tile_size "${CAPTION_TILE_SIZE}"
+  --max_new_tokens "${CAPTION_MAX_NEW_TOKENS}"
   --dtype "${CAPTION_DTYPE}"
   --device_map "${CAPTION_DEVICE_MAP}"
 )
 
+if [[ "${CAPTION_USE_FAST_PROCESSOR}" == "1" ]]; then
+  ARGS+=(--use_fast_processor)
+fi
 if [[ "${FALLBACK_ONLY}" == "1" ]]; then
   ARGS+=(--fallback_only)
 fi
@@ -118,4 +127,14 @@ echo "[caption] env=${PYTHON_ENV:-current shell python}"
 echo "[caption] model=${CAPTION_MODEL}"
 echo "[caption] output=${CAPTION_JSON}"
 
+set +e
 CUDA_VISIBLE_DEVICES="${CAPTION_GPU}" "${PYTHON_RUN[@]}" "${ARGS[@]}"
+caption_rc=$?
+set -e
+
+if [[ "${caption_rc}" != "0" && "${CAPTION_FALLBACK_ON_ERROR}" == "1" && "${FALLBACK_ONLY}" != "1" ]]; then
+  echo "[caption][warn] Qwen caption failed with code ${caption_rc}; writing fallback captions so smoke can continue."
+  CUDA_VISIBLE_DEVICES="${CAPTION_GPU}" "${PYTHON_RUN[@]}" "${ARGS[@]}" --fallback_only
+else
+  exit "${caption_rc}"
+fi

@@ -129,7 +129,7 @@ def fallback_caption(video: VideoItem) -> str:
     return f"A realistic video scene of {words} with a clean, coherent background."
 
 
-def load_qwen(model_path: Path, device_map: str, dtype_name: str, attn_implementation: str):
+def load_qwen(model_path: Path, device_map: str, dtype_name: str, attn_implementation: str, use_fast_processor: bool):
     import torch
     from transformers import AutoProcessor
 
@@ -163,7 +163,7 @@ def load_qwen(model_path: Path, device_map: str, dtype_name: str, attn_implement
     except Exception:
         kwargs.pop("attn_implementation", None)
         model = model_cls.from_pretrained(model_path, **kwargs)
-    processor = AutoProcessor.from_pretrained(model_path)
+    processor = AutoProcessor.from_pretrained(model_path, use_fast=use_fast_processor)
     return model, processor
 
 
@@ -176,6 +176,8 @@ def tensor_device(model):
 
 
 def caption_with_qwen(model, processor, image: Image.Image, max_new_tokens: int) -> str:
+    import torch
+
     prompt = (
         "Describe the scene across these video frames in one concise English sentence for a video "
         "inpainting prompt. Focus on background, setting, camera view, visible objects, and visual "
@@ -194,7 +196,8 @@ def caption_with_qwen(model, processor, image: Image.Image, max_new_tokens: int)
     inputs = processor(text=[text], images=[image], padding=True, return_tensors="pt")
     device = tensor_device(model)
     inputs = {k: v.to(device) if hasattr(v, "to") else v for k, v in inputs.items()}
-    generated = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
+    with torch.inference_mode():
+        generated = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
     trimmed = [out[len(inp):] for inp, out in zip(inputs["input_ids"], generated)]
     return processor.batch_decode(trimmed, skip_special_tokens=True, clean_up_tokenization_spaces=False)[0]
 
@@ -214,8 +217,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--tile_size", type=int, default=336)
     parser.add_argument("--max_new_tokens", type=int, default=80)
     parser.add_argument("--device_map", default="auto")
-    parser.add_argument("--dtype", choices=["auto", "float16", "bfloat16", "float32"], default="bfloat16")
+    parser.add_argument("--dtype", choices=["auto", "float16", "bfloat16", "float32"], default="float16")
     parser.add_argument("--attn_implementation", default="")
+    parser.add_argument("--use_fast_processor", action="store_true")
     parser.add_argument("--fallback_only", action="store_true")
     parser.add_argument("--overwrite", action="store_true")
     return parser.parse_args()
@@ -255,6 +259,7 @@ def main() -> None:
             device_map=args.device_map,
             dtype_name=args.dtype,
             attn_implementation=args.attn_implementation,
+            use_fast_processor=args.use_fast_processor,
         )
 
     print(f"[caption] videos={len(videos)} davis={davis_root} ytbv={ytbv_root}")
