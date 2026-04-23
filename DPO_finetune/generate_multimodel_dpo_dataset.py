@@ -244,6 +244,17 @@ def fit_polygon_to_area(
     return best.astype(np.float32), best_ratio
 
 
+def recenter_polygon_by_bbox(points: np.ndarray) -> np.ndarray:
+    center = np.array(
+        [
+            (float(points[:, 0].min()) + float(points[:, 0].max())) / 2.0,
+            (float(points[:, 1].min()) + float(points[:, 1].max())) / 2.0,
+        ],
+        dtype=np.float32,
+    )
+    return (points - center).astype(np.float32)
+
+
 def polygon_center_bounds(points: np.ndarray, width: int, height: int, pad: int = 0) -> Tuple[float, float, float, float]:
     min_x = float(points[:, 0].min())
     max_x = float(points[:, 0].max())
@@ -260,13 +271,46 @@ def polygon_center_bounds(points: np.ndarray, width: int, height: int, pad: int 
     return cx_min, cy_min, cx_max, cy_max
 
 
-def mask_bbox_ratio(mask: np.ndarray) -> List[float]:
+def mask_bbox(mask: np.ndarray) -> Optional[Tuple[int, int, int, int]]:
     y, x = np.where(mask > 0)
     if not len(x):
+        return None
+    return int(x.min()), int(y.min()), int(x.max()) + 1, int(y.max()) + 1
+
+
+def mask_bbox_ratio(mask: np.ndarray) -> List[float]:
+    bbox = mask_bbox(mask)
+    if bbox is None:
         return [0.0, 0.0]
+    x0, y0, x1, y1 = bbox
     return [
-        float((int(x.max()) - int(x.min()) + 1) / mask.shape[1]),
-        float((int(y.max()) - int(y.min()) + 1) / mask.shape[0]),
+        float((x1 - x0) / mask.shape[1]),
+        float((y1 - y0) / mask.shape[0]),
+    ]
+
+
+def mask_bbox_center_ratio(mask: np.ndarray) -> List[float]:
+    bbox = mask_bbox(mask)
+    if bbox is None:
+        return [0.5, 0.5]
+    x0, y0, x1, y1 = bbox
+    return [
+        float(((x0 + x1) / 2.0) / mask.shape[1]),
+        float(((y0 + y1) / 2.0) / mask.shape[0]),
+    ]
+
+
+def mask_bbox_margin_ratio(mask: np.ndarray) -> List[float]:
+    bbox = mask_bbox(mask)
+    if bbox is None:
+        return [0.0, 0.0, 0.0, 0.0]
+    x0, y0, x1, y1 = bbox
+    h, w = mask.shape[:2]
+    return [
+        float(x0 / w),
+        float(y0 / h),
+        float((w - x1) / w),
+        float((h - y1) / h),
     ]
 
 
@@ -283,6 +327,8 @@ def generate_hard_masks(
     static_prob: float = 0.50,
     speed_min: float = 0.50,
     speed_max: float = 1.50,
+    center_jitter_ratio: float = 0.04,
+    motion_box_ratio: float = 0.16,
 ) -> Dict[str, Any]:
     """Generate and save large, central, reproducible hard-negative masks."""
     rng = random.Random(seed)
@@ -291,24 +337,27 @@ def generate_hard_masks(
     target_area_ratio = rng.uniform(area_min, area_max)
     unit_base = random_polygon(2, 2, rng)
     base, fitted_area_ratio = fit_polygon_to_area(unit_base, width, height, target_area_ratio, dilation_iter)
+    base = recenter_polygon_by_bbox(base)
 
     pad = max(0, dilation_iter + 2)
     cx_min, cy_min, cx_max, cy_max = polygon_center_bounds(base, width, height, pad=pad)
-    margin_x = margin_ratio * width
-    margin_y = margin_ratio * height
-    safe_cx_min = max(cx_min, margin_x)
-    safe_cx_max = min(cx_max, width - margin_x)
-    safe_cy_min = max(cy_min, margin_y)
-    safe_cy_max = min(cy_max, height - margin_y)
-    if safe_cx_min > safe_cx_max:
-        safe_cx_min, safe_cx_max = cx_min, cx_max
-    if safe_cy_min > safe_cy_max:
-        safe_cy_min, safe_cy_max = cy_min, cy_max
+    motion_half_x = max(1.0, width * motion_box_ratio / 2.0)
+    motion_half_y = max(1.0, height * motion_box_ratio / 2.0)
+    motion_cx_min = max(cx_min, width / 2.0 - motion_half_x)
+    motion_cx_max = min(cx_max, width / 2.0 + motion_half_x)
+    motion_cy_min = max(cy_min, height / 2.0 - motion_half_y)
+    motion_cy_max = min(cy_max, height / 2.0 + motion_half_y)
+    if motion_cx_min > motion_cx_max:
+        center_x = min(max(width / 2.0, cx_min), cx_max)
+        motion_cx_min = motion_cx_max = center_x
+    if motion_cy_min > motion_cy_max:
+        center_y = min(max(height / 2.0, cy_min), cy_max)
+        motion_cy_min = motion_cy_max = center_y
 
-    center_jitter_x = 0.06 * width
-    center_jitter_y = 0.06 * height
-    cx = min(max(width / 2.0 + rng.uniform(-center_jitter_x, center_jitter_x), safe_cx_min), safe_cx_max)
-    cy = min(max(height / 2.0 + rng.uniform(-center_jitter_y, center_jitter_y), safe_cy_min), safe_cy_max)
+    center_jitter_x = center_jitter_ratio * width
+    center_jitter_y = center_jitter_ratio * height
+    cx = min(max(width / 2.0 + rng.uniform(-center_jitter_x, center_jitter_x), motion_cx_min), motion_cx_max)
+    cy = min(max(height / 2.0 + rng.uniform(-center_jitter_y, center_jitter_y), motion_cy_min), motion_cy_max)
 
     if rng.random() < static_prob:
         vx = vy = 0.0
@@ -323,6 +372,8 @@ def generate_hard_masks(
     frame_meta = []
     area_ratios = []
     bbox_ratios = []
+    bbox_center_ratios = []
+    bbox_margin_ratios = []
     initial_velocity = [vx, vy]
     for t in range(num_frames):
         pts = base + np.array([cx, cy], dtype=np.float32)
@@ -331,31 +382,45 @@ def generate_hard_masks(
 
         area_ratio = float(np.count_nonzero(mask)) / float(width * height)
         bbox_ratio = mask_bbox_ratio(mask)
+        bbox_center = mask_bbox_center_ratio(mask)
+        bbox_margin = mask_bbox_margin_ratio(mask)
         area_ratios.append(area_ratio)
         bbox_ratios.append(bbox_ratio)
+        bbox_center_ratios.append(bbox_center)
+        bbox_margin_ratios.append(bbox_margin)
         frame_meta.append(
             {
                 "frame": t,
                 "center": [round(cx, 3), round(cy, 3)],
                 "area_ratio": round(area_ratio, 6),
                 "bbox_ratio": [round(float(bbox_ratio[0]), 6), round(float(bbox_ratio[1]), 6)],
+                "bbox_center_ratio": [round(float(bbox_center[0]), 6), round(float(bbox_center[1]), 6)],
+                "bbox_margin_ratio": [round(float(x), 6) for x in bbox_margin],
             }
         )
 
         nx = cx + vx
         ny = cy + vy
-        if nx < safe_cx_min or nx > safe_cx_max:
+        if nx < motion_cx_min or nx > motion_cx_max:
             vx = -vx
             nx = cx + vx
-        if ny < safe_cy_min or ny > safe_cy_max:
+        if ny < motion_cy_min or ny > motion_cy_max:
             vy = -vy
             ny = cy + vy
-        cx = min(max(nx, safe_cx_min), safe_cx_max)
-        cy = min(max(ny, safe_cy_min), safe_cy_max)
+        cx = min(max(nx, motion_cx_min), motion_cx_max)
+        cy = min(max(ny, motion_cy_min), motion_cy_max)
 
     mean_bbox_ratio = [
         float(np.mean([b[0] for b in bbox_ratios])) if bbox_ratios else 0.0,
         float(np.mean([b[1] for b in bbox_ratios])) if bbox_ratios else 0.0,
+    ]
+    mean_bbox_center_ratio = [
+        float(np.mean([b[0] for b in bbox_center_ratios])) if bbox_center_ratios else 0.5,
+        float(np.mean([b[1] for b in bbox_center_ratios])) if bbox_center_ratios else 0.5,
+    ]
+    min_bbox_margin_ratio = [
+        float(np.min([b[i] for b in bbox_margin_ratios])) if bbox_margin_ratios else 0.0
+        for i in range(4)
     ]
 
     return {
@@ -369,10 +434,14 @@ def generate_hard_masks(
         "area_ratio_max": float(np.max(area_ratios)) if area_ratios else fitted_area_ratio,
         "area_ratio_range": [area_min, area_max],
         "bbox_ratio": mean_bbox_ratio,
+        "bbox_center_ratio": mean_bbox_center_ratio,
+        "bbox_margin_ratio_min": min_bbox_margin_ratio,
         "vertices": int(len(base)),
         "margin_ratio": margin_ratio,
         "center_bounds": [cx_min / width, cy_min / height, cx_max / width, cy_max / height],
-        "safe_center_bounds": [safe_cx_min / width, safe_cy_min / height, safe_cx_max / width, safe_cy_max / height],
+        "motion_center_bounds": [motion_cx_min / width, motion_cy_min / height, motion_cx_max / width, motion_cy_max / height],
+        "center_jitter_ratio": center_jitter_ratio,
+        "motion_box_ratio": motion_box_ratio,
         "dilation_iter": dilation_iter,
         "frames": frame_meta,
     }
@@ -988,6 +1057,8 @@ def process_one_video(
         static_prob=args.mask_static_prob,
         speed_min=args.mask_speed_min,
         speed_max=args.mask_speed_max,
+        center_jitter_ratio=args.mask_center_jitter_ratio,
+        motion_box_ratio=args.mask_motion_box_ratio,
     )
     with (video_root_dir / "mask_meta.json").open("w", encoding="utf-8") as f:
         json.dump(mask_meta, f, indent=2, ensure_ascii=False)
@@ -1124,6 +1195,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--mask_static_prob", type=float, default=0.50)
     parser.add_argument("--mask_speed_min", type=float, default=0.50)
     parser.add_argument("--mask_speed_max", type=float, default=1.50)
+    parser.add_argument("--mask_center_jitter_ratio", type=float, default=0.04)
+    parser.add_argument("--mask_motion_box_ratio", type=float, default=0.16)
     parser.add_argument("--source_selection_weights", default="propainter=1.5,cococo=1.0,diffueraser=1.0,minimax=1.0")
     parser.add_argument("--parallel_methods", type=int, default=3)
     parser.add_argument("--seed", type=int, default=20260422)
@@ -1192,6 +1265,8 @@ def main() -> None:
             "margin_ratio": args.mask_margin_ratio,
             "static_prob": args.mask_static_prob,
             "speed_range_px_per_frame": [args.mask_speed_min, args.mask_speed_max],
+            "center_jitter_ratio": args.mask_center_jitter_ratio,
+            "motion_box_ratio": args.mask_motion_box_ratio,
             "dilation_iter": args.mask_dilation_iter,
         },
         "methods": parse_csv(args.methods),
