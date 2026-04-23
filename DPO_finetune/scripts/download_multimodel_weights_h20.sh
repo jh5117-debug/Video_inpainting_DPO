@@ -22,6 +22,9 @@ COCOCO_HF_FILENAME="${COCOCO_HF_FILENAME:-OneDrive_1_2026-4-23.zip}"
 SD_INPAINT_REPO="${SD_INPAINT_REPO:-runwayml/stable-diffusion-inpainting}"
 SD_INPAINT_REPOS="${SD_INPAINT_REPOS:-${SD_INPAINT_REPO},stable-diffusion-v1-5/stable-diffusion-inpainting,genai-archive/stable-diffusion-v1-5-inpainting,benjamin-paine/stable-diffusion-v1-5-inpainting}"
 SD_INPAINT_VARIANT="${SD_INPAINT_VARIANT:-fp16}"
+SD_INPAINT_HF_REPO="${SD_INPAINT_HF_REPO:-}"
+SD_INPAINT_HF_REPO_TYPE="${SD_INPAINT_HF_REPO_TYPE:-dataset}"
+SD_INPAINT_HF_FILENAME="${SD_INPAINT_HF_FILENAME:-stable-diffusion-inpainting.zip}"
 SD_INPAINT_SEARCH_DIRS="${SD_INPAINT_SEARCH_DIRS:-}"
 MINIMAX_HF_REPO="${MINIMAX_HF_REPO:-zibojia/minimax-remover}"
 COCOCO_LOCAL_ZIP="${COCOCO_LOCAL_ZIP:-}"
@@ -69,7 +72,7 @@ fi
 mkdir -p "${WEIGHTS_ROOT}" "${DOWNLOAD_ROOT}"
 export PROJECT_ROOT THIRD_PARTY_ROOT WEIGHTS_ROOT DOWNLOAD_ROOT
 export COCOCO_HF_REPO COCOCO_HF_REPO_TYPE COCOCO_HF_FILENAME SD_INPAINT_REPO SD_INPAINT_REPOS SD_INPAINT_VARIANT MINIMAX_HF_REPO
-export COCOCO_LOCAL_ZIP SD_INPAINT_LOCAL_DIR SD_INPAINT_SEARCH_DIRS MINIMAX_LOCAL_DIR HF_LOCAL_FILES_ONLY
+export COCOCO_LOCAL_ZIP SD_INPAINT_LOCAL_DIR SD_INPAINT_HF_REPO SD_INPAINT_HF_REPO_TYPE SD_INPAINT_HF_FILENAME SD_INPAINT_SEARCH_DIRS MINIMAX_LOCAL_DIR HF_LOCAL_FILES_ONLY
 export HF_ENDPOINT HF_HUB_DISABLE_XET HF_HUB_DOWNLOAD_TIMEOUT HF_HUB_ETAG_TIMEOUT HF_SNAPSHOT_MAX_WORKERS
 
 echo "[weights] project=${PROJECT_ROOT}"
@@ -80,6 +83,10 @@ echo "[weights] HF_HUB_DISABLE_XET=${HF_HUB_DISABLE_XET}"
 echo "[weights] HF_HUB_DOWNLOAD_TIMEOUT=${HF_HUB_DOWNLOAD_TIMEOUT}"
 echo "[weights] HF_SNAPSHOT_MAX_WORKERS=${HF_SNAPSHOT_MAX_WORKERS}"
 echo "[weights] SD_INPAINT_VARIANT=${SD_INPAINT_VARIANT}"
+if [[ -n "${SD_INPAINT_HF_REPO}" ]]; then
+  echo "[weights] SD_INPAINT_HF_REPO=${SD_INPAINT_HF_REPO}"
+  echo "[weights] SD_INPAINT_HF_FILENAME=${SD_INPAINT_HF_FILENAME}"
+fi
 if [[ -n "${SD_INPAINT_SEARCH_DIRS}" ]]; then
   echo "[weights] SD_INPAINT_SEARCH_DIRS=${SD_INPAINT_SEARCH_DIRS}"
 fi
@@ -339,6 +346,20 @@ def find_valid_local_sd(repo_ids: list, search_dirs: list) -> Path | None:
     return None
 
 
+def extract_zip_once(zip_path: Path, extract_dir: Path, label: str) -> None:
+    marker = extract_dir / ".extracted.ok"
+    if marker.exists():
+        print(f"[{label}] reuse extracted files: {extract_dir}")
+        return
+    if extract_dir.exists():
+        shutil.rmtree(extract_dir)
+    extract_dir.mkdir(parents=True, exist_ok=True)
+    print(f"[{label}] extract {zip_path} -> {extract_dir}")
+    with zipfile.ZipFile(zip_path) as zf:
+        zf.extractall(extract_dir)
+    marker.write_text("ok\n", encoding="utf-8")
+
+
 weights_root = Path(os.environ["WEIGHTS_ROOT"])
 download_root = Path(os.environ["DOWNLOAD_ROOT"])
 cococo_repo = os.environ["COCOCO_HF_REPO"]
@@ -350,6 +371,9 @@ sd_inpaint_variant = os.environ.get("SD_INPAINT_VARIANT", "fp16").strip().lower(
 minimax_repo = os.environ["MINIMAX_HF_REPO"]
 cococo_local_zip = os.environ.get("COCOCO_LOCAL_ZIP", "").strip()
 sd_inpaint_local_dir = os.environ.get("SD_INPAINT_LOCAL_DIR", "").strip()
+sd_inpaint_hf_repo = os.environ.get("SD_INPAINT_HF_REPO", "").strip()
+sd_inpaint_hf_repo_type = os.environ.get("SD_INPAINT_HF_REPO_TYPE", "dataset").strip()
+sd_inpaint_hf_filename = os.environ.get("SD_INPAINT_HF_FILENAME", "stable-diffusion-inpainting.zip").strip()
 sd_inpaint_search_dirs_raw = os.environ.get("SD_INPAINT_SEARCH_DIRS", "").strip()
 minimax_local_dir = os.environ.get("MINIMAX_LOCAL_DIR", "").strip()
 local_files_only = os.environ.get("HF_LOCAL_FILES_ONLY", "0") == "1"
@@ -362,6 +386,8 @@ cococo_ckpt_dir = cococo_bundle / "cococo"
 sd_target = cococo_bundle / "stable-diffusion-v1-5-inpainting"
 cococo_extract = download_root / "cococo_hf_extract"
 cococo_zip = download_root / cococo_filename
+sd_hf_zip = download_root / sd_inpaint_hf_filename if sd_inpaint_hf_filename else None
+sd_hf_extract = download_root / "sd_inpaint_hf_extract"
 sd_search_dirs = [download_root]
 for env_name in ["HF_HUB_CACHE", "HF_HOME"]:
     value = os.environ.get(env_name, "").strip()
@@ -398,17 +424,7 @@ else:
     if zip_path != cococo_zip and zip_path.exists():
         cococo_zip = zip_path
 
-marker = cococo_extract / ".extracted.ok"
-if not marker.exists():
-    if cococo_extract.exists():
-        shutil.rmtree(cococo_extract)
-    cococo_extract.mkdir(parents=True, exist_ok=True)
-    print(f"[cococo] extract {cococo_zip} -> {cococo_extract}")
-    with zipfile.ZipFile(cococo_zip) as zf:
-        zf.extractall(cococo_extract)
-    marker.write_text("ok\n", encoding="utf-8")
-else:
-    print(f"[cococo] reuse extracted files: {cococo_extract}")
+extract_zip_once(cococo_zip, cococo_extract, "cococo")
 
 ckpts = find_cococo_ckpts(cococo_extract)
 missing = [f"model_{i}.pth" for i in range(4) if f"model_{i}.pth" not in ckpts]
@@ -427,6 +443,28 @@ elif sd_inpaint_local_dir:
     if not (sd_src / "model_index.json").exists():
         raise SystemExit(f"SD_INPAINT_LOCAL_DIR is not a diffusers model folder: {sd_src}")
     print(f"[sd] use local SD inpainting dir: {sd_src}")
+    publish_sd_root(sd_src, sd_target)
+elif sd_inpaint_hf_repo:
+    assert sd_hf_zip is not None
+    if sd_hf_zip.exists():
+        print(f"[sd] reuse local SD zip: {sd_hf_zip}")
+    else:
+        print(f"[sd] download SD zip {sd_inpaint_hf_repo}/{sd_inpaint_hf_filename}")
+        sd_hf_zip = Path(
+            hf_hub_download(
+                repo_id=sd_inpaint_hf_repo,
+                repo_type=sd_inpaint_hf_repo_type,
+                filename=sd_inpaint_hf_filename,
+                local_dir=str(download_root),
+                local_dir_use_symlinks=False,
+                local_files_only=local_files_only,
+            )
+        )
+    extract_zip_once(sd_hf_zip, sd_hf_extract, "sd")
+    sd_src = find_sd_root(sd_hf_extract)
+    if sd_src is None:
+        raise SystemExit(f"SD zip does not contain a diffusers model folder: {sd_hf_zip}")
+    print(f"[sd] found SD in uploaded zip: {sd_src}")
     publish_sd_root(sd_src, sd_target)
 elif sd_ready(sd_target):
     print(f"[sd] reuse existing valid SD inpainting weights: {sd_target}")
