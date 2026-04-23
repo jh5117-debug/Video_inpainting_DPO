@@ -62,12 +62,13 @@ fi
 
 if [[ -x "/home/nvme01/miniconda3/bin/conda" && -d "${ENVS_ROOT}/cococo" ]]; then
   echo "[env] verify COCOCO runtime extras"
-  if ! PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${ENVS_ROOT}/cococo" python -c "import cv2" >/dev/null 2>&1; then
-    echo "  install cococo extra: opencv-python-headless"
+  if ! PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${ENVS_ROOT}/cococo" \
+    python -c "import cv2, numpy; assert int(numpy.__version__.split('.')[0]) < 2" >/dev/null 2>&1; then
+    echo "  install cococo extras: numpy<2 opencv-python-headless"
     PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${ENVS_ROOT}/cococo" \
-      python -m pip install "opencv-python-headless<4.11"
+      python -m pip install "numpy<2" "opencv-python-headless<4.11"
   else
-    echo "  cococo extra ok: cv2"
+    echo "  cococo extras ok: cv2 + numpy<2"
   fi
 fi
 
