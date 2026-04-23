@@ -137,8 +137,16 @@ def load_qwen(model_path: Path, device_map: str, dtype_name: str, attn_implement
         from transformers import Qwen2_5_VLForConditionalGeneration
         model_cls = Qwen2_5_VLForConditionalGeneration
     except Exception:
-        from transformers import AutoModelForImageTextToText
-        model_cls = AutoModelForImageTextToText
+        try:
+            from transformers import AutoModelForImageTextToText
+            model_cls = AutoModelForImageTextToText
+        except Exception as auto_error:
+            raise RuntimeError(
+                "Qwen2.5-VL caption dependencies are not available in this Python environment. "
+                "On H20, rerun the caption script with "
+                "CAPTION_CREATE_ENV=1 CAPTION_INSTALL_DEPS=1 to create an isolated qwen_caption "
+                "environment, or use FALLBACK_ONLY=1 for non-Qwen fallback prompts."
+            ) from auto_error
 
     dtype = {
         "auto": "auto",
