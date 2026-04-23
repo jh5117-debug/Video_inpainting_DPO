@@ -54,6 +54,18 @@ from inference.metrics import compute_psnr, compute_ssim  # noqa: E402
 
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
 DEFAULT_VBENCH_DIMS = "subject_consistency,background_consistency,temporal_flickering,motion_smoothness,aesthetic_quality"
+QUALITY_METRIC_SPECS: List[Tuple[str, bool, float]] = [
+    ("psnr", True, 0.16),
+    ("ssim", True, 0.14),
+    ("lpips", False, 0.20),
+    ("vbench_background_consistency", True, 0.14),
+    ("vbench_temporal_flickering", True, 0.14),
+    ("vbench_motion_smoothness", True, 0.08),
+    ("vbench_imaging_quality", True, 0.10),
+    ("vbench_aesthetic_quality", True, 0.06),
+    ("vbench_subject_consistency", True, 0.06),
+    ("vbench_inpainting_score", True, 0.08),
+]
 _LPIPS_LOCK = threading.Lock()
 _VBENCH_LOCK = threading.Lock()
 _VBENCH_SCORERS: Dict[Tuple[str, str], Any] = {}
@@ -178,6 +190,21 @@ def copytree_clean(src: Path, dst: Path) -> None:
     if dst.exists():
         shutil.rmtree(dst)
     shutil.copytree(src, dst)
+
+
+def cleanup_candidate_storage(video_root_dir: Path, candidates: Sequence[CandidateResult], selected_methods: Sequence[str], retention: str) -> None:
+    shutil.rmtree(video_root_dir / "_adapter_inputs", ignore_errors=True)
+    candidates_root = video_root_dir / "candidates"
+    if retention == "all" or not candidates_root.exists():
+        return
+    if retention == "none":
+        shutil.rmtree(candidates_root, ignore_errors=True)
+        return
+    selected = set(selected_methods)
+    for cand in candidates:
+        method_dir = candidates_root / cand.method
+        if cand.method not in selected and method_dir.exists():
+            shutil.rmtree(method_dir, ignore_errors=True)
 
 
 def prepare_gt_frames(video: VideoItem, out_dir: Path, width: int, height: int, max_frames: int) -> List[Path]:
@@ -843,20 +870,8 @@ def assign_relative_quality(candidates: List[CandidateResult]) -> None:
     if not ok:
         return
 
-    metric_specs = [
-        ("psnr", True, 0.16),
-        ("ssim", True, 0.14),
-        ("lpips", False, 0.20),
-        ("vbench_background_consistency", True, 0.14),
-        ("vbench_temporal_flickering", True, 0.14),
-        ("vbench_motion_smoothness", True, 0.08),
-        ("vbench_imaging_quality", True, 0.10),
-        ("vbench_aesthetic_quality", True, 0.06),
-        ("vbench_subject_consistency", True, 0.06),
-        ("vbench_inpainting_score", True, 0.08),
-    ]
     available: List[Tuple[str, bool, float, float, float]] = []
-    for key, higher, weight in metric_specs:
+    for key, higher, weight in QUALITY_METRIC_SPECS:
         vals = [c.score.get(key) for c in ok]
         vals = [v for v in vals if isinstance(v, (int, float)) and math.isfinite(float(v))]
         if vals:
@@ -1146,6 +1161,10 @@ def process_one_video(
             "neg_frames_2": f"{video_id}/neg_frames_2",
             "num_frames": int(meta.get("num_frames", 0)),
             "source": video.source,
+            "source_frame_dir": meta.get("source_frame_dir", str(video.frame_dir)),
+            "mask_seed": (meta.get("mask") or {}).get("seed"),
+            "neg_1_source": meta.get("selected_neg_frames_1"),
+            "neg_2_source": meta.get("selected_neg_frames_2"),
         }
 
     if video_root_dir.exists() and not args.resume:
@@ -1158,6 +1177,8 @@ def process_one_video(
     num_frames = len(gt_files)
     if num_frames < args.train_nframes:
         print(f"[skip] {video_id}: too few frames after sampling")
+        if args.cleanup_failed:
+            shutil.rmtree(video_root_dir, ignore_errors=True)
         return None
 
     mask_meta = generate_hard_masks(
@@ -1244,6 +1265,8 @@ def process_one_video(
         with (video_root_dir / "meta.json").open("w", encoding="utf-8") as f:
             json.dump(meta, f, indent=2, ensure_ascii=False)
         print(f"[skip] {video_id}: {exc}")
+        if args.cleanup_failed:
+            shutil.rmtree(video_root_dir, ignore_errors=True)
         return None
 
     copytree_clean(Path(neg1.comp_dir), video_root_dir / "neg_frames_1")
@@ -1274,6 +1297,12 @@ def process_one_video(
     }
     with (video_root_dir / "meta.json").open("w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2, ensure_ascii=False)
+    cleanup_candidate_storage(
+        video_root_dir,
+        candidate_results,
+        [neg1.method, neg2.method],
+        args.candidate_retention,
+    )
 
     manifest_entry = {
         "gt_frames": f"{video_id}/gt_frames",
@@ -1283,8 +1312,12 @@ def process_one_video(
         "neg_frames_2": f"{video_id}/neg_frames_2",
         "num_frames": num_frames,
         "source": video.source,
+        "source_frame_dir": str(video.frame_dir),
+        "mask_seed": mask_meta.get("seed"),
         "neg_1_source": neg1.method,
         "neg_2_source": neg2.method,
+        "neg_1_quality": neg1.quality_score,
+        "neg_2_quality": neg2.quality_score,
     }
     print(f"[done] {video_id}: neg1={neg1.method}, neg2={neg2.method}")
     return video_id, manifest_entry
@@ -1329,6 +1362,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--vbench_dimensions", default=DEFAULT_VBENCH_DIMS)
     parser.add_argument("--save_previews", action="store_true")
     parser.add_argument("--skip_inference", action="store_true")
+    parser.add_argument("--candidate_retention", choices=["all", "selected", "none"], default="all")
+    parser.add_argument("--cleanup_failed", action="store_true")
     parser.add_argument("--resume", action="store_true")
     return parser
 
@@ -1392,6 +1427,10 @@ def main() -> None:
             "vbench_dimensions": parse_csv(args.vbench_dimensions),
             "lpips_enabled": bool(args.enable_lpips),
             "vbench_enabled": bool(args.enable_vbench),
+            "quality_score_metrics": [
+                {"key": key, "higher_better": higher, "weight": weight}
+                for key, higher, weight in QUALITY_METRIC_SPECS
+            ],
         },
         "mask_policy": {
             "area_ratio_range": [args.mask_area_min, args.mask_area_max],
@@ -1403,6 +1442,8 @@ def main() -> None:
             "dilation_iter": args.mask_dilation_iter,
         },
         "methods": parse_csv(args.methods),
+        "candidate_retention": args.candidate_retention,
+        "cleanup_failed": bool(args.cleanup_failed),
         "schema": "gt_frames,masks,mask_meta.json,neg_frames_1,neg_frames_2,meta.json",
     }
     with (Path(args.output_root) / "generation_summary.json").open("w", encoding="utf-8") as f:

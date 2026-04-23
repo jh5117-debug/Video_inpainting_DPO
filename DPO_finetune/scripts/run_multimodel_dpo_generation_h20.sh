@@ -184,6 +184,10 @@ fi
 if [[ "${SAVE_PREVIEWS:-0}" == "1" ]]; then
   ARGS+=(--save_previews)
 fi
+ARGS+=(--candidate_retention "${CANDIDATE_RETENTION:-all}")
+if [[ "${CLEANUP_FAILED:-0}" == "1" ]]; then
+  ARGS+=(--cleanup_failed)
+fi
 if [[ "${SKIP_INFERENCE:-0}" == "1" ]]; then
   ARGS+=(--skip_inference)
 fi
