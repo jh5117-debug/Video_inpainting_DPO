@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import shutil
+import subprocess
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, Iterable, List, Optional, Sequence
@@ -93,6 +95,38 @@ def draw_label(panel: np.ndarray, label: str) -> np.ndarray:
     return cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
 
 
+def encode_h264(mp4v_path: Path, out_path: Path) -> bool:
+    ffmpeg = shutil.which("ffmpeg")
+    if not ffmpeg:
+        return False
+    tmp_h264 = out_path.with_suffix(".h264.tmp.mp4")
+    cmd = [
+        ffmpeg,
+        "-y",
+        "-loglevel",
+        "error",
+        "-i",
+        str(mp4v_path),
+        "-c:v",
+        "libx264",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "-an",
+        str(tmp_h264),
+    ]
+    try:
+        subprocess.run(cmd, check=True)
+    except Exception as exc:
+        print(f"[warn] ffmpeg H.264 encode failed for {out_path}: {exc}")
+        if tmp_h264.exists():
+            tmp_h264.unlink()
+        return False
+    tmp_h264.replace(out_path)
+    return True
+
+
 def candidate_frame_dir(method_root: Path, preferred: Sequence[str]) -> Optional[Path]:
     for name in preferred:
         path = method_root / name
@@ -138,6 +172,7 @@ def write_comparison_video(
     panel_width: Optional[int],
     panel_height: Optional[int],
     max_frames: int,
+    h264: bool,
 ) -> Dict[str, object]:
     if sample.gt_dir is None or sample.mask_dir is None:
         raise RuntimeError(f"{sample.name}: missing gt_frames or masks")
@@ -157,9 +192,10 @@ def write_comparison_video(
     height = panel_height or height
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    writer = cv2.VideoWriter(str(out_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (width * (len(methods) + 1), height))
+    tmp_path = out_path.with_suffix(".mp4v.tmp.mp4")
+    writer = cv2.VideoWriter(str(tmp_path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (width * (len(methods) + 1), height))
     if not writer.isOpened():
-        raise RuntimeError(f"failed to open video writer: {out_path}")
+        raise RuntimeError(f"failed to open video writer: {tmp_path}")
 
     labels = ["GT + MASK"] + [m.upper() if m == "cococo" else m.title() for m in methods]
     for idx in range(n):
@@ -173,10 +209,19 @@ def write_comparison_video(
         frame_rgb = np.concatenate(labeled, axis=1)
         writer.write(cv2.cvtColor(frame_rgb, cv2.COLOR_RGB2BGR))
     writer.release()
+    encoded_h264 = False
+    if h264:
+        encoded_h264 = encode_h264(tmp_path, out_path)
+    if encoded_h264:
+        tmp_path.unlink(missing_ok=True)
+    else:
+        tmp_path.replace(out_path)
     return {
         "sample": sample.name,
         "output": str(out_path),
         "frames": n,
+        "resolution": [width * (len(methods) + 1), height],
+        "codec": "h264" if encoded_h264 else "mp4v",
         "methods": {method: str(sample.methods[method]) for method in methods},
         "gt_dir": str(sample.gt_dir),
         "mask_dir": str(sample.mask_dir),
@@ -195,6 +240,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--panel_width", type=int, default=0)
     parser.add_argument("--panel_height", type=int, default=0)
     parser.add_argument("--max_frames", type=int, default=0)
+    parser.add_argument("--no_h264", action="store_true", help="Keep OpenCV mp4v output instead of ffmpeg H.264.")
     parser.add_argument("--include_incomplete", action="store_true")
     return parser.parse_args()
 
@@ -247,6 +293,7 @@ def main() -> None:
             args.panel_width or None,
             args.panel_height or None,
             args.max_frames,
+            not args.no_h264,
         )
         manifest["videos"].append(item)
         print(f"[ok] {name}: {out_path}")

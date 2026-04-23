@@ -11,8 +11,8 @@ OUTPUT_DIR="${OUTPUT_DIR:-${SMOKE_OUTPUTS_DIR}/five_panel_smoke_comparisons_$(da
 METHODS="${METHODS:-propainter,cococo,diffueraser,minimax}"
 FPS="${FPS:-8}"
 MAX_FRAMES="${MAX_FRAMES:-0}"
-PANEL_WIDTH="${PANEL_WIDTH:-512}"
-PANEL_HEIGHT="${PANEL_HEIGHT:-512}"
+PANEL_WIDTH="${PANEL_WIDTH:-320}"
+PANEL_HEIGHT="${PANEL_HEIGHT:-320}"
 
 PYTHON_BIN=(python)
 if [[ -x "/home/nvme01/miniconda3/bin/conda" && -d "${DIFFUERASER_ENV}" ]]; then
