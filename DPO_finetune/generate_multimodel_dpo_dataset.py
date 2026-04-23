@@ -322,8 +322,8 @@ def generate_hard_masks(
     seed: int,
     dilation_iter: int,
     margin_ratio: float = 0.15,
-    area_min: float = 0.40,
-    area_max: float = 0.50,
+    area_min: float = 0.35,
+    area_max: float = 0.45,
     static_prob: float = 0.50,
     speed_min: float = 0.50,
     speed_max: float = 1.50,
@@ -1189,8 +1189,8 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--score_windows", default="32,24,16")
     parser.add_argument("--mask_seeds_per_video", type=int, default=1)
     parser.add_argument("--mask_dilation_iter", type=int, default=8)
-    parser.add_argument("--mask_area_min", type=float, default=0.40)
-    parser.add_argument("--mask_area_max", type=float, default=0.50)
+    parser.add_argument("--mask_area_min", type=float, default=0.35)
+    parser.add_argument("--mask_area_max", type=float, default=0.45)
     parser.add_argument("--mask_margin_ratio", type=float, default=0.15)
     parser.add_argument("--mask_static_prob", type=float, default=0.50)
     parser.add_argument("--mask_speed_min", type=float, default=0.50)
