@@ -20,6 +20,20 @@ DEFAULT_GPUS="0,1,2,3,4,5,6,7"
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEFAULT_GPUS}}"
 export VBENCH_ROOT="${VBENCH_ROOT:-${THIRD_PARTY_ROOT}/repos/VBench}"
 
+if [[ "${ENABLE_VBENCH:-0}" == "1" ]]; then
+  echo "[run] verify VBench scoring deps in ${DIFFUERASER_ENV}"
+  if ! PYTHONNOUSERSITE=1 conda run --no-capture-output -p "${DIFFUERASER_ENV}" \
+    python -c "import decord" >/dev/null 2>&1; then
+    if [[ "${VBENCH_AUTO_INSTALL_DEPS:-1}" != "1" ]]; then
+      echo "[run][error] VBench requires decord in ${DIFFUERASER_ENV}. Set VBENCH_AUTO_INSTALL_DEPS=1 or install decord." >&2
+      exit 1
+    fi
+    echo "[run] install VBench scoring deps: decord"
+    PYTHONNOUSERSITE=1 conda run --no-capture-output -p "${DIFFUERASER_ENV}" \
+      python -m pip install "decord==0.6.0"
+  fi
+fi
+
 ARGS=(
   "${PROJECT_ROOT}/DPO_finetune/generate_multimodel_dpo_dataset.py"
   --ytbv_root "${YTBV_ROOT}"

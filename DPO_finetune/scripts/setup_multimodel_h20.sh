@@ -131,6 +131,16 @@ if [[ -d "${PROJECT_ROOT}/weights/metrics" ]]; then
   rsync -a "${PROJECT_ROOT}/weights/metrics/" "${WEIGHTS_ROOT}/metrics/" || true
 fi
 if [[ -x "/home/nvme01/miniconda3/bin/conda" ]]; then
+  echo "[env] verify DiffuEraser/VBench scoring extras"
+  if ! PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run --no-capture-output -p "${DIFFUERASER_ENV}" \
+    python -c "import decord" >/dev/null 2>&1; then
+    echo "  install diffueraser scoring extras: decord"
+    PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run --no-capture-output -p "${DIFFUERASER_ENV}" \
+      python -m pip install "decord==0.6.0"
+  else
+    echo "  diffueraser scoring extras ok"
+  fi
+
   echo "[weights] try MiniMax-Remover Hugging Face download"
   /home/nvme01/miniconda3/bin/conda run --no-capture-output -p "${DIFFUERASER_ENV}" python -c \
     "from huggingface_hub import snapshot_download; snapshot_download(repo_id='zibojia/minimax-remover', allow_patterns=['vae/**','transformer/**','scheduler/**'], local_dir='${WEIGHTS_ROOT}/minimax')" || true

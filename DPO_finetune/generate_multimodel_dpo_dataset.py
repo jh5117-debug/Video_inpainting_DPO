@@ -54,6 +54,7 @@ from inference.metrics import compute_psnr, compute_ssim  # noqa: E402
 
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
 DEFAULT_VBENCH_DIMS = "subject_consistency,background_consistency,temporal_flickering,motion_smoothness,aesthetic_quality,imaging_quality"
+_LPIPS_LOCK = threading.Lock()
 _VBENCH_LOCK = threading.Lock()
 _VBENCH_SCORERS: Dict[Tuple[str, str], Any] = {}
 
@@ -678,7 +679,8 @@ def frame_metrics(
         ssims.append(compute_ssim(gt_eval, comp_eval))
         if lpips_metric is not None:
             try:
-                lpips_vals.append(float(lpips_metric.compute(gt_eval, comp_eval, device=lpips_device)))
+                with _LPIPS_LOCK:
+                    lpips_vals.append(float(lpips_metric.compute(gt_eval, comp_eval, device=lpips_device)))
             except Exception as exc:
                 print(f"[warn] LPIPS frame {i} failed: {exc}")
                 lpips_metric = None
@@ -826,6 +828,8 @@ def score_candidate(
         vbench_device = f"cuda:{gpu}" if str(gpu).isdigit() else "cuda"
         vb = maybe_vbench_score(comp_dir, method, vbench_device, comp_dir.parent / "_videos", args.vbench_dimensions)
         score["vbench"] = vb
+        if vb.get("error"):
+            raise RuntimeError(f"VBench failed for {method}: {vb.get('error')}")
         if vb.get("inpainting_score") is not None:
             score["vbench_inpainting_score"] = float(vb["inpainting_score"])
         for dim, value in (vb.get("per_dim") or {}).items():
