@@ -37,6 +37,13 @@ ARGS=(
   --score_windows "${SCORE_WINDOWS:-32,24,16}"
   --mask_seeds_per_video "${MASK_SEEDS_PER_VIDEO:-1}"
   --mask_dilation_iter "${MASK_DILATION_ITER:-8}"
+  --mask_area_min "${MASK_AREA_MIN:-0.40}"
+  --mask_area_max "${MASK_AREA_MAX:-0.50}"
+  --mask_margin_ratio "${MASK_MARGIN_RATIO:-0.15}"
+  --mask_static_prob "${MASK_STATIC_PROB:-0.50}"
+  --mask_speed_min "${MASK_SPEED_MIN:-0.50}"
+  --mask_speed_max "${MASK_SPEED_MAX:-1.50}"
+  --source_selection_weights "${SOURCE_SELECTION_WEIGHTS:-propainter=1.5,cococo=1.0,diffueraser=1.0,minimax=1.0}"
   --parallel_methods "${PARALLEL_METHODS:-4}"
   --resume
 )
@@ -61,7 +68,7 @@ echo "[run] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
 echo "[run] output_root=${OUT_ROOT}"
 echo "[run] adapter_config=${ADAPTER_CONFIG}"
 
-conda run -p "${DIFFUERASER_ENV}" python "${ARGS[@]}"
+PYTHONNOUSERSITE=1 conda run --no-capture-output -p "${DIFFUERASER_ENV}" python "${ARGS[@]}"
 
 cat <<EOF
 

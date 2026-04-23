@@ -78,6 +78,19 @@ def parse_csv(value: str) -> List[str]:
     return [v.strip() for v in value.split(",") if v.strip()]
 
 
+def parse_source_weights(value: str) -> Dict[str, float]:
+    weights: Dict[str, float] = {}
+    for item in parse_csv(value):
+        if "=" not in item:
+            continue
+        key, raw = item.split("=", 1)
+        try:
+            weights[key.strip()] = max(0.01, float(raw))
+        except ValueError:
+            continue
+    return weights
+
+
 def image_files(path: Path) -> List[Path]:
     if not path.exists() or not path.is_dir():
         return []
@@ -176,14 +189,85 @@ def prepare_gt_frames(video: VideoItem, out_dir: Path, width: int, height: int, 
 
 def random_polygon(width: int, height: int, rng: random.Random, vertices_min: int = 5, vertices_max: int = 8) -> np.ndarray:
     n = rng.randint(vertices_min, vertices_max)
-    angles = sorted(rng.random() * 2 * math.pi for _ in range(n))
+    step = 2 * math.pi / n
+    phase = rng.random() * step
+    jitter = step * 0.22
+    angles = sorted(phase + i * step + rng.uniform(-jitter, jitter) for i in range(n))
     pts = []
     for a in angles:
-        r = rng.uniform(0.6, 0.8)
-        x = math.cos(a) * width * 0.5 * r
-        y = math.sin(a) * height * 0.5 * r
+        # Push points toward a square-like boundary rather than a circle.
+        # This keeps 40%-50% masks large and central without forcing the bbox
+        # to touch image borders, even with only 5-8 vertices.
+        c = math.cos(a)
+        s = math.sin(a)
+        boundary = 1.0 / max(abs(c), abs(s), 1e-6)
+        r = rng.uniform(0.86, 1.0)
+        x = c * width * 0.5 * boundary * r
+        y = s * height * 0.5 * boundary * r
         pts.append((x, y))
     return np.array(pts, dtype=np.float32)
+
+
+def rasterize_polygon(points: np.ndarray, width: int, height: int, dilation_iter: int) -> np.ndarray:
+    pil = Image.new("L", (width, height), 0)
+    draw = ImageDraw.Draw(pil)
+    draw.polygon([tuple(p) for p in points.tolist()], fill=255)
+    mask = np.array(pil, dtype=np.uint8)
+    if dilation_iter > 0:
+        kernel = np.ones((3, 3), dtype=np.uint8)
+        mask = cv2.dilate(mask, kernel, iterations=dilation_iter)
+    return mask
+
+
+def fit_polygon_to_area(
+    base: np.ndarray,
+    width: int,
+    height: int,
+    target_area_ratio: float,
+    dilation_iter: int,
+) -> Tuple[np.ndarray, float]:
+    center = np.array([width / 2.0, height / 2.0], dtype=np.float32)
+    lo, hi = 0.2, min(width, height)
+    best = base.copy()
+    best_ratio = 0.0
+    for _ in range(26):
+        scale = (lo + hi) / 2.0
+        pts = base * scale + center
+        mask = rasterize_polygon(pts, width, height, dilation_iter)
+        ratio = float(np.count_nonzero(mask)) / float(width * height)
+        best = base * scale
+        best_ratio = ratio
+        if ratio < target_area_ratio:
+            lo = scale
+        else:
+            hi = scale
+    return best.astype(np.float32), best_ratio
+
+
+def polygon_center_bounds(points: np.ndarray, width: int, height: int, pad: int = 0) -> Tuple[float, float, float, float]:
+    min_x = float(points[:, 0].min())
+    max_x = float(points[:, 0].max())
+    min_y = float(points[:, 1].min())
+    max_y = float(points[:, 1].max())
+    cx_min = pad - min_x
+    cx_max = (width - 1 - pad) - max_x
+    cy_min = pad - min_y
+    cy_max = (height - 1 - pad) - max_y
+    if cx_min > cx_max:
+        cx_min, cx_max = width / 2.0, width / 2.0
+    if cy_min > cy_max:
+        cy_min, cy_max = height / 2.0, height / 2.0
+    return cx_min, cy_min, cx_max, cy_max
+
+
+def mask_bbox_ratio(mask: np.ndarray) -> List[float]:
+    y, x = np.where(mask > 0)
+    if not len(x):
+        return [0.0, 0.0]
+    return [
+        float((int(x.max()) - int(x.min()) + 1) / mask.shape[1]),
+        float((int(y.max()) - int(y.min()) + 1) / mask.shape[0]),
+    ]
 
 
 def generate_hard_masks(
@@ -194,68 +278,101 @@ def generate_hard_masks(
     seed: int,
     dilation_iter: int,
     margin_ratio: float = 0.15,
+    area_min: float = 0.40,
+    area_max: float = 0.50,
+    static_prob: float = 0.50,
+    speed_min: float = 0.50,
+    speed_max: float = 1.50,
 ) -> Dict[str, Any]:
-    """Generate and save large central slow/static polygon masks.
-
-    The requested 75%-85% polygon size can be larger than the 70% central
-    safe zone implied by a 15% border. We therefore keep the center inside the
-    safe zone and clamp only image-boundary crossings, preserving the intended
-    "large, central, hard" behavior.
-    """
+    """Generate and save large, central, reproducible hard-negative masks."""
     rng = random.Random(seed)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    poly_w = rng.uniform(0.75, 0.85) * width
-    poly_h = rng.uniform(0.75, 0.85) * height
-    base = random_polygon(int(poly_w), int(poly_h), rng)
+    target_area_ratio = rng.uniform(area_min, area_max)
+    unit_base = random_polygon(2, 2, rng)
+    base, fitted_area_ratio = fit_polygon_to_area(unit_base, width, height, target_area_ratio, dilation_iter)
 
+    pad = max(0, dilation_iter + 2)
+    cx_min, cy_min, cx_max, cy_max = polygon_center_bounds(base, width, height, pad=pad)
     margin_x = margin_ratio * width
     margin_y = margin_ratio * height
-    cx = rng.uniform(margin_x, width - margin_x)
-    cy = rng.uniform(margin_y, height - margin_y)
+    safe_cx_min = max(cx_min, margin_x)
+    safe_cx_max = min(cx_max, width - margin_x)
+    safe_cy_min = max(cy_min, margin_y)
+    safe_cy_max = min(cy_max, height - margin_y)
+    if safe_cx_min > safe_cx_max:
+        safe_cx_min, safe_cx_max = cx_min, cx_max
+    if safe_cy_min > safe_cy_max:
+        safe_cy_min, safe_cy_max = cy_min, cy_max
 
-    if rng.random() < 0.5:
+    center_jitter_x = 0.06 * width
+    center_jitter_y = 0.06 * height
+    cx = min(max(width / 2.0 + rng.uniform(-center_jitter_x, center_jitter_x), safe_cx_min), safe_cx_max)
+    cy = min(max(height / 2.0 + rng.uniform(-center_jitter_y, center_jitter_y), safe_cy_min), safe_cy_max)
+
+    if rng.random() < static_prob:
         vx = vy = 0.0
-        motion = "static"
+        motion_type = "static"
     else:
-        speed = rng.uniform(0.5, 1.5)
+        speed = rng.uniform(speed_min, speed_max)
         theta = rng.uniform(0, 2 * math.pi)
         vx = math.cos(theta) * speed
         vy = math.sin(theta) * speed
-        motion = "slow_drift"
+        motion_type = "slow"
 
-    kernel = np.ones((3, 3), dtype=np.uint8)
     frame_meta = []
+    area_ratios = []
+    bbox_ratios = []
+    initial_velocity = [vx, vy]
     for t in range(num_frames):
         pts = base + np.array([cx, cy], dtype=np.float32)
-        pts[:, 0] = np.clip(pts[:, 0], 0, width - 1)
-        pts[:, 1] = np.clip(pts[:, 1], 0, height - 1)
-
-        pil = Image.new("L", (width, height), 0)
-        draw = ImageDraw.Draw(pil)
-        draw.polygon([tuple(p) for p in pts.tolist()], fill=255)
-        mask = np.array(pil, dtype=np.uint8)
-        if dilation_iter > 0:
-            mask = cv2.dilate(mask, kernel, iterations=dilation_iter)
+        mask = rasterize_polygon(pts, width, height, dilation_iter)
         save_gray(out_dir / f"{t:05d}.png", mask)
 
-        frame_meta.append({"frame": t, "center": [round(cx, 3), round(cy, 3)]})
+        area_ratio = float(np.count_nonzero(mask)) / float(width * height)
+        bbox_ratio = mask_bbox_ratio(mask)
+        area_ratios.append(area_ratio)
+        bbox_ratios.append(bbox_ratio)
+        frame_meta.append(
+            {
+                "frame": t,
+                "center": [round(cx, 3), round(cy, 3)],
+                "area_ratio": round(area_ratio, 6),
+                "bbox_ratio": [round(float(bbox_ratio[0]), 6), round(float(bbox_ratio[1]), 6)],
+            }
+        )
 
         nx = cx + vx
         ny = cy + vy
-        if nx < margin_x or nx > width - margin_x:
+        if nx < safe_cx_min or nx > safe_cx_max:
             vx = -vx
             nx = cx + vx
-        if ny < margin_y or ny > height - margin_y:
+        if ny < safe_cy_min or ny > safe_cy_max:
             vy = -vy
             ny = cy + vy
-        cx, cy = nx, ny
+        cx = min(max(nx, safe_cx_min), safe_cx_max)
+        cy = min(max(ny, safe_cy_min), safe_cy_max)
+
+    mean_bbox_ratio = [
+        float(np.mean([b[0] for b in bbox_ratios])) if bbox_ratios else 0.0,
+        float(np.mean([b[1] for b in bbox_ratios])) if bbox_ratios else 0.0,
+    ]
 
     return {
         "seed": seed,
-        "motion": motion,
-        "polygon_size_ratio": [poly_w / width, poly_h / height],
+        "motion_type": motion_type,
+        "motion": motion_type,
+        "velocity": [round(initial_velocity[0], 6), round(initial_velocity[1], 6)],
+        "target_area_ratio": target_area_ratio,
+        "area_ratio": float(np.mean(area_ratios)) if area_ratios else fitted_area_ratio,
+        "area_ratio_min": float(np.min(area_ratios)) if area_ratios else fitted_area_ratio,
+        "area_ratio_max": float(np.max(area_ratios)) if area_ratios else fitted_area_ratio,
+        "area_ratio_range": [area_min, area_max],
+        "bbox_ratio": mean_bbox_ratio,
+        "vertices": int(len(base)),
         "margin_ratio": margin_ratio,
+        "center_bounds": [cx_min / width, cy_min / height, cx_max / width, cy_max / height],
+        "safe_center_bounds": [safe_cx_min / width, safe_cy_min / height, safe_cx_max / width, safe_cy_max / height],
         "dilation_iter": dilation_iter,
         "frames": frame_meta,
     }
@@ -663,7 +780,11 @@ def assign_relative_quality(candidates: List[CandidateResult]) -> None:
         c.score["relative_quality_score"] = c.quality_score
 
 
-def select_negatives(candidates: List[CandidateResult], source_counts: Dict[str, int]) -> Tuple[CandidateResult, CandidateResult, Dict[str, Any]]:
+def select_negatives(
+    candidates: List[CandidateResult],
+    source_counts: Dict[str, int],
+    source_weights: Dict[str, float],
+) -> Tuple[CandidateResult, CandidateResult, Dict[str, Any]]:
     ok = [c for c in candidates if c.ok]
     if not ok:
         raise RuntimeError("need at least one successful model candidate")
@@ -676,6 +797,7 @@ def select_negatives(candidates: List[CandidateResult], source_counts: Dict[str,
             "policy": "single_successful_source_duplicated",
             "note": "Only one model candidate succeeded; duplicated it into neg_frames_1 and neg_frames_2 for smoke-test compatibility.",
             "source_counts_after_selection": dict(source_counts),
+            "source_selection_weights": dict(source_weights),
             "candidate_quality_order": [
                 {"method": only.method, "quality": only.quality_score, "score": only.score}
             ],
@@ -691,7 +813,7 @@ def select_negatives(candidates: List[CandidateResult], source_counts: Dict[str,
     ranked = sorted(
         eligible,
         key=lambda c: (
-            source_counts.get(c.method, 0),
+            source_counts.get(c.method, 0) / max(0.01, source_weights.get(c.method, 1.0)),
             abs(c.quality_score - 0.35),
             c.quality_score,
         ),
@@ -712,6 +834,7 @@ def select_negatives(candidates: List[CandidateResult], source_counts: Dict[str,
         "policy": "balanced_source_hard_plausible",
         "note": "GT is always the DPO winner; selected negatives are complete outputs from source models.",
         "source_counts_after_selection": dict(source_counts),
+        "source_selection_weights": dict(source_weights),
         "candidate_quality_order": [
             {"method": c.method, "quality": c.quality_score, "score": c.score}
             for c in ok_sorted
@@ -833,6 +956,7 @@ def process_one_video(
         return video_id, {
             "gt_frames": f"{video_id}/gt_frames",
             "masks": f"{video_id}/masks",
+            "mask_meta": f"{video_id}/mask_meta.json",
             "neg_frames_1": f"{video_id}/neg_frames_1",
             "neg_frames_2": f"{video_id}/neg_frames_2",
             "num_frames": int(meta.get("num_frames", 0)),
@@ -858,7 +982,15 @@ def process_one_video(
         height=args.height,
         seed=mask_seed,
         dilation_iter=args.mask_dilation_iter,
+        margin_ratio=args.mask_margin_ratio,
+        area_min=args.mask_area_min,
+        area_max=args.mask_area_max,
+        static_prob=args.mask_static_prob,
+        speed_min=args.mask_speed_min,
+        speed_max=args.mask_speed_max,
     )
+    with (video_root_dir / "mask_meta.json").open("w", encoding="utf-8") as f:
+        json.dump(mask_meta, f, indent=2, ensure_ascii=False)
 
     # Some third-party CLIs expect a root containing one sequence directory.
     batch_video_root = video_root_dir / "_adapter_inputs" / "videos"
@@ -902,7 +1034,11 @@ def process_one_video(
 
     assign_relative_quality(candidate_results)
     try:
-        neg1, neg2, selection_policy = select_negatives(candidate_results, source_counts)
+        neg1, neg2, selection_policy = select_negatives(
+            candidate_results,
+            source_counts,
+            parse_source_weights(args.source_selection_weights),
+        )
     except Exception as exc:
         meta = {
             "video_id": video_id,
@@ -951,6 +1087,7 @@ def process_one_video(
     manifest_entry = {
         "gt_frames": f"{video_id}/gt_frames",
         "masks": f"{video_id}/masks",
+        "mask_meta": f"{video_id}/mask_meta.json",
         "neg_frames_1": f"{video_id}/neg_frames_1",
         "neg_frames_2": f"{video_id}/neg_frames_2",
         "num_frames": num_frames,
@@ -981,6 +1118,13 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--score_windows", default="32,24,16")
     parser.add_argument("--mask_seeds_per_video", type=int, default=1)
     parser.add_argument("--mask_dilation_iter", type=int, default=8)
+    parser.add_argument("--mask_area_min", type=float, default=0.40)
+    parser.add_argument("--mask_area_max", type=float, default=0.50)
+    parser.add_argument("--mask_margin_ratio", type=float, default=0.15)
+    parser.add_argument("--mask_static_prob", type=float, default=0.50)
+    parser.add_argument("--mask_speed_min", type=float, default=0.50)
+    parser.add_argument("--mask_speed_max", type=float, default=1.50)
+    parser.add_argument("--source_selection_weights", default="propainter=1.5,cococo=1.0,diffueraser=1.0,minimax=1.0")
     parser.add_argument("--parallel_methods", type=int, default=3)
     parser.add_argument("--seed", type=int, default=20260422)
     parser.add_argument("--enable_lpips", action="store_true")
@@ -1042,8 +1186,16 @@ def main() -> None:
         "output_root": args.output_root,
         "num_manifest_entries": len(manifest),
         "source_selection_counts": source_counts,
+        "source_selection_weights": parse_source_weights(args.source_selection_weights),
+        "mask_policy": {
+            "area_ratio_range": [args.mask_area_min, args.mask_area_max],
+            "margin_ratio": args.mask_margin_ratio,
+            "static_prob": args.mask_static_prob,
+            "speed_range_px_per_frame": [args.mask_speed_min, args.mask_speed_max],
+            "dilation_iter": args.mask_dilation_iter,
+        },
         "methods": parse_csv(args.methods),
-        "schema": "gt_frames,masks,neg_frames_1,neg_frames_2,meta.json",
+        "schema": "gt_frames,masks,mask_meta.json,neg_frames_1,neg_frames_2,meta.json",
     }
     with (Path(args.output_root) / "generation_summary.json").open("w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2, ensure_ascii=False)
