@@ -63,12 +63,24 @@ fi
 if [[ -x "/home/nvme01/miniconda3/bin/conda" && -d "${ENVS_ROOT}/cococo" ]]; then
   echo "[env] verify COCOCO runtime extras"
   if ! PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${ENVS_ROOT}/cococo" \
-    python -c "import cv2, numpy; assert int(numpy.__version__.split('.')[0]) < 2" >/dev/null 2>&1; then
-    echo "  install cococo extras: numpy<2 opencv-python-headless"
+    python -c "import cv2, numpy, diffusers, transformers, huggingface_hub; assert int(numpy.__version__.split('.')[0]) < 2; assert tuple(map(int, huggingface_hub.__version__.split('.')[:2])) < (0, 26); from diffusers import AutoencoderKL, DDIMScheduler; from diffusers.utils import WEIGHTS_NAME; from transformers import CLIPTextModel, CLIPTokenizer" >/dev/null 2>&1; then
+    echo "  install cococo extras: numpy<2 opencv-python-headless compatible diffusers stack"
     PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run -p "${ENVS_ROOT}/cococo" \
-      python -m pip install "numpy<2" "opencv-python-headless<4.11"
+      python -m pip install \
+      "numpy<2" \
+      "opencv-python-headless<4.11" \
+      "huggingface_hub<0.26" \
+      "diffusers==0.11.1" \
+      "transformers==4.25.1" \
+      "safetensors" \
+      "einops" \
+      "omegaconf" \
+      "imageio==2.34.0" \
+      "imageio-ffmpeg==0.4.9" \
+      "decord==0.6.0" \
+      "wandb"
   else
-    echo "  cococo extras ok: cv2 + numpy<2"
+    echo "  cococo extras ok: cv2 + numpy<2 + compatible diffusers stack"
   fi
 fi
 
