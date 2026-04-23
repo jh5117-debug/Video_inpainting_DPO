@@ -14,6 +14,7 @@ LOG_ROOT="${THIRD_PARTY_ROOT}/logs"
 DIFFUERASER_ENV="${DIFFUERASER_ENV:-/home/nvme01/conda_envs/diffueraser}"
 COCOCO_TORCH_INDEX_URL="${COCOCO_TORCH_INDEX_URL:-https://download.pytorch.org/whl/cu121}"
 COCOCO_TORCH_PACKAGES="${COCOCO_TORCH_PACKAGES:-torch==2.4.0 torchvision==0.19.0 torchaudio==2.4.0}"
+VBENCH_CACHE_DIR="${VBENCH_CACHE_DIR:-${WEIGHTS_ROOT}/vbench_cache}"
 
 mkdir -p "${REPOS_ROOT}" "${WEIGHTS_ROOT}" "${ENVS_ROOT}" "${LOG_ROOT}" "${THIRD_PARTY_ROOT}/manifests"
 
@@ -139,6 +140,43 @@ if [[ -x "/home/nvme01/miniconda3/bin/conda" ]]; then
       python -m pip install "decord==0.6.0"
   else
     echo "  diffueraser scoring extras ok"
+  fi
+
+  if [[ ! -s "${VBENCH_CACHE_DIR}/amt_model/amt-s.pth" ]]; then
+    echo "[weights] predownload VBench AMT weight for motion_smoothness"
+    mkdir -p "${VBENCH_CACHE_DIR}/amt_model"
+    HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}" \
+    HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}" \
+    VBENCH_CACHE_DIR="${VBENCH_CACHE_DIR}" \
+    PYTHONNOUSERSITE=1 /home/nvme01/miniconda3/bin/conda run --no-capture-output -p "${DIFFUERASER_ENV}" python - <<'PY' || true
+import os
+import shutil
+from pathlib import Path
+
+from huggingface_hub import hf_hub_download
+
+dst = Path(os.environ["VBENCH_CACHE_DIR"]) / "amt_model" / "amt-s.pth"
+dst.parent.mkdir(parents=True, exist_ok=True)
+path = hf_hub_download(
+    repo_id="lalala125/AMT",
+    filename="amt-s.pth",
+    repo_type="model",
+    local_dir=str(dst.parent),
+    local_dir_use_symlinks=False,
+)
+src = Path(path)
+if src.resolve() != dst.resolve():
+    shutil.copy2(src, dst)
+print(f"  VBench AMT ready: {dst} ({dst.stat().st_size} bytes)")
+PY
+  fi
+
+  if [[ ! -s "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader/sa_0_4_vit_l_14_linear.pth" \
+    && -s "${PROJECT_ROOT}/weights/metrics/sa_0_4_vit_l_14_linear.pth" ]]; then
+    echo "[weights] reuse local VBench aesthetic weight"
+    mkdir -p "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader"
+    cp "${PROJECT_ROOT}/weights/metrics/sa_0_4_vit_l_14_linear.pth" \
+      "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader/sa_0_4_vit_l_14_linear.pth"
   fi
 
   echo "[weights] try MiniMax-Remover Hugging Face download"

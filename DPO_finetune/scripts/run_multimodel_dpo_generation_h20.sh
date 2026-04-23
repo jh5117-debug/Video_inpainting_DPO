@@ -19,6 +19,8 @@ mkdir -p "${OUT_ROOT}"
 DEFAULT_GPUS="0,1,2,3,4,5,6,7"
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEFAULT_GPUS}}"
 export VBENCH_ROOT="${VBENCH_ROOT:-${THIRD_PARTY_ROOT}/repos/VBench}"
+export VBENCH_CACHE_DIR="${VBENCH_CACHE_DIR:-${THIRD_PARTY_ROOT}/weights/vbench_cache}"
+VBENCH_DIMENSIONS="${VBENCH_DIMENSIONS:-subject_consistency,background_consistency,temporal_flickering,motion_smoothness,aesthetic_quality,imaging_quality}"
 
 if [[ "${ENABLE_VBENCH:-0}" == "1" ]]; then
   echo "[run] verify VBench scoring deps in ${DIFFUERASER_ENV}"
@@ -31,6 +33,47 @@ if [[ "${ENABLE_VBENCH:-0}" == "1" ]]; then
     echo "[run] install VBench scoring deps: decord"
     PYTHONNOUSERSITE=1 conda run --no-capture-output -p "${DIFFUERASER_ENV}" \
       python -m pip install "decord==0.6.0"
+  fi
+
+  mkdir -p "${VBENCH_CACHE_DIR}"
+  if [[ ",${VBENCH_DIMENSIONS}," == *",motion_smoothness,"* && ! -s "${VBENCH_CACHE_DIR}/amt_model/amt-s.pth" ]]; then
+    echo "[run] predownload VBench AMT weight for motion_smoothness"
+    HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}" \
+    HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}" \
+    PYTHONNOUSERSITE=1 conda run --no-capture-output -p "${DIFFUERASER_ENV}" python - <<'PY'
+import os
+import shutil
+from pathlib import Path
+
+from huggingface_hub import hf_hub_download
+
+cache_dir = Path(os.environ["VBENCH_CACHE_DIR"])
+dst = cache_dir / "amt_model" / "amt-s.pth"
+dst.parent.mkdir(parents=True, exist_ok=True)
+path = hf_hub_download(
+    repo_id="lalala125/AMT",
+    filename="amt-s.pth",
+    repo_type="model",
+    local_dir=str(dst.parent),
+    local_dir_use_symlinks=False,
+)
+src = Path(path)
+if src.resolve() != dst.resolve():
+    shutil.copy2(src, dst)
+if not dst.exists() or dst.stat().st_size <= 0:
+    raise RuntimeError(f"AMT download failed or empty: {dst}")
+print(f"[run] VBench AMT ready: {dst} ({dst.stat().st_size} bytes)")
+PY
+  fi
+
+  if [[ ",${VBENCH_DIMENSIONS}," == *",aesthetic_quality,"* ]]; then
+    mkdir -p "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader"
+    if [[ ! -s "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader/sa_0_4_vit_l_14_linear.pth" \
+      && -s "${PROJECT_ROOT}/weights/metrics/sa_0_4_vit_l_14_linear.pth" ]]; then
+      echo "[run] reuse local VBench aesthetic weight"
+      cp "${PROJECT_ROOT}/weights/metrics/sa_0_4_vit_l_14_linear.pth" \
+        "${VBENCH_CACHE_DIR}/aesthetic_model/emb_reader/sa_0_4_vit_l_14_linear.pth"
+    fi
   fi
 fi
 
@@ -63,7 +106,7 @@ ARGS=(
   --neg_quality_min "${NEG_QUALITY_MIN:-0.20}"
   --neg_quality_max "${NEG_QUALITY_MAX:-0.80}"
   --neg_quality_target "${NEG_QUALITY_TARGET:-0.40}"
-  --vbench_dimensions "${VBENCH_DIMENSIONS:-subject_consistency,background_consistency,temporal_flickering,motion_smoothness,aesthetic_quality,imaging_quality}"
+  --vbench_dimensions "${VBENCH_DIMENSIONS}"
   --parallel_methods "${PARALLEL_METHODS:-4}"
   --resume
 )
