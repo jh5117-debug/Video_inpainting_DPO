@@ -37,6 +37,7 @@ import shlex
 import subprocess
 import sys
 import tempfile
+import threading
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Sequence, Tuple
@@ -52,6 +53,9 @@ if str(REPO_ROOT) not in sys.path:
 from inference.metrics import compute_psnr, compute_ssim  # noqa: E402
 
 IMG_EXTS = (".jpg", ".jpeg", ".png", ".bmp", ".webp")
+DEFAULT_VBENCH_DIMS = "subject_consistency,background_consistency,temporal_flickering,motion_smoothness,aesthetic_quality,imaging_quality"
+_VBENCH_LOCK = threading.Lock()
+_VBENCH_SCORERS: Dict[Tuple[str, str], Any] = {}
 
 
 @dataclass
@@ -770,12 +774,31 @@ def make_side_by_side_preview(
     return out_path
 
 
-def maybe_vbench_score(frame_dir: Path, name: str, device: str, work_dir: Path) -> Dict[str, Any]:
+def mean_existing(values: Sequence[Optional[float]]) -> float:
+    vals = [float(v) for v in values if isinstance(v, (int, float)) and math.isfinite(float(v))]
+    if not vals:
+        return 0.5
+    return float(np.mean(vals))
+
+
+def maybe_vbench_score(
+    frame_dir: Path,
+    name: str,
+    device: str,
+    work_dir: Path,
+    dimensions: str,
+) -> Dict[str, Any]:
     try:
         from tools.score_inpainting_quality import InpaintingScorer
         video_path = encode_mp4(frame_dir, work_dir / f"{name}.mp4")
-        scorer = InpaintingScorer(device=device)
-        return scorer.score_video(str(video_path), name=name)
+        dims = parse_csv(dimensions) or parse_csv(DEFAULT_VBENCH_DIMS)
+        key = (device, ",".join(dims))
+        with _VBENCH_LOCK:
+            scorer = _VBENCH_SCORERS.get(key)
+            if scorer is None:
+                scorer = InpaintingScorer(device=device, dimensions=dims)
+                _VBENCH_SCORERS[key] = scorer
+            return scorer.score_video(str(video_path), name=name)
     except Exception as exc:
         return {"error": str(exc), "inpainting_score": None}
 
@@ -797,14 +820,17 @@ def score_candidate(
         mask_files,
         [int(x) for x in parse_csv(args.score_windows)],
         args.enable_lpips,
-        lpips_device="cuda" if args.enable_lpips else "cpu",
+        lpips_device=f"cuda:{gpu}" if args.enable_lpips and str(gpu).isdigit() else ("cuda" if args.enable_lpips else "cpu"),
     )
     if args.enable_vbench:
-        os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu)
-        vb = maybe_vbench_score(comp_dir, method, "cuda", comp_dir.parent / "_videos")
+        vbench_device = f"cuda:{gpu}" if str(gpu).isdigit() else "cuda"
+        vb = maybe_vbench_score(comp_dir, method, vbench_device, comp_dir.parent / "_videos", args.vbench_dimensions)
         score["vbench"] = vb
         if vb.get("inpainting_score") is not None:
             score["vbench_inpainting_score"] = float(vb["inpainting_score"])
+        for dim, value in (vb.get("per_dim") or {}).items():
+            if isinstance(value, (int, float)) and math.isfinite(float(value)) and float(value) >= 0:
+                score[f"vbench_{dim}"] = float(value)
     return score
 
 
@@ -814,29 +840,36 @@ def assign_relative_quality(candidates: List[CandidateResult]) -> None:
         return
 
     metric_specs = [
-        ("psnr", True, 0.20),
-        ("ssim", True, 0.20),
-        ("lpips", False, 0.25),
-        ("vbench_inpainting_score", True, 0.35),
+        ("psnr", True, 0.16),
+        ("ssim", True, 0.14),
+        ("lpips", False, 0.20),
+        ("vbench_background_consistency", True, 0.14),
+        ("vbench_temporal_flickering", True, 0.14),
+        ("vbench_motion_smoothness", True, 0.08),
+        ("vbench_imaging_quality", True, 0.10),
+        ("vbench_aesthetic_quality", True, 0.06),
+        ("vbench_subject_consistency", True, 0.06),
+        ("vbench_inpainting_score", True, 0.08),
     ]
-    available = []
+    available: List[Tuple[str, bool, float, float, float]] = []
     for key, higher, weight in metric_specs:
         vals = [c.score.get(key) for c in ok]
         vals = [v for v in vals if isinstance(v, (int, float)) and math.isfinite(float(v))]
         if vals:
-            available.append((key, higher, weight))
+            available.append((key, higher, weight, float(min(vals)), float(max(vals))))
 
     if not available:
         for c in ok:
             c.quality_score = 0.5
+            c.score["relative_quality_score"] = 0.5
+            c.score["defect_bucket"] = "unscored"
         return
 
-    total_w = sum(w for _, _, w in available)
+    total_w = sum(w for _, _, w, _, _ in available)
     for c in ok:
         q = 0.0
-        for key, higher, weight in available:
-            values = [float(x.score[key]) for x in ok if key in x.score and isinstance(x.score[key], (int, float))]
-            lo, hi = min(values), max(values)
+        metric_norms: Dict[str, float] = {}
+        for key, higher, weight, lo, hi in available:
             val = float(c.score.get(key, lo if higher else hi))
             if hi == lo:
                 norm = 0.5
@@ -844,15 +877,54 @@ def assign_relative_quality(candidates: List[CandidateResult]) -> None:
                 norm = (val - lo) / (hi - lo)
             if not higher:
                 norm = 1.0 - norm
+            norm = float(max(0.0, min(1.0, norm)))
+            metric_norms[key] = norm
             q += (weight / total_w) * norm
         c.quality_score = float(q)
         c.score["relative_quality_score"] = c.quality_score
+        c.score["metric_norms"] = metric_norms
+
+        pixel_quality = mean_existing([
+            metric_norms.get("psnr"),
+            metric_norms.get("ssim"),
+            metric_norms.get("lpips"),
+        ])
+        temporal_quality = mean_existing([
+            metric_norms.get("vbench_background_consistency"),
+            metric_norms.get("vbench_temporal_flickering"),
+            metric_norms.get("vbench_motion_smoothness"),
+        ])
+        perceptual_quality = mean_existing([
+            metric_norms.get("vbench_imaging_quality"),
+            metric_norms.get("vbench_aesthetic_quality"),
+            metric_norms.get("vbench_subject_consistency"),
+        ])
+        c.score["pixel_quality_norm"] = pixel_quality
+        c.score["temporal_quality_norm"] = temporal_quality
+        c.score["perceptual_quality_norm"] = perceptual_quality
+
+        if c.quality_score >= 0.80:
+            bucket = "too_good"
+        elif c.quality_score <= 0.20:
+            bucket = "too_bad"
+        elif pixel_quality >= 0.65 and perceptual_quality <= 0.45:
+            bucket = "blur_or_texture_loss_high_pixel"
+        elif temporal_quality <= 0.35 and pixel_quality >= 0.40:
+            bucket = "temporal_inconsistent"
+        elif pixel_quality <= 0.35 and perceptual_quality >= 0.55:
+            bucket = "semantic_or_content_shift"
+        else:
+            bucket = "balanced_hard"
+        c.score["defect_bucket"] = bucket
 
 
 def select_negatives(
     candidates: List[CandidateResult],
     source_counts: Dict[str, int],
     source_weights: Dict[str, float],
+    quality_min: float,
+    quality_max: float,
+    quality_target: float,
 ) -> Tuple[CandidateResult, CandidateResult, Dict[str, Any]]:
     ok = [c for c in candidates if c.ok]
     if not ok:
@@ -873,42 +945,73 @@ def select_negatives(
             "trimmed_extremes": False,
         }
 
-    if len(ok_sorted) >= 5:
-        eligible = ok_sorted[1:-1]
-    else:
+    eligible = [c for c in ok_sorted if quality_min <= c.quality_score <= quality_max]
+    if len(eligible) < 2:
+        eligible_ids = {id(c) for c in eligible}
+        outside = [c for c in ok_sorted if id(c) not in eligible_ids]
+
+        def band_distance(cand: CandidateResult) -> float:
+            if cand.quality_score < quality_min:
+                return quality_min - cand.quality_score
+            if cand.quality_score > quality_max:
+                return cand.quality_score - quality_max
+            return 0.0
+
+        outside = sorted(outside, key=lambda c: (band_distance(c), abs(c.quality_score - quality_target)))
+        eligible = eligible + outside[: max(0, 2 - len(eligible))]
+    if len(eligible) < 2:
         eligible = ok_sorted
+
+    def source_pressure(cand: CandidateResult) -> float:
+        return source_counts.get(cand.method, 0) / max(0.01, source_weights.get(cand.method, 1.0))
 
     # Prefer under-represented source models first, then hard-but-not-catastrophic candidates.
     ranked = sorted(
         eligible,
         key=lambda c: (
-            source_counts.get(c.method, 0) / max(0.01, source_weights.get(c.method, 1.0)),
-            abs(c.quality_score - 0.35),
+            source_pressure(c),
+            abs(c.quality_score - quality_target),
             c.quality_score,
         ),
     )
     first = ranked[0]
-    second = None
-    for cand in ranked[1:]:
-        if cand.method != first.method:
-            second = cand
-            break
-    if second is None:
-        second = ranked[1]
+    first_bucket = first.score.get("defect_bucket")
+    second = sorted(
+        ranked[1:],
+        key=lambda c: (
+            c.method == first.method,
+            c.score.get("defect_bucket") == first_bucket,
+            source_pressure(c),
+            abs(c.quality_score - quality_target),
+            c.quality_score,
+        ),
+    )[0]
 
     source_counts[first.method] = source_counts.get(first.method, 0) + 1
     source_counts[second.method] = source_counts.get(second.method, 0) + 1
+    eligible_ids = {id(c) for c in eligible}
 
     policy = {
         "policy": "balanced_source_hard_plausible",
         "note": "GT is always the DPO winner; selected negatives are complete outputs from source models.",
+        "quality_band": [quality_min, quality_max],
+        "quality_target": quality_target,
         "source_counts_after_selection": dict(source_counts),
         "source_selection_weights": dict(source_weights),
         "candidate_quality_order": [
             {"method": c.method, "quality": c.quality_score, "score": c.score}
             for c in ok_sorted
         ],
-        "trimmed_extremes": len(ok_sorted) >= 5,
+        "eligible_candidate_order": [
+            {"method": c.method, "quality": c.quality_score, "bucket": c.score.get("defect_bucket")}
+            for c in ranked
+        ],
+        "filtered_out_candidates": [
+            {"method": c.method, "quality": c.quality_score, "bucket": c.score.get("defect_bucket")}
+            for c in ok_sorted
+            if id(c) not in eligible_ids
+        ],
+        "trimmed_extremes": len(eligible) < len(ok_sorted),
     }
     return first, second, policy
 
@@ -1109,6 +1212,9 @@ def process_one_video(
             candidate_results,
             source_counts,
             parse_source_weights(args.source_selection_weights),
+            args.neg_quality_min,
+            args.neg_quality_max,
+            args.neg_quality_target,
         )
     except Exception as exc:
         meta = {
@@ -1198,10 +1304,14 @@ def build_argparser() -> argparse.ArgumentParser:
     parser.add_argument("--mask_center_jitter_ratio", type=float, default=0.04)
     parser.add_argument("--mask_motion_box_ratio", type=float, default=0.16)
     parser.add_argument("--source_selection_weights", default="propainter=1.5,cococo=1.0,diffueraser=1.0,minimax=1.0")
+    parser.add_argument("--neg_quality_min", type=float, default=0.20)
+    parser.add_argument("--neg_quality_max", type=float, default=0.80)
+    parser.add_argument("--neg_quality_target", type=float, default=0.40)
     parser.add_argument("--parallel_methods", type=int, default=3)
     parser.add_argument("--seed", type=int, default=20260422)
     parser.add_argument("--enable_lpips", action="store_true")
     parser.add_argument("--enable_vbench", action="store_true")
+    parser.add_argument("--vbench_dimensions", default=DEFAULT_VBENCH_DIMS)
     parser.add_argument("--save_previews", action="store_true")
     parser.add_argument("--skip_inference", action="store_true")
     parser.add_argument("--resume", action="store_true")
@@ -1260,6 +1370,13 @@ def main() -> None:
         "num_manifest_entries": len(manifest),
         "source_selection_counts": source_counts,
         "source_selection_weights": parse_source_weights(args.source_selection_weights),
+        "neg_selection": {
+            "quality_band": [args.neg_quality_min, args.neg_quality_max],
+            "quality_target": args.neg_quality_target,
+            "vbench_dimensions": parse_csv(args.vbench_dimensions),
+            "lpips_enabled": bool(args.enable_lpips),
+            "vbench_enabled": bool(args.enable_vbench),
+        },
         "mask_policy": {
             "area_ratio_range": [args.mask_area_min, args.mask_area_max],
             "margin_ratio": args.mask_margin_ratio,

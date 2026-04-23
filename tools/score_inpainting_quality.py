@@ -119,6 +119,7 @@ class InpaintingScorer:
 
         # 加权汇总（跳过失败维度）
         valid = {d: s for d, s in per_dim.items() if s >= 0}
+        w_sum = 0.0
         if valid:
             w_sum = sum(self.weights[d] for d in valid)
             inpainting_score = sum(self.weights[d] * s / w_sum for d, s in valid.items())
