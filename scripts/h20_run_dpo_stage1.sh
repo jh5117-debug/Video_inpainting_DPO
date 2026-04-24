@@ -104,6 +104,9 @@ export WANDB_DIR="${WANDB_DIR:-${DPO_RUN_LOG_DIR}/wandb}"
 export WANDB_CACHE_DIR="${WANDB_CACHE_DIR:-${DPO_RUN_LOG_DIR}/wandb}"
 export WANDB_DATA_DIR="${WANDB_DATA_DIR:-${DPO_RUN_LOG_DIR}/wandb}"
 export WANDB_CONFIG_DIR="${WANDB_CONFIG_DIR:-${DPO_RUN_LOG_DIR}/wandb/config}"
+export WANDB_SILENT="${WANDB_SILENT:-true}"
+export WANDB_QUIET="${WANDB_QUIET:-true}"
+export WANDB_CONSOLE="${WANDB_CONSOLE:-off}"
 mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}"
 
 if [[ "${DPO_TEE_STDOUT:-1}" != "0" && -z "${DPO_STDOUT_TEE_ACTIVE:-}" ]]; then
