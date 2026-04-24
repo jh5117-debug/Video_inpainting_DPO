@@ -168,12 +168,14 @@ python training/dpo/scripts/run_stage1.py \
   --checkpointing_steps "${CKPT_STEPS:-2000}" \
   --checkpoints_total_limit "${CKPT_LIMIT:-3}" \
   --validation_steps "${VAL_STEPS:-2000}" \
+  --resolution "${RESOLUTION:-512}" \
   --nframes "${NFRAMES:-16}" \
   --seed "${SEED:-42}" \
   --mixed_precision "${MIXED_PRECISION:-bf16}" \
   --main_process_port "${MAIN_PROCESS_PORT}" \
   --wandb_project "${WANDB_PROJECT:-DPO_Diffueraser}" \
   --beta_dpo "${BETA_DPO:-500.0}" \
+  --sft_reg_weight "${SFT_REG_WEIGHT:-0.0}" \
   --davis_oversample "${DAVIS_OVERSAMPLE:-10}" \
   "${CHUNK_ARG[@]}" \
   "${XFORMERS_ARG[@]}" \

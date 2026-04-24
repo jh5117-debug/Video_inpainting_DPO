@@ -276,7 +276,7 @@ def save_wandb_run_info(output_dir, args):
 # ============================================================
 # DPO Loss + Reg-DPO Diagnostics
 # ============================================================
-def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0):
+def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0, sft_reg_weight=0.0):
     """
     Diffusion-DPO loss + Reg-DPO 论文要求的诊断指标。
 
@@ -285,7 +285,7 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0):
     noise:      [B*F, 4, H, W]   — 共享 noise (target ε)
 
     Returns:
-        loss:         DPO loss (标量)
+        loss:         总 loss = DPO + winner-side SFT regularization
         diagnostics:  dict 包含所有诊断指标 + 跨卡聚合所需的原始 tensor
     """
     target = noise.repeat(2, 1, 1, 1)  # repeat 匹配 pos+neg
@@ -306,7 +306,9 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0):
 
     # 本卡的 implicit_acc (后续会跨卡 gather 得到全局值)
     implicit_acc_local = (inside_term > 0).sum().float() / inside_term.size(0)
-    loss = (-1.0 * F.logsigmoid(inside_term)).mean()
+    dpo_loss = (-1.0 * F.logsigmoid(inside_term)).mean()
+    sft_loss = model_losses_w.mean()
+    loss = dpo_loss + float(sft_reg_weight) * sft_loss
 
     # === Reg-DPO 诊断指标 ===
     win_gap = (model_losses_w - ref_losses_w).mean()
@@ -334,7 +336,10 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0):
         loser_degrade_ratio = loser_dominant_wins / n_correct.clamp(min=1)
 
     diagnostics = {
-        "dpo_loss": loss.detach().item(),
+        "dpo_loss": dpo_loss.detach().item(),
+        "total_loss": loss.detach().item(),
+        "sft_loss": sft_loss.detach().item(),
+        "sft_reg_weight": float(sft_reg_weight),
         "implicit_acc": implicit_acc_local.detach().item(),
         "mse_w": model_losses_w.mean().detach().item(),
         "mse_l": model_losses_l.mean().detach().item(),
@@ -458,7 +463,9 @@ def format_dpo_diagnostics(step, diag, grad_norm=None, extra=None):
         return "—"
 
     rows = [
+        (f"{scope_tag_local} L_total",       diag["total_loss"],   "↓ decreasing", "—"),
         (f"{scope_tag_local} L_dpo",         diag["dpo_loss"],     "↓ decreasing", status_icon(diag["dpo_loss"], "neg", 0.693)),
+        (f"{scope_tag_local} L_sft",         diag["sft_loss"],     "↓ stable",     "—"),
         (f"{scope_tag_global} Implicit Acc",  diag["implicit_acc"], "0.5~0.9",      status_icon(diag["implicit_acc"], "mid")),
         (f"{scope_tag_local} Win Gap",       diag["win_gap"],      "< 0 (neg)",    status_icon(diag["win_gap"], "neg")),
         (f"{scope_tag_local} Lose Gap",      diag["lose_gap"],     "> 0 (pos)",    status_icon(diag["lose_gap"], "pos")),
@@ -770,6 +777,8 @@ def parse_args(input_args=None):
                         help="Ref model 权重路径 (SFT 后的 DiffuEraser 权重，含 unet_main/ 和 brushnet/)")
     parser.add_argument("--beta_dpo", type=float, default=500.0,
                         help="DPO 温度系数 beta (推荐 500~1000，过大导致 sigmoid 饱和)")
+    parser.add_argument("--sft_reg_weight", type=float, default=0.0,
+                        help="Reg-DPO 风格的 winner-side SFT regularization 权重 rho")
     parser.add_argument("--davis_oversample", type=int, default=10,
                         help="DAVIS 视频过采样倍数")
     parser.add_argument("--chunk_aligned", action="store_true",
@@ -1071,6 +1080,7 @@ def main(args):
     logger.info(f"  Gradient Accumulation steps = {args.gradient_accumulation_steps}")
     logger.info(f"  Total optimization steps = {args.max_train_steps}")
     logger.info(f"  Beta DPO = {args.beta_dpo}")
+    logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
     print_model_info({
         'unet_main (policy)': unet_main, 'brushnet (policy)': brushnet,
         'unet_ref (frozen)': unet_ref, 'brushnet_ref (frozen)': brushnet_ref,
@@ -1228,7 +1238,9 @@ def main(args):
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(
-                    model_pred, ref_pred, noise, beta_dpo=args.beta_dpo
+                    model_pred, ref_pred, noise,
+                    beta_dpo=args.beta_dpo,
+                    sft_reg_weight=args.sft_reg_weight,
                 )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
                 diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)
@@ -1309,6 +1321,9 @@ def main(args):
             scope_prefix = "global/" if diagnostics.get("_scope") == "global" else "rank0/"
             logs = {
                 "rank0/dpo_loss": diagnostics["dpo_loss"],
+                "rank0/total_loss": diagnostics["total_loss"],
+                "rank0/sft_loss": diagnostics["sft_loss"],
+                "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
                 f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
                 "rank0/mse_w": diagnostics["mse_w"],
                 "rank0/mse_l": diagnostics["mse_l"],

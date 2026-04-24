@@ -77,7 +77,7 @@ def build_cmd(project_root, args):
         "--output_dir", str(output_dir),
         "--logging_dir", "logs-dpo-stage1",
         "--val_data_dir", eval_dir,
-        "--resolution", "512",
+        "--resolution", str(args.resolution),
         "--nframes", str(args.nframes),
         "--train_batch_size", str(args.batch_size),
         "--gradient_accumulation_steps", str(args.gradient_accumulation_steps),
@@ -88,6 +88,7 @@ def build_cmd(project_root, args):
         "--checkpointing_steps", str(args.checkpointing_steps),
         "--validation_steps", str(args.validation_steps),
         "--beta_dpo", str(args.beta_dpo),
+        "--sft_reg_weight", str(args.sft_reg_weight),
         "--davis_oversample", str(args.davis_oversample),
         "--seed", str(args.seed),
         "--report_to", "wandb",
@@ -123,10 +124,12 @@ def build_cmd(project_root, args):
         },
         params={
             "nframes": args.nframes,
+            "resolution": args.resolution,
             "max_train_steps": args.max_train_steps,
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
             "beta_dpo": args.beta_dpo,
+            "sft_reg_weight": args.sft_reg_weight,
         },
     )
 
@@ -256,8 +259,10 @@ def run(args=None):
     print(f"  DPO Data Root:   {dpo_data_root}")
     print(f"  Ref Model:       {ref_model_path}")
     print(f"  GPUs:            {args.num_gpus}")
+    print(f"  Resolution:      {args.resolution}")
     print(f"  Max Steps:       {args.max_train_steps}")
     print(f"  Beta DPO:        {args.beta_dpo}")
+    print(f"  SFT Reg Weight:  {args.sft_reg_weight}")
     print(f"  LR:              {args.learning_rate}")
     print(f"  Mixed Precision: {args.mixed_precision}")
     print(f"  Main Port:       {args.main_process_port}")
@@ -294,6 +299,7 @@ def parse_args():
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--validation_steps", type=int, default=2000)
+    parser.add_argument("--resolution", type=int, default=512)
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")
@@ -301,6 +307,7 @@ def parse_args():
     parser.add_argument("--wandb_project", type=str, default="DPO_Diffueraser")
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)
+    parser.add_argument("--sft_reg_weight", type=float, default=0.0)
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--chunk_aligned", action="store_true")
     parser.add_argument("--enable_xformers", action="store_true")
