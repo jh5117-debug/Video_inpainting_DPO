@@ -832,6 +832,23 @@ def maybe_vbench_score(
         return {"error": str(exc), "inpainting_score": None}
 
 
+def resolve_local_cuda_device(gpu: str, enabled: bool = True, cpu_fallback: bool = False) -> str:
+    if not enabled:
+        return "cpu" if cpu_fallback else "cuda"
+    gpu_text = str(gpu).strip()
+    if not gpu_text.isdigit():
+        return "cuda"
+
+    visible = os.environ.get("CUDA_VISIBLE_DEVICES", "").strip()
+    if visible:
+        visible_list = [item.strip() for item in visible.split(",") if item.strip()]
+        if gpu_text in visible_list:
+            return f"cuda:{visible_list.index(gpu_text)}"
+        if int(gpu_text) < len(visible_list):
+            return f"cuda:{gpu_text}"
+    return f"cuda:{gpu_text}"
+
+
 def score_candidate(
     method: str,
     gt_dir: Path,
@@ -849,10 +866,10 @@ def score_candidate(
         mask_files,
         [int(x) for x in parse_csv(args.score_windows)],
         args.enable_lpips,
-        lpips_device=f"cuda:{gpu}" if args.enable_lpips and str(gpu).isdigit() else ("cuda" if args.enable_lpips else "cpu"),
+        lpips_device=resolve_local_cuda_device(gpu, enabled=args.enable_lpips, cpu_fallback=True),
     )
     if args.enable_vbench:
-        vbench_device = f"cuda:{gpu}" if str(gpu).isdigit() else "cuda"
+        vbench_device = resolve_local_cuda_device(gpu, enabled=True, cpu_fallback=False)
         vb = maybe_vbench_score(comp_dir, method, vbench_device, comp_dir.parent / "_videos", args.vbench_dimensions)
         score["vbench"] = vb
         if vb.get("error"):
