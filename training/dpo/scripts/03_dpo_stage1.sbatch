@@ -48,6 +48,8 @@ XFORMERS=${XFORMERS:-0}
 GRADIENT_CHECKPOINTING=${GRADIENT_CHECKPOINTING:-1}
 SPLIT_POS_NEG_FORWARD=${SPLIT_POS_NEG_FORWARD:-1}
 MAIN_PROCESS_PORT=${MAIN_PROCESS_PORT:-0}
+VAL_NUM_INFERENCE_STEPS=${VAL_NUM_INFERENCE_STEPS:-6}
+VAL_MASK_DILATION_ITER=${VAL_MASK_DILATION_ITER:-0}
 
 if [[ -n "${CONDA_ENV_PREFIX:-}" ]]; then
   CONDA_ENV="${CONDA_ENV_PREFIX}"
@@ -162,6 +164,8 @@ python training/dpo/scripts/run_stage1.py \
   --checkpointing_steps ${CKPT_STEPS} \
   --checkpoints_total_limit ${CKPT_LIMIT} \
   --validation_steps ${VAL_STEPS} \
+  --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
+  --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \

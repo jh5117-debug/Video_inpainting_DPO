@@ -87,6 +87,8 @@ def build_cmd(project_root, args):
         "--max_train_steps", str(args.max_train_steps),
         "--checkpointing_steps", str(args.checkpointing_steps),
         "--validation_steps", str(args.validation_steps),
+        "--val_num_inference_steps", str(args.val_num_inference_steps),
+        "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
         "--beta_dpo", str(args.beta_dpo),
         "--sft_reg_weight", str(args.sft_reg_weight),
         "--davis_oversample", str(args.davis_oversample),
@@ -299,6 +301,8 @@ def parse_args():
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--validation_steps", type=int, default=2000)
+    parser.add_argument("--val_num_inference_steps", type=int, default=6)
+    parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=512)
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)

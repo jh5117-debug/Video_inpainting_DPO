@@ -15,6 +15,7 @@ HF_REPO_ID="${HF_REPO_ID:-JiaHuang01/New_DPO_data}"
 HF_REPO_TYPE="${HF_REPO_TYPE:-dataset}"
 HF_PATH_IN_REPO="${HF_PATH_IN_REPO:-${ARCHIVE_NAME}}"
 UPLOAD="${UPLOAD:-1}"
+REUSE_ARCHIVE_IF_EXISTS="${REUSE_ARCHIVE_IF_EXISTS:-1}"
 HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
 HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
 HF_HUB_DOWNLOAD_TIMEOUT="${HF_HUB_DOWNLOAD_TIMEOUT:-120}"
@@ -53,15 +54,19 @@ rm -f "${tmp_archive}"
 base_name="$(basename "${DATASET_ROOT}")"
 parent_dir="$(dirname "${DATASET_ROOT}")"
 
-echo "[dataset] creating archive..."
-tar \
-  --warning=no-file-changed \
-  -C "${parent_dir}" \
-  --transform "s,^${base_name},${EXPORT_ROOT_NAME}," \
-  -cf - "${base_name}" \
-  | "${compress_cmd[@]}" > "${tmp_archive}"
+if [[ "${REUSE_ARCHIVE_IF_EXISTS}" == "1" && -s "${ARCHIVE_PATH}" ]]; then
+  echo "[dataset] reusing existing archive: ${ARCHIVE_PATH}"
+else
+  echo "[dataset] creating archive..."
+  tar \
+    --warning=no-file-changed \
+    -C "${parent_dir}" \
+    --transform "s,^${base_name},${EXPORT_ROOT_NAME}," \
+    -cf - "${base_name}" \
+    | "${compress_cmd[@]}" > "${tmp_archive}"
 
-mv "${tmp_archive}" "${ARCHIVE_PATH}"
+  mv "${tmp_archive}" "${ARCHIVE_PATH}"
+fi
 
 echo "[dataset] archive size"
 du -sh "${ARCHIVE_PATH}"

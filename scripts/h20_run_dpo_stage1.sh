@@ -66,6 +66,8 @@ XFORMERS="${XFORMERS:-0}"
 GRADIENT_CHECKPOINTING="${GRADIENT_CHECKPOINTING:-1}"
 MAIN_PROCESS_PORT="${MAIN_PROCESS_PORT:-0}"
 SPLIT_POS_NEG_FORWARD="${SPLIT_POS_NEG_FORWARD:-1}"
+VAL_NUM_INFERENCE_STEPS="${VAL_NUM_INFERENCE_STEPS:-6}"
+VAL_MASK_DILATION_ITER="${VAL_MASK_DILATION_ITER:-0}"
 
 sanitize_path_component() {
   printf '%s' "$1" | tr -c 'A-Za-z0-9._-' '-' | sed -e 's/^-*//' -e 's/-*$//'
@@ -176,6 +178,8 @@ python training/dpo/scripts/run_stage1.py \
   --checkpointing_steps "${CKPT_STEPS:-2000}" \
   --checkpoints_total_limit "${CKPT_LIMIT:-3}" \
   --validation_steps "${VAL_STEPS:-2000}" \
+  --val_num_inference_steps "${VAL_NUM_INFERENCE_STEPS}" \
+  --val_mask_dilation_iter "${VAL_MASK_DILATION_ITER}" \
   --resolution "${RESOLUTION:-512}" \
   --nframes "${NFRAMES:-16}" \
   --seed "${SEED:-42}" \
