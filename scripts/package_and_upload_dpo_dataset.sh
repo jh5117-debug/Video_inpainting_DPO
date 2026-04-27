@@ -15,6 +15,12 @@ HF_REPO_ID="${HF_REPO_ID:-JiaHuang01/New_DPO_data}"
 HF_REPO_TYPE="${HF_REPO_TYPE:-dataset}"
 HF_PATH_IN_REPO="${HF_PATH_IN_REPO:-${ARCHIVE_NAME}}"
 UPLOAD="${UPLOAD:-1}"
+HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+HF_HUB_DOWNLOAD_TIMEOUT="${HF_HUB_DOWNLOAD_TIMEOUT:-120}"
+HF_HUB_ETAG_TIMEOUT="${HF_HUB_ETAG_TIMEOUT:-60}"
+
+export HF_ENDPOINT HF_HUB_DISABLE_XET HF_HUB_DOWNLOAD_TIMEOUT HF_HUB_ETAG_TIMEOUT
 
 if [[ ! -d "${DATASET_ROOT}" ]]; then
   echo "dataset root not found: ${DATASET_ROOT}" >&2
@@ -29,6 +35,8 @@ echo "[dataset] export_root_name=${EXPORT_ROOT_NAME}"
 echo "[dataset] archives_dir=${ARCHIVES_DIR}"
 echo "[dataset] archive_path=${ARCHIVE_PATH}"
 echo "[dataset] hf_repo=${HF_REPO_ID} (${HF_REPO_TYPE}) -> ${HF_PATH_IN_REPO}"
+echo "[dataset] HF_ENDPOINT=${HF_ENDPOINT}"
+echo "[dataset] HF_HUB_DISABLE_XET=${HF_HUB_DISABLE_XET}"
 echo
 echo "[dataset] uncompressed size"
 du -sh "${DATASET_ROOT}"
