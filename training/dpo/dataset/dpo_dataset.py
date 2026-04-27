@@ -26,6 +26,7 @@ import json
 import os
 import random
 import time
+import hashlib
 from typing import Optional
 
 import numpy as np
@@ -97,12 +98,90 @@ class DPODataset(torch.utils.data.Dataset):
         except FileNotFoundError:
             return False
 
+    def _compute_dataset_snapshot(self) -> dict:
+        """
+        构建一个廉价但足够实用的数据集快照，用于判断完整性报告是否仍可复用。
+
+        这里故意不逐张图片做哈希；那样几乎和完整扫描一样贵。我们只跟踪：
+        - manifest 的大小 / mtime
+        - 视频目录与关键子目录的名称和 mtime
+        """
+        relevant_dirs = ("gt_frames", "masks", "neg_frames_1", "neg_frames_2")
+        manifest_path = os.path.join(self.dpo_data_root, "manifest.json")
+        manifest_exists = os.path.exists(manifest_path)
+        manifest_size = 0
+        manifest_mtime_ns = 0
+        if manifest_exists:
+            manifest_stat = os.stat(manifest_path)
+            manifest_size = manifest_stat.st_size
+            manifest_mtime_ns = manifest_stat.st_mtime_ns
+
+        hasher = hashlib.sha1()
+        video_dir_count = 0
+        relevant_subdir_count = 0
+
+        for video_name in sorted(os.listdir(self.dpo_data_root)):
+            video_root = os.path.join(self.dpo_data_root, video_name)
+            if not os.path.isdir(video_root):
+                continue
+
+            video_dir_count += 1
+            video_stat = os.stat(video_root)
+            hasher.update(f"video:{video_name}:{video_stat.st_mtime_ns}\n".encode("utf-8"))
+
+            for subdir in relevant_dirs:
+                subdir_path = os.path.join(video_root, subdir)
+                if not os.path.isdir(subdir_path):
+                    continue
+                relevant_subdir_count += 1
+                subdir_stat = os.stat(subdir_path)
+                hasher.update(
+                    f"subdir:{video_name}/{subdir}:{subdir_stat.st_mtime_ns}\n".encode("utf-8")
+                )
+
+        return {
+            "schema_version": 1,
+            "dataset_root": os.path.abspath(self.dpo_data_root),
+            "manifest_exists": manifest_exists,
+            "manifest_size": manifest_size,
+            "manifest_mtime_ns": manifest_mtime_ns,
+            "video_dir_count": video_dir_count,
+            "relevant_subdir_count": relevant_subdir_count,
+            "dir_fingerprint": hasher.hexdigest(),
+        }
+
+    def _load_cached_integrity_report(self) -> Optional[dict]:
+        if not os.path.exists(self.integrity_report_path):
+            return None
+
+        try:
+            with open(self.integrity_report_path) as f:
+                report = json.load(f)
+        except Exception:
+            return None
+
+        cached_snapshot = report.get("dataset_snapshot")
+        if not cached_snapshot:
+            return None
+
+        current_snapshot = self._compute_dataset_snapshot()
+        if cached_snapshot != current_snapshot:
+            return None
+
+        return report
+
     def _load_or_create_integrity_report(self) -> dict:
         """
         训练开始前做一次数据完整性扫描：
         - 若存在损坏图片 / Git LFS pointer，则整段视频跳过
         - 多卡场景下只允许一个进程扫描，其余进程等待结果
         """
+        cached_report = self._load_cached_integrity_report()
+        if cached_report is not None:
+            if self._is_logging_process():
+                print(f"DPODataset integrity: reusing cached report at {self.integrity_report_path}")
+            return cached_report
+
         while True:
             try:
                 fd = os.open(self.integrity_lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
@@ -119,10 +198,16 @@ class DPODataset(torch.utils.data.Dataset):
 
         if owner:
             try:
-                self._safe_remove(self.integrity_report_path)
+                cached_report = self._load_cached_integrity_report()
+                if cached_report is not None:
+                    if self._is_logging_process():
+                        print(f"DPODataset integrity: reusing cached report at {self.integrity_report_path}")
+                    return cached_report
+
                 if self._is_logging_process():
                     print(f"DPODataset integrity: scanning dataset at {self.dpo_data_root} ...")
                 report = self._scan_dataset_integrity()
+                report["dataset_snapshot"] = self._compute_dataset_snapshot()
                 tmp_path = self.integrity_report_path + ".tmp"
                 with open(tmp_path, "w") as f:
                     json.dump(report, f, indent=2)
@@ -135,9 +220,10 @@ class DPODataset(torch.utils.data.Dataset):
             print("DPODataset integrity: waiting for another process to finish dataset scan ...")
 
         while True:
-            if os.path.exists(self.integrity_report_path) and not os.path.exists(self.integrity_lock_path):
-                with open(self.integrity_report_path) as f:
-                    return json.load(f)
+            if not os.path.exists(self.integrity_lock_path):
+                cached_report = self._load_cached_integrity_report()
+                if cached_report is not None:
+                    return cached_report
             if self._is_stale_lock(self.integrity_lock_path):
                 self._safe_remove(self.integrity_lock_path)
                 return self._load_or_create_integrity_report()
