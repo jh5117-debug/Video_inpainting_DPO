@@ -16,12 +16,20 @@ HF_REPO_TYPE="${HF_REPO_TYPE:-dataset}"
 HF_PATH_IN_REPO="${HF_PATH_IN_REPO:-${ARCHIVE_NAME}}"
 UPLOAD="${UPLOAD:-1}"
 REUSE_ARCHIVE_IF_EXISTS="${REUSE_ARCHIVE_IF_EXISTS:-1}"
-HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
-HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-1}"
+UPLOAD_RETRIES="${UPLOAD_RETRIES:-5}"
+UPLOAD_RETRY_SLEEP="${UPLOAD_RETRY_SLEEP:-15}"
+HF_ENDPOINT="${HF_ENDPOINT:-}"
+HF_HUB_DISABLE_XET="${HF_HUB_DISABLE_XET:-0}"
+HF_HUB_ENABLE_HF_TRANSFER="${HF_HUB_ENABLE_HF_TRANSFER:-1}"
 HF_HUB_DOWNLOAD_TIMEOUT="${HF_HUB_DOWNLOAD_TIMEOUT:-120}"
 HF_HUB_ETAG_TIMEOUT="${HF_HUB_ETAG_TIMEOUT:-60}"
 
-export HF_ENDPOINT HF_HUB_DISABLE_XET HF_HUB_DOWNLOAD_TIMEOUT HF_HUB_ETAG_TIMEOUT
+export HF_HUB_DISABLE_XET HF_HUB_ENABLE_HF_TRANSFER HF_HUB_DOWNLOAD_TIMEOUT HF_HUB_ETAG_TIMEOUT
+if [[ -n "${HF_ENDPOINT}" ]]; then
+  export HF_ENDPOINT
+else
+  unset HF_ENDPOINT || true
+fi
 
 if [[ ! -d "${DATASET_ROOT}" ]]; then
   echo "dataset root not found: ${DATASET_ROOT}" >&2
@@ -36,8 +44,9 @@ echo "[dataset] export_root_name=${EXPORT_ROOT_NAME}"
 echo "[dataset] archives_dir=${ARCHIVES_DIR}"
 echo "[dataset] archive_path=${ARCHIVE_PATH}"
 echo "[dataset] hf_repo=${HF_REPO_ID} (${HF_REPO_TYPE}) -> ${HF_PATH_IN_REPO}"
-echo "[dataset] HF_ENDPOINT=${HF_ENDPOINT}"
+echo "[dataset] HF_ENDPOINT=${HF_ENDPOINT:-<official>}"
 echo "[dataset] HF_HUB_DISABLE_XET=${HF_HUB_DISABLE_XET}"
+echo "[dataset] HF_HUB_ENABLE_HF_TRANSFER=${HF_HUB_ENABLE_HF_TRANSFER}"
 echo
 echo "[dataset] uncompressed size"
 du -sh "${DATASET_ROOT}"
@@ -78,8 +87,9 @@ if [[ "${UPLOAD}" == "0" ]]; then
   exit 0
 fi
 
-python - <<'PY' "${ARCHIVE_PATH}" "${HF_REPO_ID}" "${HF_REPO_TYPE}" "${HF_PATH_IN_REPO}"
+python - <<'PY' "${ARCHIVE_PATH}" "${HF_REPO_ID}" "${HF_REPO_TYPE}" "${HF_PATH_IN_REPO}" "${UPLOAD_RETRIES}" "${UPLOAD_RETRY_SLEEP}"
 import os
+import time
 import subprocess
 import sys
 from pathlib import Path
@@ -88,6 +98,8 @@ archive_path = Path(sys.argv[1])
 repo_id = sys.argv[2]
 repo_type = sys.argv[3]
 path_in_repo = sys.argv[4]
+upload_retries = int(sys.argv[5])
+upload_retry_sleep = int(sys.argv[6])
 
 try:
     from huggingface_hub import HfApi
@@ -96,12 +108,31 @@ except Exception:
     from huggingface_hub import HfApi
 
 token = os.environ.get("HF_TOKEN")
-api = HfApi(token=token)
-api.upload_file(
-    path_or_fileobj=str(archive_path),
-    path_in_repo=path_in_repo,
-    repo_id=repo_id,
-    repo_type=repo_type,
-)
-print(f"[dataset] uploaded {archive_path} -> {repo_type}:{repo_id}/{path_in_repo}")
+last_error = None
+for attempt in range(1, upload_retries + 1):
+    try:
+        print(
+            f"[dataset] upload attempt {attempt}/{upload_retries} "
+            f"(HF_HUB_DISABLE_XET={os.environ.get('HF_HUB_DISABLE_XET')}, "
+            f"HF_HUB_ENABLE_HF_TRANSFER={os.environ.get('HF_HUB_ENABLE_HF_TRANSFER')}, "
+            f"HF_ENDPOINT={os.environ.get('HF_ENDPOINT', '<official>')})"
+        )
+        api = HfApi(token=token)
+        api.upload_file(
+            path_or_fileobj=str(archive_path),
+            path_in_repo=path_in_repo,
+            repo_id=repo_id,
+            repo_type=repo_type,
+        )
+        print(f"[dataset] uploaded {archive_path} -> {repo_type}:{repo_id}/{path_in_repo}")
+        break
+    except Exception as exc:
+        last_error = exc
+        if attempt >= upload_retries:
+            raise
+        print(f"[dataset] upload failed on attempt {attempt}: {exc!r}")
+        print(f"[dataset] sleeping {upload_retry_sleep}s before retry ...")
+        time.sleep(upload_retry_sleep)
+else:
+    raise last_error
 PY
