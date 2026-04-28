@@ -10,5 +10,13 @@
 #SBATCH --output=logs/dpo-stage1-%j.out
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-export PROJECT_ROOT="${PROJECT_ROOT:-${PROJECT_HOME:-$(cd "${SCRIPT_DIR}/../.." && pwd)}}"
+if [[ -z "${PROJECT_ROOT:-}" ]]; then
+  if [[ -n "${PROJECT_DEV:-}" ]]; then
+    export PROJECT_ROOT="${PROJECT_DEV}/H20_Video_inpainting_DPO"
+  elif [[ -n "${PROJECT_HOME:-}" ]]; then
+    export PROJECT_ROOT="${PROJECT_HOME}/dev/H20_Video_inpainting_DPO"
+  else
+    export PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
+  fi
+fi
 exec bash "${PROJECT_ROOT}/training/dpo/scripts/03_dpo_stage1.sbatch" "$@"
