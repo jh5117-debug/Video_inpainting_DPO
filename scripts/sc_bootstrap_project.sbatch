@@ -20,6 +20,8 @@ export PROJECT_DATA="${PROJECT_DATA:-${PROJECT_DEV}/data}"
 export PROJECT_ROOT="${PROJECT_ROOT:-${PROJECT_DEV}/${PROJECT_NAME}}"
 export DATA="${DATA:-${PROJECT_DATA}/${DATA_NAME}}"
 export DATA_NAME
+export WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
+export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
 
 mkdir -p "${PROJECT_ROOT}/logs"
 exec bash "${SCRIPT_DIR}/sc_bootstrap_project.sh"

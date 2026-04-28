@@ -27,6 +27,7 @@ NFRAMES=${NFRAMES:-10}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-fp16}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
+WANDB_ENTITY=${WANDB_ENTITY:-jh5117-columbia-university}
 EXPERIMENTS_DIR=${EXPERIMENTS_DIR:-${PROJECT_ROOT}/experiments}
 RUN_NAME=${RUN_NAME:-stage1}
 RUN_VERSION=${RUN_VERSION:-}
@@ -59,4 +60,5 @@ python training/sft/scripts/run_stage1.py \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
   --wandb_project ${WANDB_PROJECT} \
+  --wandb_entity ${WANDB_ENTITY} \
   "${RUN_VERSION_ARG[@]}"

@@ -10,5 +10,6 @@
 #SBATCH --output=logs/train-all-%j.out
 
 export PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
+export WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
+export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
 exec bash "${PROJECT_ROOT}/training/sft/scripts/02_train_all.sbatch" "$@"
-

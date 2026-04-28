@@ -17,6 +17,7 @@ WEIGHTS_DIR=${WEIGHTS_DIR:-${PROJECT_ROOT}/weights}
 MIXED_PRECISION=${MIXED_PRECISION:-fp16}
 SEED=${SEED:-42}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
+WANDB_ENTITY=${WANDB_ENTITY:-jh5117-columbia-university}
 EXPERIMENTS_DIR=${EXPERIMENTS_DIR:-${PROJECT_ROOT}/experiments}
 RUN_NAME=${RUN_NAME:-sft}
 RUN_VERSION=${RUN_VERSION:-}
@@ -61,6 +62,7 @@ python training/sft/scripts/run_all.py \
   --mixed_precision ${MIXED_PRECISION} \
   --seed ${SEED} \
   --wandb_project ${WANDB_PROJECT} \
+  --wandb_entity ${WANDB_ENTITY} \
   --s1_batch_size ${S1_BATCH_SIZE} \
   --s1_gradient_accumulation_steps ${S1_GRAD_ACCUM} \
   --s1_learning_rate ${S1_LR} \
