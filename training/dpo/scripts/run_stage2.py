@@ -54,7 +54,12 @@ def build_cmd(project_root, args):
         os.path.join(weights_dir, "diffuEraser", "converted_weights_step48000"),
         os.path.join(project_root, "finetune-stage2", "converted_weights_step34000"),
     )
-    baseline_unet_path = args.baseline_unet_path or os.path.join(weights_dir, "diffuEraser")
+    baseline_unet_path = args.baseline_unet_path or first_existing(
+        os.path.join(weights_dir, "diffuEraser", "converted_weights_step34000"),
+        os.path.join(weights_dir, "diffuEraser", "converted_weights_step48000"),
+        os.path.join(project_root, "finetune-stage2", "converted_weights_step34000"),
+        os.path.join(weights_dir, "diffuEraser"),
+    )
     eval_dir = args.val_data_dir or first_existing(
         os.path.join(project_root, "data_val"),
         os.path.join(project_root, "data", "external", "davis_432_240"),

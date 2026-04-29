@@ -38,7 +38,19 @@ DPO_DATA_ROOT=${DPO_DATA_ROOT:-${DATA}/DPO_Finetune_data}
 VAL_DATA_DIR=${VAL_DATA_DIR:-${DATA}/davis_432_240}
 PRETRAINED_DPO_S1=${PRETRAINED_DPO_S1:-}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
-BASELINE_UNET_PATH=${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser}
+if [[ -z "${BASELINE_UNET_PATH:-}" ]]; then
+  for candidate in \
+    "${WEIGHTS_DIR}/diffuEraser/converted_weights_step34000" \
+    "${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000" \
+    "${PROJECT_ROOT}/finetune-stage2/converted_weights_step34000" \
+    "${WEIGHTS_DIR}/diffuEraser"; do
+    if [[ -f "${candidate}/unet_main/config.json" ]]; then
+      BASELINE_UNET_PATH="${candidate}"
+      break
+    fi
+  done
+  BASELINE_UNET_PATH="${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser/converted_weights_step34000}"
+fi
 BATCH_SIZE=${BATCH_SIZE:-1}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
 LR=${LR:-1e-6}
