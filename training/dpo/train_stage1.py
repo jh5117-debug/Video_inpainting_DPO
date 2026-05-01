@@ -1134,6 +1134,7 @@ def main(args):
     logger.info(f"  Policy forward dtype = {policy_dtype}")
     logger.info(f"  Ref dtype = {ref_dtype}")
     logger.info(f"  Text dtype = {text_dtype}")
+    logger.info(f"  Policy negative grad enabled = {float(args.lose_gap_weight) != 0.0}")
     print_model_info({
         'unet_main (policy)': unet_main, 'brushnet (policy)': brushnet,
         'unet_ref (frozen)': unet_ref, 'brushnet_ref (frozen)': brushnet_ref,
@@ -1282,12 +1283,21 @@ def main(args):
                     debug_stage("after policy pos forward")
                     torch.cuda.empty_cache()
                     gc.collect()
-                    debug_stage("before policy neg forward")
-                    model_pred_neg = forward_stage1_pair_member(
-                        brushnet, unet_main, noisy_neg, timesteps_expanded,
-                        encoder_hidden_states_policy, brushnet_cond, policy_dtype,
-                    )
-                    debug_stage("after policy neg forward")
+                    if float(args.lose_gap_weight) == 0.0:
+                        debug_stage("before policy neg forward no_grad")
+                        with torch.no_grad():
+                            model_pred_neg = forward_stage1_pair_member(
+                                brushnet, unet_main, noisy_neg, timesteps_expanded,
+                                encoder_hidden_states_policy, brushnet_cond, policy_dtype,
+                            )
+                        debug_stage("after policy neg forward no_grad")
+                    else:
+                        debug_stage("before policy neg forward")
+                        model_pred_neg = forward_stage1_pair_member(
+                            brushnet, unet_main, noisy_neg, timesteps_expanded,
+                            encoder_hidden_states_policy, brushnet_cond, policy_dtype,
+                        )
+                        debug_stage("after policy neg forward")
                     model_pred = torch.cat([model_pred_pos, model_pred_neg], dim=0)
                     del model_pred_pos, model_pred_neg
                 else:
