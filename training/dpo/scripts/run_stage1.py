@@ -91,6 +91,7 @@ def build_cmd(project_root, args):
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
         "--beta_dpo", str(args.beta_dpo),
         "--sft_reg_weight", str(args.sft_reg_weight),
+        "--lose_gap_weight", str(args.lose_gap_weight),
         "--davis_oversample", str(args.davis_oversample),
         "--seed", str(args.seed),
         "--report_to", "wandb",
@@ -265,6 +266,7 @@ def run(args=None):
     print(f"  Max Steps:       {args.max_train_steps}")
     print(f"  Beta DPO:        {args.beta_dpo}")
     print(f"  SFT Reg Weight:  {args.sft_reg_weight}")
+    print(f"  Lose Gap Weight: {args.lose_gap_weight}")
     print(f"  LR:              {args.learning_rate}")
     print(f"  Mixed Precision: {args.mixed_precision}")
     print(f"  Main Port:       {args.main_process_port}")
@@ -312,6 +314,7 @@ def parse_args():
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)
     parser.add_argument("--sft_reg_weight", type=float, default=0.0)
+    parser.add_argument("--lose_gap_weight", type=float, default=1.0)
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--chunk_aligned", action="store_true")
     parser.add_argument("--enable_xformers", action="store_true")

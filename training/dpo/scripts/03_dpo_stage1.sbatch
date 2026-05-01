@@ -57,6 +57,7 @@ RUN_NAME=${RUN_NAME:-sc-dpo-stage1-newdata-bf16-raw6-nodil}
 RUN_VERSION=${RUN_VERSION:-}
 WANDB_ENTITY=${WANDB_ENTITY:-jh5117-columbia-university}
 SFT_REG_WEIGHT=${SFT_REG_WEIGHT:-0.0}
+DPO_LOSE_GAP_WEIGHT=${DPO_LOSE_GAP_WEIGHT:-1.0}
 CHUNK_ALIGNED=${CHUNK_ALIGNED:-1}
 XFORMERS=${XFORMERS:-0}
 GRADIENT_CHECKPOINTING=${GRADIENT_CHECKPOINTING:-1}
@@ -186,6 +187,7 @@ python training/dpo/scripts/run_stage1.py \
   --wandb_project ${WANDB_PROJECT} \
   --beta_dpo ${BETA_DPO} \
   --sft_reg_weight ${SFT_REG_WEIGHT} \
+  --lose_gap_weight ${DPO_LOSE_GAP_WEIGHT} \
   --davis_oversample ${DAVIS_OVERSAMPLE} \
   "${MAIN_PROCESS_PORT_ARG[@]}" \
   "${WANDB_ENTITY_ARG[@]}" \

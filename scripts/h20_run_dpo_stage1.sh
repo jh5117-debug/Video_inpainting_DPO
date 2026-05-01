@@ -189,6 +189,7 @@ python training/dpo/scripts/run_stage1.py \
   "${WANDB_ENTITY_ARG[@]}" \
   --beta_dpo "${BETA_DPO:-500.0}" \
   --sft_reg_weight "${SFT_REG_WEIGHT:-0.0}" \
+  --lose_gap_weight "${DPO_LOSE_GAP_WEIGHT:-1.0}" \
   --davis_oversample "${DAVIS_OVERSAMPLE:-10}" \
   "${CHUNK_ARG[@]}" \
   "${XFORMERS_ARG[@]}" \

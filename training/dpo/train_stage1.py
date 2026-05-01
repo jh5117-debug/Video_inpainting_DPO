@@ -276,7 +276,14 @@ def save_wandb_run_info(output_dir, args):
 # ============================================================
 # DPO Loss + Reg-DPO Diagnostics
 # ============================================================
-def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0, sft_reg_weight=0.0):
+def compute_dpo_loss(
+    model_pred,
+    ref_pred,
+    noise,
+    beta_dpo=500.0,
+    sft_reg_weight=0.0,
+    lose_gap_weight=1.0,
+):
     """
     Diffusion-DPO loss + Reg-DPO 论文要求的诊断指标。
 
@@ -293,16 +300,16 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0, sft_reg_weight
     # ‖ε - ε_θ‖² per-sample
     model_losses = (model_pred.float() - target.float()).pow(2).mean(dim=[1, 2, 3])
     model_losses_w, model_losses_l = model_losses.chunk(2)
-    model_diff = model_losses_w - model_losses_l
 
     # ‖ε - ε_ref‖² (常量)
     with torch.no_grad():
         ref_losses = (ref_pred.float() - target.float()).pow(2).mean(dim=[1, 2, 3])
         ref_losses_w, ref_losses_l = ref_losses.chunk(2)
-        ref_diff = ref_losses_w - ref_losses_l
 
     scale_term = -0.5 * beta_dpo
-    inside_term = scale_term * (model_diff - ref_diff)
+    per_win_gap = model_losses_w - ref_losses_w
+    per_lose_gap = model_losses_l - ref_losses_l
+    inside_term = scale_term * (per_win_gap - float(lose_gap_weight) * per_lose_gap)
 
     # 本卡的 implicit_acc (后续会跨卡 gather 得到全局值)
     implicit_acc_local = (inside_term > 0).sum().float() / inside_term.size(0)
@@ -326,8 +333,6 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0, sft_reg_weight
     #   loser_dominant iff loser_degradation > winner_improvement
     with torch.no_grad():
         correct_mask = inside_term > 0
-        per_win_gap = model_losses_w - ref_losses_w   # per-sample
-        per_lose_gap = model_losses_l - ref_losses_l  # per-sample
         winner_improvement = (-per_win_gap).clamp(min=0)  # 取正部: policy 在 winner 上改善的量
         loser_degradation = per_lose_gap.clamp(min=0)     # 取正部: policy 在 loser 上退化的量
         loser_dominant_mask = loser_degradation > winner_improvement
@@ -340,6 +345,7 @@ def compute_dpo_loss(model_pred, ref_pred, noise, beta_dpo=500.0, sft_reg_weight
         "total_loss": loss.detach().item(),
         "sft_loss": sft_loss.detach().item(),
         "sft_reg_weight": float(sft_reg_weight),
+        "lose_gap_weight": float(lose_gap_weight),
         "implicit_acc": implicit_acc_local.detach().item(),
         "mse_w": model_losses_w.mean().detach().item(),
         "mse_l": model_losses_l.mean().detach().item(),
@@ -791,6 +797,8 @@ def parse_args(input_args=None):
                         help="DPO 温度系数 beta (推荐 500~1000，过大导致 sigmoid 饱和)")
     parser.add_argument("--sft_reg_weight", type=float, default=0.0,
                         help="Reg-DPO 风格的 winner-side SFT regularization 权重 rho")
+    parser.add_argument("--lose_gap_weight", type=float, default=1.0,
+                        help="DPO loss 中 loser/negative gap 的权重；1.0 为原始 DPO，0.0 为 winner-only ablation")
     parser.add_argument("--davis_oversample", type=int, default=10,
                         help="DAVIS 视频过采样倍数")
     parser.add_argument("--chunk_aligned", action="store_true",
@@ -1093,6 +1101,7 @@ def main(args):
     logger.info(f"  Total optimization steps = {args.max_train_steps}")
     logger.info(f"  Beta DPO = {args.beta_dpo}")
     logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
+    logger.info(f"  Lose Gap Weight = {args.lose_gap_weight}")
     print_model_info({
         'unet_main (policy)': unet_main, 'brushnet (policy)': brushnet,
         'unet_ref (frozen)': unet_ref, 'brushnet_ref (frozen)': brushnet_ref,
@@ -1253,6 +1262,7 @@ def main(args):
                     model_pred, ref_pred, noise,
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
+                    lose_gap_weight=args.lose_gap_weight,
                 )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
                 diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)
@@ -1336,6 +1346,7 @@ def main(args):
                 "rank0/total_loss": diagnostics["total_loss"],
                 "rank0/sft_loss": diagnostics["sft_loss"],
                 "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
+                "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
                 f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
                 "rank0/mse_w": diagnostics["mse_w"],
                 "rank0/mse_l": diagnostics["mse_l"],
