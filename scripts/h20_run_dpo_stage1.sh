@@ -184,6 +184,7 @@ python training/dpo/scripts/run_stage1.py \
   --nframes "${NFRAMES:-16}" \
   --seed "${SEED:-42}" \
   --mixed_precision "${MIXED_PRECISION:-bf16}" \
+  --vae_dtype "${VAE_DTYPE:-auto}" \
   --main_process_port "${MAIN_PROCESS_PORT}" \
   --wandb_project "${WANDB_PROJECT:-DPO_Diffueraser}" \
   "${WANDB_ENTITY_ARG[@]}" \

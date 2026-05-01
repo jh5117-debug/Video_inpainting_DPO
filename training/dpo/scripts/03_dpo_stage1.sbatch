@@ -49,6 +49,7 @@ VAL_STEPS=${VAL_STEPS:-2000}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
+VAE_DTYPE=${VAE_DTYPE:-auto}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
 BETA_DPO=${BETA_DPO:-500.0}
 DAVIS_OVERSAMPLE=${DAVIS_OVERSAMPLE:-10}
@@ -184,6 +185,7 @@ python training/dpo/scripts/run_stage1.py \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
+  --vae_dtype ${VAE_DTYPE} \
   --wandb_project ${WANDB_PROJECT} \
   --beta_dpo ${BETA_DPO} \
   --sft_reg_weight ${SFT_REG_WEIGHT} \

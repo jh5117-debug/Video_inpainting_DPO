@@ -89,6 +89,7 @@ def build_cmd(project_root, args):
         "--validation_steps", str(args.validation_steps),
         "--val_num_inference_steps", str(args.val_num_inference_steps),
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
+        "--vae_dtype", args.vae_dtype,
         "--beta_dpo", str(args.beta_dpo),
         "--sft_reg_weight", str(args.sft_reg_weight),
         "--lose_gap_weight", str(args.lose_gap_weight),
@@ -269,6 +270,7 @@ def run(args=None):
     print(f"  Lose Gap Weight: {args.lose_gap_weight}")
     print(f"  LR:              {args.learning_rate}")
     print(f"  Mixed Precision: {args.mixed_precision}")
+    print(f"  VAE dtype:       {args.vae_dtype}")
     print(f"  Main Port:       {args.main_process_port}")
     print(f"  XFormers:        {args.enable_xformers}")
     print(f"  Grad Ckpt:       {not args.disable_gradient_checkpointing}")
@@ -309,6 +311,7 @@ def parse_args():
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")
+    parser.add_argument("--vae_dtype", type=str, default="auto", choices=["auto", "fp32"])
     parser.add_argument("--main_process_port", type=str, default=None)
     parser.add_argument("--wandb_project", type=str, default="DPO_Diffueraser")
     parser.add_argument("--wandb_entity", type=str, default=None)
