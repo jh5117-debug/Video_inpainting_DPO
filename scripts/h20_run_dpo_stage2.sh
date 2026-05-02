@@ -64,8 +64,9 @@ PRETRAINED_DPO_S1="${PRETRAINED_DPO_S1:-}"
 REF_MODEL_PATH="${REF_MODEL_PATH:-}"
 if [[ -z "${BASELINE_UNET_PATH:-}" ]]; then
   for candidate in \
-    "${WEIGHTS_DIR}/diffuEraser/converted_weights_step34000" \
     "${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000" \
+    "${WEIGHTS_DIR}/diffuEraser/converted_weights_step34000" \
+    "${PROJECT_ROOT}/finetune-stage2/converted_weights_step48000" \
     "${PROJECT_ROOT}/finetune-stage2/converted_weights_step34000" \
     "${WEIGHTS_DIR}/diffuEraser"; do
     if [[ -f "${candidate}/unet_main/config.json" ]]; then
@@ -73,7 +74,7 @@ if [[ -z "${BASELINE_UNET_PATH:-}" ]]; then
       break
     fi
   done
-  BASELINE_UNET_PATH="${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser/converted_weights_step34000}"
+  BASELINE_UNET_PATH="${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000}"
 fi
 CHUNK_ALIGNED="${CHUNK_ALIGNED:-1}"
 XFORMERS="${XFORMERS:-0}"

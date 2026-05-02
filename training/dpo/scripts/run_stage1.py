@@ -43,8 +43,9 @@ def build_cmd(project_root, args):
     ) / "converted_weights"
     ref_model_path = args.ref_model_path or first_existing(
         latest_sft_stage2,
-        os.path.join(weights_dir, "diffuEraser", "converted_weights_step34000"),
         os.path.join(weights_dir, "diffuEraser", "converted_weights_step48000"),
+        os.path.join(weights_dir, "diffuEraser", "converted_weights_step34000"),
+        os.path.join(project_root, "finetune-stage2", "converted_weights_step48000"),
         os.path.join(project_root, "finetune-stage2", "converted_weights_step34000"),
     )
     eval_dir = args.val_data_dir or first_existing(
