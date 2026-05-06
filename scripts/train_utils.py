@@ -37,13 +37,12 @@ def init_workspace(name, logdir, model_config, lightning_config, rank=0):
         )
         # 2024 0728 haoyu
         # save data.yaml to the work sapace
-        src_path = model_config['data']['params']['train']['params']['data_root'] ## xx. configs/data/vidpro/train_data.yaml
-        root_dir = "/home/rliuay/haoyu/research/DPO-videocrafter"
-        # get current workdir 
-        
-        config_path = os.path.join(root_dir,src_path)
-        save_path = os.path.join(cfgdir,"train_data.yaml")
-        os.system(f"cp {src_path} {save_path}")
+        src_path = model_config["data"]["params"]["train"]["params"]["data_root"]  ## xx. configs/data/vidpro/train_data.yaml
+        save_path = os.path.join(cfgdir, "train_data.yaml")
+        if os.path.isfile(src_path):
+            os.system(f"cp {src_path} {save_path}")
+        else:
+            OmegaConf.save(OmegaConf.create({"data_root": src_path}), save_path)
         # import pdb;pdb.set_trace()
         # print("test saving train data .yaml exiting");exit();
         # save_path = os.path.join(cfgdir,"valid_data.yaml")
@@ -350,13 +349,22 @@ def get_autoresume_path(logdir):
     return resume_checkpt_path
 
 
+def _get_log_level(name, default):
+    value = os.environ.get(name, default).upper()
+    return getattr(logging, value, getattr(logging, default))
+
+
 def set_logger(logfile, name="mainlogger"):
     logger = logging.getLogger(name)
-    logger.setLevel(logging.INFO)
+    file_level = _get_log_level("VIDEODPO_FILE_LOG_LEVEL", "INFO")
+    console_level = _get_log_level("VIDEODPO_CONSOLE_LOG_LEVEL", "WARNING")
+    logger.setLevel(min(file_level, console_level))
+    logger.handlers.clear()
+    logger.propagate = False
     fh = logging.FileHandler(logfile, mode="w")
-    fh.setLevel(logging.INFO)
+    fh.setLevel(file_level)
     ch = logging.StreamHandler()
-    ch.setLevel(logging.DEBUG)
+    ch.setLevel(console_level)
     fh.setFormatter(logging.Formatter("%(asctime)s-%(levelname)s: %(message)s"))
     ch.setFormatter(logging.Formatter("%(message)s"))
     logger.addHandler(fh)

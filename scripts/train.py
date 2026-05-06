@@ -93,8 +93,9 @@ if __name__ == "__main__":
     except:
         local_rank, global_rank, num_rank = 0, 0, 1
     num_gpus = torch.cuda.device_count()
-    print(f"可用 GPU 的总数量: {num_gpus}")
-    print(f"local_rank: {local_rank} | global_rank:{global_rank} | num_rank:{num_rank}")
+    if global_rank == 0:
+        print(f"可用 GPU 的总数量: {num_gpus}")
+        print(f"local_rank: {local_rank} | global_rank:{global_rank} | num_rank:{num_rank}")
     os.environ.pop("SLURM_NTASKS", None)
     parser = get_parser()
     ## Extends existing argparse by default Trainer attributes
@@ -151,7 +152,8 @@ if __name__ == "__main__":
     for k in get_nondefault_trainer_args(args):
         trainer_config[k] = getattr(args, k)
 
-    print(trainer_config)
+    if global_rank == 0:
+        print(trainer_config)
     num_nodes = trainer_config.num_nodes
     ngpu_per_node = trainer_config.devices
     logger.info(f"Running on {num_rank}={num_nodes}x{ngpu_per_node} GPUs")
