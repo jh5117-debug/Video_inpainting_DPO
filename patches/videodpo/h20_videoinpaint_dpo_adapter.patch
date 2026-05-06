@@ -1,4 +1,4 @@
-From 5a325993ff392e104457ff83c4d44835cdf3e89d Mon Sep 17 00:00:00 2001
+From b4e9773679d7feeb1f6a00db76515253fc3a1a18 Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -6,12 +6,12 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
 ---
  data/video_inpainting_dpo_data.py             | 267 ++++++++++++++++++
  lvdm/models/ddpm3d.py                         | 148 ++++++++--
- lvdm/models/turbo_utils/turbo_scheduler.py    |  18 ++
+ lvdm/models/turbo_utils/turbo_scheduler.py    |  52 ++++
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
  ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 114 ++++++++
  utils/video_inpainting_validation.py          | 167 +++++++++++
- 7 files changed, 716 insertions(+), 34 deletions(-)
+ 7 files changed, 750 insertions(+), 34 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -479,10 +479,10 @@ index 66d7251..d663ab4 100644
 \ No newline at end of file
 +        return out
 diff --git a/lvdm/models/turbo_utils/turbo_scheduler.py b/lvdm/models/turbo_utils/turbo_scheduler.py
-index 265419f..df12959 100644
+index 265419f..646fd0e 100644
 --- a/lvdm/models/turbo_utils/turbo_scheduler.py
 +++ b/lvdm/models/turbo_utils/turbo_scheduler.py
-@@ -22,6 +22,24 @@ from typing import List, Optional, Tuple, Union
+@@ -22,6 +22,58 @@ from typing import List, Optional, Tuple, Union
  import numpy as np
  import torch
  
@@ -495,12 +495,46 @@ index 265419f..df12959 100644
 +            return None
 +
 +        @staticmethod
++        def manual_seed(seed):
++            return None
++
++        @staticmethod
++        def manual_seed_all(seed):
++            return None
++
++        @staticmethod
++        def seed():
++            return 0
++
++        @staticmethod
++        def initial_seed():
++            return 0
++
++        @staticmethod
 +        def is_available():
 +            return False
 +
 +        @staticmethod
 +        def device_count():
 +            return 0
++
++        @staticmethod
++        def current_device():
++            return 0
++
++        @staticmethod
++        def set_device(device):
++            return None
++
++        @staticmethod
++        def synchronize(device=None):
++            return None
++
++        def __getattr__(self, name):
++            def _noop(*args, **kwargs):
++                return None
++
++            return _noop
 +
 +    torch.xpu = _TorchXPUStub()
 +
