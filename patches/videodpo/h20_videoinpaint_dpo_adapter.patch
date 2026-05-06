@@ -1,4 +1,4 @@
-From 357cb5e9066650e86c220ee1d30214e00b4028dd Mon Sep 17 00:00:00 2001
+From 9bafee08dc2b08654dcbbbbb6d91fc8a59d4c707 Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -8,9 +8,9 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
  lvdm/models/ddpm3d.py                         | 148 ++++++++--
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
- ...unch_vc2_dpo_videoinpainting_h20_gpu6_7.sh | 108 +++++++
+ ...unch_vc2_dpo_videoinpainting_h20_gpu6_7.sh | 111 ++++++++
  utils/video_inpainting_validation.py          | 167 +++++++++++
- 6 files changed, 692 insertions(+), 34 deletions(-)
+ 6 files changed, 695 insertions(+), 34 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -555,24 +555,26 @@ index 27d3cb0..712afc0 100644
      logger.addHandler(fh)
 diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
 new file mode 100755
-index 0000000..e690359
+index 0000000..a52cfb7
 --- /dev/null
 +++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
-@@ -0,0 +1,108 @@
+@@ -0,0 +1,111 @@
 +#!/usr/bin/env bash
 +set -euo pipefail
 +
 +cd /home/nvme01/VideoDPO
-+mkdir -p /home/nvme01/VideoDPO_runs
 +
 +PY="${PY:-/home/nvme01/conda_envs/videodpo/bin/python}"
 +RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu6-7_$(date +%Y%m%d_%H%M%S)}"
-+STDOUT="/home/nvme01/VideoDPO_runs/${RUN_TAG}.stdout.log"
-+PID_FILE="/home/nvme01/VideoDPO_runs/${RUN_TAG}.pid"
 +MASTER_PORT="${MASTER_PORT:-$(shuf -i 20000-65000 -n 1)}"
 +
 +H20_DPO_ROOT="${H20_DPO_ROOT:-/home/nvme01/H20_Video_inpainting_DPO/DPO_Finetune_Data_Multimodel_v1}"
 +VIDEOINPAINTING_REPO="${VIDEOINPAINTING_REPO:-/home/nvme01/H20_Video_inpainting_DPO}"
++LOG_ROOT="${LOG_ROOT:-${VIDEOINPAINTING_REPO}/logs}"
++mkdir -p "${LOG_ROOT}"
++
++STDOUT="${LOG_ROOT}/${RUN_TAG}.stdout.log"
++PID_FILE="${LOG_ROOT}/${RUN_TAG}.pid"
 +MAX_STEPS="${MAX_STEPS:-10000}"
 +DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 +VAL_EVERY="${VAL_EVERY:-2000}"
@@ -617,10 +619,10 @@ index 0000000..e690359
 +  --devices "0,1"
 +  --base configs/vc2_dpo/config.yaml
 +  --name "${RUN_TAG}"
-+  --logdir /home/nvme01/VideoDPO_runs
++  --logdir "${LOG_ROOT}"
 +  lightning.logger.target=pytorch_lightning.loggers.CSVLogger
 +  lightning.logger.params.name=csv
-+  lightning.logger.params.save_dir=/home/nvme01/VideoDPO_runs
++  lightning.logger.params.save_dir="${LOG_ROOT}"
 +  lightning.trainer.num_nodes=1
 +  lightning.trainer.devices=2
 +  lightning.trainer.accelerator=gpu
@@ -653,6 +655,7 @@ index 0000000..e690359
 +echo "[launch] RUN_TAG=${RUN_TAG}"
 +echo "[launch] STDOUT=${STDOUT}"
 +echo "[launch] PID_FILE=${PID_FILE}"
++echo "[launch] LOG_ROOT=${LOG_ROOT}"
 +echo "[launch] MASTER_PORT=${MASTER_PORT}"
 +echo "[launch] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
 +echo "[launch] H20_DPO_ROOT=${H20_DPO_ROOT}"
