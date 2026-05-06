@@ -1,4 +1,4 @@
-From b663d1c451ec104561f775164f74e5d76b5b78ed Mon Sep 17 00:00:00 2001
+From 5a325993ff392e104457ff83c4d44835cdf3e89d Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -6,11 +6,12 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
 ---
  data/video_inpainting_dpo_data.py             | 267 ++++++++++++++++++
  lvdm/models/ddpm3d.py                         | 148 ++++++++--
+ lvdm/models/turbo_utils/turbo_scheduler.py    |  18 ++
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
  ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 114 ++++++++
  utils/video_inpainting_validation.py          | 167 +++++++++++
- 6 files changed, 698 insertions(+), 34 deletions(-)
+ 7 files changed, 716 insertions(+), 34 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -477,6 +478,35 @@ index 66d7251..d663ab4 100644
 -        return out
 \ No newline at end of file
 +        return out
+diff --git a/lvdm/models/turbo_utils/turbo_scheduler.py b/lvdm/models/turbo_utils/turbo_scheduler.py
+index 265419f..df12959 100644
+--- a/lvdm/models/turbo_utils/turbo_scheduler.py
++++ b/lvdm/models/turbo_utils/turbo_scheduler.py
+@@ -22,6 +22,24 @@ from typing import List, Optional, Tuple, Union
+ import numpy as np
+ import torch
+ 
++# Newer diffusers versions may reference torch.xpu during import, while the
++# VideoDPO H20 environment uses torch 2.1.x where torch.xpu is not defined.
++if not hasattr(torch, "xpu"):
++    class _TorchXPUStub:
++        @staticmethod
++        def empty_cache():
++            return None
++
++        @staticmethod
++        def is_available():
++            return False
++
++        @staticmethod
++        def device_count():
++            return 0
++
++    torch.xpu = _TorchXPUStub()
++
+ from diffusers import ConfigMixin, SchedulerMixin
+ from diffusers.configuration_utils import register_to_config
+ from diffusers.utils import BaseOutput
 diff --git a/scripts/train.py b/scripts/train.py
 index fff90b9..38b49fb 100644
 --- a/scripts/train.py
