@@ -1,0 +1,845 @@
+From 357cb5e9066650e86c220ee1d30214e00b4028dd Mon Sep 17 00:00:00 2001
+From: jh5117-debug <jh5117@columbia.edu>
+Date: Wed, 6 May 2026 18:01:35 +0200
+Subject: [PATCH] Add H20 VideoInpainting DPO adapter
+
+---
+ data/video_inpainting_dpo_data.py             | 267 ++++++++++++++++++
+ lvdm/models/ddpm3d.py                         | 148 ++++++++--
+ scripts/train.py                              |   8 +-
+ scripts/train_utils.py                        |  28 +-
+ ...unch_vc2_dpo_videoinpainting_h20_gpu6_7.sh | 108 +++++++
+ utils/video_inpainting_validation.py          | 167 +++++++++++
+ 6 files changed, 692 insertions(+), 34 deletions(-)
+ create mode 100644 data/video_inpainting_dpo_data.py
+ create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+ create mode 100644 utils/video_inpainting_validation.py
+
+diff --git a/data/video_inpainting_dpo_data.py b/data/video_inpainting_dpo_data.py
+new file mode 100644
+index 0000000..c7b6bcd
+--- /dev/null
++++ b/data/video_inpainting_dpo_data.py
+@@ -0,0 +1,267 @@
++"""
++Dataset adapter for running open-source VideoDPO on DiffuEraser-style
++video-inpainting DPO pairs.
++
++Expected H20 layout:
++
++  DPO_Finetune_Data_Multimodel_v1/
++    manifest.json
++    <video_name>/
++      gt_frames/
++      masks/
++      neg_frames_1/
++      neg_frames_2/
++      meta.json
++
++The adapter returns the same batch contract as ``TextVideoDPO``:
++``{"video": cat([winner, loser], dim=0), "caption": ..., "dupfactor": 1.0}``,
++where each video tensor is ``[C, T, H, W]`` in ``[-1, 1]``.
++"""
++
++from __future__ import annotations
++
++import json
++import os
++import random
++from pathlib import Path
++from typing import Iterable
++
++import numpy as np
++import torch
++from PIL import Image
++from torch.utils.data import Dataset
++
++
++IMAGE_EXTS = (".png", ".jpg", ".jpeg", ".bmp", ".webp")
++
++
++class VideoInpaintingDPODataset(Dataset):
++    def __init__(
++        self,
++        data_root,
++        resolution,
++        video_length,
++        frame_stride=1,
++        subset_split="all",
++        clip_length=1.0,
++        caption="clean background",
++        neg_dirs=None,
++        davis_oversample=10,
++        chunk_aligned=False,
++        seed=20230211,
++        dupbeta=0,
++        max_resample_attempts=64,
++        **_,
++    ):
++        self.data_root = data_root
++        self.resolution = [resolution, resolution] if isinstance(resolution, int) else list(resolution)
++        self.video_length = int(video_length)
++        self.frame_stride = int(frame_stride)
++        self.subset_split = subset_split
++        self.clip_length = clip_length
++        self.caption = caption
++        self.neg_dirs = list(neg_dirs) if neg_dirs else ["neg_frames_1", "neg_frames_2"]
++        self.davis_oversample = int(davis_oversample)
++        self.chunk_aligned = bool(chunk_aligned)
++        self.seed = int(seed)
++        self.dupbeta = dupbeta
++        self.max_resample_attempts = int(max_resample_attempts)
++        self.entries = self._load_entries()
++
++        if not self.entries:
++            raise RuntimeError(f"No usable VideoInpainting DPO pairs found from data_root={data_root}")
++
++        print(
++            "VideoInpaintingDPODataset: "
++            f"entries={len(self.entries)} roots={self._root_summary()} "
++            f"resolution={self.resolution} video_length={self.video_length} frame_stride={self.frame_stride}"
++        )
++
++    def _root_summary(self) -> str:
++        roots = sorted({entry["dataset_root"] for entry in self.entries})
++        return ",".join(roots[:3]) + ("..." if len(roots) > 3 else "")
++
++    def _resolve_roots(self) -> list[str]:
++        root = Path(self.data_root)
++        if root.is_file() and root.suffix.lower() in {".yaml", ".yml"}:
++            import yaml
++
++            with root.open("r") as f:
++                cfg = yaml.load(f, Loader=yaml.FullLoader)
++            roots = cfg.get("META", [])
++            return [str(Path(p).expanduser()) for p in roots]
++        return [str(root.expanduser())]
++
++    def _load_entries(self) -> list[dict]:
++        entries = []
++        for root in self._resolve_roots():
++            root_entries = self._load_root_entries(root)
++            entries.extend(root_entries)
++        return entries
++
++    def _load_root_entries(self, root: str) -> list[dict]:
++        root = os.path.abspath(root)
++        if not os.path.isdir(root):
++            raise FileNotFoundError(f"VideoInpainting DPO root not found: {root}")
++
++        manifest_path = os.path.join(root, "manifest.json")
++        if os.path.exists(manifest_path):
++            with open(manifest_path, "r") as f:
++                manifest = json.load(f)
++            video_items = self._manifest_video_items(root, manifest)
++        else:
++            video_items = [(name, name, {}) for name in sorted(os.listdir(root))]
++
++        entries = []
++        seen = set()
++        for video_name, video_dir_name, info in video_items:
++            video_dir = os.path.join(root, video_dir_name)
++            if not os.path.isdir(video_dir):
++                continue
++
++            gt_dir = os.path.join(video_dir, "gt_frames")
++            if not os.path.isdir(gt_dir):
++                continue
++
++            gt_files = self._image_files(gt_dir)
++            if len(gt_files) < self.video_length:
++                continue
++
++            chunks = self._load_chunks(video_dir)
++            for neg_name in self._negative_dirs(video_dir):
++                neg_dir = os.path.join(video_dir, neg_name)
++                neg_files = self._image_files(neg_dir)
++                num_frames = min(int(info.get("num_frames", len(gt_files))), len(gt_files), len(neg_files))
++                if num_frames < self.video_length:
++                    continue
++
++                entry = {
++                    "dataset_root": root,
++                    "video_name": video_name,
++                    "video_dir_name": video_dir_name,
++                    "gt_dir": gt_dir,
++                    "neg_dir": neg_dir,
++                    "neg_id": neg_name,
++                    "num_frames": num_frames,
++                    "chunks": chunks,
++                }
++                valid_starts = self._enumerate_valid_starts(entry)
++                if not valid_starts:
++                    continue
++                dedup_key = (video_dir, neg_name)
++                if dedup_key in seen:
++                    continue
++                seen.add(dedup_key)
++                entry["valid_starts"] = tuple(valid_starts)
++                entries.extend(self._maybe_oversample(entry))
++
++        return entries
++
++    def _manifest_video_items(self, root: str, manifest) -> list[tuple[str, str, dict]]:
++        items = []
++        if isinstance(manifest, dict):
++            iterable = manifest.items()
++        elif isinstance(manifest, list):
++            iterable = ((str(i), item) for i, item in enumerate(manifest))
++        else:
++            raise ValueError(f"Unsupported manifest type under {root}: {type(manifest).__name__}")
++
++        for key, info in iterable:
++            info = info or {}
++            video_dir_name = str(info.get("video_dir") or info.get("video_name") or key)
++            if not os.path.isdir(os.path.join(root, video_dir_name)):
++                gt_path = str(info.get("gt_frames", ""))
++                if gt_path:
++                    video_dir_name = os.path.basename(os.path.dirname(gt_path))
++            items.append((str(key), video_dir_name, info))
++        return items
++
++    def _negative_dirs(self, video_dir: str) -> list[str]:
++        names = [name for name in self.neg_dirs if os.path.isdir(os.path.join(video_dir, name))]
++        if names:
++            return names
++        discovered = []
++        for name in sorted(os.listdir(video_dir)):
++            path = os.path.join(video_dir, name)
++            if os.path.isdir(path) and (name.startswith("neg_frames") or "negative" in name or name.startswith("lose")):
++                discovered.append(name)
++        return discovered
++
++    def _load_chunks(self, video_dir: str):
++        meta_path = os.path.join(video_dir, "meta.json")
++        if not os.path.exists(meta_path):
++            return None
++        try:
++            with open(meta_path, "r") as f:
++                return json.load(f).get("chunks")
++        except Exception:
++            return None
++
++    def _maybe_oversample(self, entry: dict) -> list[dict]:
++        repeats = self.davis_oversample if entry["video_name"].startswith("davis_") and self.davis_oversample > 1 else 1
++        return [dict(entry, repeat_slot=i, repeats=repeats) for i in range(repeats)]
++
++    def _enumerate_valid_starts(self, entry: dict) -> list[int]:
++        span = (self.video_length - 1) * self.frame_stride + 1
++        if self.chunk_aligned and entry.get("chunks"):
++            starts = []
++            for chunk in entry["chunks"]:
++                c_start = int(chunk.get("start", 0))
++                c_end = int(chunk.get("end", 0))
++                if c_end - c_start >= span:
++                    starts.extend(range(c_start, c_end - span + 1))
++            if starts:
++                return sorted(set(starts))
++        return list(range(0, max(0, entry["num_frames"] - span) + 1))
++
++    def _image_files(self, frame_dir: str) -> list[str]:
++        return sorted(
++            os.path.join(frame_dir, name)
++            for name in os.listdir(frame_dir)
++            if name.lower().endswith(IMAGE_EXTS)
++        )
++
++    def _select_start(self, entry: dict, index: int) -> int:
++        valid_starts = entry["valid_starts"]
++        rng = random.Random(f"{self.seed}:{entry['video_dir_name']}:{entry['neg_id']}:{index}")
++        return valid_starts[rng.randrange(len(valid_starts))]
++
++    def _frame_indices(self, entry: dict, index: int) -> list[int]:
++        start = self._select_start(entry, index)
++        return [start + i * self.frame_stride for i in range(self.video_length)]
++
++    def _read_video(self, frame_dir: str, frame_indices: Iterable[int]) -> torch.Tensor:
++        files = self._image_files(frame_dir)
++        frames = []
++        height, width = int(self.resolution[0]), int(self.resolution[1])
++        for idx in frame_indices:
++            with Image.open(files[idx]) as img:
++                img = img.convert("RGB").resize((width, height), Image.BILINEAR)
++                arr = np.asarray(img, dtype=np.float32)
++            frames.append(torch.from_numpy(arr).permute(2, 0, 1))
++        video = torch.stack(frames, dim=1)
++        return video.div(255.0).sub(0.5).mul(2.0)
++
++    def __len__(self):
++        return len(self.entries)
++
++    def __getitem__(self, index):
++        last_error = None
++        for attempt in range(self.max_resample_attempts):
++            real_index = (index + attempt) % len(self.entries)
++            entry = self.entries[real_index]
++            try:
++                frame_indices = self._frame_indices(entry, real_index)
++                winner = self._read_video(entry["gt_dir"], frame_indices)
++                loser = self._read_video(entry["neg_dir"], frame_indices)
++                return {
++                    "video": torch.cat([winner, loser], dim=0),
++                    "caption": self.caption,
++                    "dupfactor": 1.0,
++                    "video_name": entry["video_name"],
++                    "neg_id": entry["neg_id"],
++                }
++            except (FileNotFoundError, OSError, IndexError, ValueError) as exc:
++                last_error = exc
++                continue
++        raise RuntimeError(f"Failed to load a valid VideoInpainting DPO pair near index={index}: {last_error}")
+diff --git a/lvdm/models/ddpm3d.py b/lvdm/models/ddpm3d.py
+index 66d7251..d663ab4 100644
+--- a/lvdm/models/ddpm3d.py
++++ b/lvdm/models/ddpm3d.py
+@@ -43,7 +43,14 @@ from utils.common_utils import instantiate_from_config
+ __conditioning_keys__ = {"concat": "c_concat", "crossattn": "c_crossattn", "adm": "y"}
+ 
+ import peft
+-            
++
++
++def _env_int(name, default):
++    try:
++        return int(os.environ.get(name, default))
++    except (TypeError, ValueError):
++        return int(default)
++
+ 
+ class DDPM(pl.LightningModule):
+     # classic DDPM with Gaussian diffusion, in image space
+@@ -373,35 +380,135 @@ class DDPM(pl.LightningModule):
+         )
+ 
+     def dpo_loss(self, target, pred):
+-        model_losses = (pred - target).pow(2).mean(dim=[1, 2, 3])
++        reduce_dims = tuple(range(1, pred.ndim))
++        model_losses = (pred - target).pow(2).mean(dim=reduce_dims)
+         model_losses_w, model_losses_l = model_losses.chunk(2)
+-        raw_model_loss = 0.5 * (model_losses_w.mean() + model_losses_l.mean())
+-        model_diff = model_losses_w - model_losses_l  # These are both LBS (as is t)
+-        with torch.no_grad():  # Get the reference policy (unet) prediction
++        model_diff = model_losses_w - model_losses_l
++
++        with torch.no_grad():
+             ref_pred = self.ref_pred
+-            ref_losses = (ref_pred - target).pow(2).mean(dim=[1, 2, 3])
++            ref_losses = (ref_pred - target).pow(2).mean(dim=reduce_dims)
+             ref_losses_w, ref_losses_l = ref_losses.chunk(2)
+             ref_diff = ref_losses_w - ref_losses_l
+-            raw_ref_loss = ref_losses.mean()
++
+         scale_term = -0.5 * self.beta_dpo
+         inside_term = scale_term * (model_diff - ref_diff)
+-        # print()
+-        implicit_acc = (inside_term > 0).sum().float() / inside_term.size(0)
+-        # log implicit acc for 
++        factor = self.dupfactor
++        if not torch.is_tensor(factor):
++            factor = torch.tensor(factor)
++        factor = factor.to(device=inside_term.device, dtype=inside_term.dtype)
++        loss = (-1.0 * factor * F.logsigmoid(inside_term)).mean()
++
++        with torch.no_grad():
++            correct_mask = inside_term > 0
++            per_win_gap = model_losses_w - ref_losses_w
++            per_lose_gap = model_losses_l - ref_losses_l
++            winner_improvement = (-per_win_gap).clamp(min=0)
++            loser_degradation = per_lose_gap.clamp(min=0)
++
++            global_inside = inside_term.detach()
++            global_winner_improvement = winner_improvement.detach()
++            global_loser_degradation = loser_degradation.detach()
++            if torch.distributed.is_available() and torch.distributed.is_initialized():
++                global_inside = self.all_gather(global_inside).reshape(-1)
++                global_winner_improvement = self.all_gather(global_winner_improvement).reshape(-1)
++                global_loser_degradation = self.all_gather(global_loser_degradation).reshape(-1)
++
++            global_correct_mask = global_inside > 0
++            global_correct = global_correct_mask.sum().float()
++            global_total = torch.tensor(float(global_inside.numel()), device=global_inside.device)
++            global_acc = global_correct / global_total.clamp(min=1)
++
++            global_loser_dominant = (
++                global_correct_mask & (global_loser_degradation > global_winner_improvement)
++            ).sum().float()
++            global_loser_ratio = global_loser_dominant / global_correct.clamp(min=1)
++
++            diagnostics = {
++                "global/implicit_acc": global_acc,
++                "global/inside_term_mean": global_inside.mean(),
++                "global/inside_term_min": global_inside.min(),
++                "global/inside_term_max": global_inside.max(),
++                "global/loser_dominant_ratio": global_loser_ratio,
++                "rank0/dpo_loss": (-1.0 * F.logsigmoid(inside_term)).mean(),
++                "rank0/total_loss": loss.detach(),
++                "rank0/factor": factor.mean(),
++                "rank0/mse_w": model_losses_w.mean(),
++                "rank0/mse_l": model_losses_l.mean(),
++                "rank0/ref_mse_w": ref_losses_w.mean(),
++                "rank0/ref_mse_l": ref_losses_l.mean(),
++                "rank0/win_gap": per_win_gap.mean(),
++                "rank0/lose_gap": per_lose_gap.mean(),
++                "rank0/reward_margin": (ref_losses_w - ref_losses_l).mean(),
++                "rank0/sigma_term": torch.sigmoid(inside_term).mean(),
++                "rank0/kl_divergence": 0.5 * (model_losses.mean() - ref_losses.mean()),
++            }
++
++        for name, value in diagnostics.items():
++            self.log(
++                name,
++                value,
++                prog_bar=name in {"global/implicit_acc", "rank0/dpo_loss", "rank0/win_gap", "rank0/lose_gap"},
++                logger=True,
++                on_step=True,
++                on_epoch=False,
++                sync_dist=False,
++                rank_zero_only=False,
++            )
++
++        diag_every = _env_int("VIDEODPO_DPO_DIAG_EVERY", 300)
++        should_log_diag = (
++            getattr(self, "global_rank", 0) == 0
++            and os.environ.get("VIDEODPO_LOG_DPO_DIAG", "0") == "1"
++            and diag_every > 0
++            and int(self.global_step) % diag_every == 0
++        )
++        if should_log_diag:
++            mainlogger.info(
++                "[dpo_diag] step=%d implicit_acc=%.6f inside_term=%.6f inside_term_min=%.6f "
++                "inside_term_max=%.6f loser_dominant_ratio=%.6f dpo_loss=%.6f total_loss=%.6f "
++                "factor=%.6f mw=%.6f mwref=%.6f ml=%.6f mlref=%.6f "
++                "win_gap=%.6f lose_gap=%.6f reward_margin=%.6f sigma_term=%.6f kl_divergence=%.6f",
++                int(self.global_step),
++                diagnostics["global/implicit_acc"].item(),
++                diagnostics["global/inside_term_mean"].item(),
++                diagnostics["global/inside_term_min"].item(),
++                diagnostics["global/inside_term_max"].item(),
++                diagnostics["global/loser_dominant_ratio"].item(),
++                diagnostics["rank0/dpo_loss"].item(),
++                diagnostics["rank0/total_loss"].item(),
++                diagnostics["rank0/factor"].item(),
++                diagnostics["rank0/mse_w"].item(),
++                diagnostics["rank0/ref_mse_w"].item(),
++                diagnostics["rank0/mse_l"].item(),
++                diagnostics["rank0/ref_mse_l"].item(),
++                diagnostics["rank0/win_gap"].item(),
++                diagnostics["rank0/lose_gap"].item(),
++                diagnostics["rank0/reward_margin"].item(),
++                diagnostics["rank0/sigma_term"].item(),
++                diagnostics["rank0/kl_divergence"].item(),
++            )
++
++        return loss
++
++    def on_after_backward(self):
++        total_norm_sq = 0.0
++        for param in self.parameters():
++            if param.grad is None:
++                continue
++            grad_norm = param.grad.detach().float().norm(2).item()
++            total_norm_sq += grad_norm * grad_norm
++        total_norm = total_norm_sq ** 0.5
+         self.log(
+-            "train/implicit_acc",implicit_acc,
+-            prog_bar=True,
++            "rank0/dgr_grad_norm",
++            total_norm,
++            prog_bar=False,
+             logger=True,
+             on_step=True,
+             on_epoch=False,
++            sync_dist=False,
++            rank_zero_only=False,
+         )
+-        factor = self.dupfactor
+-        loss = ( -1 * factor * F.logsigmoid(inside_term)).mean()
+-        self.log(      "train/factor",float(factor.clone().mean().detach().cpu()),
+-            prog_bar=False,logger=True,
+-            on_step=True,on_epoch=False,
+-        )
+-        return loss
+ 
+     def get_loss(self, pred, target, mean=True):
+         if self.loss_type == "l1":
+@@ -1125,7 +1232,6 @@ class LatentDiffusion(DDPM):
+         return loss, loss_dict
+ 
+     def training_step(self, batch, batch_idx):
+-        print("test")
+         loss, loss_dict = self.shared_step(
+             batch, random_uncond=self.classifier_free_guidance
+         )
+@@ -1932,4 +2038,4 @@ class DiffusionWrapper(pl.LightningModule):
+         else:
+             raise NotImplementedError()
+ 
+-        return out
+\ No newline at end of file
++        return out
+diff --git a/scripts/train.py b/scripts/train.py
+index fff90b9..38b49fb 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -93,8 +93,9 @@ if __name__ == "__main__":
+     except:
+         local_rank, global_rank, num_rank = 0, 0, 1
+     num_gpus = torch.cuda.device_count()
+-    print(f"可用 GPU 的总数量: {num_gpus}")
+-    print(f"local_rank: {local_rank} | global_rank:{global_rank} | num_rank:{num_rank}")
++    if global_rank == 0:
++        print(f"可用 GPU 的总数量: {num_gpus}")
++        print(f"local_rank: {local_rank} | global_rank:{global_rank} | num_rank:{num_rank}")
+     os.environ.pop("SLURM_NTASKS", None)
+     parser = get_parser()
+     ## Extends existing argparse by default Trainer attributes
+@@ -151,7 +152,8 @@ if __name__ == "__main__":
+     for k in get_nondefault_trainer_args(args):
+         trainer_config[k] = getattr(args, k)
+ 
+-    print(trainer_config)
++    if global_rank == 0:
++        print(trainer_config)
+     num_nodes = trainer_config.num_nodes
+     ngpu_per_node = trainer_config.devices
+     logger.info(f"Running on {num_rank}={num_nodes}x{ngpu_per_node} GPUs")
+diff --git a/scripts/train_utils.py b/scripts/train_utils.py
+index 27d3cb0..712afc0 100644
+--- a/scripts/train_utils.py
++++ b/scripts/train_utils.py
+@@ -37,13 +37,12 @@ def init_workspace(name, logdir, model_config, lightning_config, rank=0):
+         )
+         # 2024 0728 haoyu
+         # save data.yaml to the work sapace
+-        src_path = model_config['data']['params']['train']['params']['data_root'] ## xx. configs/data/vidpro/train_data.yaml
+-        root_dir = "/home/rliuay/haoyu/research/DPO-videocrafter"
+-        # get current workdir 
+-        
+-        config_path = os.path.join(root_dir,src_path)
+-        save_path = os.path.join(cfgdir,"train_data.yaml")
+-        os.system(f"cp {src_path} {save_path}")
++        src_path = model_config["data"]["params"]["train"]["params"]["data_root"]  ## xx. configs/data/vidpro/train_data.yaml
++        save_path = os.path.join(cfgdir, "train_data.yaml")
++        if os.path.isfile(src_path):
++            os.system(f"cp {src_path} {save_path}")
++        else:
++            OmegaConf.save(OmegaConf.create({"data_root": src_path}), save_path)
+         # import pdb;pdb.set_trace()
+         # print("test saving train data .yaml exiting");exit();
+         # save_path = os.path.join(cfgdir,"valid_data.yaml")
+@@ -350,13 +349,22 @@ def get_autoresume_path(logdir):
+     return resume_checkpt_path
+ 
+ 
++def _get_log_level(name, default):
++    value = os.environ.get(name, default).upper()
++    return getattr(logging, value, getattr(logging, default))
++
++
+ def set_logger(logfile, name="mainlogger"):
+     logger = logging.getLogger(name)
+-    logger.setLevel(logging.INFO)
++    file_level = _get_log_level("VIDEODPO_FILE_LOG_LEVEL", "INFO")
++    console_level = _get_log_level("VIDEODPO_CONSOLE_LOG_LEVEL", "WARNING")
++    logger.setLevel(min(file_level, console_level))
++    logger.handlers.clear()
++    logger.propagate = False
+     fh = logging.FileHandler(logfile, mode="w")
+-    fh.setLevel(logging.INFO)
++    fh.setLevel(file_level)
+     ch = logging.StreamHandler()
+-    ch.setLevel(logging.DEBUG)
++    ch.setLevel(console_level)
+     fh.setFormatter(logging.Formatter("%(asctime)s-%(levelname)s: %(message)s"))
+     ch.setFormatter(logging.Formatter("%(message)s"))
+     logger.addHandler(fh)
+diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+new file mode 100755
+index 0000000..e690359
+--- /dev/null
++++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+@@ -0,0 +1,108 @@
++#!/usr/bin/env bash
++set -euo pipefail
++
++cd /home/nvme01/VideoDPO
++mkdir -p /home/nvme01/VideoDPO_runs
++
++PY="${PY:-/home/nvme01/conda_envs/videodpo/bin/python}"
++RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu6-7_$(date +%Y%m%d_%H%M%S)}"
++STDOUT="/home/nvme01/VideoDPO_runs/${RUN_TAG}.stdout.log"
++PID_FILE="/home/nvme01/VideoDPO_runs/${RUN_TAG}.pid"
++MASTER_PORT="${MASTER_PORT:-$(shuf -i 20000-65000 -n 1)}"
++
++H20_DPO_ROOT="${H20_DPO_ROOT:-/home/nvme01/H20_Video_inpainting_DPO/DPO_Finetune_Data_Multimodel_v1}"
++VIDEOINPAINTING_REPO="${VIDEOINPAINTING_REPO:-/home/nvme01/H20_Video_inpainting_DPO}"
++MAX_STEPS="${MAX_STEPS:-10000}"
++DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
++VAL_EVERY="${VAL_EVERY:-2000}"
++VAL_MAX_VIDEOS="${VAL_MAX_VIDEOS:-1}"
++VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-25}"
++NUM_WORKERS="${NUM_WORKERS:-8}"
++
++if [[ ! -x "${PY}" ]]; then
++  echo "[launch] python not executable: ${PY}" >&2
++  exit 1
++fi
++if [[ ! -d "${H20_DPO_ROOT}" ]]; then
++  echo "[launch] H20_DPO_ROOT not found: ${H20_DPO_ROOT}" >&2
++  exit 1
++fi
++if [[ ! -d "${VIDEOINPAINTING_REPO}" ]]; then
++  echo "[launch] VIDEOINPAINTING_REPO not found: ${VIDEOINPAINTING_REPO}" >&2
++  exit 1
++fi
++
++export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-6,7}"
++export PYTHONPATH=/home/nvme01/VideoDPO
++export PYTHONUNBUFFERED=1
++export PYTHONFAULTHANDLER=1
++export TOKENIZERS_PARALLELISM=false
++export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
++export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
++export NCCL_ASYNC_ERROR_HANDLING=1
++export VIDEODPO_LOG_DPO_DIAG=1
++export VIDEODPO_DPO_DIAG_EVERY="${DPO_DIAG_EVERY}"
++export VIDEODPO_CONSOLE_LOG_LEVEL="${VIDEODPO_CONSOLE_LOG_LEVEL:-INFO}"
++export VIDEODPO_FILE_LOG_LEVEL="${VIDEODPO_FILE_LOG_LEVEL:-INFO}"
++export VIDEOINPAINTING_REPO
++
++CMD=(
++  "${PY}" -m torch.distributed.run
++  --nnodes=1
++  --nproc_per_node=2
++  --master_port "${MASTER_PORT}"
++  scripts/train.py
++  -t
++  --devices "0,1"
++  --base configs/vc2_dpo/config.yaml
++  --name "${RUN_TAG}"
++  --logdir /home/nvme01/VideoDPO_runs
++  lightning.logger.target=pytorch_lightning.loggers.CSVLogger
++  lightning.logger.params.name=csv
++  lightning.logger.params.save_dir=/home/nvme01/VideoDPO_runs
++  lightning.trainer.num_nodes=1
++  lightning.trainer.devices=2
++  lightning.trainer.accelerator=gpu
++  lightning.trainer.max_steps="${MAX_STEPS}"
++  lightning.trainer.max_epochs=1000
++  lightning.trainer.accumulate_grad_batches=1
++  lightning.trainer.log_every_n_steps=1
++  lightning.trainer.precision=32
++  lightning.callbacks.image_logger.params.batch_frequency=-1
++  lightning.callbacks.metrics_over_trainsteps_checkpoint.params.every_n_train_steps="${VAL_EVERY}"
++  lightning.callbacks.video_inpainting_metric_logger.target=utils.video_inpainting_validation.VideoInpaintingMetricLogger
++  lightning.callbacks.video_inpainting_metric_logger.params.every_n_train_steps="${VAL_EVERY}"
++  lightning.callbacks.video_inpainting_metric_logger.params.max_videos="${VAL_MAX_VIDEOS}"
++  lightning.callbacks.video_inpainting_metric_logger.params.ddim_steps="${VAL_DDIM_STEPS}"
++  lightning.callbacks.video_inpainting_metric_logger.params.unconditional_guidance_scale=12.0
++  lightning.callbacks.video_inpainting_metric_logger.params.video_inpainting_repo="${VIDEOINPAINTING_REPO}"
++  model.params.beta_dpo=5000.0
++  model.params.log_every_t=100
++  data.params.batch_size=1
++  data.params.num_workers="${NUM_WORKERS}"
++  data.params.train.target=data.video_inpainting_dpo_data.VideoInpaintingDPODataset
++  data.params.train.params.data_root="${H20_DPO_ROOT}"
++  "data.params.train.params.resolution=[320,512]"
++  data.params.train.params.video_length=16
++  data.params.train.params.frame_stride=1
++  "data.params.train.params.caption=clean background"
++  data.params.train.params.davis_oversample=10
++)
++
++echo "[launch] RUN_TAG=${RUN_TAG}"
++echo "[launch] STDOUT=${STDOUT}"
++echo "[launch] PID_FILE=${PID_FILE}"
++echo "[launch] MASTER_PORT=${MASTER_PORT}"
++echo "[launch] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
++echo "[launch] H20_DPO_ROOT=${H20_DPO_ROOT}"
++echo "[launch] VIDEOINPAINTING_REPO=${VIDEOINPAINTING_REPO}"
++echo "[launch] MAX_STEPS=${MAX_STEPS} diag_every=${DPO_DIAG_EVERY} val_every=${VAL_EVERY}"
++echo "[launch] PY=${PY}"
++"${PY}" -V
++
++setsid nohup "${CMD[@]}" > "${STDOUT}" 2>&1 < /dev/null &
++echo $! > "${PID_FILE}"
++disown
++
++echo "STDOUT=${STDOUT}"
++echo "PID_FILE=${PID_FILE}"
+diff --git a/utils/video_inpainting_validation.py b/utils/video_inpainting_validation.py
+new file mode 100644
+index 0000000..18d0750
+--- /dev/null
++++ b/utils/video_inpainting_validation.py
+@@ -0,0 +1,167 @@
++"""PSNR/SSIM callback for VideoDPO runs on video-inpainting preference pairs."""
++
++from __future__ import annotations
++
++import importlib.util
++import os
++import sys
++from pathlib import Path
++
++import numpy as np
++import torch
++from PIL import Image
++from pytorch_lightning.callbacks import Callback
++
++from utils.callbacks import mainlogger
++
++
++def _load_video_inpainting_metrics(repo_path: str | None = None):
++    candidates = []
++    if repo_path:
++        candidates.append(Path(repo_path))
++    if os.environ.get("VIDEOINPAINTING_REPO"):
++        candidates.append(Path(os.environ["VIDEOINPAINTING_REPO"]))
++    candidates.extend([
++        Path("/home/nvme01/H20_Video_inpainting_DPO"),
++        Path("/home/hj/Video_inpainting_DPO"),
++    ])
++
++    for root in candidates:
++        metrics_path = root / "inference" / "metrics.py"
++        if not metrics_path.exists():
++            continue
++        spec = importlib.util.spec_from_file_location("video_inpainting_metrics", metrics_path)
++        if spec is None or spec.loader is None:
++            continue
++        module = importlib.util.module_from_spec(spec)
++        sys.modules[spec.name] = module
++        spec.loader.exec_module(module)
++        return module.compute_psnr, module.compute_ssim, str(metrics_path)
++
++    raise ImportError(
++        "Could not import compute_psnr/compute_ssim from a Video_inpainting_DPO checkout. "
++        "Set VIDEOINPAINTING_REPO=/path/to/H20_Video_inpainting_DPO."
++    )
++
++
++def _video_tensor_to_uint8(video: torch.Tensor) -> list[np.ndarray]:
++    """Convert [C,T,H,W] in [-1,1] to a list of uint8 RGB frames."""
++    video = video.detach().float().cpu().clamp(-1.0, 1.0)
++    video = video.add(1.0).mul(127.5).round().clamp(0, 255).byte()
++    video = video.permute(1, 2, 3, 0).numpy()
++    return [frame for frame in video]
++
++
++def _resize_like(frame: np.ndarray, reference: np.ndarray) -> np.ndarray:
++    if frame.shape == reference.shape:
++        return frame
++    image = Image.fromarray(frame.astype(np.uint8))
++    image = image.resize((reference.shape[1], reference.shape[0]), Image.BILINEAR)
++    return np.asarray(image, dtype=np.uint8)
++
++
++class VideoInpaintingMetricLogger(Callback):
++    """
++    Periodically samples the VideoDPO policy from the current DPO batch and compares
++    the generated videos to the winner GT videos with the existing VideoInpainting
++    PSNR/SSIM operators.
++
++    This is a proxy metric: open-source VideoDPO is text-conditioned and does not
++    consume masks/masked images, so it cannot run the DiffuEraser inpainting
++    validation pipeline directly.
++    """
++
++    def __init__(
++        self,
++        every_n_train_steps=2000,
++        max_videos=1,
++        ddim_steps=25,
++        unconditional_guidance_scale=12.0,
++        video_inpainting_repo=None,
++        enabled=True,
++    ):
++        super().__init__()
++        self.every_n_train_steps = int(every_n_train_steps)
++        self.max_videos = int(max_videos)
++        self.ddim_steps = int(ddim_steps)
++        self.unconditional_guidance_scale = float(unconditional_guidance_scale)
++        self.video_inpainting_repo = video_inpainting_repo
++        self.enabled = bool(enabled)
++        self._last_step = -1
++
++    def _should_run(self, trainer) -> bool:
++        step = int(trainer.global_step)
++        if not self.enabled or self.every_n_train_steps <= 0:
++            return False
++        if step <= 0 or step == self._last_step:
++            return False
++        if step % self.every_n_train_steps != 0:
++            return False
++        return int(getattr(trainer, "global_rank", 0)) == 0
++
++    @torch.no_grad()
++    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx=None):
++        if not self._should_run(trainer):
++            return
++
++        step = int(trainer.global_step)
++        self._last_step = step
++
++        try:
++            compute_psnr, compute_ssim, metrics_path = _load_video_inpainting_metrics(self.video_inpainting_repo)
++        except Exception as exc:
++            mainlogger.warning(f"[video_inpaint_val] step={step} skipped: {exc}")
++            return
++
++        was_training = pl_module.training
++        pl_module.eval()
++        try:
++            logs = pl_module.log_images(
++                batch,
++                sample=True,
++                ddim_steps=self.ddim_steps,
++                unconditional_guidance_scale=self.unconditional_guidance_scale,
++            )
++            samples = logs.get("samples")
++            if samples is None:
++                mainlogger.warning(f"[video_inpaint_val] step={step} skipped: log_images returned no samples")
++                return
++
++            target = batch[pl_module.first_stage_key][:, :3]
++            samples = samples.detach().cpu()
++            target = target.detach().cpu()
++            count = min(self.max_videos, target.shape[0], samples.shape[0])
++            if count <= 0:
++                mainlogger.warning(f"[video_inpaint_val] step={step} skipped: empty sample/target tensors")
++                return
++
++            per_video = []
++            for i in range(count):
++                pred_frames = _video_tensor_to_uint8(samples[i])
++                gt_frames = _video_tensor_to_uint8(target[i])
++                frame_psnr, frame_ssim = [], []
++                for pred, gt in zip(pred_frames, gt_frames):
++                    gt = _resize_like(gt, pred)
++                    frame_psnr.append(float(compute_psnr(gt, pred)))
++                    frame_ssim.append(float(compute_ssim(gt, pred)))
++                per_video.append((float(np.mean(frame_psnr)), float(np.mean(frame_ssim))))
++
++            psnr = float(np.mean([item[0] for item in per_video]))
++            ssim = float(np.mean([item[1] for item in per_video]))
++            pl_module.log("val/psnr_mean", psnr, logger=True, on_step=True, on_epoch=False, rank_zero_only=True)
++            pl_module.log("val/ssim_mean", ssim, logger=True, on_step=True, on_epoch=False, rank_zero_only=True)
++            mainlogger.info(
++                "[video_inpaint_val] step=%d videos=%d psnr=%.4f ssim=%.4f "
++                "target=winner_gt generated=videodpo_sample metrics=%s",
++                step,
++                count,
++                psnr,
++                ssim,
++                metrics_path,
++            )
++        except Exception as exc:
++            mainlogger.warning(f"[video_inpaint_val] step={step} failed: {type(exc).__name__}: {exc}")
++        finally:
++            if was_training:
++                pl_module.train()
++            torch.cuda.empty_cache()
+-- 
+2.34.1
+
