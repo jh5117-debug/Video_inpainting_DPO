@@ -1,4 +1,4 @@
-From b4e9773679d7feeb1f6a00db76515253fc3a1a18 Mon Sep 17 00:00:00 2001
+From 7216551afbb4f5fb548451154a907da7fec8960d Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -10,8 +10,8 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
  ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 114 ++++++++
- utils/video_inpainting_validation.py          | 167 +++++++++++
- 7 files changed, 750 insertions(+), 34 deletions(-)
+ utils/video_inpainting_validation.py          | 184 ++++++++++++
+ 7 files changed, 767 insertions(+), 34 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -619,7 +619,7 @@ index 27d3cb0..712afc0 100644
      logger.addHandler(fh)
 diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 new file mode 100755
-index 0000000..85be21c
+index 0000000..1ffb586
 --- /dev/null
 +++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 @@ -0,0 +1,114 @@
@@ -643,8 +643,8 @@ index 0000000..85be21c
 +DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 +VAL_EVERY="${VAL_EVERY:-2000}"
 +VAL_MAX_VIDEOS="${VAL_MAX_VIDEOS:-1}"
-+VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-25}"
-+NUM_WORKERS="${NUM_WORKERS:-8}"
++VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-6}"
++NUM_WORKERS="${NUM_WORKERS:-4}"
 +NUM_GPUS="${NUM_GPUS:-8}"
 +DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5,6,7}"
 +
@@ -739,10 +739,10 @@ index 0000000..85be21c
 +echo "PID_FILE=${PID_FILE}"
 diff --git a/utils/video_inpainting_validation.py b/utils/video_inpainting_validation.py
 new file mode 100644
-index 0000000..18d0750
+index 0000000..39f8a6d
 --- /dev/null
 +++ b/utils/video_inpainting_validation.py
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,184 @@
 +"""PSNR/SSIM callback for VideoDPO runs on video-inpainting preference pairs."""
 +
 +from __future__ import annotations
@@ -842,7 +842,16 @@ index 0000000..18d0750
 +            return False
 +        if step % self.every_n_train_steps != 0:
 +            return False
-+        return int(getattr(trainer, "global_rank", 0)) == 0
++        return True
++
++    def _barrier(self, trainer, name: str) -> None:
++        strategy = getattr(trainer, "strategy", None)
++        if strategy is None or not hasattr(strategy, "barrier"):
++            return
++        try:
++            strategy.barrier(name)
++        except TypeError:
++            strategy.barrier()
 +
 +    @torch.no_grad()
 +    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx, dataloader_idx=None):
@@ -851,11 +860,18 @@ index 0000000..18d0750
 +
 +        step = int(trainer.global_step)
 +        self._last_step = step
++        rank = int(getattr(trainer, "global_rank", 0))
++
++        self._barrier(trainer, f"video_inpaint_val_start_{step}")
++        if rank != 0:
++            self._barrier(trainer, f"video_inpaint_val_end_{step}")
++            return
 +
 +        try:
 +            compute_psnr, compute_ssim, metrics_path = _load_video_inpainting_metrics(self.video_inpainting_repo)
 +        except Exception as exc:
 +            mainlogger.warning(f"[video_inpaint_val] step={step} skipped: {exc}")
++            self._barrier(trainer, f"video_inpaint_val_end_{step}")
 +            return
 +
 +        was_training = pl_module.training
@@ -910,6 +926,7 @@ index 0000000..18d0750
 +            if was_training:
 +                pl_module.train()
 +            torch.cuda.empty_cache()
++            self._barrier(trainer, f"video_inpaint_val_end_{step}")
 -- 
 2.34.1
 
