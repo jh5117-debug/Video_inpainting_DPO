@@ -20,9 +20,9 @@ git checkout main
 git checkout -B h20-videoinpaint-dpo-adapter origin/main
 git am /home/nvme01/H20_Video_inpainting_DPO/patches/videodpo/h20_videoinpaint_dpo_adapter.patch
 
-bash scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+bash scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 
-LOG=$(ls -t /home/nvme01/H20_Video_inpainting_DPO/logs/vc2_dpo_videoinpainting_h20_gpu6-7_*.stdout.log | head -n 1)
+LOG=$(ls -t /home/nvme01/H20_Video_inpainting_DPO/logs/vc2_dpo_videoinpainting_h20_gpu0-7_*.stdout.log | head -n 1)
 tail -f "$LOG"
 ```
 

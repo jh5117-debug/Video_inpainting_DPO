@@ -1,4 +1,4 @@
-From 9bafee08dc2b08654dcbbbbb6d91fc8a59d4c707 Mon Sep 17 00:00:00 2001
+From b663d1c451ec104561f775164f74e5d76b5b78ed Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -8,11 +8,11 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
  lvdm/models/ddpm3d.py                         | 148 ++++++++--
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
- ...unch_vc2_dpo_videoinpainting_h20_gpu6_7.sh | 111 ++++++++
+ ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 114 ++++++++
  utils/video_inpainting_validation.py          | 167 +++++++++++
- 6 files changed, 695 insertions(+), 34 deletions(-)
+ 6 files changed, 698 insertions(+), 34 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
- create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+ create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
 
 diff --git a/data/video_inpainting_dpo_data.py b/data/video_inpainting_dpo_data.py
@@ -553,19 +553,19 @@ index 27d3cb0..712afc0 100644
      fh.setFormatter(logging.Formatter("%(asctime)s-%(levelname)s: %(message)s"))
      ch.setFormatter(logging.Formatter("%(message)s"))
      logger.addHandler(fh)
-diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
+diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 new file mode 100755
-index 0000000..a52cfb7
+index 0000000..85be21c
 --- /dev/null
-+++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu6_7.sh
-@@ -0,0 +1,111 @@
++++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
+@@ -0,0 +1,114 @@
 +#!/usr/bin/env bash
 +set -euo pipefail
 +
 +cd /home/nvme01/VideoDPO
 +
 +PY="${PY:-/home/nvme01/conda_envs/videodpo/bin/python}"
-+RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu6-7_$(date +%Y%m%d_%H%M%S)}"
++RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu0-7_$(date +%Y%m%d_%H%M%S)}"
 +MASTER_PORT="${MASTER_PORT:-$(shuf -i 20000-65000 -n 1)}"
 +
 +H20_DPO_ROOT="${H20_DPO_ROOT:-/home/nvme01/H20_Video_inpainting_DPO/DPO_Finetune_Data_Multimodel_v1}"
@@ -581,6 +581,8 @@ index 0000000..a52cfb7
 +VAL_MAX_VIDEOS="${VAL_MAX_VIDEOS:-1}"
 +VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-25}"
 +NUM_WORKERS="${NUM_WORKERS:-8}"
++NUM_GPUS="${NUM_GPUS:-8}"
++DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5,6,7}"
 +
 +if [[ ! -x "${PY}" ]]; then
 +  echo "[launch] python not executable: ${PY}" >&2
@@ -595,7 +597,7 @@ index 0000000..a52cfb7
 +  exit 1
 +fi
 +
-+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-6,7}"
++export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}"
 +export PYTHONPATH=/home/nvme01/VideoDPO
 +export PYTHONUNBUFFERED=1
 +export PYTHONFAULTHANDLER=1
@@ -612,11 +614,11 @@ index 0000000..a52cfb7
 +CMD=(
 +  "${PY}" -m torch.distributed.run
 +  --nnodes=1
-+  --nproc_per_node=2
++  --nproc_per_node="${NUM_GPUS}"
 +  --master_port "${MASTER_PORT}"
 +  scripts/train.py
 +  -t
-+  --devices "0,1"
++  --devices "${DEVICE_LIST}"
 +  --base configs/vc2_dpo/config.yaml
 +  --name "${RUN_TAG}"
 +  --logdir "${LOG_ROOT}"
@@ -624,7 +626,7 @@ index 0000000..a52cfb7
 +  lightning.logger.params.name=csv
 +  lightning.logger.params.save_dir="${LOG_ROOT}"
 +  lightning.trainer.num_nodes=1
-+  lightning.trainer.devices=2
++  lightning.trainer.devices="${NUM_GPUS}"
 +  lightning.trainer.accelerator=gpu
 +  lightning.trainer.max_steps="${MAX_STEPS}"
 +  lightning.trainer.max_epochs=1000
@@ -658,6 +660,7 @@ index 0000000..a52cfb7
 +echo "[launch] LOG_ROOT=${LOG_ROOT}"
 +echo "[launch] MASTER_PORT=${MASTER_PORT}"
 +echo "[launch] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"
++echo "[launch] NUM_GPUS=${NUM_GPUS} DEVICE_LIST=${DEVICE_LIST}"
 +echo "[launch] H20_DPO_ROOT=${H20_DPO_ROOT}"
 +echo "[launch] VIDEOINPAINTING_REPO=${VIDEOINPAINTING_REPO}"
 +echo "[launch] MAX_STEPS=${MAX_STEPS} diag_every=${DPO_DIAG_EVERY} val_every=${VAL_EVERY}"
