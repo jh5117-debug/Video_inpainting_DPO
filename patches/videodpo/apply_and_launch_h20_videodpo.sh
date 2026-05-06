@@ -34,8 +34,20 @@ if git status --short | grep -q .; then
   echo "[apply] saved dirty diff to ${DIRTY_PATCH}"
 fi
 
-git fetch origin
-git checkout -B h20-videoinpaint-dpo-adapter origin/main
+if [[ "${FETCH_VIDEODPO_ORIGIN:-0}" == "1" ]]; then
+  git fetch origin
+fi
+
+if git show-ref --verify --quiet refs/remotes/origin/main; then
+  BASE_REF="${VIDEODPO_BASE_REF:-origin/main}"
+elif git show-ref --verify --quiet refs/heads/main; then
+  BASE_REF="${VIDEODPO_BASE_REF:-main}"
+else
+  BASE_REF="${VIDEODPO_BASE_REF:-HEAD}"
+fi
+
+echo "[apply] base=${BASE_REF}"
+git checkout -B h20-videoinpaint-dpo-adapter "${BASE_REF}"
 
 git am "${PATCH_FILE}"
 
