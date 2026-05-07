@@ -54,6 +54,6 @@ git am "${PATCH_FILE}"
 export LOG_ROOT
 bash scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 
-LOG="$(ls -t "${LOG_ROOT}"/vc2_dpo_videoinpainting_h20_gpu0-7_*.stdout.log | head -n 1)"
+LOG="$(ls -t "${LOG_ROOT}"/vc2_dpo_videoinpainting_h20_gpu*.stdout.log | head -n 1)"
 echo "[apply] tail log: ${LOG}"
 tail -f "${LOG}"

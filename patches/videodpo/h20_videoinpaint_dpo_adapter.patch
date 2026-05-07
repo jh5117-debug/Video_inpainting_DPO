@@ -1,4 +1,4 @@
-From fb9ee27ff8a68edb5c48942cf6feee4051c99d3f Mon Sep 17 00:00:00 2001
+From 1f763386aa465ffe9a11206d29bfd8e381691f25 Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -10,8 +10,9 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
  ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 115 ++++++++
+ utils/callbacks.py                            |  22 +-
  utils/video_inpainting_validation.py          | 184 ++++++++++++
- 7 files changed, 779 insertions(+), 34 deletions(-)
+ 8 files changed, 792 insertions(+), 43 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -630,7 +631,7 @@ index 27d3cb0..712afc0 100644
      logger.addHandler(fh)
 diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 new file mode 100755
-index 0000000..3adfb1c
+index 0000000..bcc4f2b
 --- /dev/null
 +++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 @@ -0,0 +1,115 @@
@@ -640,7 +641,7 @@ index 0000000..3adfb1c
 +cd /home/nvme01/VideoDPO
 +
 +PY="${PY:-/home/nvme01/conda_envs/videodpo/bin/python}"
-+RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu0-7_$(date +%Y%m%d_%H%M%S)}"
++RUN_TAG="${RUN_TAG:-vc2_dpo_videoinpainting_h20_gpu2-7_$(date +%Y%m%d_%H%M%S)}"
 +MASTER_PORT="${MASTER_PORT:-$(shuf -i 20000-65000 -n 1)}"
 +
 +H20_DPO_ROOT="${H20_DPO_ROOT:-/home/nvme01/H20_Video_inpainting_DPO/DPO_Finetune_Data_Multimodel_v1}"
@@ -656,8 +657,8 @@ index 0000000..3adfb1c
 +VAL_MAX_VIDEOS="${VAL_MAX_VIDEOS:-1}"
 +VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-6}"
 +NUM_WORKERS="${NUM_WORKERS:-4}"
-+NUM_GPUS="${NUM_GPUS:-8}"
-+DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5,6,7}"
++NUM_GPUS="${NUM_GPUS:-6}"
++DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5}"
 +
 +if [[ ! -x "${PY}" ]]; then
 +  echo "[launch] python not executable: ${PY}" >&2
@@ -672,7 +673,7 @@ index 0000000..3adfb1c
 +  exit 1
 +fi
 +
-+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}"
++export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-2,3,4,5,6,7}"
 +export PYTHONPATH=/home/nvme01/VideoDPO
 +export PYTHONUNBUFFERED=1
 +export PYTHONFAULTHANDLER=1
@@ -749,6 +750,56 @@ index 0000000..3adfb1c
 +
 +echo "STDOUT=${STDOUT}"
 +echo "PID_FILE=${PID_FILE}"
+diff --git a/utils/callbacks.py b/utils/callbacks.py
+index 8ca1b83..908b0a3 100644
+--- a/utils/callbacks.py
++++ b/utils/callbacks.py
+@@ -64,15 +64,20 @@ class ImageLogger(Callback):
+     def log_to_tensorboard(self, pl_module, batch_logs, filename, split, save_fps=10):
+         """log images and videos to tensorboard"""
+         global_step = pl_module.global_step
++        experiment = getattr(pl_module.logger, "experiment", None)
+         for key in batch_logs:
+             value = batch_logs[key]
+             tag = "gs%d-%s/%s-%s" % (global_step, split, filename, key)
+             if isinstance(value, list) and isinstance(value[0], str):
++                if experiment is None or not hasattr(experiment, "add_text"):
++                    mainlogger.info("Skip tensorboard text log for %s: logger has no add_text", tag)
++                    continue
+                 captions = " |------| ".join(value)
+-                pl_module.logger.experiment.add_text(
+-                    tag, captions, global_step=global_step
+-                )
++                experiment.add_text(tag, captions, global_step=global_step)
+             elif isinstance(value, torch.Tensor) and value.dim() == 5:
++                if experiment is None or not hasattr(experiment, "add_video"):
++                    mainlogger.info("Skip tensorboard video log for %s: logger has no add_video", tag)
++                    continue
+                 video = value
+                 n = video.shape[0]
+                 video = video.permute(2, 0, 1, 3, 4)  # t,n,c,h,w
+@@ -85,16 +90,15 @@ class ImageLogger(Callback):
+                 )  # stack in temporal dim [t, 3, n*h, w]
+                 grid = (grid + 1.0) / 2.0
+                 grid = grid.unsqueeze(dim=0)
+-                pl_module.logger.experiment.add_video(
+-                    tag, grid, fps=save_fps, global_step=global_step
+-                )
++                experiment.add_video(tag, grid, fps=save_fps, global_step=global_step)
+             elif isinstance(value, torch.Tensor) and value.dim() == 4:
++                if experiment is None or not hasattr(experiment, "add_image"):
++                    mainlogger.info("Skip tensorboard image log for %s: logger has no add_image", tag)
++                    continue
+                 img = value
+                 grid = torchvision.utils.make_grid(img, nrow=int(n))
+                 grid = (grid + 1.0) / 2.0  # -1,1 -> 0,1; c,h,w
+-                pl_module.logger.experiment.add_image(
+-                    tag, grid, global_step=global_step
+-                )
++                experiment.add_image(tag, grid, global_step=global_step)
+             else:
+                 pass
+ 
 diff --git a/utils/video_inpainting_validation.py b/utils/video_inpainting_validation.py
 new file mode 100644
 index 0000000..39f8a6d
