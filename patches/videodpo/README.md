@@ -20,17 +20,21 @@ git checkout main
 git checkout -B h20-videoinpaint-dpo-adapter origin/main
 git am /home/nvme01/H20_Video_inpainting_DPO/patches/videodpo/h20_videoinpaint_dpo_adapter.patch
 
-INSTALL_SKIMAGE=1 MAX_PAIR_STEPS=10000 DPO_DIAG_EVERY=300 VAL_EVERY=2000 \
+MAX_PAIR_STEPS=10000 DPO_DIAG_EVERY=300 CKPT_EVERY=2000 \
   bash scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 
 LOG=$(ls -t /home/nvme01/H20_Video_inpainting_DPO/logs/vc2_dpo_videoinpainting_h20_gpu2-7_*.stdout.log | head -n 1)
-tail -f "$LOG" | grep --line-buffered "\\[dpo_diag\\]\\|\\[video_inpaint_val\\]"
+tail -f "$LOG" | grep --line-buffered "\\[dpo_diag\\]"
 ```
 
-All stdout diagnostics, `[dpo_diag]` intermediate metrics, and
-`[video_inpaint_val]` PSNR/SSIM lines are written under:
+All stdout diagnostics and `[dpo_diag]` intermediate metrics are written under:
 
 `/home/nvme01/H20_Video_inpainting_DPO/logs`
+
+This run intentionally does not compute PSNR/SSIM. It only logs DPO intermediate
+metrics such as `implicit_acc`, `inside_term_mean`, `dpo_loss`, `mw/mwref`,
+`ml/mlref`, `win_gap`, `lose_gap`, `reward_margin`, `sigma_term`, and
+`kl_divergence`.
 
 Step convention:
 
