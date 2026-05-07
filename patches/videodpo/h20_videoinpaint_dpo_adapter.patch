@@ -1,4 +1,4 @@
-From b70ea4ddd9c28e344b4661ea23cb57fc5f197cda Mon Sep 17 00:00:00 2001
+From 68f992dc4b6a895dc497fb006bd51af14c6d0f5c Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
@@ -7,12 +7,12 @@ Subject: [PATCH] Add H20 VideoInpainting DPO adapter
  data/video_inpainting_dpo_data.py             | 267 ++++++++++++++++++
  lvdm/models/ddpm3d.py                         | 167 +++++++++--
  lvdm/models/turbo_utils/turbo_scheduler.py    |  52 ++++
- scripts/train.py                              |   8 +-
+ scripts/train.py                              |  13 +-
  scripts/train_utils.py                        |  28 +-
- ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 144 ++++++++++
- utils/callbacks.py                            |  22 +-
+ ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 146 ++++++++++
+ utils/callbacks.py                            |  26 +-
  utils/video_inpainting_validation.py          | 195 +++++++++++++
- 8 files changed, 840 insertions(+), 43 deletions(-)
+ 8 files changed, 851 insertions(+), 43 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -562,7 +562,7 @@ index 265419f..646fd0e 100644
  from diffusers.configuration_utils import register_to_config
  from diffusers.utils import BaseOutput
 diff --git a/scripts/train.py b/scripts/train.py
-index fff90b9..38b49fb 100644
+index fff90b9..cd44031 100644
 --- a/scripts/train.py
 +++ b/scripts/train.py
 @@ -93,8 +93,9 @@ if __name__ == "__main__":
@@ -577,13 +577,18 @@ index fff90b9..38b49fb 100644
      os.environ.pop("SLURM_NTASKS", None)
      parser = get_parser()
      ## Extends existing argparse by default Trainer attributes
-@@ -151,7 +152,8 @@ if __name__ == "__main__":
+@@ -151,7 +152,13 @@ if __name__ == "__main__":
      for k in get_nondefault_trainer_args(args):
          trainer_config[k] = getattr(args, k)
  
 -    print(trainer_config)
 +    if global_rank == 0:
-+        print(trainer_config)
++        if os.environ.get("VIDEODPO_STEP_ONLY_LOGS") == "1":
++            visible_trainer_config = OmegaConf.to_container(trainer_config, resolve=True)
++            visible_trainer_config.pop("max_epochs", None)
++            print(visible_trainer_config)
++        else:
++            print(trainer_config)
      num_nodes = trainer_config.num_nodes
      ngpu_per_node = trainer_config.devices
      logger.info(f"Running on {num_rank}={num_nodes}x{ngpu_per_node} GPUs")
@@ -639,10 +644,10 @@ index 27d3cb0..712afc0 100644
      logger.addHandler(fh)
 diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 new file mode 100755
-index 0000000..625b25c
+index 0000000..13602f6
 --- /dev/null
 +++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
-@@ -0,0 +1,144 @@
+@@ -0,0 +1,146 @@
 +#!/usr/bin/env bash
 +set -euo pipefail
 +
@@ -692,6 +697,7 @@ index 0000000..625b25c
 +export PYTHONPATH=/home/nvme01/VideoDPO
 +export PYTHONUNBUFFERED=1
 +export PYTHONFAULTHANDLER=1
++export TQDM_DISABLE=1
 +export TOKENIZERS_PARALLELISM=false
 +export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 +export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
@@ -701,6 +707,7 @@ index 0000000..625b25c
 +export VIDEODPO_MAX_OPT_STEPS="${MAX_OPT_STEPS}"
 +export VIDEODPO_MAX_PAIR_STEPS="${MAX_PAIR_STEPS}"
 +export VIDEODPO_PAIR_STEPS_PER_OPT_STEP="${PAIR_STEPS_PER_OPT_STEP}"
++export VIDEODPO_STEP_ONLY_LOGS=1
 +export VIDEODPO_CONSOLE_LOG_LEVEL="${VIDEODPO_CONSOLE_LOG_LEVEL:-INFO}"
 +export VIDEODPO_FILE_LOG_LEVEL="${VIDEODPO_FILE_LOG_LEVEL:-INFO}"
 +export VIDEOINPAINTING_REPO
@@ -740,9 +747,9 @@ index 0000000..625b25c
 +  lightning.trainer.devices="${NUM_GPUS}"
 +  lightning.trainer.accelerator=gpu
 +  lightning.trainer.max_steps="${MAX_OPT_STEPS}"
-+  lightning.trainer.max_epochs=1000
 +  lightning.trainer.accumulate_grad_batches=1
 +  lightning.trainer.log_every_n_steps=1
++  lightning.trainer.enable_progress_bar=false
 +  lightning.trainer.precision=32
 +  lightning.callbacks.image_logger.params.batch_frequency=-1
 +  lightning.callbacks.metrics_over_trainsteps_checkpoint.params.every_n_train_steps="${OPT_VAL_EVERY}"
@@ -788,7 +795,7 @@ index 0000000..625b25c
 +echo "STDOUT=${STDOUT}"
 +echo "PID_FILE=${PID_FILE}"
 diff --git a/utils/callbacks.py b/utils/callbacks.py
-index 8ca1b83..908b0a3 100644
+index 8ca1b83..9b4e298 100644
 --- a/utils/callbacks.py
 +++ b/utils/callbacks.py
 @@ -64,15 +64,20 @@ class ImageLogger(Callback):
@@ -837,6 +844,24 @@ index 8ca1b83..908b0a3 100644
              else:
                  pass
  
+@@ -163,6 +167,8 @@ class CUDACallback(Callback):
+     # see https://github.com/SeanNaren/minGPT/blob/master/mingpt/callback.py
+ 
+     def on_train_epoch_start(self, trainer, pl_module):
++        if os.environ.get("VIDEODPO_STEP_ONLY_LOGS") == "1":
++            return
+         # Reset the memory use counter
+         # lightning update
+         if int((pl.__version__).split(".")[1]) >= 7:
+@@ -174,6 +180,8 @@ class CUDACallback(Callback):
+         self.start_time = time.time()
+ 
+     def on_train_epoch_end(self, trainer, pl_module):
++        if os.environ.get("VIDEODPO_STEP_ONLY_LOGS") == "1":
++            return
+         if int((pl.__version__).split(".")[1]) >= 7:
+             gpu_index = trainer.strategy.root_device.index
+         else:
 diff --git a/utils/video_inpainting_validation.py b/utils/video_inpainting_validation.py
 new file mode 100644
 index 0000000..6946105
