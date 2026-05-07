@@ -1,18 +1,18 @@
-From 1f763386aa465ffe9a11206d29bfd8e381691f25 Mon Sep 17 00:00:00 2001
+From b70ea4ddd9c28e344b4661ea23cb57fc5f197cda Mon Sep 17 00:00:00 2001
 From: jh5117-debug <jh5117@columbia.edu>
 Date: Wed, 6 May 2026 18:01:35 +0200
 Subject: [PATCH] Add H20 VideoInpainting DPO adapter
 
 ---
  data/video_inpainting_dpo_data.py             | 267 ++++++++++++++++++
- lvdm/models/ddpm3d.py                         | 159 +++++++++--
+ lvdm/models/ddpm3d.py                         | 167 +++++++++--
  lvdm/models/turbo_utils/turbo_scheduler.py    |  52 ++++
  scripts/train.py                              |   8 +-
  scripts/train_utils.py                        |  28 +-
- ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 115 ++++++++
+ ...unch_vc2_dpo_videoinpainting_h20_gpu0_7.sh | 144 ++++++++++
  utils/callbacks.py                            |  22 +-
- utils/video_inpainting_validation.py          | 184 ++++++++++++
- 8 files changed, 792 insertions(+), 43 deletions(-)
+ utils/video_inpainting_validation.py          | 195 +++++++++++++
+ 8 files changed, 840 insertions(+), 43 deletions(-)
  create mode 100644 data/video_inpainting_dpo_data.py
  create mode 100755 scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
  create mode 100644 utils/video_inpainting_validation.py
@@ -291,7 +291,7 @@ index 0000000..c7b6bcd
 +                continue
 +        raise RuntimeError(f"Failed to load a valid VideoInpainting DPO pair near index={index}: {last_error}")
 diff --git a/lvdm/models/ddpm3d.py b/lvdm/models/ddpm3d.py
-index 66d7251..6fd1947 100644
+index 66d7251..f36ca44 100644
 --- a/lvdm/models/ddpm3d.py
 +++ b/lvdm/models/ddpm3d.py
 @@ -43,7 +43,14 @@ from utils.common_utils import instantiate_from_config
@@ -310,7 +310,7 @@ index 66d7251..6fd1947 100644
  
  class DDPM(pl.LightningModule):
      # classic DDPM with Gaussian diffusion, in image space
-@@ -373,35 +380,146 @@ class DDPM(pl.LightningModule):
+@@ -373,35 +380,154 @@ class DDPM(pl.LightningModule):
          )
  
      def dpo_loss(self, target, pred):
@@ -410,18 +410,26 @@ index 66d7251..6fd1947 100644
 +        )
 +        if should_log_diag:
 +            trainer = getattr(self, "trainer", None)
-+            max_steps = getattr(trainer, "max_steps", None)
-+            if max_steps is None or int(max_steps) < 0:
-+                max_steps = _env_int("VIDEODPO_MAX_STEPS", -1)
-+            max_steps_text = str(int(max_steps)) if int(max_steps) > 0 else "unknown"
++            max_opt_steps = getattr(trainer, "max_steps", None)
++            if max_opt_steps is None or int(max_opt_steps) < 0:
++                max_opt_steps = _env_int("VIDEODPO_MAX_OPT_STEPS", -1)
++            step_multiplier = max(1, _env_int("VIDEODPO_PAIR_STEPS_PER_OPT_STEP", 1))
++            max_pair_steps = _env_int("VIDEODPO_MAX_PAIR_STEPS", -1)
++            pair_step = int(self.global_step) * step_multiplier
++            if max_pair_steps > 0:
++                pair_step = min(pair_step, max_pair_steps)
++            max_pair_steps_text = str(int(max_pair_steps)) if int(max_pair_steps) > 0 else "unknown"
++            max_opt_steps_text = str(int(max_opt_steps)) if int(max_opt_steps) > 0 else "unknown"
 +            mainlogger.info(
-+                "[dpo_diag] global_step=%d/%s implicit_acc=%.6f implicit_acc_count=%d/%d "
++                "[dpo_diag] step=%d/%s global_step=%d/%s implicit_acc=%.6f implicit_acc_count=%d/%d "
 +                "inside_term_mean=%.6f inside_term_min=%.6f "
 +                "inside_term_max=%.6f loser_dominant_ratio=%.6f dpo_loss=%.6f total_loss=%.6f "
 +                "factor=%.6f mw=%.6f mwref=%.6f ml=%.6f mlref=%.6f "
 +                "win_gap=%.6f lose_gap=%.6f reward_margin=%.6f sigma_term=%.6f kl_divergence=%.6f",
++                pair_step,
++                max_pair_steps_text,
 +                int(self.global_step),
-+                max_steps_text,
++                max_opt_steps_text,
 +                diagnostics["global/implicit_acc"].item(),
 +                int(diagnostics["global/implicit_acc_correct"].item()),
 +                int(diagnostics["global/implicit_acc_total"].item()),
@@ -475,7 +483,7 @@ index 66d7251..6fd1947 100644
  
      def get_loss(self, pred, target, mean=True):
          if self.loss_type == "l1":
-@@ -1125,7 +1243,6 @@ class LatentDiffusion(DDPM):
+@@ -1125,7 +1251,6 @@ class LatentDiffusion(DDPM):
          return loss, loss_dict
  
      def training_step(self, batch, batch_idx):
@@ -483,7 +491,7 @@ index 66d7251..6fd1947 100644
          loss, loss_dict = self.shared_step(
              batch, random_uncond=self.classifier_free_guidance
          )
-@@ -1932,4 +2049,4 @@ class DiffusionWrapper(pl.LightningModule):
+@@ -1932,4 +2057,4 @@ class DiffusionWrapper(pl.LightningModule):
          else:
              raise NotImplementedError()
  
@@ -631,10 +639,10 @@ index 27d3cb0..712afc0 100644
      logger.addHandler(fh)
 diff --git a/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
 new file mode 100755
-index 0000000..bcc4f2b
+index 0000000..625b25c
 --- /dev/null
 +++ b/scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
-@@ -0,0 +1,115 @@
+@@ -0,0 +1,144 @@
 +#!/usr/bin/env bash
 +set -euo pipefail
 +
@@ -651,14 +659,21 @@ index 0000000..bcc4f2b
 +
 +STDOUT="${LOG_ROOT}/${RUN_TAG}.stdout.log"
 +PID_FILE="${LOG_ROOT}/${RUN_TAG}.pid"
-+MAX_STEPS="${MAX_STEPS:-10000}"
-+DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
-+VAL_EVERY="${VAL_EVERY:-2000}"
 +VAL_MAX_VIDEOS="${VAL_MAX_VIDEOS:-1}"
 +VAL_DDIM_STEPS="${VAL_DDIM_STEPS:-6}"
 +NUM_WORKERS="${NUM_WORKERS:-4}"
 +NUM_GPUS="${NUM_GPUS:-6}"
 +DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5}"
++BATCH_SIZE="${BATCH_SIZE:-1}"
++MAX_PAIR_STEPS="${MAX_PAIR_STEPS:-${MAX_STEPS:-10000}}"
++DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
++VAL_EVERY="${VAL_EVERY:-2000}"
++PAIR_STEPS_PER_OPT_STEP="${PAIR_STEPS_PER_OPT_STEP:-$((NUM_GPUS * BATCH_SIZE))}"
++MAX_OPT_STEPS="${MAX_OPT_STEPS:-$(((MAX_PAIR_STEPS + PAIR_STEPS_PER_OPT_STEP - 1) / PAIR_STEPS_PER_OPT_STEP))}"
++OPT_DIAG_EVERY="${OPT_DIAG_EVERY:-$(((DPO_DIAG_EVERY + PAIR_STEPS_PER_OPT_STEP - 1) / PAIR_STEPS_PER_OPT_STEP))}"
++OPT_VAL_EVERY="${OPT_VAL_EVERY:-$(((VAL_EVERY + PAIR_STEPS_PER_OPT_STEP - 1) / PAIR_STEPS_PER_OPT_STEP))}"
++OPT_DIAG_EVERY="$((OPT_DIAG_EVERY < 1 ? 1 : OPT_DIAG_EVERY))"
++OPT_VAL_EVERY="$((OPT_VAL_EVERY < 1 ? 1 : OPT_VAL_EVERY))"
 +
 +if [[ ! -x "${PY}" ]]; then
 +  echo "[launch] python not executable: ${PY}" >&2
@@ -682,11 +697,30 @@ index 0000000..bcc4f2b
 +export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
 +export NCCL_ASYNC_ERROR_HANDLING=1
 +export VIDEODPO_LOG_DPO_DIAG=1
-+export VIDEODPO_DPO_DIAG_EVERY="${DPO_DIAG_EVERY}"
-+export VIDEODPO_MAX_STEPS="${MAX_STEPS}"
++export VIDEODPO_DPO_DIAG_EVERY="${OPT_DIAG_EVERY}"
++export VIDEODPO_MAX_OPT_STEPS="${MAX_OPT_STEPS}"
++export VIDEODPO_MAX_PAIR_STEPS="${MAX_PAIR_STEPS}"
++export VIDEODPO_PAIR_STEPS_PER_OPT_STEP="${PAIR_STEPS_PER_OPT_STEP}"
 +export VIDEODPO_CONSOLE_LOG_LEVEL="${VIDEODPO_CONSOLE_LOG_LEVEL:-INFO}"
 +export VIDEODPO_FILE_LOG_LEVEL="${VIDEODPO_FILE_LOG_LEVEL:-INFO}"
 +export VIDEOINPAINTING_REPO
++
++if [[ "${INSTALL_SKIMAGE:-0}" == "1" ]]; then
++  echo "[launch] INSTALL_SKIMAGE=1, installing scikit-image in ${PY}"
++  "${PY}" -m pip install -q scikit-image
++fi
++
++"${PY}" - <<PY
++import sys
++import numpy as np
++repo = "${VIDEOINPAINTING_REPO}"
++if repo not in sys.path:
++    sys.path.insert(0, repo)
++from inference.metrics import compute_psnr, compute_ssim
++a = np.zeros((16, 16, 3), dtype=np.uint8)
++b = np.zeros((16, 16, 3), dtype=np.uint8)
++print("[launch] metric_preflight=ok metrics=inference.metrics psnr=%.4f ssim=%.4f" % (compute_psnr(a, b), compute_ssim(a, b)))
++PY
 +
 +CMD=(
 +  "${PY}" -m torch.distributed.run
@@ -705,22 +739,22 @@ index 0000000..bcc4f2b
 +  lightning.trainer.num_nodes=1
 +  lightning.trainer.devices="${NUM_GPUS}"
 +  lightning.trainer.accelerator=gpu
-+  lightning.trainer.max_steps="${MAX_STEPS}"
++  lightning.trainer.max_steps="${MAX_OPT_STEPS}"
 +  lightning.trainer.max_epochs=1000
 +  lightning.trainer.accumulate_grad_batches=1
 +  lightning.trainer.log_every_n_steps=1
 +  lightning.trainer.precision=32
 +  lightning.callbacks.image_logger.params.batch_frequency=-1
-+  lightning.callbacks.metrics_over_trainsteps_checkpoint.params.every_n_train_steps="${VAL_EVERY}"
++  lightning.callbacks.metrics_over_trainsteps_checkpoint.params.every_n_train_steps="${OPT_VAL_EVERY}"
 +  lightning.callbacks.video_inpainting_metric_logger.target=utils.video_inpainting_validation.VideoInpaintingMetricLogger
-+  lightning.callbacks.video_inpainting_metric_logger.params.every_n_train_steps="${VAL_EVERY}"
++  lightning.callbacks.video_inpainting_metric_logger.params.every_n_train_steps="${OPT_VAL_EVERY}"
 +  lightning.callbacks.video_inpainting_metric_logger.params.max_videos="${VAL_MAX_VIDEOS}"
 +  lightning.callbacks.video_inpainting_metric_logger.params.ddim_steps="${VAL_DDIM_STEPS}"
 +  lightning.callbacks.video_inpainting_metric_logger.params.unconditional_guidance_scale=12.0
 +  lightning.callbacks.video_inpainting_metric_logger.params.video_inpainting_repo="${VIDEOINPAINTING_REPO}"
 +  model.params.beta_dpo=5000.0
 +  model.params.log_every_t=100
-+  data.params.batch_size=1
++  data.params.batch_size="${BATCH_SIZE}"
 +  data.params.num_workers="${NUM_WORKERS}"
 +  data.params.train.target=data.video_inpainting_dpo_data.VideoInpaintingDPODataset
 +  data.params.train.params.data_root="${H20_DPO_ROOT}"
@@ -740,7 +774,10 @@ index 0000000..bcc4f2b
 +echo "[launch] NUM_GPUS=${NUM_GPUS} DEVICE_LIST=${DEVICE_LIST}"
 +echo "[launch] H20_DPO_ROOT=${H20_DPO_ROOT}"
 +echo "[launch] VIDEOINPAINTING_REPO=${VIDEOINPAINTING_REPO}"
-+echo "[launch] MAX_STEPS=${MAX_STEPS} diag_every=${DPO_DIAG_EVERY} val_every=${VAL_EVERY}"
++echo "[launch] BATCH_SIZE=${BATCH_SIZE}"
++echo "[launch] MAX_PAIR_STEPS=${MAX_PAIR_STEPS} pair_step_per_opt_step=${PAIR_STEPS_PER_OPT_STEP}"
++echo "[launch] MAX_OPT_STEPS=${MAX_OPT_STEPS} opt_diag_every=${OPT_DIAG_EVERY} opt_val_every=${OPT_VAL_EVERY}"
++echo "[launch] pair_diag_every=${DPO_DIAG_EVERY} pair_val_every=${VAL_EVERY}"
 +echo "[launch] PY=${PY}"
 +"${PY}" -V
 +
@@ -802,10 +839,10 @@ index 8ca1b83..908b0a3 100644
  
 diff --git a/utils/video_inpainting_validation.py b/utils/video_inpainting_validation.py
 new file mode 100644
-index 0000000..39f8a6d
+index 0000000..6946105
 --- /dev/null
 +++ b/utils/video_inpainting_validation.py
-@@ -0,0 +1,184 @@
+@@ -0,0 +1,195 @@
 +"""PSNR/SSIM callback for VideoDPO runs on video-inpainting preference pairs."""
 +
 +from __future__ import annotations
@@ -897,6 +934,15 @@ index 0000000..39f8a6d
 +        self.enabled = bool(enabled)
 +        self._last_step = -1
 +
++    def _pair_step(self, trainer) -> int:
++        opt_step = int(trainer.global_step)
++        multiplier = max(1, int(os.environ.get("VIDEODPO_PAIR_STEPS_PER_OPT_STEP", "1")))
++        max_pair_steps = int(os.environ.get("VIDEODPO_MAX_PAIR_STEPS", "-1"))
++        pair_step = opt_step * multiplier
++        if max_pair_steps > 0:
++            pair_step = min(pair_step, max_pair_steps)
++        return pair_step
++
 +    def _should_run(self, trainer) -> bool:
 +        step = int(trainer.global_step)
 +        if not self.enabled or self.every_n_train_steps <= 0:
@@ -921,20 +967,21 @@ index 0000000..39f8a6d
 +        if not self._should_run(trainer):
 +            return
 +
-+        step = int(trainer.global_step)
-+        self._last_step = step
++        opt_step = int(trainer.global_step)
++        step = self._pair_step(trainer)
++        self._last_step = opt_step
 +        rank = int(getattr(trainer, "global_rank", 0))
 +
-+        self._barrier(trainer, f"video_inpaint_val_start_{step}")
++        self._barrier(trainer, f"video_inpaint_val_start_{opt_step}")
 +        if rank != 0:
-+            self._barrier(trainer, f"video_inpaint_val_end_{step}")
++            self._barrier(trainer, f"video_inpaint_val_end_{opt_step}")
 +            return
 +
 +        try:
 +            compute_psnr, compute_ssim, metrics_path = _load_video_inpainting_metrics(self.video_inpainting_repo)
 +        except Exception as exc:
-+            mainlogger.warning(f"[video_inpaint_val] step={step} skipped: {exc}")
-+            self._barrier(trainer, f"video_inpaint_val_end_{step}")
++            mainlogger.warning(f"[video_inpaint_val] step={step} global_step={opt_step} skipped: {exc}")
++            self._barrier(trainer, f"video_inpaint_val_end_{opt_step}")
 +            return
 +
 +        was_training = pl_module.training
@@ -948,7 +995,7 @@ index 0000000..39f8a6d
 +            )
 +            samples = logs.get("samples")
 +            if samples is None:
-+                mainlogger.warning(f"[video_inpaint_val] step={step} skipped: log_images returned no samples")
++                mainlogger.warning(f"[video_inpaint_val] step={step} global_step={opt_step} skipped: log_images returned no samples")
 +                return
 +
 +            target = batch[pl_module.first_stage_key][:, :3]
@@ -956,7 +1003,7 @@ index 0000000..39f8a6d
 +            target = target.detach().cpu()
 +            count = min(self.max_videos, target.shape[0], samples.shape[0])
 +            if count <= 0:
-+                mainlogger.warning(f"[video_inpaint_val] step={step} skipped: empty sample/target tensors")
++                mainlogger.warning(f"[video_inpaint_val] step={step} global_step={opt_step} skipped: empty sample/target tensors")
 +                return
 +
 +            per_video = []
@@ -975,21 +1022,22 @@ index 0000000..39f8a6d
 +            pl_module.log("val/psnr_mean", psnr, logger=True, on_step=True, on_epoch=False, rank_zero_only=True)
 +            pl_module.log("val/ssim_mean", ssim, logger=True, on_step=True, on_epoch=False, rank_zero_only=True)
 +            mainlogger.info(
-+                "[video_inpaint_val] step=%d videos=%d psnr=%.4f ssim=%.4f "
++                "[video_inpaint_val] step=%d global_step=%d videos=%d psnr=%.4f ssim=%.4f "
 +                "target=winner_gt generated=videodpo_sample metrics=%s",
 +                step,
++                opt_step,
 +                count,
 +                psnr,
 +                ssim,
 +                metrics_path,
 +            )
 +        except Exception as exc:
-+            mainlogger.warning(f"[video_inpaint_val] step={step} failed: {type(exc).__name__}: {exc}")
++            mainlogger.warning(f"[video_inpaint_val] step={step} global_step={opt_step} failed: {type(exc).__name__}: {exc}")
 +        finally:
 +            if was_training:
 +                pl_module.train()
 +            torch.cuda.empty_cache()
-+            self._barrier(trainer, f"video_inpaint_val_end_{step}")
++            self._barrier(trainer, f"video_inpaint_val_end_{opt_step}")
 -- 
 2.34.1
 
