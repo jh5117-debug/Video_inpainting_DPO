@@ -20,3 +20,14 @@ For SC, if the existing DiffuEraser-DPO environment must be reused first, run:
 CONDA_ENV=diffueraser \
 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
 ```
+
+If the smoke reports missing modules such as `pytorch_lightning`, rerun with:
+
+```bash
+CONDA_ENV=diffueraser INSTALL_MINIMAL=1 \
+bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
+```
+
+`INSTALL_MINIMAL=1` installs only VideoDPO smoke/runtime dependencies listed in
+`videodpo_requirements.minimal_no_torch.txt`; it intentionally excludes
+`torch`, `torchvision`, `numpy`, and `xformers`.

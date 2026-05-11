@@ -12,6 +12,7 @@ CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
 FALLBACK_CONDA_ENV="${FALLBACK_CONDA_ENV:-}"
 CREATE_ENV="${CREATE_ENV:-0}"
 INSTALL_REQUIREMENTS="${INSTALL_REQUIREMENTS:-0}"
+INSTALL_MINIMAL="${INSTALL_MINIMAL:-0}"
 PYTHON_VERSION="${PYTHON_VERSION:-3.10}"
 EXPORT_ENV="${EXPORT_ENV:-1}"
 OUT_DIR="${OUT_DIR:-${PROJECT_ROOT}/env_exports}"
@@ -55,12 +56,34 @@ fi
 
 mkdir -p "${OUT_DIR}"
 NORMALIZED_REQ="${OUT_DIR}/videodpo_requirements.normalized.txt"
-sed 's/^tenosrboard$/tensorboard/' "${VIDEODPO_REPO}/requirements.txt" > "${NORMALIZED_REQ}"
+sed -e 's/^tenosrboard$/tensorboard/' -e 's/[[:space:]]*$//' "${VIDEODPO_REPO}/requirements.txt" > "${NORMALIZED_REQ}"
+MINIMAL_REQ="${OUT_DIR}/videodpo_requirements.minimal_no_torch.txt"
+cat > "${MINIMAL_REQ}" <<'REQ'
+pytorch-lightning==1.9.5
+omegaconf
+einops
+tqdm
+PyYAML
+decord==0.6.0
+av
+open_clip_torch
+transformers
+fairscale
+timm
+peft==0.13.2
+REQ
 
 if [[ "${INSTALL_REQUIREMENTS}" == "1" ]]; then
   echo "[videodpo-env] installing VideoDPO requirements into ${CONDA_ENV}"
   conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -U pip wheel setuptools
   conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -r "${NORMALIZED_REQ}"
+fi
+
+if [[ "${INSTALL_MINIMAL}" == "1" ]]; then
+  echo "[videodpo-env] installing minimal VideoDPO smoke requirements into ${CONDA_ENV}"
+  echo "[videodpo-env] minimal list intentionally excludes torch/torchvision/numpy/xformers"
+  conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -U pip wheel setuptools
+  conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -r "${MINIMAL_REQ}"
 fi
 
 echo "[videodpo-env] smoke env=${CONDA_ENV}"
@@ -92,9 +115,19 @@ required = [
     "timm",
     "peft",
 ]
+missing = []
 for name in required:
-    module = importlib.import_module(name)
-    print(f"[smoke][OK] {name} {getattr(module, '__version__', '')}".rstrip())
+    try:
+        module = importlib.import_module(name)
+        print(f"[smoke][OK] {name} {getattr(module, '__version__', '')}".rstrip())
+    except Exception as exc:
+        print(f"[smoke][FAIL] {name}: {type(exc).__name__}: {exc}")
+        missing.append(name)
+
+if missing:
+    print("[smoke][ERROR] missing/import-failing modules:", ", ".join(missing))
+    print("[smoke][HINT] rerun with INSTALL_MINIMAL=1 to install VideoDPO smoke deps without reinstalling torch/numpy")
+    raise SystemExit(2)
 
 try:
     importlib.import_module("xformers")

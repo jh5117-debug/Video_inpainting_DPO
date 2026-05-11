@@ -1,0 +1,12 @@
+pytorch-lightning==1.9.5
+omegaconf
+einops
+tqdm
+PyYAML
+decord==0.6.0
+av
+open_clip_torch
+transformers
+fairscale
+timm
+peft==0.13.2
