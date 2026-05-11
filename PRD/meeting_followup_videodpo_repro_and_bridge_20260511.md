@@ -50,7 +50,10 @@ Using the released `vidpro-vc2-dataset` training prompts as the final benchmark 
 
 New files:
 
+- `DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch`
+- `DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch`
 - `DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch`
+- `tools/prepare_videodpo_vc2_dataset.py`
 - `tools/videodpo_prepare_vbench_standard.py`
 - `tools/summarize_vbench_results.py`
 
@@ -61,6 +64,54 @@ The SC script:
 - renames/symlinks `0001.mp4` style outputs into VBench standard filenames `<prompt>-<sample_idx>.mp4`;
 - runs VBench standard-mode evaluation;
 - writes `summary.json` and `summary.csv`.
+
+Before training/evaluation on SC, prepare the released VC2 preference dataset and check VBench:
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+mkdir -p logs
+
+sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch
+```
+
+This writes an absolute VideoDPO train yaml by default:
+
+```text
+${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml
+```
+
+and places the dataset by default under:
+
+```text
+${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset
+```
+
+If VBench is absent on SC, either set `VBENCH_ROOT` to an existing checkout or run the prepare job with:
+
+```bash
+INSTALL_VBENCH=1 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch
+```
+
+VBench metric model weights may still be downloaded lazily during the first real evaluation; keep HF cache on project storage if SC home quota is tight.
+
+Train VC2-DPO on SC:
+
+```bash
+RUN_NAME=sc-vc2-dpo-beta5000 \
+MAX_OPT_STEPS=10000 \
+CKPT_EVERY=1000 \
+BETA_DPO=5000 \
+VC2_DATA_YAML="${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+The trained checkpoints should be under:
+
+```text
+${PROJECT_DATA}/experiments/videodpo_vc2_dpo/${RUN_NAME}/checkpoints
+```
 
 Minimal SC command:
 
@@ -85,7 +136,7 @@ sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch
 Full reproduction-style command with base and DPO checkpoints:
 
 ```bash
-CKPT_SPECS="vc2_base:${PROJECT_DEV}/VideoDPO/checkpoints/vc2/model.ckpt,vc2_dpo:/path/to/videodpo_dpo.ckpt" \
+CKPT_SPECS="vc2_base:${PROJECT_DEV}/VideoDPO/checkpoints/vc2/model.ckpt,vc2_dpo:${PROJECT_DATA}/experiments/videodpo_vc2_dpo/sc-vc2-dpo-beta5000/checkpoints/last.ckpt" \
 SAMPLES_PER_PROMPT=5 \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch
 ```
