@@ -132,18 +132,48 @@ VBench code now comes from `external/VBench`.  VBench metric model weights may s
 Train VC2-DPO on SC:
 
 ```bash
-RUN_NAME=sc-vc2-dpo-beta5000 \
-MAX_OPT_STEPS=10000 \
-CKPT_EVERY=1000 \
+CONDA_ENV=diffueraser \
+RUN_NAME=sc-vc2-dpo-official \
+NUM_GPUS=4 \
+DEVICE_LIST=0,1,2,3 \
+BATCH_SIZE=1 \
+GRAD_ACCUM=2 \
+NUM_WORKERS=16 \
+CKPT_EVERY=499 \
 BETA_DPO=5000 \
 VC2_DATA_YAML="${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
 ```
 
+This is the closest current SC command to the official VC2-DPO training recipe:
+
+- `max_epochs=10` comes from `external/VideoDPO/configs/vc2_dpo/config.yaml`.
+- `every_n_train_steps=499` comes from the official train-step checkpoint callback.
+- `video_length=16` means each training sample is a 16-frame video clip.
+- Validation dataloader is intentionally absent, matching the official README recommendation to disable validation to reduce peak memory.
+
+For controlled internal comparisons, a fixed optimizer-step run can be used by adding `MAX_OPT_STEPS=10000`, but that is no longer a pure official reproduction setting.
+
 The trained checkpoints should be under:
 
 ```text
 ${PROJECT_DATA}/experiments/videodpo_vc2_dpo/${RUN_NAME}/checkpoints
+```
+
+Paper-level validation is not the Lightning validation loop.  It is a post-training VBench sweep over saved checkpoints.  VBench reports the leaderboard-style `quality_score`, `semantic_score`, and `total_score`; the checkpoint selector ranks by `total_score` by default and keeps a selected best checkpoint plus `last.ckpt`:
+
+```bash
+CONDA_ENV=diffueraser \
+TRAIN_RUN_NAME=sc-vc2-dpo-official \
+SAMPLES_PER_PROMPT=5 \
+PRUNE_AFTER=0 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch
+```
+
+Set `PRUNE_AFTER=1` only after confirming the sweep output.  It deletes non-best train-step checkpoints from `trainstep_checkpoints/` after hardlinking the best checkpoint into:
+
+```text
+${PROJECT_DATA}/experiments/videodpo_vc2_dpo/${RUN_NAME}/checkpoints/selected_vbench
 ```
 
 Minimal SC command:

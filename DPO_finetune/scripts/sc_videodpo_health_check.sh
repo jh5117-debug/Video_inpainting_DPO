@@ -303,6 +303,7 @@ for script in \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch" \
+  "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage1.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fullmask_dataset_smoke.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/videodpo_env_smoke_and_export.sh" \
