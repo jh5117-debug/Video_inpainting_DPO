@@ -51,6 +51,8 @@ Using the released `vidpro-vc2-dataset` training prompts as the final benchmark 
 New files:
 
 - `DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch`
+- `DPO_finetune/scripts/sc_prepare_videodpo_vc2_checkpoints.sh`
+- `DPO_finetune/scripts/videodpo_env_smoke_and_export.sh`
 - `DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch`
 - `DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch`
 - `DPO_finetune/scripts/sc_videodpo_health_check.sh`
@@ -73,6 +75,23 @@ git pull --ff-only origin main
 bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
 ```
 
+Prepare or reuse a VideoDPO-compatible conda environment:
+
+```bash
+# Official-style fresh env.  This normalizes the typo `tenosrboard` to `tensorboard`.
+CREATE_ENV=1 INSTALL_REQUIREMENTS=1 CONDA_ENV=videodpo \
+bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
+```
+
+If SC must reuse the existing DiffuEraser-DPO environment temporarily, run:
+
+```bash
+CONDA_ENV=diffueraser \
+bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
+```
+
+On HAL, the existing `diffueraser` env passed a CPU-only VideoDPO smoke on 2026-05-11: key packages imported, `configs/vc2_dpo/config.yaml` loaded, and `lvdm.models.ddpm3d` imported.  It is a compatibility fallback, not the clean official VideoDPO environment.
+
 The SC script:
 
 - runs VC2 inference from `external/VideoDPO`;
@@ -89,6 +108,9 @@ cd "$PROJECT_DEV/Video_inpainting_DPO"
 git pull --ff-only origin main
 mkdir -p logs
 bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
+
+CONDA_ENV=videodpo \
+bash DPO_finetune/scripts/sc_prepare_videodpo_vc2_checkpoints.sh
 
 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch
 ```
