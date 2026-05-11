@@ -91,6 +91,7 @@ def build_cmd(project_root, args):
         "--ref_model_path", ref_model_path,
         "--vae_path", os.path.join(weights_dir, "sd-vae-ft-mse"),
         "--dpo_data_root", dpo_data_root,
+        "--dpo_dataset_type", args.dpo_dataset_type,
         "--output_dir", str(output_dir),
         "--logging_dir", "logs-dpo-stage2",
         "--val_data_dir", eval_dir,
@@ -108,6 +109,9 @@ def build_cmd(project_root, args):
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
         "--beta_dpo", str(args.beta_dpo),
         "--davis_oversample", str(args.davis_oversample),
+        "--videodpo_frame_stride", str(args.videodpo_frame_stride),
+        "--videodpo_clip_length", str(args.videodpo_clip_length),
+        "--videodpo_full_mask_value", str(args.videodpo_full_mask_value),
         "--seed", str(args.seed),
         "--report_to", "wandb",
         "--tracker_project_name", args.wandb_project,
@@ -127,6 +131,8 @@ def build_cmd(project_root, args):
         cmd.append("--chunk_aligned")
     if args.split_pos_neg_forward:
         cmd.append("--split_pos_neg_forward")
+    if args.use_8bit_adam:
+        cmd.append("--use_8bit_adam")
 
     # Metric model paths
     raft_path = os.path.join(weights_dir, "propainter", "raft-things.pth")
@@ -148,6 +154,7 @@ def build_cmd(project_root, args):
         command=cmd,
         inputs={
             "dpo_data_root": dpo_data_root,
+            "dpo_dataset_type": args.dpo_dataset_type,
             "pretrained_dpo_stage1": pretrained_dpo_stage1,
             "ref_model_path": ref_model_path,
             "baseline_unet_path": baseline_unet_path,
@@ -161,6 +168,8 @@ def build_cmd(project_root, args):
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
             "beta_dpo": args.beta_dpo,
+            "videodpo_frame_stride": args.videodpo_frame_stride,
+            "videodpo_full_mask_value": args.videodpo_full_mask_value,
         },
     )
 
@@ -288,6 +297,7 @@ def run(args=None):
     print("=" * 60)
     print(f"  Project Root:       {project_root}")
     print(f"  DPO Data Root:      {dpo_data_root}")
+    print(f"  Dataset Type:       {args.dpo_dataset_type}")
     print(f"  DPO Stage 1:        {dpo_s1}")
     print(f"  Ref Model:          {ref_model}")
     print(f"  GPUs:               {args.num_gpus}")
@@ -299,6 +309,7 @@ def run(args=None):
     print(f"  XFormers:           {args.enable_xformers}")
     print(f"  Grad Ckpt:          {not args.disable_gradient_checkpointing}")
     print(f"  Split Pos/Neg:      {args.split_pos_neg_forward}")
+    print(f"  8bit Adam:          {args.use_8bit_adam}")
     print("=" * 60)
     print(f"\n  Command:\n  {' '.join(cmd[:6])} \\\n    " + " \\\n    ".join(cmd[6:]))
     print()
@@ -319,6 +330,8 @@ def parse_args():
     parser.add_argument("--num_gpus", type=int, default=1)
     parser.add_argument("--weights_dir", type=str, default=None)
     parser.add_argument("--dpo_data_root", type=str, default=None)
+    parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
+                        choices=["diffueraser_inpainting", "videodpo_fullmask"])
     parser.add_argument("--pretrained_dpo_stage1", type=str, default=None)
     parser.add_argument("--ref_model_path", type=str, default=None)
     parser.add_argument("--baseline_unet_path", type=str, default=None)
@@ -347,10 +360,14 @@ def parse_args():
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)
     parser.add_argument("--davis_oversample", type=int, default=10)
+    parser.add_argument("--videodpo_frame_stride", type=int, default=1)
+    parser.add_argument("--videodpo_clip_length", type=float, default=1.0)
+    parser.add_argument("--videodpo_full_mask_value", type=float, default=0.0)
     parser.add_argument("--chunk_aligned", action="store_true")
     parser.add_argument("--enable_xformers", action="store_true")
     parser.add_argument("--disable_gradient_checkpointing", action="store_true")
     parser.add_argument("--split_pos_neg_forward", action="store_true")
+    parser.add_argument("--use_8bit_adam", action="store_true")
     return parser.parse_args()
 
 

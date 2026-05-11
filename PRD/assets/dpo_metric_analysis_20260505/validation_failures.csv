@@ -1,0 +1,4 @@
+experiment,step,error
+VideoDPO_on_VideoInpainting_data,2000,ModuleNotFoundError: No module named 'skimage'
+VideoDPO_on_VideoInpainting_data,4000,ModuleNotFoundError: No module named 'skimage'
+VideoDPO_on_VideoInpainting_data,6000,ModuleNotFoundError: No module named 'skimage'

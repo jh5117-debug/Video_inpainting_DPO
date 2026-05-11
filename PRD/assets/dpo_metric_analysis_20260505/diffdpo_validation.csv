@@ -1,0 +1,6 @@
+experiment,step,psnr,ssim
+DiffDPO_loss,2000,20.455,0.7779
+DiffDPO_loss,4000,19.1507,0.7334
+DiffDPO_loss,6000,19.1513,0.7349
+DiffDPO_loss,8000,16.578,0.6428
+DiffDPO_loss,10000,14.7542,0.5737

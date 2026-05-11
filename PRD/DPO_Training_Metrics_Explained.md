@@ -1,8 +1,21 @@
 # DPO 训练指标说明表
 
 > 对应代码：
-> [train_dpo_stage1.py](/home/hj/Reg_DPO_Inpainting/DPO_finetune/train_dpo_stage1.py)
-> [train_dpo_stage2.py](/home/hj/Reg_DPO_Inpainting/DPO_finetune/train_dpo_stage2.py)
+> [train_stage1.py](/home/hj/Video_inpainting_DPO/training/dpo/train_stage1.py)
+> [train_stage2.py](/home/hj/Video_inpainting_DPO/training/dpo/train_stage2.py)
+
+## 2026-05-09 最新口径
+
+完整项目交接入口见 `PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md` 和 `PRD/PROJECT_HANDOFF_20260509.md`。
+
+当前 DiffDPO 的 `implicit_acc` 诊断已经改成 **video-pair 粒度**：
+
+- 一个 winner/loser 视频片段只算一次判断。
+- `batch_size=1`、8 张卡时，一次 optimizer step 的全局 `implicit_acc` 分母是 `8` 个 video pair，不再是 `8 * 16 = 128` 个 frame。
+- 代码会先把每个视频的 `nframes` 帧 gap 平均成一个 pair margin，再判断 `inside_term > 0`。
+- 当前只改了诊断口径，DPO loss 本身仍保持原来的 frame-level 优化目标。
+
+如果未来把 DPO loss 本身也改成 pair-level，必须作为新实验单独记录，因为那会改变训练目标。
 
 ## 1. 最核心的公式
 

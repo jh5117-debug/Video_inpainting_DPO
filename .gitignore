@@ -29,9 +29,12 @@ converted_weights/
 wandb/
 runs/
 outputs/
+smoke_outputs/
+Diffueraser_DPO_Log/
 checkpoints/
 logs/
 log/
+log.log
 .wandb_cache/
 .hf_cache/
 .hf_repair_stage_dirs/

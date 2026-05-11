@@ -35,6 +35,7 @@ DEFAULT_CONDA_ENV_PREFIX="${PROJECT_DEV}/conda_envs/diffueraser"
 NUM_GPUS=${NUM_GPUS:-8}
 WEIGHTS_DIR=${WEIGHTS_DIR:-${DATA}/weights}
 DPO_DATA_ROOT=${DPO_DATA_ROOT:-${DATA}/DPO_Finetune_data}
+DPO_DATASET_TYPE=${DPO_DATASET_TYPE:-diffueraser_inpainting}
 VAL_DATA_DIR=${VAL_DATA_DIR:-${DATA}/davis_432_240}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
 BATCH_SIZE=${BATCH_SIZE:-1}
@@ -46,6 +47,7 @@ MAX_STEPS=${MAX_STEPS:-20000}
 CKPT_STEPS=${CKPT_STEPS:-2000}
 CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
+RESOLUTION=${RESOLUTION:-512}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
@@ -53,6 +55,9 @@ VAE_DTYPE=${VAE_DTYPE:-auto}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
 BETA_DPO=${BETA_DPO:-500.0}
 DAVIS_OVERSAMPLE=${DAVIS_OVERSAMPLE:-10}
+VIDEODPO_FRAME_STRIDE=${VIDEODPO_FRAME_STRIDE:-1}
+VIDEODPO_CLIP_LENGTH=${VIDEODPO_CLIP_LENGTH:-1.0}
+VIDEODPO_FULL_MASK_VALUE=${VIDEODPO_FULL_MASK_VALUE:-0.0}
 EXPERIMENTS_DIR=${EXPERIMENTS_DIR:-${DATA}/experiments}
 RUN_NAME=${RUN_NAME:-sc-dpo-stage1-newdata-bf16-raw6-nodil}
 RUN_VERSION=${RUN_VERSION:-}
@@ -63,6 +68,7 @@ CHUNK_ALIGNED=${CHUNK_ALIGNED:-1}
 XFORMERS=${XFORMERS:-0}
 GRADIENT_CHECKPOINTING=${GRADIENT_CHECKPOINTING:-1}
 SPLIT_POS_NEG_FORWARD=${SPLIT_POS_NEG_FORWARD:-1}
+USE_8BIT_ADAM=${USE_8BIT_ADAM:-0}
 MAIN_PROCESS_PORT=${MAIN_PROCESS_PORT:-0}
 VAL_NUM_INFERENCE_STEPS=${VAL_NUM_INFERENCE_STEPS:-6}
 VAL_MASK_DILATION_ITER=${VAL_MASK_DILATION_ITER:-0}
@@ -97,6 +103,12 @@ if [[ ! -d "$PROJECT_ROOT" ]]; then
 fi
 
 cd "$PROJECT_ROOT"
+
+echo "[dpo-stage1] dataset_type=${DPO_DATASET_TYPE}"
+echo "[dpo-stage1] dpo_data_root=${DPO_DATA_ROOT}"
+if [[ "${DPO_DATASET_TYPE}" == "videodpo_fullmask" ]]; then
+  echo "[dpo-stage1] videodpo_frame_stride=${VIDEODPO_FRAME_STRIDE} full_mask_value=${VIDEODPO_FULL_MASK_VALUE}"
+fi
 
 REF_MODEL_ARG=()
 if [[ -n "${REF_MODEL_PATH}" ]]; then
@@ -146,6 +158,13 @@ case "${SPLIT_POS_NEG_FORWARD,,}" in
     ;;
 esac
 
+USE_8BIT_ADAM_ARG=()
+case "${USE_8BIT_ADAM,,}" in
+  1|true|yes|on)
+    USE_8BIT_ADAM_ARG=(--use_8bit_adam)
+    ;;
+esac
+
 # === 所有缓存/日志/artifacts 必须在项目目录内，禁止写入 home ===
 export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
@@ -168,6 +187,7 @@ python training/dpo/scripts/run_stage1.py \
   --num_gpus ${NUM_GPUS} \
   --weights_dir ${WEIGHTS_DIR} \
   --dpo_data_root ${DPO_DATA_ROOT} \
+  --dpo_dataset_type ${DPO_DATASET_TYPE} \
   --val_data_dir ${VAL_DATA_DIR} \
   --experiments_dir ${EXPERIMENTS_DIR} \
   --run_name ${RUN_NAME} \
@@ -182,6 +202,7 @@ python training/dpo/scripts/run_stage1.py \
   --validation_steps ${VAL_STEPS} \
   --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
   --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
+  --resolution ${RESOLUTION} \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
@@ -191,11 +212,15 @@ python training/dpo/scripts/run_stage1.py \
   --sft_reg_weight ${SFT_REG_WEIGHT} \
   --lose_gap_weight ${DPO_LOSE_GAP_WEIGHT} \
   --davis_oversample ${DAVIS_OVERSAMPLE} \
+  --videodpo_frame_stride ${VIDEODPO_FRAME_STRIDE} \
+  --videodpo_clip_length ${VIDEODPO_CLIP_LENGTH} \
+  --videodpo_full_mask_value ${VIDEODPO_FULL_MASK_VALUE} \
   "${MAIN_PROCESS_PORT_ARG[@]}" \
   "${WANDB_ENTITY_ARG[@]}" \
   "${CHUNK_ARG[@]}" \
   "${XFORMERS_ARG[@]}" \
   "${GRADIENT_CHECKPOINTING_ARG[@]}" \
   "${SPLIT_POS_NEG_FORWARD_ARG[@]}" \
+  "${USE_8BIT_ADAM_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}"

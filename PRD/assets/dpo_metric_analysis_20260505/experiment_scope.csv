@@ -1,0 +1,5 @@
+experiment,raw_rows,used_rows,raw_step_range,used_step_range,analysis_cutoff_step,analysis_note
+DiffDPO_loss,44,34,1-12900,1-9900,10000,global-step aligned to step<=10000.
+DiffDPO_no_lose_gap,34,34,1-9900,1-9900,10000,global-step aligned to step<=10000.
+VideoDPO_open_source,10000,10000,0-9999,0-9999,10000,old log records optimizer global_step; use it directly as the x-axis.
+VideoDPO_on_VideoInpainting_data,6102,6102,0-6101,0-6101,10000,"old log records optimizer global_step; use it directly as the x-axis. New mixed logs combine [dpo_diag] rows and Lightning progress rows, both aligned to optimizer global_step."

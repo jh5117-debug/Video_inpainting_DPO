@@ -1,0 +1,6 @@
+experiment,step,psnr,ssim
+DiffDPO_no_lose_gap,2000,24.1625,0.8658
+DiffDPO_no_lose_gap,4000,24.1781,0.8662
+DiffDPO_no_lose_gap,6000,24.1893,0.8665
+DiffDPO_no_lose_gap,8000,24.1946,0.8666
+DiffDPO_no_lose_gap,10000,24.1936,0.8665

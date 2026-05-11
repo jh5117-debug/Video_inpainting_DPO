@@ -67,7 +67,7 @@ from diffueraser.pipeline_diffueraser import StableDiffusionDiffuEraserPipeline
 from libs.brushnet_CA import BrushNetModel
 from libs.unet_2d_condition import UNet2DConditionModel
 from libs.unet_motion_model import UNetMotionModel, MotionAdapter
-from training.dpo.dataset.dpo_dataset import DPODataset
+from training.dpo.dataset.factory import build_dpo_dataset
 from training.dpo.train_stage1 import (
     compute_dpo_loss,
     compute_dpo_grad_norm,
@@ -433,6 +433,12 @@ def parse_args(input_args=None):
 
     # ===== DPO 特有参数 =====
     parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data")
+    parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
+                        choices=["diffueraser_inpainting", "videodpo_fullmask"],
+                        help="DPO dataset adapter. videodpo_fullmask keeps VideoDPO data/task and feeds DiffuEraser with a full-hole mask.")
+    parser.add_argument("--videodpo_frame_stride", type=int, default=1)
+    parser.add_argument("--videodpo_clip_length", type=float, default=1.0)
+    parser.add_argument("--videodpo_full_mask_value", type=float, default=0.0)
     parser.add_argument("--ref_model_path", type=str, default=None,
                         help="Ref model 权重路径 (SFT 后的完整 DiffuEraser 权重)")
     parser.add_argument("--beta_dpo", type=float, default=500.0,
@@ -662,7 +668,7 @@ def main(args):
         eps=args.adam_epsilon,
     )
 
-    train_dataset = DPODataset(args, tokenizer, dpo_data_root=args.dpo_data_root)
+    train_dataset = build_dpo_dataset(args, tokenizer)
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset, shuffle=True, collate_fn=collate_fn,
         batch_size=args.train_batch_size, num_workers=args.dataloader_num_workers,
@@ -882,7 +888,9 @@ def main(args):
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(
-                    model_pred, ref_pred, noise, beta_dpo=args.beta_dpo
+                    model_pred, ref_pred, noise,
+                    beta_dpo=args.beta_dpo,
+                    nframes=args.nframes,
                 )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
                 diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)

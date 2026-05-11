@@ -71,7 +71,7 @@ from diffueraser.pipeline_diffueraser_stage1 import StableDiffusionDiffuEraserPi
 from libs.brushnet_CA import BrushNetModel
 from libs.unet_2d_condition import UNet2DConditionModel
 from libs.unet_motion_model import UNetMotionModel
-from training.dpo.dataset.dpo_dataset import DPODataset
+from training.dpo.dataset.factory import build_dpo_dataset
 from dataset.file_client import FileClient
 from dataset.img_util import imfrombytes
 
@@ -295,6 +295,7 @@ def compute_dpo_loss(
     beta_dpo=500.0,
     sft_reg_weight=0.0,
     lose_gap_weight=1.0,
+    nframes=None,
 ):
     """
     Diffusion-DPO loss + Reg-DPO 论文要求的诊断指标。
@@ -302,6 +303,7 @@ def compute_dpo_loss(
     model_pred: [2*B*F, 4, H, W] — policy 的 ε prediction (pos+neg concat)
     ref_pred:   [2*B*F, 4, H, W] — ref 的 ε prediction
     noise:      [B*F, 4, H, W]   — 共享 noise (target ε)
+    nframes:    每个 video pair 的帧数；诊断指标按 video-pair 聚合
 
     Returns:
         loss:         总 loss = DPO + winner-side SFT regularization
@@ -321,13 +323,28 @@ def compute_dpo_loss(
     scale_term = -0.5 * beta_dpo
     per_win_gap = model_losses_w - ref_losses_w
     per_lose_gap = model_losses_l - ref_losses_l
-    inside_term = scale_term * (per_win_gap - float(lose_gap_weight) * per_lose_gap)
+    frame_inside_term = scale_term * (per_win_gap - float(lose_gap_weight) * per_lose_gap)
 
-    # 本卡的 implicit_acc (后续会跨卡 gather 得到全局值)
-    implicit_acc_local = (inside_term > 0).sum().float() / inside_term.size(0)
-    dpo_loss = (-1.0 * F.logsigmoid(inside_term)).mean()
+    # 训练 loss 保持原有 frame-level 目标；诊断统一按 video-pair 统计。
+    dpo_loss = (-1.0 * F.logsigmoid(frame_inside_term)).mean()
     sft_loss = model_losses_w.mean()
     loss = dpo_loss + float(sft_reg_weight) * sft_loss
+
+    if nframes is None:
+        nframes = per_win_gap.numel()
+    nframes = int(nframes)
+    if nframes <= 0 or per_win_gap.numel() % nframes != 0:
+        raise ValueError(
+            f"nframes={nframes} must divide the number of frame losses "
+            f"({per_win_gap.numel()}) for pair-level DPO diagnostics."
+        )
+
+    pair_win_gap = per_win_gap.view(-1, nframes).mean(dim=1)
+    pair_lose_gap = per_lose_gap.view(-1, nframes).mean(dim=1)
+    inside_term = scale_term * (pair_win_gap - float(lose_gap_weight) * pair_lose_gap)
+
+    # 本卡的 pair-level implicit_acc (后续会跨卡 gather 得到全局值)
+    implicit_acc_local = (inside_term > 0).sum().float() / inside_term.size(0)
 
     # === Reg-DPO 诊断指标 ===
     win_gap = (model_losses_w - ref_losses_w).mean()
@@ -345,8 +362,8 @@ def compute_dpo_loss(
     #   loser_dominant iff loser_degradation > winner_improvement
     with torch.no_grad():
         correct_mask = inside_term > 0
-        winner_improvement = (-per_win_gap).clamp(min=0)  # 取正部: policy 在 winner 上改善的量
-        loser_degradation = per_lose_gap.clamp(min=0)     # 取正部: policy 在 loser 上退化的量
+        winner_improvement = (-pair_win_gap).clamp(min=0)  # 取正部: policy 在 winner 上改善的量
+        loser_degradation = pair_lose_gap.clamp(min=0)     # 取正部: policy 在 loser 上退化的量
         loser_dominant_mask = loser_degradation > winner_improvement
         loser_dominant_wins = (correct_mask & loser_dominant_mask).sum().float()
         n_correct = correct_mask.sum().float()
@@ -813,6 +830,15 @@ def parse_args(input_args=None):
     # ===== DPO 特有参数 =====
     parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data",
                         help="DPO 偏好对数据集根目录")
+    parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
+                        choices=["diffueraser_inpainting", "videodpo_fullmask"],
+                        help="DPO dataset adapter. videodpo_fullmask keeps VideoDPO data/task and feeds DiffuEraser with a full-hole mask.")
+    parser.add_argument("--videodpo_frame_stride", type=int, default=1,
+                        help="Frame stride for videodpo_fullmask dataset.")
+    parser.add_argument("--videodpo_clip_length", type=float, default=1.0,
+                        help="Minimum clip duration for videodpo_fullmask metadata compatibility.")
+    parser.add_argument("--videodpo_full_mask_value", type=float, default=0.0,
+                        help="Mask tensor value for full-hole DiffuEraser generation mode; 0 follows the existing inverted-mask convention.")
     parser.add_argument("--ref_model_path", type=str, default=None,
                         help="Ref model 权重路径 (SFT 后的 DiffuEraser 权重，含 unet_main/ 和 brushnet/)")
     parser.add_argument("--beta_dpo", type=float, default=500.0,
@@ -1069,7 +1095,7 @@ def main(args):
         eps=args.adam_epsilon,
     )
 
-    train_dataset = DPODataset(args, tokenizer, dpo_data_root=args.dpo_data_root)
+    train_dataset = build_dpo_dataset(args, tokenizer)
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset, shuffle=True, collate_fn=collate_fn,
         batch_size=args.train_batch_size, num_workers=args.dataloader_num_workers,
@@ -1333,6 +1359,7 @@ def main(args):
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,
+                    nframes=args.nframes,
                 )
                 debug_stage("after dpo loss")
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
