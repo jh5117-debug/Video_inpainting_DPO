@@ -28,9 +28,9 @@ export PROJECT_DATA="${PROJECT_DATA:-${PROJECT_DEV}/data}"
 export DATA_NAME="${DATA_NAME:-Video_inpainting_DPO}"
 export DATA="${DATA:-${PROJECT_DATA}/${DATA_NAME}}"
 
-export VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_DEV}/VideoDPO}"
-export VIDEODPO_DATA_BASE="${VIDEODPO_DATA_BASE:-${VIDEODPO_REPO}}"
-export DPO_DATA_ROOT="${DPO_DATA_ROOT:-${VIDEODPO_REPO}/configs/vc2_dpo/vidpro/train_data.yaml}"
+export VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_ROOT}/external/VideoDPO}"
+export VIDEODPO_DATA_BASE="${VIDEODPO_DATA_BASE:-${PROJECT_DATA}/VideoDPO}"
+export DPO_DATA_ROOT="${DPO_DATA_ROOT:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml}"
 export DPO_DATASET_TYPE="videodpo_fullmask"
 
 # Keep the old DiffuEraser model/ref/weights env contract.  This experiment
@@ -56,6 +56,7 @@ export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
 
 if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[videodpo-fullmask][error] VIDEODPO_REPO not found: ${VIDEODPO_REPO}" >&2
+  echo "[videodpo-fullmask][error] Run from ${PROJECT_ROOT}: git submodule update --init --recursive" >&2
   exit 1
 fi
 if [[ ! -e "${DPO_DATA_ROOT}" ]]; then

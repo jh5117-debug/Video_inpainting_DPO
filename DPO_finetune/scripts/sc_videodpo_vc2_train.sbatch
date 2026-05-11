@@ -26,7 +26,7 @@ export PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 export PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"
 export PROJECT_DATA="${PROJECT_DATA:-${PROJECT_DEV}/data}"
 
-VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_DEV}/VideoDPO}"
+VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_ROOT}/external/VideoDPO}"
 VC2_DATA_YAML="${VC2_DATA_YAML:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml}"
 LOG_ROOT="${LOG_ROOT:-${PROJECT_DATA}/experiments/videodpo_vc2_dpo}"
 RUN_NAME="${RUN_NAME:-sc-vc2-dpo-$(date -u +%Y%m%d_%H%M%S)}"
@@ -57,6 +57,7 @@ conda activate "${CONDA_ENV}"
 
 if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[vc2-train][error] VIDEODPO_REPO not found: ${VIDEODPO_REPO}" >&2
+  echo "[vc2-train][error] Run from ${PROJECT_ROOT}: git submodule update --init --recursive" >&2
   exit 1
 fi
 if [[ ! -f "${VC2_DATA_YAML}" ]]; then

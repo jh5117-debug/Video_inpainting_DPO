@@ -1,0 +1,6 @@
+[submodule "external/VideoDPO"]
+	path = external/VideoDPO
+	url = https://github.com/CIntellifusion/VideoDPO.git
+[submodule "external/VBench"]
+	path = external/VBench
+	url = https://github.com/Vchitect/VBench.git

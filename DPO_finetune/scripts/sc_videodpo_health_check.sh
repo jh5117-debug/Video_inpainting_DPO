@@ -110,9 +110,9 @@ PROJECT_ROOT="$(cd "${PROJECT_ROOT}" 2>/dev/null && pwd || printf '%s' "$PROJECT
 PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"
 PROJECT_DATA="${PROJECT_DATA:-${PROJECT_DEV}/data}"
-VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_DEV}/VideoDPO}"
+VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_ROOT}/external/VideoDPO}"
 VIDEODPO_DATA_BASE="${VIDEODPO_DATA_BASE:-${PROJECT_DATA}/VideoDPO}"
-VBENCH_ROOT="${VBENCH_ROOT:-${PROJECT_DEV}/VBench}"
+VBENCH_ROOT="${VBENCH_ROOT:-${PROJECT_ROOT}/external/VBench}"
 VC2_DATA_YAML="${VC2_DATA_YAML:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml}"
 VC2_DATASET_ROOT="${VC2_DATASET_ROOT:-${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset}"
 PROMPTS_FILE="${PROMPTS_FILE:-${VIDEODPO_REPO}/prompts/vbench_standard_prompts.txt}"
@@ -148,6 +148,7 @@ check_dir "$PROJECT_DEV" "PROJECT_DEV"
 check_dir "$PROJECT_DATA" "PROJECT_DATA"
 check_dir "$PROJECT_ROOT" "Video_inpainting_DPO repo"
 check_dir "$VIDEODPO_REPO" "VideoDPO repo"
+check_dir "$VBENCH_ROOT" "VBench repo"
 
 section "Git State"
 if command -v git >/dev/null 2>&1 && [[ -d "${PROJECT_ROOT}/.git" ]]; then
@@ -156,11 +157,36 @@ if command -v git >/dev/null 2>&1 && [[ -d "${PROJECT_ROOT}/.git" ]]; then
 else
   warn "git not available or PROJECT_ROOT is not a git repo"
 fi
-if command -v git >/dev/null 2>&1 && [[ -d "${VIDEODPO_REPO}/.git" ]]; then
+section "Submodules"
+check_file "${PROJECT_ROOT}/.gitmodules" ".gitmodules"
+if command -v git >/dev/null 2>&1 && [[ -d "${PROJECT_ROOT}/.git" ]]; then
+  SUBMODULE_STATUS="$(git -C "$PROJECT_ROOT" submodule status --recursive 2>/dev/null || true)"
+  if [[ -n "$SUBMODULE_STATUS" ]]; then
+    printf '%s\n' "$SUBMODULE_STATUS"
+    if printf '%s\n' "$SUBMODULE_STATUS" | grep -q '^-'; then
+      fail "At least one submodule is not initialized. Run: git submodule update --init --recursive"
+    fi
+  else
+    fail "No submodule status output; expected external/VideoDPO and external/VBench"
+  fi
+else
+  warn "Cannot inspect submodules because git or PROJECT_ROOT/.git is unavailable"
+fi
+check_file "${VIDEODPO_REPO}/scripts/train.py" "VideoDPO submodule train.py"
+check_file "${VBENCH_ROOT}/evaluate.py" "VBench submodule evaluate.py"
+
+section "Dependency Git State"
+if command -v git >/dev/null 2>&1 && [[ -e "${VIDEODPO_REPO}/.git" ]]; then
   git -C "$VIDEODPO_REPO" status -sb || warn "git status failed for $VIDEODPO_REPO"
   git -C "$VIDEODPO_REPO" log -1 --oneline || warn "git log failed for $VIDEODPO_REPO"
 else
   warn "VideoDPO repo git metadata not available"
+fi
+if command -v git >/dev/null 2>&1 && [[ -e "${VBENCH_ROOT}/.git" ]]; then
+  git -C "$VBENCH_ROOT" status -sb || warn "git status failed for $VBENCH_ROOT"
+  git -C "$VBENCH_ROOT" log -1 --oneline || warn "git log failed for $VBENCH_ROOT"
+else
+  warn "VBench repo git metadata not available"
 fi
 
 section "VideoDPO VC2 Dataset"
@@ -278,6 +304,8 @@ for script in \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage1.sbatch" \
+  "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fullmask_dataset_smoke.sbatch" \
+  "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_health_check.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/03_dpo_stage1.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/03_dpo_stage2.sbatch" \

@@ -26,8 +26,8 @@ export PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 export PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"
 export PROJECT_DATA="${PROJECT_DATA:-${PROJECT_DEV}/data}"
 
-VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_DEV}/VideoDPO}"
-VBENCH_ROOT="${VBENCH_ROOT:-${PROJECT_DEV}/VBench}"
+VIDEODPO_REPO="${VIDEODPO_REPO:-${PROJECT_ROOT}/external/VideoDPO}"
+VBENCH_ROOT="${VBENCH_ROOT:-${PROJECT_ROOT}/external/VBench}"
 PROMPTS_FILE="${PROMPTS_FILE:-${VIDEODPO_REPO}/prompts/vbench_standard_prompts.txt}"
 VBENCH_FULL_JSON="${VBENCH_FULL_JSON:-${VBENCH_ROOT}/vbench/VBench_full_info.json}"
 
@@ -69,6 +69,7 @@ conda activate "${CONDA_ENV}"
 
 if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[videodpo-vbench][error] VIDEODPO_REPO not found: ${VIDEODPO_REPO}" >&2
+  echo "[videodpo-vbench][error] Run from ${PROJECT_ROOT}: git submodule update --init --recursive" >&2
   exit 1
 fi
 if [[ ! -f "${PROMPTS_FILE}" ]]; then

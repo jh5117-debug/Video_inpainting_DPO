@@ -53,13 +53,29 @@ New files:
 - `DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch`
 - `DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch`
 - `DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch`
+- `DPO_finetune/scripts/sc_videodpo_health_check.sh`
+- `DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh`
 - `tools/prepare_videodpo_vc2_dataset.py`
 - `tools/videodpo_prepare_vbench_standard.py`
 - `tools/summarize_vbench_results.py`
 
+External dependencies are repo-local submodules:
+
+- `external/VideoDPO`: official VideoDPO code
+- `external/VBench`: official VBench code
+
+Do not maintain sibling naked clones like `${PROJECT_DEV}/VideoDPO` or `${PROJECT_DEV}/VBench` for this workflow.  After pulling this repo on SC, initialize/update submodules from inside this repo:
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
+```
+
 The SC script:
 
-- runs VC2 inference from `/home/.../VideoDPO`;
+- runs VC2 inference from `external/VideoDPO`;
 - repeats inference for `SAMPLES_PER_PROMPT` seeds;
 - renames/symlinks `0001.mp4` style outputs into VBench standard filenames `<prompt>-<sample_idx>.mp4`;
 - runs VBench standard-mode evaluation;
@@ -72,6 +88,7 @@ source ~/.bashrc
 cd "$PROJECT_DEV/Video_inpainting_DPO"
 git pull --ff-only origin main
 mkdir -p logs
+bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
 
 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch
 ```
@@ -88,13 +105,7 @@ and places the dataset by default under:
 ${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset
 ```
 
-If VBench is absent on SC, either set `VBENCH_ROOT` to an existing checkout or run the prepare job with:
-
-```bash
-INSTALL_VBENCH=1 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch
-```
-
-VBench metric model weights may still be downloaded lazily during the first real evaluation; keep HF cache on project storage if SC home quota is tight.
+VBench code now comes from `external/VBench`.  VBench metric model weights may still be downloaded lazily during the first real evaluation; keep HF cache on project storage if SC home quota is tight.
 
 Train VC2-DPO on SC:
 
@@ -136,7 +147,7 @@ sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch
 Full reproduction-style command with base and DPO checkpoints:
 
 ```bash
-CKPT_SPECS="vc2_base:${PROJECT_DEV}/VideoDPO/checkpoints/vc2/model.ckpt,vc2_dpo:${PROJECT_DATA}/experiments/videodpo_vc2_dpo/sc-vc2-dpo-beta5000/checkpoints/last.ckpt" \
+CKPT_SPECS="vc2_base:${PROJECT_DEV}/Video_inpainting_DPO/external/VideoDPO/checkpoints/vc2/model.ckpt,vc2_dpo:${PROJECT_DATA}/experiments/videodpo_vc2_dpo/sc-vc2-dpo-beta5000/checkpoints/last.ckpt" \
 SAMPLES_PER_PROMPT=5 \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch
 ```
@@ -236,12 +247,11 @@ Then run a short stage1 smoke training:
 RUN_NAME=sc-videodpo-fullmask-diffueraser-stage1-smoke \
 MAX_STEPS=1000 \
 BETA_DPO=10 \
-DPO_DATA_ROOT="${PROJECT_DEV}/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml" \
-VIDEODPO_REPO="${PROJECT_DEV}/VideoDPO" \
+DPO_DATA_ROOT="${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage1.sbatch
 ```
 
-If the VideoDPO dataset is not located under `${PROJECT_DEV}/VideoDPO/data/...`, set:
+If the VideoDPO dataset is not located under `${PROJECT_DATA}/VideoDPO/data/...`, set:
 
 ```bash
 VIDEODPO_DATA_BASE=/path/that/contains/the/META/relative/data/root
@@ -255,8 +265,7 @@ MAX_STEPS=10000 \
 CKPT_STEPS=2000 \
 VAL_STEPS=2000 \
 BETA_DPO=10 \
-DPO_DATA_ROOT="${PROJECT_DEV}/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml" \
-VIDEODPO_REPO="${PROJECT_DEV}/VideoDPO" \
+DPO_DATA_ROOT="${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage1.sbatch
 ```
 
@@ -302,7 +311,7 @@ WEIGHTS_DIR=/home/hj/Video_inpainting_DPO/weights \
 DPO_DATA_ROOT=/home/hj/Video_inpainting_DPO/smoke_outputs/videodpo_tiny_fullmask/train_data.yaml \
 DPO_DATASET_TYPE=videodpo_fullmask \
 VIDEODPO_DATA_BASE=/home/hj/Video_inpainting_DPO/smoke_outputs/videodpo_tiny_fullmask \
-VIDEODPO_REPO=/home/hj/VideoDPO \
+VIDEODPO_REPO=/home/hj/Video_inpainting_DPO/external/VideoDPO \
 VAL_DATA_DIR=/home/hj/Video_inpainting_DPO/data/external/davis_432_240 \
 EXPERIMENTS_DIR=/home/hj/Video_inpainting_DPO/smoke_outputs/experiments \
 RUN_NAME=hal-videodpo-fullmask-diffueraser-stage1-smoke \
@@ -333,8 +342,8 @@ Observed HAL smoke result on 2026-05-11: dataset adapter passed, one-step traini
 
 Do not hide these uncertainties:
 
-- I do not know the actual SC path for the downloaded HF `JiaHuang01/vidpro10k-vc2-dataset`; scripts therefore use `DPO_DATA_ROOT`, `VIDEODPO_REPO`, and `VIDEODPO_DATA_BASE`.
-- I do not know whether SC already has VBench installed at `${PROJECT_DEV}/VBench`; set `VBENCH_ROOT` if not.
+- I do not know the actual SC path for the downloaded HF `JiaHuang01/vidpro10k-vc2-dataset`; scripts therefore use `DPO_DATA_ROOT` and `VIDEODPO_DATA_BASE`.
+- Official VideoDPO and VBench code should come from repo-local submodules under `external/`; run `git submodule update --init --recursive` after pulling.
 - I do not know whether the official final VC2-DPO checkpoint is available.  Pass it through `CKPT_SPECS`.
 - Full-mask DiffuEraser generation is a deliberate distribution shift; it is a smoke experiment, not yet a validated replacement for VC2.
 
