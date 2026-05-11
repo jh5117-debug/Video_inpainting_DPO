@@ -12,6 +12,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 import shutil
+import tarfile
+import zipfile
 
 import yaml
 
@@ -45,6 +47,47 @@ def _copy_or_link(src: Path, dst: Path, mode: str) -> None:
             shutil.copy2(src, dst)
     else:
         raise ValueError(f"Unknown mode: {mode}")
+
+
+def _archive_paths(root: Path) -> list[Path]:
+    suffixes = {
+        ".tar",
+        ".tgz",
+        ".zip",
+        ".gz",
+        ".bz2",
+        ".xz",
+    }
+    archives = []
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        name = path.name.lower()
+        if name.endswith((".tar.gz", ".tar.bz2", ".tar.xz", ".tgz", ".zip")) or path.suffix.lower() in suffixes:
+            archives.append(path)
+    return sorted(archives, key=lambda p: (len(p.parts), str(p)))
+
+
+def _extract_archives(root: Path, extract_dir: Path) -> None:
+    archives = _archive_paths(root)
+    if not archives:
+        return
+    extract_dir.mkdir(parents=True, exist_ok=True)
+    for archive in archives:
+        marker = extract_dir / f".extracted_{archive.name.replace('/', '_')}"
+        if marker.exists():
+            continue
+        print(f"[prepare-vc2] extracting archive={archive} to={extract_dir}")
+        if tarfile.is_tarfile(archive):
+            with tarfile.open(archive) as tf:
+                tf.extractall(extract_dir)
+        elif zipfile.is_zipfile(archive):
+            with zipfile.ZipFile(archive) as zf:
+                zf.extractall(extract_dir)
+        else:
+            print(f"[prepare-vc2][warn] unsupported archive, skipping: {archive}")
+            continue
+        marker.write_text(str(archive), encoding="utf-8")
 
 
 def main() -> int:
@@ -82,11 +125,27 @@ def main() -> int:
             local_dir_use_symlinks=False,
         )
 
-    source_root = _find_dataset_root(download_dir)
+    try:
+        source_root = _find_dataset_root(download_dir)
+    except FileNotFoundError:
+        _extract_archives(download_dir, download_dir / "_extracted")
+        source_root = _find_dataset_root(download_dir)
     if source_root.resolve() != target_root:
-        if target_root.exists() and not ((target_root / "metadata.json").is_file() and (target_root / "pair.json").is_file()):
+        if target_root.exists() and not (
+            (target_root / "metadata.json").is_file()
+            and (target_root / "pair.json").is_file()
+        ):
+            # Hugging Face snapshots may put archive files directly in target_root;
+            # after extraction, source_root can still be copied into this directory.
+            has_archives_only = bool(_archive_paths(target_root)) or (target_root / "_extracted").exists()
+            if not has_archives_only:
+                raise FileExistsError(f"target_root exists but is not a VideoDPO dataset root: {target_root}")
+        if target_root.exists() and any(target_root.iterdir()) and source_root.is_relative_to(target_root):
+            pass
+        elif target_root.exists() and not ((target_root / "metadata.json").is_file() and (target_root / "pair.json").is_file()):
             raise FileExistsError(f"target_root exists but is not a VideoDPO dataset root: {target_root}")
-        _copy_or_link(source_root, target_root, args.link_mode)
+        else:
+            _copy_or_link(source_root, target_root, args.link_mode)
 
     dataset_root = _find_dataset_root(target_root).resolve()
     output_yaml.parent.mkdir(parents=True, exist_ok=True)
