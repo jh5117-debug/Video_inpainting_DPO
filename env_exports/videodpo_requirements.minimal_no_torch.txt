@@ -1,3 +1,4 @@
+setuptools<81
 pytorch-lightning==1.9.5
 omegaconf
 einops

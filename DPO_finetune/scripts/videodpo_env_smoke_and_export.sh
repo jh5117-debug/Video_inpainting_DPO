@@ -59,6 +59,7 @@ NORMALIZED_REQ="${OUT_DIR}/videodpo_requirements.normalized.txt"
 sed -e 's/^tenosrboard$/tensorboard/' -e 's/[[:space:]]*$//' "${VIDEODPO_REPO}/requirements.txt" > "${NORMALIZED_REQ}"
 MINIMAL_REQ="${OUT_DIR}/videodpo_requirements.minimal_no_torch.txt"
 cat > "${MINIMAL_REQ}" <<'REQ'
+setuptools<81
 pytorch-lightning==1.9.5
 omegaconf
 einops
@@ -82,7 +83,8 @@ fi
 if [[ "${INSTALL_MINIMAL}" == "1" ]]; then
   echo "[videodpo-env] installing minimal VideoDPO smoke requirements into ${CONDA_ENV}"
   echo "[videodpo-env] minimal list intentionally excludes torch/torchvision/numpy/xformers"
-  conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -U pip wheel setuptools
+  echo "[videodpo-env] setuptools is included because pytorch_lightning 1.9 imports pkg_resources"
+  conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -U pip wheel "setuptools<81"
   conda run --no-capture-output -n "${CONDA_ENV}" python -m pip install -r "${MINIMAL_REQ}"
 fi
 
@@ -126,7 +128,8 @@ for name in required:
 
 if missing:
     print("[smoke][ERROR] missing/import-failing modules:", ", ".join(missing))
-    print("[smoke][HINT] rerun with INSTALL_MINIMAL=1 to install VideoDPO smoke deps without reinstalling torch/numpy")
+    print("[smoke][HINT] rerun: CONDA_ENV=<env> INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh")
+    print("[smoke][HINT] if pytorch_lightning fails on pkg_resources, install setuptools<81 in that env")
     raise SystemExit(2)
 
 try:

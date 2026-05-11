@@ -30,4 +30,5 @@ bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
 
 `INSTALL_MINIMAL=1` installs only VideoDPO smoke/runtime dependencies listed in
 `videodpo_requirements.minimal_no_torch.txt`; it intentionally excludes
-`torch`, `torchvision`, `numpy`, and `xformers`.
+`torch`, `torchvision`, `numpy`, and `xformers`.  It does include
+`setuptools<81` because `pytorch_lightning==1.9.x` imports `pkg_resources`.
