@@ -35,7 +35,7 @@ NUM_GPUS="${NUM_GPUS:-4}"
 DEVICE_LIST="${DEVICE_LIST:-0,1,2,3}"
 BATCH_SIZE="${BATCH_SIZE:-1}"
 GRAD_ACCUM="${GRAD_ACCUM:-2}"
-MAX_OPT_STEPS="${MAX_OPT_STEPS:-10000}"
+MAX_OPT_STEPS="${MAX_OPT_STEPS:-}"
 CKPT_EVERY="${CKPT_EVERY:-1000}"
 NUM_WORKERS="${NUM_WORKERS:-10}"
 BETA_DPO="${BETA_DPO:-5000.0}"
@@ -88,7 +88,12 @@ echo "[vc2-train] data_yaml=${VC2_DATA_YAML}"
 echo "[vc2-train] log_root=${LOG_ROOT}"
 echo "[vc2-train] run_name=${RUN_NAME}"
 echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
-echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
+echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
+
+MAX_STEPS_ARG=()
+if [[ -n "${MAX_OPT_STEPS}" ]]; then
+  MAX_STEPS_ARG=(lightning.trainer.max_steps="${MAX_OPT_STEPS}")
+fi
 
 cd "${VIDEODPO_REPO}"
 python -m torch.distributed.run \
@@ -105,7 +110,6 @@ python -m torch.distributed.run \
   lightning.trainer.num_nodes=1 \
   lightning.trainer.devices="${NUM_GPUS}" \
   lightning.trainer.accelerator=gpu \
-  lightning.trainer.max_steps="${MAX_OPT_STEPS}" \
   lightning.trainer.accumulate_grad_batches="${GRAD_ACCUM}" \
   lightning.trainer.log_every_n_steps=1 \
   lightning.trainer.precision=32 \
@@ -116,7 +120,8 @@ python -m torch.distributed.run \
   data.params.train.params.data_root="${VC2_DATA_YAML}" \
   "data.params.train.params.resolution=[320,512]" \
   data.params.train.params.video_length=16 \
-  data.params.train.params.frame_stride=1
+  data.params.train.params.frame_stride=1 \
+  "${MAX_STEPS_ARG[@]}"
 
 echo "[vc2-train] done"
 echo "[vc2-train] checkpoints should be under ${LOG_ROOT}/${RUN_NAME}/checkpoints"
