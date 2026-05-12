@@ -128,6 +128,53 @@ count_json_key() {
   fi
 }
 
+first_json_string_value() {
+  local key="$1"
+  local path="$2"
+  if [[ -f "$path" ]]; then
+    grep -o "\"${key}\"[[:space:]]*:[[:space:]]*\"[^\"]*\"" "$path" \
+      | head -n 1 \
+      | sed "s/.*\"${key}\"[[:space:]]*:[[:space:]]*\"//; s/\"$//"
+  fi
+}
+
+diag_path_status() {
+  local label="$1"
+  local path="$2"
+  local parent
+  parent="$(dirname "$path")"
+  printf '[DIAG] %s=%s\n' "$label" "$path"
+  printf '[DIAG] %s_exists=%s is_file=%s is_dir=%s is_symlink=%s\n' \
+    "$label" \
+    "$([[ -e "$path" ]] && echo yes || echo no)" \
+    "$([[ -f "$path" ]] && echo yes || echo no)" \
+    "$([[ -d "$path" ]] && echo yes || echo no)" \
+    "$([[ -L "$path" ]] && echo yes || echo no)"
+  printf '[DIAG] %s_parent=%s parent_exists=%s parent_is_dir=%s\n' \
+    "$label" "$parent" \
+    "$([[ -e "$parent" ]] && echo yes || echo no)" \
+    "$([[ -d "$parent" ]] && echo yes || echo no)"
+  ls -ld "$path" 2>/dev/null | sed "s/^/[DIAG] ls_${label}=/" || true
+  ls -ld "$parent" 2>/dev/null | sed "s/^/[DIAG] ls_${label}_parent=/" || true
+  readlink -f "$path" 2>/dev/null | sed "s/^/[DIAG] readlink_${label}=/" || true
+}
+
+find_limited() {
+  local root="$1"
+  shift
+  local timeout_s="${HEALTH_FIND_TIMEOUT:-20}"
+  local limit="${HEALTH_FIND_LIMIT:-20}"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout "$timeout_s" find "$root" "$@" 2>/dev/null | head -n "$limit" || true
+  else
+    find "$root" "$@" 2>/dev/null | head -n "$limit" || true
+  fi
+}
+
+shown_count() {
+  sed '/^$/d' | wc -l | tr -d ' '
+}
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_NAME="${PROJECT_NAME:-Video_inpainting_DPO}"
 if [[ -z "${PROJECT_ROOT:-}" ]]; then
@@ -246,7 +293,7 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
       if [[ "$META_COUNT" -le 0 ]]; then
         warn "metadata.json basic-key count is zero; inspect JSON format manually"
       fi
-      FIRST_CLIP="$(grep -m 1 -o '"clip_path"[[:space:]]*:[[:space:]]*"[^"]*"' "${RESOLVED_META}/metadata.json" | sed 's/.*"clip_path"[[:space:]]*:[[:space:]]*"//; s/"$//' || true)"
+      FIRST_CLIP="$(first_json_string_value clip_path "${RESOLVED_META}/metadata.json" || true)"
       if [[ -n "$FIRST_CLIP" ]]; then
         if [[ "$FIRST_CLIP" = /* ]]; then
           FIRST_CLIP_PATH="$FIRST_CLIP"
@@ -268,31 +315,32 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
           printf '[DIAG] metadata_clip_path=%s\n' "$FIRST_CLIP"
           printf '[DIAG] resolved_metadata_clip=%s\n' "$FIRST_CLIP_PATH"
           printf '[DIAG] metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
+          diag_path_status first_clip "$FIRST_CLIP_PATH"
           printf '[DIAG] parsed_clip_parent=%s parsed_clip_basename=%s\n' "$CLIP_PARENT" "$CLIP_BASENAME"
           printf '[DIAG] extracted_root=%s exists=%s\n' "$EXTRACTED_ROOT" "$([ -d "$EXTRACTED_ROOT" ] && echo yes || echo no)"
           if [[ -d "$EXTRACTED_ROOT" ]]; then
-            TOTAL_VIDEO_COUNT="$(find "$EXTRACTED_ROOT" -type f \( -name '*.mp4' -o -name '*.webm' -o -name '*.avi' -o -name '*.gif' \) 2>/dev/null | wc -l | tr -d ' ')"
-            SUFFIX_COUNT="$(find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" 2>/dev/null | wc -l | tr -d ' ')"
-            BASENAME_COUNT="$(find "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" 2>/dev/null | wc -l | tr -d ' ')"
-            PARENT_DIR_COUNT="$(find "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" 2>/dev/null | wc -l | tr -d ' ')"
-            printf '[DIAG] total_video_files_under_extracted=%s\n' "$TOTAL_VIDEO_COUNT"
-            printf '[DIAG] search_suffix=%s matches=%s\n' "$CLIP_SUFFIX" "$SUFFIX_COUNT"
-            find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" -print 2>/dev/null \
-              | head -n 10 \
-              | sed 's/^/[DIAG] candidate_by_suffix=/'
-            printf '[DIAG] search_basename=%s matches=%s\n' "$CLIP_BASENAME" "$BASENAME_COUNT"
-            find "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" -print 2>/dev/null \
-              | head -n 10 \
-              | sed 's/^/[DIAG] candidate_by_basename=/'
-            printf '[DIAG] search_parent_dir=%s matches=%s\n' "$CLIP_PARENT" "$PARENT_DIR_COUNT"
-            find "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" -print 2>/dev/null \
-              | head -n 10 \
-              | sed 's/^/[DIAG] candidate_parent_dir=/'
-            if [[ "$SUFFIX_COUNT" -gt 0 || "$BASENAME_COUNT" -gt 0 ]]; then
+            printf '[DIAG] bounded_find_timeout_seconds=%s limit=%s\n' "${HEALTH_FIND_TIMEOUT:-20}" "${HEALTH_FIND_LIMIT:-20}"
+            VIDEO_SAMPLE="$(find_limited "$EXTRACTED_ROOT" -type f \( -name '*.mp4' -o -name '*.webm' -o -name '*.avi' -o -name '*.gif' \) -print)"
+            SUFFIX_SAMPLE="$(find_limited "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" -print)"
+            BASENAME_SAMPLE="$(find_limited "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" -print)"
+            PARENT_DIR_SAMPLE="$(find_limited "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" -print)"
+            VIDEO_SHOWN="$(printf '%s\n' "$VIDEO_SAMPLE" | shown_count)"
+            SUFFIX_SHOWN="$(printf '%s\n' "$SUFFIX_SAMPLE" | shown_count)"
+            BASENAME_SHOWN="$(printf '%s\n' "$BASENAME_SAMPLE" | shown_count)"
+            PARENT_DIR_SHOWN="$(printf '%s\n' "$PARENT_DIR_SAMPLE" | shown_count)"
+            printf '[DIAG] video_sample_shown=%s\n' "$VIDEO_SHOWN"
+            printf '%s\n' "$VIDEO_SAMPLE" | sed '/^$/d' | sed 's/^/[DIAG] video_sample=/'
+            printf '[DIAG] search_suffix=%s shown=%s\n' "$CLIP_SUFFIX" "$SUFFIX_SHOWN"
+            printf '%s\n' "$SUFFIX_SAMPLE" | sed '/^$/d' | sed 's/^/[DIAG] candidate_by_suffix=/'
+            printf '[DIAG] search_basename=%s shown=%s\n' "$CLIP_BASENAME" "$BASENAME_SHOWN"
+            printf '%s\n' "$BASENAME_SAMPLE" | sed '/^$/d' | sed 's/^/[DIAG] candidate_by_basename=/'
+            printf '[DIAG] search_parent_dir=%s shown=%s\n' "$CLIP_PARENT" "$PARENT_DIR_SHOWN"
+            printf '%s\n' "$PARENT_DIR_SAMPLE" | sed '/^$/d' | sed 's/^/[DIAG] candidate_parent_dir=/'
+            if [[ "$SUFFIX_SHOWN" -gt 0 || "$BASENAME_SHOWN" -gt 0 ]]; then
               printf '[DIAG] diagnosis=metadata clip_path points to the wrong location; rerun sc_prepare_videodpo_vc2_assets.sbatch after pulling the latest repo.\n'
               printf '[DIAG] repair_command=CONDA_ENV=diffueraser DOWNLOAD_DATASET=0 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch\n'
             else
-              printf '[DIAG] diagnosis=no local video candidate was found under _extracted; dataset extraction/download is incomplete.\n'
+              printf '[DIAG] diagnosis=no local video candidate was found in the bounded scan under _extracted; dataset extraction/download may be incomplete, or increase HEALTH_FIND_TIMEOUT.\n'
               printf '[DIAG] repair_command=CONDA_ENV=diffueraser sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch\n'
             fi
           fi

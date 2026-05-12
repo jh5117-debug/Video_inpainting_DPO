@@ -213,7 +213,7 @@ def _resolve_for_videodpo(dataset_root: Path, clip_path: str) -> Path:
     return dataset_root / clip_path
 
 
-def _validate_metadata_clips(dataset_root: Path, limit: int = 20) -> tuple[str, Path, int]:
+def _validate_metadata_clips(dataset_root: Path, limit: int = 20) -> tuple[str, Path, bool, int]:
     metadata_path = dataset_root / "metadata.json"
     with metadata_path.open("r", encoding="utf-8") as f:
         metadata = json.load(f)
@@ -222,12 +222,13 @@ def _validate_metadata_clips(dataset_root: Path, limit: int = 20) -> tuple[str, 
 
     first_clip = str(metadata[0]["basic"]["clip_path"])
     first_resolved = _resolve_for_videodpo(dataset_root, first_clip)
+    first_exists = first_resolved.is_file()
     missing = 0
     for item in metadata[:limit]:
         clip_path = str(item["basic"]["clip_path"])
         if not _resolve_for_videodpo(dataset_root, clip_path).is_file():
             missing += 1
-    return first_clip, first_resolved, missing
+    return first_clip, first_resolved, first_exists, missing
 
 
 def main() -> int:
@@ -295,7 +296,7 @@ def main() -> int:
     output_yaml.parent.mkdir(parents=True, exist_ok=True)
     with output_yaml.open("w", encoding="utf-8") as f:
         yaml.safe_dump({"META": [str(dataset_root)]}, f, sort_keys=False)
-    first_clip, first_resolved, missing_sample = _validate_metadata_clips(dataset_root)
+    first_clip, first_resolved, first_exists, missing_sample = _validate_metadata_clips(dataset_root)
 
     print(f"[prepare-vc2] repo_id={args.repo_id}")
     print(f"[prepare-vc2] dataset_root={dataset_root}")
@@ -303,11 +304,17 @@ def main() -> int:
     print(f"[prepare-vc2] rewritten_clip_paths={changed} unresolved_clip_paths={unresolved}")
     print(f"[prepare-vc2] first_clip_path={first_clip}")
     print(f"[prepare-vc2] first_clip_resolved={first_resolved}")
+    print(f"[prepare-vc2] first_clip_exists={'yes' if first_exists else 'no'}")
     print(f"[prepare-vc2] sample_missing_clip_paths={missing_sample}/20")
     if unresolved:
         raise RuntimeError(
             f"{unresolved} clip_path entries could not be resolved under {target_root}. "
             "Inspect metadata.json and the extracted archive layout."
+        )
+    if not first_exists:
+        raise RuntimeError(
+            f"First clip_path does not exist after rewrite: {first_resolved}. "
+            "The dataset prepare step and health check would disagree without this hard failure."
         )
     if missing_sample:
         raise RuntimeError(
