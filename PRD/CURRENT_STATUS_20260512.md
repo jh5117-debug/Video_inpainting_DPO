@@ -215,9 +215,10 @@ ENABLE_WANDB=0 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sb
 source ~/.bashrc
 cd "$PROJECT_DEV/Video_inpainting_DPO"
 git pull --ff-only origin main
-CONDA_ENV=diffueraser INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
-CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_fix_env_and_health_check.sh
 ```
+
+这个 wrapper 会先 `git submodule update --init --recursive`，再显式用 `INSTALL_MINIMAL=1` 修复/检查当前 conda env，最后跑 `sc_videodpo_health_check.sh`。普通 health check 仍然只检查，不会偷偷改环境。
 
 相关提交：
 

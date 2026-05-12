@@ -489,6 +489,7 @@ for script in \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fullmask_dataset_smoke.sbatch" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/videodpo_env_smoke_and_export.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_prepare_videodpo_vc2_checkpoints.sh" \
+  "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_fix_env_and_health_check.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_health_check.sh" \
   "${PROJECT_ROOT}/DPO_finetune/scripts/03_dpo_stage1.sbatch" \
