@@ -1,0 +1,229 @@
+diff --git a/lvdm/models/ddpm3d.py b/lvdm/models/ddpm3d.py
+index 66d7251..bcd1c7e 100644
+--- a/lvdm/models/ddpm3d.py
++++ b/lvdm/models/ddpm3d.py
+@@ -143,6 +143,90 @@ class DDPM(pl.LightningModule):
+             for param in self.ref_model.diffusion_model.parameters():
+                 param.requires_grad = False
+             self.beta_dpo = beta_dpo
++            self.dpo_diag_every = int(os.environ.get("DPO_DIAG_EVERY", "300"))
++            self._last_dpo_diag_table_step = -1
++            self._dpo_diag_table_rows = []
++
++    def _dpo_all_reduce(self, value, op):
++        value = value.detach().clone()
++        if torch.distributed.is_available() and torch.distributed.is_initialized():
++            torch.distributed.all_reduce(value, op=op)
++        return value
++
++    def _dpo_scalar(self, value):
++        if isinstance(value, torch.Tensor):
++            return float(value.detach().cpu().item())
++        return float(value)
++
++    @rank_zero_only
++    def _log_dpo_diag_table(self, metrics):
++        step = int(metrics.get("global_step", self.global_step))
++        if self.dpo_diag_every <= 0:
++            return
++        if step % self.dpo_diag_every != 0:
++            return
++        if step == self._last_dpo_diag_table_step:
++            return
++        self._last_dpo_diag_table_step = step
++
++        msg = (
++            "[dpo_diag] "
++            f"global_step={step} "
++            f"implicit_acc={metrics['implicit_acc']:.6f} "
++            f"implicit_acc_count={int(metrics['implicit_acc_count'])}/{int(metrics['implicit_acc_total'])} "
++            f"inside_term_mean={metrics['inside_term_mean']:.6f} "
++            f"inside_term_min={metrics['inside_term_min']:.6f} "
++            f"inside_term_max={metrics['inside_term_max']:.6f} "
++            f"loser_dominant_ratio={metrics['loser_dominant_ratio']:.6f} "
++            f"dpo_loss={metrics['dpo_loss']:.6f} "
++            f"mse_w={metrics['mse_w']:.6f} "
++            f"ref_mse_w={metrics['ref_mse_w']:.6f} "
++            f"mse_l={metrics['mse_l']:.6f} "
++            f"ref_mse_l={metrics['ref_mse_l']:.6f} "
++            f"win_gap={metrics['win_gap']:.6f} "
++            f"lose_gap={metrics['lose_gap']:.6f} "
++            f"reward_margin={metrics['reward_margin']:.6f} "
++            f"sigma_term={metrics['sigma_term']:.6f} "
++            f"kl_divergence={metrics['kl_divergence']:.6f}"
++        )
++        mainlogger.info(msg)
++        print(msg, flush=True)
++
++        logger = getattr(self, "logger", None)
++        if logger is None:
++            return
++        experiment = getattr(logger, "experiment", None)
++        if experiment is None or not hasattr(experiment, "log"):
++            return
++        try:
++            import wandb
++            columns = [
++                "global_step",
++                "implicit_acc",
++                "implicit_acc_count",
++                "implicit_acc_total",
++                "inside_term_mean",
++                "inside_term_min",
++                "inside_term_max",
++                "loser_dominant_ratio",
++                "dpo_loss",
++                "mse_w",
++                "ref_mse_w",
++                "mse_l",
++                "ref_mse_l",
++                "win_gap",
++                "lose_gap",
++                "reward_margin",
++                "sigma_term",
++                "kl_divergence",
++                "factor",
++            ]
++            row = [metrics[key] for key in columns]
++            self._dpo_diag_table_rows.append(row)
++            table = wandb.Table(columns=columns, data=self._dpo_diag_table_rows)
++            experiment.log({"dpo/diagnostics_table": table}, step=step)
++        except Exception as exc:
++            mainlogger.info(f"[dpo_diag] wandb table logging skipped: {type(exc).__name__}: {exc}")
+ 
+     def register_schedule(
+         self,
+@@ -375,32 +459,109 @@ class DDPM(pl.LightningModule):
+     def dpo_loss(self, target, pred):
+         model_losses = (pred - target).pow(2).mean(dim=[1, 2, 3])
+         model_losses_w, model_losses_l = model_losses.chunk(2)
+-        raw_model_loss = 0.5 * (model_losses_w.mean() + model_losses_l.mean())
+         model_diff = model_losses_w - model_losses_l  # These are both LBS (as is t)
+         with torch.no_grad():  # Get the reference policy (unet) prediction
+             ref_pred = self.ref_pred
+             ref_losses = (ref_pred - target).pow(2).mean(dim=[1, 2, 3])
+             ref_losses_w, ref_losses_l = ref_losses.chunk(2)
+             ref_diff = ref_losses_w - ref_losses_l
+-            raw_ref_loss = ref_losses.mean()
+         scale_term = -0.5 * self.beta_dpo
+         inside_term = scale_term * (model_diff - ref_diff)
+-        # print()
+-        implicit_acc = (inside_term > 0).sum().float() / inside_term.size(0)
+-        # log implicit acc for 
+-        self.log(
+-            "train/implicit_acc",implicit_acc,
+-            prog_bar=True,
+-            logger=True,
+-            on_step=True,
+-            on_epoch=False,
+-        )
+         factor = self.dupfactor
+-        loss = ( -1 * factor * F.logsigmoid(inside_term)).mean()
+-        self.log(      "train/factor",float(factor.clone().mean().detach().cpu()),
+-            prog_bar=False,logger=True,
+-            on_step=True,on_epoch=False,
+-        )
++        loss = (-1 * factor * F.logsigmoid(inside_term)).mean()
++
++        diag_reduce_dims = tuple(range(1, pred.ndim))
++        diag_model_losses = (pred - target).pow(2).mean(dim=diag_reduce_dims)
++        diag_model_losses_w, diag_model_losses_l = diag_model_losses.chunk(2)
++        with torch.no_grad():
++            diag_ref_losses = (ref_pred - target).pow(2).mean(dim=diag_reduce_dims)
++            diag_ref_losses_w, diag_ref_losses_l = diag_ref_losses.chunk(2)
++        diag_model_diff = diag_model_losses_w - diag_model_losses_l
++        diag_ref_diff = diag_ref_losses_w - diag_ref_losses_l
++        diag_inside_term = scale_term * (diag_model_diff - diag_ref_diff)
++
++        correct = diag_inside_term > 0
++        winner_improvement = diag_ref_losses_w - diag_model_losses_w
++        loser_degradation = diag_model_losses_l - diag_ref_losses_l
++        loser_dominant = correct & (loser_degradation > winner_improvement)
++        win_gap = diag_model_losses_w - diag_ref_losses_w
++        lose_gap = diag_model_losses_l - diag_ref_losses_l
++
++        count = torch.tensor(float(diag_inside_term.numel()), device=diag_inside_term.device, dtype=diag_inside_term.dtype)
++        correct_count = correct.float().sum()
++        loser_dom_count = loser_dominant.float().sum()
++        factor_mean = torch.as_tensor(factor, device=diag_inside_term.device, dtype=diag_inside_term.dtype).detach().mean()
++
++        global_count = self._dpo_all_reduce(count, torch.distributed.ReduceOp.SUM)
++        global_correct = self._dpo_all_reduce(correct_count, torch.distributed.ReduceOp.SUM)
++        global_loser_dom = self._dpo_all_reduce(loser_dom_count, torch.distributed.ReduceOp.SUM)
++        global_inside_sum = self._dpo_all_reduce(diag_inside_term.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_inside_min = self._dpo_all_reduce(diag_inside_term.detach().min(), torch.distributed.ReduceOp.MIN)
++        global_inside_max = self._dpo_all_reduce(diag_inside_term.detach().max(), torch.distributed.ReduceOp.MAX)
++        global_loss_sum = self._dpo_all_reduce(loss.detach() * count, torch.distributed.ReduceOp.SUM)
++        global_sigma_sum = self._dpo_all_reduce(torch.sigmoid(diag_inside_term.detach()).sum(), torch.distributed.ReduceOp.SUM)
++        global_mw_sum = self._dpo_all_reduce(diag_model_losses_w.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_ml_sum = self._dpo_all_reduce(diag_model_losses_l.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_refw_sum = self._dpo_all_reduce(diag_ref_losses_w.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_refl_sum = self._dpo_all_reduce(diag_ref_losses_l.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_wingap_sum = self._dpo_all_reduce(win_gap.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_losegap_sum = self._dpo_all_reduce(lose_gap.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_reward_sum = self._dpo_all_reduce(diag_model_diff.detach().sum(), torch.distributed.ReduceOp.SUM)
++        global_factor_sum = self._dpo_all_reduce(factor_mean * count, torch.distributed.ReduceOp.SUM)
++
++        denom = global_count.clamp_min(1.0)
++        global_metrics_t = {
++            "global/implicit_acc": global_correct / denom,
++            "global/inside_term_mean": global_inside_sum / denom,
++            "global/inside_term_min": global_inside_min,
++            "global/inside_term_max": global_inside_max,
++            "global/loser_dominant_ratio": global_loser_dom / global_correct.clamp_min(1.0),
++            "rank0/dpo_loss": global_loss_sum / denom,
++            "rank0/mse_w": global_mw_sum / denom,
++            "rank0/mse_l": global_ml_sum / denom,
++            "rank0/ref_mse_w": global_refw_sum / denom,
++            "rank0/ref_mse_l": global_refl_sum / denom,
++            "rank0/win_gap": global_wingap_sum / denom,
++            "rank0/lose_gap": global_losegap_sum / denom,
++            "rank0/reward_margin": global_reward_sum / denom,
++            "rank0/sigma_term": global_sigma_sum / denom,
++            "rank0/kl_divergence": 0.5 * (global_wingap_sum + global_losegap_sum) / denom,
++            "train/factor": global_factor_sum / denom,
++        }
++        for name, value in global_metrics_t.items():
++            self.log(
++                name,
++                value,
++                prog_bar=name in {"global/implicit_acc", "rank0/dpo_loss", "rank0/win_gap", "rank0/lose_gap"},
++                logger=True,
++                on_step=True,
++                on_epoch=False,
++                sync_dist=False,
++                rank_zero_only=True,
++            )
++
++        table_metrics = {
++            "global_step": int(self.global_step),
++            "implicit_acc": self._dpo_scalar(global_metrics_t["global/implicit_acc"]),
++            "implicit_acc_count": self._dpo_scalar(global_correct),
++            "implicit_acc_total": self._dpo_scalar(global_count),
++            "inside_term_mean": self._dpo_scalar(global_metrics_t["global/inside_term_mean"]),
++            "inside_term_min": self._dpo_scalar(global_metrics_t["global/inside_term_min"]),
++            "inside_term_max": self._dpo_scalar(global_metrics_t["global/inside_term_max"]),
++            "loser_dominant_ratio": self._dpo_scalar(global_metrics_t["global/loser_dominant_ratio"]),
++            "dpo_loss": self._dpo_scalar(global_metrics_t["rank0/dpo_loss"]),
++            "mse_w": self._dpo_scalar(global_metrics_t["rank0/mse_w"]),
++            "ref_mse_w": self._dpo_scalar(global_metrics_t["rank0/ref_mse_w"]),
++            "mse_l": self._dpo_scalar(global_metrics_t["rank0/mse_l"]),
++            "ref_mse_l": self._dpo_scalar(global_metrics_t["rank0/ref_mse_l"]),
++            "win_gap": self._dpo_scalar(global_metrics_t["rank0/win_gap"]),
++            "lose_gap": self._dpo_scalar(global_metrics_t["rank0/lose_gap"]),
++            "reward_margin": self._dpo_scalar(global_metrics_t["rank0/reward_margin"]),
++            "sigma_term": self._dpo_scalar(global_metrics_t["rank0/sigma_term"]),
++            "kl_divergence": self._dpo_scalar(global_metrics_t["rank0/kl_divergence"]),
++            "factor": self._dpo_scalar(global_metrics_t["train/factor"]),
++        }
++        self._log_dpo_diag_table(table_metrics)
+         return loss
+ 
+     def get_loss(self, pred, target, mean=True):
+@@ -1932,4 +2093,4 @@ class DiffusionWrapper(pl.LightningModule):
+         else:
+             raise NotImplementedError()
+ 
+-        return out
+\ No newline at end of file
++        return out

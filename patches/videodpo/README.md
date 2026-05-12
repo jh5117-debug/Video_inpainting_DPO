@@ -37,3 +37,31 @@ Step convention:
 - `MAX_PAIR_STEPS=10000` means 10000 winner/loser pairs, not 10000 Lightning optimizer steps.
 - With the default 6 GPUs and `batch_size=1`, the launch script sets Lightning `max_steps=1667`.
 - Logs print both: `[dpo_diag] step=<pair_step>/10000 global_step=<optimizer_step>/1667 ...`.
+
+## SC VC2-DPO Diagnostics Patch
+
+`sc_vc2_dpo_diagnostics.patch` is for the repo-local SC submodule:
+
+`external/VideoDPO`
+
+It adds the DPO training diagnostics used by the PRD analysis to official
+VideoDPO VC2 training:
+
+- `implicit_acc`
+- `dpo_loss`
+- `mse_w`, `ref_mse_w`
+- `mse_l`, `ref_mse_l`
+- `win_gap`, `lose_gap`
+- `reward_margin`, `sigma_term`, `kl_divergence`
+- `loser_dominant_ratio`
+
+The SC launcher applies it by default before training:
+
+```bash
+APPLY_DPO_DIAG_PATCH=1 DPO_DIAG_EVERY=300 \
+  sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+It writes scalar metrics to W&B and updates the cumulative
+`dpo/diagnostics_table` every `DPO_DIAG_EVERY` Lightning optimizer global
+steps.

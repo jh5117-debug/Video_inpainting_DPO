@@ -196,6 +196,7 @@ VBENCH_ROOT="${VBENCH_ROOT:-${PROJECT_ROOT}/external/VBench}"
 VC2_DATA_YAML="${VC2_DATA_YAML:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml}"
 VC2_DATASET_ROOT="${VC2_DATASET_ROOT:-${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset}"
 PROMPTS_FILE="${PROMPTS_FILE:-${VIDEODPO_REPO}/prompts/vbench_standard_prompts.txt}"
+DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
 CHECK_ENV_IMPORTS="${CHECK_ENV_IMPORTS:-1}"
 REQUIRE_WANDB="${REQUIRE_WANDB:-1}"
@@ -384,6 +385,23 @@ check_file "${VIDEODPO_REPO}/requirements.txt" "VideoDPO requirements.txt"
 check_file "${VIDEODPO_REPO}/scripts/train.py" "VideoDPO train.py"
 check_file "${VIDEODPO_REPO}/configs/vc2_dpo/config.yaml" "official VC2-DPO config"
 check_file "${VIDEODPO_REPO}/data/video_data.py" "official VideoDPO dataloader"
+check_file "$DPO_DIAG_PATCH" "SC VideoDPO DPO diagnostics patch"
+if [[ -f "$DPO_DIAG_PATCH" && -f "${VIDEODPO_REPO}/lvdm/models/ddpm3d.py" ]]; then
+  if grep -q "_log_dpo_diag_table" "${VIDEODPO_REPO}/lvdm/models/ddpm3d.py"; then
+    ok "SC VideoDPO DPO diagnostics patch already applied"
+  elif command -v git >/dev/null 2>&1; then
+    PATCH_CHECK_OUTPUT="$(git -C "$VIDEODPO_REPO" apply --check "$DPO_DIAG_PATCH" 2>&1)"
+    PATCH_CHECK_RC=$?
+    if [[ "$PATCH_CHECK_RC" -eq 0 ]]; then
+      ok "SC VideoDPO DPO diagnostics patch applies cleanly"
+    else
+      printf '%s\n' "$PATCH_CHECK_OUTPUT" | sed '/^$/d' | sed 's/^/[DIAG] dpo_diag_patch_check=/'
+      fail "SC VideoDPO DPO diagnostics patch does not apply cleanly: $DPO_DIAG_PATCH"
+    fi
+  else
+    warn "git command not found; cannot check DPO diagnostics patch application"
+  fi
+fi
 if [[ "${CHECK_ENV_IMPORTS}" == "1" ]]; then
   if command -v conda >/dev/null 2>&1; then
     ENV_IMPORT_OUTPUT="$(

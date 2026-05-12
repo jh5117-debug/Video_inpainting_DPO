@@ -47,6 +47,14 @@ WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
 WANDB_RUN_GROUP="${WANDB_RUN_GROUP:-VideoDPO_VC2}"
 WANDB_LOG_MODEL="${WANDB_LOG_MODEL:-False}"
 EARLY_WANDB="${EARLY_WANDB:-1}"
+APPLY_DPO_DIAG_PATCH="${APPLY_DPO_DIAG_PATCH:-1}"
+DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
+DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
+
+export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
+export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
+export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -113,6 +121,26 @@ export TRANSFORMERS_CACHE="${PROJECT_ROOT}/.hf_cache"
 export TMPDIR="${TMPDIR:-${PROJECT_ROOT}/.tmp}"
 mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}" "${HF_HOME}" "${TMPDIR}"
 
+apply_dpo_diag_patch() {
+  case "${APPLY_DPO_DIAG_PATCH,,}" in
+    1|true|yes|on)
+      if [[ ! -f "${DPO_DIAG_PATCH}" ]]; then
+        echo "[vc2-train][error] DPO diagnostics patch missing: ${DPO_DIAG_PATCH}" >&2
+        exit 1
+      fi
+      if grep -q "_log_dpo_diag_table" "${VIDEODPO_REPO}/lvdm/models/ddpm3d.py"; then
+        echo "[vc2-train] DPO diagnostics patch already applied in ${VIDEODPO_REPO}"
+      else
+        echo "[vc2-train] applying DPO diagnostics patch: ${DPO_DIAG_PATCH}"
+        git -C "${VIDEODPO_REPO}" apply "${DPO_DIAG_PATCH}"
+      fi
+      ;;
+    *)
+      echo "[vc2-train] DPO diagnostics patch disabled by APPLY_DPO_DIAG_PATCH=${APPLY_DPO_DIAG_PATCH}"
+      ;;
+  esac
+}
+
 wandb_event() {
   local event="$1"
   shift || true
@@ -148,6 +176,7 @@ echo "[vc2-train] launch_log=${LAUNCH_LOG}"
 echo "[vc2-train] run_name=${RUN_NAME}"
 echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
+echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
 wandb_event start \
@@ -155,8 +184,12 @@ wandb_event start \
   --config "num_gpus=${NUM_GPUS}" \
   --config "device_list=${DEVICE_LIST}" \
   --config "beta_dpo=${BETA_DPO}" \
+  --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
+  --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
   --config "vc2_data_yaml=${VC2_DATA_YAML}" \
   --config "videodpo_repo=${VIDEODPO_REPO}"
+
+apply_dpo_diag_patch
 
 echo "[vc2-train] dependency preflight"
 python - <<'PY'
