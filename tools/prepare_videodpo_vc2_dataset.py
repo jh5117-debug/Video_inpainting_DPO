@@ -174,9 +174,9 @@ def _rewrite_metadata_clip_paths(dataset_root: Path, search_roots: list[Path]) -
         if local_video is None:
             unresolved += 1
             continue
-        rel_path = os.path.relpath(local_video, dataset_root).replace(os.sep, "/")
-        if rel_path != clip_path:
-            basic["clip_path"] = rel_path
+        fixed_path = str(local_video)
+        if fixed_path != clip_path:
+            basic["clip_path"] = fixed_path
             changed += 1
 
     if changed:
