@@ -26,6 +26,7 @@ if [[ "${SC_HEALTH_FILTERED:-0}" != "1" && "${QUIET_OK}" == "1" ]]; then
     /^metadata_clip_path=/ ||
     /^metadata_clip_exists=/ ||
     /^real_local_candidate=/ ||
+    /^repo_commit=/ ||
     /^\[RESULT\]/ { print }
   '
   exit "${PIPESTATUS[0]}"
@@ -182,6 +183,7 @@ check_dir "$VBENCH_ROOT" "VBench repo"
 
 section "Git State"
 if command -v git >/dev/null 2>&1 && [[ -d "${PROJECT_ROOT}/.git" ]]; then
+  printf 'repo_commit=%s\n' "$(git -C "$PROJECT_ROOT" log -1 --oneline 2>/dev/null || true)"
   git -C "$PROJECT_ROOT" status -sb || warn "git status failed for $PROJECT_ROOT"
   git -C "$PROJECT_ROOT" log -1 --oneline || warn "git log failed for $PROJECT_ROOT"
 else

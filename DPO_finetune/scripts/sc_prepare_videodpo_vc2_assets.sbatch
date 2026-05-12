@@ -53,6 +53,9 @@ conda activate "${CONDA_ENV}"
 
 mkdir -p "${PROJECT_ROOT}/logs" "$(dirname "${VC2_DATA_YAML}")" "$(dirname "${VC2_DATASET_ROOT}")"
 echo "[assets] project_root=${PROJECT_ROOT}"
+if command -v git >/dev/null 2>&1 && [[ -d "${PROJECT_ROOT}/.git" ]]; then
+  echo "[assets] project_commit=$(git -C "${PROJECT_ROOT}" log -1 --oneline 2>/dev/null || true)"
+fi
 echo "[assets] project_dev=${PROJECT_DEV}"
 echo "[assets] project_data=${PROJECT_DATA}"
 echo "[assets] videodpo_repo=${VIDEODPO_REPO}"
