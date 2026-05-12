@@ -3,11 +3,11 @@
 #SBATCH --partition=pgpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --gres=gpu:4
+#SBATCH --gres=gpu:8
 #SBATCH --cpus-per-task=16
-#SBATCH --mem=180G
-#SBATCH --time=72:00:00
-#SBATCH --output=logs/videodpo-vc2-train-%j.out
+#SBATCH --mem=200G
+#SBATCH --time=48:00:00
+#SBATCH --output=logs/dpo-stage1-%j.out
 
 set -euo pipefail
 
@@ -31,8 +31,8 @@ VC2_DATA_YAML="${VC2_DATA_YAML:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/
 LOG_ROOT="${LOG_ROOT:-${PROJECT_DATA}/experiments/videodpo_vc2_dpo}"
 RUN_NAME="${RUN_NAME:-sc-vc2-dpo-$(date -u +%Y%m%d_%H%M%S)}"
 CONFIG="${CONFIG:-configs/vc2_dpo/config.yaml}"
-NUM_GPUS="${NUM_GPUS:-4}"
-DEVICE_LIST="${DEVICE_LIST:-0,1,2,3}"
+NUM_GPUS="${NUM_GPUS:-8}"
+DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5,6,7}"
 BATCH_SIZE="${BATCH_SIZE:-1}"
 GRAD_ACCUM="${GRAD_ACCUM:-2}"
 MAX_OPT_STEPS="${MAX_OPT_STEPS:-}"
