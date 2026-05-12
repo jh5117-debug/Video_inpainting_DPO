@@ -27,6 +27,10 @@ def _extract_reason(log_tail: str, event: str) -> str:
 
     patterns = [
         r"CUDA out of memory[^\n]*",
+        r"MisconfigurationException: [^\n]*",
+        r"Failed to get device handle for GPU [^\n]*",
+        r"\[vc2-train\]\[gpu-preflight\]\[ERROR\][^\n]*",
+        r"torch\.cuda\.is_available\(\)=False[^\n]*",
         r"RuntimeError: [^\n]*",
         r"ValueError: [^\n]*",
         r"KeyError: [^\n]*",
@@ -42,15 +46,13 @@ def _extract_reason(log_tail: str, event: str) -> str:
         r"CANCELLED[^\n]*",
         r"TIMEOUT[^\n]*",
     ]
-    for line in reversed(log_tail.splitlines()):
-        clean = line.strip()
-        if not clean:
-            continue
-        for pattern in patterns:
+    lines = [line.strip() for line in log_tail.splitlines() if line.strip()]
+    for pattern in patterns:
+        for clean in reversed(lines):
             match = re.search(pattern, clean)
             if match:
                 return match.group(0)[:500]
-    return log_tail.splitlines()[-1].strip()[:500]
+    return lines[-1][:500] if lines else f"{event}: no non-empty log lines"
 
 
 def main() -> int:
@@ -100,6 +102,9 @@ def main() -> int:
 
         log_tail = _tail(args.log_file, args.tail_lines)
         if log_tail:
+            print(f"[wandb-event] launcher log tail ({args.event}, last {args.tail_lines} lines) BEGIN", flush=True)
+            print(log_tail[-20000:], flush=True)
+            print(f"[wandb-event] launcher log tail ({args.event}) END", flush=True)
             tail_dir = Path(args.run_dir) / "wandb_tail"
             tail_dir.mkdir(parents=True, exist_ok=True)
             tail_path = tail_dir / f"{args.run_id}.{args.event}.tail.txt"

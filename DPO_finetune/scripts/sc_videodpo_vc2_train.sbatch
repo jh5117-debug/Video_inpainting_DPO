@@ -52,11 +52,12 @@ DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
 CLEAN_DEBUG_PRINT="${CLEAN_DEBUG_PRINT:-1}"
 DEBUG_PRINT_PATCH="${DEBUG_PRINT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_remove_debug_training_step_print.patch}"
+GPU_PREFLIGHT="${GPU_PREFLIGHT:-1}"
 
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH GPU_PREFLIGHT
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -212,6 +213,7 @@ echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
 echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
 echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
+echo "[vc2-train] gpu_preflight=${GPU_PREFLIGHT} slurm_job_gpus=${SLURM_JOB_GPUS:-unset} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-unset}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
 wandb_event start \
@@ -222,6 +224,7 @@ wandb_event start \
   --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
   --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
   --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
+  --config "gpu_preflight=${GPU_PREFLIGHT}" \
   --config "vc2_data_yaml=${VC2_DATA_YAML}" \
   --config "videodpo_repo=${VIDEODPO_REPO}"
 
@@ -274,6 +277,57 @@ if missing:
     print("[vc2-train][preflight][FIX] CONDA_ENV=%s INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh" % env)
     raise SystemExit(2)
 PY
+
+case "${GPU_PREFLIGHT,,}" in
+  1|true|yes|on)
+    echo "[vc2-train] gpu preflight"
+    echo "[vc2-train][gpu-preflight] host=$(hostname)"
+    echo "[vc2-train][gpu-preflight] SLURM_JOB_ID=${SLURM_JOB_ID:-unset}"
+    echo "[vc2-train][gpu-preflight] SLURM_JOB_GPUS=${SLURM_JOB_GPUS:-unset}"
+    echo "[vc2-train][gpu-preflight] CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES:-unset}"
+    nvidia-smi -L || true
+    python - <<'PY'
+import os
+import sys
+
+import torch
+
+requested = int(os.environ.get("NUM_GPUS", "1"))
+print(f"[vc2-train][gpu-preflight] torch={torch.__version__} torch.version.cuda={torch.version.cuda}")
+print(f"[vc2-train][gpu-preflight] torch.cuda.is_available()={torch.cuda.is_available()}")
+try:
+    count = torch.cuda.device_count()
+except Exception as exc:
+    print(f"[vc2-train][gpu-preflight][ERROR] torch.cuda.device_count failed: {type(exc).__name__}: {exc}")
+    raise SystemExit(3)
+print(f"[vc2-train][gpu-preflight] torch.cuda.device_count()={count} requested={requested}")
+if not torch.cuda.is_available() or count < requested:
+    print(
+        "[vc2-train][gpu-preflight][ERROR] CUDA is not visible inside this Slurm allocation; "
+        "likely node/GPU allocation/driver issue. Requeue on another node or contact SC admin."
+    )
+    raise SystemExit(3)
+for idx in range(count):
+    try:
+        props = torch.cuda.get_device_properties(idx)
+        print(f"[vc2-train][gpu-preflight][OK] cuda:{idx} name={props.name} total_memory_gb={props.total_memory / (1024 ** 3):.1f}")
+    except Exception as exc:
+        print(f"[vc2-train][gpu-preflight][ERROR] cuda:{idx} properties failed: {type(exc).__name__}: {exc}")
+        raise SystemExit(3)
+try:
+    torch.cuda.set_device(0)
+    probe = torch.ones(1, device="cuda")
+    torch.cuda.synchronize()
+    print(f"[vc2-train][gpu-preflight][OK] cuda tensor probe={float(probe.item())}")
+except Exception as exc:
+    print(f"[vc2-train][gpu-preflight][ERROR] cuda tensor probe failed: {type(exc).__name__}: {exc}")
+    raise SystemExit(3)
+PY
+    ;;
+  *)
+    echo "[vc2-train] GPU preflight disabled by GPU_PREFLIGHT=${GPU_PREFLIGHT}"
+    ;;
+esac
 
 MAX_STEPS_ARG=()
 if [[ -n "${MAX_OPT_STEPS}" ]]; then
