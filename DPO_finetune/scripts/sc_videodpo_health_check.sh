@@ -5,6 +5,28 @@
 
 set -uo pipefail
 
+if [[ "${VERBOSE:-0}" == "1" ]]; then
+  QUIET_OK=0
+else
+  QUIET_OK="${QUIET_OK:-1}"
+fi
+
+if [[ "${SC_HEALTH_FILTERED:-0}" != "1" && "${QUIET_OK}" == "1" ]]; then
+  export SC_HEALTH_FILTERED=1
+  set +e
+  "$0" "$@" 2>&1 | awk '
+    /^\[FAIL\]/ ||
+    /^\[WARN\]/ ||
+    /^========== Summary ==========/ ||
+    /^errors=/ ||
+    /^failures:/ ||
+    /^warnings:/ ||
+    /^  - / ||
+    /^\[RESULT\]/ { print }
+  '
+  exit "${PIPESTATUS[0]}"
+fi
+
 ERRORS=0
 WARNINGS=0
 FAIL_MESSAGES=()
