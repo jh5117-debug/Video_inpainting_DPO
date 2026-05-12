@@ -72,6 +72,8 @@ transformers
 fairscale
 timm
 peft==0.13.2
+kornia
+wandb
 REQ
 
 if [[ "${INSTALL_REQUIREMENTS}" == "1" ]]; then
@@ -116,6 +118,8 @@ required = [
     "fairscale",
     "timm",
     "peft",
+    "kornia",
+    "wandb",
 ]
 missing = []
 for name in required:
@@ -141,6 +145,7 @@ except Exception as exc:
 from omegaconf import OmegaConf
 from utils.common_utils import instantiate_from_config  # noqa: F401
 import lvdm.modules.attention  # noqa: F401
+import lvdm.modules.encoders.condition  # noqa: F401
 import lvdm.models.ddpm3d  # noqa: F401
 
 cfg = OmegaConf.load("configs/vc2_dpo/config.yaml")

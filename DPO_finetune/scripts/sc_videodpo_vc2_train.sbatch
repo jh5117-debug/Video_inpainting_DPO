@@ -46,6 +46,7 @@ WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
 WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
 WANDB_RUN_GROUP="${WANDB_RUN_GROUP:-VideoDPO_VC2}"
 WANDB_LOG_MODEL="${WANDB_LOG_MODEL:-False}"
+EARLY_WANDB="${EARLY_WANDB:-1}"
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -79,7 +80,11 @@ if [[ ! -f "${VIDEODPO_REPO}/checkpoints/vc2/ref_model.ckpt" ]]; then
   exit 1
 fi
 
-mkdir -p "${LOG_ROOT}" "${PROJECT_ROOT}/logs"
+RUN_DIR="${LOG_ROOT}/${RUN_NAME}"
+mkdir -p "${LOG_ROOT}" "${PROJECT_ROOT}/logs" "${RUN_DIR}"
+LAUNCH_LOG="${LAUNCH_LOG:-${RUN_DIR}/slurm_launch_stdout.log}"
+exec > >(tee -a "${LAUNCH_LOG}") 2>&1
+
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST}}"
 export PYTHONPATH="${VIDEODPO_REPO}:${PYTHONPATH:-}"
 export PYTHONUNBUFFERED=1
@@ -93,6 +98,10 @@ export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_DATA_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_CONFIG_DIR="${PROJECT_ROOT}/.wandb_cache/config"
+WANDB_RUN_ID="${WANDB_RUN_ID:-$(printf '%s' "${RUN_NAME}-${SLURM_JOB_ID:-manual}" | tr -cs 'A-Za-z0-9_.-' '-')}"
+WANDB_RUN_ID="$(printf '%s' "${WANDB_RUN_ID}" | sed 's/^-//; s/-$//')"
+WANDB_RESUME="${WANDB_RESUME:-allow}"
+export WANDB_RUN_ID WANDB_RESUME
 if [[ -z "${WANDB_API_KEY:-}" && -f "${HOME}/.netrc" ]]; then
   WANDB_API_KEY_FROM_NETRC=$(grep -A2 'api.wandb.ai' "${HOME}/.netrc" | grep password | awk '{print $2}' | head -n 1 || true)
   if [[ -n "${WANDB_API_KEY_FROM_NETRC}" ]]; then
@@ -104,13 +113,97 @@ export TRANSFORMERS_CACHE="${PROJECT_ROOT}/.hf_cache"
 export TMPDIR="${TMPDIR:-${PROJECT_ROOT}/.tmp}"
 mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}" "${HF_HOME}" "${TMPDIR}"
 
+wandb_event() {
+  local event="$1"
+  shift || true
+  case "${ENABLE_WANDB,,}:${EARLY_WANDB,,}" in
+    1:1|1:true|1:yes|1:on|true:1|true:true|true:yes|true:on|yes:1|yes:true|yes:yes|yes:on|on:1|on:true|on:yes|on:on)
+      python "${PROJECT_ROOT}/tools/wandb_job_event.py" \
+        --event "${event}" \
+        --project "${WANDB_PROJECT}" \
+        --entity "${WANDB_ENTITY}" \
+        --group "${WANDB_RUN_GROUP}" \
+        --run-name "${RUN_NAME}" \
+        --run-id "${WANDB_RUN_ID}" \
+        --run-dir "${WANDB_DIR}" \
+        --log-file "${LAUNCH_LOG}" \
+        "$@" || true
+      ;;
+  esac
+}
+
+on_error() {
+  local rc="$?"
+  trap - ERR
+  echo "[vc2-train][error] failed with exit_code=${rc}"
+  wandb_event failed --exit-code "${rc}" --tail-lines 260
+  exit "${rc}"
+}
+trap on_error ERR
+
 echo "[vc2-train] videodpo_repo=${VIDEODPO_REPO}"
 echo "[vc2-train] data_yaml=${VC2_DATA_YAML}"
 echo "[vc2-train] log_root=${LOG_ROOT}"
+echo "[vc2-train] launch_log=${LAUNCH_LOG}"
 echo "[vc2-train] run_name=${RUN_NAME}"
 echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
-echo "[vc2-train] enable_wandb=${ENABLE_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR}"
+echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
+
+wandb_event start \
+  --config "run_name=${RUN_NAME}" \
+  --config "num_gpus=${NUM_GPUS}" \
+  --config "device_list=${DEVICE_LIST}" \
+  --config "beta_dpo=${BETA_DPO}" \
+  --config "vc2_data_yaml=${VC2_DATA_YAML}" \
+  --config "videodpo_repo=${VIDEODPO_REPO}"
+
+echo "[vc2-train] dependency preflight"
+python - <<'PY'
+import importlib
+import os
+import sys
+
+videodpo_repo = os.environ["VIDEODPO_REPO"]
+sys.path.insert(0, videodpo_repo)
+os.chdir(videodpo_repo)
+
+required = [
+    "torch",
+    "pytorch_lightning",
+    "omegaconf",
+    "kornia",
+    "wandb",
+    "open_clip",
+    "transformers",
+    "fairscale",
+    "timm",
+    "peft",
+    "decord",
+    "av",
+]
+missing = []
+for name in required:
+    try:
+        module = importlib.import_module(name)
+        print(f"[vc2-train][preflight][OK] {name} {getattr(module, '__version__', '')}".rstrip())
+    except Exception as exc:
+        print(f"[vc2-train][preflight][FAIL] {name}: {type(exc).__name__}: {exc}")
+        missing.append(name)
+
+try:
+    importlib.import_module("lvdm.modules.encoders.condition")
+    print("[vc2-train][preflight][OK] lvdm.modules.encoders.condition")
+except Exception as exc:
+    print(f"[vc2-train][preflight][FAIL] lvdm.modules.encoders.condition: {type(exc).__name__}: {exc}")
+    missing.append("lvdm.modules.encoders.condition")
+
+if missing:
+    env = os.environ.get("CONDA_ENV", "diffueraser")
+    print("[vc2-train][preflight][ERROR] missing/import-failing modules:", ", ".join(missing))
+    print("[vc2-train][preflight][FIX] CONDA_ENV=%s INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh" % env)
+    raise SystemExit(2)
+PY
 
 MAX_STEPS_ARG=()
 if [[ -n "${MAX_OPT_STEPS}" ]]; then
@@ -125,6 +218,8 @@ case "${ENABLE_WANDB,,}" in
       lightning.logger.params.project="${WANDB_PROJECT}"
       lightning.logger.params.entity="${WANDB_ENTITY}"
       lightning.logger.params.name="${RUN_NAME}"
+      lightning.logger.params.id="${WANDB_RUN_ID}"
+      lightning.logger.params.resume="${WANDB_RESUME}"
       lightning.logger.params.save_dir="${LOG_ROOT}"
       lightning.logger.params.group="${WANDB_RUN_GROUP}"
       lightning.logger.params.log_model="${WANDB_LOG_MODEL}"
@@ -164,5 +259,7 @@ python -m torch.distributed.run \
   "${LOGGER_ARGS[@]}" \
   "${MAX_STEPS_ARG[@]}"
 
+trap - ERR
+wandb_event finished --exit-code 0 --tail-lines 120
 echo "[vc2-train] done"
 echo "[vc2-train] checkpoints should be under ${LOG_ROOT}/${RUN_NAME}/checkpoints"

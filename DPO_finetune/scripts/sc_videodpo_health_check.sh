@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
-# Static SC health check for VideoDPO reproduction and DiffuEraser bridge.
-# This script intentionally does not run Python, training, inference, VBench, or
-# any GPU command.  It is safe for a compute node or login-side static audit.
+# SC health check for VideoDPO reproduction and DiffuEraser bridge.
+# This script never runs training, inference, VBench, or any GPU command.  By
+# default it does run a lightweight Python import preflight so missing conda
+# packages fail here instead of after a queued GPU job starts.
 
 set -uo pipefail
 
@@ -196,6 +197,8 @@ VC2_DATA_YAML="${VC2_DATA_YAML:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/
 VC2_DATASET_ROOT="${VC2_DATASET_ROOT:-${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset}"
 PROMPTS_FILE="${PROMPTS_FILE:-${VIDEODPO_REPO}/prompts/vbench_standard_prompts.txt}"
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
+CHECK_ENV_IMPORTS="${CHECK_ENV_IMPORTS:-1}"
+REQUIRE_WANDB="${REQUIRE_WANDB:-1}"
 DIFFUERASER_WEIGHTS_DIR="${WEIGHTS_DIR:-${PROJECT_DATA}/Video_inpainting_DPO/weights}"
 DIFFUERASER_REF="${REF_MODEL_PATH:-${DIFFUERASER_WEIGHTS_DIR}/diffuEraser/converted_weights_step48000}"
 
@@ -381,6 +384,65 @@ check_file "${VIDEODPO_REPO}/requirements.txt" "VideoDPO requirements.txt"
 check_file "${VIDEODPO_REPO}/scripts/train.py" "VideoDPO train.py"
 check_file "${VIDEODPO_REPO}/configs/vc2_dpo/config.yaml" "official VC2-DPO config"
 check_file "${VIDEODPO_REPO}/data/video_data.py" "official VideoDPO dataloader"
+if [[ "${CHECK_ENV_IMPORTS}" == "1" ]]; then
+  if command -v conda >/dev/null 2>&1; then
+    ENV_IMPORT_OUTPUT="$(
+      VIDEODPO_REPO="${VIDEODPO_REPO}" REQUIRE_WANDB="${REQUIRE_WANDB}" \
+      conda run --no-capture-output -n "${CONDA_ENV}" python - <<'PY' 2>&1
+import importlib
+import os
+import sys
+
+videodpo_repo = os.environ["VIDEODPO_REPO"]
+sys.path.insert(0, videodpo_repo)
+os.chdir(videodpo_repo)
+
+required = [
+    "torch",
+    "pytorch_lightning",
+    "omegaconf",
+    "kornia",
+    "open_clip",
+    "transformers",
+    "fairscale",
+    "timm",
+    "peft",
+    "decord",
+    "av",
+]
+if os.environ.get("REQUIRE_WANDB", "1") == "1":
+    required.append("wandb")
+
+missing = []
+for name in required:
+    try:
+        importlib.import_module(name)
+    except Exception as exc:
+        print(f"{name}: {type(exc).__name__}: {exc}")
+        missing.append(name)
+
+try:
+    importlib.import_module("lvdm.modules.encoders.condition")
+except Exception as exc:
+    print(f"lvdm.modules.encoders.condition: {type(exc).__name__}: {exc}")
+    missing.append("lvdm.modules.encoders.condition")
+
+raise SystemExit(2 if missing else 0)
+PY
+    )"
+    ENV_IMPORT_RC=$?
+    if [[ "$ENV_IMPORT_RC" -eq 0 ]]; then
+      ok "VideoDPO env import preflight passed in conda env: ${CONDA_ENV}"
+    else
+      printf '%s\n' "$ENV_IMPORT_OUTPUT" | sed '/^$/d' | sed 's/^/[DIAG] env_import_failure=/'
+      fail "VideoDPO env import preflight failed in conda env ${CONDA_ENV}. Fix: CONDA_ENV=${CONDA_ENV} INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh"
+    fi
+  else
+    warn "Skipping env import preflight because conda command is not available"
+  fi
+else
+  warn "CHECK_ENV_IMPORTS=0; skipped VideoDPO env import preflight"
+fi
 
 section "Official VC2-DPO Hyperparameter Lines"
 VC2_CONFIG="${VIDEODPO_REPO}/configs/vc2_dpo/config.yaml"

@@ -202,6 +202,23 @@ WANDB_CONFIG_DIR=${PROJECT_ROOT}/.wandb_cache/config
 ENABLE_WANDB=0 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
 ```
 
+2026-05-12 追加修复：
+
+- SC 第一次 VC2-DPO 训练在 `lvdm/modules/encoders/condition.py` 处失败，原因是复用的 `diffueraser` conda env 缺少 `kornia`。
+- `videodpo_env_smoke_and_export.sh` 的 minimal install/smoke 现在包含 `kornia` 和 `wandb`，并会显式 import `lvdm.modules.encoders.condition`。
+- `sc_videodpo_health_check.sh` 现在默认做轻量 Python import preflight；它仍然不跑训练、不跑 inference、不占 GPU。
+- `sc_videodpo_vc2_train.sbatch` 现在会在 `torchrun` 前创建 W&B launcher marker，并在失败时把 Slurm launch log 的 tail 写入同一个 W&B run，避免 import 阶段报错时 W&B 页面没有 run。
+
+修复 SC 环境的命令：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+CONDA_ENV=diffueraser INSTALL_MINIMAL=1 bash DPO_finetune/scripts/videodpo_env_smoke_and_export.sh
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+```
+
 相关提交：
 
 ```text

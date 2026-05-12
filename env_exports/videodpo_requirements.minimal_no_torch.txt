@@ -11,3 +11,5 @@ transformers
 fairscale
 timm
 peft==0.13.2
+kornia
+wandb
