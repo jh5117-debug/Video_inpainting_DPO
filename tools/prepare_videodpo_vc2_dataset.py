@@ -190,6 +190,30 @@ def _rewrite_metadata_clip_paths(dataset_root: Path, search_roots: list[Path]) -
     return changed, unresolved
 
 
+def _resolve_for_videodpo(dataset_root: Path, clip_path: str) -> Path:
+    path = Path(clip_path)
+    if path.is_absolute():
+        return path
+    return dataset_root / clip_path
+
+
+def _validate_metadata_clips(dataset_root: Path, limit: int = 20) -> tuple[str, Path, int]:
+    metadata_path = dataset_root / "metadata.json"
+    with metadata_path.open("r", encoding="utf-8") as f:
+        metadata = json.load(f)
+    if not isinstance(metadata, list) or not metadata:
+        raise RuntimeError(f"metadata.json has no list entries: {metadata_path}")
+
+    first_clip = str(metadata[0]["basic"]["clip_path"])
+    first_resolved = _resolve_for_videodpo(dataset_root, first_clip)
+    missing = 0
+    for item in metadata[:limit]:
+        clip_path = str(item["basic"]["clip_path"])
+        if not _resolve_for_videodpo(dataset_root, clip_path).is_file():
+            missing += 1
+    return first_clip, first_resolved, missing
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo_id", default="JiaHuang01/vidpro10k-vc2-dataset")
@@ -255,15 +279,24 @@ def main() -> int:
     output_yaml.parent.mkdir(parents=True, exist_ok=True)
     with output_yaml.open("w", encoding="utf-8") as f:
         yaml.safe_dump({"META": [str(dataset_root)]}, f, sort_keys=False)
+    first_clip, first_resolved, missing_sample = _validate_metadata_clips(dataset_root)
 
     print(f"[prepare-vc2] repo_id={args.repo_id}")
     print(f"[prepare-vc2] dataset_root={dataset_root}")
     print(f"[prepare-vc2] output_yaml={output_yaml}")
     print(f"[prepare-vc2] rewritten_clip_paths={changed} unresolved_clip_paths={unresolved}")
+    print(f"[prepare-vc2] first_clip_path={first_clip}")
+    print(f"[prepare-vc2] first_clip_resolved={first_resolved}")
+    print(f"[prepare-vc2] sample_missing_clip_paths={missing_sample}/20")
     if unresolved:
         raise RuntimeError(
             f"{unresolved} clip_path entries could not be resolved under {target_root}. "
             "Inspect metadata.json and the extracted archive layout."
+        )
+    if missing_sample:
+        raise RuntimeError(
+            f"{missing_sample}/20 sampled clip_path entries are missing after rewrite. "
+            "The metadata.json file is still not safe for VideoDPO training."
         )
     return 0
 
