@@ -41,6 +41,11 @@ NUM_WORKERS="${NUM_WORKERS:-16}"
 BETA_DPO="${BETA_DPO:-5000.0}"
 MASTER_PORT="${MASTER_PORT:-$(shuf -i 20000-65000 -n 1)}"
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
+ENABLE_WANDB="${ENABLE_WANDB:-1}"
+WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
+WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
+WANDB_RUN_GROUP="${WANDB_RUN_GROUP:-VideoDPO_VC2}"
+WANDB_LOG_MODEL="${WANDB_LOG_MODEL:-False}"
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -83,6 +88,21 @@ export TOKENIZERS_PARALLELISM=false
 export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
 export NCCL_ASYNC_ERROR_HANDLING=1
+export WANDB_PROJECT WANDB_ENTITY
+export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
+export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
+export WANDB_DATA_DIR="${PROJECT_ROOT}/.wandb_cache"
+export WANDB_CONFIG_DIR="${PROJECT_ROOT}/.wandb_cache/config"
+if [[ -z "${WANDB_API_KEY:-}" && -f "${HOME}/.netrc" ]]; then
+  WANDB_API_KEY_FROM_NETRC=$(grep -A2 'api.wandb.ai' "${HOME}/.netrc" | grep password | awk '{print $2}' | head -n 1 || true)
+  if [[ -n "${WANDB_API_KEY_FROM_NETRC}" ]]; then
+    export WANDB_API_KEY="${WANDB_API_KEY_FROM_NETRC}"
+  fi
+fi
+export HF_HOME="${PROJECT_ROOT}/.hf_cache"
+export TRANSFORMERS_CACHE="${PROJECT_ROOT}/.hf_cache"
+export TMPDIR="${TMPDIR:-${PROJECT_ROOT}/.tmp}"
+mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}" "${HF_HOME}" "${TMPDIR}"
 
 echo "[vc2-train] videodpo_repo=${VIDEODPO_REPO}"
 echo "[vc2-train] data_yaml=${VC2_DATA_YAML}"
@@ -90,11 +110,30 @@ echo "[vc2-train] log_root=${LOG_ROOT}"
 echo "[vc2-train] run_name=${RUN_NAME}"
 echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
+echo "[vc2-train] enable_wandb=${ENABLE_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR}"
 
 MAX_STEPS_ARG=()
 if [[ -n "${MAX_OPT_STEPS}" ]]; then
   MAX_STEPS_ARG=(lightning.trainer.max_steps="${MAX_OPT_STEPS}")
 fi
+
+LOGGER_ARGS=()
+case "${ENABLE_WANDB,,}" in
+  1|true|yes|on)
+    LOGGER_ARGS=(
+      lightning.logger.target=pytorch_lightning.loggers.WandbLogger
+      lightning.logger.params.project="${WANDB_PROJECT}"
+      lightning.logger.params.entity="${WANDB_ENTITY}"
+      lightning.logger.params.name="${RUN_NAME}"
+      lightning.logger.params.save_dir="${LOG_ROOT}"
+      lightning.logger.params.group="${WANDB_RUN_GROUP}"
+      lightning.logger.params.log_model="${WANDB_LOG_MODEL}"
+    )
+    ;;
+  *)
+    echo "[vc2-train] W&B disabled; using official VideoDPO TensorBoard logger."
+    ;;
+esac
 
 cd "${VIDEODPO_REPO}"
 python -m torch.distributed.run \
@@ -122,6 +161,7 @@ python -m torch.distributed.run \
   "data.params.train.params.resolution=[320,512]" \
   data.params.train.params.video_length=16 \
   data.params.train.params.frame_stride=1 \
+  "${LOGGER_ARGS[@]}" \
   "${MAX_STEPS_ARG[@]}"
 
 echo "[vc2-train] done"
