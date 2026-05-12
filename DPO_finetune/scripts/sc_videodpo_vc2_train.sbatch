@@ -53,12 +53,14 @@ DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
 CLEAN_DEBUG_PRINT="${CLEAN_DEBUG_PRINT:-1}"
 DEBUG_PRINT_PATCH="${DEBUG_PRINT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_remove_debug_training_step_print.patch}"
+PATCH_OPENCLIP_BATCH_FIRST="${PATCH_OPENCLIP_BATCH_FIRST:-1}"
+OPENCLIP_BATCH_FIRST_PATCH="${OPENCLIP_BATCH_FIRST_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_open_clip_batch_first.patch}"
 GPU_PREFLIGHT="${GPU_PREFLIGHT:-1}"
 
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH GPU_PREFLIGHT WANDB_START_EVENT
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH PATCH_OPENCLIP_BATCH_FIRST OPENCLIP_BATCH_FIRST_PATCH GPU_PREFLIGHT WANDB_START_EVENT
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -166,6 +168,26 @@ apply_debug_print_patch() {
   esac
 }
 
+apply_openclip_batch_first_patch() {
+  case "${PATCH_OPENCLIP_BATCH_FIRST,,}" in
+    1|true|yes|on)
+      if [[ ! -f "${OPENCLIP_BATCH_FIRST_PATCH}" ]]; then
+        echo "[vc2-train][error] OpenCLIP batch-first patch missing: ${OPENCLIP_BATCH_FIRST_PATCH}" >&2
+        exit 1
+      fi
+      if grep -q 'batch_first = getattr(self.model.transformer, "batch_first", False)' "${VIDEODPO_REPO}/lvdm/modules/encoders/condition.py"; then
+        echo "[vc2-train] OpenCLIP batch-first patch already applied"
+      else
+        echo "[vc2-train] applying OpenCLIP batch-first patch: ${OPENCLIP_BATCH_FIRST_PATCH}"
+        git -C "${VIDEODPO_REPO}" apply "${OPENCLIP_BATCH_FIRST_PATCH}"
+      fi
+      ;;
+    *)
+      echo "[vc2-train] OpenCLIP batch-first patch disabled by PATCH_OPENCLIP_BATCH_FIRST=${PATCH_OPENCLIP_BATCH_FIRST}"
+      ;;
+  esac
+}
+
 wandb_event() {
   local event="$1"
   shift || true
@@ -214,6 +236,7 @@ echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
 echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
 echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
+echo "[vc2-train] patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST} openclip_batch_first_patch=${OPENCLIP_BATCH_FIRST_PATCH}"
 echo "[vc2-train] gpu_preflight=${GPU_PREFLIGHT} slurm_job_gpus=${SLURM_JOB_GPUS:-unset} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-unset}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_start_event=${WANDB_START_EVENT} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
@@ -227,6 +250,7 @@ case "${WANDB_START_EVENT,,}" in
       --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
       --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
       --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
+      --config "patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST}" \
       --config "gpu_preflight=${GPU_PREFLIGHT}" \
       --config "vc2_data_yaml=${VC2_DATA_YAML}" \
       --config "videodpo_repo=${VIDEODPO_REPO}"
@@ -238,6 +262,7 @@ esac
 
 apply_dpo_diag_patch
 apply_debug_print_patch
+apply_openclip_batch_first_patch
 
 echo "[vc2-train] dependency preflight"
 python - <<'PY'
