@@ -287,7 +287,7 @@ def log_validation(
         log_str = " | ".join([f"{k}: {v:.4f}" for k, v in results.items()])
         logger.info(f"[Validation @ Step {step}] {log_str} ({len(all_psnr)} videos)")
 
-        if is_wandb_available():
+        if is_wandb_available() and wandb.run is not None:
             wandb.log({f"val/{k}": v for k, v in results.items()}, step=step)
 
     del pipeline
@@ -488,12 +488,17 @@ def collate_fn(examples):
 # Main
 # ============================================================
 def main(args):
+    report_to = args.report_to
+    if report_to is not None and str(report_to).strip().lower() in {"none", "off", "no", "false", "disabled"}:
+        report_to = None
+        args.report_to = "none"
+
     logging_dir = Path(args.output_dir, args.logging_dir)
     accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
     accelerator = Accelerator(
         gradient_accumulation_steps=args.gradient_accumulation_steps,
         mixed_precision=args.mixed_precision,
-        log_with=args.report_to,
+        log_with=report_to,
         project_config=accelerator_project_config,
     )
     setup_process_console_capture(args.output_dir)
@@ -518,28 +523,28 @@ def main(args):
     if accelerator.is_main_process:
         os.makedirs(args.output_dir, exist_ok=True)
 
-    # ===== WandB 初始化提前: 确保后续任何报错都能在 WandB 中可见 =====
-    if accelerator.is_main_process:
+    # ===== Tracker 初始化提前: 确保后续任何报错都能在启用的 tracker 中可见 =====
+    if accelerator.is_main_process and report_to is not None:
         tracker_config = dict(vars(args))
         for key in ["validation_prompt", "validation_image", "validation_mask"]:
             tracker_config.pop(key, None)
 
         init_kwargs = {}
-        if args.report_to == "wandb":
+        if report_to == "wandb":
             init_kwargs["wandb"] = {"name": f"dpo-stage2-{args.max_train_steps or 'auto'}steps"}
             if args.wandb_entity:
                 init_kwargs["wandb"]["entity"] = args.wandb_entity
 
         try:
             accelerator.init_trackers(args.tracker_project_name, config=tracker_config, init_kwargs=init_kwargs)
-            logger.info("WandB tracker initialized successfully (early init).")
+            logger.info("Tracker initialized successfully (early init).")
             save_wandb_run_info(args.output_dir, args)
             sync_console_logs_to_wandb(args.output_dir, policy="live")
         except Exception as e:
-            logger.error(f"Failed to init WandB tracker: {e}")
+            logger.error(f"Failed to init tracker: {e}")
             raise RuntimeError(
-                "WandB tracker initialization failed before training started. "
-                "Aborting to avoid running without a visible W&B run."
+                "Tracker initialization failed before training started. "
+                "Aborting to avoid running without the requested tracker."
             ) from e
 
     # Load tokenizer
@@ -956,7 +961,7 @@ def main(args):
                                     unwrap_model(brushnet).save_pretrained(os.path.join(best_dir, "brushnet"))
                                     logger.info(f"New best weights saved (composite={composite:.4f})")
 
-                                    if is_wandb_available():
+                                    if is_wandb_available() and wandb.run is not None:
                                         artifact = wandb.Artifact(
                                             "dpo-stage2-best", type="model",
                                             metadata={"step": global_step, "composite": composite, **results}
@@ -1008,7 +1013,7 @@ def main(args):
         accelerator.unwrap_model(brushnet).save_pretrained(os.path.join(last_dir, "brushnet"))
         logger.info(f"Last weights saved to {last_dir}")
 
-        if is_wandb_available():
+        if is_wandb_available() and wandb.run is not None:
             try:
                 artifact = wandb.Artifact("dpo-stage2-last", type="model", metadata={"step": global_step})
                 artifact.add_dir(last_dir)

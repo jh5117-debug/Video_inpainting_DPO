@@ -53,6 +53,7 @@ SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
 VAE_DTYPE=${VAE_DTYPE:-auto}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
+REPORT_TO=${REPORT_TO:-wandb}
 BETA_DPO=${BETA_DPO:-500.0}
 DAVIS_OVERSAMPLE=${DAVIS_OVERSAMPLE:-10}
 VIDEODPO_FRAME_STRIDE=${VIDEODPO_FRAME_STRIDE:-1}
@@ -166,22 +167,25 @@ case "${USE_8BIT_ADAM,,}" in
 esac
 
 # === 所有缓存/日志/artifacts 必须在项目目录内，禁止写入 home ===
-export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
-export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
-export WANDB_DATA_DIR="${PROJECT_ROOT}/.wandb_cache"
-export WANDB_CONFIG_DIR="${PROJECT_ROOT}/.wandb_cache/config"
-if [[ -z "${WANDB_API_KEY:-}" && -f "${HOME}/.netrc" ]]; then
-  WANDB_API_KEY_FROM_NETRC=$(grep -A2 'api.wandb.ai' "${HOME}/.netrc" | grep password | awk '{print $2}' | head -n 1 || true)
-  if [[ -n "${WANDB_API_KEY_FROM_NETRC}" ]]; then
-    export WANDB_API_KEY="${WANDB_API_KEY_FROM_NETRC}"
+if [[ "${REPORT_TO,,}" == "wandb" ]]; then
+  export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
+  export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
+  export WANDB_DATA_DIR="${PROJECT_ROOT}/.wandb_cache"
+  export WANDB_CONFIG_DIR="${PROJECT_ROOT}/.wandb_cache/config"
+  if [[ -z "${WANDB_API_KEY:-}" && -f "${HOME}/.netrc" ]]; then
+    WANDB_API_KEY_FROM_NETRC=$(grep -A2 'api.wandb.ai' "${HOME}/.netrc" | grep password | awk '{print $2}' | head -n 1 || true)
+    if [[ -n "${WANDB_API_KEY_FROM_NETRC}" ]]; then
+      export WANDB_API_KEY="${WANDB_API_KEY_FROM_NETRC}"
+    fi
   fi
+  mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}"
 fi
 export HF_HOME="${PROJECT_ROOT}/.hf_cache"
 export TRANSFORMERS_CACHE="${PROJECT_ROOT}/.hf_cache"
 export TMPDIR="${TMPDIR:-${PROJECT_ROOT}/.tmp}"
 export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
-mkdir -p "${WANDB_DIR}" "${WANDB_CONFIG_DIR}" "${HF_HOME}"
+mkdir -p "${HF_HOME}" "${TMPDIR}"
 
 python training/dpo/scripts/run_stage1.py \
   --num_gpus ${NUM_GPUS} \
@@ -207,6 +211,7 @@ python training/dpo/scripts/run_stage1.py \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
   --vae_dtype ${VAE_DTYPE} \
+  --report_to ${REPORT_TO} \
   --wandb_project ${WANDB_PROJECT} \
   --beta_dpo ${BETA_DPO} \
   --sft_reg_weight ${SFT_REG_WEIGHT} \

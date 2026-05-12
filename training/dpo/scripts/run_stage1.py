@@ -103,7 +103,7 @@ def build_cmd(project_root, args):
         "--videodpo_clip_length", str(args.videodpo_clip_length),
         "--videodpo_full_mask_value", str(args.videodpo_full_mask_value),
         "--seed", str(args.seed),
-        "--report_to", "wandb",
+        "--report_to", args.report_to,
         "--tracker_project_name", args.wandb_project,
         "--set_grads_to_none",
         "--resume_from_checkpoint", "latest",
@@ -292,6 +292,7 @@ def run(args=None):
     print(f"  Policy dtype:    {args.policy_dtype}")
     print(f"  Ref dtype:       {args.ref_dtype}")
     print(f"  Text dtype:      {args.text_dtype}")
+    print(f"  Report To:       {args.report_to}")
     print(f"  Main Port:       {args.main_process_port}")
     print(f"  XFormers:        {args.enable_xformers}")
     print(f"  TF32:            {args.allow_tf32}")
@@ -304,7 +305,7 @@ def run(args=None):
     print()
 
     result = subprocess.run(cmd, cwd=project_root)
-    if result.returncode != 0:
+    if result.returncode != 0 and args.report_to.lower() == "wandb":
         upload_full_crash_log_to_wandb(project_root, output_dir, result.returncode)
     return result.returncode
 
@@ -342,6 +343,8 @@ def parse_args():
     parser.add_argument("--ref_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"])
     parser.add_argument("--text_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"])
     parser.add_argument("--main_process_port", type=str, default=None)
+    parser.add_argument("--report_to", type=str, default="wandb",
+                        help="Accelerate tracker backend. Use 'none'/'off' to disable W&B/tracker logging.")
     parser.add_argument("--wandb_project", type=str, default="DPO_Diffueraser")
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)

@@ -113,7 +113,7 @@ def build_cmd(project_root, args):
         "--videodpo_clip_length", str(args.videodpo_clip_length),
         "--videodpo_full_mask_value", str(args.videodpo_full_mask_value),
         "--seed", str(args.seed),
-        "--report_to", "wandb",
+        "--report_to", args.report_to,
         "--tracker_project_name", args.wandb_project,
         "--set_grads_to_none",
         "--resume_from_checkpoint", "latest",
@@ -305,6 +305,7 @@ def run(args=None):
     print(f"  Beta DPO:           {args.beta_dpo}")
     print(f"  LR:                 {args.learning_rate}")
     print(f"  Mixed Precision:    {args.mixed_precision}")
+    print(f"  Report To:          {args.report_to}")
     print(f"  Main Port:          {args.main_process_port}")
     print(f"  XFormers:           {args.enable_xformers}")
     print(f"  Grad Ckpt:          {not args.disable_gradient_checkpointing}")
@@ -320,7 +321,7 @@ def run(args=None):
         return 1
 
     result = subprocess.run(cmd, cwd=project_root)
-    if result.returncode != 0:
+    if result.returncode != 0 and args.report_to.lower() == "wandb":
         upload_full_crash_log_to_wandb(project_root, output_dir, result.returncode)
     return result.returncode
 
@@ -356,6 +357,8 @@ def parse_args():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")
     parser.add_argument("--main_process_port", type=str, default=None)
+    parser.add_argument("--report_to", type=str, default="wandb",
+                        help="Accelerate tracker backend. Use 'none'/'off' to disable W&B/tracker logging.")
     parser.add_argument("--wandb_project", type=str, default="DPO_Diffueraser")
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)

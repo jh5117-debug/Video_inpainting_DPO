@@ -33,17 +33,18 @@ export VIDEODPO_DATA_BASE="${VIDEODPO_DATA_BASE:-${PROJECT_DATA}/VideoDPO}"
 export DPO_DATA_ROOT="${DPO_DATA_ROOT:-${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml}"
 export DPO_DATASET_TYPE="videodpo_fullmask"
 
-# Keep the old DiffuEraser model/ref/weights env contract.  This experiment
-# changes only the training data/task adapter: VideoDPO pairs + full mask.
+# Conceptually keep VideoDPO data/task and swap in the DiffuEraser model side.
+# Engineering-wise this uses the opt-in full-mask adapter for VideoDPO pairs.
 export RUN_NAME="${RUN_NAME:-sc-videodpo-fullmask-diffueraser-stage1-smoke}"
 export MAX_STEPS="${MAX_STEPS:-1000}"
 export CKPT_STEPS="${CKPT_STEPS:-500}"
 export VAL_STEPS="${VAL_STEPS:-500}"
-export BETA_DPO="${BETA_DPO:-10}"
+export BETA_DPO="${BETA_DPO:-5000}"
 export DPO_LOSE_GAP_WEIGHT="${DPO_LOSE_GAP_WEIGHT:-1.0}"
 export NUM_GPUS="${NUM_GPUS:-8}"
 export BATCH_SIZE="${BATCH_SIZE:-1}"
-export GRAD_ACCUM="${GRAD_ACCUM:-1}"
+export GRAD_ACCUM="${GRAD_ACCUM:-2}"
+export LR="${LR:-6e-6}"
 export RESOLUTION="${RESOLUTION:-512}"
 export MIXED_PRECISION="${MIXED_PRECISION:-bf16}"
 export VAE_DTYPE="${VAE_DTYPE:-auto}"
@@ -53,6 +54,7 @@ export GRADIENT_CHECKPOINTING="${GRADIENT_CHECKPOINTING:-1}"
 export VIDEODPO_FRAME_STRIDE="${VIDEODPO_FRAME_STRIDE:-1}"
 export VIDEODPO_FULL_MASK_VALUE="${VIDEODPO_FULL_MASK_VALUE:-0.0}"
 export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser}"
+export REPORT_TO="${REPORT_TO:-wandb}"
 
 if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[videodpo-fullmask][error] VIDEODPO_REPO not found: ${VIDEODPO_REPO}" >&2
@@ -69,6 +71,6 @@ echo "[videodpo-fullmask] project_root=${PROJECT_ROOT}"
 echo "[videodpo-fullmask] videodpo_repo=${VIDEODPO_REPO}"
 echo "[videodpo-fullmask] dpo_data_root=${DPO_DATA_ROOT}"
 echo "[videodpo-fullmask] run_name=${RUN_NAME}"
-echo "[videodpo-fullmask] max_steps=${MAX_STEPS} beta=${BETA_DPO}"
+echo "[videodpo-fullmask] max_steps=${MAX_STEPS} beta=${BETA_DPO} lr=${LR} grad_accum=${GRAD_ACCUM} report_to=${REPORT_TO}"
 
 exec bash "${PROJECT_ROOT}/DPO_finetune/scripts/03_dpo_stage1.sbatch"
