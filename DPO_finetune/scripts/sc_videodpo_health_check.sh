@@ -17,6 +17,7 @@ if [[ "${SC_HEALTH_FILTERED:-0}" != "1" && "${QUIET_OK}" == "1" ]]; then
   "$0" "$@" 2>&1 | awk '
     /^\[FAIL\]/ ||
     /^\[WARN\]/ ||
+    /^\[DIAG\]/ ||
     /^========== Summary ==========/ ||
     /^errors=/ ||
     /^failures:/ ||
@@ -257,13 +258,37 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
           ls -lh "$FIRST_CLIP_PATH" 2>/dev/null || true
         else
           fail "first clip missing: $FIRST_CLIP_PATH"
-          printf 'dataset_root=%s\n' "$RESOLVED_META"
-          printf 'metadata_clip_path=%s\n' "$FIRST_CLIP"
-          printf 'metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
-          REAL_LOCAL_CANDIDATE="$(
-            find "${VC2_DATASET_ROOT}/_extracted" -path "*/$(basename "$FIRST_CLIP")" -print -quit 2>/dev/null || true
-          )"
-          printf 'real_local_candidate=%s\n' "${REAL_LOCAL_CANDIDATE:-none}"
+          CLIP_BASENAME="$(basename "$FIRST_CLIP")"
+          CLIP_PARENT="$(basename "$(dirname "$FIRST_CLIP")")"
+          CLIP_SUFFIX="${CLIP_PARENT}/${CLIP_BASENAME}"
+          EXTRACTED_ROOT="${VC2_DATASET_ROOT}/_extracted"
+          printf '[DIAG] dataset_root=%s\n' "$RESOLVED_META"
+          printf '[DIAG] metadata_clip_path=%s\n' "$FIRST_CLIP"
+          printf '[DIAG] resolved_metadata_clip=%s\n' "$FIRST_CLIP_PATH"
+          printf '[DIAG] metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
+          printf '[DIAG] extracted_root=%s exists=%s\n' "$EXTRACTED_ROOT" "$([ -d "$EXTRACTED_ROOT" ] && echo yes || echo no)"
+          if [[ -d "$EXTRACTED_ROOT" ]]; then
+            SUFFIX_COUNT="$(find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" 2>/dev/null | wc -l | tr -d ' ')"
+            BASENAME_COUNT="$(find "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" 2>/dev/null | wc -l | tr -d ' ')"
+            PARENT_DIR_COUNT="$(find "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" 2>/dev/null | wc -l | tr -d ' ')"
+            printf '[DIAG] search_suffix=%s matches=%s\n' "$CLIP_SUFFIX" "$SUFFIX_COUNT"
+            find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" -print 2>/dev/null \
+              | head -n 10 \
+              | sed 's/^/[DIAG] candidate_by_suffix=/'
+            printf '[DIAG] search_basename=%s matches=%s\n' "$CLIP_BASENAME" "$BASENAME_COUNT"
+            find "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" -print 2>/dev/null \
+              | head -n 10 \
+              | sed 's/^/[DIAG] candidate_by_basename=/'
+            printf '[DIAG] search_parent_dir=%s matches=%s\n' "$CLIP_PARENT" "$PARENT_DIR_COUNT"
+            find "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" -print 2>/dev/null \
+              | head -n 10 \
+              | sed 's/^/[DIAG] candidate_parent_dir=/'
+            if [[ "$SUFFIX_COUNT" -gt 0 || "$BASENAME_COUNT" -gt 0 ]]; then
+              printf '[DIAG] diagnosis=metadata clip_path points to the wrong location; rerun sc_prepare_videodpo_vc2_assets.sbatch after pulling the latest repo.\n'
+            else
+              printf '[DIAG] diagnosis=no local video candidate was found under _extracted; dataset extraction/download is incomplete.\n'
+            fi
+          fi
         fi
       else
         warn "Could not parse first clip_path from metadata.json"
