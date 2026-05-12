@@ -12,18 +12,27 @@ PRD/meeting_followup_videodpo_repro_and_bridge_20260511.md
 
 该文件是目前最新的任务入口：Task 1 是 VideoDPO/VC2 VBench 复现，Task 2 是在 VideoDPO 数据和任务不变的情况下，用 full-mask 条件把 DiffuEraser 接到这个赛道上。
 
+2026-05-12 最新状态见：
+
+```text
+PRD/CURRENT_STATUS_20260512.md
+```
+
+该文件记录了 SC VideoDPO/VC2 的最新工程状态：repo-local submodules、VC2 dataset/metadata health check 已通过、metadata 单行 JSON 误报已修复、SC 训练脚本当前默认 8 GPU、W&B 已对齐旧 stage1/stage2，并给出了当前启动训练与 VBench sweep 命令。
+
 ## 0. 给新聊天框的开场提示
 
 如果要换一个聊天框，建议直接粘贴下面这段：
 
 ```text
-请先完整阅读 /home/hj/Video_inpainting_DPO/PRD/README_FOR_NEXT_CHAT.md、/home/hj/Video_inpainting_DPO/PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md、/home/hj/Video_inpainting_DPO/PRD/PROJECT_HANDOFF_20260509.md，然后按 README 里的顺序阅读 PRD 关键文档。不要直接重构、删除、revert 或硬编码路径。
+请先完整阅读 /home/hj/Video_inpainting_DPO/PRD/README_FOR_NEXT_CHAT.md、/home/hj/Video_inpainting_DPO/PRD/CURRENT_STATUS_20260512.md、/home/hj/Video_inpainting_DPO/PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md、/home/hj/Video_inpainting_DPO/PRD/PROJECT_HANDOFF_20260509.md，然后按 README 里的顺序阅读 PRD 关键文档。不要直接重构、删除、revert 或硬编码路径。
 
 当前项目的开发逻辑是：
 1. HAL 服务器 /home/hj/Video_inpainting_DPO 是主要开发机，上面有 Codex，用来读代码、改代码、写 PRD、分析日志；改完后 push 到 Git。
 2. H20 服务器有 H20 GPU，只负责 pull 最新代码后用 bash 脚本训练；不要把 H20 改成 Slurm。
 3. SC 服务器是合作者训练资源，必须 pull 最新代码后用 Slurm/sbatch；不要把 SC 的环境变量路径改成硬编码。
 4. 当前 DiffDPO stage1/stage2 的 implicit_acc 诊断已经改成 video-pair 粒度；DPO loss 本身仍保持 frame-level 训练目标。修改训练逻辑前必须先说明是改 diagnostics 还是改 objective。
+5. SC VideoDPO/VC2 当前 health check 已通过；训练脚本默认 8 GPU、200G、48h，W&B 默认上传到 jh5117-columbia-university/DPO_Diffueraser。若要纯官方 epoch 口径，不要设置 MAX_OPT_STEPS。
 
 先读文档，再运行 git status --short。不要删除日志、checkpoint、PRD assets，也不要 revert 用户已有改动。
 ```
@@ -70,6 +79,16 @@ python -m py_compile training/dpo/train_stage1.py training/dpo/train_stage2.py t
 ```
 
 当前需要特别注意：工作区可能有已有未提交改动和 untracked PRD assets。不要随便 `git reset --hard`，不要删除不认识的文件。
+
+2026-05-12 HAL 工作区已知有用户已有删除状态，接手者不要随手恢复或提交：
+
+```text
+PRD/First_Finetuning_Summary.md
+PRD/PPT.pptx
+PRD/stage2_motion_module_init.md
+PRD/update_ppt_tables.py
+PRD/validation_optimization.md
+```
 
 ### 2.2 H20：GPU 训练机，bash 启动
 
@@ -193,6 +212,108 @@ WANDB_ENTITY
 ```
 
 必须保护这些环境变量逻辑。不要把 H20 的 `/home/nvme01/...` 写进 SC 脚本。
+
+### 2.4 SC VideoDPO/VC2 最新状态（2026-05-12）
+
+VideoDPO/VC2 复现现在使用 repo-local submodules：
+
+```text
+external/VideoDPO
+external/VBench
+```
+
+不要再维护 `${PROJECT_DEV}/VideoDPO` 或 `${PROJECT_DEV}/VBench` 这种 sibling naked clone。
+
+初始化与健康检查：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
+```
+
+静态 health check 默认只输出 warning/fail/summary；通过时会类似：
+
+```text
+repo_commit=65e916f Fix VC2 health clip parsing
+========== Summary ==========
+errors=0 warnings=0
+[RESULT] PASS: static health check found required assets.
+```
+
+要看完整 OK 内容：
+
+```bash
+CONDA_ENV=diffueraser QUIET_OK=0 bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+```
+
+之前的 `first clip missing` 是 health check 解析单行 `metadata.json` 的 bug，不是 HF 数据集缺第一个视频。已修复：只取第一个 `clip_path`，并且缺文件时只做 bounded scan，避免卡住。
+
+当前 SC VC2 训练脚本：
+
+```text
+DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+默认 Slurm 资源：
+
+```bash
+#SBATCH --gres=gpu:8
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=200G
+#SBATCH --time=48:00:00
+#SBATCH --output=logs/dpo-stage1-%j.out
+```
+
+默认训练参数：
+
+```text
+NUM_GPUS=8
+DEVICE_LIST=0,1,2,3,4,5,6,7
+BATCH_SIZE=1
+GRAD_ACCUM=2
+CKPT_EVERY=499
+BETA_DPO=5000
+NUM_WORKERS=16
+```
+
+注意：官方 VideoDPO `run.sh` 是 4 GPU。当前脚本按用户要求改成 8 GPU，因此不是逐字复刻官方 world size；若要严格复刻官方 run.sh，显式覆盖 `NUM_GPUS=4 DEVICE_LIST=0,1,2,3`。
+
+当前训练启动：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+
+CONDA_ENV=diffueraser \
+RUN_NAME=sc-vc2-dpo-official-beta5000 \
+BETA_DPO=5000 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+不要传 `MAX_OPT_STEPS`，除非明确要做固定 optimizer-step 内部对比；不传时使用官方 config 的 `max_epochs=10`。
+
+W&B 默认对齐旧 stage1/stage2：
+
+```text
+WANDB_ENTITY=jh5117-columbia-university
+WANDB_PROJECT=DPO_Diffueraser
+WANDB_RUN_GROUP=VideoDPO_VC2
+WANDB_DIR=${PROJECT_ROOT}/.wandb_cache
+```
+
+训练后的 VBench sweep：
+
+```bash
+CONDA_ENV=diffueraser \
+TRAIN_RUN_NAME=sc-vc2-dpo-official-beta5000 \
+INCLUDE_LAST_IN_SWEEP=1 \
+SELECT_BEST=1 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch
+```
 
 ## 3. 当前代码逻辑：DiffDPO implicit_acc 已改成 pair-level diagnostics
 

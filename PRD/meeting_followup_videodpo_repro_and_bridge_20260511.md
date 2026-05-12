@@ -5,8 +5,16 @@ Date: 2026-05-11
 This note records the new direction after the advisor meeting.  It should be read together with:
 
 - `PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md`
+- `PRD/CURRENT_STATUS_20260512.md`
 - `PRD/DPO_Training_Metrics_Explained.md`
 - `PRD/dpo_metric_regularization_prd_20260505.md`
+
+2026-05-12 update:
+
+- SC VideoDPO/VC2 static health check has passed with `errors=0 warnings=0`.
+- The earlier `first clip missing` failure was a health-check parsing bug for single-line `metadata.json`, not proof that the HF dataset was missing `000000.mp4`.
+- `sc_videodpo_vc2_train.sbatch` now defaults to the user's requested 8-GPU Slurm resource config and W&B logging aligned with DiffuEraser DPO stage1/stage2.
+- For the latest one-page handoff, read `PRD/CURRENT_STATUS_20260512.md`.
 
 ## 1. Advisor Feedback
 
@@ -60,6 +68,11 @@ New files:
 - `tools/prepare_videodpo_vc2_dataset.py`
 - `tools/videodpo_prepare_vbench_standard.py`
 - `tools/summarize_vbench_results.py`
+
+Additional files added/used by the checkpoint-evaluation workflow:
+
+- `DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch`
+- `tools/select_best_vbench_checkpoint.py`
 
 External dependencies are repo-local submodules:
 
@@ -129,19 +142,33 @@ ${PROJECT_DATA}/VideoDPO/data/vidpro-vc2-dpo-dataset
 
 VBench code now comes from `external/VBench`.  VBench metric model weights may still be downloaded lazily during the first real evaluation; keep HF cache on project storage if SC home quota is tight.
 
-Train VC2-DPO on SC:
+The current quiet health check command is:
+
+```bash
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+```
+
+Passing output currently looks like:
+
+```text
+repo_commit=65e916f Fix VC2 health clip parsing
+========== Summary ==========
+errors=0 warnings=0
+[RESULT] PASS: static health check found required assets.
+```
+
+To show every `[OK]` line:
+
+```bash
+CONDA_ENV=diffueraser QUIET_OK=0 bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+```
+
+Train VC2-DPO on SC with the current 8-GPU SC script:
 
 ```bash
 CONDA_ENV=diffueraser \
-RUN_NAME=sc-vc2-dpo-official \
-NUM_GPUS=4 \
-DEVICE_LIST=0,1,2,3 \
-BATCH_SIZE=1 \
-GRAD_ACCUM=2 \
-NUM_WORKERS=16 \
-CKPT_EVERY=499 \
+RUN_NAME=sc-vc2-dpo-official-beta5000 \
 BETA_DPO=5000 \
-VC2_DATA_YAML="${PROJECT_DATA}/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
 ```
 
@@ -151,6 +178,10 @@ This is the closest current SC command to the official VC2-DPO training recipe:
 - `every_n_train_steps=499` comes from the official train-step checkpoint callback.
 - `video_length=16` means each training sample is a 16-frame video clip.
 - Validation dataloader is intentionally absent, matching the official README recommendation to disable validation to reduce peak memory.
+- The script now requests `#SBATCH --gres=gpu:8`, `--mem=200G`, `--time=48:00:00`, and writes stdout to `logs/dpo-stage1-%j.out`.
+- W&B defaults to `entity=jh5117-columbia-university`, `project=DPO_Diffueraser`, `group=VideoDPO_VC2`, with cache under `${PROJECT_ROOT}/.wandb_cache`.
+
+Important: official VideoDPO `configs/vc2_dpo/run.sh` uses 4 GPUs.  The current SC script defaults to 8 GPUs because the user requested that Slurm resource configuration.  The model/config hyperparameters remain close to official VC2-DPO, but the world size/effective global batch are not an exact copy of the official run.sh unless `NUM_GPUS=4 DEVICE_LIST=0,1,2,3` is explicitly set.
 
 For controlled internal comparisons, a fixed optimizer-step run can be used by adding `MAX_OPT_STEPS=10000`, but that is no longer a pure official reproduction setting.
 
@@ -164,7 +195,7 @@ Paper-level validation is not the Lightning validation loop.  It is a post-train
 
 ```bash
 CONDA_ENV=diffueraser \
-TRAIN_RUN_NAME=sc-vc2-dpo-official \
+TRAIN_RUN_NAME=sc-vc2-dpo-official-beta5000 \
 SAMPLES_PER_PROMPT=5 \
 PRUNE_AFTER=0 \
 sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch

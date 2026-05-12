@@ -18,6 +18,14 @@ PRD/dpo_metric_regularization_prd_20260505.md
 
 `NEXT_CHAT_FULL_CONTEXT_20260509.md` 是对本文件的更完整操作版，特别强调 HAL/H20/SC 三台机器协作、环境变量路径规则、当前 pair-level diagnostics 代码逻辑、以及给新聊天框的提示词。
 
+2026-05-12 最新状态快照：
+
+```text
+PRD/CURRENT_STATUS_20260512.md
+```
+
+该文件包含 SC VideoDPO/VC2 当前通过的 health check、metadata 单行 JSON 误报修复、repo-local submodule 依赖、8 GPU Slurm 训练配置、W&B 上传位置、以及 VBench sweep 命令。新聊天框应先读它，避免继续使用旧的 4 GPU 命令或误判 HF dataset 缺文件。
+
 ## 1. 当前项目一句话总结
 
 这个项目在做 Video Inpainting 的 DPO fine-tuning。当前同时比较两类基底模型：
@@ -179,6 +187,95 @@ BETA_DPO=10 \
 MAX_STEPS=10000 \
 RUN_NAME=sc-dpo-stage1-beta10-pair-implicit-acc \
 bash scripts/sc_submit_dpo_stage1.sh
+```
+
+### 2.4 SC VideoDPO/VC2 复现最新工程状态
+
+当前 VideoDPO/VC2 复现不再依赖 sibling 裸 clone，而是使用本 repo 内的 submodules：
+
+```text
+external/VideoDPO
+external/VBench
+```
+
+SC 上先拉代码和检查：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+bash DPO_finetune/scripts/sc_videodpo_pull_submodules_and_health_check.sh
+```
+
+截至 2026-05-12，用户在 SC 上运行 health check 已通过：
+
+```text
+errors=0 warnings=0
+[RESULT] PASS: static health check found required assets.
+```
+
+之前 `first clip missing` 是 health check 解析单行 `metadata.json` 的误报，已在 `65e916f Fix VC2 health clip parsing` 修复；不是 HF 数据集必然缺视频。
+
+当前训练脚本：
+
+```text
+DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+Slurm 配置已经按用户要求改为：
+
+```bash
+#SBATCH --gres=gpu:8
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=200G
+#SBATCH --time=48:00:00
+#SBATCH --output=logs/dpo-stage1-%j.out
+```
+
+脚本默认同步为 8 卡：
+
+```text
+NUM_GPUS=8
+DEVICE_LIST=0,1,2,3,4,5,6,7
+```
+
+训练启动：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_health_check.sh
+
+CONDA_ENV=diffueraser \
+RUN_NAME=sc-vc2-dpo-official-beta5000 \
+BETA_DPO=5000 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
+```
+
+说明：
+
+- 不传 `MAX_OPT_STEPS` 时使用官方 config 的 `max_epochs=10`。
+- 传 `MAX_OPT_STEPS=10000` 时是内部固定 optimizer-step 对比，不是纯官方 epoch 复现。
+- 官方 `external/VideoDPO/configs/vc2_dpo/run.sh` 是 4 GPU；当前 8 GPU 是用户要求的 SC 资源配置，world size 与官方 run.sh 不完全一致。
+
+W&B 已对齐旧 DiffuEraser DPO stage1/stage2：
+
+```text
+WANDB_ENTITY=jh5117-columbia-university
+WANDB_PROJECT=DPO_Diffueraser
+WANDB_RUN_GROUP=VideoDPO_VC2
+WANDB_DIR=${PROJECT_ROOT}/.wandb_cache
+```
+
+训练后 VBench sweep：
+
+```bash
+CONDA_ENV=diffueraser \
+TRAIN_RUN_NAME=sc-vc2-dpo-official-beta5000 \
+INCLUDE_LAST_IN_SWEEP=1 \
+SELECT_BEST=1 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_checkpoint_sweep.sbatch
 ```
 
 ## 3. 当前代码结构和最新改动
