@@ -50,11 +50,13 @@ EARLY_WANDB="${EARLY_WANDB:-1}"
 APPLY_DPO_DIAG_PATCH="${APPLY_DPO_DIAG_PATCH:-1}"
 DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
+CLEAN_DEBUG_PRINT="${CLEAN_DEBUG_PRINT:-1}"
+DEBUG_PRINT_PATCH="${DEBUG_PRINT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_remove_debug_training_step_print.patch}"
 
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -102,6 +104,7 @@ export OMP_NUM_THREADS="${OMP_NUM_THREADS:-4}"
 export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
 export NCCL_ASYNC_ERROR_HANDLING=1
 export WANDB_PROJECT WANDB_ENTITY
+export WANDB_CONSOLE="${WANDB_CONSOLE:-wrap}"
 export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_CACHE_DIR="${PROJECT_ROOT}/.wandb_cache"
 export WANDB_DATA_DIR="${PROJECT_ROOT}/.wandb_cache"
@@ -141,6 +144,26 @@ apply_dpo_diag_patch() {
   esac
 }
 
+apply_debug_print_patch() {
+  case "${CLEAN_DEBUG_PRINT,,}" in
+    1|true|yes|on)
+      if [[ ! -f "${DEBUG_PRINT_PATCH}" ]]; then
+        echo "[vc2-train][error] debug-print cleanup patch missing: ${DEBUG_PRINT_PATCH}" >&2
+        exit 1
+      fi
+      if grep -q '^[[:space:]]*print("test")' "${VIDEODPO_REPO}/lvdm/models/ddpm3d.py"; then
+        echo "[vc2-train] removing VideoDPO training_step debug print: ${DEBUG_PRINT_PATCH}"
+        git -C "${VIDEODPO_REPO}" apply "${DEBUG_PRINT_PATCH}"
+      else
+        echo "[vc2-train] VideoDPO training_step debug print already absent"
+      fi
+      ;;
+    *)
+      echo "[vc2-train] debug-print cleanup disabled by CLEAN_DEBUG_PRINT=${CLEAN_DEBUG_PRINT}"
+      ;;
+  esac
+}
+
 wandb_event() {
   local event="$1"
   shift || true
@@ -164,10 +187,21 @@ on_error() {
   local rc="$?"
   trap - ERR
   echo "[vc2-train][error] failed with exit_code=${rc}"
-  wandb_event failed --exit-code "${rc}" --tail-lines 260
+  wandb_event failed --exit-code "${rc}" --tail-lines 400
+  exit "${rc}"
+}
+on_signal() {
+  local sig="$1"
+  local rc=128
+  trap - ERR TERM INT HUP
+  echo "[vc2-train][error] received signal ${sig}; logging Slurm tail to W&B before exit"
+  wandb_event failed --exit-code "${rc}" --tail-lines 400 --config "signal=${sig}"
   exit "${rc}"
 }
 trap on_error ERR
+trap 'on_signal TERM' TERM
+trap 'on_signal INT' INT
+trap 'on_signal HUP' HUP
 
 echo "[vc2-train] videodpo_repo=${VIDEODPO_REPO}"
 echo "[vc2-train] data_yaml=${VC2_DATA_YAML}"
@@ -177,6 +211,7 @@ echo "[vc2-train] run_name=${RUN_NAME}"
 echo "[vc2-train] num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST}"
 echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} grad_accum=${GRAD_ACCUM} beta=${BETA_DPO}"
 echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
+echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
 wandb_event start \
@@ -186,10 +221,12 @@ wandb_event start \
   --config "beta_dpo=${BETA_DPO}" \
   --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
   --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
+  --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
   --config "vc2_data_yaml=${VC2_DATA_YAML}" \
   --config "videodpo_repo=${VIDEODPO_REPO}"
 
 apply_dpo_diag_patch
+apply_debug_print_patch
 
 echo "[vc2-train] dependency preflight"
 python - <<'PY'

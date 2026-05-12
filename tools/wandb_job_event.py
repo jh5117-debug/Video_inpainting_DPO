@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import os
 from pathlib import Path
+import re
 
 
 def _tail(path: str | None, lines: int) -> str:
@@ -19,9 +20,42 @@ def _tail(path: str | None, lines: int) -> str:
     return "".join(data[-lines:])
 
 
+def _extract_reason(log_tail: str, event: str) -> str:
+    """Pull a compact failure hint from the copied Slurm/training log tail."""
+    if not log_tail:
+        return f"{event}: no log tail available"
+
+    patterns = [
+        r"CUDA out of memory[^\n]*",
+        r"RuntimeError: [^\n]*",
+        r"ValueError: [^\n]*",
+        r"KeyError: [^\n]*",
+        r"FileNotFoundError: [^\n]*",
+        r"ModuleNotFoundError: [^\n]*",
+        r"ImportError: [^\n]*",
+        r"AssertionError[^\n]*",
+        r"slurmstepd:[^\n]*",
+        r"\[vc2-train\]\[error\][^\n]*",
+        r"\[vc2-train\]\[preflight\]\[ERROR\][^\n]*",
+        r"Traceback \(most recent call last\):",
+        r"FAILED[^\n]*",
+        r"CANCELLED[^\n]*",
+        r"TIMEOUT[^\n]*",
+    ]
+    for line in reversed(log_tail.splitlines()):
+        clean = line.strip()
+        if not clean:
+            continue
+        for pattern in patterns:
+            match = re.search(pattern, clean)
+            if match:
+                return match.group(0)[:500]
+    return log_tail.splitlines()[-1].strip()[:500]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--event", required=True, choices=["start", "failed", "finished"])
+    parser.add_argument("--event", required=True, choices=["start", "running", "failed", "finished"])
     parser.add_argument("--project", required=True)
     parser.add_argument("--entity", default=None)
     parser.add_argument("--group", default=None)
@@ -59,6 +93,7 @@ def main() -> int:
             config=config or None,
         )
         run.summary["launcher_event"] = args.event
+        run.summary["launcher_last_event"] = args.event
         run.summary["launcher_exit_code"] = args.exit_code
         run.summary["slurm_job_id"] = os.environ.get("SLURM_JOB_ID", "")
         run.summary["slurm_job_partition"] = os.environ.get("SLURM_JOB_PARTITION", "")
@@ -72,8 +107,19 @@ def main() -> int:
             wandb.save(str(tail_path), policy="now")
             run.summary["launcher_log_tail_file"] = str(tail_path)
             run.summary["launcher_log_tail_preview"] = log_tail[-3500:]
+            if args.event == "failed":
+                run.summary["launcher_error_reason"] = _extract_reason(log_tail, args.event)
+            try:
+                tail_preview = log_tail[-10000:]
+                tail_table = wandb.Table(
+                    columns=["event", "exit_code", "tail"],
+                    data=[[args.event, args.exit_code, tail_preview]],
+                )
+                wandb.log({"launcher/log_tail": tail_table})
+            except Exception as exc:
+                print(f"[wandb-event][warn] failed to log tail table: {type(exc).__name__}: {exc}")
 
-        wandb.log({"launcher/event_code": {"start": 0, "failed": 1, "finished": 2}[args.event]})
+        wandb.log({"launcher/event_code": {"start": 0, "running": 0.5, "failed": 1, "finished": 2}[args.event]})
         wandb.finish(exit_code=args.exit_code)
         print(f"[wandb-event] logged event={args.event} run_id={args.run_id}")
     except Exception as exc:  # pragma: no cover - keep Slurm failure reason primary.
