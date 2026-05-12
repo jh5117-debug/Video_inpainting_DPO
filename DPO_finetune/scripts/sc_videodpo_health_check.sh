@@ -251,6 +251,11 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
           ls -lh "$FIRST_CLIP_PATH" 2>/dev/null || true
         else
           fail "first clip missing: $FIRST_CLIP_PATH"
+          printf 'dataset_root=%s\n' "$RESOLVED_META"
+          printf 'metadata_clip_path=%s\n' "$FIRST_CLIP"
+          printf 'metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
+          printf 'real_local_candidate:\n'
+          find "${VC2_DATASET_ROOT}/_extracted" -path "*/$(basename "$FIRST_CLIP")" -print -quit 2>/dev/null || true
         fi
       else
         warn "Could not parse first clip_path from metadata.json"
