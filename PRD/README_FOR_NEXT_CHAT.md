@@ -4,9 +4,13 @@ Date: 2026-05-09
 
 如果换一个聊天框继续这个项目，请让新的 Codex 先读这个目录下的文档。推荐顺序如下：
 
+0. `PRD/NEXT_CHAT_PROMPT_20260512.md`
+   - 这是可以直接复制到新聊天框的开场 prompt。
+   - 新聊天框应该先按这个 prompt 阅读 PRD，并只总结理解，不要一上来改代码。
+
 1. `PRD/CURRENT_STATUS_20260512.md`
    - 这是 2026-05-12 的最新状态快照。
-   - 包含 SC VideoDPO/VC2 health check 已通过、metadata 误报修复、8 卡 Slurm 训练配置、W&B 对齐、VBench sweep 口径和当前风险点。
+   - 包含 SC VideoDPO/VC2 health check 已通过、metadata 误报修复、8 卡 Slurm 训练配置、W&B 对齐、DPO diagnostics patch、VBench sweep 口径和当前风险点。
 
 2. `PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md`
    - 这是最完整的新聊天框交接入口。
@@ -32,10 +36,16 @@ Date: 2026-05-09
    - 早期历史设计总结。
    - 有些路径和代码结构是历史版本，新接手时以 `PROJECT_HANDOFF_20260509.md` 为准。
 
-给新聊天框的推荐开场提示：
+给新聊天框的推荐开场提示也保存在：
 
 ```text
-请先完整阅读 /home/hj/Video_inpainting_DPO/PRD/README_FOR_NEXT_CHAT.md、/home/hj/Video_inpainting_DPO/PRD/CURRENT_STATUS_20260512.md、/home/hj/Video_inpainting_DPO/PRD/NEXT_CHAT_FULL_CONTEXT_20260509.md 和 /home/hj/Video_inpainting_DPO/PRD/PROJECT_HANDOFF_20260509.md，然后再根据其中的阅读顺序阅读 PRD 里的关键文档和代码。不要直接重构、删除或 revert 文件。先理解当前项目：HAL 本地开发并 push，H20 pull 后用 bash 训练，SC pull 后用 Slurm 训练；当前 DiffDPO 的 implicit_acc 诊断已改成 video-pair 粒度，DPO loss 本身仍保持 frame-level；SC VideoDPO/VC2 health check 已通过，训练脚本当前默认 8 卡、W&B 上传到 jh5117-columbia-university/DPO_Diffueraser。接下来所有修改必须保护现有训练脚本、环境变量路径逻辑和实验日志。
+PRD/NEXT_CHAT_PROMPT_20260512.md
+```
+
+简短版开场提示：
+
+```text
+项目路径是 /home/hj/Video_inpainting_DPO。请先完整阅读 PRD/NEXT_CHAT_PROMPT_20260512.md，并按其中顺序阅读 PRD 关键文档。第一轮只总结你理解到的项目状态、实验结论、代码逻辑、HAL/H20/SC 三台服务器工作流、当前训练命令和风险点；不要修改任何文件，等我确认后再继续。
 ```
 
 重要原则：

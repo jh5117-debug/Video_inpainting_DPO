@@ -224,7 +224,7 @@ CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_fix_env_and_health_c
 
 - SC 训练曾在 dependency preflight 处报 `KeyError: 'VIDEODPO_REPO'`。直接原因是 `sc_videodpo_vc2_train.sbatch` 里 `VIDEODPO_REPO` 只是 shell 变量，Python preflight 用 `os.environ["VIDEODPO_REPO"]` 读取不到。训练脚本已改为显式 `export VIDEODPO_REPO`，并一起 export 数据、日志、DPO diagnostics 等关键变量。
 - 官方 VideoDPO VC2 代码默认只记录有限训练信号，不能满足我们之前分析用的完整 DPO 中间指标。现在新增 repo 内补丁 `patches/videodpo/sc_vc2_dpo_diagnostics.patch`，训练脚本默认 `APPLY_DPO_DIAG_PATCH=1`，启动前会把补丁应用到 `external/VideoDPO/lvdm/models/ddpm3d.py`。如果以后要跑完全原版 VideoDPO，可显式设置 `APPLY_DPO_DIAG_PATCH=0`。
-- 新 diagnostics 不改变 VideoDPO 的模型结构、数据集、task，也不改 Slurm 资源；它只补充 DPO loss 内部统计和日志。当前补丁会把 VideoDPO 的 winner/loser MSE 按 **video pair** 聚合，而不是遗留的部分维度聚合。
+- 新 diagnostics 不改变 VideoDPO 的模型结构、数据集、task，也不改 Slurm 资源；它只补充 DPO loss 内部统计和日志。当前补丁保留官方 `dpo_loss` objective，只把 diagnostics 里的 winner/loser MSE 和 `implicit_acc` 按 **video pair** 聚合，而不是遗留的部分维度聚合。
 - W&B 中会出现标量：`global/implicit_acc`、`global/inside_term_mean/min/max`、`global/loser_dominant_ratio`、`rank0/dpo_loss`、`rank0/mse_w`、`rank0/ref_mse_w`、`rank0/mse_l`、`rank0/ref_mse_l`、`rank0/win_gap`、`rank0/lose_gap`、`rank0/reward_margin`、`rank0/sigma_term`、`rank0/kl_divergence`、`train/factor`。
 - 每 `DPO_DIAG_EVERY=300` 个 Lightning optimizer `global_step`，rank0 会打印一行 `[dpo_diag] ...`，并向 W&B 更新累计表：`dpo/diagnostics_table`。默认 `DPO_DIAG_EVERY=300`，可在提交 Slurm 时覆盖。
 - `sc_videodpo_health_check.sh` 会检查这个 diagnostics patch 是否存在、是否已经应用或能否干净 apply，避免排队到 GPU 后才发现补丁失效。
@@ -232,8 +232,24 @@ CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_fix_env_and_health_c
 相关提交：
 
 ```text
+f8c68d5 Add SC VideoDPO DPO diagnostics
 dd9f8be Align SC VideoDPO W&B logging
 0a763d5 Use 8 GPUs for SC VideoDPO VC2 training
+```
+
+最新 SC 训练命令：
+
+```bash
+source ~/.bashrc
+cd "$PROJECT_DEV/Video_inpainting_DPO"
+git pull --ff-only origin main
+CONDA_ENV=diffueraser bash DPO_finetune/scripts/sc_videodpo_fix_env_and_health_check.sh
+
+CONDA_ENV=diffueraser \
+RUN_NAME=sc-vc2-dpo-official-beta5000 \
+BETA_DPO=5000 \
+DPO_DIAG_EVERY=300 \
+sbatch --export=ALL DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch
 ```
 
 ## 6. VBench 验证逻辑
