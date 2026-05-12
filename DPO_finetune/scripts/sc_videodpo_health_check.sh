@@ -7,6 +7,8 @@ set -uo pipefail
 
 ERRORS=0
 WARNINGS=0
+FAIL_MESSAGES=()
+WARN_MESSAGES=()
 
 section() {
   printf '\n========== %s ==========\n' "$1"
@@ -18,11 +20,13 @@ ok() {
 
 warn() {
   WARNINGS=$((WARNINGS + 1))
+  WARN_MESSAGES+=("$1")
   printf '[WARN] %s\n' "$1"
 }
 
 fail() {
   ERRORS=$((ERRORS + 1))
+  FAIL_MESSAGES+=("$1")
   printf '[FAIL] %s\n' "$1"
 }
 
@@ -328,6 +332,18 @@ done
 
 section "Summary"
 printf 'errors=%d warnings=%d\n' "$ERRORS" "$WARNINGS"
+if [[ "$ERRORS" -gt 0 ]]; then
+  printf 'failures:\n'
+  for msg in "${FAIL_MESSAGES[@]}"; do
+    printf '  - %s\n' "$msg"
+  done
+fi
+if [[ "$WARNINGS" -gt 0 ]]; then
+  printf 'warnings:\n'
+  for msg in "${WARN_MESSAGES[@]}"; do
+    printf '  - %s\n' "$msg"
+  done
+fi
 if [[ "$ERRORS" -gt 0 ]]; then
   printf '[RESULT] FAIL: fix missing required assets before training/evaluation.\n'
   exit 1
