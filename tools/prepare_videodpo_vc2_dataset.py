@@ -145,6 +145,22 @@ def _find_local_video(clip_path: str, dataset_root: Path, video_index: dict[str,
     if local.is_file():
         return local.resolve()
 
+    # A previous bad rewrite may have produced an absolute path under
+    # dataset_root that does not exist.  Recover by also trying the path
+    # relative to dataset_root before suffix matching.
+    try:
+        rel_to_dataset = Path(clip_path).relative_to(dataset_root)
+    except ValueError:
+        rel_to_dataset = None
+    if rel_to_dataset is not None:
+        local_rel = dataset_root / rel_to_dataset
+        if local_rel.is_file():
+            return local_rel.resolve()
+        for suffix in _path_suffixes(PurePosixPath(str(rel_to_dataset))):
+            matches = video_index.get(suffix, [])
+            if len(matches) == 1:
+                return matches[0]
+
     for suffix in _path_suffixes(raw):
         matches = video_index.get(suffix, [])
         if len(matches) == 1:

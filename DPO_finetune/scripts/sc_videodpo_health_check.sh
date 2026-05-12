@@ -258,19 +258,24 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
           ls -lh "$FIRST_CLIP_PATH" 2>/dev/null || true
         else
           fail "first clip missing: $FIRST_CLIP_PATH"
-          CLIP_BASENAME="$(basename "$FIRST_CLIP")"
-          CLIP_PARENT="$(basename "$(dirname "$FIRST_CLIP")")"
+          CLIP_TRIMMED="${FIRST_CLIP%/}"
+          CLIP_BASENAME="${CLIP_TRIMMED##*/}"
+          CLIP_PARENT_PATH="${CLIP_TRIMMED%/*}"
+          CLIP_PARENT="${CLIP_PARENT_PATH##*/}"
           CLIP_SUFFIX="${CLIP_PARENT}/${CLIP_BASENAME}"
           EXTRACTED_ROOT="${VC2_DATASET_ROOT}/_extracted"
           printf '[DIAG] dataset_root=%s\n' "$RESOLVED_META"
           printf '[DIAG] metadata_clip_path=%s\n' "$FIRST_CLIP"
           printf '[DIAG] resolved_metadata_clip=%s\n' "$FIRST_CLIP_PATH"
           printf '[DIAG] metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
+          printf '[DIAG] parsed_clip_parent=%s parsed_clip_basename=%s\n' "$CLIP_PARENT" "$CLIP_BASENAME"
           printf '[DIAG] extracted_root=%s exists=%s\n' "$EXTRACTED_ROOT" "$([ -d "$EXTRACTED_ROOT" ] && echo yes || echo no)"
           if [[ -d "$EXTRACTED_ROOT" ]]; then
+            TOTAL_VIDEO_COUNT="$(find "$EXTRACTED_ROOT" -type f \( -name '*.mp4' -o -name '*.webm' -o -name '*.avi' -o -name '*.gif' \) 2>/dev/null | wc -l | tr -d ' ')"
             SUFFIX_COUNT="$(find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" 2>/dev/null | wc -l | tr -d ' ')"
             BASENAME_COUNT="$(find "$EXTRACTED_ROOT" -type f -name "$CLIP_BASENAME" 2>/dev/null | wc -l | tr -d ' ')"
             PARENT_DIR_COUNT="$(find "$EXTRACTED_ROOT" -type d -name "$CLIP_PARENT" 2>/dev/null | wc -l | tr -d ' ')"
+            printf '[DIAG] total_video_files_under_extracted=%s\n' "$TOTAL_VIDEO_COUNT"
             printf '[DIAG] search_suffix=%s matches=%s\n' "$CLIP_SUFFIX" "$SUFFIX_COUNT"
             find "$EXTRACTED_ROOT" -type f -path "*/${CLIP_SUFFIX}" -print 2>/dev/null \
               | head -n 10 \
@@ -285,8 +290,10 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
               | sed 's/^/[DIAG] candidate_parent_dir=/'
             if [[ "$SUFFIX_COUNT" -gt 0 || "$BASENAME_COUNT" -gt 0 ]]; then
               printf '[DIAG] diagnosis=metadata clip_path points to the wrong location; rerun sc_prepare_videodpo_vc2_assets.sbatch after pulling the latest repo.\n'
+              printf '[DIAG] repair_command=CONDA_ENV=diffueraser DOWNLOAD_DATASET=0 sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch\n'
             else
               printf '[DIAG] diagnosis=no local video candidate was found under _extracted; dataset extraction/download is incomplete.\n'
+              printf '[DIAG] repair_command=CONDA_ENV=diffueraser sbatch --export=ALL DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch\n'
             fi
           fi
         fi
