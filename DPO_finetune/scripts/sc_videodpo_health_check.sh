@@ -22,6 +22,10 @@ if [[ "${SC_HEALTH_FILTERED:-0}" != "1" && "${QUIET_OK}" == "1" ]]; then
     /^failures:/ ||
     /^warnings:/ ||
     /^  - / ||
+    /^dataset_root=/ ||
+    /^metadata_clip_path=/ ||
+    /^metadata_clip_exists=/ ||
+    /^real_local_candidate=/ ||
     /^\[RESULT\]/ { print }
   '
   exit "${PIPESTATUS[0]}"
@@ -254,8 +258,10 @@ if [[ -f "$VC2_DATA_YAML" ]]; then
           printf 'dataset_root=%s\n' "$RESOLVED_META"
           printf 'metadata_clip_path=%s\n' "$FIRST_CLIP"
           printf 'metadata_clip_exists=%s\n' "$([ -f "$FIRST_CLIP_PATH" ] && echo yes || echo no)"
-          printf 'real_local_candidate:\n'
-          find "${VC2_DATASET_ROOT}/_extracted" -path "*/$(basename "$FIRST_CLIP")" -print -quit 2>/dev/null || true
+          REAL_LOCAL_CANDIDATE="$(
+            find "${VC2_DATASET_ROOT}/_extracted" -path "*/$(basename "$FIRST_CLIP")" -print -quit 2>/dev/null || true
+          )"
+          printf 'real_local_candidate=%s\n' "${REAL_LOCAL_CANDIDATE:-none}"
         fi
       else
         warn "Could not parse first clip_path from metadata.json"
