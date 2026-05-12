@@ -47,6 +47,7 @@ WANDB_ENTITY="${WANDB_ENTITY:-jh5117-columbia-university}"
 WANDB_RUN_GROUP="${WANDB_RUN_GROUP:-VideoDPO_VC2}"
 WANDB_LOG_MODEL="${WANDB_LOG_MODEL:-False}"
 EARLY_WANDB="${EARLY_WANDB:-1}"
+WANDB_START_EVENT="${WANDB_START_EVENT:-0}"
 APPLY_DPO_DIAG_PATCH="${APPLY_DPO_DIAG_PATCH:-1}"
 DPO_DIAG_EVERY="${DPO_DIAG_EVERY:-300}"
 DPO_DIAG_PATCH="${DPO_DIAG_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_dpo_diagnostics.patch}"
@@ -57,7 +58,7 @@ GPU_PREFLIGHT="${GPU_PREFLIGHT:-1}"
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH GPU_PREFLIGHT
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH GPU_PREFLIGHT WANDB_START_EVENT
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -214,19 +215,26 @@ echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} gra
 echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
 echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
 echo "[vc2-train] gpu_preflight=${GPU_PREFLIGHT} slurm_job_gpus=${SLURM_JOB_GPUS:-unset} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-unset}"
-echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
+echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_start_event=${WANDB_START_EVENT} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
-wandb_event start \
-  --config "run_name=${RUN_NAME}" \
-  --config "num_gpus=${NUM_GPUS}" \
-  --config "device_list=${DEVICE_LIST}" \
-  --config "beta_dpo=${BETA_DPO}" \
-  --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
-  --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
-  --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
-  --config "gpu_preflight=${GPU_PREFLIGHT}" \
-  --config "vc2_data_yaml=${VC2_DATA_YAML}" \
-  --config "videodpo_repo=${VIDEODPO_REPO}"
+case "${WANDB_START_EVENT,,}" in
+  1|true|yes|on)
+    wandb_event start \
+      --config "run_name=${RUN_NAME}" \
+      --config "num_gpus=${NUM_GPUS}" \
+      --config "device_list=${DEVICE_LIST}" \
+      --config "beta_dpo=${BETA_DPO}" \
+      --config "dpo_diag_every=${DPO_DIAG_EVERY}" \
+      --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
+      --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
+      --config "gpu_preflight=${GPU_PREFLIGHT}" \
+      --config "vc2_data_yaml=${VC2_DATA_YAML}" \
+      --config "videodpo_repo=${VIDEODPO_REPO}"
+    ;;
+  *)
+    echo "[vc2-train] W&B start marker disabled; training or failure hook will create/update the run."
+    ;;
+esac
 
 apply_dpo_diag_patch
 apply_debug_print_patch
