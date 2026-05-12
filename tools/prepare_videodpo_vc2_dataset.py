@@ -10,12 +10,18 @@ train_data.yaml for SC/H20-style jobs.
 from __future__ import annotations
 
 import argparse
+import json
+import os
 from pathlib import Path
+from pathlib import PurePosixPath
 import shutil
 import tarfile
 import zipfile
 
 import yaml
+
+
+VIDEO_EXTS = {".avi", ".gif", ".mp4", ".webm"}
 
 
 def _find_dataset_root(root: Path) -> Path:
@@ -90,6 +96,100 @@ def _extract_archives(root: Path, extract_dir: Path) -> None:
         marker.write_text(str(archive), encoding="utf-8")
 
 
+def _path_suffixes(path: Path | PurePosixPath) -> list[str]:
+    parts = [p for p in path.parts if p not in ("", "/")]
+    suffixes: list[str] = []
+    for marker in ("dataset", "vidpro10k-vc2-dataset", "text2video2-10k"):
+        if marker in parts:
+            idx = parts.index(marker)
+            starts = [idx]
+            if marker in {"dataset", "vidpro10k-vc2-dataset"}:
+                starts.append(idx + 1)
+            for start in starts:
+                if start < len(parts):
+                    suffixes.append("/".join(parts[start:]))
+    for n in range(min(10, len(parts)), 0, -1):
+        suffixes.append("/".join(parts[-n:]))
+    seen = set()
+    out = []
+    for suffix in suffixes:
+        if suffix and suffix not in seen:
+            seen.add(suffix)
+            out.append(suffix)
+    return out
+
+
+def _build_video_index(search_roots: list[Path]) -> dict[str, list[Path]]:
+    index: dict[str, list[Path]] = {}
+    seen_files = set()
+    for root in search_roots:
+        if not root.exists():
+            continue
+        for path in root.rglob("*"):
+            if not path.is_file() or path.suffix.lower() not in VIDEO_EXTS:
+                continue
+            resolved = path.resolve()
+            if resolved in seen_files:
+                continue
+            seen_files.add(resolved)
+            for suffix in _path_suffixes(path):
+                index.setdefault(suffix, []).append(resolved)
+    return index
+
+
+def _find_local_video(clip_path: str, dataset_root: Path, video_index: dict[str, list[Path]]) -> Path | None:
+    raw = PurePosixPath(clip_path)
+    if raw.is_absolute() and Path(clip_path).is_file():
+        return Path(clip_path).resolve()
+    local = dataset_root / clip_path
+    if local.is_file():
+        return local.resolve()
+
+    for suffix in _path_suffixes(raw):
+        matches = video_index.get(suffix, [])
+        if len(matches) == 1:
+            return matches[0]
+    return None
+
+
+def _rewrite_metadata_clip_paths(dataset_root: Path, search_roots: list[Path]) -> tuple[int, int]:
+    metadata_path = dataset_root / "metadata.json"
+    if not metadata_path.is_file():
+        return 0, 0
+
+    with metadata_path.open("r", encoding="utf-8") as f:
+        metadata = json.load(f)
+    if not isinstance(metadata, list):
+        return 0, 0
+
+    video_index = _build_video_index(search_roots)
+    changed = 0
+    unresolved = 0
+    for item in metadata:
+        basic = item.get("basic") if isinstance(item, dict) else None
+        if not isinstance(basic, dict) or "clip_path" not in basic:
+            continue
+        clip_path = str(basic["clip_path"])
+        local_video = _find_local_video(clip_path, dataset_root, video_index)
+        if local_video is None:
+            unresolved += 1
+            continue
+        rel_path = os.path.relpath(local_video, dataset_root).replace(os.sep, "/")
+        if rel_path != clip_path:
+            basic["clip_path"] = rel_path
+            changed += 1
+
+    if changed:
+        backup = dataset_root / "metadata.json.original_paths.bak"
+        if not backup.exists():
+            shutil.copy2(metadata_path, backup)
+        tmp = dataset_root / "metadata.json.tmp"
+        with tmp.open("w", encoding="utf-8") as f:
+            json.dump(metadata, f, ensure_ascii=False)
+        tmp.replace(metadata_path)
+    return changed, unresolved
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo_id", default="JiaHuang01/vidpro10k-vc2-dataset")
@@ -148,6 +248,10 @@ def main() -> int:
             _copy_or_link(source_root, target_root, args.link_mode)
 
     dataset_root = _find_dataset_root(target_root).resolve()
+    changed, unresolved = _rewrite_metadata_clip_paths(
+        dataset_root,
+        sorted({target_root, download_dir, dataset_root}, key=lambda p: str(p)),
+    )
     output_yaml.parent.mkdir(parents=True, exist_ok=True)
     with output_yaml.open("w", encoding="utf-8") as f:
         yaml.safe_dump({"META": [str(dataset_root)]}, f, sort_keys=False)
@@ -155,6 +259,12 @@ def main() -> int:
     print(f"[prepare-vc2] repo_id={args.repo_id}")
     print(f"[prepare-vc2] dataset_root={dataset_root}")
     print(f"[prepare-vc2] output_yaml={output_yaml}")
+    print(f"[prepare-vc2] rewritten_clip_paths={changed} unresolved_clip_paths={unresolved}")
+    if unresolved:
+        raise RuntimeError(
+            f"{unresolved} clip_path entries could not be resolved under {target_root}. "
+            "Inspect metadata.json and the extracted archive layout."
+        )
     return 0
 
 
