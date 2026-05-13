@@ -29,25 +29,40 @@ export BATCH_SIZE="${BATCH_SIZE:-1}"
 export GRAD_ACCUM="${GRAD_ACCUM:-2}"
 export CONFIG="${CONFIG:-configs/vc2_dpo/config.yaml}"
 
+make_logical_device_list() {
+  local count="$1"
+  local out=""
+  local i
+  for ((i = 0; i < count; i++)); do
+    if [[ -n "${out}" ]]; then
+      out+=","
+    fi
+    out+="${i}"
+  done
+  printf '%s' "${out}"
+}
+
 SMOKE="${SMOKE:-1}"
 case "${SMOKE,,}" in
   1|true|yes|on)
     export NUM_GPUS="${NUM_GPUS:-1}"
-    export DEVICE_LIST="${DEVICE_LIST:-0}"
-    export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST}}"
+    export PHYSICAL_DEVICE_LIST="${PHYSICAL_DEVICE_LIST:-${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST:-0}}}"
+    export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${PHYSICAL_DEVICE_LIST}}"
+    export DEVICE_LIST="${LIGHTNING_DEVICE_LIST:-$(make_logical_device_list "${NUM_GPUS}")}"
     export NUM_WORKERS="${NUM_WORKERS:-0}"
     export MAX_OPT_STEPS="${MAX_OPT_STEPS:-2}"
     export CKPT_EVERY="${CKPT_EVERY:-999999}"
-    export RUN_NAME="${RUN_NAME:-h20-vc2-dpo-official-smoke-gpu${DEVICE_LIST//,/}_$(date +%Y%m%d_%H%M%S)}"
+    export RUN_NAME="${RUN_NAME:-h20-vc2-dpo-official-smoke-gpu${PHYSICAL_DEVICE_LIST//,/}_$(date +%Y%m%d_%H%M%S)}"
     ;;
   *)
     export NUM_GPUS="${NUM_GPUS:-8}"
-    export DEVICE_LIST="${DEVICE_LIST:-0,1,2,3,4,5,6,7}"
-    export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST}}"
+    export PHYSICAL_DEVICE_LIST="${PHYSICAL_DEVICE_LIST:-${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST:-0,1,2,3,4,5,6,7}}}"
+    export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${PHYSICAL_DEVICE_LIST}}"
+    export DEVICE_LIST="${LIGHTNING_DEVICE_LIST:-$(make_logical_device_list "${NUM_GPUS}")}"
     export NUM_WORKERS="${NUM_WORKERS:-16}"
     export MAX_OPT_STEPS="${MAX_OPT_STEPS:-}"
     export CKPT_EVERY="${CKPT_EVERY:-499}"
-    export RUN_NAME="${RUN_NAME:-h20-vc2-dpo-official-beta5000-gpu0-7_$(date +%Y%m%d_%H%M%S)}"
+    export RUN_NAME="${RUN_NAME:-h20-vc2-dpo-official-beta5000-gpu${PHYSICAL_DEVICE_LIST//,/}_$(date +%Y%m%d_%H%M%S)}"
     ;;
 esac
 
@@ -245,6 +260,6 @@ echo "[h20-vc2] videodpo_repo=${VIDEODPO_REPO}"
 echo "[h20-vc2] vc2_data_yaml=${VC2_DATA_YAML}"
 echo "[h20-vc2] log_root=${LOG_ROOT}"
 echo "[h20-vc2] conda_env=${CONDA_ENV}"
-echo "[h20-vc2] smoke=${SMOKE} num_gpus=${NUM_GPUS} device_list=${DEVICE_LIST} max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs}"
+echo "[h20-vc2] smoke=${SMOKE} num_gpus=${NUM_GPUS} physical_cuda_visible_devices=${CUDA_VISIBLE_DEVICES} lightning_device_list=${DEVICE_LIST} max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs}"
 
 exec bash "${PROJECT_ROOT}/DPO_finetune/scripts/sc_videodpo_vc2_train.sbatch"
