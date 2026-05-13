@@ -25,9 +25,7 @@ from typing import Optional
 
 import numpy as np
 import torch
-import torchvision.transforms as transforms
 import yaml
-from PIL import Image
 
 try:
     from decord import VideoReader, cpu
@@ -48,18 +46,13 @@ class VideoDPOFullMaskDiffuEraserDataset(torch.utils.data.Dataset):
 
         self.nframes = int(args.nframes)
         self.resolution = int(args.resolution)
+        self.height = int(getattr(args, "train_height", None) or self.resolution)
+        self.width = int(getattr(args, "train_width", None) or self.resolution)
         self.frame_stride = int(getattr(args, "videodpo_frame_stride", 1))
         self.clip_length = float(getattr(args, "videodpo_clip_length", 1.0))
         self.base_seed = int(getattr(args, "seed", 0) or 0)
         self.full_mask_value = float(getattr(args, "videodpo_full_mask_value", 0.0))
         self.max_resample_attempts = int(getattr(args, "max_resample_attempts", 64))
-
-        self.img_transform = transforms.Compose([
-            transforms.Resize(self.resolution, interpolation=transforms.InterpolationMode.BILINEAR),
-            transforms.CenterCrop(self.resolution),
-            transforms.ToTensor(),
-            transforms.Normalize([0.5], [0.5]),
-        ])
 
         self.video_roots = self._resolve_video_roots(self.data_root)
         self.videos = []
@@ -70,7 +63,8 @@ class VideoDPOFullMaskDiffuEraserDataset(torch.utils.data.Dataset):
         print(
             "VideoDPOFullMaskDiffuEraserDataset: "
             f"pairs={len(self.pairs)} roots={len(self.video_roots)} "
-            f"resolution={self.resolution} nframes={self.nframes} frame_stride={self.frame_stride}"
+            f"resolution=[{self.height},{self.width}] nframes={self.nframes} "
+            f"frame_stride={self.frame_stride}"
         )
 
     def _resolve_video_roots(self, data_root: str) -> list[Path]:
@@ -157,25 +151,17 @@ class VideoDPOFullMaskDiffuEraserDataset(torch.utils.data.Dataset):
     def _read_video(self, path: str, index: int) -> torch.Tensor:
         if VideoReader is None:
             raise ImportError("decord is required for VideoDPO full-mask dataset video loading")
-        reader = VideoReader(path, ctx=cpu(0), width=self.resolution, height=self.resolution)
+        reader = VideoReader(path, ctx=cpu(0), width=self.width, height=self.height)
         if len(reader) < self.nframes:
             raise ValueError(f"Video too short for nframes={self.nframes}: {path}")
-        span = (self.nframes - 1) * self.frame_stride + 1
-        if len(reader) < span:
-            stride = 1
-            span = self.nframes
-        else:
-            stride = self.frame_stride
-        max_start = max(0, len(reader) - span)
-        rng = random.Random(f"{self.base_seed}:{path}:{index}")
-        start = rng.randint(0, max_start) if max_start > 0 else 0
-        frame_indices = [start + i * stride for i in range(self.nframes)]
+        all_frames = list(range(0, len(reader), self.frame_stride))
+        if len(all_frames) < self.nframes:
+            all_frames = list(range(0, len(reader), 1))
+        start = random.randint(0, len(all_frames) - self.nframes)
+        frame_indices = all_frames[start:start + self.nframes]
         frames = reader.get_batch(frame_indices).asnumpy()
-        tensors = []
-        for frame in frames:
-            img = Image.fromarray(np.asarray(frame, dtype=np.uint8)).convert("RGB")
-            tensors.append(self.img_transform(img))
-        return torch.stack(tensors, dim=0)
+        frames = torch.tensor(np.asarray(frames, dtype=np.uint8)).permute(0, 3, 1, 2).float()
+        return (frames / 255.0 - 0.5) * 2.0
 
     def _load_pair(self, pair: dict, index: int) -> dict:
         winner_info = self.videos[pair["winner"]]
@@ -186,7 +172,7 @@ class VideoDPOFullMaskDiffuEraserDataset(torch.utils.data.Dataset):
         neg = self._read_video(loser_info["clip_path"], index)
         conditioning = torch.full_like(pos, -1.0)
         masks = torch.full(
-            (self.nframes, 1, self.resolution, self.resolution),
+            (self.nframes, 1, self.height, self.width),
             self.full_mask_value,
             dtype=pos.dtype,
         )

@@ -83,6 +83,7 @@ def build_cmd(project_root, args):
         "--nframes", str(args.nframes),
         "--train_batch_size", str(args.batch_size),
         "--gradient_accumulation_steps", str(args.gradient_accumulation_steps),
+        "--dataloader_num_workers", str(args.num_workers),
         "--learning_rate", str(args.learning_rate),
         "--lr_scheduler", args.lr_scheduler,
         "--lr_warmup_steps", str(args.lr_warmup_steps),
@@ -109,6 +110,10 @@ def build_cmd(project_root, args):
         "--set_grads_to_none",
         "--resume_from_checkpoint", "latest",
     ])
+    if args.train_height is not None:
+        cmd.extend(["--train_height", str(args.train_height)])
+    if args.train_width is not None:
+        cmd.extend(["--train_width", str(args.train_width)])
 
     if args.enable_xformers:
         cmd.append("--enable_xformers_memory_efficient_attention")
@@ -145,10 +150,13 @@ def build_cmd(project_root, args):
         params={
             "nframes": args.nframes,
             "resolution": args.resolution,
+            "train_height": args.train_height,
+            "train_width": args.train_width,
             "max_train_steps": args.max_train_steps,
             "logging_steps": args.logging_steps,
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
+            "num_workers": args.num_workers,
             "beta_dpo": args.beta_dpo,
             "sft_reg_weight": args.sft_reg_weight,
             "videodpo_frame_stride": args.videodpo_frame_stride,
@@ -284,12 +292,15 @@ def run(args=None):
     print(f"  Ref Model:       {ref_model_path}")
     print(f"  GPUs:            {args.num_gpus}")
     print(f"  Resolution:      {args.resolution}")
+    if args.train_height is not None or args.train_width is not None:
+        print(f"  Train Size:      {args.train_height or args.resolution}x{args.train_width or args.resolution}")
     print(f"  Max Steps:       {args.max_train_steps}")
     print(f"  Logging Steps:   {args.logging_steps}")
     print(f"  Beta DPO:        {args.beta_dpo}")
     print(f"  SFT Reg Weight:  {args.sft_reg_weight}")
     print(f"  Lose Gap Weight: {args.lose_gap_weight}")
     print(f"  LR:              {args.learning_rate}")
+    print(f"  Num Workers:     {args.num_workers}")
     print(f"  Mixed Precision: {args.mixed_precision}")
     print(f"  VAE dtype:       {args.vae_dtype}")
     print(f"  Policy dtype:    {args.policy_dtype}")
@@ -328,6 +339,7 @@ def parse_args():
     parser.add_argument("--run_version", type=str, default=None)
     parser.add_argument("--batch_size", type=int, default=1)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
+    parser.add_argument("--num_workers", type=int, default=0)
     parser.add_argument("--learning_rate", type=float, default=1e-6)
     parser.add_argument("--lr_scheduler", type=str, default="constant")
     parser.add_argument("--lr_warmup_steps", type=int, default=500)
@@ -340,6 +352,8 @@ def parse_args():
     parser.add_argument("--val_num_inference_steps", type=int, default=6)
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None)
+    parser.add_argument("--train_width", type=int, default=None)
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")

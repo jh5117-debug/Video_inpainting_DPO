@@ -40,6 +40,7 @@ VAL_DATA_DIR=${VAL_DATA_DIR:-${DATA}/davis_432_240}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
 BATCH_SIZE=${BATCH_SIZE:-1}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
+NUM_WORKERS=${NUM_WORKERS:-0}
 LR=${LR:-1e-6}
 LR_SCHEDULER=${LR_SCHEDULER:-constant}
 LR_WARMUP=${LR_WARMUP:-500}
@@ -49,6 +50,8 @@ CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
 LOGGING_STEPS=${LOGGING_STEPS:-300}
 RESOLUTION=${RESOLUTION:-512}
+TRAIN_HEIGHT=${TRAIN_HEIGHT:-${RESOLUTION}}
+TRAIN_WIDTH=${TRAIN_WIDTH:-${RESOLUTION}}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
@@ -206,6 +209,7 @@ python training/dpo/scripts/run_stage1.py \
   --run_name ${RUN_NAME} \
   --batch_size ${BATCH_SIZE} \
   --gradient_accumulation_steps ${GRAD_ACCUM} \
+  --num_workers ${NUM_WORKERS} \
   --learning_rate ${LR} \
   --lr_scheduler ${LR_SCHEDULER} \
   --lr_warmup_steps ${LR_WARMUP} \
@@ -217,6 +221,8 @@ python training/dpo/scripts/run_stage1.py \
   --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
   --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
   --resolution ${RESOLUTION} \
+  --train_height ${TRAIN_HEIGHT} \
+  --train_width ${TRAIN_WIDTH} \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \

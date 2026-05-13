@@ -772,6 +772,10 @@ def parse_args(input_args=None):
     parser.add_argument("--cache_dir", type=str, default=None)
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None,
+                        help="Optional training frame height. Used by videodpo_fullmask to match VideoDPO [320,512].")
+    parser.add_argument("--train_width", type=int, default=None,
+                        help="Optional training frame width. Used by videodpo_fullmask to match VideoDPO [320,512].")
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--train_batch_size", type=int, default=1)
     parser.add_argument("--num_train_epochs", type=int, default=10000)
