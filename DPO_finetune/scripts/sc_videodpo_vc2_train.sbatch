@@ -55,12 +55,15 @@ CLEAN_DEBUG_PRINT="${CLEAN_DEBUG_PRINT:-1}"
 DEBUG_PRINT_PATCH="${DEBUG_PRINT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_remove_debug_training_step_print.patch}"
 PATCH_OPENCLIP_BATCH_FIRST="${PATCH_OPENCLIP_BATCH_FIRST:-1}"
 OPENCLIP_BATCH_FIRST_PATCH="${OPENCLIP_BATCH_FIRST_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_open_clip_batch_first.patch}"
+PATCH_LOGGER_COMPAT="${PATCH_LOGGER_COMPAT:-1}"
+LOGGER_COMPAT_PATCH="${LOGGER_COMPAT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_wandb_logger_compat.patch}"
+DISABLE_IMAGE_LOGGER="${DISABLE_IMAGE_LOGGER:-1}"
 GPU_PREFLIGHT="${GPU_PREFLIGHT:-1}"
 
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH PATCH_OPENCLIP_BATCH_FIRST OPENCLIP_BATCH_FIRST_PATCH GPU_PREFLIGHT WANDB_START_EVENT
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH PATCH_OPENCLIP_BATCH_FIRST OPENCLIP_BATCH_FIRST_PATCH PATCH_LOGGER_COMPAT LOGGER_COMPAT_PATCH DISABLE_IMAGE_LOGGER GPU_PREFLIGHT WANDB_START_EVENT
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -188,6 +191,26 @@ apply_openclip_batch_first_patch() {
   esac
 }
 
+apply_logger_compat_patch() {
+  case "${PATCH_LOGGER_COMPAT,,}" in
+    1|true|yes|on)
+      if [[ ! -f "${LOGGER_COMPAT_PATCH}" ]]; then
+        echo "[vc2-train][error] logger compatibility patch missing: ${LOGGER_COMPAT_PATCH}" >&2
+        exit 1
+      fi
+      if grep -Eq 'Skip W&B video log|Skip tensorboard video log' "${VIDEODPO_REPO}/utils/callbacks.py"; then
+        echo "[vc2-train] W&B logger compatibility patch already applied"
+      else
+        echo "[vc2-train] applying W&B logger compatibility patch: ${LOGGER_COMPAT_PATCH}"
+        git -C "${VIDEODPO_REPO}" apply "${LOGGER_COMPAT_PATCH}"
+      fi
+      ;;
+    *)
+      echo "[vc2-train] W&B logger compatibility patch disabled by PATCH_LOGGER_COMPAT=${PATCH_LOGGER_COMPAT}"
+      ;;
+  esac
+}
+
 wandb_event() {
   local event="$1"
   shift || true
@@ -237,6 +260,8 @@ echo "[vc2-train] max_opt_steps=${MAX_OPT_STEPS:-official-config-max_epochs} gra
 echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH} patch=${DPO_DIAG_PATCH}"
 echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
 echo "[vc2-train] patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST} openclip_batch_first_patch=${OPENCLIP_BATCH_FIRST_PATCH}"
+echo "[vc2-train] patch_logger_compat=${PATCH_LOGGER_COMPAT} logger_compat_patch=${LOGGER_COMPAT_PATCH}"
+echo "[vc2-train] disable_image_logger=${DISABLE_IMAGE_LOGGER}"
 echo "[vc2-train] gpu_preflight=${GPU_PREFLIGHT} slurm_job_gpus=${SLURM_JOB_GPUS:-unset} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-unset}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_start_event=${WANDB_START_EVENT} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
 
@@ -251,6 +276,8 @@ case "${WANDB_START_EVENT,,}" in
       --config "apply_dpo_diag_patch=${APPLY_DPO_DIAG_PATCH}" \
       --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
       --config "patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST}" \
+      --config "patch_logger_compat=${PATCH_LOGGER_COMPAT}" \
+      --config "disable_image_logger=${DISABLE_IMAGE_LOGGER}" \
       --config "gpu_preflight=${GPU_PREFLIGHT}" \
       --config "vc2_data_yaml=${VC2_DATA_YAML}" \
       --config "videodpo_repo=${VIDEODPO_REPO}"
@@ -263,6 +290,7 @@ esac
 apply_dpo_diag_patch
 apply_debug_print_patch
 apply_openclip_batch_first_patch
+apply_logger_compat_patch
 
 echo "[vc2-train] dependency preflight"
 python - <<'PY'
@@ -367,6 +395,16 @@ if [[ -n "${MAX_OPT_STEPS}" ]]; then
   MAX_STEPS_ARG=(lightning.trainer.max_steps="${MAX_OPT_STEPS}")
 fi
 
+IMAGE_LOGGER_ARGS=()
+case "${DISABLE_IMAGE_LOGGER,,}" in
+  1|true|yes|on)
+    IMAGE_LOGGER_ARGS=(
+      lightning.callbacks.batch_logger.params.batch_frequency=-1
+      lightning.callbacks.image_logger.params.batch_frequency=-1
+    )
+    ;;
+esac
+
 LOGGER_ARGS=()
 case "${ENABLE_WANDB,,}" in
   1|true|yes|on)
@@ -413,6 +451,7 @@ python -m torch.distributed.run \
   "data.params.train.params.resolution=[320,512]" \
   data.params.train.params.video_length=16 \
   data.params.train.params.frame_stride=1 \
+  "${IMAGE_LOGGER_ARGS[@]}" \
   "${LOGGER_ARGS[@]}" \
   "${MAX_STEPS_ARG[@]}"
 

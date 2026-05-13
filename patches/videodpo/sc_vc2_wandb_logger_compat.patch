@@ -1,0 +1,76 @@
+diff --git a/utils/callbacks.py b/utils/callbacks.py
+index 8ca1b83..1371a41 100644
+--- a/utils/callbacks.py
++++ b/utils/callbacks.py
+@@ -64,14 +64,23 @@ class ImageLogger(Callback):
+     def log_to_tensorboard(self, pl_module, batch_logs, filename, split, save_fps=10):
+         """log images and videos to tensorboard"""
+         global_step = pl_module.global_step
++        experiment = getattr(getattr(pl_module, "logger", None), "experiment", None)
++        if experiment is None:
++            mainlogger.warning("Skip image logging because pl_module.logger.experiment is unavailable.")
++            return
++
+         for key in batch_logs:
+             value = batch_logs[key]
+             tag = "gs%d-%s/%s-%s" % (global_step, split, filename, key)
+             if isinstance(value, list) and isinstance(value[0], str):
+                 captions = " |------| ".join(value)
+-                pl_module.logger.experiment.add_text(
+-                    tag, captions, global_step=global_step
+-                )
++                if hasattr(experiment, "add_text"):
++                    experiment.add_text(tag, captions, global_step=global_step)
++                elif hasattr(experiment, "log"):
++                    try:
++                        experiment.log({tag: captions}, step=global_step)
++                    except Exception as exc:
++                        mainlogger.warning(f"Skip W&B text log for {tag}: {exc}")
+             elif isinstance(value, torch.Tensor) and value.dim() == 5:
+                 video = value
+                 n = video.shape[0]
+@@ -85,16 +94,38 @@ class ImageLogger(Callback):
+                 )  # stack in temporal dim [t, 3, n*h, w]
+                 grid = (grid + 1.0) / 2.0
+                 grid = grid.unsqueeze(dim=0)
+-                pl_module.logger.experiment.add_video(
+-                    tag, grid, fps=save_fps, global_step=global_step
+-                )
++                if hasattr(experiment, "add_video"):
++                    experiment.add_video(tag, grid, fps=save_fps, global_step=global_step)
++                elif hasattr(experiment, "log"):
++                    try:
++                        import wandb
++                        video_np = grid[0].detach().float().cpu().clamp(0, 1).numpy()
++                        experiment.log(
++                            {tag: wandb.Video(video_np, fps=save_fps, format="gif")},
++                            step=global_step,
++                        )
++                    except Exception as exc:
++                        mainlogger.warning(f"Skip W&B video log for {tag}: {exc}")
++                else:
++                    mainlogger.warning(f"Skip video log for {tag}: logger has no add_video/log API.")
+             elif isinstance(value, torch.Tensor) and value.dim() == 4:
+                 img = value
++                n = img.shape[0]
+                 grid = torchvision.utils.make_grid(img, nrow=int(n))
+                 grid = (grid + 1.0) / 2.0  # -1,1 -> 0,1; c,h,w
+-                pl_module.logger.experiment.add_image(
+-                    tag, grid, global_step=global_step
+-                )
++                if hasattr(experiment, "add_image"):
++                    experiment.add_image(tag, grid, global_step=global_step)
++                elif hasattr(experiment, "log"):
++                    try:
++                        import wandb
++                        experiment.log(
++                            {tag: wandb.Image(grid.detach().float().cpu().clamp(0, 1))},
++                            step=global_step,
++                        )
++                    except Exception as exc:
++                        mainlogger.warning(f"Skip W&B image log for {tag}: {exc}")
++                else:
++                    mainlogger.warning(f"Skip image log for {tag}: logger has no add_image/log API.")
+             else:
+                 pass
+ 
