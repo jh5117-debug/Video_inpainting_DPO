@@ -89,6 +89,7 @@ def build_cmd(project_root, args):
         "--max_train_steps", str(args.max_train_steps),
         "--checkpointing_steps", str(args.checkpointing_steps),
         "--validation_steps", str(args.validation_steps),
+        "--logging_steps", str(args.logging_steps),
         "--val_num_inference_steps", str(args.val_num_inference_steps),
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
         "--vae_dtype", args.vae_dtype,
@@ -145,6 +146,7 @@ def build_cmd(project_root, args):
             "nframes": args.nframes,
             "resolution": args.resolution,
             "max_train_steps": args.max_train_steps,
+            "logging_steps": args.logging_steps,
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
             "beta_dpo": args.beta_dpo,
@@ -283,6 +285,7 @@ def run(args=None):
     print(f"  GPUs:            {args.num_gpus}")
     print(f"  Resolution:      {args.resolution}")
     print(f"  Max Steps:       {args.max_train_steps}")
+    print(f"  Logging Steps:   {args.logging_steps}")
     print(f"  Beta DPO:        {args.beta_dpo}")
     print(f"  SFT Reg Weight:  {args.sft_reg_weight}")
     print(f"  Lose Gap Weight: {args.lose_gap_weight}")
@@ -332,6 +335,8 @@ def parse_args():
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--validation_steps", type=int, default=2000)
+    parser.add_argument("--logging_steps", type=int, default=300,
+                        help="Print detailed DPO diagnostics every N optimizer steps.")
     parser.add_argument("--val_num_inference_steps", type=int, default=6)
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=512)

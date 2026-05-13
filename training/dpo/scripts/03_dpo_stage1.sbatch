@@ -47,6 +47,7 @@ MAX_STEPS=${MAX_STEPS:-20000}
 CKPT_STEPS=${CKPT_STEPS:-2000}
 CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
+LOGGING_STEPS=${LOGGING_STEPS:-300}
 RESOLUTION=${RESOLUTION:-512}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
@@ -204,6 +205,7 @@ python training/dpo/scripts/run_stage1.py \
   --checkpointing_steps ${CKPT_STEPS} \
   --checkpoints_total_limit ${CKPT_LIMIT} \
   --validation_steps ${VAL_STEPS} \
+  --logging_steps ${LOGGING_STEPS} \
   --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
   --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
   --resolution ${RESOLUTION} \
