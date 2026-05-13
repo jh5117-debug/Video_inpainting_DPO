@@ -307,7 +307,6 @@ required = [
     "pytorch_lightning",
     "omegaconf",
     "kornia",
-    "wandb",
     "open_clip",
     "transformers",
     "fairscale",
@@ -316,6 +315,8 @@ required = [
     "decord",
     "av",
 ]
+if os.environ.get("ENABLE_WANDB", "1").lower() in {"1", "true", "yes", "on"}:
+    required.append("wandb")
 missing = []
 for name in required:
     try:
