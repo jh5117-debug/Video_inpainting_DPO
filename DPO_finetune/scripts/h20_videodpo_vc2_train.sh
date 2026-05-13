@@ -138,6 +138,8 @@ scan_roots = [
 ]
 scan_roots = [p for p in scan_roots if p.exists()]
 found_roots = []
+all_pair_roots = []
+archive_candidates = []
 if scan_roots:
     import subprocess
 
@@ -163,10 +165,44 @@ if scan_roots:
         root = Path(line).parent
         if not (root / "metadata.json").is_file():
             continue
+        all_pair_roots.append(root.resolve())
         root_s = str(root).lower()
         if not any(token in root_s for token in ("vidpro", "vc2", "videodpo")):
             continue
         found_roots.append(root.resolve())
+
+    archive_cmd = [
+        "find",
+        *[str(p) for p in scan_roots],
+        "(",
+        "-path", "*/.git", "-o",
+        "-path", "*/.cache", "-o",
+        "-path", "*/wandb", "-o",
+        "-path", "*/miniconda3", "-o",
+        "-path", "*/conda_envs", "-o",
+        "-path", "*/envs",
+        ")",
+        "-prune",
+        "-o",
+        "-type", "f",
+        "(",
+        "-iname", "*vidpro*.tar", "-o",
+        "-iname", "*vidpro*.tar.gz", "-o",
+        "-iname", "*vidpro*.tgz", "-o",
+        "-iname", "*vidpro*.zip", "-o",
+        "-iname", "*vc2*.tar", "-o",
+        "-iname", "*vc2*.tar.gz", "-o",
+        "-iname", "*vc2*.tgz", "-o",
+        "-iname", "*vc2*.zip", "-o",
+        "-iname", "*videodpo*.tar", "-o",
+        "-iname", "*videodpo*.tar.gz", "-o",
+        "-iname", "*videodpo*.tgz", "-o",
+        "-iname", "*videodpo*.zip",
+        ")",
+        "-print",
+    ]
+    archives = subprocess.run(archive_cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    archive_candidates = sorted(set(archives.stdout.splitlines()))
 
 found_roots = sorted({str(p): p for p in found_roots}.values(), key=lambda p: str(p))
 if found_roots:
@@ -179,6 +215,13 @@ if found_roots:
     print(out)
     raise SystemExit(0)
 
+all_pair_roots = sorted({str(p): p for p in all_pair_roots}.values(), key=lambda p: str(p))
+if all_pair_roots:
+    print("[h20-vc2][diagnostic] found pair.json+metadata.json roots, but their paths do not look like VC2/vidpro:", file=sys.stderr)
+    for root in all_pair_roots[:50]:
+        print(f"  {root}", file=sys.stderr)
+    print("[h20-vc2][diagnostic] If one is the intended VideoDPO VC2 root, rerun with VC2_DATA_YAML=/that/root", file=sys.stderr)
+
 print("[h20-vc2][error] no valid VC2 train_data yaml or dataset root found.", file=sys.stderr)
 print("[h20-vc2][error] Set VC2_DATA_YAML to a yaml whose META roots contain metadata.json and pair.json,", file=sys.stderr)
 print("[h20-vc2][error] or set VC2_DATA_SEARCH_ROOTS to directories that contain the extracted vidpro/vc2 dataset.", file=sys.stderr)
@@ -188,6 +231,10 @@ for candidate in candidates:
 print("[h20-vc2][error] scanned roots:", file=sys.stderr)
 for root in scan_roots:
     print(f"  {root}", file=sys.stderr)
+if archive_candidates:
+    print("[h20-vc2][diagnostic] possible compressed dataset archives:", file=sys.stderr)
+    for path in archive_candidates[:50]:
+        print(f"  {path}", file=sys.stderr)
 raise SystemExit(2)
 PY
 )"
