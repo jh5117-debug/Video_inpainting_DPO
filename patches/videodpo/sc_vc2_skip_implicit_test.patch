@@ -1,0 +1,11 @@
+diff --git a/scripts/train.py b/scripts/train.py
+index fff90b9..fe0c17d 100644
+--- a/scripts/train.py
++++ b/scripts/train.py
+@@ -263,5 +263,5 @@ if __name__ == "__main__":
+             raise
+     if args.val:
+         trainer.validate(model, data)
+-    if args.test or not trainer.interrupted:
++    if args.test:
+         trainer.test(model, data)

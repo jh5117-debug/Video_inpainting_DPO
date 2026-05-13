@@ -57,13 +57,15 @@ PATCH_OPENCLIP_BATCH_FIRST="${PATCH_OPENCLIP_BATCH_FIRST:-1}"
 OPENCLIP_BATCH_FIRST_PATCH="${OPENCLIP_BATCH_FIRST_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_open_clip_batch_first.patch}"
 PATCH_LOGGER_COMPAT="${PATCH_LOGGER_COMPAT:-1}"
 LOGGER_COMPAT_PATCH="${LOGGER_COMPAT_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_wandb_logger_compat.patch}"
+PATCH_SKIP_IMPLICIT_TEST="${PATCH_SKIP_IMPLICIT_TEST:-1}"
+SKIP_IMPLICIT_TEST_PATCH="${SKIP_IMPLICIT_TEST_PATCH:-${PROJECT_ROOT}/patches/videodpo/sc_vc2_skip_implicit_test.patch}"
 DISABLE_IMAGE_LOGGER="${DISABLE_IMAGE_LOGGER:-1}"
 GPU_PREFLIGHT="${GPU_PREFLIGHT:-1}"
 
 export PROJECT_ROOT PROJECT_HOME PROJECT_DEV PROJECT_DATA
 export VIDEODPO_REPO VC2_DATA_YAML LOG_ROOT RUN_NAME CONFIG
 export NUM_GPUS DEVICE_LIST BATCH_SIZE GRAD_ACCUM MAX_OPT_STEPS CKPT_EVERY NUM_WORKERS BETA_DPO CONDA_ENV
-export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH PATCH_OPENCLIP_BATCH_FIRST OPENCLIP_BATCH_FIRST_PATCH PATCH_LOGGER_COMPAT LOGGER_COMPAT_PATCH DISABLE_IMAGE_LOGGER GPU_PREFLIGHT WANDB_START_EVENT
+export APPLY_DPO_DIAG_PATCH DPO_DIAG_EVERY DPO_DIAG_PATCH CLEAN_DEBUG_PRINT DEBUG_PRINT_PATCH PATCH_OPENCLIP_BATCH_FIRST OPENCLIP_BATCH_FIRST_PATCH PATCH_LOGGER_COMPAT LOGGER_COMPAT_PATCH PATCH_SKIP_IMPLICIT_TEST SKIP_IMPLICIT_TEST_PATCH DISABLE_IMAGE_LOGGER GPU_PREFLIGHT WANDB_START_EVENT
 
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
   :
@@ -217,6 +219,26 @@ apply_logger_compat_patch() {
   esac
 }
 
+apply_skip_implicit_test_patch() {
+  case "${PATCH_SKIP_IMPLICIT_TEST,,}" in
+    1|true|yes|on)
+      if [[ ! -f "${SKIP_IMPLICIT_TEST_PATCH}" ]]; then
+        echo "[vc2-train][error] skip implicit test patch missing: ${SKIP_IMPLICIT_TEST_PATCH}" >&2
+        exit 1
+      fi
+      if grep -q 'if args.test:' "${VIDEODPO_REPO}/scripts/train.py" && ! grep -q 'if args.test or not trainer.interrupted' "${VIDEODPO_REPO}/scripts/train.py"; then
+        echo "[vc2-train] implicit post-train test already disabled"
+      else
+        echo "[vc2-train] applying skip implicit post-train test patch: ${SKIP_IMPLICIT_TEST_PATCH}"
+        git -C "${VIDEODPO_REPO}" apply "${SKIP_IMPLICIT_TEST_PATCH}"
+      fi
+      ;;
+    *)
+      echo "[vc2-train] skip implicit post-train test patch disabled by PATCH_SKIP_IMPLICIT_TEST=${PATCH_SKIP_IMPLICIT_TEST}"
+      ;;
+  esac
+}
+
 wandb_event() {
   local event="$1"
   shift || true
@@ -267,6 +289,7 @@ echo "[vc2-train] dpo_diag_every=${DPO_DIAG_EVERY} apply_dpo_diag_patch=${APPLY_
 echo "[vc2-train] clean_debug_print=${CLEAN_DEBUG_PRINT} debug_print_patch=${DEBUG_PRINT_PATCH}"
 echo "[vc2-train] patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST} openclip_batch_first_patch=${OPENCLIP_BATCH_FIRST_PATCH}"
 echo "[vc2-train] patch_logger_compat=${PATCH_LOGGER_COMPAT} logger_compat_patch=${LOGGER_COMPAT_PATCH}"
+echo "[vc2-train] patch_skip_implicit_test=${PATCH_SKIP_IMPLICIT_TEST} skip_implicit_test_patch=${SKIP_IMPLICIT_TEST_PATCH}"
 echo "[vc2-train] disable_image_logger=${DISABLE_IMAGE_LOGGER}"
 echo "[vc2-train] gpu_preflight=${GPU_PREFLIGHT} slurm_job_gpus=${SLURM_JOB_GPUS:-unset} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-unset}"
 echo "[vc2-train] enable_wandb=${ENABLE_WANDB} early_wandb=${EARLY_WANDB} wandb_start_event=${WANDB_START_EVENT} wandb_project=${WANDB_PROJECT} wandb_entity=${WANDB_ENTITY} wandb_dir=${WANDB_DIR} wandb_run_id=${WANDB_RUN_ID}"
@@ -283,6 +306,7 @@ case "${WANDB_START_EVENT,,}" in
       --config "clean_debug_print=${CLEAN_DEBUG_PRINT}" \
       --config "patch_openclip_batch_first=${PATCH_OPENCLIP_BATCH_FIRST}" \
       --config "patch_logger_compat=${PATCH_LOGGER_COMPAT}" \
+      --config "patch_skip_implicit_test=${PATCH_SKIP_IMPLICIT_TEST}" \
       --config "disable_image_logger=${DISABLE_IMAGE_LOGGER}" \
       --config "gpu_preflight=${GPU_PREFLIGHT}" \
       --config "vc2_data_yaml=${VC2_DATA_YAML}" \
@@ -297,6 +321,7 @@ apply_dpo_diag_patch
 apply_debug_print_patch
 apply_openclip_batch_first_patch
 apply_logger_compat_patch
+apply_skip_implicit_test_patch
 
 echo "[vc2-train] dependency preflight"
 python - <<'PY'
