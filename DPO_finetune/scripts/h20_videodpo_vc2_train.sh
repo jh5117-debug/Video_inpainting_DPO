@@ -77,8 +77,12 @@ if raw:
 else:
     patterns = [
         str(videodpo_repo / "configs/vc2_dpo/vidpro/train_data.yaml"),
+        str(Path(os.environ["PROJECT_ROOT"]) / "logs/vc2_dpo_videoinpainting_h20_gpu*/configs/train_data.yaml"),
+        str(Path(os.environ["PROJECT_ROOT"]) / "logs/videodpo_vc2_dpo/*/configs/train_data.yaml"),
         "/home/nvme01/VideoDPO_runs/vc2_dpo_clean_*/configs/train_data.yaml",
         "/home/nvme01/VideoDPO_runs/vc2_dpo_diag_*/configs/train_data.yaml",
+        "/home/nvme0*/VideoDPO*/configs/vc2_dpo/vidpro/train_data*.yaml",
+        "/home/nvme0*/VideoDPO_runs/*/configs/train_data.yaml",
     ]
     candidates = []
     for pattern in patterns:
@@ -100,6 +104,12 @@ def resolve_meta(meta, yaml_path):
 
 for candidate in candidates:
     yaml_path = Path(candidate).expanduser()
+    if yaml_path.is_dir() and (yaml_path / "metadata.json").is_file() and (yaml_path / "pair.json").is_file():
+        log_root.mkdir(parents=True, exist_ok=True)
+        out = log_root / "h20_vc2_train_data.absolute.yaml"
+        out.write_text(yaml.safe_dump({"META": [str(yaml_path.resolve())]}, sort_keys=False))
+        print(out)
+        raise SystemExit(0)
     if not yaml_path.is_file():
         continue
     try:
@@ -122,11 +132,62 @@ for candidate in candidates:
         print(out)
         raise SystemExit(0)
 
-print("[h20-vc2][error] no valid VC2 train_data yaml found.", file=sys.stderr)
-print("[h20-vc2][error] Set VC2_DATA_YAML to a yaml whose META roots contain metadata.json and pair.json.", file=sys.stderr)
+scan_roots = [
+    Path(p).expanduser()
+    for p in os.environ.get("VC2_DATA_SEARCH_ROOTS", "/home/nvme01 /home/nvme02 /home/nvme03 /home/nvme04").split()
+]
+scan_roots = [p for p in scan_roots if p.exists()]
+found_roots = []
+if scan_roots:
+    import subprocess
+
+    cmd = [
+        "find",
+        *[str(p) for p in scan_roots],
+        "(",
+        "-path", "*/.git", "-o",
+        "-path", "*/.cache", "-o",
+        "-path", "*/wandb", "-o",
+        "-path", "*/miniconda3", "-o",
+        "-path", "*/conda_envs", "-o",
+        "-path", "*/envs",
+        ")",
+        "-prune",
+        "-o",
+        "-type", "f",
+        "-name", "pair.json",
+        "-print",
+    ]
+    proc = subprocess.run(cmd, text=True, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    for line in proc.stdout.splitlines():
+        root = Path(line).parent
+        if not (root / "metadata.json").is_file():
+            continue
+        root_s = str(root).lower()
+        if not any(token in root_s for token in ("vidpro", "vc2", "videodpo")):
+            continue
+        found_roots.append(root.resolve())
+
+found_roots = sorted({str(p): p for p in found_roots}.values(), key=lambda p: str(p))
+if found_roots:
+    log_root.mkdir(parents=True, exist_ok=True)
+    out = log_root / "h20_vc2_train_data.absolute.yaml"
+    out.write_text(yaml.safe_dump({"META": [str(p) for p in found_roots]}, sort_keys=False))
+    print(f"[h20-vc2][data] generated absolute yaml from filesystem scan: {out}", file=sys.stderr)
+    for root in found_roots:
+        print(f"[h20-vc2][data] META={root}", file=sys.stderr)
+    print(out)
+    raise SystemExit(0)
+
+print("[h20-vc2][error] no valid VC2 train_data yaml or dataset root found.", file=sys.stderr)
+print("[h20-vc2][error] Set VC2_DATA_YAML to a yaml whose META roots contain metadata.json and pair.json,", file=sys.stderr)
+print("[h20-vc2][error] or set VC2_DATA_SEARCH_ROOTS to directories that contain the extracted vidpro/vc2 dataset.", file=sys.stderr)
 print("[h20-vc2][error] checked candidates:", file=sys.stderr)
 for candidate in candidates:
     print(f"  {candidate}", file=sys.stderr)
+print("[h20-vc2][error] scanned roots:", file=sys.stderr)
+for root in scan_roots:
+    print(f"  {root}", file=sys.stderr)
 raise SystemExit(2)
 PY
 )"
