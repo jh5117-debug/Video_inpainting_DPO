@@ -49,7 +49,25 @@ export LR="${LR:-6e-6}"
 export RESOLUTION="${RESOLUTION:-512}"
 export MIXED_PRECISION="${MIXED_PRECISION:-bf16}"
 export VAE_DTYPE="${VAE_DTYPE:-auto}"
-export SPLIT_POS_NEG_FORWARD="${SPLIT_POS_NEG_FORWARD:-1}"
+REQUESTED_SPLIT_POS_NEG_FORWARD="${SPLIT_POS_NEG_FORWARD:-0}"
+ALLOW_UNSTABLE_FULLMASK_SPLIT="${ALLOW_UNSTABLE_FULLMASK_SPLIT:-0}"
+case "${REQUESTED_SPLIT_POS_NEG_FORWARD,,}" in
+  1|true|yes|on)
+    case "${ALLOW_UNSTABLE_FULLMASK_SPLIT,,}" in
+      1|true|yes|on)
+        export SPLIT_POS_NEG_FORWARD="${REQUESTED_SPLIT_POS_NEG_FORWARD}"
+        ;;
+      *)
+        echo "[videodpo-fullmask][warn] forcing SPLIT_POS_NEG_FORWARD=0; split forward is a known H20 step-0 SIGFPE path for this fullmask bridge." >&2
+        echo "[videodpo-fullmask][warn] set ALLOW_UNSTABLE_FULLMASK_SPLIT=1 only for debugging that unstable path." >&2
+        export SPLIT_POS_NEG_FORWARD=0
+        ;;
+    esac
+    ;;
+  *)
+    export SPLIT_POS_NEG_FORWARD="${REQUESTED_SPLIT_POS_NEG_FORWARD}"
+    ;;
+esac
 export USE_8BIT_ADAM="${USE_8BIT_ADAM:-0}"
 export GRADIENT_CHECKPOINTING="${GRADIENT_CHECKPOINTING:-1}"
 export VIDEODPO_FRAME_STRIDE="${VIDEODPO_FRAME_STRIDE:-1}"
@@ -72,6 +90,6 @@ echo "[videodpo-fullmask] project_root=${PROJECT_ROOT}"
 echo "[videodpo-fullmask] videodpo_repo=${VIDEODPO_REPO}"
 echo "[videodpo-fullmask] dpo_data_root=${DPO_DATA_ROOT}"
 echo "[videodpo-fullmask] run_name=${RUN_NAME}"
-echo "[videodpo-fullmask] max_steps=${MAX_STEPS} logging_steps=${LOGGING_STEPS} beta=${BETA_DPO} lr=${LR} grad_accum=${GRAD_ACCUM} report_to=${REPORT_TO}"
+echo "[videodpo-fullmask] max_steps=${MAX_STEPS} logging_steps=${LOGGING_STEPS} beta=${BETA_DPO} lr=${LR} grad_accum=${GRAD_ACCUM} split_pos_neg=${SPLIT_POS_NEG_FORWARD} report_to=${REPORT_TO}"
 
 exec bash "${PROJECT_ROOT}/DPO_finetune/scripts/03_dpo_stage1.sbatch"

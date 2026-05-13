@@ -71,6 +71,7 @@ XFORMERS=${XFORMERS:-0}
 GRADIENT_CHECKPOINTING=${GRADIENT_CHECKPOINTING:-1}
 SPLIT_POS_NEG_FORWARD=${SPLIT_POS_NEG_FORWARD:-1}
 USE_8BIT_ADAM=${USE_8BIT_ADAM:-0}
+DEBUG_FIRST_BATCH_STAGES=${DEBUG_FIRST_BATCH_STAGES:-0}
 MAIN_PROCESS_PORT=${MAIN_PROCESS_PORT:-0}
 VAL_NUM_INFERENCE_STEPS=${VAL_NUM_INFERENCE_STEPS:-6}
 VAL_MASK_DILATION_ITER=${VAL_MASK_DILATION_ITER:-0}
@@ -167,6 +168,13 @@ case "${USE_8BIT_ADAM,,}" in
     ;;
 esac
 
+DEBUG_FIRST_BATCH_STAGES_ARG=()
+case "${DEBUG_FIRST_BATCH_STAGES,,}" in
+  1|true|yes|on)
+    DEBUG_FIRST_BATCH_STAGES_ARG=(--debug_first_batch_stages)
+    ;;
+esac
+
 # === 所有缓存/日志/artifacts 必须在项目目录内，禁止写入 home ===
 if [[ "${REPORT_TO,,}" == "wandb" ]]; then
   export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
@@ -229,5 +237,6 @@ python training/dpo/scripts/run_stage1.py \
   "${GRADIENT_CHECKPOINTING_ARG[@]}" \
   "${SPLIT_POS_NEG_FORWARD_ARG[@]}" \
   "${USE_8BIT_ADAM_ARG[@]}" \
+  "${DEBUG_FIRST_BATCH_STAGES_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}"
