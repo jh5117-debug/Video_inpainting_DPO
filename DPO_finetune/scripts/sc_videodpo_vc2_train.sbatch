@@ -83,6 +83,12 @@ if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[vc2-train][error] Run from ${PROJECT_ROOT}: git submodule update --init --recursive" >&2
   exit 1
 fi
+if [[ ! -f "${VIDEODPO_REPO}/scripts/train.py" || ! -f "${VIDEODPO_REPO}/lvdm/models/ddpm3d.py" || ! -f "${VIDEODPO_REPO}/configs/vc2_dpo/config.yaml" ]]; then
+  echo "[vc2-train][error] VIDEODPO_REPO is incomplete: ${VIDEODPO_REPO}" >&2
+  echo "[vc2-train][error] Missing one of scripts/train.py, lvdm/models/ddpm3d.py, configs/vc2_dpo/config.yaml." >&2
+  echo "[vc2-train][error] Fix the submodule first: git submodule update --init --recursive external/VideoDPO" >&2
+  exit 1
+fi
 if [[ ! -f "${VC2_DATA_YAML}" ]]; then
   echo "[vc2-train][error] VC2_DATA_YAML not found: ${VC2_DATA_YAML}" >&2
   echo "Run DPO_finetune/scripts/sc_prepare_videodpo_vc2_assets.sbatch first, or set VC2_DATA_YAML." >&2
