@@ -68,12 +68,14 @@ PyYAML
 decord==0.6.0
 av
 open_clip_torch
-transformers
+transformers==4.25.1
 fairscale
 timm
 peft==0.13.2
 kornia
 wandb
+huggingface_hub<0.26
+diffusers==0.11.1
 REQ
 
 if [[ "${INSTALL_REQUIREMENTS}" == "1" ]]; then
@@ -115,6 +117,8 @@ required = [
     "av",
     "open_clip",
     "transformers",
+    "huggingface_hub",
+    "diffusers",
     "fairscale",
     "timm",
     "peft",

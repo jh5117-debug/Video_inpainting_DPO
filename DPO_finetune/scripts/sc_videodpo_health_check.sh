@@ -422,6 +422,8 @@ required = [
     "kornia",
     "open_clip",
     "transformers",
+    "huggingface_hub",
+    "diffusers",
     "fairscale",
     "timm",
     "peft",
@@ -444,6 +446,12 @@ try:
 except Exception as exc:
     print(f"lvdm.modules.encoders.condition: {type(exc).__name__}: {exc}")
     missing.append("lvdm.modules.encoders.condition")
+
+try:
+    importlib.import_module("lvdm.models.ddpm3d")
+except Exception as exc:
+    print(f"lvdm.models.ddpm3d: {type(exc).__name__}: {exc}")
+    missing.append("lvdm.models.ddpm3d")
 
 raise SystemExit(2 if missing else 0)
 PY

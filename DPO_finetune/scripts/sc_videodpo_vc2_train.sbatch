@@ -315,6 +315,8 @@ required = [
     "kornia",
     "open_clip",
     "transformers",
+    "huggingface_hub",
+    "diffusers",
     "fairscale",
     "timm",
     "peft",
@@ -338,6 +340,13 @@ try:
 except Exception as exc:
     print(f"[vc2-train][preflight][FAIL] lvdm.modules.encoders.condition: {type(exc).__name__}: {exc}")
     missing.append("lvdm.modules.encoders.condition")
+
+try:
+    importlib.import_module("lvdm.models.ddpm3d")
+    print("[vc2-train][preflight][OK] lvdm.models.ddpm3d")
+except Exception as exc:
+    print(f"[vc2-train][preflight][FAIL] lvdm.models.ddpm3d: {type(exc).__name__}: {exc}")
+    missing.append("lvdm.models.ddpm3d")
 
 if missing:
     env = os.environ.get("CONDA_ENV", "diffueraser")
