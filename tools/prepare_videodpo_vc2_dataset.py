@@ -22,6 +22,7 @@ import yaml
 
 
 VIDEO_EXTS = {".avi", ".gif", ".mp4", ".webm"}
+DEFAULT_HF_ENDPOINT = "https://hf-mirror.com"
 
 
 def _find_dataset_root(root: Path) -> Path:
@@ -251,6 +252,7 @@ def main() -> int:
     download_dir = Path(args.download_dir).expanduser().resolve() if args.download_dir else target_root
 
     if not args.skip_download:
+        os.environ.setdefault("HF_ENDPOINT", DEFAULT_HF_ENDPOINT)
         try:
             from huggingface_hub import snapshot_download
         except Exception as exc:  # pragma: no cover - depends on cluster env
@@ -259,6 +261,7 @@ def main() -> int:
                 "or rerun with --skip_download after manually placing the dataset."
             ) from exc
         download_dir.mkdir(parents=True, exist_ok=True)
+        print(f"[prepare-vc2] hf_endpoint={os.environ.get('HF_ENDPOINT')}")
         snapshot_download(
             repo_id=args.repo_id,
             repo_type="dataset",
