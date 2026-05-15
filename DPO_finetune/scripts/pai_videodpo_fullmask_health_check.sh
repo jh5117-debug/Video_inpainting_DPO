@@ -399,7 +399,7 @@ check_file "${VIDEODPO_REPO}/checkpoints/vc2/model.ckpt" "VC2 base model.ckpt"
 check_file "${VIDEODPO_REPO}/checkpoints/vc2/ref_model.ckpt" "VC2 ref_model.ckpt"
 
 section "VideoDPO VC2 Data"
-RESOLVED_DPO_DATA_ROOT="${DPO_DATA_ROOT}"
+RESOLVED_DPO_DATA_ROOT=""
 if command -v python3 >/dev/null 2>&1; then
   resolved="$(resolve_vc2_yaml python3 2>/tmp/pai_resolve_data.$$ || true)"
   if [[ -n "${resolved}" ]]; then
@@ -455,6 +455,8 @@ for root in roots:
         if not clip.is_file():
             raise SystemExit(f"first clip missing: {clip}")
 PY
+else
+  warn "skip VideoDPO data validation because no valid train_data yaml/root was resolved"
 fi
 
 section "Full-Mask Dataset Smoke"
@@ -506,6 +508,8 @@ EOF
 if [[ "${RUN_FULLMASK_TRAIN_SMOKE}" == "1" ]]; then
   if [[ -z "${DIFF_PY}" ]]; then
     fail "cannot run full-mask train smoke without DiffuEraser env"
+  elif [[ -z "${RESOLVED_DPO_DATA_ROOT}" || ! -e "${RESOLVED_DPO_DATA_ROOT}" ]]; then
+    fail "cannot run full-mask train smoke without resolved VideoDPO VC2 data"
   else
     CUDA_VISIBLE_DEVICES="${SMOKE_GPU}" \
     CONDA_ENV="$(cd "$(dirname "${DIFF_PY}")/.." && pwd)" \
@@ -532,6 +536,8 @@ fi
 if [[ "${RUN_VIDEODPO_TRAIN_SMOKE}" == "1" ]]; then
   if [[ -z "${VIDEO_PY}" ]]; then
     fail "cannot run official VideoDPO smoke without VideoDPO env"
+  elif [[ -z "${RESOLVED_DPO_DATA_ROOT}" || ! -e "${RESOLVED_DPO_DATA_ROOT}" ]]; then
+    fail "cannot run official VideoDPO smoke without resolved VideoDPO VC2 data"
   else
     SMOKE=1 \
     CUDA_VISIBLE_DEVICES="${SMOKE_GPU}" \
