@@ -74,6 +74,16 @@ check_file_any() {
   fail "${label} missing; checked: $*"
 }
 
+warn_file() {
+  local path="$1"
+  local label="$2"
+  if [[ -f "${path}" ]]; then
+    ok "${label}: ${path}"
+  else
+    warn "${label} missing: ${path}"
+  fi
+}
+
 check_dir() {
   local path="$1"
   local label="$2"
@@ -408,8 +418,8 @@ check_dir "${WEIGHTS_DIR}/stable-diffusion-v1-5" "stable-diffusion-v1-5"
 check_dir "${WEIGHTS_DIR}/stable-diffusion-v1-5/tokenizer" "stable-diffusion-v1-5 tokenizer"
 check_dir "${WEIGHTS_DIR}/sd-vae-ft-mse" "sd-vae-ft-mse"
 check_dir "${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000" "DiffuEraser converted_weights_step48000"
-check_file "${VIDEODPO_REPO}/checkpoints/vc2/model.ckpt" "VC2 base model.ckpt"
-check_file "${VIDEODPO_REPO}/checkpoints/vc2/ref_model.ckpt" "VC2 ref_model.ckpt"
+warn_file "${VIDEODPO_REPO}/checkpoints/vc2/model.ckpt" "VC2 base model.ckpt (official VideoDPO only)"
+warn_file "${VIDEODPO_REPO}/checkpoints/vc2/ref_model.ckpt" "VC2 ref_model.ckpt (official VideoDPO only)"
 
 section "Full-Mask Required Weight Files"
 SD15_DIR="${WEIGHTS_DIR}/stable-diffusion-v1-5"
