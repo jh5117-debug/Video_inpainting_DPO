@@ -10,6 +10,9 @@
 #SBATCH --output=logs/train-stage1-%j.out
 
 PROJECT_ROOT="${PROJECT_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)}"
+PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-worldmodelphy}"
+export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
 
 NUM_GPUS=${NUM_GPUS:-8}
 DATA_DIR=${DATA_DIR:-${PROJECT_ROOT}/data}
@@ -40,6 +43,7 @@ fi
 source ~/.bashrc
 conda activate diffueraser
 cd "$PROJECT_ROOT"
+export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH:-}"
 
 python training/sft/scripts/run_stage1.py \
   --num_gpus ${NUM_GPUS} \

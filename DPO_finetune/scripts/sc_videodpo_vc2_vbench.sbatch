@@ -21,6 +21,8 @@ if [[ -z "${PROJECT_ROOT:-}" ]]; then
   fi
 fi
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-worldmodelphy}"
+export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
 
 export PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 export PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"

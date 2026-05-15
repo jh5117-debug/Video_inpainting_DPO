@@ -25,6 +25,8 @@ if [[ -z "${PROJECT_ROOT:-}" ]]; then
   fi
 fi
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-worldmodelphy}"
+export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
 PROJECT_PARENT="$(dirname "${PROJECT_ROOT}")"
 PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"
@@ -197,6 +199,7 @@ export TRANSFORMERS_CACHE="${PROJECT_ROOT}/.hf_cache"
 export TMPDIR="${TMPDIR:-${PROJECT_ROOT}/.tmp}"
 export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
+export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH:-}"
 mkdir -p "${HF_HOME}" "${TMPDIR}"
 
 python training/dpo/scripts/run_stage1.py \
