@@ -61,6 +61,19 @@ check_file() {
   fi
 }
 
+check_file_any() {
+  local label="$1"
+  shift
+  local path
+  for path in "$@"; do
+    if [[ -f "${path}" ]]; then
+      ok "${label}: ${path}"
+      return 0
+    fi
+  done
+  fail "${label} missing; checked: $*"
+}
+
 check_dir() {
   local path="$1"
   local label="$2"
@@ -397,6 +410,40 @@ check_dir "${WEIGHTS_DIR}/sd-vae-ft-mse" "sd-vae-ft-mse"
 check_dir "${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000" "DiffuEraser converted_weights_step48000"
 check_file "${VIDEODPO_REPO}/checkpoints/vc2/model.ckpt" "VC2 base model.ckpt"
 check_file "${VIDEODPO_REPO}/checkpoints/vc2/ref_model.ckpt" "VC2 ref_model.ckpt"
+
+section "Full-Mask Required Weight Files"
+SD15_DIR="${WEIGHTS_DIR}/stable-diffusion-v1-5"
+VAE_DIR="${WEIGHTS_DIR}/sd-vae-ft-mse"
+DIFFUERASER_REF_DIR="${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000"
+check_file "${SD15_DIR}/model_index.json" "SD1.5 model_index.json"
+check_file "${SD15_DIR}/tokenizer/vocab.json" "SD1.5 tokenizer vocab.json"
+check_file "${SD15_DIR}/tokenizer/merges.txt" "SD1.5 tokenizer merges.txt"
+check_file "${SD15_DIR}/tokenizer/tokenizer_config.json" "SD1.5 tokenizer config"
+check_file "${SD15_DIR}/scheduler/scheduler_config.json" "SD1.5 scheduler config"
+check_file "${SD15_DIR}/text_encoder/config.json" "SD1.5 text_encoder config"
+check_file_any "SD1.5 text_encoder weights" \
+  "${SD15_DIR}/text_encoder/model.safetensors" \
+  "${SD15_DIR}/text_encoder/pytorch_model.bin" \
+  "${SD15_DIR}/text_encoder/model.fp16.safetensors" \
+  "${SD15_DIR}/text_encoder/pytorch_model.fp16.bin"
+check_file "${SD15_DIR}/unet/config.json" "SD1.5 unet config"
+check_file_any "SD1.5 unet weights" \
+  "${SD15_DIR}/unet/diffusion_pytorch_model.safetensors" \
+  "${SD15_DIR}/unet/diffusion_pytorch_model.bin" \
+  "${SD15_DIR}/unet/diffusion_pytorch_model.fp16.safetensors" \
+  "${SD15_DIR}/unet/diffusion_pytorch_model.fp16.bin"
+check_file "${VAE_DIR}/config.json" "sd-vae-ft-mse config"
+check_file_any "sd-vae-ft-mse weights" \
+  "${VAE_DIR}/diffusion_pytorch_model.safetensors" \
+  "${VAE_DIR}/diffusion_pytorch_model.bin"
+check_file "${DIFFUERASER_REF_DIR}/unet_main/config.json" "DiffuEraser ref unet_main config"
+check_file_any "DiffuEraser ref unet_main weights" \
+  "${DIFFUERASER_REF_DIR}/unet_main/diffusion_pytorch_model.safetensors" \
+  "${DIFFUERASER_REF_DIR}/unet_main/diffusion_pytorch_model.bin"
+check_file "${DIFFUERASER_REF_DIR}/brushnet/config.json" "DiffuEraser ref brushnet config"
+check_file_any "DiffuEraser ref brushnet weights" \
+  "${DIFFUERASER_REF_DIR}/brushnet/diffusion_pytorch_model.safetensors" \
+  "${DIFFUERASER_REF_DIR}/brushnet/diffusion_pytorch_model.bin"
 
 section "VideoDPO VC2 Data"
 RESOLVED_DPO_DATA_ROOT=""
