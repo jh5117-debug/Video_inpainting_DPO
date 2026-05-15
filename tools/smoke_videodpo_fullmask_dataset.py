@@ -21,6 +21,8 @@ def main() -> int:
     parser.add_argument("--dpo_data_root", required=True)
     parser.add_argument("--base_model_name_or_path", required=True)
     parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None)
+    parser.add_argument("--train_width", type=int, default=None)
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--videodpo_frame_stride", type=int, default=1)
