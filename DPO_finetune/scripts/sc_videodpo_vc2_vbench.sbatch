@@ -49,6 +49,8 @@ DDIM_ETA="${DDIM_ETA:-1.0}"
 GUIDANCE_SCALE="${GUIDANCE_SCALE:-12.0}"
 SAMPLES_PER_PROMPT="${SAMPLES_PER_PROMPT:-5}"
 PROMPT_LIMIT="${PROMPT_LIMIT:-0}"
+PROMPT_RANDOM_LIMIT="${PROMPT_RANDOM_LIMIT:-0}"
+PROMPT_RANDOM_SEED="${PROMPT_RANDOM_SEED:-20260517}"
 LINK_MODE="${LINK_MODE:-symlink}"
 RUN_INFERENCE="${RUN_INFERENCE:-1}"
 RUN_VBENCH="${RUN_VBENCH:-1}"
@@ -58,6 +60,12 @@ PATCH_VIDEODPO_INFERENCE="${PATCH_VIDEODPO_INFERENCE:-1}"
 MAKE_PAPER_TABLE="${MAKE_PAPER_TABLE:-1}"
 PAPER_TABLE_MODEL_GROUP="${PAPER_TABLE_MODEL_GROUP:-VC2}"
 PAPER_LABEL_MAP="${PAPER_LABEL_MAP:-vc2_base=Baseline[7],vc2_dpo=VideoDPO}"
+NUM_INFER_GPUS="${NUM_INFER_GPUS:-${NUM_GPUS:-}}"
+MAKE_QUAL_COMPARE="${MAKE_QUAL_COMPARE:-0}"
+QUAL_BASE_LABEL="${QUAL_BASE_LABEL:-vc2_base}"
+QUAL_DPO_LABEL="${QUAL_DPO_LABEL:-vc2_dpo}"
+QUAL_BASE_TITLE="${QUAL_BASE_TITLE:-VC2-Base}"
+QUAL_DPO_TITLE="${QUAL_DPO_TITLE:-VC2-DPO}"
 
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
@@ -116,6 +124,34 @@ elif new in text:
     print(f"[videodpo-vbench] savefps type already patched in {inference_path}")
 else:
     raise SystemExit(f"[videodpo-vbench][error] could not locate savefps parser line in {inference_path}")
+
+main_old = '''if __name__ == "__main__":
+    now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    print("@CoLVDM Inference: %s" % now)
+    parser = get_parser()
+    args = parser.parse_args()
+    seed_everything(args.seed)
+    rank, gpu_num = 0, 1
+    run_inference(args, gpu_num, rank)
+'''
+main_new = '''if __name__ == "__main__":
+    now = datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
+    print("@CoLVDM Inference: %s" % now)
+    parser = get_parser()
+    args = parser.parse_args()
+    seed_everything(args.seed)
+    rank = int(os.environ.get("VIDEODPO_INFER_RANK", "0"))
+    gpu_num = int(os.environ.get("VIDEODPO_INFER_NUM_GPUS", "1"))
+    run_inference(args, gpu_num, rank)
+'''
+text = inference_path.read_text()
+if main_old in text:
+    inference_path.write_text(text.replace(main_old, main_new))
+    print(f"[videodpo-vbench] patched multi-gpu env ranks in {inference_path}")
+elif "VIDEODPO_INFER_NUM_GPUS" in text:
+    print(f"[videodpo-vbench] multi-gpu env ranks already patched in {inference_path}")
+else:
+    raise SystemExit(f"[videodpo-vbench][error] could not locate inference main block in {inference_path}")
 
 utils_text = utils_path.read_text()
 if "imageio.mimsave(savepath" in utils_text:
@@ -190,6 +226,45 @@ fi
 mkdir -p "${OUT_ROOT}" "${PROJECT_ROOT}/logs"
 export PYTHONPATH="${VIDEODPO_REPO}:${VBENCH_ROOT}:${PROJECT_ROOT}:${PYTHONPATH:-}"
 RUN_PROMPTS_FILE="${PROMPTS_FILE}"
+if [[ -z "${NUM_INFER_GPUS}" ]]; then
+  if [[ -n "${CUDA_VISIBLE_DEVICES:-}" ]]; then
+    IFS=',' read -r -a _visible_gpu_items <<< "${CUDA_VISIBLE_DEVICES}"
+    NUM_INFER_GPUS="${#_visible_gpu_items[@]}"
+  else
+    NUM_INFER_GPUS=1
+  fi
+fi
+if (( NUM_INFER_GPUS < 1 )); then
+  echo "[videodpo-vbench][error] NUM_INFER_GPUS must be >= 1, got ${NUM_INFER_GPUS}" >&2
+  exit 1
+fi
+if [[ "${PROMPT_RANDOM_LIMIT}" != "0" ]]; then
+  if [[ "${RUN_VBENCH}" == "1" ]]; then
+    echo "[videodpo-vbench][error] PROMPT_RANDOM_LIMIT is for inference/qualitative smoke only." >&2
+    echo "VBench standard mode expects the full VBench prompt suite. Set RUN_VBENCH=0 for qualitative smoke." >&2
+    exit 1
+  fi
+  RUN_PROMPTS_FILE="${OUT_ROOT}/prompts_random_${PROMPT_RANDOM_LIMIT}_seed${PROMPT_RANDOM_SEED}.txt"
+  "${PYTHON_BIN}" - "${PROMPTS_FILE}" "${RUN_PROMPTS_FILE}" "${PROMPT_RANDOM_LIMIT}" "${PROMPT_RANDOM_SEED}" <<'PY'
+from pathlib import Path
+import random
+import sys
+
+src = Path(sys.argv[1])
+dst = Path(sys.argv[2])
+limit = int(sys.argv[3])
+seed = int(sys.argv[4])
+prompts = [line.strip() for line in src.read_text(encoding="utf-8").splitlines() if line.strip()]
+if limit > len(prompts):
+    raise SystemExit(f"PROMPT_RANDOM_LIMIT={limit} exceeds prompt count={len(prompts)}")
+rng = random.Random(seed)
+indices = sorted(rng.sample(range(len(prompts)), limit))
+dst.parent.mkdir(parents=True, exist_ok=True)
+dst.write_text("".join(prompts[i] + "\n" for i in indices), encoding="utf-8")
+print(f"[videodpo-vbench] random prompts: count={limit} seed={seed} output={dst}")
+PY
+  PROMPT_LIMIT=0
+fi
 if [[ "${PROMPT_LIMIT}" != "0" ]]; then
   RUN_PROMPTS_FILE="${OUT_ROOT}/prompts_limit_${PROMPT_LIMIT}.txt"
   head -n "${PROMPT_LIMIT}" "${PROMPTS_FILE}" > "${RUN_PROMPTS_FILE}"
@@ -206,6 +281,7 @@ echo "[videodpo-vbench] prompts=${RUN_PROMPTS_FILE}"
 echo "[videodpo-vbench] out_root=${OUT_ROOT}"
 echo "[videodpo-vbench] ckpt_specs=${CKPT_SPECS}"
 echo "[videodpo-vbench] samples_per_prompt=${SAMPLES_PER_PROMPT} prompt_limit=${PROMPT_LIMIT}"
+echo "[videodpo-vbench] num_infer_gpus=${NUM_INFER_GPUS} cuda_visible_devices=${CUDA_VISIBLE_DEVICES:-<unset>}"
 
 IFS=',' read -r -a CKPT_ITEMS <<< "${CKPT_SPECS}"
 for item in "${CKPT_ITEMS[@]}"; do
@@ -232,23 +308,49 @@ for item in "${CKPT_ITEMS[@]}"; do
       mkdir -p "${sample_raw}"
       echo "[videodpo-vbench] infer label=${label} sample=${sample_idx} seed=${seed}"
       cd "${VIDEODPO_REPO}"
-      "${PYTHON_BIN}" scripts/inference.py \
-        --seed "${seed}" \
-        --mode base \
-        --ckpt_path "${ckpt}" \
-        --config "${CONFIG}" \
-        --savedir "${sample_raw}" \
-        --n_samples 1 \
-        --bs 1 \
-        --height "${HEIGHT}" \
-        --width "${WIDTH}" \
-        --frames "${FRAMES}" \
-        --unconditional_guidance_scale "${GUIDANCE_SCALE}" \
-        --ddim_steps "${DDIM_STEPS}" \
-        --ddim_eta "${DDIM_ETA}" \
-        --prompt_file "${RUN_PROMPTS_FILE}" \
-        --fps "${FPS}" \
+      infer_cmd=(
+        "${PYTHON_BIN}" scripts/inference.py
+        --seed "${seed}"
+        --mode base
+        --ckpt_path "${ckpt}"
+        --config "${CONFIG}"
+        --savedir "${sample_raw}"
+        --n_samples 1
+        --bs 1
+        --height "${HEIGHT}"
+        --width "${WIDTH}"
+        --frames "${FRAMES}"
+        --unconditional_guidance_scale "${GUIDANCE_SCALE}"
+        --ddim_steps "${DDIM_STEPS}"
+        --ddim_eta "${DDIM_ETA}"
+        --prompt_file "${RUN_PROMPTS_FILE}"
+        --fps "${FPS}"
         --savefps "${SAVE_FPS}"
+      )
+      if (( NUM_INFER_GPUS > 1 )); then
+        pids=()
+        for rank in $(seq 0 $((NUM_INFER_GPUS - 1))); do
+          log_file="${sample_raw}/infer_rank${rank}.log"
+          echo "[videodpo-vbench]   launch rank=${rank}/${NUM_INFER_GPUS} log=${log_file}"
+          VIDEODPO_INFER_RANK="${rank}" \
+          VIDEODPO_INFER_NUM_GPUS="${NUM_INFER_GPUS}" \
+          "${infer_cmd[@]}" > "${log_file}" 2>&1 &
+          pids+=("$!")
+        done
+        failed=0
+        for pid in "${pids[@]}"; do
+          if ! wait "${pid}"; then
+            failed=1
+          fi
+        done
+        if (( failed != 0 )); then
+          echo "[videodpo-vbench][error] one or more inference ranks failed for ${label} sample=${sample_idx}" >&2
+          tail -n 80 "${sample_raw}"/infer_rank*.log >&2 || true
+          exit 1
+        fi
+      else
+        "${infer_cmd[@]}"
+      fi
 
       "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/videodpo_prepare_vbench_standard.py" \
         --raw_dir "${sample_raw}" \
@@ -277,6 +379,24 @@ for item in "${CKPT_ITEMS[@]}"; do
       --output_csv "${eval_root}/summary.csv"
   fi
 done
+
+if [[ "${RUN_INFERENCE}" == "1" && "${MAKE_QUAL_COMPARE}" == "1" ]]; then
+  base_raw="${OUT_ROOT}/${QUAL_BASE_LABEL}/raw/sample_0"
+  dpo_raw="${OUT_ROOT}/${QUAL_DPO_LABEL}/raw/sample_0"
+  if [[ ! -d "${base_raw}" || ! -d "${dpo_raw}" ]]; then
+    echo "[videodpo-vbench][error] qualitative compare inputs missing: ${base_raw} ${dpo_raw}" >&2
+    exit 1
+  fi
+  "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/videodpo_make_side_by_side.py" \
+    --left_raw_dir "${base_raw}" \
+    --right_raw_dir "${dpo_raw}" \
+    --prompts_file "${RUN_PROMPTS_FILE}" \
+    --output_dir "${OUT_ROOT}/qual_side_by_side" \
+    --left_label "${QUAL_BASE_TITLE}" \
+    --right_label "${QUAL_DPO_TITLE}" \
+    --fps "${SAVE_FPS}" \
+    --strict
+fi
 
 if [[ "${RUN_VBENCH}" == "1" && "${MAKE_PAPER_TABLE}" == "1" ]]; then
   "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/vbench_make_paper_table.py" \
