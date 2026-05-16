@@ -54,6 +54,7 @@ RUN_INFERENCE="${RUN_INFERENCE:-1}"
 RUN_VBENCH="${RUN_VBENCH:-1}"
 SEED_BASE="${SEED_BASE:-20230211}"
 DIMENSIONS="${DIMENSIONS:-subject_consistency background_consistency aesthetic_quality imaging_quality object_class multiple_objects color spatial_relationship scene temporal_style overall_consistency human_action temporal_flickering motion_smoothness dynamic_degree appearance_style}"
+PATCH_VIDEODPO_INFERENCE="${PATCH_VIDEODPO_INFERENCE:-1}"
 
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
@@ -93,6 +94,24 @@ fi
 if [[ ! -f "${PROMPTS_FILE}" ]]; then
   echo "[videodpo-vbench][error] PROMPTS_FILE not found: ${PROMPTS_FILE}" >&2
   exit 1
+fi
+if [[ "${PATCH_VIDEODPO_INFERENCE}" == "1" ]]; then
+  "${PYTHON_BIN}" - "${VIDEODPO_REPO}/scripts/inference.py" <<'PY'
+from pathlib import Path
+import sys
+
+path = Path(sys.argv[1])
+text = path.read_text()
+old = 'parser.add_argument("--savefps", type=str, default=10, help="video fps to generate")'
+new = 'parser.add_argument("--savefps", type=int, default=10, help="video fps to generate")'
+if old in text:
+    path.write_text(text.replace(old, new))
+    print(f"[videodpo-vbench] patched savefps type in {path}")
+elif new in text:
+    print(f"[videodpo-vbench] savefps type already patched in {path}")
+else:
+    raise SystemExit(f"[videodpo-vbench][error] could not locate savefps parser line in {path}")
+PY
 fi
 if [[ "${RUN_VBENCH}" == "1" && ! -f "${VBENCH_ROOT}/evaluate.py" ]]; then
   echo "[videodpo-vbench][error] VBench evaluate.py not found under VBENCH_ROOT=${VBENCH_ROOT}" >&2
