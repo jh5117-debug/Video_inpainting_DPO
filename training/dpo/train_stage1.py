@@ -71,9 +71,10 @@ from diffueraser.pipeline_diffueraser_stage1 import StableDiffusionDiffuEraserPi
 from libs.brushnet_CA import BrushNetModel
 from libs.unet_2d_condition import UNet2DConditionModel
 from libs.unet_motion_model import UNetMotionModel
+from training.common.dataset_imports import import_dataset_file_helpers
 from training.dpo.dataset.factory import build_dpo_dataset
-from dataset.file_client import FileClient
-from dataset.img_util import imfrombytes
+
+FileClient, imfrombytes = import_dataset_file_helpers(PROJECT_ROOT)
 
 
 if is_wandb_available():
