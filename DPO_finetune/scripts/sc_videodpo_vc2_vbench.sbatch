@@ -96,21 +96,87 @@ if [[ ! -f "${PROMPTS_FILE}" ]]; then
   exit 1
 fi
 if [[ "${PATCH_VIDEODPO_INFERENCE}" == "1" ]]; then
-  "${PYTHON_BIN}" - "${VIDEODPO_REPO}/scripts/inference.py" <<'PY'
+  "${PYTHON_BIN}" - "${VIDEODPO_REPO}/scripts/inference.py" "${VIDEODPO_REPO}/scripts/inference_utils.py" <<'PY'
 from pathlib import Path
 import sys
 
-path = Path(sys.argv[1])
-text = path.read_text()
+inference_path = Path(sys.argv[1])
+utils_path = Path(sys.argv[2])
+
+text = inference_path.read_text()
 old = 'parser.add_argument("--savefps", type=str, default=10, help="video fps to generate")'
 new = 'parser.add_argument("--savefps", type=int, default=10, help="video fps to generate")'
 if old in text:
-    path.write_text(text.replace(old, new))
-    print(f"[videodpo-vbench] patched savefps type in {path}")
+    inference_path.write_text(text.replace(old, new))
+    print(f"[videodpo-vbench] patched savefps type in {inference_path}")
 elif new in text:
-    print(f"[videodpo-vbench] savefps type already patched in {path}")
+    print(f"[videodpo-vbench] savefps type already patched in {inference_path}")
 else:
-    raise SystemExit(f"[videodpo-vbench][error] could not locate savefps parser line in {path}")
+    raise SystemExit(f"[videodpo-vbench][error] could not locate savefps parser line in {inference_path}")
+
+utils_text = utils_path.read_text()
+if "imageio.mimsave(savepath" in utils_text:
+    print(f"[videodpo-vbench] video writer already patched in {utils_path}")
+else:
+    old_func = '''def save_videos(batch_tensors, savedir, filenames, fps=10):
+    # b,samples,c,t,h,w
+    n_samples = batch_tensors.shape[1]
+    for idx, vid_tensor in enumerate(batch_tensors):
+        video = vid_tensor.detach().cpu()
+        video = torch.clamp(video.float(), -1.0, 1.0)
+        video = video.permute(2, 0, 1, 3, 4)  # t,n,c,h,w
+        frame_grids = [
+            torchvision.utils.make_grid(framesheet, nrow=int(n_samples))
+            for framesheet in video
+        ]  # [3, 1*h, n*w]
+        grid = torch.stack(frame_grids, dim=0)  # stack in temporal dim [t, 3, n*h, w]
+        grid = (grid + 1.0) / 2.0
+        grid = (grid * 255).to(torch.uint8).permute(0, 2, 3, 1)
+        savepath = os.path.join(savedir, f"{filenames[idx]}.mp4")
+        torchvision.io.write_video(
+            savepath, grid, fps=fps, video_codec="h264", options={"crf": "10"}
+        )
+'''
+    new_func = '''def save_videos(batch_tensors, savedir, filenames, fps=10):
+    # b,samples,c,t,h,w
+    fps = int(fps)
+    n_samples = batch_tensors.shape[1]
+    os.makedirs(savedir, exist_ok=True)
+    for idx, vid_tensor in enumerate(batch_tensors):
+        video = vid_tensor.detach().cpu()
+        video = torch.clamp(video.float(), -1.0, 1.0)
+        video = video.permute(2, 0, 1, 3, 4)  # t,n,c,h,w
+        frame_grids = [
+            torchvision.utils.make_grid(framesheet, nrow=int(n_samples))
+            for framesheet in video
+        ]  # [3, 1*h, n*w]
+        grid = torch.stack(frame_grids, dim=0)  # stack in temporal dim [t, 3, n*h, w]
+        grid = (grid + 1.0) / 2.0
+        grid = (grid * 255).to(torch.uint8).permute(0, 2, 3, 1)
+        frames = grid.numpy()
+        savepath = os.path.join(savedir, f"{filenames[idx]}.mp4")
+        try:
+            import imageio.v2 as imageio
+            imageio.mimsave(savepath, list(frames), fps=fps, macro_block_size=1)
+        except Exception as imageio_error:
+            writer = cv2.VideoWriter(
+                savepath,
+                cv2.VideoWriter_fourcc(*"mp4v"),
+                fps,
+                (frames.shape[2], frames.shape[1]),
+            )
+            if not writer.isOpened():
+                raise RuntimeError(f"Could not open cv2 VideoWriter for {savepath}") from imageio_error
+            try:
+                for frame in frames:
+                    writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+            finally:
+                writer.release()
+'''
+    if old_func not in utils_text:
+        raise SystemExit(f"[videodpo-vbench][error] could not locate torchvision video writer in {utils_path}")
+    utils_path.write_text(utils_text.replace(old_func, new_func))
+    print(f"[videodpo-vbench] patched video writer in {utils_path}")
 PY
 fi
 if [[ "${RUN_VBENCH}" == "1" && ! -f "${VBENCH_ROOT}/evaluate.py" ]]; then
