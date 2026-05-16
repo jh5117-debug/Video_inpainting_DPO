@@ -1463,38 +1463,47 @@ def main(args):
                                 except Exception as e:
                                     logger.warning(f"Failed to save best weights: {e}")
 
-            # === WandB + progress bar logging (每步) ===
-            scope_prefix = "global/" if diagnostics.get("_scope") == "global" else "rank0/"
-            logs = {
-                "rank0/dpo_loss": diagnostics["dpo_loss"],
-                "rank0/total_loss": diagnostics["total_loss"],
-                "rank0/sft_loss": diagnostics["sft_loss"],
-                "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
-                "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
-                f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
-                "rank0/mse_w": diagnostics["mse_w"],
-                "rank0/mse_l": diagnostics["mse_l"],
-                "rank0/win_gap": diagnostics["win_gap"],
-                "rank0/lose_gap": diagnostics["lose_gap"],
-                "rank0/reward_margin": diagnostics["reward_margin"],
-                "rank0/sigma_term": diagnostics["sigma_term"],
-                "rank0/kl_divergence": diagnostics["kl_divergence"],
-                f"{scope_prefix}inside_term_mean": diagnostics.get("inside_term_mean", 0),
-                f"{scope_prefix}inside_term_min": diagnostics.get("inside_term_min", 0),
-                f"{scope_prefix}inside_term_max": diagnostics.get("inside_term_max", 0),
-                f"{scope_prefix}loser_dominant_ratio": diagnostics.get("loser_degrade_ratio", 0),
-                "lr": lr_scheduler.get_last_lr()[0],
-            }
-            if grad_norm is not None:
-                logs["rank0/dgr_grad_norm"] = grad_norm
-                if initial_grad_norm is None:
-                    initial_grad_norm = grad_norm
-                if initial_grad_norm > 0:
-                    ratio = grad_norm / initial_grad_norm
-                    logs["rank0/grad_norm_ratio"] = ratio
-                    diagnostics["grad_norm_ratio"] = ratio
-            progress_bar.set_postfix(**{k: f"{v:.4f}" if isinstance(v, float) else v for k, v in list(logs.items())[:6]})
-            accelerator.log(logs, step=global_step)
+                # === WandB + progress bar logging (optimizer step only) ===
+                # With gradient accumulation, code outside sync_gradients runs once per
+                # micro-batch. Keep tqdm/log refresh tied to optimizer steps so one
+                # visible progress update corresponds to one real training step.
+                scope_prefix = "global/" if diagnostics.get("_scope") == "global" else "rank0/"
+                logs = {
+                    "rank0/dpo_loss": diagnostics["dpo_loss"],
+                    "rank0/total_loss": diagnostics["total_loss"],
+                    "rank0/sft_loss": diagnostics["sft_loss"],
+                    "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
+                    "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
+                    f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
+                    "rank0/mse_w": diagnostics["mse_w"],
+                    "rank0/mse_l": diagnostics["mse_l"],
+                    "rank0/win_gap": diagnostics["win_gap"],
+                    "rank0/lose_gap": diagnostics["lose_gap"],
+                    "rank0/reward_margin": diagnostics["reward_margin"],
+                    "rank0/sigma_term": diagnostics["sigma_term"],
+                    "rank0/kl_divergence": diagnostics["kl_divergence"],
+                    f"{scope_prefix}inside_term_mean": diagnostics.get("inside_term_mean", 0),
+                    f"{scope_prefix}inside_term_min": diagnostics.get("inside_term_min", 0),
+                    f"{scope_prefix}inside_term_max": diagnostics.get("inside_term_max", 0),
+                    f"{scope_prefix}loser_dominant_ratio": diagnostics.get("loser_degrade_ratio", 0),
+                    "lr": lr_scheduler.get_last_lr()[0],
+                }
+                if grad_norm is not None:
+                    logs["rank0/dgr_grad_norm"] = grad_norm
+                    if initial_grad_norm is None:
+                        initial_grad_norm = grad_norm
+                    if initial_grad_norm > 0:
+                        ratio = grad_norm / initial_grad_norm
+                        logs["rank0/grad_norm_ratio"] = ratio
+                        diagnostics["grad_norm_ratio"] = ratio
+                if accelerator.is_local_main_process:
+                    progress_bar.set_postfix(
+                        loss=f"{diagnostics['total_loss']:.4f}",
+                        dpo=f"{diagnostics['dpo_loss']:.4f}",
+                        acc=f"{diagnostics['implicit_acc']:.4f}",
+                        lr=f"{lr_scheduler.get_last_lr()[0]:.2e}",
+                    )
+                accelerator.log(logs, step=global_step)
 
             if global_step >= args.max_train_steps:
                 break
