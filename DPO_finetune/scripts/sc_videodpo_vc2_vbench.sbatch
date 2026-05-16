@@ -67,7 +67,23 @@ else
   exit 1
 fi
 source "${CONDA_BASE}/etc/profile.d/conda.sh"
-conda activate "${CONDA_ENV}"
+if [[ -x "${CONDA_ENV}/bin/python" ]]; then
+  PYTHON_BIN="${CONDA_ENV}/bin/python"
+  conda activate "${CONDA_ENV}" >/dev/null 2>&1 || true
+else
+  conda activate "${CONDA_ENV}"
+  PYTHON_BIN="$(command -v python)"
+fi
+
+echo "[videodpo-vbench] python=${PYTHON_BIN}"
+"${PYTHON_BIN}" - <<'PY'
+import importlib.util
+import sys
+print(f"[videodpo-vbench] sys.executable={sys.executable}")
+missing = [m for m in ["torch", "pytorch_lightning", "omegaconf", "einops"] if importlib.util.find_spec(m) is None]
+if missing:
+    raise SystemExit(f"[videodpo-vbench][error] missing required inference modules: {missing}")
+PY
 
 if [[ ! -d "${VIDEODPO_REPO}" ]]; then
   echo "[videodpo-vbench][error] VIDEODPO_REPO not found: ${VIDEODPO_REPO}" >&2
@@ -128,7 +144,7 @@ for item in "${CKPT_ITEMS[@]}"; do
       mkdir -p "${sample_raw}"
       echo "[videodpo-vbench] infer label=${label} sample=${sample_idx} seed=${seed}"
       cd "${VIDEODPO_REPO}"
-      python scripts/inference.py \
+      "${PYTHON_BIN}" scripts/inference.py \
         --seed "${seed}" \
         --mode base \
         --ckpt_path "${ckpt}" \
@@ -146,7 +162,7 @@ for item in "${CKPT_ITEMS[@]}"; do
         --fps "${FPS}" \
         --savefps "${SAVE_FPS}"
 
-      python "${PROJECT_ROOT}/tools/videodpo_prepare_vbench_standard.py" \
+      "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/videodpo_prepare_vbench_standard.py" \
         --raw_dir "${sample_raw}" \
         --prompts_file "${RUN_PROMPTS_FILE}" \
         --output_dir "${named_root}" \
@@ -160,7 +176,7 @@ for item in "${CKPT_ITEMS[@]}"; do
   if [[ "${RUN_VBENCH}" == "1" ]]; then
     echo "[videodpo-vbench] vbench label=${label}"
     cd "${VBENCH_ROOT}"
-    python evaluate.py \
+    "${PYTHON_BIN}" evaluate.py \
       --videos_path "${named_root}" \
       --output_path "${eval_root}" \
       --full_json_dir "${VBENCH_FULL_JSON}" \
@@ -168,7 +184,7 @@ for item in "${CKPT_ITEMS[@]}"; do
       --mode vbench_standard
 
     latest_json="$(ls -t "${eval_root}"/results_*_eval_results.json | head -n 1)"
-    python "${PROJECT_ROOT}/tools/summarize_vbench_results.py" "${latest_json}" \
+    "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/summarize_vbench_results.py" "${latest_json}" \
       --output_json "${eval_root}/summary.json" \
       --output_csv "${eval_root}/summary.csv"
   fi
