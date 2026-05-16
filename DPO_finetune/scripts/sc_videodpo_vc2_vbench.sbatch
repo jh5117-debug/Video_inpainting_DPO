@@ -55,6 +55,9 @@ RUN_VBENCH="${RUN_VBENCH:-1}"
 SEED_BASE="${SEED_BASE:-20230211}"
 DIMENSIONS="${DIMENSIONS:-subject_consistency background_consistency aesthetic_quality imaging_quality object_class multiple_objects color spatial_relationship scene temporal_style overall_consistency human_action temporal_flickering motion_smoothness dynamic_degree appearance_style}"
 PATCH_VIDEODPO_INFERENCE="${PATCH_VIDEODPO_INFERENCE:-1}"
+MAKE_PAPER_TABLE="${MAKE_PAPER_TABLE:-1}"
+PAPER_TABLE_MODEL_GROUP="${PAPER_TABLE_MODEL_GROUP:-VC2}"
+PAPER_LABEL_MAP="${PAPER_LABEL_MAP:-vc2_base=Baseline[7],vc2_dpo=VideoDPO}"
 
 CONDA_ENV="${CONDA_ENV:-${VIDEODPO_CONDA_ENV:-videodpo}}"
 if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
@@ -274,5 +277,14 @@ for item in "${CKPT_ITEMS[@]}"; do
       --output_csv "${eval_root}/summary.csv"
   fi
 done
+
+if [[ "${RUN_VBENCH}" == "1" && "${MAKE_PAPER_TABLE}" == "1" ]]; then
+  "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/vbench_make_paper_table.py" \
+    --out_root "${OUT_ROOT}" \
+    --ckpt_specs "${CKPT_SPECS}" \
+    --model_group "${PAPER_TABLE_MODEL_GROUP}" \
+    --label_map "${PAPER_LABEL_MAP}" \
+    --output_prefix "${OUT_ROOT}/vbench_paper_table"
+fi
 
 echo "[videodpo-vbench] done: ${OUT_ROOT}"
