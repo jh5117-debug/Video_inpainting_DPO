@@ -46,11 +46,22 @@ NUM_WORKERS=${NUM_WORKERS:-0}
 LR=${LR:-1e-6}
 LR_SCHEDULER=${LR_SCHEDULER:-constant}
 LR_WARMUP=${LR_WARMUP:-500}
-MAX_STEPS=${MAX_STEPS:-20000}
+MAX_EPOCHS=${MAX_EPOCHS:-}
+if [[ -z "${MAX_STEPS+x}" ]]; then
+  if [[ "${DPO_DATASET_TYPE}" == "videodpo_fullmask" ]]; then
+    MAX_STEPS=""
+    MAX_EPOCHS="${MAX_EPOCHS:-10}"
+  else
+    MAX_STEPS="20000"
+  fi
+else
+  MAX_STEPS="${MAX_STEPS}"
+fi
 CKPT_STEPS=${CKPT_STEPS:-2000}
 CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
 LOGGING_STEPS=${LOGGING_STEPS:-300}
+DPO_DIAGNOSTICS=${DPO_DIAGNOSTICS:-1}
 RESOLUTION=${RESOLUTION:-512}
 TRAIN_HEIGHT=${TRAIN_HEIGHT:-${RESOLUTION}}
 TRAIN_WIDTH=${TRAIN_WIDTH:-${RESOLUTION}}
@@ -138,6 +149,16 @@ if [[ -n "${MAIN_PROCESS_PORT}" && "${MAIN_PROCESS_PORT}" != "0" && "${MAIN_PROC
   MAIN_PROCESS_PORT_ARG=(--main_process_port "${MAIN_PROCESS_PORT}")
 fi
 
+MAX_STEPS_ARG=()
+if [[ -n "${MAX_STEPS}" ]]; then
+  MAX_STEPS_ARG=(--max_train_steps "${MAX_STEPS}")
+fi
+
+MAX_EPOCHS_ARG=()
+if [[ -n "${MAX_EPOCHS}" ]]; then
+  MAX_EPOCHS_ARG=(--num_train_epochs "${MAX_EPOCHS}")
+fi
+
 CHUNK_ARG=()
 case "${CHUNK_ALIGNED,,}" in
   1|true|yes|on)
@@ -180,6 +201,13 @@ case "${DEBUG_FIRST_BATCH_STAGES,,}" in
     ;;
 esac
 
+DPO_DIAGNOSTICS_ARG=()
+case "${DPO_DIAGNOSTICS,,}" in
+  0|false|no|off)
+    DPO_DIAGNOSTICS_ARG=(--disable_dpo_diagnostics)
+    ;;
+esac
+
 # === 所有缓存/日志/artifacts 必须在项目目录内，禁止写入 home ===
 if [[ "${REPORT_TO,,}" == "wandb" ]]; then
   export WANDB_DIR="${PROJECT_ROOT}/.wandb_cache"
@@ -216,7 +244,8 @@ python training/dpo/scripts/run_stage1.py \
   --learning_rate ${LR} \
   --lr_scheduler ${LR_SCHEDULER} \
   --lr_warmup_steps ${LR_WARMUP} \
-  --max_train_steps ${MAX_STEPS} \
+  "${MAX_STEPS_ARG[@]}" \
+  "${MAX_EPOCHS_ARG[@]}" \
   --checkpointing_steps ${CKPT_STEPS} \
   --checkpoints_total_limit ${CKPT_LIMIT} \
   --validation_steps ${VAL_STEPS} \
@@ -247,5 +276,6 @@ python training/dpo/scripts/run_stage1.py \
   "${SPLIT_POS_NEG_FORWARD_ARG[@]}" \
   "${USE_8BIT_ADAM_ARG[@]}" \
   "${DEBUG_FIRST_BATCH_STAGES_ARG[@]}" \
+  "${DPO_DIAGNOSTICS_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}"

@@ -827,6 +827,8 @@ def parse_args(input_args=None):
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--logging_steps", type=int, default=300,
                         help="每隔多少步输出详细 DPO 诊断日志")
+    parser.add_argument("--disable_dpo_diagnostics", action="store_true",
+                        help="Disable detailed DPO diagnostic tables and keep tqdm progress only.")
 
     # W&B
     parser.add_argument("--tracker_project_name", type=str, default="DPO_Diffueraser")
@@ -1163,6 +1165,7 @@ def main(args):
     logger.info(f"  Total train batch size = {total_batch_size}")
     logger.info(f"  Gradient Accumulation steps = {args.gradient_accumulation_steps}")
     logger.info(f"  Total optimization steps = {args.max_train_steps}")
+    logger.info(f"  VideoDPO-compatible epoch target = {args.num_train_epochs}")
     logger.info(f"  Beta DPO = {args.beta_dpo}")
     logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
     logger.info(f"  Lose Gap Weight = {args.lose_gap_weight}")
@@ -1209,7 +1212,8 @@ def main(args):
         initial_global_step = 0
 
     progress_bar = tqdm(
-        range(0, args.max_train_steps), initial=initial_global_step, desc="Steps",
+        range(0, args.max_train_steps), initial=initial_global_step,
+        desc=f"Epoch {first_epoch + 1}/{args.num_train_epochs}",
         disable=not accelerator.is_local_main_process,
     )
 
@@ -1218,6 +1222,8 @@ def main(args):
             print(f"[debug-stage] step={global_step} {message}", flush=True)
 
     for epoch in range(first_epoch, args.num_train_epochs):
+        if accelerator.is_local_main_process:
+            progress_bar.set_description(f"Epoch {epoch + 1}/{args.num_train_epochs}")
         if hasattr(train_dataset, "set_epoch"):
             train_dataset.set_epoch(epoch)
         for step, batch in enumerate(train_dataloader):
@@ -1403,7 +1409,10 @@ def main(args):
 
                 if accelerator.is_main_process:
                     # === 每 300 步: 详细诊断日志 ===
-                    if global_step % args.logging_steps == 0 or global_step == 1:
+                    if (
+                        not args.disable_dpo_diagnostics
+                        and (global_step % args.logging_steps == 0 or global_step == 1)
+                    ):
                         diag_table = format_dpo_diagnostics(
                             global_step, diagnostics, grad_norm=grad_norm
                         )
