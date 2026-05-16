@@ -350,7 +350,8 @@ def compute_dpo_loss(
     # === Reg-DPO 诊断指标 ===
     win_gap = (model_losses_w - ref_losses_w).mean()
     lose_gap = (model_losses_l - ref_losses_l).mean()
-    reward_margin = (ref_losses_w - ref_losses_l).mean()
+    # Match official VideoDPO dpo_diag: policy winner MSE minus policy loser MSE.
+    reward_margin = (model_losses_w - model_losses_l).mean()
     sigma_term = torch.sigmoid(inside_term).mean()
     all_model_losses = model_losses.mean()
     all_ref_losses = ref_losses.mean()
@@ -547,6 +548,32 @@ def format_dpo_diagnostics(step, diag, grad_norm=None, extra=None):
     lines.append(f"  {sep}")
     lines.append("")
     return "\n".join(lines)
+
+
+def format_dpo_diagnostics_line(step, diag):
+    """Official VideoDPO-compatible one-line diagnostics for grep/CSV parsing."""
+    n_correct = diag.get("n_correct_global", diag.get("n_correct_local", 0))
+    n_total = diag.get("n_total_global", diag.get("n_total_local", 0))
+    return (
+        "[dpo_diag] "
+        f"global_step={step} "
+        f"implicit_acc={diag['implicit_acc']:.6f} "
+        f"implicit_acc_count={int(n_correct)}/{int(n_total)} "
+        f"inside_term_mean={diag.get('inside_term_mean', 0.0):.6f} "
+        f"inside_term_min={diag.get('inside_term_min', 0.0):.6f} "
+        f"inside_term_max={diag.get('inside_term_max', 0.0):.6f} "
+        f"loser_dominant_ratio={diag.get('loser_degrade_ratio', 0.0):.6f} "
+        f"dpo_loss={diag['dpo_loss']:.6f} "
+        f"mse_w={diag['mse_w']:.6f} "
+        f"ref_mse_w={diag['ref_mse_w']:.6f} "
+        f"mse_l={diag['mse_l']:.6f} "
+        f"ref_mse_l={diag['ref_mse_l']:.6f} "
+        f"win_gap={diag['win_gap']:.6f} "
+        f"lose_gap={diag['lose_gap']:.6f} "
+        f"reward_margin={diag['reward_margin']:.6f} "
+        f"sigma_term={diag['sigma_term']:.6f} "
+        f"kl_divergence={diag['kl_divergence']:.6f}"
+    )
 
 
 # ============================================================
@@ -1413,6 +1440,7 @@ def main(args):
                         not args.disable_dpo_diagnostics
                         and (global_step % args.logging_steps == 0 or global_step == 1)
                     ):
+                        logger.info(format_dpo_diagnostics_line(global_step, diagnostics))
                         diag_table = format_dpo_diagnostics(
                             global_step, diagnostics, grad_norm=grad_norm
                         )
