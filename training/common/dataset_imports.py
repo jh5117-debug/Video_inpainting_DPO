@@ -22,10 +22,21 @@ def _load_module_from_path(name: str, path: Path):
     return module
 
 
+def _resolve_repo_root(project_root) -> Path:
+    """Resolve the repository root even if a caller passes ``repo/training``."""
+
+    start = Path(project_root).resolve()
+    candidates = [start, *start.parents]
+    for candidate in candidates:
+        if (candidate / "dataset" / "file_client.py").is_file():
+            return candidate
+    return start
+
+
 def import_dataset_file_helpers(project_root):
     """Return ``FileClient`` and ``imfrombytes`` from the repo dataset helpers."""
 
-    root = Path(project_root).resolve()
+    root = _resolve_repo_root(project_root)
     if str(root) not in sys.path:
         sys.path.insert(0, str(root))
 
