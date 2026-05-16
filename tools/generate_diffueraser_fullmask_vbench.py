@@ -91,7 +91,26 @@ def load_unet(weights_path: Path, base_model_path: str, revision=None, variant=N
 def save_video(frames, path: Path, fps: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     arrays = [np.asarray(frame.convert("RGB"), dtype=np.uint8) for frame in frames]
-    imageio.mimsave(path, arrays, fps=fps)
+    try:
+        imageio.mimsave(path, arrays, fps=int(fps), codec="libx264", macro_block_size=1)
+        return
+    except Exception as imageio_error:
+        import cv2
+
+        height, width = arrays[0].shape[:2]
+        writer = cv2.VideoWriter(
+            str(path),
+            cv2.VideoWriter_fourcc(*"mp4v"),
+            float(fps),
+            (width, height),
+        )
+        if not writer.isOpened():
+            raise RuntimeError(f"Could not open cv2 VideoWriter for {path}") from imageio_error
+        try:
+            for frame in arrays:
+                writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+        finally:
+            writer.release()
 
 
 def build_pipeline(args, device: torch.device):
