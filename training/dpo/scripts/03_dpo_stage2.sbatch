@@ -25,7 +25,7 @@ if [[ -z "${PROJECT_ROOT:-}" ]]; then
   fi
 fi
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
-export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-worldmodelphy}"
+export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-lingbotworld-phy}"
 export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
 PROJECT_PARENT="$(dirname "${PROJECT_ROOT}")"
 PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
@@ -60,13 +60,16 @@ GRAD_ACCUM=${GRAD_ACCUM:-1}
 LR=${LR:-1e-6}
 LR_SCHEDULER=${LR_SCHEDULER:-constant}
 LR_WARMUP=${LR_WARMUP:-500}
-MAX_STEPS=${MAX_STEPS:-30000}
+MAX_STEPS=${MAX_STEPS-30000}
+MAX_EPOCHS=${MAX_EPOCHS:-}
 CKPT_STEPS=${CKPT_STEPS:-2000}
 CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
 VAL_NUM_INFERENCE_STEPS=${VAL_NUM_INFERENCE_STEPS:-6}
 VAL_MASK_DILATION_ITER=${VAL_MASK_DILATION_ITER:-0}
 RESOLUTION=${RESOLUTION:-512}
+TRAIN_HEIGHT=${TRAIN_HEIGHT:-${RESOLUTION}}
+TRAIN_WIDTH=${TRAIN_WIDTH:-${RESOLUTION}}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
@@ -115,6 +118,7 @@ cd "$PROJECT_ROOT"
 
 echo "[dpo-stage2] dataset_type=${DPO_DATASET_TYPE}"
 echo "[dpo-stage2] dpo_data_root=${DPO_DATA_ROOT}"
+echo "[dpo-stage2] process_name=${WORLDMODELPHY_PROCESS_NAME} train_size=${TRAIN_HEIGHT}x${TRAIN_WIDTH} max_steps=${MAX_STEPS:-auto} max_epochs=${MAX_EPOCHS:-default}"
 if [[ "${DPO_DATASET_TYPE}" == "videodpo_fullmask" ]]; then
   echo "[dpo-stage2] videodpo_frame_stride=${VIDEODPO_FRAME_STRIDE} full_mask_value=${VIDEODPO_FULL_MASK_VALUE}"
 fi
@@ -130,6 +134,16 @@ fi
 RUN_VERSION_ARG=()
 if [[ -n "${RUN_VERSION}" ]]; then
   RUN_VERSION_ARG=(--run_version "${RUN_VERSION}")
+fi
+
+MAX_STEPS_ARG=()
+if [[ -n "${MAX_STEPS}" ]]; then
+  MAX_STEPS_ARG=(--max_train_steps "${MAX_STEPS}")
+fi
+
+MAX_EPOCHS_ARG=()
+if [[ -n "${MAX_EPOCHS}" ]]; then
+  MAX_EPOCHS_ARG=(--num_train_epochs "${MAX_EPOCHS}")
 fi
 
 WANDB_ENTITY_ARG=()
@@ -214,13 +228,14 @@ python training/dpo/scripts/run_stage2.py \
   --learning_rate ${LR} \
   --lr_scheduler ${LR_SCHEDULER} \
   --lr_warmup_steps ${LR_WARMUP} \
-  --max_train_steps ${MAX_STEPS} \
   --checkpointing_steps ${CKPT_STEPS} \
   --checkpoints_total_limit ${CKPT_LIMIT} \
   --validation_steps ${VAL_STEPS} \
   --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
   --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
   --resolution ${RESOLUTION} \
+  --train_height ${TRAIN_HEIGHT} \
+  --train_width ${TRAIN_WIDTH} \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
@@ -231,6 +246,8 @@ python training/dpo/scripts/run_stage2.py \
   --videodpo_frame_stride ${VIDEODPO_FRAME_STRIDE} \
   --videodpo_clip_length ${VIDEODPO_CLIP_LENGTH} \
   --videodpo_full_mask_value ${VIDEODPO_FULL_MASK_VALUE} \
+  "${MAX_STEPS_ARG[@]}" \
+  "${MAX_EPOCHS_ARG[@]}" \
   "${MAIN_PROCESS_PORT_ARG[@]}" \
   "${WANDB_ENTITY_ARG[@]}" \
   "${CHUNK_ARG[@]}" \

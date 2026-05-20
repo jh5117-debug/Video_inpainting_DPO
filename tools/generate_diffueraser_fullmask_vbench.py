@@ -22,6 +22,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from diffueraser.pipeline_diffueraser_stage1 import StableDiffusionDiffuEraserPipelineStageOne
+from diffueraser.pipeline_diffueraser_stage2 import StableDiffusionDiffuEraserPipelineStageTwo
 from libs.brushnet_CA import BrushNetModel
 from libs.unet_2d_condition import UNet2DConditionModel
 from libs.unet_motion_model import UNetMotionModel
@@ -74,7 +75,7 @@ def extract_2d_from_motion(motion_unet, base_model_path: str, revision=None, var
     return unet_2d
 
 
-def load_unet(weights_path: Path, base_model_path: str, revision=None, variant=None):
+def load_unet(weights_path: Path, base_model_path: str, stage: str, revision=None, variant=None):
     config_path = weights_path / "unet_main" / "config.json"
     is_motion_model = False
     if config_path.exists():
@@ -82,10 +83,14 @@ def load_unet(weights_path: Path, base_model_path: str, revision=None, variant=N
             is_motion_model = json.load(f).get("_class_name") == "UNetMotionModel"
     if is_motion_model:
         motion_unet = UNetMotionModel.from_pretrained(str(weights_path), subfolder="unet_main")
-        unet = extract_2d_from_motion(motion_unet, base_model_path, revision=revision, variant=variant)
-        del motion_unet
-        return unet
-    return UNet2DConditionModel.from_pretrained(str(weights_path), subfolder="unet_main")
+        if stage == "stage1":
+            unet = extract_2d_from_motion(motion_unet, base_model_path, revision=revision, variant=variant)
+            del motion_unet
+            return unet, "stage1"
+        return motion_unet, "stage2"
+    if stage == "stage2":
+        raise ValueError(f"--stage stage2 requires UNetMotionModel weights: {weights_path / 'unet_main'}")
+    return UNet2DConditionModel.from_pretrained(str(weights_path), subfolder="unet_main"), "stage1"
 
 
 def save_video(frames, path: Path, fps: int) -> None:
@@ -127,10 +132,23 @@ def build_pipeline(args, device: torch.device):
     vae = AutoencoderKL.from_pretrained(
         args.vae_path, subfolder="vae", revision=args.revision, variant=args.variant
     )
-    unet = load_unet(args.weights_path, args.base_model_name_or_path, args.revision, args.variant)
+    unet, resolved_stage = load_unet(
+        args.weights_path,
+        args.base_model_name_or_path,
+        args.stage,
+        args.revision,
+        args.variant,
+    )
     brushnet = BrushNetModel.from_pretrained(str(args.weights_path), subfolder="brushnet")
 
-    pipeline = StableDiffusionDiffuEraserPipelineStageOne.from_pretrained(
+    pipeline_cls = (
+        StableDiffusionDiffuEraserPipelineStageTwo
+        if resolved_stage == "stage2"
+        else StableDiffusionDiffuEraserPipelineStageOne
+    )
+    print(f"[fullmask-vbench-gen] resolved_stage={resolved_stage} pipeline={pipeline_cls.__name__}")
+
+    pipeline = pipeline_cls.from_pretrained(
         args.base_model_name_or_path,
         vae=vae,
         text_encoder=text_encoder,
@@ -151,6 +169,16 @@ def build_pipeline(args, device: torch.device):
     return pipeline, weight_dtype
 
 
+def fullmask_value_to_pil_pixel(value: float, value_space: str) -> int:
+    value = max(0.0, min(1.0, float(value)))
+    if value_space == "pil":
+        return int(round(value * 255))
+    # DiffuEraser preprocesses PIL masks into the BrushNet channel with
+    # `(mask.sum(1) < 0)`. White PIL masks therefore become internal 0/hole,
+    # while black PIL masks become internal 1/known.
+    return int(round((1.0 - value) * 255))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--base_model_name_or_path", required=True)
@@ -167,7 +195,24 @@ def main() -> int:
     parser.add_argument("--num_inference_steps", type=int, default=50)
     parser.add_argument("--guidance_scale", type=float, default=12.0)
     parser.add_argument("--seed_base", type=int, default=20230211)
-    parser.add_argument("--full_mask_value", type=float, default=0.0)
+    parser.add_argument(
+        "--full_mask_value",
+        type=float,
+        default=0.0,
+        help="Full-mask value. By default this is the internal BrushNet mask channel value: 0.0 means full hole.",
+    )
+    parser.add_argument(
+        "--mask_value_space",
+        choices=["internal", "pil"],
+        default="internal",
+        help="Interpret --full_mask_value as the internal BrushNet channel or as a normalized PIL mask pixel.",
+    )
+    parser.add_argument(
+        "--stage",
+        choices=["auto", "stage1", "stage2"],
+        default="auto",
+        help="Use StageOne for UNet2D weights and StageTwo for UNetMotionModel weights. auto infers from unet_main/config.json.",
+    )
     parser.add_argument("--torch_dtype", choices=["auto", "fp32", "bf16", "fp16"], default="bf16")
     parser.add_argument("--vae_dtype", choices=["auto", "fp32", "bf16", "fp16"], default="fp32")
     parser.add_argument("--revision", default=None)
@@ -185,9 +230,23 @@ def main() -> int:
     prompts = read_prompts(args.prompts_file, args.prompt_limit)
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
+    if args.stage == "auto":
+        config_path = args.weights_path / "unet_main" / "config.json"
+        with config_path.open("r", encoding="utf-8") as f:
+            args.stage = "stage2" if json.load(f).get("_class_name") == "UNetMotionModel" else "stage1"
+
     pipeline, weight_dtype = build_pipeline(args, device)
     blank_rgb = Image.new("RGB", (args.width, args.height), (0, 0, 0))
-    mask_pixel = int(max(0.0, min(1.0, args.full_mask_value)) * 255)
+    mask_pixel = fullmask_value_to_pil_pixel(args.full_mask_value, args.mask_value_space)
+    print(
+        "[fullmask-vbench-gen] "
+        f"mask_value={args.full_mask_value} space={args.mask_value_space} -> pil_mask_pixel={mask_pixel}"
+    )
+    if args.mask_value_space == "internal" and args.full_mask_value > 0.5:
+        print(
+            "[fullmask-vbench-gen][warn] internal mask values near 1.0 mean known/keep in the "
+            "DiffuEraser pipeline. Use 0.0 for full-hole generation."
+        )
     full_mask = Image.new("L", (args.width, args.height), mask_pixel)
     images = [blank_rgb.copy() for _ in range(args.frames)]
     masks = [full_mask.copy() for _ in range(args.frames)]

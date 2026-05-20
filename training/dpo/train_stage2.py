@@ -387,6 +387,10 @@ def parse_args(input_args=None):
     parser.add_argument("--cache_dir", type=str, default=None)
     parser.add_argument("--seed", type=int, default=None)
     parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None,
+                        help="Training frame height for datasets that support non-square clips.")
+    parser.add_argument("--train_width", type=int, default=None,
+                        help="Training frame width for datasets that support non-square clips.")
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--train_batch_size", type=int, default=1)
     parser.add_argument("--num_train_epochs", type=int, default=10000)
@@ -462,6 +466,12 @@ def parse_args(input_args=None):
     args.validation_image = ensure_list(args.validation_image)
     args.validation_mask = ensure_list(args.validation_mask)
     args.validation_prompt = ensure_list(args.validation_prompt)
+    if args.resolution % 8 != 0:
+        raise ValueError("`--resolution` must be divisible by 8.")
+    if args.train_height is not None and args.train_height % 8 != 0:
+        raise ValueError("`--train_height` must be divisible by 8.")
+    if args.train_width is not None and args.train_width % 8 != 0:
+        raise ValueError("`--train_width` must be divisible by 8.")
 
     return args
 

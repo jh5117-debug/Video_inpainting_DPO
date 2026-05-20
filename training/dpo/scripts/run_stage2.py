@@ -102,7 +102,6 @@ def build_cmd(project_root, args):
         "--learning_rate", str(args.learning_rate),
         "--lr_scheduler", args.lr_scheduler,
         "--lr_warmup_steps", str(args.lr_warmup_steps),
-        "--max_train_steps", str(args.max_train_steps),
         "--checkpointing_steps", str(args.checkpointing_steps),
         "--validation_steps", str(args.validation_steps),
         "--val_num_inference_steps", str(args.val_num_inference_steps),
@@ -118,6 +117,14 @@ def build_cmd(project_root, args):
         "--set_grads_to_none",
         "--resume_from_checkpoint", "latest",
     ])
+    if args.train_height is not None:
+        cmd.extend(["--train_height", str(args.train_height)])
+    if args.train_width is not None:
+        cmd.extend(["--train_width", str(args.train_width)])
+    if args.max_train_steps is not None:
+        cmd.extend(["--max_train_steps", str(args.max_train_steps)])
+    if args.num_train_epochs is not None:
+        cmd.extend(["--num_train_epochs", str(args.num_train_epochs)])
 
     if args.enable_xformers:
         cmd.append("--enable_xformers_memory_efficient_attention")
@@ -164,7 +171,10 @@ def build_cmd(project_root, args):
         params={
             "nframes": args.nframes,
             "resolution": args.resolution,
+            "train_height": args.train_height,
+            "train_width": args.train_width,
             "max_train_steps": args.max_train_steps,
+            "num_train_epochs": args.num_train_epochs,
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
             "beta_dpo": args.beta_dpo,
@@ -301,7 +311,10 @@ def run(args=None):
     print(f"  DPO Stage 1:        {dpo_s1}")
     print(f"  Ref Model:          {ref_model}")
     print(f"  GPUs:               {args.num_gpus}")
+    if args.train_height is not None or args.train_width is not None:
+        print(f"  Train Size:         {args.train_height or args.resolution}x{args.train_width or args.resolution}")
     print(f"  Max Steps:          {args.max_train_steps}")
+    print(f"  Max Epochs:         {args.num_train_epochs}")
     print(f"  Beta DPO:           {args.beta_dpo}")
     print(f"  LR:                 {args.learning_rate}")
     print(f"  Mixed Precision:    {args.mixed_precision}")
@@ -346,13 +359,16 @@ def parse_args():
     parser.add_argument("--learning_rate", type=float, default=1e-6)
     parser.add_argument("--lr_scheduler", type=str, default="constant")
     parser.add_argument("--lr_warmup_steps", type=int, default=500)
-    parser.add_argument("--max_train_steps", type=int, default=30000)
+    parser.add_argument("--max_train_steps", type=int, default=None)
+    parser.add_argument("--num_train_epochs", type=int, default=None)
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--validation_steps", type=int, default=2000)
     parser.add_argument("--val_num_inference_steps", type=int, default=6)
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None)
+    parser.add_argument("--train_width", type=int, default=None)
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")

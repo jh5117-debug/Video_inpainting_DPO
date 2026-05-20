@@ -44,6 +44,8 @@ NUM_INFERENCE_STEPS="${NUM_INFERENCE_STEPS:-50}"
 GUIDANCE_SCALE="${GUIDANCE_SCALE:-12.0}"
 SEED_BASE="${SEED_BASE:-20230211}"
 FULL_MASK_VALUE="${FULL_MASK_VALUE:-0.0}"
+FULL_MASK_VALUE_SPACE="${FULL_MASK_VALUE_SPACE:-internal}"
+GEN_STAGE="${GEN_STAGE:-auto}"
 TORCH_DTYPE="${TORCH_DTYPE:-bf16}"
 VAE_DTYPE="${VAE_DTYPE:-fp32}"
 GENERATE="${GENERATE:-1}"
@@ -114,6 +116,8 @@ if [[ "${GENERATE}" == "1" ]]; then
     --guidance_scale "${GUIDANCE_SCALE}" \
     --seed_base "${SEED_BASE}" \
     --full_mask_value "${FULL_MASK_VALUE}" \
+    --mask_value_space "${FULL_MASK_VALUE_SPACE}" \
+    --stage "${GEN_STAGE}" \
     --torch_dtype "${TORCH_DTYPE}" \
     --vae_dtype "${VAE_DTYPE}" \
     --skip_existing

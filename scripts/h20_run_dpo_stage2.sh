@@ -141,6 +141,17 @@ if [[ -n "${REF_MODEL_PATH}" ]]; then
   REF_MODEL_ARG=(--ref_model_path "${REF_MODEL_PATH}")
 fi
 
+MAX_STEPS_VALUE="${MAX_STEPS-30000}"
+MAX_STEPS_ARG=()
+if [[ -n "${MAX_STEPS_VALUE}" ]]; then
+  MAX_STEPS_ARG=(--max_train_steps "${MAX_STEPS_VALUE}")
+fi
+
+MAX_EPOCHS_ARG=()
+if [[ -n "${MAX_EPOCHS:-}" ]]; then
+  MAX_EPOCHS_ARG=(--num_train_epochs "${MAX_EPOCHS}")
+fi
+
 RUN_VERSION_ARG=()
 if [[ -n "${RUN_VERSION}" ]]; then
   RUN_VERSION_ARG=(--run_version "${RUN_VERSION}")
@@ -190,13 +201,14 @@ python training/dpo/scripts/run_stage2.py \
   --learning_rate "${LR:-1e-6}" \
   --lr_scheduler "${LR_SCHEDULER:-constant}" \
   --lr_warmup_steps "${LR_WARMUP:-500}" \
-  --max_train_steps "${MAX_STEPS:-30000}" \
   --checkpointing_steps "${CKPT_STEPS:-2000}" \
   --checkpoints_total_limit "${CKPT_LIMIT:-3}" \
   --validation_steps "${VAL_STEPS:-2000}" \
   --val_num_inference_steps "${VAL_NUM_INFERENCE_STEPS:-6}" \
   --val_mask_dilation_iter "${VAL_MASK_DILATION_ITER:-0}" \
   --resolution "${RESOLUTION:-512}" \
+  --train_height "${TRAIN_HEIGHT:-${RESOLUTION:-512}}" \
+  --train_width "${TRAIN_WIDTH:-${RESOLUTION:-512}}" \
   --nframes "${NFRAMES:-16}" \
   --seed "${SEED:-42}" \
   --mixed_precision "${MIXED_PRECISION:-bf16}" \
@@ -205,6 +217,8 @@ python training/dpo/scripts/run_stage2.py \
   "${WANDB_ENTITY_ARG[@]}" \
   --beta_dpo "${BETA_DPO:-500.0}" \
   --davis_oversample "${DAVIS_OVERSAMPLE:-10}" \
+  "${MAX_STEPS_ARG[@]}" \
+  "${MAX_EPOCHS_ARG[@]}" \
   "${CHUNK_ARG[@]}" \
   "${XFORMERS_ARG[@]}" \
   "${GRADIENT_CHECKPOINTING_ARG[@]}" \
