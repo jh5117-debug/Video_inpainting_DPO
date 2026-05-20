@@ -531,7 +531,7 @@ class OfficialVideoDPODiffuEraser(pl.LightningModule):
             eps=self.adam_epsilon,
         )
 
-    def on_before_optimizer_step(self, optimizer):
+    def on_before_optimizer_step(self, optimizer, optimizer_idx: int | None = None):
         params = [p for p in self.parameters() if p.requires_grad and p.grad is not None]
         if params:
             torch.nn.utils.clip_grad_norm_(params, self.max_grad_norm)
