@@ -33,7 +33,12 @@ class OfficialVideoDPOFullMaskDataset(VideoDPOFullMaskDiffuEraserDataset):
         max_resample_attempts: int = 64,
         **_,
     ):
-        if isinstance(resolution, (list, tuple)):
+        if (
+            not isinstance(resolution, (str, bytes))
+            and hasattr(resolution, "__len__")
+            and hasattr(resolution, "__getitem__")
+            and len(resolution) == 2
+        ):
             train_height = int(resolution[0])
             train_width = int(resolution[1])
             resolution = max(int(train_height), int(train_width))
@@ -61,4 +66,3 @@ class OfficialVideoDPOFullMaskDataset(VideoDPOFullMaskDiffuEraserDataset):
             max_resample_attempts=int(max_resample_attempts),
         )
         super().__init__(args=args, tokenizer=tokenizer, dpo_data_root=data_root)
-
