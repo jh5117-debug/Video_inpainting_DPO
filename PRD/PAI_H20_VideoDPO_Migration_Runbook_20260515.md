@@ -6024,6 +6024,7 @@ LOG="$PWD/logs/fullmask_stage2_smoke_$(date +%Y%m%d_%H%M%S).log"
 
 CUDA_VISIBLE_DEVICES=7 \
 NUM_GPUS=1 \
+GRAD_ACCUM=4 \
 CONDA_ENV=/mnt/nas/hj/conda_envs/diffueraser \
 WEIGHTS_DIR=/mnt/nas/hj/weights \
 PRETRAINED_DPO_S1="$STAGE1_WEIGHTS" \
@@ -6042,6 +6043,7 @@ WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
 PROCESS_TITLE=lingbotworld-phy \
 NCCL_DEBUG=WARN \
 TORCH_DISTRIBUTED_DEBUG=OFF \
+TMPDIR=/tmp/hj_worldmodel_tmp \
 bash DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage2.sbatch 2>&1 | tee "$LOG"
 
 echo "LOG=$LOG"
@@ -6075,6 +6077,7 @@ LOGGING_STEPS=499 \
 NUM_WORKERS=16 \
 NCCL_DEBUG=WARN \
 TORCH_DISTRIBUTED_DEBUG=OFF \
+TMPDIR=/tmp/hj_worldmodel_tmp \
 RUN_NAME=pai-fullmask-stage2-epoch5-gpu4-7-$(date +%Y%m%d_%H%M%S) \
 WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
 PROCESS_TITLE=lingbotworld-phy \
