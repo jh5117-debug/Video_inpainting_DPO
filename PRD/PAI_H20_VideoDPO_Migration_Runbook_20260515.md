@@ -5991,12 +5991,18 @@ NFRAMES=16
 MAX_EPOCHS=5  # matches completed Stage1 run 20260516_024051
 BETA_DPO=5000
 LR=6e-6
-NUM_GPUS=4
-GRAD_ACCUM=4
+NUM_GPUS=8       # formal PAI run; smoke can use NUM_GPUS=1
+GRAD_ACCUM=2     # formal 8-GPU run; smoke can use GRAD_ACCUM=4
 LOGGING_STEPS=499
 NUM_WORKERS=16
 MIXED_PRECISION=no
 SPLIT_POS_NEG_FORWARD=0
+
+Effective batch alignment:
+  Stage1 completed run used effective batch 16.
+  Stage2 smoke can use NUM_GPUS=1, GRAD_ACCUM=4.
+  Stage2 formal 8-GPU run should use NUM_GPUS=8, GRAD_ACCUM=2.
+  This keeps effective batch = train_batch_size 1 * 8 * 2 = 16.
 ```
 
 训练进程名统一：
@@ -6058,31 +6064,147 @@ tail -220 "$LOG"
 grep -nEi 'Traceback|RuntimeError|Error|Exception|Killed|CUDA out of memory|No such file|ModuleNotFound|ImportError|failed|TypeError' "$LOG" | tail -80 || true
 ```
 
-smoke 通过后再跑正式 Stage2：
+smoke 通过后再跑正式 Stage2。当前 PAI 不需要 wandb，因此正式训练也使用 `REPORT_TO=none`，避免因为未登录 wandb 在 tracker 初始化阶段提前失败。
 
 ```bash
-CUDA_VISIBLE_DEVICES=4,5,6,7 \
-NUM_GPUS=4 \
-GRAD_ACCUM=4 \
+STAGE1_WEIGHTS=/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260516_024051_lingbot-world-model-fullmask-videodpo-epoch5-gpu4-7-20260516_104046/last_weights
+VC2_YAML=/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml
+RUN_NAME=pai-fullmask-stage2-epoch5-gpu0-7-$(date +%Y%m%d_%H%M%S)
+LOG="$PWD/logs/fullmask_stage2_train_${RUN_NAME}.log"
+
+mkdir -p /tmp/hj_worldmodel_tmp
+
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+PROJECT_ROOT="$PWD" \
+NUM_GPUS=8 \
+GRAD_ACCUM=2 \
 CONDA_ENV=/mnt/nas/hj/conda_envs/diffueraser \
 WEIGHTS_DIR=/mnt/nas/hj/weights \
 PRETRAINED_DPO_S1="$STAGE1_WEIGHTS" \
 BASELINE_UNET_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
 REF_MODEL_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
 DPO_DATA_ROOT="$VC2_YAML" \
-REPORT_TO=wandb \
+REPORT_TO=none \
 MAX_STEPS= \
 MAX_EPOCHS=5 \
+CKPT_STEPS=499 \
+VAL_STEPS=999999 \
 LOGGING_STEPS=499 \
 NUM_WORKERS=16 \
 NCCL_DEBUG=WARN \
 TORCH_DISTRIBUTED_DEBUG=OFF \
 TMPDIR=/tmp/hj_worldmodel_tmp \
-RUN_NAME=pai-fullmask-stage2-epoch5-gpu4-7-$(date +%Y%m%d_%H%M%S) \
+RUN_NAME="$RUN_NAME" \
 WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
 PROCESS_TITLE=lingbotworld-phy \
 nohup bash DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage2.sbatch \
-  > logs/fullmask_stage2_train_$(date +%Y%m%d_%H%M%S).log 2>&1 < /dev/null &
+  > "$LOG" 2>&1 < /dev/null &
+
+echo "LOG=$LOG"
+```
+
+#### 23.4.1 2026-05-21 PAI 8-GPU formal run health record
+
+最新 8 卡正式训练已经健康跑起来，且进程名正确。
+
+```text
+log:
+  logs/fullmask_stage2_train_pai-fullmask-stage2-epoch5-gpu0-7-20260520_232734.log
+
+process:
+  pgrep -af 'lingbotworld-phy|train_stage2.py|accelerate' shows lingbotworld-phy processes.
+  nvidia-smi process table shows 8 compute PIDs named lingbotworld-phy.
+  GPU PIDs: 2841734, 2841735, 2841736, 2841737, 2841738, 2841739, 2841740, 2841741.
+  /proc/<pid>/cmdline is lingbotworld-phy for all 8 GPU PIDs.
+  /proc/<pid>/comm may show pt_main_thread; this is PyTorch thread naming and is not a failure.
+
+gpu:
+  All 8 L20X GPUs are occupied.
+  Each GPU uses about 54GB memory.
+  Example memory range from nvidia-smi: 54024MiB to 54344MiB per GPU process.
+
+stage2 load path:
+  baseline UNetMotionModel:
+    /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+  DPO Stage1 2D / BrushNet override:
+    /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260516_024051_lingbot-world-model-fullmask-videodpo-epoch5-gpu4-7-20260516_104046/last_weights
+  ref model:
+    /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+
+healthy setup lines:
+  data_root_ok=/mnt/nas/hj/data/external/hf/vidpro10k-vc2-dataset/_extracted/home/liurt/liurt_data/haoyu/dataset/vidpro10k-vc2-dataset
+  process_name=lingbotworld-phy
+  Successfully loaded baseline MotionModule + DPO Stage 1 2D weights
+  Trainable params (MotionModule): 453.2M
+  VideoDPOFullMaskDiffuEraserDataset: pairs=10000 roots=1 resolution=[320,512] nframes=16 frame_stride=1
+
+training scale:
+  Num processes = 8
+  Num examples = 10000
+  Num batches each epoch per GPU = 1250
+  Num Epochs = 5
+  Batch size per device = 1
+  Total train batch size = 16
+  Gradient Accumulation steps = 2
+  Total optimization steps = 3125
+  Beta DPO = 5000.0
+
+model freeze / trainable check:
+  unet_main policy-MM: total 1312.7M, trainable 453.2M, frozen 859.5M
+  brushnet: frozen
+  unet_ref: frozen
+  brushnet_ref: frozen
+  vae: frozen
+  text_encoder: frozen
+```
+
+Step 1 diagnostics were healthy enough to keep running:
+
+```text
+DPO Diagnostics @ Step 1:
+  L_total = 0.621075
+  L_dpo = 0.621075
+  L_sft = 0.070737
+  Global implicit acc = 0.875000
+  Win gap = 0.002766
+  Lose gap = 0.003007
+  Reward margin = -0.004951
+  Sigma term = 0.646456
+  KL divergence = 0.001443
+  MSE win = 0.070737
+  MSE lose = 0.075689
+  Ref MSE win = 0.067972
+  Ref MSE lose = 0.072681
+  Grad norm DGR = 36.185785
+  InsideTerm mean/min/max = 2.360870 / -0.040262 / 7.308798
+  Samples: 7/8 correct
+```
+
+Current observed progress from the same health check:
+
+```text
+Steps: 383/3125
+Progress: about 12%
+Elapsed: about 1h03m
+ETA shown by tqdm: about 7h31m
+Latest visible metrics:
+  global/implicit_acc=0.8750
+  rank0/dpo_loss=0.0881
+  rank0/lose_gap=0.0071
+  rank0/mse_l=0.1876
+  rank0/mse_w=0.1836
+  rank0/win_gap=0.0057
+```
+
+健康结论：
+
+```text
+1. 8-GPU Stage2 formal training is running.
+2. Process name is correct: lingbotworld-phy.
+3. REPORT_TO=none fixed the previous wandb API-key crash.
+4. Stage2 is correctly initialized from baseline MotionModule + fullmask Stage1 2D/BrushNet weights.
+5. Only MotionModule is trainable, matching the DiffuEraser Stage2 design.
+6. Effective batch size is 16, aligned with the completed fullmask Stage1 setting.
 ```
 
 ### 23.5 Stage2 后的生成测试
@@ -6143,3 +6265,312 @@ PY
 4. FULL_MASK_VALUE 是否仍是 0.0 internal。
 5. 是否误传 GEN_STAGE=stage1 或 --mask_value_space pil。
 ```
+
+## 24. 2026-05-21 VideoDPO official clone audit and current Stage2 decision
+
+### 24.1 Three code paths must not be confused
+
+当前有三条相关但职责不同的代码路径：
+
+| Path | Role | Current state | Use for |
+| --- | --- | --- | --- |
+| `/home/hj/Video_inpainting_DPO/external/VideoDPO` | clean upstream VideoDPO subrepo | `origin/main`, commit `1febdb4` | official VC2 DPO reproduction baseline |
+| `/home/hj/VideoDPO` | upstream VideoDPO plus H20 video-inpainting adapter | branch `h20-videoinpaint-dpo-adapter`, commit `5408ddd` | previous H20 adapter experiments |
+| `/home/hj/Video_inpainting_DPO/training/dpo/train_stage2.py` | fullmask DiffuEraser Stage2 bridge | project-native code | train DiffuEraser temporal MotionModule after fullmask Stage1 |
+
+Important conclusion:
+
+```text
+The running fullmask DiffuEraser Stage2 should not be expected to run inside
+the original VideoDPO repo. It is intentionally project-native code because
+it loads DiffuEraser UNetMotionModel / BrushNet weights and trains only the
+temporal MotionModule. Original VideoDPO is only needed to isolate VC2 paper
+reproduction.
+```
+
+### 24.2 Our adapted `/home/hj/VideoDPO` vs clean official VideoDPO
+
+Clean official source:
+
+```text
+repo: /home/hj/Video_inpainting_DPO/external/VideoDPO
+remote: https://github.com/CIntellifusion/VideoDPO.git
+branch: main
+commit: 1febdb4
+dataset target: data.video_data.TextVideoDPO
+config:
+  accumulate_grad_batches: 2
+  max_epochs: 10
+  beta_dpo: 5000.0
+DPO loss reduction:
+  (pred - target).pow(2).mean(dim=[1, 2, 3])
+```
+
+Adapted H20 branch:
+
+```text
+repo: /home/hj/VideoDPO
+remote: https://github.com/CIntellifusion/VideoDPO.git
+branch: h20-videoinpaint-dpo-adapter
+commit: 5408ddd
+diff against origin/main:
+  7 files changed, 631 insertions, 43 deletions
+```
+
+Changed files:
+
+```text
+data/video_inpainting_dpo_data.py
+lvdm/models/ddpm3d.py
+lvdm/models/turbo_utils/turbo_scheduler.py
+scripts/train.py
+scripts/train_utils.py
+scripts_sh/launch_vc2_dpo_videoinpainting_h20_gpu0_7.sh
+utils/callbacks.py
+```
+
+Key behavior differences:
+
+| Area | Official VideoDPO | H20 adapter branch |
+| --- | --- | --- |
+| Dataset | `data.video_data.TextVideoDPO` | adds `data.video_inpainting_dpo_data.VideoInpaintingDPODataset` |
+| Caption | uses original text-video DPO metadata | adapter can force `caption=clean background` |
+| Launcher | official config-driven launch | H20 launch overrides `max_steps`, `accumulate_grad_batches=1`, dataset target, and caption |
+| DPO loss reduction | mean over `dim=[1,2,3]` | mean over all non-batch dims via `reduce_dims = tuple(range(1, pred.ndim))` |
+| Diagnostics | upstream minimal behavior | extra diagnostics / logging / compatibility behavior in `ddpm3d.py`, `train.py`, `train_utils.py`, callbacks |
+| Goal | reproduce paper VC2 text-to-video DPO | adapt VideoDPO-style training to H20 video-inpainting data |
+
+This means a clean paper reproduction should use a separate official clone
+pinned to `1febdb4`, not the H20 adapter branch.
+
+### 24.3 VC2 VBench result currently reproduced
+
+The real reproduced VC2 VBench result from:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_full/pai_vc2_vs_dpo_full_20260517_034228
+```
+
+is:
+
+| Backbone | Model | VBench Total (%) | VBench Quality (%) | VBench Semantics (%) | MeanRaw |
+| --- | --- | ---: | ---: | ---: | ---: |
+| VC2 | VC2-Base | 79.86 | 81.44 | 73.51 | 0.658176 |
+| VC2 | VideoDPO-VC2 | 77.05 | 80.24 | 64.30 | 0.625838 |
+
+Paper Table 1 reports:
+
+| Backbone | Model | VBench Total (%) | VBench Quality (%) | VBench Semantics (%) | HPS (V) | PickScore |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| VC2 | Baseline | 80.44 | 82.20 | 73.42 | 0.258 | 20.65 |
+| VC2 | VideoDPO | 81.93 | 83.07 | 77.38 | 0.261 | 20.65 |
+
+Interpretation:
+
+```text
+1. VC2-Base reproduction is close to the paper number, so VBench wiring is
+   likely usable.
+2. VideoDPO-VC2 is far below the paper number, especially semantics.
+3. Because the previous DPO training scale/settings likely differed from the
+   paper, the next clean isolation test should use official upstream code,
+   official VC2 model structure, wandb disabled, and paper-scale global batch.
+```
+
+The paper-relevant training scale is:
+
+```text
+paper: 3000 optimization steps, global batch size 8, AdamW lr 6e-6, beta_dpo 5000.
+recommended PAI equivalent:
+  8 GPUs * batch 1 * grad_accum 1 = global batch 8
+  MAX_OPT_STEPS=3000
+```
+
+### 24.4 Clean official VideoDPO VC2 reproduction plan
+
+Use the isolated official clone launcher. It keeps upstream code pinned and
+changes only local data/checkpoint paths plus paper-scale training knobs.
+
+```bash
+cd /mnt/nas/hj/H20_Video_inpainting_DPO || exit 1
+git pull --ff-only
+
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 \
+PROJECT_ROOT="$PWD" \
+CONDA_ENV=/mnt/nas/hj/conda_envs/videodpo \
+OFFICIAL_VIDEODPO_REPO=/mnt/nas/hj/official_repos/VideoDPO_official_1febdb4 \
+VC2_DATA_YAML=/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml \
+NUM_GPUS=8 \
+DEVICE_LIST=0,1,2,3,4,5,6,7 \
+BATCH_SIZE=1 \
+GRAD_ACCUM=1 \
+MAX_OPT_STEPS=3000 \
+ENABLE_WANDB=0 \
+STRICT_OFFICIAL=1 \
+WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
+PROCESS_TITLE=lingbotworld-phy \
+bash DPO_finetune/scripts/pai_videodpo_vc2_official_repro.sh
+```
+
+If strict official mode reaches the post-train environment-specific implicit
+test and fails after saving checkpoints, rerun with:
+
+```bash
+STRICT_OFFICIAL=0
+```
+
+That mode still leaves DPO loss, model, dataset and optimizer untouched, but
+applies small runtime compatibility patches for logging/OpenCLIP/post-train
+test behavior.
+
+After official VC2 training, run VBench with the resulting checkpoint:
+
+```bash
+cd /mnt/nas/hj/H20_Video_inpainting_DPO || exit 1
+
+OFFICIAL=/mnt/nas/hj/official_repos/VideoDPO_official_1febdb4
+RUN_DIR=$(ls -td logs/videodpo_vc2_dpo_official_clean/pai-vc2-dpo-official-clean-* | head -1)
+DPO_CKPT="$RUN_DIR/checkpoints/last.ckpt"
+OUT_ROOT="$PWD/logs/vbench_full/pai_vc2_official_clean_vs_base_$(date +%Y%m%d_%H%M%S)"
+
+CUDA_VISIBLE_DEVICES=0 \
+CONDA_ENV=/mnt/nas/hj/conda_envs/videodpo \
+VIDEODPO_REPO="$OFFICIAL" \
+VBENCH_ROOT="$PWD/external/VBench" \
+CKPT_SPECS="vc2_base:$OFFICIAL/checkpoints/vc2/model.ckpt,vc2_dpo:$DPO_CKPT" \
+OUT_ROOT="$OUT_ROOT" \
+RUN_VBENCH=1 \
+bash DPO_finetune/scripts/sc_videodpo_vc2_vbench.sbatch
+```
+
+### 24.5 Current fullmask DiffuEraser Stage2 should keep running
+
+Latest PAI monitor snapshot, from PAI log timestamp `2026-05-21 03:58:39`:
+
+```text
+log:
+  logs/fullmask_stage2_train_pai-fullmask-stage2-epoch5-gpu0-7-20260520_232734.log
+
+process:
+  GPU process names are lingbotworld-phy.
+  8 GPU PIDs: 2841734, 2841735, 2841736, 2841737, 2841738, 2841739, 2841740, 2841741.
+  /proc/<pid>/cmdline is lingbotworld-phy for all 8 GPU PIDs.
+  /proc/<pid>/comm may show pt_main_thread; that is PyTorch thread naming.
+
+stage2 initialization:
+  full_mask_value=0.0
+  videodpo_frame_stride=1
+  loaded baseline MotionModule from:
+    /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+  overrode 2D / BrushNet weights from fullmask Stage1:
+    /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260516_024051_lingbot-world-model-fullmask-videodpo-epoch5-gpu4-7-20260516_104046/last_weights
+  successfully loaded baseline MotionModule + DPO Stage1 2D weights
+  trainable params: MotionModule 453.2M
+
+training scale:
+  Num examples = 10000
+  Num Epochs = 5
+  Total train batch size = 16
+  Gradient Accumulation steps = 2
+  Total optimization steps = 3125
+  checkpoints saved: 499, 998, 1497
+  latest observed progress: about 1606 / 3125, about 51%
+```
+
+Decision:
+
+```text
+Do not stop the current fullmask DiffuEraser Stage2 just because it is not
+inside the original VideoDPO repo. This Stage2 is supposed to run in the H20
+project code path because it trains DiffuEraser temporal modules.
+
+The official VideoDPO clone experiment is a separate VC2 paper-reproduction
+line. It should be launched after the current 8-GPU DiffuEraser Stage2 finishes,
+or after a checkpoint boundary if GPU priority requires stopping.
+```
+
+If it must be stopped to free GPUs, wait for the next checkpoint boundary first
+and then stop gracefully:
+
+```bash
+cd /mnt/nas/hj/H20_Video_inpainting_DPO || exit 1
+LOG=logs/fullmask_stage2_train_pai-fullmask-stage2-epoch5-gpu0-7-20260520_232734.log
+
+tr '\r' '\n' < "$LOG" | grep -E '^Steps:' | tail -5
+grep -nE 'Saved state|Last weights saved|Traceback|RuntimeError|FAILED|CUDA out' "$LOG" | tail -40
+
+pkill -TERM -f 'sc_videodpo_fullmask_diffueraser_stage2|training/dpo/train_stage2.py|accelerate launch.*train_stage2.py|lingbotworld-phy'
+sleep 30
+pgrep -af 'lingbotworld-phy|train_stage2.py|accelerate' || echo "stage2 stopped"
+```
+
+### 24.6 Stage2 supervision command
+
+Use this while the fullmask DiffuEraser Stage2 is running:
+
+```bash
+cd /mnt/nas/hj/H20_Video_inpainting_DPO || exit 1
+
+LOG=$(ls -t \
+  logs/fullmask_stage2_train_*.log \
+  logs/fullmask_stage2_smoke_*.log \
+  2>/dev/null | head -1)
+
+echo "LOG=$LOG"
+
+echo
+echo "========== process =========="
+pgrep -af 'lingbotworld-phy|train_stage2.py|accelerate|sc_videodpo_fullmask_diffueraser_stage2' || echo "NO_PROCESS"
+
+echo
+echo "========== GPU =========="
+nvidia-smi
+
+echo
+echo "========== GPU proc names =========="
+for p in $(nvidia-smi --query-compute-apps=pid --format=csv,noheader,nounits 2>/dev/null | sort -u); do
+  echo "PID=$p"
+  echo -n "cmd : "; tr '\0' ' ' < /proc/$p/cmdline 2>/dev/null; echo
+done
+
+echo
+echo "========== health =========="
+grep -nE \
+'process_name=|videodpo_frame_stride=|full_mask_value=|Overriding 2D weights|Successfully loaded|Trainable params|Running DPO Stage 2|Num examples|Num Epochs|Total train batch size|Gradient Accumulation|Total optimization steps|DPO Diagnostics @ Step|Saved state|Last weights saved|Traceback|RuntimeError|CUDA out|FAILED|Training crashed' \
+"$LOG" | tail -160 || true
+
+echo
+echo "========== progress =========="
+tr '\r' '\n' < "$LOG" | grep -E '^Steps:' | tail -10 || true
+
+echo
+echo "========== tail =========="
+tail -80 "$LOG"
+```
+
+### 24.7 Mask polarity invariant
+
+For fullmask DiffuEraser training:
+
+```text
+videodpo_full_mask_value=0.0 is correct in internal BrushNet space.
+Internal 0.0 means hole / to-generate.
+Internal 1.0 means known / keep.
+```
+
+For generation with PIL masks:
+
+```text
+White PIL mask means hole / inpaint.
+Black PIL mask means known / keep.
+Therefore internal full_mask_value=0.0 must be converted to white PIL mask.
+```
+
+Generation commands should explicitly use:
+
+```bash
+FULL_MASK_VALUE=0.0
+FULL_MASK_VALUE_SPACE=internal
+```
+
+This prevents the earlier mask-polarity bug where generation could pass the
+opposite mask meaning.
