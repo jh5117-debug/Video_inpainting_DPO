@@ -21,6 +21,8 @@ export PROJECT_ROOT
 
 export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-lingbotworld-phy}"
 export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
+export NCCL_DEBUG="${NCCL_DEBUG:-WARN}"
+export TORCH_DISTRIBUTED_DEBUG="${TORCH_DISTRIBUTED_DEBUG:-OFF}"
 
 export PROJECT_HOME="${PROJECT_HOME:-$(dirname "${PROJECT_ROOT}")}"
 export PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}}"
@@ -151,6 +153,98 @@ fi
 if [[ ! -f "${BASELINE_UNET_PATH}/unet_main/config.json" ]]; then
   echo "[videodpo-fullmask-stage2][error] BASELINE_UNET_PATH invalid: ${BASELINE_UNET_PATH}" >&2
   exit 1
+fi
+
+if [[ "${DPO_DATASET_TYPE}" == "videodpo_fullmask" ]] && command -v python3 >/dev/null 2>&1; then
+  DPO_DATA_ROOT="${DPO_DATA_ROOT}" \
+  VIDEODPO_DATA_BASE="${VIDEODPO_DATA_BASE:-}" \
+  VIDEODPO_REPO="${VIDEODPO_REPO:-}" \
+  PROJECT_ROOT="${PROJECT_ROOT}" \
+  python3 - <<'PY'
+from pathlib import Path
+import os
+import re
+import sys
+
+
+def read_meta(path: Path) -> list[str]:
+    text = path.read_text(encoding="utf-8")
+    try:
+        import yaml
+        cfg = yaml.safe_load(text) or {}
+        return [str(x) for x in cfg.get("META", [])]
+    except Exception:
+        metas = []
+        in_meta = False
+        for line in text.splitlines():
+            stripped = line.strip()
+            if stripped.startswith("META:"):
+                in_meta = True
+                metas.extend(re.findall(r"['\"]([^'\"]+)['\"]", stripped.split(":", 1)[1]))
+                continue
+            if in_meta and stripped.startswith("-"):
+                metas.append(stripped[1:].strip().strip("'\""))
+            elif in_meta and stripped and not line.startswith((" ", "\t")):
+                in_meta = False
+        return metas
+
+
+def valid_root(root: Path) -> bool:
+    return (root / "metadata.json").is_file() and (root / "pair.json").is_file()
+
+
+raw = Path(os.environ["DPO_DATA_ROOT"]).expanduser()
+project_root = Path(os.environ["PROJECT_ROOT"]).expanduser()
+cwd = Path.cwd()
+checked = []
+
+if raw.is_dir():
+    roots = [raw]
+elif raw.is_file() and raw.suffix.lower() in {".yaml", ".yml"}:
+    roots = []
+    for item in read_meta(raw):
+        meta = Path(item).expanduser()
+        if meta.is_absolute():
+            candidates = [meta]
+        else:
+            candidates = []
+            if os.environ.get("VIDEODPO_DATA_BASE"):
+                candidates.append(Path(os.environ["VIDEODPO_DATA_BASE"]).expanduser() / meta)
+            if os.environ.get("VIDEODPO_REPO"):
+                candidates.append(Path(os.environ["VIDEODPO_REPO"]).expanduser() / meta)
+            candidates.extend([raw.parent / meta, project_root / meta, cwd / meta])
+        seen = set()
+        unique = []
+        for candidate in candidates:
+            key = str(candidate)
+            if key not in seen:
+                seen.add(key)
+                unique.append(candidate)
+        checked.extend(unique)
+        match = next((candidate for candidate in unique if valid_root(candidate)), None)
+        if match is None:
+            print("[videodpo-fullmask-stage2][error] VideoDPO META root is missing metadata.json/pair.json.", file=sys.stderr)
+            print(f"  train_data={raw}", file=sys.stderr)
+            print(f"  meta={item}", file=sys.stderr)
+            print("  checked:", file=sys.stderr)
+            for candidate in unique:
+                print(f"    - {candidate}", file=sys.stderr)
+            sys.exit(1)
+        roots.append(match)
+else:
+    print(f"[videodpo-fullmask-stage2][error] DPO_DATA_ROOT is not a directory/yaml: {raw}", file=sys.stderr)
+    sys.exit(1)
+
+if not roots:
+    print(f"[videodpo-fullmask-stage2][error] no META roots in {raw}", file=sys.stderr)
+    sys.exit(1)
+
+for root in roots:
+    if not valid_root(root):
+        print(f"[videodpo-fullmask-stage2][error] missing metadata.json/pair.json under {root}", file=sys.stderr)
+        sys.exit(1)
+    print(f"[videodpo-fullmask-stage2] data_root_ok={root}")
+PY
 fi
 
 echo "[videodpo-fullmask-stage2] project_root=${PROJECT_ROOT}"
