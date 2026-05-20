@@ -14,7 +14,10 @@ PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
 OFFICIAL_REPO_URL="${OFFICIAL_REPO_URL:-https://github.com/CIntellifusion/VideoDPO.git}"
 OFFICIAL_VIDEODPO_REPO="${OFFICIAL_VIDEODPO_REPO:-/mnt/nas/hj/official_repos/VideoDPO_official_1febdb4}"
 VIDEODPO_REF="${VIDEODPO_REF:-1febdb4}"
-FETCH_OFFICIAL="${FETCH_OFFICIAL:-1}"
+# PAI jobs often run in flaky outbound-network environments. Once the isolated
+# official clone exists, default to using it offline; set FETCH_OFFICIAL=1 only
+# when intentionally refreshing the clone from GitHub.
+FETCH_OFFICIAL="${FETCH_OFFICIAL:-0}"
 RESET_OFFICIAL_REPO="${RESET_OFFICIAL_REPO:-0}"
 
 SOURCE_VC2_CKPT_DIR="${SOURCE_VC2_CKPT_DIR:-${PROJECT_ROOT}/external/VideoDPO/checkpoints/vc2}"
@@ -43,6 +46,8 @@ if [[ -d "${OFFICIAL_VIDEODPO_REPO}/.git" ]]; then
   fi
   if [[ "${FETCH_OFFICIAL}" == "1" ]]; then
     git -C "${OFFICIAL_VIDEODPO_REPO}" fetch origin
+  else
+    echo "[official-videodpo] fetch_skipped=1 (set FETCH_OFFICIAL=1 to refresh from origin)"
   fi
 else
   git clone "${OFFICIAL_REPO_URL}" "${OFFICIAL_VIDEODPO_REPO}"
