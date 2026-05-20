@@ -17,6 +17,7 @@ if [[ -z "${PROJECT_ROOT:-}" ]]; then
   PROJECT_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 fi
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+export PROJECT_ROOT
 
 export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-lingbotworld-phy}"
 export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
