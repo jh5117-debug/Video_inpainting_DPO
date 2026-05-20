@@ -31,6 +31,8 @@ PRETRAINED_DPO_S1="${PRETRAINED_DPO_S1:-}"
 
 NUM_GPUS="${NUM_GPUS:-4}"
 DEVICE_LIST="${DEVICE_LIST:-4,5,6,7}"
+CUDA_DEVICE_LIST="${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST}}"
+PL_DEVICE_LIST="${PL_DEVICE_LIST:-}"
 BATCH_SIZE="${BATCH_SIZE:-1}"
 GRAD_ACCUM="${GRAD_ACCUM:-2}"
 MAX_OPT_STEPS="${MAX_OPT_STEPS:-1}"
@@ -67,6 +69,7 @@ echo "[official-diffueraser] source_repo=${OFFICIAL_SOURCE_REPO}"
 echo "[official-diffueraser] config=${CONFIG}"
 echo "[official-diffueraser] run_name=${RUN_NAME}"
 echo "[official-diffueraser] device_list=${DEVICE_LIST} num_gpus=${NUM_GPUS} batch=${BATCH_SIZE} grad_accum=${GRAD_ACCUM} global_batch=$((NUM_GPUS * BATCH_SIZE * GRAD_ACCUM)) max_steps=${MAX_OPT_STEPS}"
+echo "[official-diffueraser] cuda_visible_devices=${CUDA_DEVICE_LIST}"
 echo "[official-diffueraser] data=${VC2_DATA_YAML}"
 echo "[official-diffueraser] ref_model=${REF_MODEL_PATH}"
 echo "[official-diffueraser] baseline_unet=${BASELINE_UNET_PATH}"
@@ -141,7 +144,11 @@ fi
 source "${CONDA_BASE}/etc/profile.d/conda.sh"
 conda activate "${CONDA_ENV}"
 
-export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-${DEVICE_LIST}}"
+if [[ -z "${PL_DEVICE_LIST}" ]]; then
+  PL_DEVICE_LIST="$(seq -s, 0 "$((NUM_GPUS - 1))")"
+fi
+
+export CUDA_VISIBLE_DEVICES="${CUDA_DEVICE_LIST}"
 export PYTHONPATH="${PROJECT_ROOT}:${OFFICIAL_VIDEODPO_REPO}:${PYTHONPATH:-}"
 export PYTHONUNBUFFERED=1
 export PYTHONFAULTHANDLER=1
@@ -156,6 +163,7 @@ export TMPDIR
 export PROCESS_TITLE="${PROCESS_TITLE:-lingbotworld-phy}"
 export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-lingbotworld-phy}"
 mkdir -p "${HF_HOME}" "${TMPDIR}"
+echo "[official-diffueraser] lightning_devices=${PL_DEVICE_LIST}"
 
 python - <<'PY'
 import importlib
@@ -186,7 +194,7 @@ python -m torch.distributed.run \
   --master_port "${MASTER_PORT}" \
   scripts/train.py \
   -t \
-  --devices "${DEVICE_LIST}" \
+  --devices "${PL_DEVICE_LIST}" \
   --base "${CONFIG}" \
   --name "${RUN_NAME}" \
   --logdir "${LOG_ROOT}" \
