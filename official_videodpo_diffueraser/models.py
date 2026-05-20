@@ -46,6 +46,21 @@ def _dtype(name: str | None) -> torch.dtype:
     raise ValueError(f"Unsupported dtype: {name}")
 
 
+def _load_autoencoder_kl(
+    vae_path: str,
+    revision: str | None = None,
+    variant: str | None = None,
+) -> AutoencoderKL:
+    root = Path(vae_path)
+    if (root / "vae" / "config.json").exists():
+        return AutoencoderKL.from_pretrained(vae_path, subfolder="vae", revision=revision, variant=variant)
+    if (root / "config.json").exists():
+        return AutoencoderKL.from_pretrained(vae_path, revision=revision, variant=variant)
+    raise FileNotFoundError(
+        f"VAE path must contain either {root / 'vae' / 'config.json'} or {root / 'config.json'}"
+    )
+
+
 def _extract_2d_from_motion(
     motion_unet: UNetMotionModel,
     base_model_name_or_path: str,
@@ -195,7 +210,7 @@ class OfficialVideoDPODiffuEraser(pl.LightningModule):
         self.text_encoder = text_encoder_cls.from_pretrained(
             base_model_name_or_path, subfolder="text_encoder", revision=revision, variant=variant
         )
-        self.vae = AutoencoderKL.from_pretrained(vae_path, subfolder="vae", revision=revision, variant=variant)
+        self.vae = _load_autoencoder_kl(vae_path, revision=revision, variant=variant)
         self.vae.requires_grad_(False)
         self.text_encoder.requires_grad_(False)
 
@@ -530,4 +545,3 @@ class OfficialVideoDPODiffuEraser(pl.LightningModule):
         self.unet_main.save_pretrained(out_dir / "unet_main")
         self.brushnet.save_pretrained(out_dir / "brushnet")
         print(f"[official-diffueraser] last_weights={out_dir}", flush=True)
-

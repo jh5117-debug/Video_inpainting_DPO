@@ -105,12 +105,21 @@ if [[ "${STAGE}" == "stage2" ]]; then
   fi
 fi
 
+if [[ -f "${VAE_PATH}/vae/config.json" ]]; then
+  echo "[official-diffueraser] vae_layout=sd-subfolder"
+elif [[ -f "${VAE_PATH}/config.json" ]]; then
+  echo "[official-diffueraser] vae_layout=standalone"
+else
+  echo "[official-diffueraser][error] VAE path invalid: ${VAE_PATH}" >&2
+  echo "[official-diffueraser][error] expected either ${VAE_PATH}/vae/config.json or ${VAE_PATH}/config.json" >&2
+  exit 1
+fi
+
 for required in \
   "${CONFIG}" \
   "${VC2_DATA_YAML}" \
   "${BASE_MODEL_NAME_OR_PATH}/tokenizer" \
   "${BASE_MODEL_NAME_OR_PATH}/scheduler" \
-  "${VAE_PATH}/vae/config.json" \
   "${REF_MODEL_PATH}/unet_main/config.json" \
   "${REF_MODEL_PATH}/brushnet/config.json"; do
   if [[ ! -e "${required}" ]]; then
