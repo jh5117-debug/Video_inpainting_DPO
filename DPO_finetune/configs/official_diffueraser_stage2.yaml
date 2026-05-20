@@ -1,0 +1,65 @@
+model:
+  base_learning_rate: 6.0e-06
+  scale_lr: false
+  target: official_videodpo_diffueraser.models.OfficialVideoDPODiffuEraser
+  params:
+    stage: stage2
+    base_model_name_or_path: /mnt/nas/hj/weights/stable-diffusion-v1-5
+    vae_path: /mnt/nas/hj/weights/sd-vae-ft-mse
+    ref_model_path: /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+    baseline_unet_path: /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+    pretrained_dpo_stage1: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/REPLACE_WITH_STAGE1/last_weights
+    nframes: 16
+    learning_rate: 6.0e-06
+    beta_dpo: 5000.0
+    lose_gap_weight: 1.0
+    forward_dtype: fp32
+    vae_dtype: fp32
+    ref_dtype: fp32
+    text_dtype: fp32
+    gradient_checkpointing: true
+    split_pos_neg_forward: true
+
+data:
+  target: data.lightning_data.DataModuleFromConfig
+  params:
+    batch_size: 1
+    num_workers: 16
+    wrap: false
+    train:
+      target: official_videodpo_diffueraser.data.OfficialVideoDPOFullMaskDataset
+      params:
+        data_root: /mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml
+        base_model_name_or_path: /mnt/nas/hj/weights/stable-diffusion-v1-5
+        resolution: [320, 512]
+        train_height: 320
+        train_width: 512
+        video_length: 16
+        frame_stride: 1
+        full_mask_value: 0.0
+        seed: 42
+
+lightning:
+  callbacks:
+    batch_logger:
+      target: utils.callbacks.ImageLogger
+      params:
+        batch_frequency: -1
+        max_images: 1
+    metrics_over_trainsteps_checkpoint:
+      target: pytorch_lightning.callbacks.ModelCheckpoint
+      params:
+        filename: "step-{step:04}"
+        save_weights_only: true
+        every_n_epochs:
+        every_n_train_steps: 499
+  trainer:
+    benchmark: true
+    log_every_n_steps: 1
+    num_workers: 10
+    num_nodes: 1
+    accumulate_grad_batches: 2
+    max_epochs: 5
+    accelerator: gpu
+    precision: 32
+
