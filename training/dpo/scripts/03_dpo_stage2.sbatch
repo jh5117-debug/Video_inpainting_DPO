@@ -57,6 +57,7 @@ if [[ -z "${BASELINE_UNET_PATH:-}" ]]; then
 fi
 BATCH_SIZE=${BATCH_SIZE:-1}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
+NUM_WORKERS=${NUM_WORKERS:-0}
 LR=${LR:-1e-6}
 LR_SCHEDULER=${LR_SCHEDULER:-constant}
 LR_WARMUP=${LR_WARMUP:-500}
@@ -65,6 +66,7 @@ MAX_EPOCHS=${MAX_EPOCHS:-}
 CKPT_STEPS=${CKPT_STEPS:-2000}
 CKPT_LIMIT=${CKPT_LIMIT:-1}
 VAL_STEPS=${VAL_STEPS:-2000}
+LOGGING_STEPS=${LOGGING_STEPS:-300}
 VAL_NUM_INFERENCE_STEPS=${VAL_NUM_INFERENCE_STEPS:-6}
 VAL_MASK_DILATION_ITER=${VAL_MASK_DILATION_ITER:-0}
 RESOLUTION=${RESOLUTION:-512}
@@ -118,7 +120,7 @@ cd "$PROJECT_ROOT"
 
 echo "[dpo-stage2] dataset_type=${DPO_DATASET_TYPE}"
 echo "[dpo-stage2] dpo_data_root=${DPO_DATA_ROOT}"
-echo "[dpo-stage2] process_name=${WORLDMODELPHY_PROCESS_NAME} train_size=${TRAIN_HEIGHT}x${TRAIN_WIDTH} max_steps=${MAX_STEPS:-auto} max_epochs=${MAX_EPOCHS:-default}"
+echo "[dpo-stage2] process_name=${WORLDMODELPHY_PROCESS_NAME} train_size=${TRAIN_HEIGHT}x${TRAIN_WIDTH} max_steps=${MAX_STEPS:-auto} max_epochs=${MAX_EPOCHS:-default} logging_steps=${LOGGING_STEPS} num_workers=${NUM_WORKERS}"
 if [[ "${DPO_DATASET_TYPE}" == "videodpo_fullmask" ]]; then
   echo "[dpo-stage2] videodpo_frame_stride=${VIDEODPO_FRAME_STRIDE} full_mask_value=${VIDEODPO_FULL_MASK_VALUE}"
 fi
@@ -224,6 +226,7 @@ python training/dpo/scripts/run_stage2.py \
   --experiments_dir ${EXPERIMENTS_DIR} \
   --run_name ${RUN_NAME} \
   --batch_size ${BATCH_SIZE} \
+  --num_workers ${NUM_WORKERS} \
   --gradient_accumulation_steps ${GRAD_ACCUM} \
   --learning_rate ${LR} \
   --lr_scheduler ${LR_SCHEDULER} \
@@ -231,6 +234,7 @@ python training/dpo/scripts/run_stage2.py \
   --checkpointing_steps ${CKPT_STEPS} \
   --checkpoints_total_limit ${CKPT_LIMIT} \
   --validation_steps ${VAL_STEPS} \
+  --logging_steps ${LOGGING_STEPS} \
   --val_num_inference_steps ${VAL_NUM_INFERENCE_STEPS} \
   --val_mask_dilation_iter ${VAL_MASK_DILATION_ITER} \
   --resolution ${RESOLUTION} \

@@ -5988,10 +5988,13 @@ VIDEODPO_FULL_MASK_VALUE=0.0
 TRAIN_HEIGHT=320
 TRAIN_WIDTH=512
 NFRAMES=16
-MAX_EPOCHS=10
+MAX_EPOCHS=5  # matches completed Stage1 run 20260516_024051
 BETA_DPO=5000
 LR=6e-6
-GRAD_ACCUM=2
+NUM_GPUS=4
+GRAD_ACCUM=4
+LOGGING_STEPS=499
+NUM_WORKERS=16
 MIXED_PRECISION=no
 SPLIT_POS_NEG_FORWARD=0
 ```
@@ -6016,6 +6019,7 @@ cd /mnt/nas/hj/H20_Video_inpainting_DPO || exit 1
 git pull --ff-only
 
 STAGE1_WEIGHTS=/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260516_024051_lingbot-world-model-fullmask-videodpo-epoch5-gpu4-7-20260516_104046/last_weights
+VC2_YAML=/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml
 LOG="$PWD/logs/fullmask_stage2_smoke_$(date +%Y%m%d_%H%M%S).log"
 
 CUDA_VISIBLE_DEVICES=7 \
@@ -6026,15 +6030,18 @@ PRETRAINED_DPO_S1="$STAGE1_WEIGHTS" \
 STAGE1_WEIGHTS_PATH="$STAGE1_WEIGHTS" \
 BASELINE_UNET_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
 REF_MODEL_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
-DPO_DATA_ROOT="$PWD/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
+DPO_DATA_ROOT="$VC2_YAML" \
 REPORT_TO=none \
 MAX_STEPS=1 \
 MAX_EPOCHS= \
 CKPT_STEPS=1 \
 VAL_STEPS=999999 \
+LOGGING_STEPS=1 \
 RUN_NAME=pai-fullmask-stage2-smoke-$(date +%Y%m%d_%H%M%S) \
 WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
 PROCESS_TITLE=lingbotworld-phy \
+NCCL_DEBUG=WARN \
+TORCH_DISTRIBUTED_DEBUG=OFF \
 bash DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage2.sbatch 2>&1 | tee "$LOG"
 
 echo "LOG=$LOG"
@@ -6054,16 +6061,21 @@ smoke 通过后再跑正式 Stage2：
 ```bash
 CUDA_VISIBLE_DEVICES=4,5,6,7 \
 NUM_GPUS=4 \
+GRAD_ACCUM=4 \
 CONDA_ENV=/mnt/nas/hj/conda_envs/diffueraser \
 WEIGHTS_DIR=/mnt/nas/hj/weights \
 PRETRAINED_DPO_S1="$STAGE1_WEIGHTS" \
 BASELINE_UNET_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
 REF_MODEL_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
-DPO_DATA_ROOT="$PWD/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
+DPO_DATA_ROOT="$VC2_YAML" \
 REPORT_TO=wandb \
 MAX_STEPS= \
-MAX_EPOCHS=10 \
-RUN_NAME=pai-fullmask-stage2-epoch10-gpu4-7-$(date +%Y%m%d_%H%M%S) \
+MAX_EPOCHS=5 \
+LOGGING_STEPS=499 \
+NUM_WORKERS=16 \
+NCCL_DEBUG=WARN \
+TORCH_DISTRIBUTED_DEBUG=OFF \
+RUN_NAME=pai-fullmask-stage2-epoch5-gpu4-7-$(date +%Y%m%d_%H%M%S) \
 WORLDMODELPHY_PROCESS_NAME=lingbotworld-phy \
 PROCESS_TITLE=lingbotworld-phy \
 nohup bash DPO_finetune/scripts/sc_videodpo_fullmask_diffueraser_stage2.sbatch \

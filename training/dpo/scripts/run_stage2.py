@@ -98,12 +98,14 @@ def build_cmd(project_root, args):
         "--resolution", str(args.resolution),
         "--nframes", str(args.nframes),
         "--train_batch_size", str(args.batch_size),
+        "--dataloader_num_workers", str(args.num_workers),
         "--gradient_accumulation_steps", str(args.gradient_accumulation_steps),
         "--learning_rate", str(args.learning_rate),
         "--lr_scheduler", args.lr_scheduler,
         "--lr_warmup_steps", str(args.lr_warmup_steps),
         "--checkpointing_steps", str(args.checkpointing_steps),
         "--validation_steps", str(args.validation_steps),
+        "--logging_steps", str(args.logging_steps),
         "--val_num_inference_steps", str(args.val_num_inference_steps),
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
         "--beta_dpo", str(args.beta_dpo),
@@ -177,6 +179,8 @@ def build_cmd(project_root, args):
             "num_train_epochs": args.num_train_epochs,
             "learning_rate": args.learning_rate,
             "batch_size": args.batch_size,
+            "num_workers": args.num_workers,
+            "logging_steps": args.logging_steps,
             "beta_dpo": args.beta_dpo,
             "videodpo_frame_stride": args.videodpo_frame_stride,
             "videodpo_full_mask_value": args.videodpo_full_mask_value,
@@ -355,6 +359,7 @@ def parse_args():
     parser.add_argument("--run_name", type=str, default="stage2")
     parser.add_argument("--run_version", type=str, default=None)
     parser.add_argument("--batch_size", type=int, default=1)
+    parser.add_argument("--num_workers", type=int, default=0)
     parser.add_argument("--gradient_accumulation_steps", type=int, default=4)
     parser.add_argument("--learning_rate", type=float, default=1e-6)
     parser.add_argument("--lr_scheduler", type=str, default="constant")
@@ -364,6 +369,7 @@ def parse_args():
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--validation_steps", type=int, default=2000)
+    parser.add_argument("--logging_steps", type=int, default=300)
     parser.add_argument("--val_num_inference_steps", type=int, default=6)
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--resolution", type=int, default=512)
