@@ -683,3 +683,174 @@ hard_neg = 从 candidate pool 中筛选 hard but plausible loser
    - `lose_gap > 0`
    - `mse_win` 不应显著高于 `ref_mse_win`
    - `sigma_term` 不要长期接近 `1.0`
+
+## 八、2026-05-21 PAI 官方 VideoDPO + DiffuEraser 续写
+
+### 8.1 本轮目标
+
+本轮目标是把官方 VideoDPO 训练骨架和 DiffuEraser 逻辑接起来，用官方 clean repo 作为 `scripts/train.py` / Lightning / DDP 外壳，但 DiffuEraser 的数据、模型前向、权重加载和 full-mask DPO 逻辑必须沿用已经在 `/home/hj/Video_inpainting_DPO` 跑通过的前期工作。
+
+因此当前修改边界是：
+
+- 可以改 `official_videodpo_diffueraser` adapter、PAI 启动脚本和必要的兼容层；
+- 不应重写 DiffuEraser 核心训练逻辑；
+- 如果使用 DiffuEraser，就要完整保持前期可通逻辑，而不是半套迁移。
+
+### 8.2 已合入/已热修的关键变更
+
+本轮涉及的核心提交和 PAI 热修如下：
+
+- `3ad7e7f`：新增 official-hosted DiffuEraser VideoDPO adapter。
+- `076b5ba`：支持独立 DiffuEraser VAE 权重目录。
+- `e9cbf93`：支持 OmegaConf `resolution=[320,512]` 这类 ListConfig 输入。
+- `b2945ff`：修复 PAI 上 `CUDA_VISIBLE_DEVICES=4,5,6,7` 后 Lightning 仍应使用本地可见 ordinal `0,1,2,3` 的问题。
+- `31a7467`：修复 Lightning 1.9 下 `on_before_optimizer_step(self, optimizer, optimizer_idx)` hook 签名兼容问题。
+
+PAI 端因为 pull/dirty workspace 问题，部分修复曾经用 `python - <<'PY' ... PY` 直接热修到：
+
+- `DPO_finetune/scripts/pai_official_diffueraser_stage.sh`
+- `official_videodpo_diffueraser/data.py`
+- `official_videodpo_diffueraser/models.py`
+
+后续如果重新 pull，需要确认这些 PAI 热修没有被旧版本覆盖。
+
+### 8.3 官方 VC2 full run 状态
+
+官方 VC2 clean 复现已经从 smoke 升级到 full run，使用 0-3 号卡：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/pai-vc2-dpo-official-full-gpu0-3-gb8-step3000-20260521_061414.log
+```
+
+PAI 进程曾显示：
+
+```text
+python -m torch.distributed.run --nproc_per_node=4 scripts/train.py ...
+--devices 0,1,2,3
+lightning.trainer.max_steps=3000
+```
+
+该 run 与 DiffuEraser stage1/stage2 使用的 4-7 号卡隔离，不应被误杀。
+
+### 8.4 DiffuEraser stage1 smoke 结果
+
+official-hosted DiffuEraser stage1 smoke 已经跑通。关键日志：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/pai-official-diffueraser-stage1-smoke-gpu4-7-20260521_071450.log
+```
+
+关键证据：
+
+```text
+cuda_visible_devices=4,5,6,7
+lightning_devices=0,1,2,3
+VideoDPOFullMaskDiffuEraserDataset: pairs=10000 roots=1 resolution=[320,512] nframes=16 frame_stride=1
+1.7 B Trainable params
+Epoch 0 ... loss=0.693 ... train/implicit_acc=0.500 ... train/dpo_loss=0.693
+Trainer.fit stopped: max_steps=1 reached
+[official-diffueraser] done
+```
+
+生成的 smoke stage1 权重：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage1/pai-official-diffueraser-stage1-smoke-gpu4-7-20260521_071450/last_weights
+```
+
+这个结果证明：官方 VideoDPO 外壳、DiffuEraser full-mask dataset、DPO loss、optimizer step 和 checkpoint 导出链路已经连通。
+
+### 8.5 DiffuEraser stage1 full run
+
+stage1 full run 已按 4-7 号卡、global batch 8、3000 optimizer steps 启动：
+
+```text
+RUN_NAME=pai-official-diffueraser-stage1-full-gpu4-7-gb8-step3000-20260521_072559
+LOG=/mnt/nas/hj/H20_Video_inpainting_DPO/logs/pai-official-diffueraser-stage1-full-gpu4-7-gb8-step3000-20260521_072559.log
+wrapper PID=186663
+```
+
+启动参数核心为：
+
+```text
+CUDA_VISIBLE_DEVICES=4,5,6,7
+PL_DEVICE_LIST=0,1,2,3
+STAGE=stage1
+NUM_GPUS=4
+BATCH_SIZE=1
+GRAD_ACCUM=2
+MAX_OPT_STEPS=3000
+CKPT_EVERY=500
+REF_MODEL_PATH=/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000
+```
+
+注意：检查日志时不要把 `<上面打印的RUN_NAME>` 当成真实路径。应直接使用已经打印出来的完整 log 路径：
+
+```bash
+STAGE1_LOG=/mnt/nas/hj/H20_Video_inpainting_DPO/logs/pai-official-diffueraser-stage1-full-gpu4-7-gb8-step3000-20260521_072559.log
+
+pgrep -af 'official_diffueraser_stage1|pai-official-diffueraser-stage1-full|VideoDPO_official_diffueraser|scripts/train.py|torch.distributed.run|lingbotworld-phy' || true
+nvidia-smi
+grep -nE 'stage=stage1|cuda_visible_devices|lightning_devices|VideoDPOFullMask|Trainable|Epoch 0:|last_weights|done|Traceback|FAILED|error|CUDA out|RuntimeError' "$STAGE1_LOG" | tail -200
+tr '\r' '\n' < "$STAGE1_LOG" | grep -E '^Epoch' | tail -12
+```
+
+### 8.6 stage2 smoke 无输出的当前判断
+
+stage2 smoke 曾使用 stage1 smoke 权重启动：
+
+```text
+PRETRAINED_DPO_S1=/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage1/pai-official-diffueraser-stage1-smoke-gpu4-7-20260521_071450/last_weights
+STAGE=stage2
+CUDA_VISIBLE_DEVICES=4,5,6,7
+PL_DEVICE_LIST=0,1,2,3
+MAX_OPT_STEPS=1
+```
+
+但是它与 stage1 full run 使用同一组 4-7 号卡。PAI 上曾看到 stage2 wrapper 仍在：
+
+```text
+179770 bash DPO_finetune/scripts/pai_official_diffueraser_stage.sh
+179777 tee -a .../logs/official_diffueraser_stage2/pai-official-diffueraser-stage2-smoke-gpu4-7-20260521_072409/slurm_launch_stdout.log
+182718 lingbotworld-phy
+```
+
+同时 stage1 full workers 也占用 4-7 号卡：
+
+```text
+197665 lingbotworld-phy
+197666 lingbotworld-phy
+197667 lingbotworld-phy
+197668 lingbotworld-phy
+```
+
+因此 stage2 “一直没有输出”的优先判断不是代码新错误，而是 stage2 smoke 与 stage1 full 在同一组 GPU 上重叠，模型初始化/显存/调度被阻塞或互相干扰。stage2 不应和 stage1 full 同时跑在 4-7 号卡。
+
+处理建议：
+
+```bash
+ps -fp 179770 179777 182718 2>/dev/null || true
+tr '\0' ' ' < /proc/182718/cmdline 2>/dev/null; echo
+```
+
+确认 `182718` 属于旧的 `pai-official-diffueraser-stage2-smoke-gpu4-7-20260521_072409` 后，再只清理这个旧 stage2 smoke：
+
+```bash
+kill 179770 179777 182718 2>/dev/null || true
+sleep 5
+nvidia-smi
+```
+
+不要误杀 VC2 full run 的 0-3 号卡进程，也不要误杀 stage1 full 的 `197665-197668`。
+
+### 8.7 后续顺序
+
+建议后续严格按以下顺序推进：
+
+1. 继续监控 VC2 official full run 和 DiffuEraser stage1 full run。
+2. 如果旧 stage2 smoke 仍占用 4-7 号卡，先确认 cmdline，再清掉旧 stage2 smoke。
+3. 等 stage1 full 完成后，用 stage1 full 的 `last_weights` 作为 `PRETRAINED_DPO_S1`，再启动 stage2 smoke。
+4. stage2 smoke 通过后，再启动 stage2 full run。
+5. 任何时候都避免 stage1 full 和 stage2 smoke/full 同时使用 4-7 号卡。
+
+本轮 stage1 smoke 已经证明 adapter 基础链路可行；stage1 full 和 stage2 的主要风险转为资源调度、checkpoint 继承路径、以及 PAI workspace 是否保持最新 hotfix。
