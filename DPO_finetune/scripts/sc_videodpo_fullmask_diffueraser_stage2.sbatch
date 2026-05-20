@@ -48,6 +48,20 @@ export DPO_DATASET_TYPE="videodpo_fullmask"
 export VAL_DATA_DIR="${VAL_DATA_DIR:-${PROJECT_ROOT}/data/external/davis_432_240}"
 export EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-${PROJECT_ROOT}/experiments}"
 
+if [[ ! -e "${DPO_DATA_ROOT}" ]]; then
+  for candidate in \
+    "${PROJECT_ROOT}/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml" \
+    "${PROJECT_ROOT}/external/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
+    "${PROJECT_ROOT}/external/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml" \
+    "${VIDEODPO_REPO}/configs/vc2_dpo/vidpro/train_data.absolute.yaml" \
+    "${VIDEODPO_REPO}/configs/vc2_dpo/vidpro/train_data.yaml"; do
+    if [[ -f "${candidate}" ]]; then
+      export DPO_DATA_ROOT="${candidate}"
+      break
+    fi
+  done
+fi
+
 if [[ -z "${BASELINE_UNET_PATH:-}" ]]; then
   for candidate in \
     "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000" \
