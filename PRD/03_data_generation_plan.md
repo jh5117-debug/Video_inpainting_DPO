@@ -140,6 +140,15 @@ Without `--run_generation`, the same tool only prepares canonical inputs and
 writes the setting report; that is useful for debugging but does not pass the
 asset readiness gate.
 
+Parallel four-model smoke command:
+
+```bash
+bash scripts/pai_run_parallel_generation_smokes.sh
+```
+
+The parallel wrapper runs one model per process/GPU, prints each model's result
+table and failure log tail, and still generates only one canonical sample.
+
 ## Online Loser Generation
 
 Online loser generation is future work. Do not start it until offline generation is stable and all four generator runtimes are confirmed.

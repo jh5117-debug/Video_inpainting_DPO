@@ -641,6 +641,23 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
             f.write(json.dumps(row, ensure_ascii=False) + "\n")
 
 
+def tail_text(path: Path, lines: int) -> str:
+    if lines <= 0 or not path.exists():
+        return ""
+    try:
+        data = path.read_text(errors="replace").splitlines()
+    except Exception as exc:
+        return f"[could not read log: {exc}]"
+    return "\n".join(data[-lines:])
+
+
+def one_line_tail(path: Path, lines: int = 8) -> str:
+    text = tail_text(path, lines)
+    if not text:
+        return ""
+    return " | ".join(x.strip() for x in text.splitlines() if x.strip())[-1200:]
+
+
 def write_report(path: Path, setting: CanonicalSetting, results: list[SmokeResult], run_generation: bool) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     lines = [
@@ -687,6 +704,49 @@ def write_report(path: Path, setting: CanonicalSetting, results: list[SmokeResul
         "",
     ])
     path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def print_stdout_summary(
+    setting: CanonicalSetting,
+    results: list[SmokeResult],
+    report_path: Path,
+    manifest_path: Path,
+    run_generation: bool,
+    log_tail_lines: int,
+) -> None:
+    print("===== CANONICAL VIDEODPO SETTING =====")
+    print(f"height={setting.canonical_height} width={setting.canonical_width} frames={setting.canonical_num_frames} stride={setting.canonical_frame_stride}")
+    print(f"train_data_yaml={setting.train_data_yaml}")
+    print(f"winner={setting.winner_video_path}")
+    print(f"prompt={setting.prompt}")
+    print(f"run_generation={run_generation}")
+    print()
+    print("===== SMOKE RESULT TABLE =====")
+    print("| Model | Mask | Status | Decoded | H | W | Message | Log |")
+    print("| --- | --- | --- | ---: | ---: | ---: | --- | --- |")
+    for item in results:
+        log_path = Path(item.log_path)
+        msg = item.message.replace("\n", " ")[:500]
+        print(
+            f"| {item.model} | {item.mask_mode} | {item.status} | {item.decoded_frames} | "
+            f"{item.height or '-'} | {item.width or '-'} | {msg} | {log_path} |"
+        )
+    print()
+    print(f"REPORT={report_path}")
+    print(f"MANIFEST={manifest_path}")
+
+    failed = [r for r in results if run_generation and r.status != "OK"]
+    if failed:
+        print()
+        print("===== FAILURE LOG TAILS =====")
+        for item in failed:
+            log_path = Path(item.log_path)
+            print()
+            print(f"### {item.model} {item.mask_mode} status={item.status}")
+            print(f"message={item.message}")
+            print(f"log={log_path}")
+            tail = tail_text(log_path, log_tail_lines)
+            print(tail if tail else "[no log tail available]")
 
 
 def write_canonical_prd(path: Path, setting: CanonicalSetting) -> None:
@@ -744,6 +804,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--frame_selection", choices=["seeded_random", "first"], default="seeded_random")
     parser.add_argument("--run_generation", action="store_true")
     parser.add_argument("--timeout_sec", type=int, default=0)
+    parser.add_argument("--print_log_tail_lines", type=int, default=80)
     return parser
 
 
@@ -777,6 +838,10 @@ def main() -> int:
                 run_generation=args.run_generation,
                 timeout_sec=args.timeout_sec,
             )
+            if args.run_generation and result.status != "OK" and Path(result.log_path).exists():
+                tail = one_line_tail(Path(result.log_path), 8)
+                if tail and tail not in result.message:
+                    result.message = f"{result.message}; tail={tail}"
             results.append(result)
             row = {
                 **asdict(setting),
@@ -798,12 +863,14 @@ def main() -> int:
     write_report(report_path, setting, results, args.run_generation)
     write_jsonl(manifest_path, manifest_rows)
 
-    print(f"[canonical] height={setting.canonical_height} width={setting.canonical_width} frames={setting.canonical_num_frames} stride={setting.canonical_frame_stride}")
-    print(f"[canonical] train_data_yaml={setting.train_data_yaml}")
-    print(f"[canonical] winner={setting.winner_video_path}")
-    print(f"[smoke] run_generation={args.run_generation}")
-    print(f"[smoke] report={report_path}")
-    print(f"[smoke] manifest={manifest_path}")
+    print_stdout_summary(
+        setting=setting,
+        results=results,
+        report_path=report_path,
+        manifest_path=manifest_path,
+        run_generation=args.run_generation,
+        log_tail_lines=args.print_log_tail_lines,
+    )
     failed = [r for r in results if args.run_generation and r.status != "OK"]
     return 2 if failed else 0
 
