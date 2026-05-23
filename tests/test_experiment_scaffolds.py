@@ -13,6 +13,8 @@ EXPERIMENT_MODULES = [
     "official_videodpo_diffueraser_data_fullmask_loser",
     "official_videodpo_diffueraser_data_partialmask_loser_comp",
     "official_videodpo_diffueraser_data_partialmask_loser_nocomp",
+    "official_videodpo_diffueraser_data_partialmask_loser_comp_k4",
+    "official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4",
     "official_videodpo_diffueraser_task_partialmask",
     "official_videodpo_diffueraser_youtubevos_partialmask_data",
     "official_videodpo_diffueraser_online_loser_generation",

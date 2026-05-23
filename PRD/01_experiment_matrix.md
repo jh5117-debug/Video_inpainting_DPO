@@ -5,8 +5,8 @@
 The core plan has four directions, with Direction 2 split into 2A/2B:
 
 1. `official_videodpo_diffueraser_data_fullmask_loser`
-2. `official_videodpo_diffueraser_data_partialmask_loser_comp`
-3. `official_videodpo_diffueraser_data_partialmask_loser_nocomp`
+2. `official_videodpo_diffueraser_data_partialmask_loser_comp_k4`
+3. `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4`
 4. `official_videodpo_diffueraser_task_partialmask`
 5. `official_videodpo_diffueraser_youtubevos_partialmask_data`
 
@@ -37,8 +37,8 @@ The important boundary:
 | `official_videodpo_vc2` | completed | VC2 | VideoDPO | VideoDPO winner | VideoDPO rejected | none | none | false | existing pairs | official baseline | VBench, SBS | Completed full VBench. |
 | `official_videodpo_diffueraser` | completed | DiffuEraser | VideoDPO | VideoDPO winner | VideoDPO rejected | none | full | false | existing pairs | model adapter | VBench, SBS, DPO diagnostics | Official VideoDPO skeleton + DiffuEraser full-mask bridge. |
 | `official_videodpo_diffueraser_data_fullmask_loser` | scaffold | DiffuEraser bridge | VideoDPO | VideoDPO winner | full-mask inpainting generated | full | full | false | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | First data-only loser ablation. |
-| `official_videodpo_diffueraser_data_partialmask_loser_comp` | scaffold | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | Cleanest partial-mask data-only ablation. |
-| `official_videodpo_diffueraser_data_partialmask_loser_nocomp` | scaffold | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask raw output | partial | full | false | offline | data diagnostic | PSNR, SSIM, VBench, SBS, DPO diagnostics | Can introduce mask-outside drift; compare against comp. |
+| `official_videodpo_diffueraser_data_partialmask_loser_comp_k4` | scaffold | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial K=4 | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | Cleanest partial-mask data-only ablation. |
+| `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4` | scaffold | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask raw output | partial K=4 | full | false | offline | data diagnostic | PSNR, SSIM, VBench, SBS, DPO diagnostics | Reuses the same raw generation as comp; compares comp vs no-comp. |
 | `official_videodpo_diffueraser_task_partialmask` | scaffold | DiffuEraser | generated partial-mask data | VideoDPO winner | partialmask comp loser | partial | partial | true | offline data | task | PSNR, SSIM, VBench, SBS, DPO diagnostics | First mask policy: same-mask. |
 | `official_videodpo_diffueraser_youtubevos_partialmask_data` | scaffold | DiffuEraser / generator models | YouTube-VOS | YouTube-VOS clean/target clip | partial-mask generated loser | partial | partial | true first | offline | data source | PSNR, SSIM, VBench, SBS, DPO diagnostics | Built on Experiment 3 partial-mask task; PAI YouTube-VOS path must be re-confirmed. |
 | `official_videodpo_diffueraser_online_loser_generation` | future | TBD | TBD | TBD | generated during training | TBD | TBD | TBD | online | generation timing | TBD | Not first priority. |

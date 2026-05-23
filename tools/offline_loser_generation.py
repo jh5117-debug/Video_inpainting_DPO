@@ -16,6 +16,8 @@ MODEL_ENV = {
 
 MANIFEST_FIELDS = [
     "sample_id",
+    "source_video_id",
+    "mask_id",
     "prompt",
     "win_video_path",
     "raw_loser_video_path",
@@ -32,6 +34,9 @@ MANIFEST_FIELDS = [
     "num_frames",
     "height",
     "width",
+    "mask_area_ratio",
+    "mask_bbox",
+    "status",
 ]
 
 
@@ -45,6 +50,12 @@ class GenerationPlan:
     comp: bool
     offline: bool
     num_samples: int | None
+    num_masks_per_video: int
+    skip_existing: bool
+    resume: bool
+    limit: int | None
+    start_index: int | None
+    end_index: int | None
     seed: int
     save_manifest: str | None
     weight_env: str
@@ -68,8 +79,10 @@ def _canonical_model_name(name: str) -> str:
         normalized = "cococo"
     if normalized == "minimax":
         normalized = "minimax_remover"
+    if normalized == "all":
+        return normalized
     if normalized not in MODEL_ENV:
-        allowed = ", ".join(sorted(MODEL_ENV))
+        allowed = ", ".join(sorted([*MODEL_ENV, "all"]))
         raise argparse.ArgumentTypeError(f"unknown model {name!r}; expected one of: {allowed}")
     return normalized
 
@@ -84,7 +97,7 @@ def build_parser() -> argparse.ArgumentParser:
         "--model_name",
         required=True,
         type=_canonical_model_name,
-        help="diffueraser, propainter, cococo, cocococ, minimax, or minimax_remover.",
+        help="diffueraser, propainter, cococo, cocococ, minimax, minimax_remover, or all.",
     )
     parser.add_argument("--mask_mode", choices=["full", "partial"], required=True)
     parser.add_argument(
@@ -98,6 +111,12 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--comp", type=_str_bool, default=False)
     parser.add_argument("--offline", type=_str_bool, default=True)
     parser.add_argument("--num_samples", type=int, default=None)
+    parser.add_argument("--num_masks_per_video", type=int, default=1)
+    parser.add_argument("--skip_existing", type=_str_bool, default=True)
+    parser.add_argument("--resume", type=_str_bool, default=True)
+    parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--start_index", type=int, default=None)
+    parser.add_argument("--end_index", type=int, default=None)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--save_manifest", default=None)
     parser.add_argument(
@@ -123,11 +142,16 @@ def _require_path(path: str | None, label: str, allow_missing: bool) -> None:
 
 
 def make_plan(args: argparse.Namespace) -> GenerationPlan:
-    weight_env = MODEL_ENV[args.model_name]
-    weight_root = os.environ.get(weight_env)
+    weight_env = "MULTI_MODEL" if args.model_name == "all" else MODEL_ENV[args.model_name]
+    weight_root = None if args.model_name == "all" else os.environ.get(weight_env)
     allow_missing = bool(args.dry_run and args.allow_missing_assets)
     _require_path(args.source_dataset, "source_dataset", allow_missing)
-    _require_path(weight_root, weight_env, allow_missing)
+    if args.model_name != "all":
+        _require_path(weight_root, weight_env, allow_missing)
+    if args.num_masks_per_video < 1:
+        raise SystemExit("[error] --num_masks_per_video must be >= 1")
+    if args.mask_mode == "full" and args.num_masks_per_video != 1:
+        raise SystemExit("[error] full-mask generation should use --num_masks_per_video 1")
     return GenerationPlan(
         source_dataset=args.source_dataset,
         output_root=args.output_root,
@@ -137,6 +161,12 @@ def make_plan(args: argparse.Namespace) -> GenerationPlan:
         comp=bool(args.comp),
         offline=bool(args.offline),
         num_samples=args.num_samples,
+        num_masks_per_video=args.num_masks_per_video,
+        skip_existing=bool(args.skip_existing),
+        resume=bool(args.resume),
+        limit=args.limit,
+        start_index=args.start_index,
+        end_index=args.end_index,
         seed=args.seed,
         save_manifest=args.save_manifest,
         weight_env=weight_env,

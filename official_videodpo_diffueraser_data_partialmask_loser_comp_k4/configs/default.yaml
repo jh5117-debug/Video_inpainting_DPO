@@ -1,0 +1,11 @@
+experiment_name: official_videodpo_diffueraser_data_partialmask_loser_comp_k4
+source_dataset: videodpo
+win_source: videodpo_winner
+loser_source: offline_video_inpainting_generated
+mask_mode: partial
+num_masks_per_video: 4
+comp: true
+training_mask: full
+changed_variable: data_only
+online_generation: false
+process_name: lingbot-phy

@@ -33,6 +33,15 @@ data/generated_losers/partialmask_comp/*
 !data/generated_losers/partialmask_nocomp/
 data/generated_losers/partialmask_nocomp/*
 !data/generated_losers/partialmask_nocomp/.gitkeep
+!data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser/
+data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser/*
+!data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser/.gitkeep
+!data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/
+data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/*
+!data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/.gitkeep
+!data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/
+data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/*
+!data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/.gitkeep
 data_val/
 weights/*
 !weights/README.md

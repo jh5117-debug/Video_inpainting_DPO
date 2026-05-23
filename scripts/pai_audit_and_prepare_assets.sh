@@ -10,6 +10,13 @@ readiness_report="${READINESS_REPORT:-$repo_root/PRD/pai_asset_readiness_report.
 env_file="${ENV_FILE:-$repo_root/configs/paths/pai.detected.env}"
 
 mkdir -p "$(dirname "$report")" "$(dirname "$env_file")"
+mkdir -p \
+  data/videodpo data/youtubevos \
+  data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser \
+  data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
+  data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4 \
+  weights/diffueraser weights/propainter weights/cococo weights/minimax_remover weights/official_videodpo weights/vc2 \
+  outputs logs PRD configs/paths
 
 ROOTS=(
   "$repo_root"
@@ -172,8 +179,8 @@ youtube_vos_root="$(first_existing \
   "$repo_root/data/external/ytbv_2019_full_resolution" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/youtubevos_432_240" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/ytbv_2019_full_resolution" \
-  "$(find_first_dir '*youtubevos*')" \
-  "$(find_first_dir '*ytbv*')" || true)"
+  "$(find_first_dir 'youtubevos_432_240')" \
+  "$(find_first_dir 'ytbv_2019_full_resolution')" || true)"
 
 generated_loser_root="$(first_existing \
   "${GENERATED_LOSER_ROOT:-}" \
@@ -271,6 +278,43 @@ link_current "$cococo_weight_root" "$repo_root/weights/cococo/current"
 link_current "$minimax_weight_root" "$repo_root/weights/minimax_remover/current"
 link_current "$official_videodpo_weight_root" "$repo_root/weights/official_videodpo/current"
 link_current "$vc2_weight_root" "$repo_root/weights/vc2/current"
+
+section "Asset Readiness Summary"
+write_line "| Asset | Status | Path |"
+write_line "| --- | --- | --- |"
+for row in \
+  "VideoDPO data|$videodpo_data_root" \
+  "YouTube-VOS data|$youtube_vos_root" \
+  "Generated losers root|$generated_loser_root" \
+  "DiffuEraser weights|$diffueraser_weight_root" \
+  "ProPainter weights|$propainter_weight_root" \
+  "CoCoCo weights|$cococo_weight_root" \
+  "MiniMax-Remover weights|$minimax_weight_root" \
+  "Official VideoDPO weights|$official_videodpo_weight_root" \
+  "VC2 weights|$vc2_weight_root"; do
+  name="${row%%|*}"
+  path="${row#*|}"
+  if [ -n "$path" ] && [ -e "$path" ]; then
+    write_line "| $name | FOUND | \`$path\` |"
+  else
+    write_line "| $name | MISSING/UNCONFIRMED | \`$path\` |"
+  fi
+done
+
+section "Generated Loser Data Readiness"
+write_line "| Dataset | Status | Root |"
+write_line "| --- | --- | --- |"
+for d in \
+  "$repo_root/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser" \
+  "$repo_root/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4" \
+  "$repo_root/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4"; do
+  n="$(find "$d" -type f 2>/dev/null | wc -l | tr -d ' ')"
+  if [ "$n" = "0" ]; then
+    write_line "| $(basename "$d") | EMPTY/READY_FOR_GENERATION | \`$d\` |"
+  else
+    write_line "| $(basename "$d") | HAS_FILES:$n | \`$d\` |"
+  fi
+done
 
 run_block "Four Inpainting Model Search" bash -lc 'find . /home/hj /mnt/workspace /mnt/data /mnt/nas/hj -maxdepth 6 \( -iname "*diffueraser*" -o -iname "*propainter*" -o -iname "*cococo*" -o -iname "*minimax*" -o -iname "*remover*" \) 2>/dev/null | sort | head -500'
 run_block "Generation Script Search" bash -lc 'find . -type f \( -name "*.py" -o -name "*.sh" -o -name "*.sbatch" \) | grep -Ei "generate|infer|inpaint|propainter|cococo|minimax|diffueraser|remover" | sort | head -300'
