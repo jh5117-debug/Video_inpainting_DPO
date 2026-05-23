@@ -21,7 +21,14 @@ Code lives in experiment-named directories. Data, weights, generated losers, log
 | Variable | Meaning |
 | --- | --- |
 | `VIDEO_DPO_DATA_ROOT` | Original VideoDPO preference data. |
+| `VIDEO_DPO_TRAIN_DATA_YAML` | PAI train-data YAML for the 10k VC2 preference pairs. |
+| `VIDEO_DPO_PAIR_MANIFEST` | Optional resolved pair manifest, if separated from the train YAML. |
+| `VIDEO_DPO_WINNER_ROOT` | Optional resolved winner/chosen video root. |
+| `VIDEO_DPO_REJECTED_ROOT` | Optional resolved rejected/loser video root. |
+| `VIDEO_DPO_PROMPT_FILE` | Optional resolved prompt metadata path. |
 | `YOUTUBE_VOS_ROOT` | YouTube-VOS data. |
+| `YOUTUBE_VOS_FRAMES_ROOT` | YouTube-VOS `JPEGImages` root. |
+| `YOUTUBE_VOS_MASKS_ROOT` | YouTube-VOS `Annotations` root. |
 | `GENERATED_LOSER_ROOT` | Offline generated loser data root. |
 | `DIFFUERASER_WEIGHT_ROOT` | DiffuEraser weights. |
 | `PROPAINTER_WEIGHT_ROOT` | ProPainter weights. |
@@ -31,6 +38,17 @@ Code lives in experiment-named directories. Data, weights, generated losers, log
 | `VC2_WEIGHT_ROOT` | VC2 checkpoint root. |
 | `EXP_OUTPUT_ROOT` | Run outputs/logs. |
 | `LINGBOT_PROCESS_NAME` | Process/job name, default `lingbot-phy`. |
+
+## PAI Confirmed Dataset Roots
+
+| Asset | Path |
+| --- | --- |
+| VideoDPO root | `/mnt/nas/hj/data/VideoDPO` |
+| VideoDPO train YAML | `/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml` |
+| Extracted VidPro10K/VC2 root | `/mnt/nas/hj/data/external/hf/vidpro10k-vc2-dataset/_extracted/home/liurt/liurt_data/haoyu/dataset/vidpro10k-vc2-dataset` |
+| YouTube-VOS train root | `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train` |
+| YouTube-VOS frames | `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train/JPEGImages` |
+| YouTube-VOS masks | `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train/Annotations` |
 
 ## PAI Recorded Artifact Roots
 

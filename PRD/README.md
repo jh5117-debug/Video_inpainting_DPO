@@ -13,5 +13,6 @@ Start here:
 9. `data_generation_manifest_schema.md` - JSONL schema for generated loser manifests.
 10. `dpo_diagnostics_and_metrics_plan.md` - future training diagnostics and metric boundaries.
 11. `pai_asset_readiness_report.md` - PAI-generated asset readiness report template/output.
+12. `pai_generated_data_summary.md` - current PAI generated-loser readiness and smoke-test gate.
 
 `archive/` contains historical plans and handoff notes. Archive files are useful context, but they do not define the current experiment plan unless the information has been migrated into the active PRDs above.

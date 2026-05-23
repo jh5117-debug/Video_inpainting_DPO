@@ -39,6 +39,20 @@ final_loser = raw_loser
 
 Training still uses official VideoDPO / DiffuEraser full-mask bridge.
 
+### PAI Data Source
+
+Use the same VideoDPO PAI train-data YAML as the completed official VC2 and
+official DiffuEraser experiments:
+
+```bash
+VIDEO_DPO_DATA_ROOT=/mnt/nas/hj/data/VideoDPO
+VIDEO_DPO_TRAIN_DATA_YAML=/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml
+```
+
+The YAML points to the extracted VidPro10K/VC2 root and the completed training
+logs confirm `DPO dataset has 10000 pairs`. New generated-loser manifests
+should preserve compatibility with this pair order and sample identity.
+
 ### Mask Convention Audit
 
 Do not infer black/white mask semantics from experiment names. Confirm them per model.
@@ -87,10 +101,24 @@ This is a diagnostic ablation. Mask-outside differences may appear and should be
 
 | Model | Code | Weights | Env | Status |
 | --- | --- | --- | --- | --- |
-| DiffuEraser | found | found | found | ready for local path wiring |
-| ProPainter | found | found | not separately audited | ready for local path wiring |
-| CoCoCo | wrapper found | not confirmed | `cococo` exists | needs PAI/runtime verification |
-| MiniMax-Remover | wrapper/cache found | cache found, completeness unconfirmed | `minimax` exists | needs runnable verification |
+| DiffuEraser | found | found | found | path-ready; real generation smoke not run |
+| ProPainter | found | found | found | path-ready; real generation smoke not run |
+| CoCoCo | wrapper found | found | found | path-ready; real generation smoke not run |
+| MiniMax-Remover | wrapper/cache found | found | found | path-ready; real generation smoke not run |
+
+## Generation Readiness Gate
+
+As of the 2026-05-24 PAI probe:
+
+- data roots, weight roots, generated-loser roots, and manifest schema scaffolds are prepared;
+- YouTube-VOS frames and annotations are confirmed under the train split;
+- four-model inference scripts compile and weight paths list successfully;
+- real one-sample full-mask and partial-mask generation smoke has not run;
+- `tools/offline_loser_generation.py` is still a planning/manifest scaffold and intentionally does not dispatch real inference.
+
+Therefore the next step is not full data generation yet. Run one-sample smoke
+per model first, then start offline generation only for models that pass video
+decode, fps, frame-count, resolution, and comp outside-mask checks.
 
 ## Online Loser Generation
 
