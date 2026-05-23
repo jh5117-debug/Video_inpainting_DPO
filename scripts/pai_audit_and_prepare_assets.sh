@@ -6,6 +6,7 @@ cd "$repo_root"
 
 stamp="$(date +%Y%m%d_%H%M%S)"
 report="${REPORT:-$repo_root/PRD/pai_audit_pai_node_${stamp}.md}"
+readiness_report="${READINESS_REPORT:-$repo_root/PRD/pai_asset_readiness_report.md}"
 env_file="${ENV_FILE:-$repo_root/configs/paths/pai.detected.env}"
 
 mkdir -p "$(dirname "$report")" "$(dirname "$env_file")"
@@ -46,6 +47,13 @@ first_existing() {
     fi
   done
   return 1
+}
+
+dirname_if_file() {
+  local p="$1"
+  if [ -n "$p" ] && [ -f "$p" ]; then
+    dirname "$p"
+  fi
 }
 
 find_first_dir() {
@@ -104,6 +112,7 @@ write_line
 write_line "- generated_at: $(date -Is)"
 write_line "- repo_root: $repo_root"
 write_line "- env_file: $env_file"
+write_line "- readiness_report: $readiness_report"
 
 run_block "Basic Info" bash -lc 'date; hostname; whoami; pwd'
 run_block "Git Info" bash -lc 'git rev-parse --show-toplevel 2>/dev/null; git branch --show-current 2>/dev/null || true; git status --short; git log -1 --oneline || true'
@@ -150,6 +159,7 @@ official_videodpo_root="$(first_existing \
 
 videodpo_data_root="$(first_existing \
   "${VIDEO_DPO_DATA_ROOT:-}" \
+  "$repo_root/data/videodpo/current" \
   "$official_videodpo_root/data" \
   "$official_videodpo_root/datasets" \
   "$repo_root/data/external/videodpo" \
@@ -157,6 +167,7 @@ videodpo_data_root="$(first_existing \
 
 youtube_vos_root="$(first_existing \
   "${YOUTUBE_VOS_ROOT:-}" \
+  "$repo_root/data/youtubevos/current" \
   "$repo_root/data/external/youtubevos_432_240" \
   "$repo_root/data/external/ytbv_2019_full_resolution" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/youtubevos_432_240" \
@@ -170,30 +181,41 @@ generated_loser_root="$(first_existing \
 
 diffueraser_weight_root="$(first_existing \
   "${DIFFUERASER_WEIGHT_ROOT:-}" \
+  "$repo_root/weights/diffueraser/current" \
   "$repo_root/weights/diffuEraser/converted_weights_step48000" \
   "$repo_root/weights/diffuEraser" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/diffuEraser" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/diffueraser/Orign_Diffueraser" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/diffueraser" \
   "$(find_first_dir '*diffueraser*weight*')" || true)"
 
 propainter_weight_root="$(first_existing \
   "${PROPAINTER_WEIGHT_ROOT:-}" \
+  "$repo_root/weights/propainter/current" \
+  "$(dirname_if_file "$repo_root/weights/propainter/ProPainter.pth")" \
   "$repo_root/weights/ProPainter" \
-  "$repo_root/weights/propainter" \
+  "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter" \
+  "$(dirname_if_file "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter/ProPainter.pth")" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/ProPainter" \
-  "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/propainter" \
+  "$(dirname_if_file "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/propainter/ProPainter.pth")" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/propainter" \
+  "$(dirname_if_file "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/propainter/ProPainter.pth")" \
   "$(find_first_dir '*propainter*')" || true)"
 
 cococo_weight_root="$(first_existing \
   "${COCOCO_WEIGHT_ROOT:-}" \
-  "$repo_root/weights/cococo" \
-  "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/cococo" \
+  "$repo_root/weights/cococo/current" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/COCOCO_weight" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/COCOCO_weight" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/cococo" \
   "$(find_first_dir '*cococo*')" || true)"
 
 minimax_weight_root="$(first_existing \
   "${MINIMAX_REMOVER_WEIGHT_ROOT:-}" \
-  "$repo_root/weights/minimax_remover" \
+  "$repo_root/weights/minimax_remover/current" \
   "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover" \
+  "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/minimax" \
   "$HOME/.cache/huggingface/hub/models--zibojia--minimax-remover" \
   "/root/.cache/huggingface/hub/models--zibojia--minimax-remover" \
   "$(find_first_dir '*minimax*')" || true)"
@@ -206,7 +228,7 @@ official_videodpo_weight_root="$(first_existing \
 vc2_weight_root="$(first_existing \
   "${VC2_WEIGHT_ROOT:-}" \
   "$official_videodpo_root/checkpoints/vc2" \
-  "$repo_root/weights/vc2" \
+  "$repo_root/weights/vc2/current" \
   "$(find_first_file 'model.ckpt' | xargs -r dirname)" || true)"
 
 section "Detected Data And Weight Roots"
@@ -253,6 +275,7 @@ link_current "$vc2_weight_root" "$repo_root/weights/vc2/current"
 run_block "Four Inpainting Model Search" bash -lc 'find . /home/hj /mnt/workspace /mnt/data /mnt/nas/hj -maxdepth 6 \( -iname "*diffueraser*" -o -iname "*propainter*" -o -iname "*cococo*" -o -iname "*minimax*" -o -iname "*remover*" \) 2>/dev/null | sort | head -500'
 run_block "Generation Script Search" bash -lc 'find . -type f \( -name "*.py" -o -name "*.sh" -o -name "*.sbatch" \) | grep -Ei "generate|infer|inpaint|propainter|cococo|minimax|diffueraser|remover" | sort | head -300'
 run_block "Large Asset Check" bash -lc 'find data weights outputs experiments -maxdepth 4 -type f -size +50M -print 2>/dev/null | sort || true'
+run_block "Disk Capacity" bash -lc 'df -h; du -sh data weights outputs logs 2>/dev/null || true; du -sh /mnt/nas/hj/data /mnt/workspace/hj 2>/dev/null || true'
 
 section "Next Step"
 write_line "- Source detected env on PAI:"
@@ -264,4 +287,6 @@ write_line
 write_line "- If any root above is blank or marked MISSING in the symlink section, that dataset/weight is still unconfirmed and should be downloaded or pointed to before launching the corresponding experiment."
 
 echo "[pai-audit] report=$report"
+cp "$report" "$readiness_report"
+echo "[pai-audit] readiness_report=$readiness_report"
 echo "[pai-audit] env_file=$env_file"
