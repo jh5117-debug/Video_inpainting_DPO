@@ -119,6 +119,20 @@ def write_patched_runner(repo_dir: Path, work_dir: Path, num_samples: int) -> Pa
     if not src.exists():
         raise FileNotFoundError(f"COCOCO release script not found: {src}")
     text = src.read_text(encoding="utf-8")
+    wandb_stub = """\
+import sys
+import types
+try:
+    import wandb  # noqa: F401
+except Exception:
+    class _WandbNoop(types.SimpleNamespace):
+        def __getattr__(self, name):
+            def _noop(*args, **kwargs):
+                return None
+            return _noop
+    sys.modules["wandb"] = _WandbNoop()
+"""
+    text = wandb_stub + "\n" + text
     if not re.search(r"(?m)^import os\b", text):
         text = "import os\n" + text
     old = "for step in range(10):"
