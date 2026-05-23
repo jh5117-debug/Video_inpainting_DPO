@@ -503,7 +503,7 @@ def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_d
         if cococo_repo is None or root is None:
             raise RuntimeError("missing COCOCO_REPO_ROOT or COCOCO_WEIGHT_ROOT")
         model_path = first_existing([root / "cococo", root])
-        sd_inpaint = first_existing([root / "stable-diffusion-v1-5-inpainting", os.environ.get("COCOCO_SD_INPAINT_ROOT")])
+        sd_inpaint = first_existing([os.environ.get("COCOCO_SD_INPAINT_ROOT"), root / "stable-diffusion-v1-5-inpainting"])
         if model_path is None or sd_inpaint is None:
             raise RuntimeError("missing COCOCO model_path or stable-diffusion-v1-5-inpainting")
         return [
