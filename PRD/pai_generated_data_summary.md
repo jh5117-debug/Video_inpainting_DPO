@@ -36,6 +36,11 @@ Not ready for full offline generation yet:
 - output video decode, fps, frame count, resolution, and comp outside-mask checks are still pending;
 - `tools/offline_loser_generation.py` currently writes plans/schemas and intentionally does not dispatch real inference.
 
+Use `tools/pai_videodpo_single_sample_generation_smoke.py --run_generation` for
+the real one-sample gate. It uses the canonical VideoDPO setting from
+`DPO_finetune/configs/official_diffueraser_stage1.yaml` and
+`VIDEO_DPO_TRAIN_DATA_YAML`.
+
 ## Decision
 
 The next safe step is one-sample real generation smoke, not full data generation.

@@ -4,7 +4,7 @@ priority: 5
 
 data:
   source_generated_loser_root_env: GENERATED_LOSER_ROOT
-  preferred_source_experiment: official_videodpo_diffueraser_data_partialmask_loser_comp
+  preferred_source_experiment: official_videodpo_diffueraser_data_partialmask_loser_comp_k4
   win_source: videodpo_winner
   loser_source: offline_partialmask_comp_loser
   mask_for_loser_generation: partial

@@ -1,5 +1,5 @@
 experiment_name: official_videodpo_diffueraser_data_partialmask_loser_comp
-status: scaffold
+status: deprecated_use_official_videodpo_diffueraser_data_partialmask_loser_comp_k4
 priority: 3
 
 data:

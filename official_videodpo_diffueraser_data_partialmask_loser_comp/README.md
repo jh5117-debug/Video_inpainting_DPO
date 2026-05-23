@@ -1,5 +1,9 @@
 # official_videodpo_diffueraser_data_partialmask_loser_comp
 
+Deprecated: use `official_videodpo_diffueraser_data_partialmask_loser_comp_k4`
+for this week's experiments. This older scaffold is kept only as historical
+context so old notes do not break.
+
 Purpose: the cleanest partial-mask data-only loser ablation.
 
 ## Definition

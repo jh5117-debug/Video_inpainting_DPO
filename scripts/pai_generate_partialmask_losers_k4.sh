@@ -11,7 +11,7 @@ if [ -f configs/paths/pai.detected.env ]; then
   source configs/paths/pai.detected.env
 fi
 
-source_dataset="${SOURCE_DATASET:-${VIDEO_DPO_DATA_ROOT:-}}"
+source_dataset="${SOURCE_DATASET:-${VIDEO_DPO_TRAIN_DATA_YAML:-${VIDEO_DPO_DATA_ROOT:-}}}"
 output_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4}"
 model_name="${MODEL_NAME:-all}"
 num_masks="${NUM_MASKS_PER_VIDEO:-4}"
@@ -42,7 +42,7 @@ for model in "${models[@]}"; do
       --output_root "$output_root" \
       --model_name "$model" \
       --mask_mode partial \
-      --mask_convention "partial_mask_semantics_unconfirmed_until_model_smoke" \
+      --mask_convention "canonical_320x512_16f_png_255_inpaint_0_keep_comp_normalized_before_manifest" \
       --comp "$comp" \
       --offline true \
       --num_masks_per_video "$num_masks" \

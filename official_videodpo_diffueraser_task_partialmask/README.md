@@ -8,7 +8,7 @@ Changed:
 
 - Training mask is partial.
 - DiffuEraser receives the partial mask as its task condition.
-- Data can reuse the win / loser / mask outputs from `official_videodpo_diffueraser_data_partialmask_loser_comp`.
+- Data can reuse the win / loser / mask outputs from `official_videodpo_diffueraser_data_partialmask_loser_comp_k4`.
 
 Not changed in first scaffold:
 

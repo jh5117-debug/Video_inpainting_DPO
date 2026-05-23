@@ -120,6 +120,26 @@ Therefore the next step is not full data generation yet. Run one-sample smoke
 per model first, then start offline generation only for models that pass video
 decode, fps, frame-count, resolution, and comp outside-mask checks.
 
+Canonical smoke command:
+
+```bash
+python tools/pai_videodpo_single_sample_generation_smoke.py \
+  --models all \
+  --mask_modes full,partial \
+  --output_root outputs/asset_smoke_tests/videodpo_single_sample \
+  --run_generation
+```
+
+This command writes:
+
+- `PRD/videodpo_canonical_data_setting.md`
+- `outputs/asset_smoke_tests/videodpo_single_sample/report.md`
+- `outputs/asset_smoke_tests/videodpo_single_sample/smoke_manifest.jsonl`
+
+Without `--run_generation`, the same tool only prepares canonical inputs and
+writes the setting report; that is useful for debugging but does not pass the
+asset readiness gate.
+
 ## Online Loser Generation
 
 Online loser generation is future work. Do not start it until offline generation is stable and all four generator runtimes are confirmed.

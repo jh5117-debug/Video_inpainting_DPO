@@ -11,7 +11,7 @@ if [ -f configs/paths/pai.detected.env ]; then
   source configs/paths/pai.detected.env
 fi
 
-source_dataset="${SOURCE_DATASET:-${VIDEO_DPO_DATA_ROOT:-}}"
+source_dataset="${SOURCE_DATASET:-${VIDEO_DPO_TRAIN_DATA_YAML:-${VIDEO_DPO_DATA_ROOT:-}}}"
 output_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser}"
 model_name="${MODEL_NAME:-all}"
 seed="${SEED:-20260523}"
@@ -33,7 +33,7 @@ for model in "${models[@]}"; do
     --output_root "$output_root" \
     --model_name "$model" \
     --mask_mode full \
-    --mask_convention "model_specific_full_frame_mask_unconfirmed_until_smoke" \
+    --mask_convention "canonical_320x512_16f_diffueraser_internal_0_hole_generator_png_255_inpaint" \
     --comp false \
     --offline true \
     --num_masks_per_video 1 \

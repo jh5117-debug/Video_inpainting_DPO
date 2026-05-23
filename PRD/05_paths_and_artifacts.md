@@ -50,6 +50,23 @@ Code lives in experiment-named directories. Data, weights, generated losers, log
 | YouTube-VOS frames | `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train/JPEGImages` |
 | YouTube-VOS masks | `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train/Annotations` |
 
+## Canonical Generated-Loser Gate
+
+Generated losers must use the canonical VideoDPO setting verified from
+`DPO_finetune/configs/official_diffueraser_stage1.yaml`:
+
+- `train_height=320`
+- `train_width=512`
+- `video_length=16`
+- `frame_stride=1`
+- `full_mask_value=0.0`
+
+The PAI command that records the exact sample-level proof is:
+
+```bash
+python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
+```
+
 ## PAI Recorded Artifact Roots
 
 These must be verified on PAI before destructive cleanup:

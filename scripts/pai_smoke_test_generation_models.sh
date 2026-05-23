@@ -51,7 +51,7 @@ check_model() {
   fi
 
   if [ "$run_one_sample" = "1" ]; then
-    gen_status="UNIMPLEMENTED_IN_WRAPPER"
+    gen_status="DELEGATED_TO_CANONICAL_SMOKE_TOOL"
   fi
 
   printf '| %s | `%s` | `%s` | %s | %s | %s |\n' \
@@ -68,9 +68,26 @@ cat >> "$report" <<'MD'
 ## Notes
 
 - Default mode does import/compile and weight-path smoke only.
-- Set `RUN_ONE_SAMPLE=1` only after confirming the exact model-specific command.
+- Set `RUN_ONE_SAMPLE=1` to run canonical VideoDPO one-sample full/partial generation smoke through `tools/pai_videodpo_single_sample_generation_smoke.py`.
 - This script intentionally does not start DPO training.
 MD
+
+if [ "$run_one_sample" = "1" ]; then
+  {
+    echo
+    echo "## Canonical One-Sample Generation Smoke"
+    echo
+  } >> "$report"
+  models_arg="${SMOKE_MODELS:-all}"
+  python tools/pai_videodpo_single_sample_generation_smoke.py \
+    --models "$models_arg" \
+    --mask_modes "${SMOKE_MASK_MODES:-full,partial}" \
+    --output_root "$out_root/canonical_videodpo_single_sample" \
+    --report_path "$out_root/canonical_videodpo_single_sample/report.md" \
+    --manifest_path "$out_root/canonical_videodpo_single_sample/smoke_manifest.jsonl" \
+    --run_generation \
+    >> "$report" 2>&1 || true
+fi
 
 echo "[smoke] report=$report"
 echo "[smoke] out_root=$out_root"

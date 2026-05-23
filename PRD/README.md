@@ -14,5 +14,6 @@ Start here:
 10. `dpo_diagnostics_and_metrics_plan.md` - future training diagnostics and metric boundaries.
 11. `pai_asset_readiness_report.md` - PAI-generated asset readiness report template/output.
 12. `pai_generated_data_summary.md` - current PAI generated-loser readiness and smoke-test gate.
+13. `videodpo_canonical_data_setting.md` - generated on PAI by the single-sample smoke tool; records the canonical VideoDPO H/W/T sampling contract.
 
 `archive/` contains historical plans and handoff notes. Archive files are useful context, but they do not define the current experiment plan unless the information has been migrated into the active PRDs above.

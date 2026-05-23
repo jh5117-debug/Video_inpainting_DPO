@@ -54,3 +54,11 @@ comp uses `comp_loser_video_path` as `final_loser_video_path`; no-comp uses
 Current conclusion: asset paths are ready enough to run one-sample generation
 smoke tests. Full offline generation should not start until each selected model
 passes real full-mask and partial-mask smoke with decode/fps/frame-count checks.
+
+The canonical smoke entrypoint is:
+
+```bash
+python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
+```
+
+It does not train and does not launch full data generation.

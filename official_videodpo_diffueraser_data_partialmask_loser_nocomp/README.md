@@ -1,5 +1,9 @@
 # official_videodpo_diffueraser_data_partialmask_loser_nocomp
 
+Deprecated: use `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4`
+for this week's experiments. This older scaffold is kept only as historical
+context so old notes do not break.
+
 Purpose: diagnostic comp-vs-no-comp ablation.
 
 ## Definition

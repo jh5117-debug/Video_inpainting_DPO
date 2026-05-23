@@ -21,6 +21,13 @@ This project keeps code separate from data, generated losers, model weights, and
 | `PROPAINTER_WEIGHT_ROOT` | ProPainter checkpoint root. |
 | `COCOCO_WEIGHT_ROOT` | CoCoCo checkpoint/root config path. |
 | `MINIMAX_REMOVER_WEIGHT_ROOT` | MiniMax-Remover checkpoint/cache root. |
+| `THIRD_PARTY_VIDEO_INPAINTING_ROOT` | Optional common root containing third-party repos/weights. |
+| `COCOCO_REPO_ROOT` | CoCoCo repository root for the one-sample smoke wrapper. |
+| `MINIMAX_REMOVER_REPO_ROOT` | MiniMax-Remover repository root for the one-sample smoke wrapper. |
+| `BASE_MODEL_PATH` | SD1.5 base model path used by DiffuEraser smoke. |
+| `VAE_PATH` | SD VAE path used by DiffuEraser smoke. |
+| `PCM_WEIGHTS_PATH` | PCM weights path required by the DiffuEraser OR wrapper, even when PCM acceleration is not the selected evaluation setting. |
+| `DIFFUERASER_PYTHON`, `PROPAINTER_PYTHON`, `COCOCO_PYTHON`, `MINIMAX_REMOVER_PYTHON` | Optional per-model Python executables if a model needs a separate conda/env. |
 | `OFFICIAL_VIDEODPO_ROOT` | Official VideoDPO source checkout. |
 | `OFFICIAL_VIDEODPO_WEIGHT_ROOT` | Official VideoDPO checkpoint root. |
 | `VC2_WEIGHT_ROOT` | VC2 baseline checkpoint root. |
