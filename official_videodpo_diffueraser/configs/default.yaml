@@ -1,0 +1,19 @@
+experiment_name: official_videodpo_diffueraser
+status: completed_protected
+
+model:
+  family: diffueraser
+  bridge: fullmask
+  weight_root_env: DIFFUERASER_WEIGHT_ROOT
+
+data:
+  win_source: videodpo_winner
+  loser_source: videodpo_rejected
+  mask_for_loser_generation: none
+  mask_for_training: full
+  comp: false
+  offline_loser_generation: false
+  changed_variable: model_adapter
+
+process:
+  default_name: lingbot-phy

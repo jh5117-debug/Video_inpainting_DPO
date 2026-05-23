@@ -1,0 +1,10 @@
+experiment_name: official_videodpo_diffueraser_online_loser_generation
+status: future_work
+priority: future
+
+data:
+  loser_generation: online
+  changed_variable: generation_timing
+
+process:
+  default_name: lingbot-phy

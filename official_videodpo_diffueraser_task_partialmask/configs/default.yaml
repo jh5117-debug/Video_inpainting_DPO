@@ -1,0 +1,24 @@
+experiment_name: official_videodpo_diffueraser_task_partialmask
+status: scaffold
+priority: 5
+
+data:
+  source_generated_loser_root_env: GENERATED_LOSER_ROOT
+  preferred_source_experiment: official_videodpo_diffueraser_data_partialmask_loser_comp
+  win_source: videodpo_winner
+  loser_source: offline_partialmask_comp_loser
+  mask_for_loser_generation: partial
+  mask_for_training: partial
+  comp: true
+  offline_loser_generation: true
+  changed_variable: task
+
+training:
+  mask_policy: same-mask
+  reserved_mask_policies:
+    - resampled-mask
+    - mixed-mask
+  loss_region: full_video
+
+process:
+  default_name: lingbot-phy

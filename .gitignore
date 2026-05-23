@@ -5,19 +5,62 @@ __pycache__/
 .env
 .venv/
 venv/
+configs/paths/*.local.env
+configs/paths/*.detected.env
 
 .DS_Store
 .ipynb_checkpoints/
 
-# External inputs and weights. Keep these out of Git.
-data/
+# External inputs and weights. Keep these out of Git, but keep lightweight
+# directory docs/placeholders tracked.
+data/*
+!data/README.md
+!data/videodpo/
+data/videodpo/*
+!data/videodpo/.gitkeep
+!data/youtubevos/
+data/youtubevos/*
+!data/youtubevos/.gitkeep
+!data/generated_losers/
+data/generated_losers/*
+!data/generated_losers/README.md
+!data/generated_losers/fullmask/
+data/generated_losers/fullmask/*
+!data/generated_losers/fullmask/.gitkeep
+!data/generated_losers/partialmask_comp/
+data/generated_losers/partialmask_comp/*
+!data/generated_losers/partialmask_comp/.gitkeep
+!data/generated_losers/partialmask_nocomp/
+data/generated_losers/partialmask_nocomp/*
+!data/generated_losers/partialmask_nocomp/.gitkeep
 data_val/
-weights/
+weights/*
+!weights/README.md
+!weights/diffueraser/
+weights/diffueraser/*
+!weights/diffueraser/.gitkeep
+!weights/propainter/
+weights/propainter/*
+!weights/propainter/.gitkeep
+!weights/cococo/
+weights/cococo/*
+!weights/cococo/.gitkeep
+!weights/minimax_remover/
+weights/minimax_remover/*
+!weights/minimax_remover/.gitkeep
+!weights/official_videodpo/
+weights/official_videodpo/*
+!weights/official_videodpo/.gitkeep
+!weights/vc2/
+weights/vc2/*
+!weights/vc2/.gitkeep
 archives/
 diffuEraser_weights/
 
 # Experiment outputs. New runs should live under experiments/.
-experiments/
+experiments/*
+!experiments/README.md
+!experiments/.gitkeep
 exp_result/
 finetune-stage1/
 finetune-stage2/
@@ -28,13 +71,16 @@ converted_weights/
 # Runtime logs and caches.
 wandb/
 runs/
-outputs/
+outputs/*
+!outputs/README.md
+!outputs/.gitkeep
 smoke_outputs/
 Diffueraser_DPO_Log/
 checkpoints/
 logs/
 log/
 log.log
+PRD/pai_audit_pai_node_*.md
 .wandb_cache/
 .hf_cache/
 .hf_repair_stage_dirs/

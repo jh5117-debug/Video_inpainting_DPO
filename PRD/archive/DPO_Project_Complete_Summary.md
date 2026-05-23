@@ -854,3 +854,421 @@ nvidia-smi
 5. 任何时候都避免 stage1 full 和 stage2 smoke/full 同时使用 4-7 号卡。
 
 本轮 stage1 smoke 已经证明 adapter 基础链路可行；stage1 full 和 stage2 的主要风险转为资源调度、checkpoint 继承路径、以及 PAI workspace 是否保持最新 hotfix。
+
+### 8.8 2026-05-21 VC2 official step3000 VBench partial 评测与 full VBench 口径
+
+VC2 official clean run 已经按 `max_steps=3000` 正常结束，最终可用 checkpoint 为：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/videodpo_vc2_dpo_official_clean/pai-vc2-dpo-official-full-gpu0-3-gb8-step3000-20260521_061414/checkpoints/last.ckpt
+```
+
+完整 VBench 曾使用如下输出根目录启动：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_full/pai_vc2_official_step3000_20260521_113254
+```
+
+完整 VBench 的真实口径必须满足：
+
+```text
+PROMPT_LIMIT=0
+PROMPT_RANDOM_LIMIT=0
+SAMPLES_PER_PROMPT=5
+RUN_INFERENCE=1
+RUN_VBENCH=1
+MAKE_PAPER_TABLE=1
+```
+
+在该口径下，one-shot wrapper 会先生成完整 VBench prompt suite 的 5 samples，然后自动进入 `VBench/evaluate.py`，最后生成 `summary.json` 和 paper-style table。这才是可以和论文 full VBench 对齐的结果。
+
+由于完整生成耗时过长，本轮在 `sample_0` 约 330 个 raw mp4 时人工停止 full generation，并构造了一个只用于快速趋势观察的 partial300：
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_full/pai_vc2_official_step3000_20260521_113254/vc2_dpo_step3000_partial300_quiet
+```
+
+该 partial300 的关键处理：
+
+```text
+1. 只使用已经生成的 sample_0 raw mp4。
+2. 选取约 300 个可匹配 VBench prompt 的视频。
+3. 为了让 VBench standard mode 能跑，将同一个 sample_0 链接为 -0 到 -4。
+4. 自动跳过 subset 中没有样本的维度，避免 object_class 等空集触发 ZeroDivisionError。
+```
+
+因此它不是 official full VBench，不能用于报告最终 `VBench Total`。本轮 partial300 的结果为：
+
+| Run | VBench Total (%) | VBench Quality (%) | VBench Semantics (%) | MeanRaw |
+| --- | ---: | ---: | ---: | ---: |
+| VC2 official step3000 partial300_quiet | NA | 83.4495 | NA | 0.6836 |
+
+可用维度分数：
+
+| Dimension | Score |
+| --- | ---: |
+| aesthetic quality | 0.6166 |
+| appearance style | 0.2515 |
+| background consistency | 0.9826 |
+| color | 0.7579 |
+| dynamic degree | 0.6000 |
+| human action | 0.9524 |
+| imaging quality | 0.6648 |
+| motion smoothness | 0.9810 |
+| multiple objects | 0.2812 |
+| overall consistency | 0.2837 |
+| scene | 0.5625 |
+| subject consistency | 0.9675 |
+| temporal flickering | 0.9855 |
+
+`Total` 和 `Semantics` 为 `NA` 的原因是 partial subset 缺少：
+
+```text
+object_class
+spatial_relationship
+temporal_style
+```
+
+这些缺失不是模型错误，而是 partial300 的抽样没有覆盖所有 VBench semantic dimensions。完整 full VBench 或按维度补齐 prompt 后才能得到完整 semantic/total。
+
+与已有数字的趋势对比：
+
+| Source | Model | VBench Total (%) | Quality (%) | Semantics (%) | MeanRaw |
+| --- | --- | ---: | ---: | ---: | ---: |
+| paper Table 1 | VC2 Baseline | 80.44 | 82.20 | 73.42 | - |
+| paper Table 1 | VideoDPO | 81.93 | 83.07 | 77.38 | - |
+| previous reproduced full VBench | VC2-Base | 79.86 | 81.44 | 73.51 | 0.658176 |
+| previous reproduced full VBench | VideoDPO-VC2 | 77.05 | 80.24 | 64.30 | 0.625838 |
+| current partial only | VC2 official step3000 | NA | 83.45 | NA | 0.6836 |
+
+Interpretation:
+
+```text
+1. current step3000 partial Quality looks strong and is close to / slightly above paper VideoDPO Quality.
+2. It does not prove paper-level Total because semantic dimensions are incomplete.
+3. For a fair quick comparison, run the same partial300 protocol on VC2 base model.ckpt.
+4. For a reportable comparison, rerun full VBench and let it finish.
+```
+
+### 8.9 VBench cleanup policy
+
+PAI 上已经有多轮 failed / aborted VBench generation，视频目录会占用大量空间。清理时保留：
+
+```text
+1. 已经完成的 summary.json / summary.csv / paper table。
+2. 当前有用的 partial300_quiet/vbench_eval。
+3. 需要继续评测或复查的 final full VBench output。
+```
+
+可以删除：
+
+```text
+1. aborted raw generation，例如 vc2_dpo_step3000/raw。
+2. failed partial dirs，例如 vc2_dpo_step3000_partial300 与 vc2_dpo_step3000_partial300_rerun。
+3. 没有 summary.json 且包含大量 mp4 的旧 vbench_full / vbench_fullmask run。
+```
+
+推荐先 dry-run 打印候选目录和大小，再执行删除，避免误删有效 full VBench 结果。
+
+## 8.10 2026-05-22 VC2 official full VBench 与 DiffuEraser stage2 fullmask 续跑
+
+### VC2 official full VBench
+
+VC2 official VideoDPO step3000 checkpoint:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/videodpo_vc2_dpo_official_clean/pai-vc2-dpo-official-full-gpu0-3-gb8-step3000-20260521_061414/checkpoints/last.ckpt
+```
+
+Full VBench run:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_full/pai-vc2-official-step3000-full-vbench-20260521_141824
+```
+
+Status:
+
+```text
+4730 / 4730 videos generated
+VBench eval completed
+```
+
+Final score:
+
+| Run | Total (%) | Quality (%) | Semantic (%) | MeanRaw |
+| --- | ---: | ---: | ---: | ---: |
+| Official VC2 VideoDPO step3000 | 80.5997 | 82.8055 | 71.7763 | 0.659610 |
+
+Paper-style VC2 comparison:
+
+| Model | Total | Motion smooth. | Dynamic degree | Aesthetic quality | Object class | Multiple objects | Human action | Spatial relation. | Scene | Appear. style | Subject consist. | Back. consist. |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Paper VC2 Baseline | 80.44 | 97.73 | 42.50 | 63.13 | 92.55 | 40.66 | 95.00 | 35.86 | 55.29 | 87.84 | 96.85 | 98.22 |
+| Paper VC2 VideoDPO | 81.93 | 92.18 | 32.64 | 63.18 | 97.15 | 52.29 | 99.00 | 48.71 | 71.07 | 88.65 | 95.69 | 96.98 |
+| Reproduced VC2 Base | 79.86 | 97.80 | 43.89 | 61.51 | 93.80 | 42.09 | 95.00 | 38.83 | 51.83 | 25.24 | 96.91 | 96.18 |
+| Official VC2 VideoDPO step3000 | 80.60 | 97.93 | 58.89 | 61.33 | 88.84 | 42.33 | 94.60 | 39.88 | 45.31 | 25.26 | 96.68 | 96.88 |
+
+Saved table artifacts:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_paper_style.md
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_paper_style.csv
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_paper_style.tex
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_full_vbench.md
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_full_vbench.csv
+```
+
+VC2 side-by-side status:
+
+```text
+base_summary exists
+base_named=NOT_FOUND
+vc2_made=0/30
+```
+
+Conclusion: do not regenerate VC2 base qualitative videos unless a fresh VC2 qualitative figure is explicitly needed. The report path should use the tables above.
+
+### DiffuEraser official stage2 and fullmask VBench
+
+Official DiffuEraser stage1 weights:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage1/pai-official-diffueraser-stage1-full-gpu4-7-gb8-step3000-20260521_072559/last_weights
+```
+
+Official DiffuEraser stage2 completed after clearing stale GPU workers and relaunching with `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True`:
+
+```text
+run:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage2/pai-official-diffueraser-stage2-full-gpu4-7-gb8-step3000-20260521_150540
+
+weights:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage2/pai-official-diffueraser-stage2-full-gpu4-7-gb8-step3000-20260521_150540/last_weights
+
+log:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/pai-official-diffueraser-stage2-full-gpu4-7-gb8-step3000-20260521_150540.log
+
+final status:
+[official-diffueraser] done
+err=none
+```
+
+Current DiffuEraser stage2 fullmask full VBench run:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926
+```
+
+Script/log:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926/run_fullmask_multigpu_v2_base30.sh
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926/run_fullmask_multigpu_v2_base30.log
+```
+
+Execution plan:
+
+```text
+1. Generate stage2 full VBench videos: 946 prompts x 5 samples = 4730.
+2. Generate only 30 base qualitative videos: 5 samples x 6 prompts.
+3. Generate 30 SBS videos: left=DiffuEraser Base, right=DiffuEraser Stage2 Fullmask.
+4. Run VBench on stage2 full set.
+```
+
+Last checked status:
+
+| Item | Count | Status |
+| --- | ---: | --- |
+| DiffuEraser stage2 videos | 687 / 4730 | healthy, increasing |
+| DiffuEraser base30 videos | 0 / 30 | pending by design |
+| DiffuEraser SBS30 videos | 0 / 30 | pending by design |
+| matching processes | 23 | alive |
+
+GPU/process notes:
+
+```text
+Use GPUs 1-6 for current generation.
+Processes are named lingbotworld-phy.
+GPU7 has stale [Not Found] memory around 58GB and reset was not supported.
+Do not use GPU7 unless the stale allocation clears or the node restarts.
+```
+
+## 8.11 2026-05-23 Final official-VideoDPO VC2 and DiffuEraser results
+
+This is the final compact record for the two official-VideoDPO experiments:
+
+```text
+1. official-VideoDPO VC2 fine-tuning + full VBench
+2. official-VideoDPO DiffuEraser fine-tuning + fullmask full VBench
+```
+
+### official-VideoDPO VC2
+
+Method:
+
+```text
+Used official VideoDPO at commit 1febdb4.
+Fine-tuned VC2 with DPO for 3000 optimizer steps.
+Global batch = 8, beta_dpo = 5000.
+Evaluated on full VBench standard prompts with 5 samples per prompt.
+```
+
+Important paths:
+
+```text
+checkpoint:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/videodpo_vc2_dpo_official_clean/pai-vc2-dpo-official-full-gpu0-3-gb8-step3000-20260521_061414/checkpoints/last.ckpt
+
+full VBench:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/vbench_full/pai-vc2-official-step3000-full-vbench-20260521_141824
+
+tables:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_paper_style.md
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/tables/vc2_4row_full_vbench.md
+
+SBS 30:
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/vc2_and_diffueraser_20260522/vc2_base_vs_official_videodpo_samplemix
+```
+
+VC2 PPT-style comparison:
+
+| Model | Total | Motion smooth. | Dynamic degree | Aesthetic quality | Object class | Multiple objects | Human action | Spatial relation. | Scene | Appear. style | Subject consist. | Back. consist. |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Paper VC2 Baseline | 80.44 | 97.73 | 42.50 | 63.13 | 92.55 | 40.66 | 95.00 | 35.86 | 55.29 | 87.84 | 96.85 | 98.22 |
+| Paper VC2 VideoDPO | 81.93 | 92.18 | 32.64 | 63.18 | 97.15 | 52.29 | 99.00 | 48.71 | 71.07 | 88.65 | 95.69 | 96.98 |
+| Official VC2 Base reproduced | 79.86 | 97.80 | 43.89 | 61.51 | 93.80 | 42.09 | 95.00 | 38.83 | 51.83 | 25.24 | 96.91 | 96.18 |
+| Official VC2 VideoDPO step3000 | 80.60 | 97.93 | 58.89 | 61.33 | 88.84 | 42.33 | 94.60 | 39.88 | 45.31 | 25.26 | 96.68 | 96.88 |
+| Delta VideoDPO - Base | +0.74 | +0.13 | +15.00 | -0.18 | -4.96 | +0.24 | -0.40 | +1.05 | -6.52 | +0.02 | -0.23 | +0.70 |
+
+Insight:
+
+```text
+The clean official reproduction gives VC2 Base 79.86 and VC2 VideoDPO step3000
+80.60 in the same local VBench environment, a +0.74 Total improvement. The
+paper reports 81.93 for VC2 VideoDPO, so the reproduction is close but not
+identical. Per-dimension paper matching is VBench/environment sensitive; the
+within-environment Base-to-DPO delta is the safest claim.
+```
+
+Diagnostics note:
+
+```text
+The strict official run used APPLY_DPO_DIAG_PATCH=0, so it does not contain
+full [dpo_diag] tables. Use train/implicit_acc and train/loss_step from the
+log/TensorBoard instead.
+```
+
+### official-VideoDPO DiffuEraser
+
+Method:
+
+```text
+Inserted DiffuEraser into the official VideoDPO Lightning trainer via local
+model/data adapters.
+
+Stage1:
+  train UNet2D + BrushNet on full-mask VideoDPO preference pairs.
+
+Stage2:
+  load Stage1 weights, initialize Motion UNet, copy the Stage1 2D path into
+  Motion UNet, freeze BrushNet and 2D UNet parts, train only MotionModule.
+
+Evaluation:
+  blank RGB frames + full mask + VBench prompt.
+```
+
+Important code:
+
+```text
+official_videodpo_diffueraser/models.py
+official_videodpo_diffueraser/data.py
+DPO_finetune/configs/official_diffueraser_stage1.yaml
+DPO_finetune/configs/official_diffueraser_stage2.yaml
+DPO_finetune/scripts/pai_official_diffueraser_stage.sh
+tools/generate_diffueraser_fullmask_vbench.py
+```
+
+Important paths:
+
+```text
+Stage1 weights:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage1/pai-official-diffueraser-stage1-full-gpu4-7-gb8-step3000-20260521_072559/last_weights
+
+Stage2 weights:
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/official_diffueraser_stage2/pai-official-diffueraser-stage2-full-gpu4-7-gb8-step3000-20260521_150540/last_weights
+
+fullmask VBench root:
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926
+
+final tables:
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926/vbench_paper_table_base_vs_stage2.md
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926/vbench_paper_table_base_vs_stage2.csv
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/vbench_fullmask/pai-official-diffueraser-stage2-vs-base-full-vbench-20260522_002926/vbench_paper_table_base_vs_stage2.tex
+```
+
+Main result:
+
+| Backbone | Model | VBench Total (%) | VBench Quality (%) | VBench Semantics (%) | MeanRaw |
+| --- | --- | ---: | ---: | ---: | ---: |
+| DiffuEraser-FullMask | DiffuEraser-Base-Fullmask | 64.6162 | 74.4651 | 25.2204 | 0.3935 |
+| DiffuEraser-FullMask | DiffuEraser-Stage2-Fullmask | 73.6463 | 78.4804 | 54.3099 | 0.5560 |
+| Delta | Stage2 - Base | +9.0301 | +4.0153 | +29.0894 | +0.1625 |
+
+PPT-style dimension table:
+
+| Model | Total | Motion smooth. | Dynamic degree | Aesthetic quality | Object class | Multiple objects | Human action | Spatial relation. | Scene | Appear. style | Subject consist. | Back. consist. |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| DiffuEraser Base Fullmask | 64.62 | 98.33 | 0.28 | 36.28 | 14.18 | 2.15 | 6.20 | 9.14 | 0.47 | 22.78 | 99.44 | 99.09 |
+| DiffuEraser Stage2 Fullmask | 73.65 | 97.30 | 44.72 | 51.77 | 69.08 | 24.59 | 66.20 | 26.03 | 27.49 | 23.79 | 95.87 | 98.34 |
+| Delta Stage2 - Base | +9.03 | -1.03 | +44.44 | +15.49 | +54.91 | +22.44 | +60.00 | +16.89 | +27.02 | +1.01 | -3.57 | -0.76 |
+
+Full 16-dimension table:
+
+| Metric | Base-Fullmask | Stage2-Fullmask | Delta |
+| --- | ---: | ---: | ---: |
+| Total | 64.6162 | 73.6463 | +9.0301 |
+| Quality | 74.4651 | 78.4804 | +4.0153 |
+| Semantic | 25.2204 | 54.3099 | +29.0894 |
+| MeanRaw | 0.3935 | 0.5560 | +0.1625 |
+| subject consistency | 99.44 | 95.87 | -3.57 |
+| background consistency | 99.09 | 98.34 | -0.76 |
+| aesthetic quality | 36.28 | 51.77 | +15.49 |
+| imaging quality | 60.23 | 58.17 | -2.06 |
+| object class | 14.18 | 69.08 | +54.91 |
+| multiple objects | 2.15 | 24.59 | +22.44 |
+| color | 64.99 | 64.44 | -0.55 |
+| spatial relationship | 9.14 | 26.03 | +16.89 |
+| scene | 0.47 | 27.49 | +27.02 |
+| temporal style | 8.15 | 21.71 | +13.56 |
+| overall consistency | 10.07 | 22.60 | +12.54 |
+| human action | 6.20 | 66.20 | +60.00 |
+| temporal flickering | 97.82 | 97.52 | -0.30 |
+| motion smoothness | 98.33 | 97.30 | -1.03 |
+| dynamic degree | 0.28 | 44.72 | +44.44 |
+| appearance style | 22.78 | 23.79 | +1.01 |
+
+Insight:
+
+```text
+Stage2 Fullmask improves Total from 64.62 to 73.65, with the largest gain in
+Semantic score: 25.22 -> 54.31, +29.09. The strongest sub-dimension gains are
+Human action +60.00, Object class +54.91, Dynamic degree +44.44, Scene +27.02,
+Multiple objects +22.44, Spatial relationship +16.89, and Aesthetic quality
++15.49.
+
+This indicates that official-VideoDPO DiffuEraser Stage2 mainly improves prompt
+following and dynamic semantic content under fullmask generation, while keeping
+low-level temporal stability high. Subject/background consistency and motion
+smoothness slightly drop, but remain high in absolute terms.
+```
+
+Qualitative interpretation:
+
+```text
+The baseline DiffuEraser fullmask samples look strange because original
+DiffuEraser is a video inpainting model, not a pure text-to-video model.
+Fullmask blank conditioning is out-of-distribution for the base model. Audits
+showed correct mask polarity, correct stage pipeline, and correct Base/Stage2
+file pairing, so the weak Base qualitative results should be treated as a real
+baseline limitation rather than a known implementation bug.
+```

@@ -1,0 +1,18 @@
+experiment_name: official_videodpo_diffueraser_youtubevos_partialmask_data
+status: scaffold
+priority: 6
+
+data:
+  source_dataset_env: YOUTUBE_VOS_ROOT
+  output_root_env: GENERATED_LOSER_ROOT
+  win_source: youtubevos_source_video
+  loser_source: offline_partialmask_video_inpainting
+  mask_for_loser_generation: partial
+  mask_for_training: partial
+  comp: true
+  offline_loser_generation: true
+  changed_variable: data_source
+  base_task_experiment: official_videodpo_diffueraser_task_partialmask
+
+process:
+  default_name: lingbot-phy

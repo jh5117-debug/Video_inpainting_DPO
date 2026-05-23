@@ -1,0 +1,23 @@
+experiment_name: official_videodpo_diffueraser_data_partialmask_loser_comp
+status: scaffold
+priority: 3
+
+data:
+  source_dataset_env: VIDEO_DPO_DATA_ROOT
+  output_root_env: GENERATED_LOSER_ROOT
+  win_source: videodpo_winner
+  loser_source: offline_partialmask_video_inpainting
+  mask_for_loser_generation: partial
+  mask_for_training: full
+  comp: true
+  offline_loser_generation: true
+  changed_variable: data
+
+generation:
+  model_name: diffueraser
+  seed: 42
+  num_samples: null
+  save_manifest: true
+
+process:
+  default_name: lingbot-phy
