@@ -33,6 +33,7 @@ import numpy as np
 
 IMG_EXTS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}
 MODEL_NAMES = ("diffueraser", "propainter", "cococo", "minimax_remover")
+DIFFUERASER_PCM_REL = Path("sd15") / "pcm_sd15_smallcfg_2step_converted.safetensors"
 
 
 @dataclass
@@ -128,6 +129,18 @@ def first_existing(paths: Iterable[str | Path | None]) -> Path | None:
         path = Path(item).expanduser()
         if path.exists():
             return path.resolve()
+    return None
+
+
+def resolve_diffueraser_pcm_root(paths: Iterable[str | Path | None]) -> Path | None:
+    for item in paths:
+        if not item:
+            continue
+        path = Path(item).expanduser()
+        if (path / DIFFUERASER_PCM_REL).exists():
+            return path.resolve()
+        if path.name == "sd15" and (path / DIFFUERASER_PCM_REL.name).exists():
+            return path.parent.resolve()
     return None
 
 
@@ -456,10 +469,21 @@ def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_d
         vae = first_existing([os.environ.get("VAE_PATH"), "/mnt/nas/hj/weights/sd-vae-ft-mse", repo / "weights" / "sd-vae-ft-mse"])
         diffueraser = first_existing([os.environ.get("DIFFUERASER_WEIGHT_ROOT"), repo / "weights" / "diffuEraser", repo / "weights" / "diffueraser"])
         propainter = first_existing([os.environ.get("PROPAINTER_WEIGHT_ROOT"), repo / "weights" / "propainter", third / "weights" / "propainter" if third else None])
-        pcm = first_existing([os.environ.get("PCM_WEIGHTS_PATH"), "/mnt/nas/hj/weights/PCM_Weights", repo / "weights" / "PCM_Weights"])
+        pcm = resolve_diffueraser_pcm_root([
+            os.environ.get("PCM_WEIGHTS_PATH"),
+            "/mnt/nas/hj/weights/PCM_Weights",
+            repo / "weights" / "PCM_Weights",
+            third / "weights" / "PCM_Weights" if third else None,
+            third / "downloads" / "PCM_Weights" if third else None,
+            "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/PCM_Weights",
+            "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/downloads/PCM_Weights",
+        ])
         missing = [name for name, path in [("BASE_MODEL_PATH", base), ("VAE_PATH", vae), ("DIFFUERASER_WEIGHT_ROOT", diffueraser), ("PROPAINTER_WEIGHT_ROOT", propainter), ("PCM_WEIGHTS_PATH", pcm)] if path is None]
         if missing:
-            raise RuntimeError(f"missing DiffuEraser assets: {missing}")
+            raise RuntimeError(
+                f"missing DiffuEraser assets: {missing}; expected PCM file relative to "
+                f"PCM_WEIGHTS_PATH: {DIFFUERASER_PCM_REL}"
+            )
         return [
             py, "DPO_finetune/infer_diffueraser_candidate.py",
             "--video_root", str(video_dir.parent),
