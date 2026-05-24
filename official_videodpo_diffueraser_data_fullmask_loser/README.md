@@ -23,13 +23,29 @@ This is a **data-only ablation**.
 | Field | Value |
 | --- | --- |
 | win | VideoDPO winner |
+| candidates | one full-mask candidate per generation model |
 | raw_loser | `video_inpainting_model(win, full_mask)` |
-| final_loser | `raw_loser` |
+| final_loser | selected primary `raw_loser` |
 | mask for loser generation | full |
 | mask for training | full |
 | comp | false / not meaningful |
 | loser generation | offline |
 | changed variable | data only |
+
+All four generation models remain candidates:
+
+- DiffuEraser
+- ProPainter
+- CoCoCo
+- MiniMax-Remover
+
+Selection uses `medium_hard_balanced_selection_v1` and writes:
+
+- `manifests/candidates_all.jsonl`
+- `manifests/selected_primary_fullmask.jsonl`
+- `manifests/selected_secondary_fullmask.jsonl`
+
+First-version DPO training reads only `selected_primary_fullmask.jsonl`.
 
 ## Mask Convention
 

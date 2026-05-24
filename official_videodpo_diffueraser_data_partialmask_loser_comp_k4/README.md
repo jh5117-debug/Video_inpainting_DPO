@@ -10,6 +10,23 @@ Data-only ablation.
 - training later: still official VideoDPO / DiffuEraser full-mask bridge.
 - changed variable: data only.
 
+## Fixed Data Generation Policies
+
+- mask policy: `videodpo_partialmask_policy_v1_medium_hard_k4`
+- selection policy: `medium_hard_balanced_selection_v1`
+- source weights: `diffueraser=1.0`, `propainter=1.0`, `cococo=1.0`, `minimax_remover=1.0`
+
+For each VideoDPO winner, keep up to `4 masks x 4 models = 16` candidates in
+`candidates_all.jsonl`. Select `loser_primary` and `loser_secondary`, but first
+version DPO training reads only `selected_primary_comp.jsonl`.
+
+The comp and no-comp experiments must share the same selected candidate. In
+this comp view:
+
+```text
+final_loser_video_path = comp_loser_video_path
+```
+
 Use `scripts/pai_generate_partialmask_losers_k4.sh` to create the planned
 manifest schema and output folders. Full generation only happens after model
 smoke tests pass.

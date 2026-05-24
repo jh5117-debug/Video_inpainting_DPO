@@ -1,0 +1,62 @@
+policy_name: medium_hard_balanced_selection_v1
+quality_score:
+  semantics: higher_means_loser_closer_to_winner
+  range: [0.0, 1.0]
+  target: 0.45
+  eligible_min: 0.30
+  eligible_max: 0.65
+  too_bad_max_exclusive: 0.30
+  too_good_min_exclusive: 0.65
+cheap_metrics:
+  required:
+    - inside_mask_psnr
+    - inside_mask_ssim
+    - inside_mask_l1
+    - outside_mask_diff_mean
+    - outside_mask_diff_max
+    - temporal_diff
+    - frame_count
+    - height
+    - width
+    - decode_ok
+  weights:
+    inside_mask_psnr: 0.25
+    inside_mask_ssim: 0.25
+    inside_mask_l1: 0.25
+    temporal_diff: 0.15
+    outside_mask_diff_mean: 0.10
+optional_metrics:
+  enable_lpips_default: false
+  enable_vbench_default: false
+  vbench_dimensions:
+    - vbench_inpainting_score
+    - vbench_background_consistency
+    - vbench_temporal_flickering
+    - vbench_motion_smoothness
+    - vbench_imaging_quality
+    - vbench_aesthetic_quality
+    - vbench_subject_consistency
+source_weights:
+  diffueraser: 1.0
+  propainter: 1.0
+  cococo: 1.0
+  minimax_remover: 1.0
+ranking:
+  - prefer_candidates_in_quality_band
+  - prefer_lower_source_pressure
+  - prefer_closer_to_quality_target
+  - prefer_secondary_from_different_generation_model
+  - prefer_secondary_from_different_defect_bucket
+fallback:
+  no_candidate_in_quality_band: choose_two_candidates_closest_to_target
+manifests:
+  partial:
+    candidates_all: manifests/candidates_all.jsonl
+    selected_primary_comp: manifests/selected_primary_comp.jsonl
+    selected_primary_nocomp: manifests/selected_primary_nocomp.jsonl
+    selected_secondary_comp: manifests/selected_secondary_comp.jsonl
+    selected_secondary_nocomp: manifests/selected_secondary_nocomp.jsonl
+  full:
+    candidates_all: manifests/candidates_all.jsonl
+    selected_primary_fullmask: manifests/selected_primary_fullmask.jsonl
+    selected_secondary_fullmask: manifests/selected_secondary_fullmask.jsonl

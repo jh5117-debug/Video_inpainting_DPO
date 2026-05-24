@@ -17,12 +17,14 @@ model_name="${MODEL_NAME:-all}"
 num_masks="${NUM_MASKS_PER_VIDEO:-4}"
 seed="${SEED:-20260523}"
 limit="${LIMIT:-}"
+mask_policy_config="${MASK_POLICY_CONFIG:-configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml}"
+selection_policy_config="${SELECTION_POLICY_CONFIG:-configs/generation/medium_hard_balanced_selection_v1.yaml}"
 
 mkdir -p \
   "$output_root/manifests" \
-  "$output_root/videos/raw" \
-  "$output_root/videos/comp" \
+  "$output_root/candidates" \
   "$output_root/masks" \
+  "$output_root/reports" \
   "$output_root/logs"
 
 models=(diffueraser propainter cococo minimax_remover)
@@ -48,6 +50,8 @@ for model in "${models[@]}"; do
       --num_masks_per_video "$num_masks" \
       --seed "$seed" \
       --save_manifest "$manifest" \
+      --mask_policy_config "$mask_policy_config" \
+      --selection_policy_config "$selection_policy_config" \
       --dry_run \
       --allow_missing_assets
     )
@@ -59,4 +63,5 @@ for model in "${models[@]}"; do
 done
 
 echo "[partialmask-k4-plan] output_root=$output_root"
-echo "[partialmask-k4-plan] dry-run only; raw and comp manifests share the same planned generation root."
+echo "[partialmask-k4-plan] mask_policy=$mask_policy_config selection_policy=$selection_policy_config"
+echo "[partialmask-k4-plan] dry-run only; candidates_all and selected manifests must be produced by calibration/full generation."

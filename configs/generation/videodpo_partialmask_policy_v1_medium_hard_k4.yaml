@@ -1,0 +1,46 @@
+policy_name: videodpo_partialmask_policy_v1_medium_hard_k4
+source_dataset: videodpo
+canonical:
+  height: 320
+  width: 512
+  num_frames: 16
+  frame_stride: 1
+  train_data_yaml_env: VIDEO_DPO_TRAIN_DATA_YAML
+num_masks_per_video: 4
+seed: 20260524
+mask_area_min: 0.20
+mask_area_max: 0.30
+mask_margin_ratio: 0.10
+mask_static_prob: 0.50
+mask_speed_min: 0.50
+mask_speed_max: 1.50
+mask_center_jitter_ratio: 0.04
+mask_motion_box_ratio: 0.16
+mask_dilation_iter: 0
+mask_shape: irregular_polygon
+mask_location: interior_constrained
+mask_motion: two_static_two_slow_or_equivalent_random_with_static_prob
+mask_convention:
+  png_value_255: inpaint_region
+  png_value_0: keep_region
+metadata_fields:
+  - mask_id
+  - seed
+  - area_ratio
+  - area_ratio_min
+  - area_ratio_max
+  - bbox
+  - bbox_ratio
+  - bbox_center_ratio
+  - bbox_margin_ratio
+  - motion_type
+  - velocity
+  - motion_center_bounds
+  - motion_box_ratio
+  - static_prob
+  - frame_level_bbox
+  - frame_level_area_ratio
+notes:
+  - Medium-hard local masks are large enough to create DPO signal but not so large that the loser becomes a trivial shortcut.
+  - Masks are constrained away from image borders and their motion stays inside a central motion box.
+  - The first version keeps mask policy fixed; mask size, motion, and location are not separate experiments.

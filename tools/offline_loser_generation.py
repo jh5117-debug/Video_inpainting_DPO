@@ -17,6 +17,7 @@ MODEL_ENV = {
 MANIFEST_FIELDS = [
     "sample_id",
     "source_video_id",
+    "pair_index",
     "mask_id",
     "prompt",
     "win_video_path",
@@ -36,6 +37,43 @@ MANIFEST_FIELDS = [
     "width",
     "mask_area_ratio",
     "mask_bbox",
+    "mask_policy",
+    "mask_motion_type",
+    "mask_velocity",
+    "raw_metrics",
+    "comp_metrics",
+    "quality_score",
+    "defect_bucket",
+    "status",
+    "error_message",
+]
+
+SELECTED_MANIFEST_FIELDS = [
+    "sample_id",
+    "source_video_id",
+    "pair_index",
+    "prompt",
+    "win_video_path",
+    "final_loser_video_path",
+    "raw_loser_video_path",
+    "comp_loser_video_path",
+    "final_loser_type",
+    "selected_role",
+    "mask_id",
+    "mask_path",
+    "mask_policy",
+    "generation_model",
+    "quality_score",
+    "defect_bucket",
+    "selection_policy",
+    "selection_reason",
+    "candidate_rank",
+    "source_counts_snapshot",
+    "seed",
+    "fps",
+    "num_frames",
+    "height",
+    "width",
     "status",
 ]
 
@@ -58,6 +96,8 @@ class GenerationPlan:
     end_index: int | None
     seed: int
     save_manifest: str | None
+    mask_policy_config: str
+    selection_policy_config: str
     weight_env: str
     weight_root: str | None
 
@@ -120,6 +160,14 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--save_manifest", default=None)
     parser.add_argument(
+        "--mask_policy_config",
+        default="configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml",
+    )
+    parser.add_argument(
+        "--selection_policy_config",
+        default="configs/generation/medium_hard_balanced_selection_v1.yaml",
+    )
+    parser.add_argument(
         "--dry_run",
         action="store_true",
         help="Validate paths and print the plan without invoking model inference.",
@@ -169,6 +217,8 @@ def make_plan(args: argparse.Namespace) -> GenerationPlan:
         end_index=args.end_index,
         seed=args.seed,
         save_manifest=args.save_manifest,
+        mask_policy_config=args.mask_policy_config,
+        selection_policy_config=args.selection_policy_config,
         weight_env=weight_env,
         weight_root=weight_root,
     )
@@ -179,8 +229,22 @@ def write_manifest_schema(path: str, plan: GenerationPlan) -> None:
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
     payload = {
         "schema_version": 1,
-        "fields": MANIFEST_FIELDS,
+        "candidate_manifest_fields": MANIFEST_FIELDS,
+        "selected_manifest_fields": SELECTED_MANIFEST_FIELDS,
         "generation_plan": asdict(plan),
+        "mask_policy_config": getattr(plan, "mask_policy_config", None),
+        "selection_policy_config": getattr(plan, "selection_policy_config", None),
+        "candidate_manifests": [
+            "manifests/candidates_all.jsonl",
+        ],
+        "selected_manifests": [
+            "manifests/selected_primary_comp.jsonl",
+            "manifests/selected_primary_nocomp.jsonl",
+            "manifests/selected_secondary_comp.jsonl",
+            "manifests/selected_secondary_nocomp.jsonl",
+            "manifests/selected_primary_fullmask.jsonl",
+            "manifests/selected_secondary_fullmask.jsonl",
+        ],
         "items": [],
     }
     manifest_path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

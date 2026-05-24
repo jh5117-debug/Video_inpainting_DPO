@@ -12,3 +12,19 @@ Data-only diagnostic ablation.
 
 This reuses the same raw generation root as the comp experiment. The no-comp
 manifest points `final_loser_video_path` to `raw_loser_video_path`.
+
+## Shared Selection Contract
+
+No-comp must reuse the exact same selected primary and secondary candidates as
+`official_videodpo_diffueraser_data_partialmask_loser_comp_k4`.
+
+Do not rerun model inference or reselect masks/models for no-comp. The only
+difference is:
+
+```text
+final_loser_video_path = raw_loser_video_path
+final_loser_type = raw
+```
+
+First-version DPO training does not default to no-comp. This view is retained
+for diagnostic comparison against the comp primary manifest.

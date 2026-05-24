@@ -16,8 +16,9 @@ output_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_d
 model_name="${MODEL_NAME:-all}"
 seed="${SEED:-20260523}"
 limit="${LIMIT:-}"
+selection_policy_config="${SELECTION_POLICY_CONFIG:-configs/generation/medium_hard_balanced_selection_v1.yaml}"
 
-mkdir -p "$output_root/manifests" "$output_root/videos" "$output_root/masks/full" "$output_root/logs"
+mkdir -p "$output_root/manifests" "$output_root/candidates" "$output_root/masks/full" "$output_root/reports" "$output_root/logs"
 
 models=(diffueraser propainter cococo minimax_remover)
 if [ "$model_name" != "all" ]; then
@@ -39,6 +40,7 @@ for model in "${models[@]}"; do
     --num_masks_per_video 1 \
     --seed "$seed" \
     --save_manifest "$manifest" \
+    --selection_policy_config "$selection_policy_config" \
     --dry_run \
     --allow_missing_assets
   )
@@ -49,4 +51,5 @@ for model in "${models[@]}"; do
 done
 
 echo "[fullmask-plan] output_root=$output_root"
-echo "[fullmask-plan] dry-run only; wire model dispatch after smoke tests pass."
+echo "[fullmask-plan] selection_policy=$selection_policy_config"
+echo "[fullmask-plan] dry-run only; candidates_all and selected manifests must be produced by calibration/full generation."

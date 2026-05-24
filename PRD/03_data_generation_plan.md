@@ -66,7 +66,7 @@ Therefore for DiffuEraser fullmask generation, use internal mask value `0.0` for
 
 ## Partial-Mask + Comp
 
-Target experiment: `official_videodpo_diffueraser_data_partialmask_loser_comp`
+Target experiment: `official_videodpo_diffueraser_data_partialmask_loser_comp_k4`
 
 ```text
 win = VideoDPO winner
@@ -86,7 +86,7 @@ The formula above is semantic. Real implementation must first normalize mask pol
 
 ## Partial-Mask + No-Comp
 
-Target experiment: `official_videodpo_diffueraser_data_partialmask_loser_nocomp`
+Target experiment: `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4`
 
 ```text
 win = VideoDPO winner
@@ -96,6 +96,28 @@ final_loser = raw_loser
 ```
 
 This is a diagnostic ablation. Mask-outside differences may appear and should be measured.
+
+## Fixed V1 Policies
+
+Do not split mask size, mask motion, mask position, or generation model choice
+into separate first-round experiments. They are fixed data generation policies:
+
+- mask policy: `videodpo_partialmask_policy_v1_medium_hard_k4`
+- selection policy: `medium_hard_balanced_selection_v1`
+
+Configs:
+
+- `configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml`
+- `configs/generation/medium_hard_balanced_selection_v1.yaml`
+
+The partial-mask policy creates K=4 interior-constrained irregular polygon masks
+per VideoDPO winner. The selection policy scores all model/mask candidates and
+selects primary/secondary medium-hard losers with equal source weights for
+DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover.
+
+Every generated candidate must be retained in `candidates_all.jsonl` before
+selection. The comp and no-comp manifests must share the same selected candidate;
+only `final_loser_video_path` differs.
 
 ## Model Integration Status
 
@@ -119,9 +141,9 @@ As of the 2026-05-24 PAI probe:
 - `tools/offline_loser_generation.py` is still a planning/manifest scaffold and intentionally does not dispatch real inference.
 
 Therefore the one-sample asset gate is passed. The next step is an explicit
-full/offline generation launch plan with disk estimate, selected model set,
-sample range, output root, and manifest validation. Do not start DPO training
-from this step.
+calibration subset with disk estimate, selected model set, sample range, output
+root, cheap metric scoring, selection, and manifest validation. Do not start
+DPO training from this step.
 
 Canonical smoke command:
 
@@ -160,6 +182,36 @@ Passing smoke evidence:
 | ProPainter | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_063024/propainter/report.md` |
 | CoCoCo | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070827/cococo/report.md` |
 | MiniMax-Remover | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070018/minimax_remover/report.md` |
+
+## Calibration Before Full Generation
+
+Before full generation, run a calibration subset with `--limit 20` or
+`--limit 50`, all four models, and K=4 partial masks. The calibration must save
+all candidates, score cheap metrics, select primary/secondary, and write:
+
+- `PRD/generated_loser_calibration_report.md`
+- `manifests/candidates_all.jsonl`
+- `manifests/candidates_all.scored.jsonl`
+- `manifests/selected_primary_comp.jsonl`
+- `manifests/selected_primary_nocomp.jsonl`
+- `manifests/selected_secondary_comp.jsonl`
+- `manifests/selected_secondary_nocomp.jsonl`
+
+Full generation can start only after this report shows acceptable fail rates,
+reasonable `too_bad / eligible / too_good` ratios, no source-model selection
+collapse, and comp outside-mask diff still equal or very close to zero.
+
+PAI calibration entrypoint:
+
+```bash
+python tools/videodpo_generated_loser_calibration.py \
+  --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
+  --models all \
+  --limit 20 \
+  --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
+  --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
+  --calibration_report PRD/generated_loser_calibration_report.md
+```
 
 ## Online Loser Generation
 
