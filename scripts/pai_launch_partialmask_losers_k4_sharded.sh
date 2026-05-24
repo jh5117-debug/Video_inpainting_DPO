@@ -17,6 +17,7 @@ report_path="${REPORT_PATH:-$out_root/reports/generated_loser_full_generation_re
 mask_policy_config="${MASK_POLICY_CONFIG:-configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml}"
 selection_config="${SELECTION_CONFIG:-configs/generation/medium_hard_balanced_selection_v1.yaml}"
 train_data_yaml="${VIDEO_DPO_TRAIN_DATA_YAML:-/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml}"
+models_csv="${MODELS:-all}"
 
 sd15_full="${SD15_FULL:-/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/downloads/sd_inpaint_hf_extract/stable-diffusion-inpainting}"
 export BASE_MODEL_PATH="${BASE_MODEL_PATH:-$sd15_full}"
@@ -75,6 +76,7 @@ echo "out_root=$out_root"
 echo "shards_root=$shards_root"
 echo "pair_range=[$start_index, $end_index)"
 echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_workers shard_size=$shard_size"
+echo "models=$models_csv"
 echo "mask_policy=$mask_policy_config"
 echo "selection_policy=$selection_config"
 echo "DIFFUERASER_PYTHON=$DIFFUERASER_PYTHON"
@@ -109,7 +111,7 @@ run_shard() {
     export MINIMAX_REMOVER_GPU="$gpu"
     python tools/videodpo_generated_loser_calibration.py \
       --output_root "$shard_root" \
-      --models all \
+      --models "$models_csv" \
       --limit 0 \
       --start_index "$shard_start" \
       --end_index "$shard_end" \
