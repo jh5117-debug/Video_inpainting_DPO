@@ -22,10 +22,22 @@ sd15_full="${SD15_FULL:-/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515
 export BASE_MODEL_PATH="${BASE_MODEL_PATH:-$sd15_full}"
 export PCM_WEIGHTS_PATH="${PCM_WEIGHTS_PATH:-/mnt/nas/hj/weights/PCM_Weights}"
 export COCOCO_SD_INPAINT_ROOT="${COCOCO_SD_INPAINT_ROOT:-$sd15_full}"
-export DIFFUERASER_PYTHON="${DIFFUERASER_PYTHON:-/mnt/nas/hj/conda_envs/diffueraser/bin/python}"
-export PROPAINTER_PYTHON="${PROPAINTER_PYTHON:-/mnt/nas/hj/conda_envs/videodpo/bin/python}"
-export COCOCO_PYTHON="${COCOCO_PYTHON:-/mnt/nas/hj/conda_envs/videodpo/bin/python}"
-export MINIMAX_REMOVER_PYTHON="${MINIMAX_REMOVER_PYTHON:-/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/envs/minimax/bin/python}"
+
+default_diffueraser_python="/mnt/nas/hj/conda_envs/diffueraser/bin/python"
+default_videodpo_python="/mnt/nas/hj/conda_envs/videodpo/bin/python"
+default_minimax_python="/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/envs/minimax/bin/python"
+
+if [ "${RESPECT_EXISTING_MODEL_PYTHONS:-0}" = "1" ]; then
+  export DIFFUERASER_PYTHON="${DIFFUERASER_PYTHON:-$default_diffueraser_python}"
+  export PROPAINTER_PYTHON="${PROPAINTER_PYTHON:-$default_videodpo_python}"
+  export COCOCO_PYTHON="${COCOCO_PYTHON:-$default_videodpo_python}"
+  export MINIMAX_REMOVER_PYTHON="${MINIMAX_REMOVER_PYTHON:-$default_minimax_python}"
+else
+  export DIFFUERASER_PYTHON="$default_diffueraser_python"
+  export PROPAINTER_PYTHON="$default_videodpo_python"
+  export COCOCO_PYTHON="$default_videodpo_python"
+  export MINIMAX_REMOVER_PYTHON="$default_minimax_python"
+fi
 
 gpus_csv="${GPUS:-0,1,2,3,4,5,6}"
 workers_per_gpu="${WORKERS_PER_GPU:-2}"
@@ -65,6 +77,10 @@ echo "pair_range=[$start_index, $end_index)"
 echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_workers shard_size=$shard_size"
 echo "mask_policy=$mask_policy_config"
 echo "selection_policy=$selection_config"
+echo "DIFFUERASER_PYTHON=$DIFFUERASER_PYTHON"
+echo "PROPAINTER_PYTHON=$PROPAINTER_PYTHON"
+echo "COCOCO_PYTHON=$COCOCO_PYTHON"
+echo "MINIMAX_REMOVER_PYTHON=$MINIMAX_REMOVER_PYTHON"
 
 run_shard() {
   local gpu="$1"
