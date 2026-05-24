@@ -101,10 +101,10 @@ This is a diagnostic ablation. Mask-outside differences may appear and should be
 
 | Model | Code | Weights | Env | Status |
 | --- | --- | --- | --- | --- |
-| DiffuEraser | found | found | found | path-ready; real generation smoke not run |
-| ProPainter | found | found | found | path-ready; real generation smoke not run |
-| CoCoCo | wrapper found | found | found | path-ready; real generation smoke not run |
-| MiniMax-Remover | wrapper/cache found | found | found | path-ready; real generation smoke not run |
+| DiffuEraser | found | found, including PCM | found | canonical full/partial one-sample smoke OK |
+| ProPainter | found | found | found | canonical full/partial one-sample smoke OK |
+| CoCoCo | wrapper found | found, including SD inpaint root | found | canonical full/partial one-sample smoke OK |
+| MiniMax-Remover | wrapper/cache found | found | found | canonical full/partial one-sample smoke OK |
 
 ## Generation Readiness Gate
 
@@ -113,12 +113,15 @@ As of the 2026-05-24 PAI probe:
 - data roots, weight roots, generated-loser roots, and manifest schema scaffolds are prepared;
 - YouTube-VOS frames and annotations are confirmed under the train split;
 - four-model inference scripts compile and weight paths list successfully;
-- real one-sample full-mask and partial-mask generation smoke has not run;
+- real one-sample full-mask and partial-mask generation smoke passed for DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover;
+- smoke outputs decode to 16 frames at 320x512, matching the canonical VideoDPO setting;
+- partial-mask comp checks report outside-mask max absolute diff `0.000000`;
 - `tools/offline_loser_generation.py` is still a planning/manifest scaffold and intentionally does not dispatch real inference.
 
-Therefore the next step is not full data generation yet. Run one-sample smoke
-per model first, then start offline generation only for models that pass video
-decode, fps, frame-count, resolution, and comp outside-mask checks.
+Therefore the one-sample asset gate is passed. The next step is an explicit
+full/offline generation launch plan with disk estimate, selected model set,
+sample range, output root, and manifest validation. Do not start DPO training
+from this step.
 
 Canonical smoke command:
 
@@ -148,6 +151,15 @@ bash scripts/pai_run_parallel_generation_smokes.sh
 
 The parallel wrapper runs one model per process/GPU, prints each model's result
 table and failure log tail, and still generates only one canonical sample.
+
+Passing smoke evidence:
+
+| Model | Report |
+| --- | --- |
+| DiffuEraser | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_085008/diffueraser/report.md` |
+| ProPainter | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_063024/propainter/report.md` |
+| CoCoCo | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070827/cococo/report.md` |
+| MiniMax-Remover | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070018/minimax_remover/report.md` |
 
 ## Online Loser Generation
 

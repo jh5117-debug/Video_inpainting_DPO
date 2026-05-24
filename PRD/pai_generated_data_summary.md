@@ -19,6 +19,8 @@ node may also keep timestamped audit logs under `.tmp/codex_asset_prepare/`.
 | ProPainter weights | FOUND | `/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter` |
 | CoCoCo weights | FOUND | backup `third_party_video_inpainting/weights/COCOCO_weight` |
 | MiniMax-Remover weights | FOUND | backup `third_party_video_inpainting/weights/minimax` |
+| DiffuEraser PCM weights | FOUND | `/mnt/nas/hj/weights/PCM_Weights/sd15/pcm_sd15_smallcfg_2step_converted.safetensors` |
+| CoCoCo SD inpainting root | FOUND | backup `third_party_video_inpainting/downloads/sd_inpaint_hf_extract/stable-diffusion-inpainting` |
 
 ## Current Readiness
 
@@ -27,22 +29,32 @@ Ready:
 - path/env documentation for data, weights, outputs, and generated losers;
 - PAI symlink plan for `data/videodpo/current`, `data/youtubevos/current`, and model weight `current` links;
 - manifest schema scaffolds for full-mask losers and partial-mask K=4 raw/comp losers;
+- canonical VideoDPO setting verified from the completed official DiffuEraser runs: 320x512, 16 frames, frame stride 1;
+- real one-sample full-mask and partial-mask generation smoke passed for DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover;
+- output decode, frame count, resolution, and partial-mask comp outside-region checks passed for those smoke runs;
 - DPO training remains untouched.
 
-Not ready for full offline generation yet:
+Still not done:
 
-- real one-sample full-mask generation smoke has not run for the four generator models;
-- real one-sample partial-mask generation smoke has not run for the four generator models;
-- output video decode, fps, frame count, resolution, and comp outside-mask checks are still pending;
-- `tools/offline_loser_generation.py` currently writes plans/schemas and intentionally does not dispatch real inference.
+- full offline generated-loser data has not been launched;
+- DPO training has not been launched;
+- before full generation, run the disk/capacity preflight and choose the exact model set, sample range, and output root.
 
-Use `tools/pai_videodpo_single_sample_generation_smoke.py --run_generation` for
-the real one-sample gate. It uses the canonical VideoDPO setting from
-`DPO_finetune/configs/official_diffueraser_stage1.yaml` and
-`VIDEO_DPO_TRAIN_DATA_YAML`.
+## Canonical Smoke Results
+
+| Model | Full Mask | Partial Mask | Evidence |
+| --- | --- | --- | --- |
+| DiffuEraser | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_085008/diffueraser/report.md` |
+| ProPainter | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_063024/propainter/report.md` |
+| CoCoCo | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070827/cococo/report.md` |
+| MiniMax-Remover | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070018/minimax_remover/report.md` |
+
+All passing rows decoded 16 frames at 320x512. Partial-mask comp rows reported
+outside-mask max absolute diff `0.000000`.
 
 ## Decision
 
-The next safe step is one-sample real generation smoke, not full data generation.
-After a model passes smoke, it can be enabled for full-mask generation and then
-partial-mask K=4 offline generation.
+The asset smoke gate is passed for all four generation models. The next safe
+step is an explicit full/offline data generation launch plan with disk estimate
+and manifest validation. Training must remain paused until generated data is
+complete and verified.
