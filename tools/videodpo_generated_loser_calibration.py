@@ -44,6 +44,12 @@ from tools.videodpo_loser_candidate_selection import select_manifests, write_cal
 from tools.videodpo_mask_policy import generate_k_masks, load_policy
 
 MODEL_NAMES = ("diffueraser", "propainter", "cococo", "minimax_remover")
+MODEL_GPU_ENV = {
+    "diffueraser": "DIFFUERASER_GPU",
+    "propainter": "PROPAINTER_GPU",
+    "cococo": "COCOCO_GPU",
+    "minimax_remover": "MINIMAX_REMOVER_GPU",
+}
 
 
 def parse_csv(value: str, allowed: tuple[str, ...]) -> list[str]:
@@ -183,6 +189,9 @@ def run_candidate(
     command = model_command(model, "partial", setting, win_dir, mask_dir, raw_dir, work_dir)
     env = os.environ.copy()
     env["PYTHONPATH"] = str(Path.cwd()) + os.pathsep + env.get("PYTHONPATH", "")
+    gpu = os.environ.get(MODEL_GPU_ENV[model])
+    if gpu:
+        env["CUDA_VISIBLE_DEVICES"] = str(gpu)
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("w", encoding="utf-8") as log:
         log.write("[cmd] " + " ".join(shlex.quote(x) for x in command) + "\n")
