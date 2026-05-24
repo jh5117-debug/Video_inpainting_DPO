@@ -31,6 +31,7 @@ from tools.pai_videodpo_single_sample_generation_smoke import (
     load_env_file,
     load_yaml,
     metadata_caption,
+    image_files,
     model_command,
     raw_video_info,
     read_canonical_frames,
@@ -72,6 +73,12 @@ def clean_dir(path: Path) -> None:
     if path.exists():
         shutil.rmtree(path)
     path.mkdir(parents=True, exist_ok=True)
+
+
+def copy_frame_dir(src: Path, dst: Path) -> None:
+    clean_dir(dst)
+    for idx, path in enumerate(image_files(src)):
+        shutil.copy2(path, dst / f"{idx:05d}{path.suffix.lower()}")
 
 
 def derive_base(args: argparse.Namespace) -> tuple[Path, Path, dict[str, Any], int, int, int, int, float]:
@@ -186,7 +193,19 @@ def run_candidate(
     log_path: Path,
     timeout_sec: int,
 ) -> tuple[str, str]:
-    command = model_command(model, "partial", setting, win_dir, mask_dir, raw_dir, work_dir)
+    command_win_dir = win_dir
+    command_mask_dir = mask_dir
+    if model == "diffueraser":
+        # DiffuEraser wrapper expects batch roots whose child sequence names
+        # match. Other wrappers accept direct frame directories.
+        batch_root = work_dir / "batch_inputs"
+        sequence = "sample"
+        command_win_dir = batch_root / "videos" / sequence
+        command_mask_dir = batch_root / "masks" / sequence
+        copy_frame_dir(win_dir, command_win_dir)
+        copy_frame_dir(mask_dir, command_mask_dir)
+
+    command = model_command(model, "partial", setting, command_win_dir, command_mask_dir, raw_dir, work_dir)
     env = os.environ.copy()
     env["PYTHONPATH"] = str(Path.cwd()) + os.pathsep + env.get("PYTHONPATH", "")
     gpu = os.environ.get(MODEL_GPU_ENV[model])
