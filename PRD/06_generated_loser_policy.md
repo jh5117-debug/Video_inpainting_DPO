@@ -39,6 +39,11 @@ All generated-loser data in this phase must use the completed official VideoDPO 
 - `win = VideoDPO winner/chosen video`
 - `prompt = VideoDPO prompt/caption`
 
+The prompt is always preserved as source metadata. Text-conditioned generators
+(`diffueraser`, `cococo`) receive it as model input; prompt-free generators
+(`propainter`, `minimax_remover`) keep it in the manifest with
+`prompt_used_by_model = false`.
+
 Do not use arbitrary source resolution for generated loser data.
 
 ## Mask Policy V1

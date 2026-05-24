@@ -51,6 +51,12 @@ MODEL_GPU_ENV = {
     "cococo": "COCOCO_GPU",
     "minimax_remover": "MINIMAX_REMOVER_GPU",
 }
+MODEL_PROMPT_USAGE = {
+    "diffueraser": ("text_conditioned", True),
+    "propainter": ("ignored_by_model", False),
+    "cococo": ("text_conditioned", True),
+    "minimax_remover": ("ignored_by_model", False),
+}
 
 
 def parse_csv(value: str, allowed: tuple[str, ...]) -> list[str]:
@@ -102,13 +108,22 @@ def derive_base(args: argparse.Namespace) -> tuple[Path, Path, dict[str, Any], i
     return cfg_path, selected_root, cfg, height, width, nframes, stride, full_mask_value
 
 
-def iter_valid_pairs(root: Path, start_index: int, limit: int, nframes: int, stride: int) -> list[tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]]]:
+def iter_valid_pairs(
+    root: Path,
+    start_index: int,
+    end_index: int,
+    limit: int,
+    nframes: int,
+    stride: int,
+) -> list[tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]]]:
     metadata = read_json(root / "metadata.json")
     pairs = read_json(root / "pair.json")
     if not isinstance(metadata, list) or not isinstance(pairs, list):
         raise RuntimeError(f"unexpected metadata/pair format under {root}")
     out = []
     for pair_index in range(start_index, len(pairs)):
+        if end_index >= 0 and pair_index >= end_index:
+            break
         pair = pairs[pair_index]
         winner = metadata[int(pair["video1"])]
         loser = metadata[int(pair["video2"])]
@@ -250,11 +265,14 @@ def build_candidate_row(
     status: str,
     error_message: str,
 ) -> dict[str, Any]:
+    prompt_input_mode, prompt_used_by_model = MODEL_PROMPT_USAGE[model]
     return {
         "sample_id": sample_id,
         "source_video_id": Path(setting.winner_video_path).stem,
         "pair_index": setting.pair_index,
         "prompt": setting.prompt,
+        "prompt_input_mode": prompt_input_mode,
+        "prompt_used_by_model": prompt_used_by_model,
         "win_video_path": str(win_dir),
         "mask_id": mask_meta["mask_id"],
         "mask_path": mask_meta["mask_path"],
@@ -288,6 +306,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--models", default="all")
     parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--start_index", type=int, default=0)
+    parser.add_argument("--end_index", type=int, default=-1)
     parser.add_argument("--seed", type=int, default=20260524)
     parser.add_argument("--timeout_sec", type=int, default=3600)
     parser.add_argument("--frame_selection", choices=["seeded_random", "first"], default="seeded_random")
@@ -320,7 +339,7 @@ def main() -> int:
     train_yaml = Path(os.environ.get("VIDEO_DPO_TRAIN_DATA_YAML") or args.train_data_yaml).expanduser().resolve()
     policy = load_policy(args.mask_policy_config)
     selection_config = load_yaml(Path(args.selection_config))
-    pairs = iter_valid_pairs(root, args.start_index, args.limit, nframes, stride)
+    pairs = iter_valid_pairs(root, args.start_index, args.end_index, args.limit, nframes, stride)
 
     print(f"[calibration] winners={len(pairs)} models={models} output_root={output_root}")
     print(f"[calibration] mask_policy={policy.policy_name} selection_policy={selection_config['policy_name']}")

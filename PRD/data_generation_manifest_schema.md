@@ -13,6 +13,8 @@ primary/secondary manifests.
 - `pair_index`
 - `mask_id`
 - `prompt`
+- `prompt_input_mode`: `text_conditioned` or `ignored_by_model`
+- `prompt_used_by_model`: boolean
 - `win_video_path`
 - `raw_loser_video_path`
 - `comp_loser_video_path`

@@ -1,0 +1,191 @@
+#!/usr/bin/env bash
+set -uo pipefail
+
+repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+cd "$repo_root" || exit 1
+
+export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-phy}"
+
+if [ -f configs/paths/pai.detected.env ]; then
+  # shellcheck disable=SC1091
+  source configs/paths/pai.detected.env
+fi
+
+out_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4}"
+shards_root="${SHARDS_ROOT:-$out_root/_shards}"
+report_path="${REPORT_PATH:-$out_root/reports/generated_loser_full_generation_report.md}"
+mask_policy_config="${MASK_POLICY_CONFIG:-configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml}"
+selection_config="${SELECTION_CONFIG:-configs/generation/medium_hard_balanced_selection_v1.yaml}"
+train_data_yaml="${VIDEO_DPO_TRAIN_DATA_YAML:-/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml}"
+
+sd15_full="${SD15_FULL:-/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/downloads/sd_inpaint_hf_extract/stable-diffusion-inpainting}"
+export BASE_MODEL_PATH="${BASE_MODEL_PATH:-$sd15_full}"
+export PCM_WEIGHTS_PATH="${PCM_WEIGHTS_PATH:-/mnt/nas/hj/weights/PCM_Weights}"
+export COCOCO_SD_INPAINT_ROOT="${COCOCO_SD_INPAINT_ROOT:-$sd15_full}"
+export DIFFUERASER_PYTHON="${DIFFUERASER_PYTHON:-/mnt/nas/hj/conda_envs/diffueraser/bin/python}"
+export PROPAINTER_PYTHON="${PROPAINTER_PYTHON:-/mnt/nas/hj/conda_envs/videodpo/bin/python}"
+export COCOCO_PYTHON="${COCOCO_PYTHON:-/mnt/nas/hj/conda_envs/videodpo/bin/python}"
+export MINIMAX_REMOVER_PYTHON="${MINIMAX_REMOVER_PYTHON:-/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/envs/minimax/bin/python}"
+
+gpus_csv="${GPUS:-0,1,2,3,4,5,6}"
+workers_per_gpu="${WORKERS_PER_GPU:-2}"
+shard_size="${SHARD_SIZE:-10}"
+start_index="${START_INDEX:-0}"
+end_index="${END_INDEX:-}"
+seed="${SEED:-20260524}"
+timeout_sec="${TIMEOUT_SEC:-3600}"
+
+IFS=',' read -r -a gpus <<< "$gpus_csv"
+total_workers=$((${#gpus[@]} * workers_per_gpu))
+
+if [ "$total_workers" -lt 1 ]; then
+  echo "[error] no workers requested" >&2
+  exit 2
+fi
+
+if [ -z "$end_index" ]; then
+  end_index="$(python - <<'PY'
+import os
+from pathlib import Path
+from tools.pai_videodpo_single_sample_generation_smoke import read_json, resolve_videodpo_roots
+
+train_yaml = Path(os.environ.get("VIDEO_DPO_TRAIN_DATA_YAML", "/mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml")).resolve()
+root = resolve_videodpo_roots(train_yaml)[0]
+print(len(read_json(root / "pair.json")))
+PY
+)"
+fi
+
+mkdir -p "$out_root/manifests" "$out_root/reports" "$out_root/logs" "$shards_root"
+
+echo "===== PAI PARTIALMASK K4 FULL GENERATION ====="
+echo "out_root=$out_root"
+echo "shards_root=$shards_root"
+echo "pair_range=[$start_index, $end_index)"
+echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_workers shard_size=$shard_size"
+echo "mask_policy=$mask_policy_config"
+echo "selection_policy=$selection_config"
+
+run_shard() {
+  local gpu="$1"
+  local shard_start="$2"
+  local shard_end="$3"
+  local shard_name
+  shard_name="$(printf 'shard_%06d_%06d' "$shard_start" "$shard_end")"
+  local shard_root="$shards_root/$shard_name"
+  local stdout_log="$shard_root/stdout.log"
+  local done_file="$shard_root/.done"
+  local failed_file="$shard_root/.failed"
+
+  if [ -f "$done_file" ]; then
+    echo "[skip] $shard_name gpu=$gpu already done"
+    return 0
+  fi
+
+  rm -rf "$shard_root"
+  mkdir -p "$shard_root"
+  echo "[launch] $shard_name gpu=$gpu"
+
+  (
+    export DIFFUERASER_GPU="$gpu"
+    export PROPAINTER_GPU="$gpu"
+    export COCOCO_GPU="$gpu"
+    export MINIMAX_REMOVER_GPU="$gpu"
+    python tools/videodpo_generated_loser_calibration.py \
+      --output_root "$shard_root" \
+      --models all \
+      --limit 0 \
+      --start_index "$shard_start" \
+      --end_index "$shard_end" \
+      --seed "$seed" \
+      --timeout_sec "$timeout_sec" \
+      --train_data_yaml "$train_data_yaml" \
+      --mask_policy_config "$mask_policy_config" \
+      --selection_config "$selection_config" \
+      --calibration_report "$shard_root/generated_loser_calibration_report.md"
+  ) >"$stdout_log" 2>&1
+
+  local rc=$?
+  if [ "$rc" -eq 0 ]; then
+    touch "$done_file"
+    echo "[done] $shard_name gpu=$gpu"
+    return 0
+  fi
+  echo "$rc" > "$failed_file"
+  echo "[failed] $shard_name gpu=$gpu rc=$rc log=$stdout_log" >&2
+  tail -80 "$stdout_log" >&2 || true
+  return "$rc"
+}
+
+worker_loop() {
+  local worker_id="$1"
+  local gpu="$2"
+  local stride=$((total_workers * shard_size))
+  local shard_start=$((start_index + worker_id * shard_size))
+  while [ "$shard_start" -lt "$end_index" ]; do
+    local shard_end=$((shard_start + shard_size))
+    if [ "$shard_end" -gt "$end_index" ]; then
+      shard_end="$end_index"
+    fi
+    run_shard "$gpu" "$shard_start" "$shard_end" || return $?
+    shard_start=$((shard_start + stride))
+  done
+}
+
+pids=()
+worker_id=0
+for gpu in "${gpus[@]}"; do
+  for _slot in $(seq 1 "$workers_per_gpu"); do
+    worker_loop "$worker_id" "$gpu" &
+    pids+=("$!")
+    worker_id=$((worker_id + 1))
+  done
+done
+
+failed=0
+for pid in "${pids[@]}"; do
+  if ! wait "$pid"; then
+    failed=1
+  fi
+done
+
+if [ "$failed" -ne 0 ]; then
+  echo "[error] one or more shards failed; inspect:"
+  find "$shards_root" -name .failed -print | sort
+  exit 1
+fi
+
+echo "===== MERGE MANIFESTS ====="
+find "$shards_root" -path "*/manifests/candidates_all.jsonl" -print | sort > "$out_root/manifests/shard_candidate_manifests.txt"
+if [ ! -s "$out_root/manifests/shard_candidate_manifests.txt" ]; then
+  echo "[error] no shard candidates_all.jsonl found" >&2
+  exit 1
+fi
+
+xargs cat < "$out_root/manifests/shard_candidate_manifests.txt" > "$out_root/manifests/candidates_all.jsonl"
+cp "$out_root/manifests/candidates_all.jsonl" "$out_root/manifests/candidates_all.scored.jsonl"
+
+python tools/videodpo_loser_candidate_selection.py \
+  --candidates_manifest "$out_root/manifests/candidates_all.jsonl" \
+  --selection_config "$selection_config" \
+  --output_dir "$out_root/manifests" \
+  --mode partial \
+  --calibration_report "$report_path"
+
+echo "===== SUMMARY ====="
+python - <<PY
+from pathlib import Path
+root = Path("$out_root/manifests")
+for name in [
+    "candidates_all.jsonl",
+    "candidates_all.scored.jsonl",
+    "selected_primary_comp.jsonl",
+    "selected_primary_nocomp.jsonl",
+    "selected_secondary_comp.jsonl",
+    "selected_secondary_nocomp.jsonl",
+    "selection_events.jsonl",
+]:
+    path = root / name
+    print(name, sum(1 for _ in path.open()) if path.exists() else "MISSING")
+PY
+echo "report=$report_path"
