@@ -198,10 +198,8 @@ def main() -> None:
     if args.prompt.strip():
         cmd.extend([
             "--use_text",
-            "--prompt",
-            args.prompt.strip(),
-            "--n_prompt",
-            args.negative_prompt,
+            f"--prompt={args.prompt.strip()}",
+            f"--n_prompt={args.negative_prompt}",
             "--text_guidance_scale",
             str(args.text_guidance_scale),
         ])
