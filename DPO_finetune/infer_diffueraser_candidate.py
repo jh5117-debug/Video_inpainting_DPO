@@ -260,7 +260,7 @@ def main() -> None:
         effective_num_frames = 23
         print(
             f"[diffueraser] padded short clip from {args.num_frames} to "
-            f"{effective_num_frames} frames before OR inference"
+            f"{effective_num_frames} frames before inference"
         )
 
     run_dir = work_dir / "run_or"
