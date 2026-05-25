@@ -128,6 +128,17 @@ For the later task partial-mask experiment:
 
 - `M_train = M_gen`
 
+Partialmask-specific DiffuEraser rule for current D2:
+
+```text
+diffueraser_inference_stack = or
+diffueraser_prior_mode = propainter
+```
+
+This is allowed for D2 because the partial mask preserves unmasked context for
+the OR/ProPainter prior path. Do not extrapolate the D1 fullmask failure to D2
+without a separate D2 visual and comp audit.
+
 ## Candidate Generation
 
 The original all-source design for partial-mask data was:
@@ -144,7 +155,8 @@ Candidate source models in that original design:
 - `minimax_remover`
 
 Active 2026-05-25 production mode is DiffuEraser-only and supersedes the
-all-source design for the current D1/D2 data:
+original all-source design for the current D2 data. D1 is only a diagnostic
+validation path until a fullmask loser source passes quality:
 
 ```text
 K=4 masks x 1 generation model = 4 candidates
@@ -317,17 +329,46 @@ Full-mask settings:
 - `mask_area_ratio = 1.0`
 - `final_loser = raw_loser`
 
+Fullmask-specific rule:
+
+```text
+diffueraser_inference_stack = br
+diffueraser_prior_mode = noise
+ProPainter prior = forbidden
+```
+
+Reason: a full-frame mask gives ProPainter no visible context. The old D1
+OR/fullmask run produced meaningless abstract/blurred losers and is invalid for
+training. The BR/no-prior replacement is technically runnable, but the 100-row
+quality gate still failed:
+
+```text
+rows = 100
+status = OK: 100
+propainter.mp4 count = 0
+diffueraser.mp4 count = 100
+selected_primary_fullmask.jsonl = 100
+quality buckets = too_bad: 95, texture_or_structure_shift: 5
+quality_score median = 0.1947
+quality_score max = 0.3315
+```
+
+Policy decision: do not full-generate D1 and do not train experiment 4 from the
+current fullmask generated-loser roots. Keep old OR/fullmask as failure-audit
+evidence and keep BR/no-prior as a diagnostic smoke result only.
+
 Use `medium_hard_balanced_selection_v1` and save:
 
 - `candidates_all.jsonl`
 - `selected_primary_fullmask.jsonl`
 - `selected_secondary_fullmask.jsonl`
 
-First-version training reads `selected_primary_fullmask.jsonl`.
+First-version training would read `selected_primary_fullmask.jsonl`, but D1 is
+currently not approved as a training dataset because it failed the quality gate.
 
 ## Calibration Gate
 
-Before full generation, run calibration:
+Before any full generation, run calibration:
 
 ```text
 limit = 20 or 50 VideoDPO winners
@@ -356,6 +397,10 @@ Required report content:
 
 Do not start full generation until calibration is reviewed.
 
+For fullmask D1, the reviewed result is currently negative: both old
+OR/fullmask and new BR/no-prior fullmask should be treated as diagnostic, not as
+accepted training data.
+
 PAI entrypoint:
 
 ```bash
@@ -377,4 +422,4 @@ commands should use:
 
 Do not mix four-model pilot shards and DiffuEraser-only production shards in the
 same `_shards` directory. Archive old `_shards` before restarting with a
-different model set or worker/shard policy.
+different model set, inference stack, prior mode, or worker/shard policy.

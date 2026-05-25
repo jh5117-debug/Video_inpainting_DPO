@@ -58,7 +58,8 @@ Paper-style dimensions:
 
 - PAI NAS paths were not mounted in this local audit session; destructive cleanup must be done only on the PAI node after confirming `/mnt/nas` / `/mnt/workspace`.
 - Four generation models have passed one-sample smoke, but the active 2026-05-25 production data path is now DiffuEraser-only because four-model generation is too slow for full data creation.
-- D1 fullmask OR generation was paused after visual artifacts. The old H20-2 D1 root used the DiffuEraser OR stack (`inference/run_OR.py` -> `diffueraser_OR.py`), not the BR stack (`diffueraser.py`). Full-frame masks leave OR with no visible background context, so generated samples can become abstract/blurry and may be invalid as meaningful fullmask losers. Do not train from the old OR-fullmask root. New D1 validation must use the BR/no-prior path (`DIFFUERASER_INFERENCE_STACK=br`, `DIFFUERASER_PRIOR_MODE=noise`) in a separate output root.
+- D1 fullmask OR generation was paused after visual artifacts. The old H20-2 D1 root used the DiffuEraser OR stack (`inference/run_OR.py` -> `diffueraser_OR.py`), not the BR stack (`diffueraser.py`). Full-frame masks leave OR with no visible background context, so generated samples became abstract/blurry and are invalid as meaningful fullmask losers. Do not train from the old OR-fullmask root. It is retained only as failure-audit evidence.
+- D1 BR/no-prior validation technically passed manifest/decode checks, but failed the quality gate at limit=100: 95/100 rows were `too_bad`, median quality score was `0.1947`, and max quality score was only `0.3315`. Do not start full D1 generation or train experiment 4 from this data unless experiment 4 is explicitly reframed as a diagnostic/failure-case ablation.
 - The partial-mask K=4 generated-loser run should use `MODELS=diffueraser` first. Each VideoDPO winner produces four DiffuEraser candidates, one per mask; selection still writes primary/secondary manifests, but production training should consume only the selected primary manifest unless a later ablation says otherwise.
 - PAI throughput tuning is still active. The failed high-concurrency probe showed host overload (`load average` above 3000, GPU util near 0, GPU memory occupied), so do not use very high `WORKERS_PER_GPU` just to fill memory. Use the guarded launcher thread limits and tune from `WORKERS_PER_GPU=4`, `SHARD_SIZE=1`.
 - New ablations should be introduced as separate experiment directories and should reuse existing training/model code.
@@ -67,7 +68,7 @@ Paper-style dimensions:
 
 ### D1 / Experiment 4: Fullmask DiffuEraser-Only Loser Data
 
-Status: old OR-fullmask run paused; BR/no-prior replacement requires small-sample validation.
+Status: old OR-fullmask invalid; BR/no-prior smoke and limit=100 technical gates passed, quality gate failed.
 
 Old OR output root, retained only for failure audit:
 
@@ -75,7 +76,7 @@ Old OR output root, retained only for failure audit:
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser
 ```
 
-New BR/no-prior validation root:
+BR/no-prior validation root:
 
 ```text
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise
@@ -84,9 +85,9 @@ New BR/no-prior validation root:
 Important subpaths:
 
 - Old OR shards: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser/_shards`
-- New BR/no-prior shards: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/_shards`
-- New BR/no-prior manifests after launcher merge: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/manifests`
-- New BR/no-prior reports after launcher merge: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/reports`
+- BR/no-prior shards: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/_shards`
+- BR/no-prior manifests: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/manifests`
+- BR/no-prior reports: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/reports`
 
 Run identity:
 
@@ -125,6 +126,35 @@ Visual samples showed severe blur/abstract artifacts. Treat the old D1 artifacts
 as suspect. D2 partialmask remains less risky because OR receives local masks
 and the comp manifest preserves pixels outside the generated mask.
 
+BR/no-prior validation result:
+
+```text
+limit20 rows = 20
+limit100 rows = 100
+status = OK: 100
+generation_source = diffueraser_only: 100
+diffueraser_inference_stack = br: 100
+diffueraser_prior_mode = noise: 100
+propainter.mp4 count = 0
+diffueraser.mp4 count = 100
+selected_primary_fullmask.jsonl = 100
+selected_secondary_fullmask.jsonl = 100
+frame / resolution audit = pass, 16 frames at 512x320 storage / canonical 320x512
+quality buckets = too_bad: 95, texture_or_structure_shift: 5
+quality_score median = 0.1947
+quality_score mean = 0.1884
+quality_score max = 0.3315
+```
+
+Preview paths:
+
+- `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/reports/previews/d1_br_noise_limit20_win_raw_first_frame.jpg`
+- `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise/reports/previews/d1_br_noise_limit100_win_raw_first_frame.jpg`
+
+Decision: D1 BR/no-prior is technically runnable but not accepted as a main
+training data source. Experiment 4 should be downgraded to diagnostic/failure
+case unless a new D1 loser definition is introduced.
+
 Interpretation note: `generation_source=diffueraser_only` means only the
 DiffuEraser candidate is written as the manifest source and selected loser. It
 does not mean all DiffuEraser paths use the same prior policy. For D2
@@ -132,7 +162,7 @@ partialmask, the active path is still OR + ProPainter prior. For new D1
 fullmask validation, the required path is BR + `prior_mode=noise`, so no
 ProPainter prior is generated or passed.
 
-### D2 / Experiments 5, 6, 7: Partialmask K4 DiffuEraser-Only Loser Data
+### D2 / Experiments 5, 6, 7, 8: Partialmask K4 DiffuEraser-Only Loser Data
 
 Status: running on PAI.
 
@@ -155,6 +185,7 @@ num_masks_per_video = 4
 comp manifest serves experiment 5
 nocomp manifest serves experiment 6
 comp data + mask serves experiment 7
+comp data + mask also serves experiment 8 region-loss training
 ```
 
 Current observed status from PAI at `2026-05-25`:

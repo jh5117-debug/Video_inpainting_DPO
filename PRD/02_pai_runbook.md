@@ -198,24 +198,36 @@ Then run small samples only:
 ```bash
 MODELS=diffueraser \
 LINGBOT_PROCESS_NAME=lingbot-world \
+DIFFUERASER_INFERENCE_STACK=br \
+DIFFUERASER_PRIOR_MODE=noise \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \
-bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 20
+START_INDEX=0 \
+END_INDEX=20 \
+TIMEOUT_SEC=7200 \
+bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh
 
 MODELS=diffueraser \
 LINGBOT_PROCESS_NAME=lingbot-world \
+DIFFUERASER_INFERENCE_STACK=br \
+DIFFUERASER_PRIOR_MODE=noise \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \
-bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 100
+START_INDEX=0 \
+END_INDEX=100 \
+TIMEOUT_SEC=7200 \
+bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh
 ```
 
-Do not run full D1 generation until the 20/100-sample manifests and frame
-directories are checked:
+Current result: the D1 BR/no-prior 100-sample technical gate passed, but the
+quality gate failed (`too_bad=95/100`, median q=`0.1947`). Do not run full D1
+generation from this setting. The following audit command is retained for
+diagnostics:
 
 ```bash
-OUT=/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser
+OUT=/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise
 
 wc -l "$OUT/manifests/candidates_all.jsonl" \
       "$OUT/manifests/selected_primary_fullmask.jsonl"

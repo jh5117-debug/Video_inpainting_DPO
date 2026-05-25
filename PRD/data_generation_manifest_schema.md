@@ -78,8 +78,9 @@ Current省时版 production rows must set:
 generation_source = diffueraser_only
 ```
 
-This applies to D1 fullmask DiffuEraser-only and D2 VideoDPO partialmask K4
-DiffuEraser-only data. Do not label the current D2 data as all-models source.
+This applies to the D1 fullmask DiffuEraser-only diagnostic validation and the
+D2 VideoDPO partialmask K4 DiffuEraser-only production data. Do not label the
+current D2 data as all-models source.
 
 For comp manifests:
 
