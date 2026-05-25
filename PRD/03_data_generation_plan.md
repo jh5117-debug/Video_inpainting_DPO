@@ -524,3 +524,60 @@ Experiments 7 and 8 are task-level:
 
 Experiment 9 is the later data-source extension after experiments 7/8 decide
 the better partial-mask task/loss setting.
+
+## YouTube-VOS D3 Preparation
+
+D3 target experiment:
+
+```text
+official_videodpo_diffueraser_youtubevos_partialmask_data
+source_dataset = youtubevos
+generation_source = diffueraser_only
+generation_model = diffueraser
+mask_mode = partial
+num_masks_per_video = 4
+comp = true
+diffueraser_inference_stack = or
+diffueraser_prior_mode = propainter
+```
+
+Confirmed H20-2 source root:
+
+```text
+/home/nvme01/H20_Video_inpainting_DPO/data/external/ytbv_2019_full_resolution/train
+```
+
+This root contains 3471 `JPEGImages` video directories and 3471 `Annotations`
+video directories. D3 generation should write to:
+
+```text
+/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
+```
+
+Prompt policy is a new variable and must be cached before final generation.
+Use an open-weight VLM captioner to generate one concise English scene prompt
+per YouTube-VOS video, then pass that JSON as `CAPTION_JSON`. Candidate rows
+must record `prompt_source` and `prompt_model`. Fallback video-id prompts are
+allowed only for smoke tests, not for final D3 training data.
+
+H20 D3 smoke command:
+
+```bash
+cd /home/nvme01/H20_Video_inpainting_DPO
+MODELS=diffueraser \
+LINGBOT_PROCESS_NAME=lingbot-world \
+GPUS=0,1,2,3 \
+WORKERS_PER_GPU=1 \
+SHARD_SIZE=1 \
+START_INDEX=0 \
+END_INDEX=20 \
+TIMEOUT_SEC=7200 \
+bash scripts/h20_launch_youtubevos_partialmask_losers_k4_sharded.sh
+```
+
+Do not run final D3 full generation until:
+
+- D2 has finished and experiments 7/8 choose the better task/loss setting;
+- prompt cache quality is checked;
+- D3 limit=20 and limit=100 generation gates pass;
+- manifests decode and comp outside-mask diff is zero or near zero.
