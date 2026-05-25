@@ -65,8 +65,11 @@ selection_config="${SELECTION_CONFIG:-configs/generation/medium_hard_balanced_se
 train_data_yaml="${VIDEO_DPO_TRAIN_DATA_YAML:-}"
 if [ -z "$train_data_yaml" ]; then
   train_data_yaml="$(first_existing \
+    /home/nvme01/H20_Video_inpainting_DPO/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml \
     /home/nvme01/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml \
+    /home/nvme01/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml \
     /home/nvme01/H20_Video_inpainting_DPO/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml \
+    /home/nvme01/H20_Video_inpainting_DPO/external/VideoDPO/configs/vc2_dpo/vidpro/train_data.yaml \
     /mnt/nas/hj/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.pai.yaml || true)"
 fi
 
