@@ -44,6 +44,10 @@ while [ "$#" -gt 0 ]; do
       CAPTION_JSON="$2"
       shift 2
       ;;
+    --prompt_mode|--prompt-mode)
+      PROMPT_MODE="$2"
+      shift 2
+      ;;
     *)
       echo "[error] unknown argument: $1" >&2
       exit 2
@@ -69,6 +73,11 @@ selection_config="${SELECTION_CONFIG:-configs/generation/medium_hard_balanced_se
 youtube_vos_root="${YOUTUBE_VOS_ROOT:-$repo_root/data/external/ytbv_2019_full_resolution/train}"
 caption_json="${CAPTION_JSON:-$out_root/prompts/youtubevos_prompts.json}"
 prompt_model="${PROMPT_MODEL:-}"
+prompt_mode="${PROMPT_MODE:-fallback}"
+if [ "$prompt_mode" != "fallback" ] && [ "$prompt_mode" != "none" ]; then
+  echo "[error] PROMPT_MODE must be fallback or none: $prompt_mode" >&2
+  exit 2
+fi
 
 models_csv="${MODELS:-diffueraser}"
 if [ "$models_csv" != "diffueraser" ]; then
@@ -205,6 +214,7 @@ echo "output_root=$out_root"
 echo "shards_root=$shards_root"
 echo "youtube_vos_root=$youtube_vos_root"
 echo "caption_json=$caption_json"
+echo "prompt_mode=$prompt_mode"
 echo "pair_range=[$start_index, $end_index)"
 echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_workers shard_size=$shard_size"
 echo "models=$models_csv"
@@ -251,6 +261,7 @@ run_shard() {
       --youtube_vos_root "$youtube_vos_root" \
       --caption_json "$caption_json" \
       --prompt_model "$prompt_model" \
+      --prompt_mode "$prompt_mode" \
       --models "$models_csv" \
       --limit 0 \
       --start_index "$shard_start" \

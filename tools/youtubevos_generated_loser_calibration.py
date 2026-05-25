@@ -84,7 +84,9 @@ def load_captions(path: str | Path | None) -> dict[str, str]:
     return {str(k): str(v) for k, v in data.items()}
 
 
-def prompt_for(video_dir: Path, captions: dict[str, str]) -> tuple[str, str]:
+def prompt_for(video_dir: Path, captions: dict[str, str], prompt_mode: str) -> tuple[str, str]:
+    if prompt_mode == "none":
+        return "", "no_prompt"
     for key in (video_dir.name, f"ytbv_{video_dir.name}", str(video_dir)):
         value = captions.get(key, "").strip()
         if value:
@@ -234,6 +236,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--youtube_vos_root", default="data/external/ytbv_2019_full_resolution/train")
     parser.add_argument("--caption_json", default="")
     parser.add_argument("--prompt_model", default="")
+    parser.add_argument("--prompt_mode", choices=["fallback", "none"], default="fallback")
     parser.add_argument("--output_root", default="data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4")
     parser.add_argument("--models", default="diffueraser")
     parser.add_argument("--limit", type=int, default=20)
@@ -287,12 +290,12 @@ def main() -> int:
 
     print(
         f"[youtubevos] videos={len(videos)} models={models} generation_source={generation_source} "
-        f"frames_root={frames_root} output_root={output_root}"
+        f"frames_root={frames_root} output_root={output_root} prompt_mode={args.prompt_mode}"
     )
     print(f"[youtubevos] mask_policy={policy.policy_name} selection_policy={selection_config['policy_name']}")
     if args.dry_run:
         for idx, video_dir in videos[:20]:
-            prompt, prompt_source = prompt_for(video_dir, captions)
+            prompt, prompt_source = prompt_for(video_dir, captions, args.prompt_mode)
             print(f"[dry_run] {idx:06d} {video_dir.name} prompt_source={prompt_source} prompt={prompt}")
         return 0
 
@@ -300,7 +303,7 @@ def main() -> int:
     for source_index, video_dir in videos:
         source_video_id = video_dir.name
         sample_id = f"youtubevos_{source_index:06d}_{safe_id(source_video_id)}"
-        prompt, prompt_source = prompt_for(video_dir, captions)
+        prompt, prompt_source = prompt_for(video_dir, captions, args.prompt_mode)
         frame_count = len(image_files(video_dir))
         indices = choose_frame_indices(
             frame_count,
