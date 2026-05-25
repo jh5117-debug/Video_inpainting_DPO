@@ -5,6 +5,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import subprocess
 import sys
@@ -163,8 +164,18 @@ def main() -> None:
         shutil.rmtree(run_dir)
     run_dir.mkdir(parents=True, exist_ok=True)
 
+    python_executable = (
+        sys.executable
+        or os.environ.get("PYTHON_EXECUTABLE")
+        or os.environ.get("DIFFUERASER_PYTHON")
+        or shutil.which("python")
+        or shutil.which("python3")
+    )
+    if not python_executable:
+        raise RuntimeError("failed to resolve Python executable for DiffuEraser run_OR.py")
+
     cmd = [
-        sys.executable,
+        python_executable,
         str(project_root / "inference" / "run_OR.py"),
         "--dataset",
         "custom",
