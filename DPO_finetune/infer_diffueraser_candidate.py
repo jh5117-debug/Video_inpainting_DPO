@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Run local DiffuEraser OR inference and save output frames for DPO candidates."""
+"""Run local DiffuEraser inference and save output frames for DPO candidates."""
 
 from __future__ import annotations
 
@@ -112,57 +112,9 @@ def resolve_diffueraser_path(path: Path) -> Path:
     )
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(description="Run DiffuEraser and save DPO candidate frames.")
-    parser.add_argument("--video_root", required=True, help="Batch video root containing one sequence dir.")
-    parser.add_argument("--mask_root", required=True, help="Batch mask root containing one sequence dir.")
-    parser.add_argument("--output_dir", required=True)
-    parser.add_argument("--work_dir", required=True)
-    parser.add_argument("--project_root", required=True)
-    parser.add_argument("--base_model_path", required=True)
-    parser.add_argument("--vae_path", required=True)
-    parser.add_argument("--diffueraser_path", required=True)
-    parser.add_argument("--propainter_model_dir", required=True)
-    parser.add_argument("--pcm_weights_path", required=True)
-    parser.add_argument("--prompt", default="")
-    parser.add_argument("--negative_prompt", default="worst quality. bad quality.")
-    parser.add_argument("--text_guidance_scale", type=float, default=2.0)
-    parser.add_argument("--num_frames", type=int, default=-1)
-    parser.add_argument("--width", type=int, default=512)
-    parser.add_argument("--height", type=int, default=512)
-    parser.add_argument("--mask_dilation_iter", type=int, default=8)
-    parser.add_argument("--offload_models", action="store_true")
-    args = parser.parse_args()
-
-    project_root = Path(args.project_root).resolve()
-    video_root = Path(args.video_root).resolve()
-    mask_root = Path(args.mask_root).resolve()
-    work_dir = Path(args.work_dir).resolve()
-    output_dir = Path(args.output_dir).resolve()
-    diffueraser_path = resolve_diffueraser_path(Path(args.diffueraser_path))
-    sequence_name = first_sequence_name(video_root, mask_root)
-    run_video_root = video_root
-    run_mask_root = mask_root
-    effective_num_frames = args.num_frames
-
-    if 0 < args.num_frames < 23:
-        padded_root = work_dir / "padded_inputs"
-        padded_video_root = padded_root / "videos"
-        padded_mask_root = padded_root / "masks"
-        pad_sequence_tail(video_root / sequence_name, padded_video_root / sequence_name, 23)
-        pad_sequence_tail(mask_root / sequence_name, padded_mask_root / sequence_name, 23)
-        run_video_root = padded_video_root
-        run_mask_root = padded_mask_root
-        effective_num_frames = 23
-        print(
-            f"[diffueraser] padded short clip from {args.num_frames} to "
-            f"{effective_num_frames} frames before OR inference"
-        )
-
-    run_dir = work_dir / "run_or"
-    if run_dir.exists():
-        shutil.rmtree(run_dir)
-    run_dir.mkdir(parents=True, exist_ok=True)
+def run_or_stack(args: argparse.Namespace, project_root: Path, run_video_root: Path, run_mask_root: Path, run_dir: Path, effective_num_frames: int, diffueraser_path: Path) -> None:
+    if args.prior_mode != "propainter":
+        raise ValueError("inference_stack=or only supports prior_mode=propainter")
 
     python_executable = (
         sys.executable
@@ -217,8 +169,109 @@ def main() -> None:
     if args.offload_models:
         cmd.append("--offload_models")
 
+    print("[diffueraser] stack=or prior_mode=propainter")
     print("[diffueraser] run:", " ".join(cmd))
     subprocess.run(cmd, cwd=str(project_root), check=True)
+
+
+def run_br_stack(args: argparse.Namespace, project_root: Path, run_video_root: Path, run_mask_root: Path, run_dir: Path, sequence_name: str, effective_num_frames: int, diffueraser_path: Path) -> None:
+    if args.prior_mode != "noise":
+        raise ValueError("inference_stack=br currently supports prior_mode=noise for generated-loser production")
+
+    sys.path.insert(0, str(project_root))
+    import torch  # noqa: WPS433
+    from diffueraser.diffueraser import DiffuEraser  # noqa: WPS433
+
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    output_mp4 = run_dir / sequence_name / "diffueraser.mp4"
+    output_mp4.parent.mkdir(parents=True, exist_ok=True)
+
+    print("[diffueraser] stack=br prior_mode=noise")
+    print(f"[diffueraser] output_mp4={output_mp4}")
+    model = DiffuEraser(
+        device,
+        str(Path(args.base_model_path).resolve()),
+        str(Path(args.vae_path).resolve()),
+        str(diffueraser_path),
+        pcm_weights_path=str(Path(args.pcm_weights_path).resolve()),
+    )
+    model.forward(
+        validation_image=str(run_video_root / sequence_name),
+        validation_mask=str(run_mask_root / sequence_name),
+        priori="",
+        output_path=str(output_mp4),
+        max_img_size=max(args.height, args.width) + 100,
+        video_length=effective_num_frames,
+        mask_dilation_iter=args.mask_dilation_iter,
+        nframes=22,
+        seed=None,
+        guidance_scale=args.text_guidance_scale if args.prompt.strip() else None,
+        blended=False,
+        prompt=args.prompt.strip(),
+        n_prompt=args.negative_prompt,
+        apply_composite=False,
+        prior_mode=args.prior_mode,
+    )
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Run DiffuEraser and save DPO candidate frames.")
+    parser.add_argument("--video_root", required=True, help="Batch video root containing one sequence dir.")
+    parser.add_argument("--mask_root", required=True, help="Batch mask root containing one sequence dir.")
+    parser.add_argument("--output_dir", required=True)
+    parser.add_argument("--work_dir", required=True)
+    parser.add_argument("--project_root", required=True)
+    parser.add_argument("--base_model_path", required=True)
+    parser.add_argument("--vae_path", required=True)
+    parser.add_argument("--diffueraser_path", required=True)
+    parser.add_argument("--propainter_model_dir", required=True)
+    parser.add_argument("--pcm_weights_path", required=True)
+    parser.add_argument("--prompt", default="")
+    parser.add_argument("--negative_prompt", default="worst quality. bad quality.")
+    parser.add_argument("--text_guidance_scale", type=float, default=2.0)
+    parser.add_argument("--num_frames", type=int, default=-1)
+    parser.add_argument("--width", type=int, default=512)
+    parser.add_argument("--height", type=int, default=512)
+    parser.add_argument("--mask_dilation_iter", type=int, default=8)
+    parser.add_argument("--offload_models", action="store_true")
+    parser.add_argument("--inference_stack", choices=["or", "br"], default="or")
+    parser.add_argument("--prior_mode", choices=["propainter", "noise"], default="propainter")
+    args = parser.parse_args()
+
+    project_root = Path(args.project_root).resolve()
+    video_root = Path(args.video_root).resolve()
+    mask_root = Path(args.mask_root).resolve()
+    work_dir = Path(args.work_dir).resolve()
+    output_dir = Path(args.output_dir).resolve()
+    diffueraser_path = resolve_diffueraser_path(Path(args.diffueraser_path))
+    sequence_name = first_sequence_name(video_root, mask_root)
+    run_video_root = video_root
+    run_mask_root = mask_root
+    effective_num_frames = args.num_frames
+
+    if 0 < args.num_frames < 23:
+        padded_root = work_dir / "padded_inputs"
+        padded_video_root = padded_root / "videos"
+        padded_mask_root = padded_root / "masks"
+        pad_sequence_tail(video_root / sequence_name, padded_video_root / sequence_name, 23)
+        pad_sequence_tail(mask_root / sequence_name, padded_mask_root / sequence_name, 23)
+        run_video_root = padded_video_root
+        run_mask_root = padded_mask_root
+        effective_num_frames = 23
+        print(
+            f"[diffueraser] padded short clip from {args.num_frames} to "
+            f"{effective_num_frames} frames before OR inference"
+        )
+
+    run_dir = work_dir / "run_or"
+    if run_dir.exists():
+        shutil.rmtree(run_dir)
+    run_dir.mkdir(parents=True, exist_ok=True)
+
+    if args.inference_stack == "or":
+        run_or_stack(args, project_root, run_video_root, run_mask_root, run_dir, effective_num_frames, diffueraser_path)
+    else:
+        run_br_stack(args, project_root, run_video_root, run_mask_root, run_dir, sequence_name, effective_num_frames, diffueraser_path)
 
     pred_mp4 = run_dir / sequence_name / "diffueraser.mp4"
     saved = mp4_to_frames(pred_mp4, output_dir, args.num_frames)

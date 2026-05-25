@@ -58,7 +58,7 @@ first_existing() {
   return 1
 }
 
-out_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser}"
+out_root="${OUTPUT_ROOT:-$repo_root/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise}"
 shards_root="${SHARDS_ROOT:-$out_root/_shards}"
 report_path="${REPORT_PATH:-$out_root/reports/generated_loser_fullmask_generation_report.md}"
 selection_config="${SELECTION_CONFIG:-configs/generation/medium_hard_balanced_selection_v1.yaml}"
@@ -167,6 +167,8 @@ export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
 export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
 export OPENCV_NUM_THREADS="${OPENCV_NUM_THREADS:-1}"
 export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+export DIFFUERASER_INFERENCE_STACK="${DIFFUERASER_INFERENCE_STACK:-br}"
+export DIFFUERASER_PRIOR_MODE="${DIFFUERASER_PRIOR_MODE:-noise}"
 
 if [ -z "$train_data_yaml" ] || [ ! -f "$train_data_yaml" ]; then
   echo "[error] VIDEO_DPO_TRAIN_DATA_YAML not found; run scripts/h20_audit_fullmask_generation_readiness.sh first" >&2
@@ -206,7 +208,7 @@ fi
 
 mkdir -p "$out_root/manifests" "$out_root/reports" "$out_root/logs" "$shards_root"
 
-echo "===== H20 FULLMASK D1 DIFFUERASER-ONLY GENERATION ====="
+echo "===== H20 FULLMASK D1 DIFFUERASER BR NO-PRIOR GENERATION ====="
 echo "output_root=$out_root"
 echo "shards_root=$shards_root"
 echo "pair_range=[$start_index, $end_index)"
@@ -214,6 +216,8 @@ echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_worke
 echo "models=$models_csv"
 echo "mask_mode=full num_masks_per_video=1 comp=false"
 echo "generation_source=diffueraser_only"
+echo "diffueraser_inference_stack=$DIFFUERASER_INFERENCE_STACK"
+echo "diffueraser_prior_mode=$DIFFUERASER_PRIOR_MODE"
 echo "process_name=$LINGBOT_PROCESS_NAME"
 echo "train_data_yaml=$train_data_yaml"
 echo "selection_policy=$selection_config"

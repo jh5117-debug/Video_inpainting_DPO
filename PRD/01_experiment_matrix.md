@@ -39,8 +39,8 @@ The important boundary:
 | `diffueraser_reproduction_sft` | completed | DiffuEraser | DAVIS / YouTube-VOS-derived | source video | reconstruction/inpainting output | task-specific | task-specific | setting-dependent | offline | reproduction/SFT/metric setting | PSNR, SSIM, VBench | Best eval: 6 steps, no PCM, no Gaussian blur, frame-wise metric transfer. |
 | `official_videodpo_vc2` | completed | VC2 | VideoDPO | VideoDPO winner | VideoDPO rejected | none | none | false | existing pairs | official baseline | VBench, SBS | Completed full VBench. |
 | `official_videodpo_diffueraser` | completed | DiffuEraser | VideoDPO | VideoDPO winner | VideoDPO rejected | none | full | false | existing pairs | model adapter | VBench, SBS, DPO diagnostics | Official VideoDPO skeleton + DiffuEraser full-mask bridge. |
-| `official_videodpo_diffueraser_data_fullmask_loser` | D1 H20 audit/smoke pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | full-mask inpainting generated | full | full | false | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | `generation_source=diffueraser_only`; prepare H20 small sample before full generation. |
-| `official_videodpo_diffueraser_data_partialmask_loser_comp_k4` | D2 PAI generation running | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial K=4 | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | `generation_source=diffueraser_only`; cleanest partial-mask data-only ablation. |
+| `official_videodpo_diffueraser_data_fullmask_loser` | D1 old OR paused; BR/no-prior validation pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | full-mask inpainting generated | full | full | false | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | Old H20-2 OR root: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser`; do not train from it. New validation root: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise`; `generation_source=diffueraser_only`, `diffueraser_inference_stack=br`, `diffueraser_prior_mode=noise`. |
+| `official_videodpo_diffueraser_data_partialmask_loser_comp_k4` | D2 PAI full generation running | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial K=4 | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | PAI output root: `/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4`; `generation_source=diffueraser_only`; cleanest partial-mask data-only ablation. |
 | `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4` | reuses D2 data | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask raw output | partial K=4 | full | false | offline | data diagnostic | PSNR, SSIM, VBench, SBS, DPO diagnostics | Reuses D2 raw loser manifest; no new model inference. |
 | `official_videodpo_diffueraser_task_partialmask` | scaffold | DiffuEraser | generated partial-mask data | VideoDPO winner | partialmask comp loser | partial | partial | true | offline data | task | PSNR, SSIM, VBench, SBS, DPO diagnostics | First mask policy: same-mask. |
 | `official_videodpo_diffueraser_youtubevos_partialmask_data` | path-confirmed scaffold | DiffuEraser / generator models | YouTube-VOS | YouTube-VOS clean/target clip | partial-mask generated loser | partial | partial | true first | offline | data source | PSNR, SSIM, VBench, SBS, DPO diagnostics | PAI train split confirmed under `ytbv_2019_full_resolution/train`; prompt policy still needs definition. |
@@ -66,3 +66,29 @@ Not first version: `online loser generation`.
 - More diverse negatives, but costly and stochastic.
 - Couples generation with training.
 - Harder to debug than offline manifest-driven data.
+
+## Generation Source Semantics
+
+The active D1 and D2 production runs use `generation_source=diffueraser_only`.
+This label is about the manifest-level source model: only DiffuEraser output is
+used as a candidate and selected loser. It does not mean the DiffuEraser OR
+inference stack disables ProPainter internally.
+
+Current DiffuEraser OR inference runs:
+
+1. ProPainter produces a prior video, saved in the work directory as
+   `propainter.mp4`.
+2. DiffuEraser consumes the original input video, mask, prompt, and the
+   ProPainter prior.
+3. The final generated loser is the DiffuEraser result, saved as
+   `diffueraser.mp4` and recorded with `generation_model=diffueraser`.
+
+Therefore `diffueraser_only` is not a propainter-only or all-model source, and
+it is also not a no-prior DiffuEraser ablation. A no-prior DiffuEraser ablation
+would need a separate code path and experiment name.
+
+For D1 specifically, OR is no longer approved: a full-frame mask removes all
+visible context, which can make OR/ProPainter prior and DiffuEraser refinement
+degenerate into blurry or abstract output. D1 should validate BR/no-prior first.
+D2 partialmask is not the same risk profile because it uses local masks and can
+composite generated regions back into the original winner.

@@ -29,6 +29,7 @@ from tools.pai_videodpo_single_sample_generation_smoke import (
     CanonicalSetting,
     choose_frame_indices,
     compose_partial,
+    diffueraser_inference_options,
     load_env_file,
     load_yaml,
     make_full_masks,
@@ -337,6 +338,10 @@ def build_candidate_row(
     error_message: str,
 ) -> dict[str, Any]:
     prompt_input_mode, prompt_used_by_model = MODEL_PROMPT_USAGE[model]
+    diffueraser_stack = ""
+    diffueraser_prior_mode = ""
+    if model == "diffueraser":
+        diffueraser_stack, diffueraser_prior_mode = diffueraser_inference_options(mask_mode)
     return {
         "sample_id": sample_id,
         "source_video_id": Path(setting.winner_video_path).stem,
@@ -358,6 +363,8 @@ def build_candidate_row(
         "mask_motion_type": mask_meta["motion_type"],
         "mask_velocity": mask_meta["velocity"],
         "generation_model": model,
+        "diffueraser_inference_stack": diffueraser_stack,
+        "diffueraser_prior_mode": diffueraser_prior_mode,
         "raw_loser_video_path": str(raw_dir),
         "comp_loser_video_path": str(comp_dir) if comp_dir is not None else "",
         "final_loser_video_path": str(comp_dir if comp_dir is not None else raw_dir),
