@@ -39,7 +39,7 @@ Still not done:
 
 - accepted full offline generated-loser data has not been completed;
 - DPO training has not been launched;
-- the active production model set is now DiffuEraser-only (`MODELS=diffueraser`);
+- the active production model set is now DiffuEraser-only (`MODELS=diffueraser`, `generation_source=diffueraser_only`);
 - the accepted worker/shard policy must be confirmed by a 100-pair validation run before launching the full 10k-pair range.
 
 ## Canonical Smoke Results
@@ -66,7 +66,7 @@ paused until generated data is complete and verified.
 ## 2026-05-25 Launch Notes
 
 - Four-model generation is runnable but too slow for the immediate full-data goal.
-- DiffuEraser-only generation means each winner writes four candidate rows, one per K=4 mask.
+- DiffuEraser-only generation means each D2 winner writes four candidate rows, one per K=4 mask, and each row must record `generation_source=diffueraser_only`.
 - A high-concurrency probe with very large worker count overloaded the host: GPU memory was occupied, GPU util stayed near zero, and load average rose above 3000.
 - The sharded launcher now caps OpenMP/MKL/OpenBLAS/NumExpr/OpenCV threads to one by default to prevent CPU fan-out.
 - Do not reuse exploratory `_shards`; archive them before changing `MODELS`, `WORKERS_PER_GPU`, or `SHARD_SIZE`.

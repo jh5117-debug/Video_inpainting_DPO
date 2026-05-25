@@ -6,8 +6,8 @@ Purpose: data-only ablation for official-VideoDPO DiffuEraser.
 
 Changed:
 
-- Loser videos are generated offline by video inpainting models using a full mask.
-- Supports DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover once each runtime is confirmed.
+- Loser videos are generated offline by DiffuEraser using a full mask.
+- Current省时版 manifest/report must record `generation_source = diffueraser_only`.
 
 Not changed:
 
@@ -23,21 +23,15 @@ This is a **data-only ablation**.
 | Field | Value |
 | --- | --- |
 | win | VideoDPO winner |
-| candidates | one full-mask candidate per generation model |
+| candidates | one full-mask DiffuEraser candidate per winner |
 | raw_loser | `video_inpainting_model(win, full_mask)` |
 | final_loser | selected primary `raw_loser` |
 | mask for loser generation | full |
 | mask for training | full |
 | comp | false / not meaningful |
 | loser generation | offline |
+| generation_source | `diffueraser_only` |
 | changed variable | data only |
-
-All four generation models remain candidates:
-
-- DiffuEraser
-- ProPainter
-- CoCoCo
-- MiniMax-Remover
 
 Selection uses `medium_hard_balanced_selection_v1` and writes:
 
@@ -58,9 +52,9 @@ For the current DiffuEraser bridge, local code confirms:
 
 Do not apply this convention blindly to ProPainter, CoCoCo, or MiniMax-Remover; audit each model before generation.
 
-## PAI Audit Requirement
+## H20 / PAI Audit Requirement
 
-Before running, verify for each loser generation model:
+Before running, verify the DiffuEraser generation stack:
 
 - code path;
 - conda/env path;
@@ -69,7 +63,7 @@ Before running, verify for each loser generation model:
 - README/runbook;
 - mask convention.
 
-If a model is not found, record `未找到`; if its runnable state is ambiguous, record `未确认`.
+If a required asset is not found, record `未找到`; if its runnable state is ambiguous, record `未确认`.
 
 ## Metrics / Diagnostics
 
@@ -78,4 +72,9 @@ Evaluate PSNR, SSIM, VBench, and qualitative SBS. During training, monitor `impl
 ## Entry Points
 
 - `scripts/run_generate_losers.sh`: dry-run wrapper around `tools.offline_loser_generation`.
+- `scripts/h20_audit_fullmask_generation_readiness.sh`: H20 readiness audit.
+- `scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh`: real H20 D1 fullmask DiffuEraser-only sharded generation.
+- `scripts/pai_launch_fullmask_losers_diffueraser_sharded.sh`: PAI wrapper for the same D1 launcher.
+- `tools/inspect_generated_loser_manifest_videos.py`: check manifest media paths, 16-frame count, and 320x512 resolution before full generation.
+- `tools/rewrite_generated_loser_manifest_paths.py`: rewrite H20 absolute paths for PAI after data transfer.
 - Training should reuse `official_videodpo_diffueraser` launchers with this experiment's generated manifest/data root.

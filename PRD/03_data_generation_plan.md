@@ -16,6 +16,7 @@ mask_mode
 mask_convention
 comp
 generation_model
+generation_source
 source_dataset
 seed
 fps
@@ -26,6 +27,10 @@ width
 
 Keep this schema compatible across fullmask, partialmask comp, partialmask no-comp, and future YouTube-VOS data.
 
+Current省时版 production data must explicitly record
+`generation_source = diffueraser_only`. Do not describe the active D2
+VideoDPO partialmask K4 run as all-models source.
+
 ## Full-Mask Loser Generation
 
 Target experiment: `official_videodpo_diffueraser_data_fullmask_loser`
@@ -35,6 +40,7 @@ win = VideoDPO winner
 full_mask = all masked
 raw_loser = video_inpainting_model(win, full_mask)
 final_loser = raw_loser
+generation_source = diffueraser_only
 ```
 
 Training still uses official VideoDPO / DiffuEraser full-mask bridge.
@@ -62,7 +68,10 @@ For the current DiffuEraser / VideoDPO bridge, local code says:
 - `training/dpo/dataset/videodpo_fullmask_dataset.py`: the full-hole training bridge uses a black conditioning image, and `videodpo_full_mask_value=0.0` means unknown/hole in the BrushNet mask channel.
 - `tools/generate_diffueraser_fullmask_vbench.py`: `--full_mask_value 0.0 --mask_value_space internal` maps to PIL mask pixel `255`, because DiffuEraser preprocessing maps white PIL masks to internal `0/hole`.
 
-Therefore for DiffuEraser fullmask generation, use internal mask value `0.0` for full-hole/full-frame generation. For ProPainter, CoCoCo, and MiniMax-Remover, audit their own mask convention before running; do not assume DiffuEraser's PIL white/internal zero convention applies.
+Therefore for the active DiffuEraser-only fullmask generation, use internal
+mask value `0.0` for full-hole/full-frame generation. ProPainter, CoCoCo, and
+MiniMax-Remover are future source ablations, not part of the current D1/D2
+production data.
 
 ## Partial-Mask + Comp
 
@@ -74,6 +83,7 @@ partial_mask = used only for offline loser generation
 raw_loser = video_inpainting_model(win, partial_mask)
 comp_loser = win * (1 - partial_mask) + raw_loser * partial_mask
 final_loser = comp_loser
+generation_source = diffueraser_only
 ```
 
 Training still uses full-mask bridge. Partial mask is not passed to the model during training. This is the cleanest data-only partial-mask ablation.
@@ -93,6 +103,7 @@ win = VideoDPO winner
 partial_mask = used only for offline loser generation
 raw_loser = video_inpainting_model(win, partial_mask)
 final_loser = raw_loser
+generation_source = diffueraser_only
 ```
 
 This is a diagnostic ablation. Mask-outside differences may appear and should be measured.
@@ -111,11 +122,9 @@ Configs:
 - `configs/generation/medium_hard_balanced_selection_v1.yaml`
 
 The partial-mask policy creates K=4 interior-constrained irregular polygon masks
-per VideoDPO winner. The original v1 selection policy scores all model/mask
-candidates and selects primary/secondary medium-hard losers with equal source
-weights for DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover.
+per VideoDPO winner.
 
-Active 2026-05-25 production adjustment: use DiffuEraser-only generation first.
+Active 2026-05-25 production setting: use DiffuEraser-only generation.
 This keeps the same VideoDPO source, K=4 mask policy, comp/no-comp manifest
 contract, scoring, and selected-primary training input, but changes the model
 set to:
@@ -129,6 +138,7 @@ For this mode:
 - each VideoDPO winner has `4 masks x 1 model = 4 candidates`;
 - a 100-winner validation run should write 400 candidate rows;
 - the full 10k-pair run should write 40000 candidate rows;
+- every candidate and selected manifest row must write `generation_source=diffueraser_only`;
 - source balancing is effectively disabled because there is only one source model;
 - primary/secondary selection still ranks masks by the same medium-hard quality policy.
 
@@ -162,7 +172,7 @@ calibration subset with disk estimate, selected model set, sample range, output
 root, cheap metric scoring, selection, and manifest validation. Do not start
 DPO training from this step.
 
-Canonical smoke command:
+Archived asset-readiness smoke command:
 
 ```bash
 python tools/pai_videodpo_single_sample_generation_smoke.py \
@@ -178,18 +188,23 @@ This command writes:
 - `outputs/asset_smoke_tests/videodpo_single_sample/report.md`
 - `outputs/asset_smoke_tests/videodpo_single_sample/smoke_manifest.jsonl`
 
+This is historical smoke evidence only. It must not be used to describe the
+active D1/D2 production data source; current production manifests use
+`generation_source=diffueraser_only`.
+
 Without `--run_generation`, the same tool only prepares canonical inputs and
 writes the setting report; that is useful for debugging but does not pass the
 asset readiness gate.
 
-Parallel four-model smoke command:
+Archived parallel four-model smoke command:
 
 ```bash
 bash scripts/pai_run_parallel_generation_smokes.sh
 ```
 
-The parallel wrapper runs one model per process/GPU, prints each model's result
-table and failure log tail, and still generates only one canonical sample.
+The parallel wrapper ran one model per process/GPU, printed each model's result
+table and failure log tail, and generated only one canonical sample. It is not
+the active production generation path.
 
 Passing smoke evidence:
 
@@ -203,7 +218,7 @@ Passing smoke evidence:
 ## Calibration Before Full Generation
 
 Before full generation, run a calibration subset with `--limit 20` or
-`--limit 50`, all four models, and K=4 partial masks. The calibration must save
+`--limit 50`, `--models diffueraser`, and K=4 partial masks. The calibration must save
 all candidates, score cheap metrics, select primary/secondary, and write:
 
 - `PRD/generated_loser_calibration_report.md`
@@ -215,15 +230,16 @@ all candidates, score cheap metrics, select primary/secondary, and write:
 - `manifests/selected_secondary_nocomp.jsonl`
 
 Full generation can start only after this report shows acceptable fail rates,
-reasonable `too_bad / eligible / too_good` ratios, no source-model selection
-collapse, and comp outside-mask diff still equal or very close to zero.
+reasonable `too_bad / eligible / too_good` ratios, and comp outside-mask diff
+still equal or very close to zero. In DiffuEraser-only mode there is no
+source-model balancing signal.
 
 PAI calibration entrypoint:
 
 ```bash
 python tools/videodpo_generated_loser_calibration.py \
   --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models all \
+  --models diffueraser \
   --limit 20 \
   --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
@@ -247,6 +263,37 @@ bash scripts/pai_launch_partialmask_losers_k4_sharded.sh
 After the 100-pair validation run is visually and statistically accepted, omit
 `END_INDEX=100` to run the full VideoDPO pair range. If host load grows while
 GPU util remains near 0, reduce `WORKERS_PER_GPU` before increasing shard count.
+
+## Current H20 D1 Fullmask Entrypoint
+
+For D1, do not use the old dry-run `scripts/pai_generate_fullmask_losers.sh` as
+the real generator. Use the H20 sharded launcher after audit:
+
+```bash
+MODELS=diffueraser \
+GPUS=0,1,2,3 \
+WORKERS_PER_GPU=1 \
+SHARD_SIZE=1 \
+bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 20
+```
+
+Expected 20-sample D1 output:
+
+- `candidates_all.jsonl`: 20 rows
+- `selected_primary_fullmask.jsonl`: 20 rows if all candidates decode
+- `generation_source`: `diffueraser_only`
+
+Validate frame directories before allowing full D1 generation:
+
+```bash
+OUT=/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser
+python tools/inspect_generated_loser_manifest_videos.py \
+  --manifest "$OUT/manifests/selected_primary_fullmask.jsonl" \
+  --expect_frames 16 \
+  --expect_height 320 \
+  --expect_width 512 \
+  --warn_prefix /home/nvme01/H20_Video_inpainting_DPO
+```
 
 ## Online Loser Generation
 

@@ -46,6 +46,15 @@ The prompt is always preserved as source metadata. Text-conditioned generators
 
 Do not use arbitrary source resolution for generated loser data.
 
+Current省时版 production data must set:
+
+```text
+generation_source = diffueraser_only
+generation_model = diffueraser
+```
+
+Do not describe the active D2 partialmask K4 data as all-models source.
+
 ## Mask Policy V1
 
 Policy name: `videodpo_partialmask_policy_v1_medium_hard_k4`
@@ -121,24 +130,26 @@ For the later task partial-mask experiment:
 
 ## Candidate Generation
 
-For partial-mask data, each VideoDPO winner has:
+The original all-source design for partial-mask data was:
 
 ```text
 K=4 masks x 4 generation models = up to 16 candidates
 ```
 
-Generation models:
+Candidate source models in that original design:
 
 - `diffueraser`
 - `propainter`
 - `cococo`
 - `minimax_remover`
 
-Active 2026-05-25 production mode is DiffuEraser-only:
+Active 2026-05-25 production mode is DiffuEraser-only and supersedes the
+all-source design for the current D1/D2 data:
 
 ```text
 K=4 masks x 1 generation model = 4 candidates
 generation_model = diffueraser
+generation_source = diffueraser_only
 ```
 
 This mode is chosen for throughput. It does not change the mask policy,
@@ -166,12 +177,6 @@ data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/
         mask/
         diffueraser/raw/
         diffueraser/comp/
-        propainter/raw/
-        propainter/comp/
-        cococo/raw/
-        cococo/comp/
-        minimax_remover/raw/
-        minimax_remover/comp/
       mask_001/
       mask_002/
       mask_003/
@@ -307,10 +312,12 @@ Full-mask settings:
 
 - `mask_mode = full`
 - `num_masks_per_video = 1`
+- `generation_source = diffueraser_only`
+- `generation_model = diffueraser`
 - `mask_area_ratio = 1.0`
 - `final_loser = raw_loser`
 
-The four generation models are still candidates. Use `medium_hard_balanced_selection_v1` and save:
+Use `medium_hard_balanced_selection_v1` and save:
 
 - `candidates_all.jsonl`
 - `selected_primary_fullmask.jsonl`
@@ -324,8 +331,8 @@ Before full generation, run calibration:
 
 ```text
 limit = 20 or 50 VideoDPO winners
-models = all
-partial masks K=4
+models = diffueraser
+partial masks K=4 for D2, full mask K=1 for D1
 save all candidates
 compute cheap metrics
 select primary/secondary
@@ -354,7 +361,7 @@ PAI entrypoint:
 ```bash
 python tools/videodpo_generated_loser_calibration.py \
   --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models all \
+  --models diffueraser \
   --limit 20 \
   --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \

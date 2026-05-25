@@ -93,6 +93,7 @@ Active production direction as of 2026-05-25:
 
 - generated-loser data: `official_videodpo_diffueraser_data_partialmask_loser_k4`
 - model set: `MODELS=diffueraser`
+- generation_source: `diffueraser_only`
 - masks: K=4 per VideoDPO winner
 - expected candidate rows for 100 winners: `100 * 4 = 400`
 - expected candidate rows for full 10k winners: `10000 * 4 = 40000`
@@ -170,6 +171,68 @@ continuous high-frequency IO probing adds noise:
 ```bash
 iostat -xm 5 12
 pidstat -d 5 12
+```
+
+## H20 D1 Fullmask DiffuEraser-Only Preparation
+
+Do not stop or modify the PAI D2 run for this. H20 is only for preparing D1:
+
+```text
+D1 = VideoDPO fullmask loser data
+generation_source = diffueraser_only
+mask_mode = full
+num_masks_per_video = 1
+comp = false
+```
+
+First run the H20 audit:
+
+```bash
+cd /home/nvme01/H20_Video_inpainting_DPO
+bash scripts/h20_audit_fullmask_generation_readiness.sh 2>&1 | tee /tmp/h20_fullmask_audit.log
+```
+
+Then run small samples only:
+
+```bash
+MODELS=diffueraser \
+GPUS=0,1,2,3 \
+WORKERS_PER_GPU=1 \
+SHARD_SIZE=1 \
+bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 20
+
+MODELS=diffueraser \
+GPUS=0,1,2,3 \
+WORKERS_PER_GPU=1 \
+SHARD_SIZE=1 \
+bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 100
+```
+
+Do not run full D1 generation until the 20/100-sample manifests and frame
+directories are checked:
+
+```bash
+OUT=/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser
+
+wc -l "$OUT/manifests/candidates_all.jsonl" \
+      "$OUT/manifests/selected_primary_fullmask.jsonl"
+
+python tools/inspect_generated_loser_manifest_videos.py \
+  --manifest "$OUT/manifests/selected_primary_fullmask.jsonl" \
+  --expect_frames 16 \
+  --expect_height 320 \
+  --expect_width 512 \
+  --warn_prefix /home/nvme01/H20_Video_inpainting_DPO
+```
+
+If manifests contain `/home/nvme01/...` paths and data will be copied to PAI,
+rewrite path prefixes with:
+
+```bash
+python tools/rewrite_generated_loser_manifest_paths.py \
+  --input data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser/manifests/selected_primary_fullmask.jsonl \
+  --output /tmp/selected_primary_fullmask.pai.jsonl \
+  --map /home/nvme01/H20_Video_inpainting_DPO=/mnt/nas/hj/H20_Video_inpainting_DPO
 ```
 
 ## Completed Official Experiments

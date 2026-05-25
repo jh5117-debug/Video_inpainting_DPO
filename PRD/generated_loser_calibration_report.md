@@ -6,20 +6,22 @@ This report must be overwritten on PAI after running the calibration subset.
 Do not launch full offline generation before this report contains real
 candidate metrics and selection distributions.
 
-Required calibration command shape on PAI:
+Required current省时版 calibration command shape on PAI:
 
 ```bash
 python tools/videodpo_generated_loser_calibration.py \
   --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models all \
+  --models diffueraser \
+  --mask_mode partial \
   --limit 20 \
   --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
   --calibration_report PRD/generated_loser_calibration_report.md
 ```
 
-Current 2026-05-25 production pass uses DiffuEraser-only generation for
-throughput:
+Current 2026-05-25 production pass uses `generation_source=diffueraser_only`
+for throughput. The earlier four-model smoke remains only archived readiness
+evidence, not the active D1/D2 generation source.
 
 ```bash
 python tools/videodpo_generated_loser_calibration.py \
@@ -35,8 +37,9 @@ python tools/videodpo_generated_loser_calibration.py \
 
 - calibration_winners: `PENDING`
 - masks_per_winner: `4`
-- models_per_mask_default: `diffueraser, propainter, cococo, minimax_remover`
+- models_per_mask_archived_smoke: `diffueraser, propainter, cococo, minimax_remover`
 - models_per_mask_current: `diffueraser`
+- generation_source_current: `diffueraser_only`
 - candidate_count: `PENDING`
 - successful_candidate_count: `PENDING`
 - failed_candidate_count: `PENDING`

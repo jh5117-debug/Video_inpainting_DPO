@@ -26,7 +26,8 @@ primary/secondary manifests.
 - `mask_bbox`
 - `mask_motion_type`
 - `mask_velocity`
-- `generation_model`: `diffueraser`, `propainter`, `cococo`, or `minimax_remover`
+- `generation_model`: current省时版 uses `diffueraser`
+- `generation_source`: current省时版 must be `diffueraser_only`
 - `source_dataset`: `videodpo` or `youtubevos`
 - `raw_metrics`
 - `comp_metrics`
@@ -53,6 +54,7 @@ Selected manifests keep the final DPO pair view. Required fields:
 - `mask_path`
 - `mask_policy`
 - `generation_model`
+- `generation_source`
 - `quality_score`
 - `defect_bucket`
 - `selection_policy`
@@ -69,6 +71,15 @@ Selected manifests keep the final DPO pair view. Required fields:
 Full-mask loser generation uses `num_masks_per_video = 1`.
 Partial-mask loser generation uses offline `num_masks_per_video = 4` by default
 with policy `videodpo_partialmask_policy_v1_medium_hard_k4`.
+
+Current省时版 production rows must set:
+
+```text
+generation_source = diffueraser_only
+```
+
+This applies to D1 fullmask DiffuEraser-only and D2 VideoDPO partialmask K4
+DiffuEraser-only data. Do not label the current D2 data as all-models source.
 
 For comp manifests:
 

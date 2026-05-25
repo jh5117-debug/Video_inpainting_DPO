@@ -1,6 +1,7 @@
 # VideoDPO Canonical Data Setting
 
-This checked-in file is a template. On PAI it is overwritten by:
+This checked-in file is a template. The archived 2026-05-24 all-model asset
+smoke overwrote it with:
 
 ```bash
 python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
@@ -27,4 +28,5 @@ the PAI train YAML:
 - prompt source: VideoDPO pair metadata loaded from `VIDEO_DPO_TRAIN_DATA_YAML`
 
 Canonical full-mask and partial-mask one-sample smoke passed for all four
-generation models. Full data generation has not been launched yet.
+generation models, but current production data generation is DiffuEraser-only:
+`generation_source=diffueraser_only`.

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 """Run a VideoDPO generated-loser calibration subset.
 
-This is a narrow PAI utility for the post-smoke, pre-full-generation stage. It
-uses the canonical official DiffuEraser VideoDPO setting, generates K masks per
-winner, runs the selected generation models, scores every candidate with cheap
-metrics, and writes selected primary/secondary manifests.
+This is a narrow PAI/H20 utility for the post-smoke, pre-full-generation stage.
+It uses the canonical official DiffuEraser VideoDPO setting, generates either a
+single full mask or K partial masks per winner, runs the selected generation
+models, scores every candidate with cheap metrics, and writes selected
+primary/secondary manifests.
 """
 
 from __future__ import annotations
@@ -30,6 +31,7 @@ from tools.pai_videodpo_single_sample_generation_smoke import (
     compose_partial,
     load_env_file,
     load_yaml,
+    make_full_masks,
     metadata_caption,
     image_files,
     model_command,
@@ -37,6 +39,7 @@ from tools.pai_videodpo_single_sample_generation_smoke import (
     read_canonical_frames,
     read_json,
     resolve_videodpo_roots,
+    save_mask_frames,
     save_rgb_frames,
     validate_frame_dir,
 )
@@ -85,6 +88,65 @@ def copy_frame_dir(src: Path, dst: Path) -> None:
     clean_dir(dst)
     for idx, path in enumerate(image_files(src)):
         shutil.copy2(path, dst / f"{idx:05d}{path.suffix.lower()}")
+
+
+def generation_source_label(models: list[str]) -> str:
+    if models == ["diffueraser"]:
+        return "diffueraser_only"
+    return "multi_source_" + "_".join(models)
+
+
+def make_full_mask_meta(setting: CanonicalSetting, sample_id: str, sample_root: Path, seed: int) -> list[dict[str, Any]]:
+    mask_id = "mask_000"
+    mask_dir = sample_root / mask_id / "mask"
+    save_mask_frames(
+        make_full_masks(setting.canonical_num_frames, setting.canonical_height, setting.canonical_width),
+        mask_dir,
+    )
+    width = setting.canonical_width
+    height = setting.canonical_height
+    frame_bbox = [[0, 0, width, height] for _ in range(setting.canonical_num_frames)]
+    frame_area = [1.0 for _ in range(setting.canonical_num_frames)]
+    return [
+        {
+            "mask_id": mask_id,
+            "sample_id": sample_id,
+            "mask_policy": "fullmask_v1",
+            "seed": seed,
+            "area_ratio": 1.0,
+            "area_ratio_min": 1.0,
+            "area_ratio_max": 1.0,
+            "frame_area_ratio_min": 1.0,
+            "frame_area_ratio_max": 1.0,
+            "bbox": [0, 0, width, height],
+            "bbox_ratio": [1.0, 1.0],
+            "bbox_center_ratio": [0.5, 0.5],
+            "bbox_margin_ratio": [0.0, 0.0, 0.0, 0.0],
+            "motion_type": "full_static",
+            "velocity": [0.0, 0.0],
+            "motion_center_bounds": [0.0, 0.0, 1.0, 1.0],
+            "motion_box_ratio": 1.0,
+            "static_prob": 1.0,
+            "mask_shape": "full_frame",
+            "mask_location": "full_frame",
+            "mask_motion": "static",
+            "mask_dilation_iter": 0,
+            "frame_level_bbox": frame_bbox,
+            "frame_level_area_ratio": frame_area,
+            "frames": [
+                {
+                    "frame": idx,
+                    "bbox": [0, 0, width, height],
+                    "area_ratio": 1.0,
+                    "bbox_ratio": [1.0, 1.0],
+                    "bbox_center_ratio": [0.5, 0.5],
+                    "bbox_margin_ratio": [0.0, 0.0, 0.0, 0.0],
+                }
+                for idx in range(setting.canonical_num_frames)
+            ],
+            "mask_path": str(mask_dir),
+        }
+    ]
 
 
 def derive_base(args: argparse.Namespace) -> tuple[Path, Path, dict[str, Any], int, int, int, int, float]:
@@ -199,11 +261,12 @@ def make_setting(
 
 def run_candidate(
     model: str,
+    mask_mode: str,
     setting: CanonicalSetting,
     win_dir: Path,
     mask_dir: Path,
     raw_dir: Path,
-    comp_dir: Path,
+    comp_dir: Path | None,
     work_dir: Path,
     log_path: Path,
     timeout_sec: int,
@@ -220,7 +283,7 @@ def run_candidate(
         copy_frame_dir(win_dir, command_win_dir)
         copy_frame_dir(mask_dir, command_mask_dir)
 
-    command = model_command(model, "partial", setting, command_win_dir, command_mask_dir, raw_dir, work_dir)
+    command = model_command(model, mask_mode, setting, command_win_dir, command_mask_dir, raw_dir, work_dir)
     env = os.environ.copy()
     env["PYTHONPATH"] = str(Path.cwd()) + os.pathsep + env.get("PYTHONPATH", "")
     gpu = os.environ.get(MODEL_GPU_ENV[model])
@@ -248,9 +311,12 @@ def run_candidate(
     )
     if validation != "OK":
         return "FAILED", validation
-    outside = compose_partial(win_dir, raw_dir, mask_dir, comp_dir, setting.canonical_num_frames)
-    if outside > 0:
-        return "FAILED", f"comp outside-mask max diff is not zero: {outside}"
+    if mask_mode == "partial":
+        if comp_dir is None:
+            return "FAILED", "missing comp_dir for partial mask candidate"
+        outside = compose_partial(win_dir, raw_dir, mask_dir, comp_dir, setting.canonical_num_frames)
+        if outside > 0:
+            return "FAILED", f"comp outside-mask max diff is not zero: {outside}"
     return "OK", "returncode=0"
 
 
@@ -259,9 +325,11 @@ def build_candidate_row(
     sample_id: str,
     mask_meta: dict[str, Any],
     model: str,
+    mask_mode: str,
+    generation_source: str,
     win_dir: Path,
     raw_dir: Path,
-    comp_dir: Path,
+    comp_dir: Path | None,
     status: str,
     error_message: str,
 ) -> dict[str, Any]:
@@ -276,7 +344,11 @@ def build_candidate_row(
         "win_video_path": str(win_dir),
         "mask_id": mask_meta["mask_id"],
         "mask_path": mask_meta["mask_path"],
-        "mask_mode": "partial",
+        "mask_mode": mask_mode,
+        "mask_convention": "png_255_inpaint_region_0_keep_region",
+        "comp": mask_mode == "partial",
+        "generation_source": generation_source,
+        "source_dataset": "videodpo",
         "mask_policy": mask_meta["mask_policy"],
         "mask_area_ratio": mask_meta["area_ratio"],
         "mask_bbox": mask_meta["bbox"],
@@ -284,7 +356,8 @@ def build_candidate_row(
         "mask_velocity": mask_meta["velocity"],
         "generation_model": model,
         "raw_loser_video_path": str(raw_dir),
-        "comp_loser_video_path": str(comp_dir),
+        "comp_loser_video_path": str(comp_dir) if comp_dir is not None else "",
+        "final_loser_video_path": str(comp_dir if comp_dir is not None else raw_dir),
         "raw_metrics": {},
         "comp_metrics": {},
         "quality_score": 0.0,
@@ -304,6 +377,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run VideoDPO generated-loser calibration subset.")
     parser.add_argument("--output_root", default="data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4")
     parser.add_argument("--models", default="all")
+    parser.add_argument("--mask_mode", choices=["partial", "full"], default="partial")
     parser.add_argument("--limit", type=int, default=20)
     parser.add_argument("--start_index", type=int, default=0)
     parser.add_argument("--end_index", type=int, default=-1)
@@ -324,6 +398,7 @@ def main() -> int:
     args = build_parser().parse_args()
     load_env_file(Path("configs/paths/pai.detected.env"))
     models = parse_csv(args.models, MODEL_NAMES)
+    generation_source = generation_source_label(models)
     output_root = Path(args.output_root).resolve()
     manifests_dir = output_root / "manifests"
     reports_dir = output_root / "reports"
@@ -337,12 +412,12 @@ def main() -> int:
 
     cfg_path, root, _, height, width, nframes, stride, full_mask_value = derive_base(args)
     train_yaml = Path(os.environ.get("VIDEO_DPO_TRAIN_DATA_YAML") or args.train_data_yaml).expanduser().resolve()
-    policy = load_policy(args.mask_policy_config)
+    policy = load_policy(args.mask_policy_config) if args.mask_mode == "partial" else None
     selection_config = load_yaml(Path(args.selection_config))
     pairs = iter_valid_pairs(root, args.start_index, args.end_index, args.limit, nframes, stride)
 
-    print(f"[calibration] winners={len(pairs)} models={models} output_root={output_root}")
-    print(f"[calibration] mask_policy={policy.policy_name} selection_policy={selection_config['policy_name']}")
+    print(f"[calibration] winners={len(pairs)} models={models} generation_source={generation_source} output_root={output_root}")
+    print(f"[calibration] mask_mode={args.mask_mode} mask_policy={(policy.policy_name if policy else 'fullmask_v1')} selection_policy={selection_config['policy_name']}")
     if args.dry_run:
         print("[calibration] dry_run=true; no model inference")
         return 0
@@ -371,32 +446,65 @@ def main() -> int:
         if not args.skip_existing:
             clean_dir(sample_root)
         save_rgb_frames(frames, win_dir)
-        mask_rows = generate_k_masks(policy, sample_id, output_root / "candidates", args.seed + pair_index * 1009)
+        if args.mask_mode == "partial":
+            if policy is None:
+                raise RuntimeError("partial mask mode requires a mask policy")
+            mask_rows = generate_k_masks(policy, sample_id, output_root / "candidates", args.seed + pair_index * 1009)
+        else:
+            mask_rows = make_full_mask_meta(setting, sample_id, sample_root, args.seed + pair_index * 1009)
         print(f"[sample] {sample_id} masks={len(mask_rows)}")
         for mask_meta in mask_rows:
             mask_id = str(mask_meta["mask_id"])
             mask_dir = Path(mask_meta["mask_path"])
             for model in models:
                 raw_dir = sample_root / mask_id / model / "raw"
-                comp_dir = sample_root / mask_id / model / "comp"
+                comp_dir = sample_root / mask_id / model / "comp" if args.mask_mode == "partial" else None
                 work_dir = output_root / "work" / sample_id / mask_id / model
                 log_path = output_root / "logs" / sample_id / f"{mask_id}_{model}.log"
-                if args.skip_existing and comp_dir.exists():
+                existing_dir = comp_dir if comp_dir is not None else raw_dir
+                if args.skip_existing and existing_dir.exists():
                     status, message = "OK", "skip_existing"
                 else:
-                    status, message = run_candidate(model, setting, win_dir, mask_dir, raw_dir, comp_dir, work_dir, log_path, args.timeout_sec)
-                row = build_candidate_row(setting, sample_id, mask_meta, model, win_dir, raw_dir, comp_dir, status, message)
+                    status, message = run_candidate(
+                        model,
+                        args.mask_mode,
+                        setting,
+                        win_dir,
+                        mask_dir,
+                        raw_dir,
+                        comp_dir,
+                        work_dir,
+                        log_path,
+                        args.timeout_sec,
+                    )
+                row = build_candidate_row(
+                    setting,
+                    sample_id,
+                    mask_meta,
+                    model,
+                    args.mask_mode,
+                    generation_source,
+                    win_dir,
+                    raw_dir,
+                    comp_dir,
+                    status,
+                    message,
+                )
                 if status == "OK":
                     row["raw_metrics"] = compute_candidate_metrics(win_dir, raw_dir, mask_dir, selection_config)
-                    row["comp_metrics"] = compute_candidate_metrics(win_dir, comp_dir, mask_dir, selection_config)
-                    row["quality_score"] = row["comp_metrics"]["quality_score"]
-                    row["defect_bucket"] = row["comp_metrics"]["defect_bucket"]
+                    if args.mask_mode == "partial" and comp_dir is not None:
+                        row["comp_metrics"] = compute_candidate_metrics(win_dir, comp_dir, mask_dir, selection_config)
+                        row["quality_score"] = row["comp_metrics"]["quality_score"]
+                        row["defect_bucket"] = row["comp_metrics"]["defect_bucket"]
+                    else:
+                        row["quality_score"] = row["raw_metrics"]["quality_score"]
+                        row["defect_bucket"] = row["raw_metrics"]["defect_bucket"]
                 rows.append(row)
                 jsonl_append(candidates_manifest, row)
                 print(f"[candidate] {sample_id} {mask_id} {model} {status} q={row['quality_score']:.4f}")
 
     write_jsonl(scored_manifest, rows)
-    manifests, selection_events = select_manifests(rows, selection_config, "partial")
+    manifests, selection_events = select_manifests(rows, selection_config, args.mask_mode)
     for name, manifest_rows in manifests.items():
         if manifest_rows:
             write_jsonl(manifests_dir / f"{name}.jsonl", manifest_rows)

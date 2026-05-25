@@ -2,7 +2,10 @@
 
 ## Core Ablation Directions This Week
 
-The core plan has four directions, with Direction 2 split into 2A/2B:
+The full paper-story plan has 9 experiment directions: 3 completed and 6 new.
+The current省时版 generation source is `diffueraser_only`; four generator
+models are not expanded into four training experiments in the first-round main
+line.
 
 1. `official_videodpo_diffueraser_data_fullmask_loser`
 2. `official_videodpo_diffueraser_data_partialmask_loser_comp_k4`
@@ -36,9 +39,9 @@ The important boundary:
 | `diffueraser_reproduction_sft` | completed | DiffuEraser | DAVIS / YouTube-VOS-derived | source video | reconstruction/inpainting output | task-specific | task-specific | setting-dependent | offline | reproduction/SFT/metric setting | PSNR, SSIM, VBench | Best eval: 6 steps, no PCM, no Gaussian blur, frame-wise metric transfer. |
 | `official_videodpo_vc2` | completed | VC2 | VideoDPO | VideoDPO winner | VideoDPO rejected | none | none | false | existing pairs | official baseline | VBench, SBS | Completed full VBench. |
 | `official_videodpo_diffueraser` | completed | DiffuEraser | VideoDPO | VideoDPO winner | VideoDPO rejected | none | full | false | existing pairs | model adapter | VBench, SBS, DPO diagnostics | Official VideoDPO skeleton + DiffuEraser full-mask bridge. |
-| `official_videodpo_diffueraser_data_fullmask_loser` | asset-ready, smoke pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | full-mask inpainting generated | full | full | false | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | Data/weight paths found; run one-sample generation smoke before full generation. |
-| `official_videodpo_diffueraser_data_partialmask_loser_comp_k4` | asset-ready, smoke pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial K=4 | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | Cleanest partial-mask data-only ablation; wait for generator smoke. |
-| `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4` | asset-ready, smoke pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask raw output | partial K=4 | full | false | offline | data diagnostic | PSNR, SSIM, VBench, SBS, DPO diagnostics | Reuses the same raw generation as comp; wait for generator smoke. |
+| `official_videodpo_diffueraser_data_fullmask_loser` | D1 H20 audit/smoke pending | DiffuEraser bridge | VideoDPO | VideoDPO winner | full-mask inpainting generated | full | full | false | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | `generation_source=diffueraser_only`; prepare H20 small sample before full generation. |
+| `official_videodpo_diffueraser_data_partialmask_loser_comp_k4` | D2 PAI generation running | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask inpainting + composite | partial K=4 | full | true | offline | data | PSNR, SSIM, VBench, SBS, DPO diagnostics | `generation_source=diffueraser_only`; cleanest partial-mask data-only ablation. |
+| `official_videodpo_diffueraser_data_partialmask_loser_nocomp_k4` | reuses D2 data | DiffuEraser bridge | VideoDPO | VideoDPO winner | partial-mask raw output | partial K=4 | full | false | offline | data diagnostic | PSNR, SSIM, VBench, SBS, DPO diagnostics | Reuses D2 raw loser manifest; no new model inference. |
 | `official_videodpo_diffueraser_task_partialmask` | scaffold | DiffuEraser | generated partial-mask data | VideoDPO winner | partialmask comp loser | partial | partial | true | offline data | task | PSNR, SSIM, VBench, SBS, DPO diagnostics | First mask policy: same-mask. |
 | `official_videodpo_diffueraser_youtubevos_partialmask_data` | path-confirmed scaffold | DiffuEraser / generator models | YouTube-VOS | YouTube-VOS clean/target clip | partial-mask generated loser | partial | partial | true first | offline | data source | PSNR, SSIM, VBench, SBS, DPO diagnostics | PAI train split confirmed under `ytbv_2019_full_resolution/train`; prompt policy still needs definition. |
 | `official_videodpo_diffueraser_online_loser_generation` | future | TBD | TBD | TBD | generated during training | TBD | TBD | TBD | online | generation timing | TBD | Not first priority. |
