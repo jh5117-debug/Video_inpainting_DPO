@@ -45,6 +45,14 @@ diffueraser_py="$(first_existing \
   /home/nvme01/conda_envs/diffueraser/bin/python \
   "$(dirname "$repo_root")/conda_envs/diffueraser/bin/python" \
   /mnt/nas/hj/conda_envs/diffueraser/bin/python || true)"
+audit_python="$(first_existing \
+  "${PYTHON:-}" \
+  "${VIDEODPO_PYTHON:-}" \
+  "${PROPAINTER_PYTHON:-}" \
+  /home/nvme01/conda_envs/videodpo/bin/python \
+  /mnt/nas/hj/conda_envs/videodpo/bin/python \
+  "$(command -v python 2>/dev/null || true)" \
+  "$(command -v python3 2>/dev/null || true)" || true)"
 third_party_root="$(first_existing \
   "${THIRD_PARTY_VIDEO_INPAINTING_ROOT:-}" \
   /home/nvme01/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting \
@@ -80,6 +88,7 @@ pcm_weights="$(first_existing \
   /mnt/nas/hj/weights/PCM_Weights || true)"
 
 printf 'VIDEO_DPO_TRAIN_DATA_YAML=%s\n' "${train_yaml:-MISSING}"
+printf 'ORCHESTRATION_PYTHON=%s\n' "${audit_python:-MISSING}"
 printf 'DIFFUERASER_PYTHON=%s\n' "${diffueraser_py:-MISSING}"
 printf 'THIRD_PARTY_VIDEO_INPAINTING_ROOT=%s\n' "${third_party_root:-MISSING}"
 printf 'BASE_MODEL_PATH=%s\n' "${base_model:-MISSING}"
@@ -108,8 +117,8 @@ fi
 
 echo
 echo "===== canonical VideoDPO setting ====="
-if [ -n "$train_yaml" ]; then
-  VIDEO_DPO_TRAIN_DATA_YAML="$train_yaml" python - <<'PY' || true
+if [ -n "$train_yaml" ] && [ -n "$audit_python" ]; then
+  VIDEO_DPO_TRAIN_DATA_YAML="$train_yaml" "$audit_python" - <<'PY' || true
 from pathlib import Path
 from tools.pai_videodpo_single_sample_generation_smoke import load_yaml, resolve_videodpo_roots, read_json
 
@@ -127,7 +136,7 @@ print("canonical_height", int(params.get("train_height") or params.get("resoluti
 print("canonical_width", int(params.get("train_width") or params.get("resolution", [320,512])[-1]))
 PY
 else
-  echo "missing train yaml; cannot resolve canonical data"
+  echo "missing train yaml or orchestration python; cannot resolve canonical data"
 fi
 
 echo

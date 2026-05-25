@@ -40,6 +40,15 @@ else
   export MINIMAX_REMOVER_PYTHON="$default_minimax_python"
 fi
 
+orchestration_python="${PYTHON:-$default_videodpo_python}"
+if [ ! -x "$orchestration_python" ]; then
+  orchestration_python="$(command -v python 2>/dev/null || command -v python3 2>/dev/null || true)"
+fi
+if [ -z "$orchestration_python" ] || [ ! -x "$orchestration_python" ]; then
+  echo "[error] ORCHESTRATION_PYTHON not found/executable" >&2
+  exit 2
+fi
+
 gpus_csv="${GPUS:-0,1,2,3,4,5,6}"
 workers_per_gpu="${WORKERS_PER_GPU:-2}"
 shard_size="${SHARD_SIZE:-10}"
@@ -67,7 +76,7 @@ if [ "$total_workers" -lt 1 ]; then
 fi
 
 if [ -z "$end_index" ]; then
-  end_index="$(python - <<'PY'
+  end_index="$("$orchestration_python" - <<'PY'
 import os
 from pathlib import Path
 from tools.pai_videodpo_single_sample_generation_smoke import read_json, resolve_videodpo_roots
@@ -90,6 +99,7 @@ echo "models=$models_csv"
 echo "mask_policy=$mask_policy_config"
 echo "selection_policy=$selection_config"
 echo "cpu_threads=OMP:$OMP_NUM_THREADS MKL:$MKL_NUM_THREADS OPENBLAS:$OPENBLAS_NUM_THREADS NUMEXPR:$NUMEXPR_NUM_THREADS OPENCV:$OPENCV_NUM_THREADS"
+echo "ORCHESTRATION_PYTHON=$orchestration_python"
 echo "DIFFUERASER_PYTHON=$DIFFUERASER_PYTHON"
 echo "PROPAINTER_PYTHON=$PROPAINTER_PYTHON"
 echo "COCOCO_PYTHON=$COCOCO_PYTHON"
@@ -120,7 +130,7 @@ run_shard() {
     export PROPAINTER_GPU="$gpu"
     export COCOCO_GPU="$gpu"
     export MINIMAX_REMOVER_GPU="$gpu"
-    python tools/videodpo_generated_loser_calibration.py \
+    "$orchestration_python" tools/videodpo_generated_loser_calibration.py \
       --output_root "$shard_root" \
       --models "$models_csv" \
       --limit 0 \
@@ -194,7 +204,7 @@ fi
 xargs cat < "$out_root/manifests/shard_candidate_manifests.txt" > "$out_root/manifests/candidates_all.jsonl"
 cp "$out_root/manifests/candidates_all.jsonl" "$out_root/manifests/candidates_all.scored.jsonl"
 
-python tools/videodpo_loser_candidate_selection.py \
+"$orchestration_python" tools/videodpo_loser_candidate_selection.py \
   --candidates_manifest "$out_root/manifests/candidates_all.jsonl" \
   --selection_config "$selection_config" \
   --output_dir "$out_root/manifests" \
@@ -202,7 +212,7 @@ python tools/videodpo_loser_candidate_selection.py \
   --calibration_report "$report_path"
 
 echo "===== SUMMARY ====="
-python - <<PY
+"$orchestration_python" - <<PY
 from pathlib import Path
 root = Path("$out_root/manifests")
 for name in [

@@ -92,6 +92,15 @@ diffueraser_python="$(first_existing \
   /mnt/nas/hj/conda_envs/diffueraser/bin/python || true)"
 export DIFFUERASER_PYTHON="${DIFFUERASER_PYTHON:-$diffueraser_python}"
 
+orchestration_python="$(first_existing \
+  "${PYTHON:-}" \
+  "${VIDEODPO_PYTHON:-}" \
+  "${PROPAINTER_PYTHON:-}" \
+  /home/nvme01/conda_envs/videodpo/bin/python \
+  /mnt/nas/hj/conda_envs/videodpo/bin/python \
+  "$(command -v python 2>/dev/null || true)" \
+  "$(command -v python3 2>/dev/null || true)" || true)"
+
 base_model="$(first_existing \
   "${BASE_MODEL_PATH:-}" \
   "${third_party_root:-}/downloads/sd_inpaint_hf_extract/stable-diffusion-inpainting" \
@@ -164,6 +173,10 @@ if [ -z "${DIFFUERASER_PYTHON:-}" ] || [ ! -x "$DIFFUERASER_PYTHON" ]; then
   echo "[error] DIFFUERASER_PYTHON not found/executable; run scripts/h20_audit_fullmask_generation_readiness.sh first" >&2
   exit 2
 fi
+if [ -z "$orchestration_python" ] || [ ! -x "$orchestration_python" ]; then
+  echo "[error] ORCHESTRATION_PYTHON not found/executable; run scripts/h20_audit_fullmask_generation_readiness.sh first" >&2
+  exit 2
+fi
 
 IFS=',' read -r -a gpus <<< "$gpus_csv"
 total_workers=$((${#gpus[@]} * workers_per_gpu))
@@ -177,7 +190,7 @@ if [ -n "$limit" ]; then
 fi
 
 if [ -z "$end_index" ]; then
-  end_index="$(VIDEO_DPO_TRAIN_DATA_YAML="$train_data_yaml" python - <<'PY'
+  end_index="$(VIDEO_DPO_TRAIN_DATA_YAML="$train_data_yaml" "$orchestration_python" - <<'PY'
 import os
 from pathlib import Path
 from tools.pai_videodpo_single_sample_generation_smoke import read_json, resolve_videodpo_roots
@@ -202,6 +215,7 @@ echo "process_name=$LINGBOT_PROCESS_NAME"
 echo "train_data_yaml=$train_data_yaml"
 echo "selection_policy=$selection_config"
 echo "cpu_threads=OMP:$OMP_NUM_THREADS MKL:$MKL_NUM_THREADS OPENBLAS:$OPENBLAS_NUM_THREADS NUMEXPR:$NUMEXPR_NUM_THREADS OPENCV:$OPENCV_NUM_THREADS"
+echo "ORCHESTRATION_PYTHON=$orchestration_python"
 echo "DIFFUERASER_PYTHON=$DIFFUERASER_PYTHON"
 echo "BASE_MODEL_PATH=${BASE_MODEL_PATH:-}"
 echo "VAE_PATH=${VAE_PATH:-}"
@@ -231,7 +245,7 @@ run_shard() {
 
   (
     export DIFFUERASER_GPU="$gpu"
-    exec -a "$LINGBOT_PROCESS_NAME" python tools/videodpo_generated_loser_calibration.py \
+    exec -a "$LINGBOT_PROCESS_NAME" "$orchestration_python" tools/videodpo_generated_loser_calibration.py \
       --output_root "$shard_root" \
       --models "$models_csv" \
       --mask_mode full \
@@ -305,7 +319,7 @@ fi
 xargs cat < "$out_root/manifests/shard_candidate_manifests.txt" > "$out_root/manifests/candidates_all.jsonl"
 cp "$out_root/manifests/candidates_all.jsonl" "$out_root/manifests/candidates_all.scored.jsonl"
 
-python tools/videodpo_loser_candidate_selection.py \
+"$orchestration_python" tools/videodpo_loser_candidate_selection.py \
   --candidates_manifest "$out_root/manifests/candidates_all.jsonl" \
   --selection_config "$selection_config" \
   --output_dir "$out_root/manifests" \
@@ -313,7 +327,7 @@ python tools/videodpo_loser_candidate_selection.py \
   --calibration_report "$report_path"
 
 echo "===== SUMMARY ====="
-python - <<PY
+"$orchestration_python" - <<PY
 from pathlib import Path
 root = Path("$out_root/manifests")
 for name in [
