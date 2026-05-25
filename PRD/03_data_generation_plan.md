@@ -271,6 +271,7 @@ the real generator. Use the H20 sharded launcher after audit:
 
 ```bash
 MODELS=diffueraser \
+LINGBOT_PROCESS_NAME=lingbot-world \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \

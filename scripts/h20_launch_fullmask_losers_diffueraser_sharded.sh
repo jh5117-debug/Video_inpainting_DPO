@@ -4,7 +4,7 @@ set -uo pipefail
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 cd "$repo_root" || exit 1
 
-export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-phy}"
+export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-world}"
 
 if [ -f configs/paths/pai.detected.env ]; then
   # shellcheck disable=SC1091
@@ -198,6 +198,7 @@ echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_worke
 echo "models=$models_csv"
 echo "mask_mode=full num_masks_per_video=1 comp=false"
 echo "generation_source=diffueraser_only"
+echo "process_name=$LINGBOT_PROCESS_NAME"
 echo "train_data_yaml=$train_data_yaml"
 echo "selection_policy=$selection_config"
 echo "cpu_threads=OMP:$OMP_NUM_THREADS MKL:$MKL_NUM_THREADS OPENBLAS:$OPENBLAS_NUM_THREADS NUMEXPR:$NUMEXPR_NUM_THREADS OPENCV:$OPENCV_NUM_THREADS"
@@ -230,7 +231,7 @@ run_shard() {
 
   (
     export DIFFUERASER_GPU="$gpu"
-    python tools/videodpo_generated_loser_calibration.py \
+    exec -a "$LINGBOT_PROCESS_NAME" python tools/videodpo_generated_loser_calibration.py \
       --output_root "$shard_root" \
       --models "$models_csv" \
       --mask_mode full \

@@ -183,6 +183,7 @@ generation_source = diffueraser_only
 mask_mode = full
 num_masks_per_video = 1
 comp = false
+process_name = lingbot-world
 ```
 
 First run the H20 audit:
@@ -196,12 +197,14 @@ Then run small samples only:
 
 ```bash
 MODELS=diffueraser \
+LINGBOT_PROCESS_NAME=lingbot-world \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \
 bash scripts/h20_launch_fullmask_losers_diffueraser_sharded.sh --limit 20
 
 MODELS=diffueraser \
+LINGBOT_PROCESS_NAME=lingbot-world \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \

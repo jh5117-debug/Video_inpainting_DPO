@@ -31,6 +31,7 @@ This is a **data-only ablation**.
 | comp | false / not meaningful |
 | loser generation | offline |
 | generation_source | `diffueraser_only` |
+| process_name | `lingbot-world` |
 | changed variable | data only |
 
 Selection uses `medium_hard_balanced_selection_v1` and writes:

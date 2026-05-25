@@ -284,6 +284,10 @@ def run_candidate(
         copy_frame_dir(mask_dir, command_mask_dir)
 
     command = model_command(model, mask_mode, setting, command_win_dir, command_mask_dir, raw_dir, work_dir)
+    process_name = os.environ.get("LINGBOT_PROCESS_NAME", "")
+    run_command = command
+    if process_name:
+        run_command = ["bash", "-c", 'exec -a "$0" "$@"', process_name, *command]
     env = os.environ.copy()
     env["PYTHONPATH"] = str(Path.cwd()) + os.pathsep + env.get("PYTHONPATH", "")
     gpu = os.environ.get(MODEL_GPU_ENV[model])
@@ -292,8 +296,10 @@ def run_candidate(
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with log_path.open("w", encoding="utf-8") as log:
         log.write("[cmd] " + " ".join(shlex.quote(x) for x in command) + "\n")
+        if process_name:
+            log.write("[process_name] " + shlex.quote(process_name) + "\n")
         proc = subprocess.run(
-            command,
+            run_command,
             cwd=str(Path.cwd()),
             env=env,
             stdout=log,
