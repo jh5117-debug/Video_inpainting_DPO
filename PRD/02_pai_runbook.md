@@ -85,6 +85,93 @@ export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-phy}"
 
 Use `scripts/lingbot_process.sh` for new wrappers. W&B names should remain experiment-specific.
 
+Note: `nvidia-smi` reports the CUDA process executable, so DiffuEraser jobs are expected to show as paths such as `/mnt/nas/hj/conda_envs/diffueraser/bin/python`. This does not mean the run is using the wrong project; verify the command line with `ps -eo pid,etime,cmd`.
+
+## DiffuEraser-Only Partial-Mask Generation
+
+Active production direction as of 2026-05-25:
+
+- generated-loser data: `official_videodpo_diffueraser_data_partialmask_loser_k4`
+- model set: `MODELS=diffueraser`
+- masks: K=4 per VideoDPO winner
+- expected candidate rows for 100 winners: `100 * 4 = 400`
+- expected candidate rows for full 10k winners: `10000 * 4 = 40000`
+
+Before restarting after an overloaded or exploratory run, stop active shard
+processes and archive test shards instead of mixing them with production data:
+
+```bash
+OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+
+pkill -TERM -f 'pai_launch_partialmask_losers_k4_sharded.sh' || true
+pkill -TERM -f "$OUT/_shards" || true
+sleep 15
+pkill -KILL -f "$OUT/_shards" || true
+
+ARCHIVE="$OUT/_shards_overload_$(date +%Y%m%d_%H%M%S)"
+mv "$OUT/_shards" "$ARCHIVE"
+mkdir -p "$OUT/_shards"
+echo "archived=$ARCHIVE"
+```
+
+Recommended restart command for the 100-pair validation run:
+
+```bash
+MODELS=diffueraser \
+GPUS=0,1,2,3,4,5,6 \
+WORKERS_PER_GPU=4 \
+SHARD_SIZE=1 \
+END_INDEX=100 \
+TIMEOUT_SEC=7200 \
+bash scripts/pai_launch_partialmask_losers_k4_sharded.sh
+```
+
+The launcher caps CPU thread fan-out by default:
+
+```bash
+OMP_NUM_THREADS=1
+MKL_NUM_THREADS=1
+OPENBLAS_NUM_THREADS=1
+NUMEXPR_NUM_THREADS=1
+OPENCV_NUM_THREADS=1
+```
+
+Do not chase full GPU memory occupancy. DiffuEraser generation is often limited
+by CPU preprocessing, model loading, and NAS IO. The bad high-concurrency probe
+showed GPU memory near 32-47 GiB per card but GPU util near 0 with host load
+above 3000, which means too many runnable host threads/processes.
+
+Tuning rule:
+
+- start with `WORKERS_PER_GPU=4`, `SHARD_SIZE=1`;
+- if `rows` advances steadily and host load is reasonable, try `WORKERS_PER_GPU=5`;
+- if GPU util stays at 0 and load remains very high, reduce to `WORKERS_PER_GPU=3`;
+- do not use `WORKERS_PER_GPU=8` for this workload without a new successful IO/CPU probe.
+
+Progress monitor:
+
+```bash
+export OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+
+watch -n 60 '
+date
+echo done=$(find "$OUT/_shards" -name .done | wc -l)
+echo failed=$(find "$OUT/_shards" -name .failed | wc -l)
+echo rows=$(find "$OUT/_shards" -path "*/manifests/candidates_all.jsonl" -exec wc -l {} \; | awk "{s+=\$1} END{print s+0}")
+uptime
+ps -eo stat,cmd | grep -E "run_OR|infer_diffueraser|videodpo_generated" | grep -v grep | awk "{print \$1}" | sort | uniq -c
+nvidia-smi --query-gpu=index,memory.used,utilization.gpu --format=csv,noheader,nounits
+'
+```
+
+Run IO diagnostics only when throughput stalls or before changing concurrency;
+continuous high-frequency IO probing adds noise:
+
+```bash
+iostat -xm 5 12
+pidstat -d 5 12
+```
+
 ## Completed Official Experiments
 
 Re-check these on PAI before moving/deleting anything:
@@ -115,5 +202,6 @@ PY
 - Missing NAS mount: `/mnt/nas` or `/mnt/workspace` not visible.
 - Conda solver issue: `GLIBCXX_3.4.31` missing for libmamba.
 - Missing runtime packages in active env: `moviepy`, `av`, `omegaconf`.
-- CoCoCo/MiniMax weights not confirmed.
 - Stale GPU processes with old `lingbotworld-phy` names from previous runs.
+- Prompt strings beginning with `-` must be passed as `--prompt=<text>`, not `--prompt <text>`, otherwise argparse treats the prompt as an option.
+- Host overload: high load average, many `R`/`S` processes, GPU memory occupied, and GPU util near 0. Stop the run, archive `_shards`, restart with lower `WORKERS_PER_GPU`, and keep CPU thread env vars capped.

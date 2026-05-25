@@ -134,6 +134,18 @@ Generation models:
 - `cococo`
 - `minimax_remover`
 
+Active 2026-05-25 production mode is DiffuEraser-only:
+
+```text
+K=4 masks x 1 generation model = 4 candidates
+generation_model = diffueraser
+```
+
+This mode is chosen for throughput. It does not change the mask policy,
+manifest schema, comp/no-comp path contract, or training adapter. It only
+reduces the candidate source set so full data generation can complete before
+launching DPO training.
+
 Each candidate preserves:
 
 - `raw_loser`
@@ -251,6 +263,10 @@ Selection ranking:
 
 Every selection writes `selection_meta` with source counts, source weights, quality order, selected primary/secondary, and fallback reason.
 
+In DiffuEraser-only mode, source balancing is a no-op because all candidates
+come from `diffueraser`. Selection still uses the quality band and target score
+to choose primary and secondary candidates across the four masks.
+
 ## Primary And Secondary
 
 Save both:
@@ -344,3 +360,14 @@ python tools/videodpo_generated_loser_calibration.py \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
   --calibration_report PRD/generated_loser_calibration_report.md
 ```
+
+For the current DiffuEraser-only production pass, calibration/full-generation
+commands should use:
+
+```bash
+--models diffueraser
+```
+
+Do not mix four-model pilot shards and DiffuEraser-only production shards in the
+same `_shards` directory. Archive old `_shards` before restarting with a
+different model set or worker/shard policy.

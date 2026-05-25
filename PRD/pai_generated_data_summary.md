@@ -1,7 +1,8 @@
 # PAI Generated Data Summary
 
-Updated from the 2026-05-24 PAI probe. This is the checked-in summary; the PAI
-node may also keep timestamped audit logs under `.tmp/codex_asset_prepare/`.
+Updated from the 2026-05-24 PAI probe and the 2026-05-25 generated-loser launch
+debugging session. This is the checked-in summary; the PAI node may also keep
+timestamped audit logs under `.tmp/codex_asset_prepare/`.
 
 ## Asset Status
 
@@ -36,9 +37,10 @@ Ready:
 
 Still not done:
 
-- full offline generated-loser data has not been launched;
+- accepted full offline generated-loser data has not been completed;
 - DPO training has not been launched;
-- before full generation, run the disk/capacity preflight and choose the exact model set, sample range, and output root.
+- the active production model set is now DiffuEraser-only (`MODELS=diffueraser`);
+- the accepted worker/shard policy must be confirmed by a 100-pair validation run before launching the full 10k-pair range.
 
 ## Canonical Smoke Results
 
@@ -54,7 +56,17 @@ outside-mask max absolute diff `0.000000`.
 
 ## Decision
 
-The asset smoke gate is passed for all four generation models. The next safe
-step is an explicit full/offline data generation launch plan with disk estimate
-and manifest validation. Training must remain paused until generated data is
-complete and verified.
+The asset smoke gate is passed for all four generation models, but the current
+production path intentionally uses only DiffuEraser for speed and operational
+simplicity. Run the 100-pair validation pass with `MODELS=diffueraser`,
+`WORKERS_PER_GPU=4`, and `SHARD_SIZE=1`; visually inspect generated frames and
+validate manifests before running the full 10k-pair range. Training must remain
+paused until generated data is complete and verified.
+
+## 2026-05-25 Launch Notes
+
+- Four-model generation is runnable but too slow for the immediate full-data goal.
+- DiffuEraser-only generation means each winner writes four candidate rows, one per K=4 mask.
+- A high-concurrency probe with very large worker count overloaded the host: GPU memory was occupied, GPU util stayed near zero, and load average rose above 3000.
+- The sharded launcher now caps OpenMP/MKL/OpenBLAS/NumExpr/OpenCV threads to one by default to prevent CPU fan-out.
+- Do not reuse exploratory `_shards`; archive them before changing `MODELS`, `WORKERS_PER_GPU`, or `SHARD_SIZE`.

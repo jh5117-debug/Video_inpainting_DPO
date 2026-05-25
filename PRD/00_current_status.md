@@ -56,7 +56,8 @@ Paper-style dimensions:
 
 ## Current Open Problems
 
-- PAI NAS paths were not mounted in the current audit session; destructive cleanup must be done only after reconnecting to PAI or mounting `/mnt/nas` / `/mnt/workspace`.
-- CoCoCo model weights/runnable generation environment are not confirmed.
-- MiniMax-Remover has an env and Hugging Face cache, but direct runnable state is not confirmed.
+- PAI NAS paths were not mounted in this local audit session; destructive cleanup must be done only on the PAI node after confirming `/mnt/nas` / `/mnt/workspace`.
+- Four generation models have passed one-sample smoke, but the active 2026-05-25 production data path is now DiffuEraser-only because four-model generation is too slow for full data creation.
+- The partial-mask K=4 generated-loser run should use `MODELS=diffueraser` first. Each VideoDPO winner produces four DiffuEraser candidates, one per mask; selection still writes primary/secondary manifests, but production training should consume only the selected primary manifest unless a later ablation says otherwise.
+- PAI throughput tuning is still active. The failed high-concurrency probe showed host overload (`load average` above 3000, GPU util near 0, GPU memory occupied), so do not use very high `WORKERS_PER_GPU` just to fill memory. Use the guarded launcher thread limits and tune from `WORKERS_PER_GPU=4`, `SHARD_SIZE=1`.
 - New ablations should be introduced as separate experiment directories and should reuse existing training/model code.

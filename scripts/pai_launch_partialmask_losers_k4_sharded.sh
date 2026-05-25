@@ -48,6 +48,16 @@ end_index="${END_INDEX:-}"
 seed="${SEED:-20260524}"
 timeout_sec="${TIMEOUT_SEC:-3600}"
 
+# DiffuEraser/torch/opencv subprocesses otherwise fan out many CPU threads per
+# worker. On PAI this can create thousands of runnable threads and leave GPUs
+# idle while the host thrashes.
+export OMP_NUM_THREADS="${OMP_NUM_THREADS:-1}"
+export MKL_NUM_THREADS="${MKL_NUM_THREADS:-1}"
+export OPENBLAS_NUM_THREADS="${OPENBLAS_NUM_THREADS:-1}"
+export NUMEXPR_NUM_THREADS="${NUMEXPR_NUM_THREADS:-1}"
+export OPENCV_NUM_THREADS="${OPENCV_NUM_THREADS:-1}"
+export PYTHONUNBUFFERED="${PYTHONUNBUFFERED:-1}"
+
 IFS=',' read -r -a gpus <<< "$gpus_csv"
 total_workers=$((${#gpus[@]} * workers_per_gpu))
 
@@ -79,6 +89,7 @@ echo "gpus=$gpus_csv workers_per_gpu=$workers_per_gpu total_workers=$total_worke
 echo "models=$models_csv"
 echo "mask_policy=$mask_policy_config"
 echo "selection_policy=$selection_config"
+echo "cpu_threads=OMP:$OMP_NUM_THREADS MKL:$MKL_NUM_THREADS OPENBLAS:$OPENBLAS_NUM_THREADS NUMEXPR:$NUMEXPR_NUM_THREADS OPENCV:$OPENCV_NUM_THREADS"
 echo "DIFFUERASER_PYTHON=$DIFFUERASER_PYTHON"
 echo "PROPAINTER_PYTHON=$PROPAINTER_PYTHON"
 echo "COCOCO_PYTHON=$COCOCO_PYTHON"

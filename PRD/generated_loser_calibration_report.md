@@ -18,11 +18,25 @@ python tools/videodpo_generated_loser_calibration.py \
   --calibration_report PRD/generated_loser_calibration_report.md
 ```
 
+Current 2026-05-25 production pass uses DiffuEraser-only generation for
+throughput:
+
+```bash
+python tools/videodpo_generated_loser_calibration.py \
+  --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
+  --models diffueraser \
+  --limit 20 \
+  --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
+  --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
+  --calibration_report PRD/generated_loser_calibration_report.md
+```
+
 ## Pending Fields
 
 - calibration_winners: `PENDING`
 - masks_per_winner: `4`
-- models_per_mask: `diffueraser, propainter, cococo, minimax_remover`
+- models_per_mask_default: `diffueraser, propainter, cococo, minimax_remover`
+- models_per_mask_current: `diffueraser`
 - candidate_count: `PENDING`
 - successful_candidate_count: `PENDING`
 - failed_candidate_count: `PENDING`

@@ -111,9 +111,26 @@ Configs:
 - `configs/generation/medium_hard_balanced_selection_v1.yaml`
 
 The partial-mask policy creates K=4 interior-constrained irregular polygon masks
-per VideoDPO winner. The selection policy scores all model/mask candidates and
-selects primary/secondary medium-hard losers with equal source weights for
-DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover.
+per VideoDPO winner. The original v1 selection policy scores all model/mask
+candidates and selects primary/secondary medium-hard losers with equal source
+weights for DiffuEraser, ProPainter, CoCoCo, and MiniMax-Remover.
+
+Active 2026-05-25 production adjustment: use DiffuEraser-only generation first.
+This keeps the same VideoDPO source, K=4 mask policy, comp/no-comp manifest
+contract, scoring, and selected-primary training input, but changes the model
+set to:
+
+```bash
+MODELS=diffueraser
+```
+
+For this mode:
+
+- each VideoDPO winner has `4 masks x 1 model = 4 candidates`;
+- a 100-winner validation run should write 400 candidate rows;
+- the full 10k-pair run should write 40000 candidate rows;
+- source balancing is effectively disabled because there is only one source model;
+- primary/secondary selection still ranks masks by the same medium-hard quality policy.
 
 Every generated candidate must be retained in `candidates_all.jsonl` before
 selection. The comp and no-comp manifests must share the same selected candidate;
@@ -212,6 +229,24 @@ python tools/videodpo_generated_loser_calibration.py \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
   --calibration_report PRD/generated_loser_calibration_report.md
 ```
+
+## Current PAI Full-Generation Entrypoint
+
+For the active DiffuEraser-only partial-mask K=4 run, use the sharded launcher:
+
+```bash
+MODELS=diffueraser \
+GPUS=0,1,2,3,4,5,6 \
+WORKERS_PER_GPU=4 \
+SHARD_SIZE=1 \
+END_INDEX=100 \
+TIMEOUT_SEC=7200 \
+bash scripts/pai_launch_partialmask_losers_k4_sharded.sh
+```
+
+After the 100-pair validation run is visually and statistically accepted, omit
+`END_INDEX=100` to run the full VideoDPO pair range. If host load grows while
+GPU util remains near 0, reduce `WORKERS_PER_GPU` before increasing shard count.
 
 ## Online Loser Generation
 
