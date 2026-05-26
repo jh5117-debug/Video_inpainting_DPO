@@ -41,8 +41,9 @@ Still not done:
   is invalid and BR/no-prior failed the limit=100 quality gate;
 - DPO training has not been launched;
 - the active production model set is now DiffuEraser-only (`MODELS=diffueraser`, `generation_source=diffueraser_only`);
-- D2 partialmask K4 full generation is the active main data asset for
-  experiments 5/6/7/8 and must continue without stopping.
+- D2 partialmask K4 full generation has completed and is the active main data
+  asset for experiments 5/6/7/8, pending final training-readiness checks and a
+  generated-loser manifest dataset adapter.
 
 ## Canonical Smoke Results
 
@@ -75,11 +76,13 @@ D1 fullmask decision:
 
 D2 partialmask decision:
 
-- keep the PAI D2 partialmask K4 run active;
+- do not regenerate D2;
 - D2 remains OR + ProPainter prior because partial masks have visible context;
-- D2 is the active main data asset for experiments 5/6/7/8.
+- D2 is the active main data asset for experiments 5/6/7/8;
+- use repaired manifests only for training entrypoints.
 
-Training must remain paused until generated data is complete and verified.
+Training must remain paused until `reports/d2_training_readiness_report.md`
+passes and the manifest dataset adapter exists.
 
 ## 2026-05-25 Launch Notes
 
@@ -142,6 +145,48 @@ diffueraser_inference_stack = or
 diffueraser_prior_mode = propainter
 ```
 
+Final full-generation status from PAI on `2026-05-26`:
+
+```text
+done_shards = 10000 / 10000
+failed_shards = 0
+candidate_rows = 40000 / 40000
+status = OK: 40000
+generation_model = diffueraser: 40000
+candidates_all.jsonl = 40000
+candidates_all.scored.jsonl = 40000
+selected_primary_comp.jsonl = 10000
+selected_primary_nocomp.jsonl = 10000
+selected_secondary_comp.jsonl = 10000
+selected_secondary_nocomp.jsonl = 10000
+selection_events.jsonl = 10000
+```
+
+The post-generation repair has been run and wrote:
+
+```text
+manifests/candidates_all.repaired.jsonl
+manifests/candidates_all.scored.repaired.jsonl
+manifests/selected_primary_comp.repaired.jsonl
+manifests/selected_primary_nocomp.repaired.jsonl
+manifests/selected_secondary_comp.repaired.jsonl
+manifests/selected_secondary_nocomp.repaired.jsonl
+reports/d2_post_generation_audit.md
+```
+
+Final readiness command:
+
+```bash
+OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+python tools/d2_training_readiness_check.py --output_root "$OUT"
+```
+
+This writes:
+
+```text
+reports/d2_training_readiness_report.md
+```
+
 Before pulling H20 changes onto PAI, preserve local state:
 
 ```bash
@@ -153,3 +198,10 @@ git merge --ff-only h20/main
 ```
 
 If the merge cannot fast-forward, do not reset or overwrite PAI-local changes.
+If PAI has a dirty worktree, copy only the needed tool from `h20/main`:
+
+```bash
+mkdir -p tools
+git show h20/main:tools/d2_training_readiness_check.py > tools/d2_training_readiness_check.py
+chmod +x tools/d2_training_readiness_check.py
+```

@@ -457,6 +457,7 @@ export SHARD_SIZE=1
 export EXPECT_ROWS=$((TOTAL_PAIRS * 4))
 
 python tools/d2_post_generation_audit_and_repair.py --output_root "$OUT"
+python tools/d2_training_readiness_check.py --output_root "$OUT"
 wc -l "$OUT/manifests/selected_primary_comp.jsonl" "$OUT/manifests/selected_primary_nocomp.jsonl" 2>/dev/null || true
 ```
 
@@ -468,6 +469,8 @@ The manifest audit must confirm:
 - `diffueraser_prior_mode = propainter`
 - raw and comp loser videos decode to 16 frames at the canonical setting
 - comp outside-mask max diff remains zero or near zero
+- no training manifest path points to `/home/nvme01/...` on PAI
+- `reports/d2_training_readiness_report.md` is written before training starts
 - failed shards are empty or explicitly audited
 
 Before pulling H20 changes on PAI, protect dirty files:
@@ -574,11 +577,22 @@ Confirmed H20-2 source root:
 ```
 
 This root contains 3471 `JPEGImages` video directories and 3471 `Annotations`
-video directories. D3 generation should write to:
+video directories. Final D3 generation should prefer a NAS output root if H20
+has `/mnt/nas` mounted:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
+```
+
+Fallback local H20 smoke/readiness root:
 
 ```text
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
 ```
+
+If local H20 storage is used for any official data, the manifest must be
+rewritten or the data transferred before PAI training so no final training
+manifest points to `/home/nvme01/...`.
 
 Prompt policy is a controlled variable. The accepted smoke result indicates
 that `PROMPT_MODE=none` is viable for DiffuEraser-only partial-mask D3, because
@@ -593,6 +607,7 @@ H20 D3 smoke command:
 cd /home/nvme01/H20_Video_inpainting_DPO
 MODELS=diffueraser \
 LINGBOT_PROCESS_NAME=lingbot-world \
+PROMPT_MODE=none \
 GPUS=0,1,2,3 \
 WORKERS_PER_GPU=1 \
 SHARD_SIZE=1 \

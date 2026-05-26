@@ -90,11 +90,20 @@ selection_config = configs/generation/medium_hard_balanced_selection_v1.yaml
 
 ## Output Root Plan
 
-Official future D3 output root:
+Preferred official future D3 output root, if H20 has a NAS mount:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
+```
+
+Fallback local H20 root for smoke/readiness only:
 
 ```text
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
 ```
+
+If the final D3 run must write to `/home/nvme01/...`, produce a path-rewritten
+manifest before PAI training or transfer the data to the NAS root first.
 
 Do not reuse the interrupted scratch root:
 
@@ -159,3 +168,19 @@ Smoke gate:
 
 D3 is not blocked technically. It is schedule-blocked: official generation waits
 until experiments 7/8 decide the best task/loss setting.
+
+## Read-Only H20 Check Command
+
+Use this before any future smoke or full D3 run:
+
+```bash
+cd /home/nvme01/H20_Video_inpainting_DPO
+hostname
+git status --short
+test -d data/external/ytbv_2019_full_resolution/train/JPEGImages && echo YTVOS_JPEG_OK
+test -d data/external/ytbv_2019_full_resolution/train/Annotations && echo YTVOS_ANN_OK
+find data/external/ytbv_2019_full_resolution/train/JPEGImages -mindepth 1 -maxdepth 1 -type d | wc -l
+find data/external/ytbv_2019_full_resolution/train/Annotations -mindepth 1 -maxdepth 1 -type d | wc -l
+df -h /home/nvme01 /home/nvme04 /mnt/nas 2>/dev/null || true
+pgrep -af 'youtubevos_generated_loser_calibration|h20_launch_youtubevos|infer_diffueraser|run_OR|lingbot-world' || echo no_d3_processes
+```

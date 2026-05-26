@@ -164,7 +164,8 @@ ProPainter prior is generated or passed.
 
 ### D2 / Experiments 5, 6, 7, 8: Partialmask K4 DiffuEraser-Only Loser Data
 
-Status: running on PAI.
+Status: generated on PAI; post-generation audit/repair completed; final
+training-readiness check pending before any long training.
 
 Output root:
 
@@ -188,26 +189,53 @@ comp data + mask serves experiment 7
 comp data + mask also serves experiment 8 region-loss training
 ```
 
-Current observed status from PAI at `2026-05-25`:
+Final observed status from PAI at `2026-05-26`:
 
 ```text
-done_shards = 2052 / 10000
+done_shards = 10000 / 10000
 failed_shards = 0
-candidate_rows = 8228 / 40000
-status = OK: 8228
-rate = 461.3 shards/hour
-estimated finish = 2026-05-26 05:50 CST
+candidate_rows = 40000 / 40000
+status = OK: 40000
+generation_model = diffueraser: 40000
+candidates_all.jsonl = 40000
+candidates_all.scored.jsonl = 40000
+selected_primary_comp.jsonl = 10000
+selected_primary_nocomp.jsonl = 10000
+selected_secondary_comp.jsonl = 10000
+selected_secondary_nocomp.jsonl = 10000
+selection_events.jsonl = 10000
 ```
 
-The PAI monitoring variables must use full-run values:
+The raw D2 manifests were generated before the explicit metadata fields were
+added. The repair step has been run and confirmed:
+
+```text
+generation_source = diffueraser_only
+diffueraser_inference_stack = or
+diffueraser_prior_mode = propainter
+```
+
+Repaired manifests:
+
+```text
+manifests/candidates_all.repaired.jsonl
+manifests/candidates_all.scored.repaired.jsonl
+manifests/selected_primary_comp.repaired.jsonl
+manifests/selected_primary_nocomp.repaired.jsonl
+manifests/selected_secondary_comp.repaired.jsonl
+manifests/selected_secondary_nocomp.repaired.jsonl
+```
+
+Run the final training-readiness check before implementing or launching
+experiments 5/6/7/8:
 
 ```bash
-export TOTAL_PAIRS=10000
-export SHARD_SIZE=1
-export EXPECT_ROWS=$((TOTAL_PAIRS * 4))
+OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+python tools/d2_training_readiness_check.py --output_root "$OUT"
 ```
 
-If `TOTAL_PAIRS=100` is left from a validation run, progress prints such as
-`done_shards=2052 / 100` are misleading. The existing merged selected manifests
-with 100 rows are historical validation-run artifacts until the full launcher
-finishes and merges all shards again.
+This writes:
+
+```text
+reports/d2_training_readiness_report.md
+```

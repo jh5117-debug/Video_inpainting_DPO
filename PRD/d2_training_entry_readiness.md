@@ -20,6 +20,29 @@ python tools/d2_post_generation_audit_and_repair.py \
   --output_root /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
 ```
 
+Then run the final training-readiness check:
+
+```bash
+OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+python tools/d2_training_readiness_check.py --output_root "$OUT"
+```
+
+Expected output:
+
+```text
+reports/d2_training_readiness_report.md
+selected_primary_comp.repaired.jsonl = 10000
+selected_primary_nocomp.repaired.jsonl = 10000
+selected_secondary_comp.repaired.jsonl = 10000
+selected_secondary_nocomp.repaired.jsonl = 10000
+```
+
+The readiness check samples 100 selected comp rows and verifies path existence,
+frame decode, 16-frame count, 512x320 storage / canonical 320x512 resolution,
+mask readability, and outside-mask comp difference. It also rejects
+`/home/nvme01/...` training paths on PAI and writes `.pai_paths.jsonl` copies if
+an H20-only prefix is detected.
+
 Use repaired manifests only:
 
 ```text
@@ -49,6 +72,10 @@ Current code does **not** yet support the requested manifest-task interface:
 --loss_region_mode region
 --enable_dpo_diag true
 ```
+
+Therefore do not launch experiment 5/6/7/8 training until the manifest dataset
+adapter is implemented and smoke-tested. The D2 data can be ready while the
+training entrypoint is still not ready.
 
 ## Required Code Gaps
 
