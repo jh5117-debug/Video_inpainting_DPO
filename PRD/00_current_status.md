@@ -273,3 +273,31 @@ Experiment manifest mapping:
 - Experiment 6: `manifests/selected_primary_nocomp.repaired.jsonl`, `train_mask_mode=full`, `loss_region_mode=full`.
 - Experiment 7: `manifests/selected_primary_comp.repaired.jsonl`, `train_mask_mode=partial`, `mask_from_manifest=true`, `loss_region_mode=full`.
 - Experiment 8: dataset entry is ready with `train_mask_mode=partial`, but `loss_region_mode=region` is not implemented yet and must be added as a wrapper around the existing DPO loss before training.
+
+PAI smoke status on `2026-05-26`:
+
+```text
+manifest dataset smoke:
+  exp5_comp_full issues=0
+  exp6_nocomp_full issues=0
+  exp7_comp_partial issues=0
+  exp8_comp_partial_region_dataset_only issues=0
+
+stage1 5-step smoke:
+  Exp5 comp/full passed, dpo=0.6658, acc=1.0000
+  Exp6 nocomp/full passed, dpo=0.6521, acc=1.0000
+  Exp7 comp/partial/full-loss passed, dpo=0.6533, acc=1.0000
+  Exp8 not trained; region loss wrapper pending
+```
+
+Smoke logs on PAI:
+
+```text
+logs/smoke/exp5_stage1_smoke5.log
+logs/smoke/exp6_stage1_smoke5.log
+logs/smoke/exp7_stage1_smoke5.log
+```
+
+Next action: launch formal Experiment 5 Stage1 from the repaired comp manifest,
+with `EXPERIMENTS_DIR=/mnt/nas/hj/H20_Video_inpainting_DPO/experiments` so the
+official run artifacts land on NAS rather than `/sc-projects/...`.

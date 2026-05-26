@@ -83,8 +83,7 @@ D2 partialmask decision:
 - D2 is the active main data asset for experiments 5/6/7/8;
 - use repaired manifests only for training entrypoints.
 
-Training must remain paused until a short PAI 5-step smoke is run with the new
-manifest adapter. The D2 readiness report itself has passed:
+The D2 readiness report itself has passed:
 
 ```text
 reports/d2_training_readiness_report.md
@@ -103,6 +102,38 @@ Adapter:
 ```text
 training/dpo/dataset/generated_loser_manifest_dataset.py
 tools/smoke_manifest_dataset.py
+```
+
+PAI manifest dataset smoke and Stage1 5-step training smoke passed on
+`2026-05-26`:
+
+```text
+manifest dataset smoke:
+  exp5_comp_full rows=10000 issues=0
+  exp6_nocomp_full rows=10000 issues=0
+  exp7_comp_partial rows=10000 issues=0
+  exp8_comp_partial_region_dataset_only rows=10000 issues=0
+
+stage1 5-step smoke:
+  Exp5 comp/full: 5/5, dpo=0.6658, acc=1.0000
+  Exp6 nocomp/full: 5/5, dpo=0.6521, acc=1.0000
+  Exp7 comp/partial/full-loss: 5/5, dpo=0.6533, acc=1.0000
+  Exp8 region-loss: not trained, loss wrapper pending
+```
+
+Smoke logs:
+
+```text
+logs/smoke/exp5_stage1_smoke5.log
+logs/smoke/exp6_stage1_smoke5.log
+logs/smoke/exp7_stage1_smoke5.log
+```
+
+Exp5 is now the next formal training target. Set `EXPERIMENTS_DIR` to the NAS
+experiment root before formal training:
+
+```bash
+export EXPERIMENTS_DIR=/mnt/nas/hj/H20_Video_inpainting_DPO/experiments
 ```
 
 ## 2026-05-25 Launch Notes
