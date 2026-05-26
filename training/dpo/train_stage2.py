@@ -81,6 +81,7 @@ from training.dpo.train_stage1 import (
     parse_bool_arg,
     print_model_info,
     save_wandb_run_info,
+    set_process_title_from_env,
     setup_process_console_capture,
     sync_console_logs_to_wandb,
 )
@@ -514,6 +515,7 @@ def collate_fn(examples):
 # Main
 # ============================================================
 def main(args):
+    set_process_title_from_env()
     if args.loss_region_mode == "region":
         raise NotImplementedError(
             "--loss_region_mode region is not implemented yet. "

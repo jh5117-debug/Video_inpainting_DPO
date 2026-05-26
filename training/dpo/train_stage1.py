@@ -97,6 +97,26 @@ def parse_bool_arg(value):
     raise argparse.ArgumentTypeError(f"Expected true/false value, got {value!r}")
 
 
+def set_process_title_from_env():
+    name = os.environ.get("LINGBOT_PROCESS_NAME") or os.environ.get("PROCESS_TITLE")
+    if not name:
+        return
+    try:
+        import setproctitle
+
+        setproctitle.setproctitle(name)
+        return
+    except Exception:
+        pass
+    try:
+        import ctypes
+
+        libc = ctypes.CDLL(None)
+        libc.prctl(15, name[:15].encode("utf-8"), 0, 0, 0)
+    except Exception:
+        pass
+
+
 def forward_stage1_pair_member(
     brushnet,
     unet,
@@ -1017,6 +1037,7 @@ def collate_fn(examples):
 # Main
 # ============================================================
 def main(args):
+    set_process_title_from_env()
     if args.loss_region_mode == "region":
         raise NotImplementedError(
             "--loss_region_mode region is not implemented yet. "
