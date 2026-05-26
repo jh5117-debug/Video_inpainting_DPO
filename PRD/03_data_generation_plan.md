@@ -101,19 +101,26 @@ Decision: do not run D1 full generation and do not train experiment 4 from the
 current OR-fullmask or BR/no-prior fullmask roots. Treat experiment 4 as a
 diagnostic/failure case unless a new D1 loser source is defined.
 
-Old H20-2 OR-fullmask root, retained only for audit:
+Old H20-2 OR-fullmask root, retained only for audit until cleanup:
 
 ```text
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser
 ```
 
-H20-2 BR/no-prior validation root:
+H20-2 BR/no-prior validation root, retained only for audit until cleanup:
 
 ```text
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_fullmask_loser_br_noise
 ```
 
-Important H20-2 subpaths:
+Cleanup note:
+
+On 2026-05-26, after the quality-gate failure was recorded, the old H20 D1
+OR-fullmask root, the BR/no-prior validation root, and temporary D3 smoke roots
+were removed from H20 to reclaim storage. Do not rely on those paths for future
+training; the PRD entries above are historical audit references only.
+
+Important H20-2 subpaths when the historical roots are restored from backup:
 
 - Old OR `_shards/`: per-pair shard outputs retained for failure audit only.
 - BR/no-prior `_shards/`: per-pair shard outputs and logs for the failed quality gate.
@@ -391,21 +398,42 @@ export SHARD_SIZE=1
 export EXPECT_ROWS=$((TOTAL_PAIRS * 4))
 ```
 
-Observed PAI D2 progress on `2026-05-25`:
+Final PAI D2 status on `2026-05-26`:
 
 ```text
-done_shards = 2052 / 10000
+done_shards = 10000 / 10000
 failed_shards = 0
-candidate_rows = 8228 / 40000
-status = OK: 8228
+candidate_rows = 40000 / 40000
+status = OK: 40000
 generation_model = diffueraser
-rate = 461.3 shards/hour
-estimated finish = 2026-05-26 05:50 CST
+candidates_all.jsonl = 40000
+candidates_all.scored.jsonl = 40000
+selected_primary_comp.jsonl = 10000
+selected_primary_nocomp.jsonl = 10000
+selected_secondary_comp.jsonl = 10000
+selected_secondary_nocomp.jsonl = 10000
+selection_events.jsonl = 10000
 ```
 
-The merged `selected_*` manifests may still show 100 rows while the full run is
-in progress. Treat those as validation-run artifacts until the full launcher
-finishes and performs the final merge.
+The original D2 manifests were generated before explicit metadata fields were
+added, so `generation_source`, `diffueraser_inference_stack`, and
+`diffueraser_prior_mode` may be null. Do not regenerate videos for this. Repair
+the manifests in place-by-copy with:
+
+```bash
+python tools/d2_post_generation_audit_and_repair.py \
+  --output_root /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
+```
+
+This writes:
+
+- `manifests/candidates_all.repaired.jsonl`
+- `manifests/candidates_all.scored.repaired.jsonl`
+- `manifests/selected_primary_comp.repaired.jsonl`
+- `manifests/selected_primary_nocomp.repaired.jsonl`
+- `manifests/selected_secondary_comp.repaired.jsonl`
+- `manifests/selected_secondary_nocomp.repaired.jsonl`
+- `reports/d2_post_generation_audit.md`
 
 D2 is partialmask generation, not fullmask generation:
 
@@ -428,9 +456,7 @@ export TOTAL_PAIRS=10000
 export SHARD_SIZE=1
 export EXPECT_ROWS=$((TOTAL_PAIRS * 4))
 
-find "$OUT/_shards" -name .done | wc -l
-find "$OUT/_shards" -name .failed -print
-find "$OUT/_shards" -path "*/manifests/candidates_all.jsonl" -exec wc -l {} \; | awk "{s+=\$1} END{print s+0}"
+python tools/d2_post_generation_audit_and_repair.py --output_root "$OUT"
 wc -l "$OUT/manifests/selected_primary_comp.jsonl" "$OUT/manifests/selected_primary_nocomp.jsonl" 2>/dev/null || true
 ```
 
@@ -554,11 +580,12 @@ video directories. D3 generation should write to:
 /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
 ```
 
-Prompt policy is a new variable and must be cached before final generation.
-Use an open-weight VLM captioner to generate one concise English scene prompt
-per YouTube-VOS video, then pass that JSON as `CAPTION_JSON`. Candidate rows
-must record `prompt_source` and `prompt_model`. Fallback video-id prompts are
-allowed only for smoke tests, not for final D3 training data.
+Prompt policy is a controlled variable. The accepted smoke result indicates
+that `PROMPT_MODE=none` is viable for DiffuEraser-only partial-mask D3, because
+the model can use local visual context from the winner frames and mask. Candidate
+rows must still record `prompt_source=no_prompt` and `prompt=""` when this
+policy is used. Fallback video-id prompts are smoke-only and should not be used
+for final D3 training data.
 
 H20 D3 smoke command:
 
@@ -578,6 +605,12 @@ bash scripts/h20_launch_youtubevos_partialmask_losers_k4_sharded.sh
 Do not run final D3 full generation until:
 
 - D2 has finished and experiments 7/8 choose the better task/loss setting;
-- prompt cache quality is checked;
+- the final prompt policy is explicitly chosen (`PROMPT_MODE=none` is currently acceptable);
 - D3 limit=20 and limit=100 generation gates pass;
 - manifests decode and comp outside-mask diff is zero or near zero.
+
+Operational note: a no-prompt D3 full run was accidentally started on H20 on
+2026-05-26 and then stopped after the current plan was clarified. It wrote only
+partial scratch data under
+`official_videodpo_diffueraser_youtubevos_partialmask_loser_k4_noprompt` and
+must not be treated as official D3.
