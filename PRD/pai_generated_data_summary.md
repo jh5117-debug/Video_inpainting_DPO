@@ -155,6 +155,10 @@ PAI D2 output root:
 /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
 ```
 
+This D2 root is a PAI/NAS asset. H20-2 does not have a local D2 dataset unless
+the NAS root is explicitly mounted there. Use H20-2 for D3/YouTube-VOS
+readiness/smoke work, not for D2 dataset smoke or D2 training.
+
 Expected identity:
 
 ```text

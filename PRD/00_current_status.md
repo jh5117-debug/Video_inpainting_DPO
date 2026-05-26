@@ -174,6 +174,12 @@ Output root:
 /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
 ```
 
+Ownership note: this is a PAI/NAS data asset. The string
+`H20_Video_inpainting_DPO` is part of the NAS project path, not evidence that
+H20-2 has a local D2 copy. H20-2 should not be used for D2 training smoke unless
+this root is explicitly mounted there. H20-2 currently owns D3/YouTube-VOS
+readiness and local D3 smoke artifacts only.
+
 Run identity:
 
 ```text
