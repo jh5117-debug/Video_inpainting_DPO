@@ -594,6 +594,11 @@ If local H20 storage is used for any official data, the manifest must be
 rewritten or the data transferred before PAI training so no final training
 manifest points to `/home/nvme01/...`.
 
+Read-only H20-2 check on 2026-05-26 found no active D3 generation process,
+`/home/nvme01` free space around 955G, `/home/nvme04` free space around 208G,
+and no `/mnt/nas` entry in `df`. Treat NAS output as unconfirmed until a later
+mount check proves it is available.
+
 Prompt policy is a controlled variable. The accepted smoke result indicates
 that `PROMPT_MODE=none` is viable for DiffuEraser-only partial-mask D3, because
 the model can use local visual context from the winner frames and mask. Candidate

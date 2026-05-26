@@ -41,6 +41,23 @@ Annotations video dirs = 3471
 valid videos with >=16 frames = 3327
 ```
 
+Read-only H20-2 check on 2026-05-26:
+
+```text
+host = instance-afs92r3e
+repo_head = 47251db
+JPEGImages video dirs = 3471
+Annotations video dirs = 3471
+/home/nvme01 free = 955G
+/home/nvme04 free = 208G
+active D3 generation processes = none
+official local D3 root size = 8.0K
+```
+
+`/mnt/nas` did not appear in the H20 `df` output from this check. Before final
+D3 generation, either mount/verify a NAS output root or plan an explicit data
+transfer plus manifest path rewrite.
+
 ## Clip Sampling
 
 Use the same canonical storage setting as D2:
