@@ -41,9 +41,11 @@ Still not done:
   is invalid and BR/no-prior failed the limit=100 quality gate;
 - DPO training has not been launched;
 - the active production model set is now DiffuEraser-only (`MODELS=diffueraser`, `generation_source=diffueraser_only`);
-- D2 partialmask K4 full generation has completed and is the active main data
-  asset for experiments 5/6/7/8, pending final training-readiness checks and a
-  generated-loser manifest dataset adapter.
+- D2 partialmask K4 full generation has completed, audit/repair has completed,
+  final training readiness has passed, and the generated-loser manifest dataset
+  adapter is now available for experiments 5/6/7/8;
+- D3 YouTube-VOS remains readiness-only for the official plan. Do not start a
+  full D3 run until the experiment 7/8 task/loss setting is chosen.
 
 ## Canonical Smoke Results
 
@@ -81,8 +83,27 @@ D2 partialmask decision:
 - D2 is the active main data asset for experiments 5/6/7/8;
 - use repaired manifests only for training entrypoints.
 
-Training must remain paused until `reports/d2_training_readiness_report.md`
-passes and the manifest dataset adapter exists.
+Training must remain paused until a short PAI 5-step smoke is run with the new
+manifest adapter. The D2 readiness report itself has passed:
+
+```text
+reports/d2_training_readiness_report.md
+selected_primary_comp.repaired.jsonl = 10000
+selected_primary_nocomp.repaired.jsonl = 10000
+selected_secondary_comp.repaired.jsonl = 10000
+selected_secondary_nocomp.repaired.jsonl = 10000
+sampled = 100
+sample_issues = 0
+rewritten_manifests = 0
+ready = True
+```
+
+Adapter:
+
+```text
+training/dpo/dataset/generated_loser_manifest_dataset.py
+tools/smoke_manifest_dataset.py
+```
 
 ## 2026-05-25 Launch Notes
 

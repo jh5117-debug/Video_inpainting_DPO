@@ -17,6 +17,7 @@ DPO Stage 1 Training — DiffuEraser DPO Finetune
 
 import argparse
 import atexit
+import csv
 import contextlib
 import gc
 import warnings
@@ -83,6 +84,17 @@ if is_wandb_available():
 check_min_version("0.27.0.dev0")
 
 logger = get_logger(__name__)
+
+
+def parse_bool_arg(value):
+    if isinstance(value, bool):
+        return value
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    raise argparse.ArgumentTypeError(f"Expected true/false value, got {value!r}")
 
 
 def forward_stage1_pair_member(
@@ -576,6 +588,71 @@ def format_dpo_diagnostics_line(step, diag):
     )
 
 
+DPO_DIAG_CSV_FIELDS = [
+    "global_step",
+    "dpo_loss",
+    "implicit_acc",
+    "win_gap",
+    "lose_gap",
+    "mse_w",
+    "ref_mse_w",
+    "mse_l",
+    "ref_mse_l",
+    "loser_dominant_ratio",
+    "sigma_term",
+    "grad_norm",
+    "total_loss",
+    "sft_loss",
+    "reward_margin",
+    "kl_divergence",
+    "inside_term_mean",
+    "inside_term_min",
+    "inside_term_max",
+]
+
+
+def dpo_diagnostics_enabled(args):
+    return bool(getattr(args, "enable_dpo_diag", True)) and not bool(getattr(args, "disable_dpo_diagnostics", False))
+
+
+def dpo_diagnostics_interval(args):
+    interval = int(getattr(args, "dpo_diag_log_every", 0) or 0)
+    if interval > 0:
+        return interval
+    return int(getattr(args, "logging_steps", 300) or 300)
+
+
+def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
+    path = os.path.join(output_dir, "dpo_diagnostics.csv")
+    exists = os.path.exists(path)
+    row = {
+        "global_step": step,
+        "dpo_loss": diag.get("dpo_loss"),
+        "implicit_acc": diag.get("implicit_acc"),
+        "win_gap": diag.get("win_gap"),
+        "lose_gap": diag.get("lose_gap"),
+        "mse_w": diag.get("mse_w"),
+        "ref_mse_w": diag.get("ref_mse_w"),
+        "mse_l": diag.get("mse_l"),
+        "ref_mse_l": diag.get("ref_mse_l"),
+        "loser_dominant_ratio": diag.get("loser_degrade_ratio"),
+        "sigma_term": diag.get("sigma_term"),
+        "grad_norm": grad_norm,
+        "total_loss": diag.get("total_loss"),
+        "sft_loss": diag.get("sft_loss"),
+        "reward_margin": diag.get("reward_margin"),
+        "kl_divergence": diag.get("kl_divergence"),
+        "inside_term_mean": diag.get("inside_term_mean"),
+        "inside_term_min": diag.get("inside_term_min"),
+        "inside_term_max": diag.get("inside_term_max"),
+    }
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=DPO_DIAG_CSV_FIELDS)
+        if not exists:
+            writer.writeheader()
+        writer.writerow(row)
+
+
 # ============================================================
 # Utility Functions
 # ============================================================
@@ -865,8 +942,22 @@ def parse_args(input_args=None):
     parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data",
                         help="DPO 偏好对数据集根目录")
     parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
-                        choices=["diffueraser_inpainting", "videodpo_fullmask"],
+                        choices=["diffueraser_inpainting", "videodpo_fullmask", "generated_loser_manifest"],
                         help="DPO dataset adapter. videodpo_fullmask keeps VideoDPO data/task and feeds DiffuEraser with a full-hole mask.")
+    parser.add_argument("--preference_manifest", type=str, default="",
+                        help="Repaired generated-loser JSONL manifest for --dpo_dataset_type generated_loser_manifest.")
+    parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"],
+                        help="Training mask policy for generated-loser manifests.")
+    parser.add_argument("--mask_from_manifest", type=parse_bool_arg, default=False,
+                        help="Use mask_path from the manifest as M_train.")
+    parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"],
+                        help="DPO loss region mode. region is declared but not implemented yet.")
+    parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True,
+                        help="Enable DPO diagnostics. Prefer this over --disable_dpo_diagnostics for new runs.")
+    parser.add_argument("--dpo_diag_log_every", type=int, default=10,
+                        help="Print/write detailed DPO diagnostics every N optimizer steps.")
+    parser.add_argument("--dpo_diag_save_csv", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_diag_save_wandb", type=parse_bool_arg, default=True)
     parser.add_argument("--videodpo_frame_stride", type=int, default=1,
                         help="Frame stride for videodpo_fullmask dataset.")
     parser.add_argument("--videodpo_clip_length", type=float, default=1.0,
@@ -926,6 +1017,14 @@ def collate_fn(examples):
 # Main
 # ============================================================
 def main(args):
+    if args.loss_region_mode == "region":
+        raise NotImplementedError(
+            "--loss_region_mode region is not implemented yet. "
+            "Use dataset smoke for experiment 8 and add a wrapper around compute_dpo_loss before training."
+        )
+    if not args.enable_dpo_diag:
+        args.disable_dpo_diagnostics = True
+
     report_to = args.report_to
     if report_to is not None and str(report_to).strip().lower() in {"none", "off", "no", "false", "disabled"}:
         report_to = None
@@ -1437,14 +1536,16 @@ def main(args):
                 if accelerator.is_main_process:
                     # === 每 300 步: 详细诊断日志 ===
                     if (
-                        not args.disable_dpo_diagnostics
-                        and (global_step % args.logging_steps == 0 or global_step == 1)
+                        dpo_diagnostics_enabled(args)
+                        and (global_step % dpo_diagnostics_interval(args) == 0 or global_step == 1)
                     ):
                         logger.info(format_dpo_diagnostics_line(global_step, diagnostics))
                         diag_table = format_dpo_diagnostics(
                             global_step, diagnostics, grad_norm=grad_norm
                         )
                         logger.info(diag_table)
+                        if args.dpo_diag_save_csv:
+                            append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
 
                     # Checkpoint 保存
                     if global_step % args.checkpointing_steps == 0:
@@ -1531,7 +1632,8 @@ def main(args):
                         acc=f"{diagnostics['implicit_acc']:.4f}",
                         lr=f"{lr_scheduler.get_last_lr()[0]:.2e}",
                     )
-                accelerator.log(logs, step=global_step)
+                if args.dpo_diag_save_wandb:
+                    accelerator.log(logs, step=global_step)
 
             if global_step >= args.max_train_steps:
                 break

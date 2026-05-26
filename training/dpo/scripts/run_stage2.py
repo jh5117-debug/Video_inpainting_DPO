@@ -92,6 +92,14 @@ def build_cmd(project_root, args):
         "--vae_path", os.path.join(weights_dir, "sd-vae-ft-mse"),
         "--dpo_data_root", dpo_data_root,
         "--dpo_dataset_type", args.dpo_dataset_type,
+        "--preference_manifest", args.preference_manifest,
+        "--train_mask_mode", args.train_mask_mode,
+        "--mask_from_manifest", str(args.mask_from_manifest).lower(),
+        "--loss_region_mode", args.loss_region_mode,
+        "--enable_dpo_diag", str(args.enable_dpo_diag).lower(),
+        "--dpo_diag_log_every", str(args.dpo_diag_log_every),
+        "--dpo_diag_save_csv", str(args.dpo_diag_save_csv).lower(),
+        "--dpo_diag_save_wandb", str(args.dpo_diag_save_wandb).lower(),
         "--output_dir", str(output_dir),
         "--logging_dir", "logs-dpo-stage2",
         "--val_data_dir", eval_dir,
@@ -164,6 +172,7 @@ def build_cmd(project_root, args):
         inputs={
             "dpo_data_root": dpo_data_root,
             "dpo_dataset_type": args.dpo_dataset_type,
+            "preference_manifest": args.preference_manifest,
             "pretrained_dpo_stage1": pretrained_dpo_stage1,
             "ref_model_path": ref_model_path,
             "baseline_unet_path": baseline_unet_path,
@@ -184,6 +193,13 @@ def build_cmd(project_root, args):
             "beta_dpo": args.beta_dpo,
             "videodpo_frame_stride": args.videodpo_frame_stride,
             "videodpo_full_mask_value": args.videodpo_full_mask_value,
+            "train_mask_mode": args.train_mask_mode,
+            "mask_from_manifest": args.mask_from_manifest,
+            "loss_region_mode": args.loss_region_mode,
+            "enable_dpo_diag": args.enable_dpo_diag,
+            "dpo_diag_log_every": args.dpo_diag_log_every,
+            "dpo_diag_save_csv": args.dpo_diag_save_csv,
+            "dpo_diag_save_wandb": args.dpo_diag_save_wandb,
         },
     )
 
@@ -349,7 +365,15 @@ def parse_args():
     parser.add_argument("--weights_dir", type=str, default=None)
     parser.add_argument("--dpo_data_root", type=str, default=None)
     parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
-                        choices=["diffueraser_inpainting", "videodpo_fullmask"])
+                        choices=["diffueraser_inpainting", "videodpo_fullmask", "generated_loser_manifest"])
+    parser.add_argument("--preference_manifest", type=str, default="")
+    parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"])
+    parser.add_argument("--mask_from_manifest", type=str, default="false")
+    parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"])
+    parser.add_argument("--enable_dpo_diag", type=str, default="true")
+    parser.add_argument("--dpo_diag_log_every", type=int, default=10)
+    parser.add_argument("--dpo_diag_save_csv", type=str, default="true")
+    parser.add_argument("--dpo_diag_save_wandb", type=str, default="true")
     parser.add_argument("--pretrained_dpo_stage1", type=str, default=None)
     parser.add_argument("--ref_model_path", type=str, default=None)
     parser.add_argument("--baseline_unet_path", type=str, default=None)

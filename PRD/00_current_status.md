@@ -165,7 +165,8 @@ ProPainter prior is generated or passed.
 ### D2 / Experiments 5, 6, 7, 8: Partialmask K4 DiffuEraser-Only Loser Data
 
 Status: generated on PAI; post-generation audit/repair completed; final
-training-readiness check pending before any long training.
+training-readiness check passed; manifest dataset adapter implemented locally
+for experiments 5/6/7/8.
 
 Output root:
 
@@ -226,8 +227,7 @@ manifests/selected_secondary_comp.repaired.jsonl
 manifests/selected_secondary_nocomp.repaired.jsonl
 ```
 
-Run the final training-readiness check before implementing or launching
-experiments 5/6/7/8:
+Final training-readiness check was run on PAI:
 
 ```bash
 OUT=/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4
@@ -239,3 +239,31 @@ This writes:
 ```text
 reports/d2_training_readiness_report.md
 ```
+
+Observed result:
+
+```text
+selected_primary_comp.repaired.jsonl = 10000
+selected_primary_nocomp.repaired.jsonl = 10000
+selected_secondary_comp.repaired.jsonl = 10000
+selected_secondary_nocomp.repaired.jsonl = 10000
+sampled = 100
+sample_issues = 0
+rewritten_manifests = 0
+ready = True
+```
+
+Training adapter status:
+
+```text
+dataset_type = generated_loser_manifest
+adapter = training/dpo/dataset/generated_loser_manifest_dataset.py
+smoke_tool = tools/smoke_manifest_dataset.py
+```
+
+Experiment manifest mapping:
+
+- Experiment 5: `manifests/selected_primary_comp.repaired.jsonl`, `train_mask_mode=full`, `loss_region_mode=full`.
+- Experiment 6: `manifests/selected_primary_nocomp.repaired.jsonl`, `train_mask_mode=full`, `loss_region_mode=full`.
+- Experiment 7: `manifests/selected_primary_comp.repaired.jsonl`, `train_mask_mode=partial`, `mask_from_manifest=true`, `loss_region_mode=full`.
+- Experiment 8: dataset entry is ready with `train_mask_mode=partial`, but `loss_region_mode=region` is not implemented yet and must be added as a wrapper around the existing DPO loss before training.

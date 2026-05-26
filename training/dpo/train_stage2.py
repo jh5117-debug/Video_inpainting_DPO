@@ -72,8 +72,13 @@ from training.dpo.dataset.factory import build_dpo_dataset
 from training.dpo.train_stage1 import (
     compute_dpo_loss,
     compute_dpo_grad_norm,
+    append_dpo_diagnostics_csv,
+    dpo_diagnostics_enabled,
+    dpo_diagnostics_interval,
     gather_dpo_diagnostics,
     format_dpo_diagnostics,
+    format_dpo_diagnostics_line,
+    parse_bool_arg,
     print_model_info,
     save_wandb_run_info,
     setup_process_console_capture,
@@ -431,6 +436,8 @@ def parse_args(input_args=None):
     parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
     parser.add_argument("--logging_steps", type=int, default=300,
                         help="每隔多少步输出详细 DPO 诊断日志")
+    parser.add_argument("--disable_dpo_diagnostics", action="store_true",
+                        help="Disable detailed DPO diagnostic tables and CSV logging.")
 
     # W&B
     parser.add_argument("--tracker_project_name", type=str, default="DPO_Diffueraser")
@@ -439,8 +446,16 @@ def parse_args(input_args=None):
     # ===== DPO 特有参数 =====
     parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data")
     parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
-                        choices=["diffueraser_inpainting", "videodpo_fullmask"],
+                        choices=["diffueraser_inpainting", "videodpo_fullmask", "generated_loser_manifest"],
                         help="DPO dataset adapter. videodpo_fullmask keeps VideoDPO data/task and feeds DiffuEraser with a full-hole mask.")
+    parser.add_argument("--preference_manifest", type=str, default="")
+    parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"])
+    parser.add_argument("--mask_from_manifest", type=parse_bool_arg, default=False)
+    parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"])
+    parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_diag_log_every", type=int, default=10)
+    parser.add_argument("--dpo_diag_save_csv", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_diag_save_wandb", type=parse_bool_arg, default=True)
     parser.add_argument("--videodpo_frame_stride", type=int, default=1)
     parser.add_argument("--videodpo_clip_length", type=float, default=1.0)
     parser.add_argument("--videodpo_full_mask_value", type=float, default=0.0)
@@ -499,6 +514,14 @@ def collate_fn(examples):
 # Main
 # ============================================================
 def main(args):
+    if args.loss_region_mode == "region":
+        raise NotImplementedError(
+            "--loss_region_mode region is not implemented yet. "
+            "Use dataset smoke for experiment 8 and add a wrapper around compute_dpo_loss before training."
+        )
+    if not args.enable_dpo_diag:
+        args.disable_dpo_diagnostics = True
+
     report_to = args.report_to
     if report_to is not None and str(report_to).strip().lower() in {"none", "off", "no", "false", "disabled"}:
         report_to = None
@@ -932,11 +955,14 @@ def main(args):
 
                 if accelerator.is_main_process:
                     # === 每 300 步: 详细诊断日志 ===
-                    if global_step % args.logging_steps == 0 or global_step == 1:
+                    if dpo_diagnostics_enabled(args) and (global_step % dpo_diagnostics_interval(args) == 0 or global_step == 1):
+                        logger.info(format_dpo_diagnostics_line(global_step, diagnostics))
                         diag_table = format_dpo_diagnostics(
                             global_step, diagnostics, grad_norm=grad_norm
                         )
                         logger.info(diag_table)
+                        if args.dpo_diag_save_csv:
+                            append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
 
                     if global_step % args.checkpointing_steps == 0:
                         if args.checkpoints_total_limit is not None:
@@ -1009,7 +1035,8 @@ def main(args):
                     logs["rank0/grad_norm_ratio"] = ratio
                     diagnostics["grad_norm_ratio"] = ratio
             progress_bar.set_postfix(**{k: f"{v:.4f}" if isinstance(v, float) else v for k, v in list(logs.items())[:6]})
-            accelerator.log(logs, step=global_step)
+            if args.dpo_diag_save_wandb:
+                accelerator.log(logs, step=global_step)
 
             if global_step >= args.max_train_steps:
                 break

@@ -34,6 +34,14 @@ Future launchers should expose:
 Outputs should include stdout/log lines, CSV, W&B if enabled, and
 `run_manifest.json`.
 
+Current implementation status:
+
+- Stage 1 and Stage 2 training expose `--enable_dpo_diag`, `--dpo_diag_log_every`, `--dpo_diag_save_csv`, and `--dpo_diag_save_wandb`.
+- Diagnostics default on for the generated-loser experiments.
+- CSV is written to `dpo_diagnostics.csv` under the training output directory.
+- `run_manifest.json` records the manifest adapter parameters through the stage launchers.
+- The new D2 manifest adapter does not alter `compute_dpo_loss`; experiment 8 region weighting is intentionally blocked until a wrapper around the existing DPO loss is implemented.
+
 ## Evaluation Boundary
 
 Data-only ablations:
@@ -48,3 +56,14 @@ Task partial-mask ablation:
 - train mask becomes partial mask;
 - first version should use `M_train = M_gen`;
 - later loss-region studies can compare full, mask-only, and region-weighted losses.
+
+## D2 Manifest Entrypoints
+
+Use `dpo_dataset_type=generated_loser_manifest`.
+
+| Experiment | Manifest | train_mask_mode | mask_from_manifest | loss_region_mode | Status |
+| --- | --- | --- | --- | --- | --- |
+| 5 | `selected_primary_comp.repaired.jsonl` | `full` | `false` | `full` | dataset ready |
+| 6 | `selected_primary_nocomp.repaired.jsonl` | `full` | `false` | `full` | dataset ready |
+| 7 | `selected_primary_comp.repaired.jsonl` | `partial` | `true` | `full` | dataset ready |
+| 8 | `selected_primary_comp.repaired.jsonl` | `partial` | `true` | `region` | dataset ready, loss wrapper pending |

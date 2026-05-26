@@ -473,6 +473,56 @@ The manifest audit must confirm:
 - `reports/d2_training_readiness_report.md` is written before training starts
 - failed shards are empty or explicitly audited
 
+PAI final readiness result on `2026-05-26`:
+
+```text
+selected_primary_comp.repaired.jsonl = 10000
+selected_primary_nocomp.repaired.jsonl = 10000
+selected_secondary_comp.repaired.jsonl = 10000
+selected_secondary_nocomp.repaired.jsonl = 10000
+sampled = 100
+sample_issues = 0
+rewritten_manifests = 0
+ready = True
+```
+
+Training adapter:
+
+```text
+dpo_dataset_type = generated_loser_manifest
+adapter = training/dpo/dataset/generated_loser_manifest_dataset.py
+smoke = tools/smoke_manifest_dataset.py
+```
+
+D2 training manifest mapping:
+
+```text
+Exp5 comp data-only:
+  preference_manifest = manifests/selected_primary_comp.repaired.jsonl
+  train_mask_mode = full
+  mask_from_manifest = false
+  loss_region_mode = full
+
+Exp6 no-comp data-only:
+  preference_manifest = manifests/selected_primary_nocomp.repaired.jsonl
+  train_mask_mode = full
+  mask_from_manifest = false
+  loss_region_mode = full
+
+Exp7 partial-mask task:
+  preference_manifest = manifests/selected_primary_comp.repaired.jsonl
+  train_mask_mode = partial
+  mask_from_manifest = true
+  loss_region_mode = full
+
+Exp8 partial-mask region-loss task:
+  preference_manifest = manifests/selected_primary_comp.repaired.jsonl
+  train_mask_mode = partial
+  mask_from_manifest = true
+  loss_region_mode = region
+  status = dataset entrypoint only; region loss wrapper not implemented yet
+```
+
 Before pulling H20 changes on PAI, protect dirty files:
 
 ```bash

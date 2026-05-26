@@ -27,6 +27,7 @@ fi
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
 export WORLDMODELPHY_PROCESS_NAME="${WORLDMODELPHY_PROCESS_NAME:-lingbotworld-phy}"
 export PROCESS_TITLE="${PROCESS_TITLE:-${WORLDMODELPHY_PROCESS_NAME}}"
+export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-phy}"
 PROJECT_PARENT="$(dirname "${PROJECT_ROOT}")"
 PROJECT_HOME="${PROJECT_HOME:-/sc-projects/sc-proj-cc09-repair/hongyou}"
 PROJECT_DEV="${PROJECT_DEV:-${PROJECT_HOME}/dev}"
@@ -38,6 +39,14 @@ NUM_GPUS=${NUM_GPUS:-8}
 WEIGHTS_DIR=${WEIGHTS_DIR:-${DATA}/weights}
 DPO_DATA_ROOT=${DPO_DATA_ROOT:-${DATA}/DPO_Finetune_data}
 DPO_DATASET_TYPE=${DPO_DATASET_TYPE:-diffueraser_inpainting}
+PREFERENCE_MANIFEST=${PREFERENCE_MANIFEST:-}
+TRAIN_MASK_MODE=${TRAIN_MASK_MODE:-full}
+MASK_FROM_MANIFEST=${MASK_FROM_MANIFEST:-false}
+LOSS_REGION_MODE=${LOSS_REGION_MODE:-full}
+ENABLE_DPO_DIAG=${ENABLE_DPO_DIAG:-true}
+DPO_DIAG_LOG_EVERY=${DPO_DIAG_LOG_EVERY:-10}
+DPO_DIAG_SAVE_CSV=${DPO_DIAG_SAVE_CSV:-true}
+DPO_DIAG_SAVE_WANDB=${DPO_DIAG_SAVE_WANDB:-true}
 VAL_DATA_DIR=${VAL_DATA_DIR:-${DATA}/davis_432_240}
 PRETRAINED_DPO_S1=${PRETRAINED_DPO_S1:-}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
@@ -221,6 +230,14 @@ python training/dpo/scripts/run_stage2.py \
   --weights_dir ${WEIGHTS_DIR} \
   --dpo_data_root ${DPO_DATA_ROOT} \
   --dpo_dataset_type ${DPO_DATASET_TYPE} \
+  --preference_manifest "${PREFERENCE_MANIFEST}" \
+  --train_mask_mode "${TRAIN_MASK_MODE}" \
+  --mask_from_manifest "${MASK_FROM_MANIFEST}" \
+  --loss_region_mode "${LOSS_REGION_MODE}" \
+  --enable_dpo_diag "${ENABLE_DPO_DIAG}" \
+  --dpo_diag_log_every "${DPO_DIAG_LOG_EVERY}" \
+  --dpo_diag_save_csv "${DPO_DIAG_SAVE_CSV}" \
+  --dpo_diag_save_wandb "${DPO_DIAG_SAVE_WANDB}" \
   --val_data_dir ${VAL_DATA_DIR} \
   --baseline_unet_path ${BASELINE_UNET_PATH} \
   --experiments_dir ${EXPERIMENTS_DIR} \
