@@ -9,7 +9,10 @@ export PROJECT_ROOT
 export OUTPUT_ROOT="${OUTPUT_ROOT:-${PROJECT_ROOT}}"
 export EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-${PROJECT_ROOT}/experiments}"
 export WEIGHTS_DIR="${WEIGHTS_DIR:-${PROJECT_ROOT}/weights}"
-export CONDA_ENV="${CONDA_ENV:-diffueraser}"
+if [[ -z "${CONDA_ENV_PREFIX:-}" && -d "/home/nvme01/conda_envs/diffueraser" ]]; then
+  export CONDA_ENV_PREFIX="/home/nvme01/conda_envs/diffueraser"
+fi
+export CONDA_ENV="${CONDA_ENV:-${CONDA_ENV_PREFIX:-diffueraser}}"
 export VBENCH_CONDA_ENV="${VBENCH_CONDA_ENV:-${CONDA_ENV}}"
 
 export EXP_NAME="${EXP_NAME:-exp6_d2_nocomp_k4_beta10_s1s2_4000}"
