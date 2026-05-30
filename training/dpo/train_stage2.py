@@ -80,6 +80,7 @@ from training.dpo.train_stage1 import (
     format_dpo_diagnostics_line,
     parse_bool_arg,
     print_model_info,
+    resolve_torch_dtype,
     save_wandb_run_info,
     set_process_title_from_env,
     setup_process_console_capture,
@@ -423,6 +424,14 @@ def parse_args(input_args=None):
     parser.add_argument("--allow_tf32", action="store_true")
     parser.add_argument("--report_to", type=str, default="wandb")
     parser.add_argument("--mixed_precision", type=str, default=None, choices=["no", "fp16", "bf16"])
+    parser.add_argument("--vae_dtype", type=str, default="auto", choices=["auto", "fp32"],
+                        help="VAE encode dtype. Use fp32 on H20 if half-precision VAE hits SIGFPE.")
+    parser.add_argument("--policy_dtype", type=str, default="auto", choices=["auto", "fp32"],
+                        help="Policy forward dtype. Use fp32 if bf16 policy forward/backward hits SIGFPE.")
+    parser.add_argument("--ref_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"],
+                        help="Frozen ref forward dtype.")
+    parser.add_argument("--text_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"],
+                        help="Frozen text encoder dtype.")
     parser.add_argument("--enable_xformers_memory_efficient_attention", action="store_true")
     parser.add_argument("--set_grads_to_none", action="store_true")
     parser.add_argument("--proportion_empty_prompts", type=float, default=0)
@@ -740,10 +749,17 @@ def main(args):
     elif accelerator.mixed_precision == "bf16":
         weight_dtype = torch.bfloat16
 
-    vae.to(accelerator.device, dtype=weight_dtype)
-    text_encoder.to(accelerator.device, dtype=weight_dtype)
-    unet_ref.to(accelerator.device, dtype=weight_dtype)
-    brushnet_ref.to(accelerator.device, dtype=weight_dtype)
+    vae_dtype = resolve_torch_dtype(args.vae_dtype, weight_dtype)
+    policy_dtype = resolve_torch_dtype(args.policy_dtype, weight_dtype)
+    ref_dtype = resolve_torch_dtype(args.ref_dtype, weight_dtype)
+    text_dtype = resolve_torch_dtype(args.text_dtype, weight_dtype)
+
+    vae.to(accelerator.device, dtype=vae_dtype)
+    text_encoder.to(accelerator.device, dtype=text_dtype)
+    unet_ref.to(accelerator.device, dtype=ref_dtype)
+    brushnet_ref.to(accelerator.device, dtype=ref_dtype)
+    unet_main.to(accelerator.device, dtype=policy_dtype)
+    brushnet.to(accelerator.device, dtype=policy_dtype)
 
     num_update_steps_per_epoch = math.ceil(len(train_dataloader) / args.gradient_accumulation_steps)
     if overrode_max_train_steps:
@@ -763,6 +779,10 @@ def main(args):
     logger.info(f"  Gradient Accumulation steps = {args.gradient_accumulation_steps}")
     logger.info(f"  Total optimization steps = {args.max_train_steps}")
     logger.info(f"  Beta DPO = {args.beta_dpo}")
+    logger.info(f"  VAE dtype = {vae_dtype}")
+    logger.info(f"  Policy forward dtype = {policy_dtype}")
+    logger.info(f"  Ref dtype = {ref_dtype}")
+    logger.info(f"  Text dtype = {text_dtype}")
     print_model_info({
         'unet_main (policy-MM)': unet_main, 'brushnet (frozen)': brushnet,
         'unet_ref (frozen)': unet_ref, 'brushnet_ref (frozen)': brushnet_ref,
@@ -813,21 +833,24 @@ def main(args):
 
                 # === VAE Encode ===
                 pos_latents = vae.encode(
-                    rearrange(batch["pixel_values_pos"], "b f c h w -> (b f) c h w").to(dtype=weight_dtype)
+                    rearrange(batch["pixel_values_pos"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
                 ).latent_dist.sample() * vae.config.scaling_factor
+                pos_latents = pos_latents.to(dtype=policy_dtype)
 
                 neg_latents = vae.encode(
-                    rearrange(batch["pixel_values_neg"], "b f c h w -> (b f) c h w").to(dtype=weight_dtype)
+                    rearrange(batch["pixel_values_neg"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
                 ).latent_dist.sample() * vae.config.scaling_factor
+                neg_latents = neg_latents.to(dtype=policy_dtype)
 
                 n_batch = batch["conditioning_pixel_values"].shape[0]
                 cond_latents = vae.encode(
-                    rearrange(batch["conditioning_pixel_values"], "b f c h w -> (b f) c h w").to(dtype=weight_dtype)
+                    rearrange(batch["conditioning_pixel_values"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
                 ).latent_dist.sample() * vae.config.scaling_factor
+                cond_latents = cond_latents.to(dtype=policy_dtype)
                 cond_latents = rearrange(cond_latents, "(b f) c h w -> b f c h w", b=n_batch)
 
                 masks = torch.nn.functional.interpolate(
-                    batch["masks"].to(dtype=weight_dtype),
+                    batch["masks"].to(dtype=policy_dtype),
                     size=(1, pos_latents.shape[-2], pos_latents.shape[-1])
                 )
 
@@ -859,21 +882,26 @@ def main(args):
                     repeat(encoder_hidden_states, "b c d -> b t c d", t=args.nframes),
                     'b t c d -> (b t) c d'
                 )
+                encoder_hidden_states_policy = encoder_hidden_states_expanded.to(dtype=policy_dtype)
+                encoder_hidden_states_ref = encoder_hidden_states_expanded.to(dtype=ref_dtype)
+                encoder_hidden_states_motion_policy = encoder_hidden_states.to(dtype=policy_dtype)
+                encoder_hidden_states_motion_ref = encoder_hidden_states.to(dtype=ref_dtype)
+                brushnet_cond_ref = brushnet_cond.to(dtype=ref_dtype)
 
                 if args.split_pos_neg_forward:
                     # 顺序跑 win/lose，保持 DPO 数学等价，同时避免 pos+neg concat 的激活峰值。
                     with torch.no_grad():
                         ref_pred_pos = forward_stage2_pair_member(
-                            brushnet_ref, unet_ref, noisy_pos, timesteps_expanded, timesteps,
-                            encoder_hidden_states_expanded, encoder_hidden_states,
-                            brushnet_cond, weight_dtype, args.nframes,
+                            brushnet_ref, unet_ref, noisy_pos.to(dtype=ref_dtype), timesteps_expanded, timesteps,
+                            encoder_hidden_states_ref, encoder_hidden_states_motion_ref,
+                            brushnet_cond_ref, ref_dtype, args.nframes,
                         )
                         torch.cuda.empty_cache()
                         gc.collect()
                         ref_pred_neg = forward_stage2_pair_member(
-                            brushnet_ref, unet_ref, noisy_neg, timesteps_expanded, timesteps,
-                            encoder_hidden_states_expanded, encoder_hidden_states,
-                            brushnet_cond, weight_dtype, args.nframes,
+                            brushnet_ref, unet_ref, noisy_neg.to(dtype=ref_dtype), timesteps_expanded, timesteps,
+                            encoder_hidden_states_ref, encoder_hidden_states_motion_ref,
+                            brushnet_cond_ref, ref_dtype, args.nframes,
                         )
                         ref_pred = torch.cat([ref_pred_pos, ref_pred_neg], dim=0)
                     del ref_pred_pos, ref_pred_neg
@@ -882,15 +910,15 @@ def main(args):
 
                     model_pred_pos = forward_stage2_pair_member(
                         brushnet, unet_main, noisy_pos, timesteps_expanded, timesteps,
-                        encoder_hidden_states_expanded, encoder_hidden_states,
-                        brushnet_cond, weight_dtype, args.nframes,
+                        encoder_hidden_states_policy, encoder_hidden_states_motion_policy,
+                        brushnet_cond, policy_dtype, args.nframes,
                     )
                     torch.cuda.empty_cache()
                     gc.collect()
                     model_pred_neg = forward_stage2_pair_member(
                         brushnet, unet_main, noisy_neg, timesteps_expanded, timesteps,
-                        encoder_hidden_states_expanded, encoder_hidden_states,
-                        brushnet_cond, weight_dtype, args.nframes,
+                        encoder_hidden_states_policy, encoder_hidden_states_motion_policy,
+                        brushnet_cond, policy_dtype, args.nframes,
                     )
                     model_pred = torch.cat([model_pred_pos, model_pred_neg], dim=0)
                     del model_pred_pos, model_pred_neg
@@ -902,17 +930,21 @@ def main(args):
                     # UNetMotionModel 内部自己 repeat_interleave(num_frames)，只需要 per-batch: (2*bsz,)
                     timesteps_all_motion = timesteps.repeat(2)
                     encoder_hidden_states_all = torch.cat(
-                        [encoder_hidden_states_expanded, encoder_hidden_states_expanded], dim=0
+                        [encoder_hidden_states_policy, encoder_hidden_states_policy], dim=0
                     )
-                    encoder_hidden_states_motion = encoder_hidden_states.repeat(2, 1, 1)
+                    encoder_hidden_states_ref_all = torch.cat(
+                        [encoder_hidden_states_ref, encoder_hidden_states_ref], dim=0
+                    )
+                    encoder_hidden_states_motion = encoder_hidden_states_motion_policy.repeat(2, 1, 1)
+                    encoder_hidden_states_motion_ref = encoder_hidden_states_motion_ref.repeat(2, 1, 1)
 
                     # === Ref forward (no_grad) ===
                     # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
                     with torch.no_grad():
                         ref_pred = forward_stage2_pair_member(
-                            brushnet_ref, unet_ref, noisy_all, timesteps_all_2d, timesteps_all_motion,
-                            encoder_hidden_states_all, encoder_hidden_states_motion,
-                            brushnet_cond_all, weight_dtype, args.nframes,
+                            brushnet_ref, unet_ref, noisy_all.to(dtype=ref_dtype), timesteps_all_2d, timesteps_all_motion,
+                            encoder_hidden_states_ref_all, encoder_hidden_states_motion_ref,
+                            brushnet_cond_all.to(dtype=ref_dtype), ref_dtype, args.nframes,
                         )
 
                     torch.cuda.empty_cache()
@@ -922,10 +954,11 @@ def main(args):
                     model_pred = forward_stage2_pair_member(
                         brushnet, unet_main, noisy_all, timesteps_all_2d, timesteps_all_motion,
                         encoder_hidden_states_all, encoder_hidden_states_motion,
-                        brushnet_cond_all, weight_dtype, args.nframes,
+                        brushnet_cond_all, policy_dtype, args.nframes,
                     )
                     del noisy_all, brushnet_cond_all, timesteps_all_2d
-                    del timesteps_all_motion, encoder_hidden_states_all, encoder_hidden_states_motion
+                    del timesteps_all_motion, encoder_hidden_states_all, encoder_hidden_states_ref_all
+                    del encoder_hidden_states_motion, encoder_hidden_states_motion_ref
 
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(

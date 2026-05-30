@@ -84,6 +84,10 @@ TRAIN_WIDTH=${TRAIN_WIDTH:-${RESOLUTION}}
 NFRAMES=${NFRAMES:-16}
 SEED=${SEED:-42}
 MIXED_PRECISION=${MIXED_PRECISION:-bf16}
+VAE_DTYPE=${VAE_DTYPE:-auto}
+POLICY_DTYPE=${POLICY_DTYPE:-auto}
+REF_DTYPE=${REF_DTYPE:-auto}
+TEXT_DTYPE=${TEXT_DTYPE:-auto}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
 REPORT_TO=${REPORT_TO:-wandb}
 BETA_DPO=${BETA_DPO:-500.0}
@@ -260,6 +264,10 @@ python training/dpo/scripts/run_stage2.py \
   --nframes ${NFRAMES} \
   --seed ${SEED} \
   --mixed_precision ${MIXED_PRECISION} \
+  --vae_dtype ${VAE_DTYPE} \
+  --policy_dtype ${POLICY_DTYPE} \
+  --ref_dtype ${REF_DTYPE} \
+  --text_dtype ${TEXT_DTYPE} \
   --report_to ${REPORT_TO} \
   --wandb_project ${WANDB_PROJECT} \
   --beta_dpo ${BETA_DPO} \

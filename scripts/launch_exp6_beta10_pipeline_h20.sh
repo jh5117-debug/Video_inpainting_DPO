@@ -52,4 +52,11 @@ export QUAL30_SEED="${QUAL30_SEED:-42}"
 export SKIP_QUAL30="${SKIP_QUAL30:-false}"
 export SKIP_FULL_VBENCH="${SKIP_FULL_VBENCH:-false}"
 
+# H20 can hit SIGFPE with bf16 policy forward/backward. Keep mixed bf16 for
+# frozen/support modules, but run the trainable policy path in fp32.
+export POLICY_DTYPE="${POLICY_DTYPE:-fp32}"
+export VAE_DTYPE="${VAE_DTYPE:-auto}"
+export REF_DTYPE="${REF_DTYPE:-auto}"
+export TEXT_DTYPE="${TEXT_DTYPE:-auto}"
+
 exec bash "${PROJECT_ROOT}/scripts/run_dpo_two_stage_vbench_pipeline.sh"

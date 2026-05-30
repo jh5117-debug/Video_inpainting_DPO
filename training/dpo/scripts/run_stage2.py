@@ -116,6 +116,10 @@ def build_cmd(project_root, args):
         "--logging_steps", str(args.logging_steps),
         "--val_num_inference_steps", str(args.val_num_inference_steps),
         "--val_mask_dilation_iter", str(args.val_mask_dilation_iter),
+        "--vae_dtype", args.vae_dtype,
+        "--policy_dtype", args.policy_dtype,
+        "--ref_dtype", args.ref_dtype,
+        "--text_dtype", args.text_dtype,
         "--beta_dpo", str(args.beta_dpo),
         "--davis_oversample", str(args.davis_oversample),
         "--videodpo_frame_stride", str(args.videodpo_frame_stride),
@@ -338,6 +342,10 @@ def run(args=None):
     print(f"  Beta DPO:           {args.beta_dpo}")
     print(f"  LR:                 {args.learning_rate}")
     print(f"  Mixed Precision:    {args.mixed_precision}")
+    print(f"  VAE dtype:          {args.vae_dtype}")
+    print(f"  Policy dtype:       {args.policy_dtype}")
+    print(f"  Ref dtype:          {args.ref_dtype}")
+    print(f"  Text dtype:         {args.text_dtype}")
     print(f"  Report To:          {args.report_to}")
     print(f"  Main Port:          {args.main_process_port}")
     print(f"  XFormers:           {args.enable_xformers}")
@@ -402,6 +410,10 @@ def parse_args():
     parser.add_argument("--nframes", type=int, default=16)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", type=str, default="fp16")
+    parser.add_argument("--vae_dtype", type=str, default="auto", choices=["auto", "fp32"])
+    parser.add_argument("--policy_dtype", type=str, default="auto", choices=["auto", "fp32"])
+    parser.add_argument("--ref_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"])
+    parser.add_argument("--text_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"])
     parser.add_argument("--main_process_port", type=str, default=None)
     parser.add_argument("--report_to", type=str, default="wandb",
                         help="Accelerate tracker backend. Use 'none'/'off' to disable W&B/tracker logging.")
