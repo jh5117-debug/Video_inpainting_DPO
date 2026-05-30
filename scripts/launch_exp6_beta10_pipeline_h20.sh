@@ -52,13 +52,12 @@ export QUAL30_SEED="${QUAL30_SEED:-42}"
 export SKIP_QUAL30="${SKIP_QUAL30:-false}"
 export SKIP_FULL_VBENCH="${SKIP_FULL_VBENCH:-false}"
 
-# H20 can hit SIGFPE with bf16 policy forward/backward. Keep mixed bf16 for
-# frozen ref/text modules, but run the trainable policy path and VAE encode in
-# fp32. The VAE fp32 setting is the smallest escalation after policy fp32 still
-# produced a first-batch SIGFPE on H20.
+# H20 can hit SIGFPE in bf16 before the first DPO step. Keep this fallback H20
+# wrapper-only: use fp32 for the trainable policy path and support modules.
+export MIXED_PRECISION="${MIXED_PRECISION:-no}"
 export POLICY_DTYPE="${POLICY_DTYPE:-fp32}"
 export VAE_DTYPE="${VAE_DTYPE:-fp32}"
-export REF_DTYPE="${REF_DTYPE:-auto}"
-export TEXT_DTYPE="${TEXT_DTYPE:-auto}"
+export REF_DTYPE="${REF_DTYPE:-fp32}"
+export TEXT_DTYPE="${TEXT_DTYPE:-fp32}"
 
 exec bash "${PROJECT_ROOT}/scripts/run_dpo_two_stage_vbench_pipeline.sh"
