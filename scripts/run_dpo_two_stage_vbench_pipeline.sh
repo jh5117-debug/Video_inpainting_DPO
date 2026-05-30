@@ -137,7 +137,23 @@ require_path "${VBENCH_RUNNER}" "VBench runner"
 require_path "${PROMPTS_FILE}" "VBench prompts"
 require_path "${VBENCH_ROOT}/evaluate.py" "VBench evaluate.py"
 require_path "${BASELINE_WEIGHTS_PATH}" "DiffuEraser-base weights"
-command -v ffmpeg >/dev/null 2>&1 || die "ffmpeg not found; needed for qual30 side-by-side"
+
+FFMPEG_BIN="${FFMPEG_BIN:-$(command -v ffmpeg || true)}"
+if [[ -z "${FFMPEG_BIN}" && -d "${CONDA_ENV}" && -x "${CONDA_ENV}/bin/python" ]]; then
+  FFMPEG_BIN="$("${CONDA_ENV}/bin/python" - <<'PY' 2>/dev/null || true
+try:
+    import imageio_ffmpeg
+    print(imageio_ffmpeg.get_ffmpeg_exe())
+except Exception:
+    pass
+PY
+)"
+fi
+if [[ -z "${FFMPEG_BIN}" ]]; then
+  log "ffmpeg not found in PATH and imageio_ffmpeg could not be resolved yet; qual30 side-by-side will fail if no ffmpeg is available after generation."
+else
+  log "Using ffmpeg: ${FFMPEG_BIN}"
+fi
 
 cat <<EOF
 ============================================================
@@ -168,6 +184,7 @@ export STAGE1_RUN_DIR STAGE2_RUN_DIR STAGE1_LOG STAGE2_LOG
 export SKIP_QUAL30 SKIP_FULL_VBENCH PROMPTS_FILE QUAL30_SEED
 export WEIGHTS_DIR BASE_MODEL_PATH VAE_PATH REF_MODEL_PATH BASELINE_UNET_PATH
 export NUM_GPUS VAL_STEPS CKPT_STEPS CKPT_LIMIT REPORT_TO DPO_DIAG_SAVE_WANDB
+export FFMPEG_BIN
 export ENABLE_DPO_DIAG DPO_DIAG_LOG_EVERY DPO_DIAG_SAVE_CSV LINGBOT_PROCESS_NAME
 export WORLDMODELPHY_PROCESS_NAME PROCESS_TITLE TRAIN_HEIGHT TRAIN_WIDTH RESOLUTION NFRAMES
 export NUM_WORKERS LOGGING_STEPS MIXED_PRECISION VAE_DTYPE POLICY_DTYPE REF_DTYPE TEXT_DTYPE
@@ -340,6 +357,7 @@ PY
 import csv
 import html
 import os
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -348,6 +366,13 @@ exp = Path(os.environ["QUAL_EXP_VIDEO_DIR"])
 out = Path(os.environ["QUAL_SBS_OUT"])
 root = Path(os.environ["QUAL_ROOT"])
 name = os.environ["EXP_NAME"]
+ffmpeg = os.environ.get("FFMPEG_BIN") or shutil.which("ffmpeg")
+if not ffmpeg:
+    try:
+        import imageio_ffmpeg
+        ffmpeg = imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception as exc:
+        raise SystemExit(f"ffmpeg not available for side-by-side generation: {exc}") from exc
 out.mkdir(parents=True, exist_ok=True)
 
 base_files = {p.name: p for p in base.glob("*.mp4")}
@@ -363,7 +388,7 @@ with (root / "pair_manifest.csv").open("w", newline="", encoding="utf-8") as f:
         dst = out / filename
         writer.writerow([filename, base_files[filename], exp_files[filename], dst])
         cmd = [
-            "ffmpeg", "-y",
+            ffmpeg, "-y",
             "-i", str(base_files[filename]),
             "-i", str(exp_files[filename]),
             "-filter_complex",
