@@ -1,0 +1,42 @@
+#!/bin/bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
+PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+
+export PROJECT_ROOT
+export OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/nas/hj/H20_Video_inpainting_DPO}"
+export EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-/mnt/nas/hj/H20_Video_inpainting_DPO/experiments}"
+export WEIGHTS_DIR="${WEIGHTS_DIR:-/mnt/nas/hj/weights}"
+export CONDA_ENV_PREFIX="${CONDA_ENV_PREFIX:-/mnt/nas/hj/conda_envs/diffueraser}"
+export CONDA_ENV="${CONDA_ENV:-${CONDA_ENV_PREFIX}}"
+export VBENCH_CONDA_ENV="${VBENCH_CONDA_ENV:-/mnt/nas/hj/conda_envs/videodpo}"
+
+export EXP_NAME="${EXP_NAME:-exp5_d2_comp_k4_beta10_s1s2_4000}"
+export PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl}"
+export TRAIN_MASK_MODE="${TRAIN_MASK_MODE:-full}"
+export MASK_FROM_MANIFEST="${MASK_FROM_MANIFEST:-false}"
+export LOSS_REGION_MODE="${LOSS_REGION_MODE:-full}"
+export BETA_DPO="${BETA_DPO:-10}"
+export STAGE1_MAX_STEPS="${STAGE1_MAX_STEPS:-4000}"
+export STAGE2_MAX_STEPS="${STAGE2_MAX_STEPS:-4000}"
+export NUM_GPUS="${NUM_GPUS:-8}"
+export VAL_STEPS="${VAL_STEPS:-999999}"
+export CKPT_STEPS="${CKPT_STEPS:-1000}"
+export CKPT_LIMIT="${CKPT_LIMIT:-2}"
+export REPORT_TO="${REPORT_TO:-none}"
+export DPO_DIAG_SAVE_WANDB="${DPO_DIAG_SAVE_WANDB:-false}"
+export ENABLE_DPO_DIAG="${ENABLE_DPO_DIAG:-true}"
+export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-worldphy}"
+export TRAIN_HEIGHT="${TRAIN_HEIGHT:-320}"
+export TRAIN_WIDTH="${TRAIN_WIDTH:-512}"
+export RESOLUTION="${RESOLUTION:-512}"
+export NFRAMES="${NFRAMES:-16}"
+export NUM_WORKERS="${NUM_WORKERS:-0}"
+export PROMPTS_FILE="${PROMPTS_FILE:-${PROJECT_ROOT}/external/VideoDPO/prompts/vbench_standard_prompts.txt}"
+export QUAL30_SEED="${QUAL30_SEED:-42}"
+export SKIP_QUAL30="${SKIP_QUAL30:-false}"
+export SKIP_FULL_VBENCH="${SKIP_FULL_VBENCH:-false}"
+
+exec bash "${PROJECT_ROOT}/scripts/run_dpo_two_stage_vbench_pipeline.sh"

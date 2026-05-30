@@ -3,6 +3,23 @@
 Updated from the 2026-05-24 PAI probe. This is the checked-in summary; the PAI
 node may also keep timestamped audit logs under `.tmp/codex_asset_prepare/`.
 
+## 2026-05-30 D2 Training Status
+
+D2 is ready and should not be regenerated for the beta10 reruns.
+
+| Manifest | Rows | Use |
+| --- | ---: | --- |
+| `selected_primary_comp.repaired.jsonl` | 10000 | Exp5 beta10 rerun |
+| `selected_primary_nocomp.repaired.jsonl` | 10000 | Exp6 beta10 rerun |
+| `selected_secondary_comp.repaired.jsonl` | 10000 | reserve / later diagnostic |
+| `selected_secondary_nocomp.repaired.jsonl` | 10000 | reserve / later diagnostic |
+
+Old Exp5 beta500 / 10000-step Stage1+Stage2 is failed/collapsed and diagnostic
+only. The failure is attributed to D2 generated losers plus full-mask full-loss
+DPO with `beta_dpo=500`, no SFT regularization, and long training. The rerun
+policy is `beta_dpo=10`, 4000 Stage1 steps, 4000 Stage2 steps, no in-training
+validation, followed by qual30 and full VBench.
+
 ## Asset Status
 
 | Asset | Status | Path / Evidence |

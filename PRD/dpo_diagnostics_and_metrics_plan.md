@@ -3,6 +3,34 @@
 This is a plan for later training runs. The current asset-preparation phase
 does not start training and does not modify loss math.
 
+## 2026-05-30 Exp5 beta500 Collapse Interpretation
+
+Old Exp5 beta500 is marked failed/collapsed/diagnostic only. The important
+diagnostic lesson is that DPO objective saturation is not visual quality:
+
+- `acc=1`, `dpo=0`, and `loss=0` appeared early.
+- Stage2 10000 qualitative VBench outputs collapsed into high-frequency noise
+  and color explosion.
+- VBench dimensions such as dynamic degree, overall consistency, scene,
+  spatial relationship, and object class were weak.
+
+This is interpreted as preference-data / optimization failure rather than task
+failure. Exp3 remains evidence that the DiffuEraser DPO task bridge can work.
+
+The immediate rerun keeps the loss math unchanged and changes only the
+optimization strength and duration:
+
+```text
+beta_dpo = 10
+stage1_max_steps = 4000
+stage2_max_steps = 4000
+sft_reg_weight = 0
+validation_steps = 999999
+```
+
+Do not change `compute_dpo_loss`, add SFT regularization, or enable Exp8 region
+loss in this pass.
+
 ## Reuse Existing Diagnostics
 
 Search and reuse existing VideoDPO/DiffuEraser diagnostics before adding any

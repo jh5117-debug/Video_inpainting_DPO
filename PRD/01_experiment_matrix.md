@@ -1,5 +1,26 @@
 # Experiment Matrix
 
+## 2026-05-30 beta500 Failure And beta10 Rerun
+
+Old `exp5_d2_comp_k4_stage1/stage2_full` with `beta_dpo=500` and 10000-step
+Stage1/Stage2 is now marked **failed / collapsed / diagnostic only**.
+
+This failure is not a task failure: Exp3 showed the VideoDPO-to-DiffuEraser DPO
+bridge can work. The old Exp5 failure is an optimization/preference-data
+failure caused by D2 generated losers plus full-mask training, full-video loss,
+`beta_dpo=500`, no SFT regularization, and long training. Early `acc=1`,
+`dpo=0`, and `loss=0` are treated as DPO saturation, not as visual success.
+
+The replacement reruns are:
+
+| Experiment | Status | Manifest | beta_dpo | Stage1 steps | Stage2 steps | Validation during training | Post Stage2 eval |
+| --- | --- | --- | ---: | ---: | ---: | --- | --- |
+| `exp5_d2_comp_k4_beta10_s1s2_4000` | planned/running | `selected_primary_comp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
+| `exp6_d2_nocomp_k4_beta10_s1s2_4000` | planned/running | `selected_primary_nocomp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
+
+Old H20 Exp6 beta500 is superseded by the beta10 rerun and should be stopped if
+still running.
+
 ## Core Ablation Directions This Week
 
 The core plan has four directions, with Direction 2 split into 2A/2B:
