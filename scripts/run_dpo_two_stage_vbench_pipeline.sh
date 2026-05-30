@@ -111,6 +111,20 @@ require_path() {
   [[ -e "$path" ]] || die "${label} not found: ${path}"
 }
 
+resolve_python() {
+  if [[ -n "${PYTHON_BIN:-}" && -x "${PYTHON_BIN}" ]]; then
+    echo "${PYTHON_BIN}"
+  elif [[ -d "${CONDA_ENV}" && -x "${CONDA_ENV}/bin/python" ]]; then
+    echo "${CONDA_ENV}/bin/python"
+  elif command -v python3 >/dev/null 2>&1; then
+    command -v python3
+  elif command -v python >/dev/null 2>&1; then
+    command -v python
+  else
+    die "python not found; set PYTHON_BIN or CONDA_ENV/CONDA_ENV_PREFIX"
+  fi
+}
+
 PIPELINE_TS="${PIPELINE_TS:-$(date +%Y%m%d_%H%M%S)}"
 RUN_VERSION="${RUN_VERSION:-${PIPELINE_TS}}"
 BETA_LABEL="$(sanitize_beta "${BETA_DPO}")"
@@ -138,9 +152,12 @@ require_path "${PROMPTS_FILE}" "VBench prompts"
 require_path "${VBENCH_ROOT}/evaluate.py" "VBench evaluate.py"
 require_path "${BASELINE_WEIGHTS_PATH}" "DiffuEraser-base weights"
 
+PYTHON_BIN="$(resolve_python)"
+log "Using python: ${PYTHON_BIN}"
+
 FFMPEG_BIN="${FFMPEG_BIN:-$(command -v ffmpeg || true)}"
-if [[ -z "${FFMPEG_BIN}" && -d "${CONDA_ENV}" && -x "${CONDA_ENV}/bin/python" ]]; then
-  FFMPEG_BIN="$("${CONDA_ENV}/bin/python" - <<'PY' 2>/dev/null || true
+if [[ -z "${FFMPEG_BIN}" ]]; then
+  FFMPEG_BIN="$("${PYTHON_BIN}" - <<'PY' 2>/dev/null || true
 try:
     import imageio_ffmpeg
     print(imageio_ffmpeg.get_ffmpeg_exe())
@@ -184,7 +201,7 @@ export STAGE1_RUN_DIR STAGE2_RUN_DIR STAGE1_LOG STAGE2_LOG
 export SKIP_QUAL30 SKIP_FULL_VBENCH PROMPTS_FILE QUAL30_SEED
 export WEIGHTS_DIR BASE_MODEL_PATH VAE_PATH REF_MODEL_PATH BASELINE_UNET_PATH
 export NUM_GPUS VAL_STEPS CKPT_STEPS CKPT_LIMIT REPORT_TO DPO_DIAG_SAVE_WANDB
-export FFMPEG_BIN
+export FFMPEG_BIN PYTHON_BIN
 export ENABLE_DPO_DIAG DPO_DIAG_LOG_EVERY DPO_DIAG_SAVE_CSV LINGBOT_PROCESS_NAME
 export WORLDMODELPHY_PROCESS_NAME PROCESS_TITLE TRAIN_HEIGHT TRAIN_WIDTH RESOLUTION NFRAMES
 export NUM_WORKERS LOGGING_STEPS MIXED_PRECISION VAE_DTYPE POLICY_DTYPE REF_DTYPE TEXT_DTYPE
@@ -193,7 +210,7 @@ export SEED DAVIS_OVERSAMPLE VIDEODPO_FRAME_STRIDE VIDEODPO_CLIP_LENGTH VIDEODPO
 export VAL_NUM_INFERENCE_STEPS VAL_MASK_DILATION_ITER GRADIENT_CHECKPOINTING SPLIT_POS_NEG_FORWARD
 export CHUNK_ALIGNED USE_8BIT_ADAM XFORMERS MAIN_PROCESS_PORT WANDB_ENTITY CONDA_ENV VBENCH_CONDA_ENV
 
-python - <<'PY'
+"${PYTHON_BIN}" - <<'PY'
 import json
 import os
 from pathlib import Path
@@ -264,7 +281,7 @@ if ! is_true "${SKIP_QUAL30}"; then
   log "Qual30 start"
   mkdir -p "${QUAL_ROOT}" "${QUAL_BASE_OUT}" "${QUAL_EXP_OUT}" "${QUAL_SBS_OUT}"
   export PROMPTS_FILE QUAL_PROMPTS QUAL30_SEED
-  python - <<'PY'
+  "${PYTHON_BIN}" - <<'PY'
 import os
 import random
 from pathlib import Path
@@ -295,7 +312,7 @@ PY
       *)
         if [[ -d "${BASE_QUAL30_DIR}" ]]; then
           export BASE_QUAL30_DIR QUAL_PROMPTS
-          if python - <<'PY'
+          if "${PYTHON_BIN}" - <<'PY'
 import os
 from pathlib import Path
 
@@ -353,7 +370,7 @@ PY
   ) > "${QUAL_ROOT}/exp_generation.log" 2>&1
 
   export QUAL_BASE_VIDEO_DIR QUAL_EXP_VIDEO_DIR QUAL_SBS_OUT QUAL_ROOT EXP_NAME
-  python - <<'PY'
+  "${PYTHON_BIN}" - <<'PY'
 import csv
 import html
 import os
@@ -446,7 +463,7 @@ if ! is_true "${SKIP_FULL_VBENCH}"; then
   require_path "${FULL_VBENCH_ROOT}/vbench_eval/summary.json" "VBench summary.json"
   export SUMMARY_CSV="${FULL_VBENCH_ROOT}/vbench_eval/summary.csv"
   export SCORE_TABLE="${FULL_VBENCH_ROOT}/vbench_score_table.md"
-  python - <<'PY'
+  "${PYTHON_BIN}" - <<'PY'
 import csv
 import os
 from pathlib import Path
