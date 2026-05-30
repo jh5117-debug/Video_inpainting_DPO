@@ -1,61 +1,27 @@
 # Generated Loser Calibration Report
 
-Status: not run in this checked-in template.
+## Summary
 
-This report must be overwritten on PAI after running the calibration subset.
-Do not launch full offline generation before this report contains real
-candidate metrics and selection distributions.
+- candidate_count: 16
+- successful_candidate_count: 16
+- failed_candidate_count: 0
+- fail_count_by_model: {}
+- quality_score_histogram: {'0.00-0.15': 0, '0.15-0.30': 0, '0.30-0.45': 2, '0.45-0.65': 14, '0.65-0.80': 0, '0.80-1.00': 0, '>=1.00': 0}
+- too_bad_ratio: 0.0000
+- eligible_ratio: 1.0000
+- too_good_ratio: 0.0000
+- selected_primary_distribution: {'minimax_remover': 1}
+- selected_secondary_distribution: {'diffueraser': 1}
+- mask_area_mean: 0.228701
+- mask_area_min: 0.204059
+- mask_area_max: 0.258541
+- mask_motion_distribution: {'static': 8, 'slow': 8}
+- comp_outside_diff_max: 0.000000
 
-Required current省时版 calibration command shape on PAI:
+## Selection Events
 
-```bash
-python tools/videodpo_generated_loser_calibration.py \
-  --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models diffueraser \
-  --mask_mode partial \
-  --limit 20 \
-  --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
-  --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
-  --calibration_report PRD/generated_loser_calibration_report.md
-```
+- sample_id=videodpo_pair000000 primary=videodpo_pair000000::mask_002::minimax_remover secondary=videodpo_pair000000::mask_003::diffueraser fallback=none
 
-Current 2026-05-25 production pass uses `generation_source=diffueraser_only`
-for throughput. The earlier four-model smoke remains only archived readiness
-evidence, not the active D1/D2 generation source.
+## Preview Paths
 
-```bash
-python tools/videodpo_generated_loser_calibration.py \
-  --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models diffueraser \
-  --limit 20 \
-  --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
-  --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
-  --calibration_report PRD/generated_loser_calibration_report.md
-```
-
-## Pending Fields
-
-- calibration_winners: `PENDING`
-- masks_per_winner: `4`
-- models_per_mask_archived_smoke: `diffueraser, propainter, cococo, minimax_remover`
-- models_per_mask_current: `diffueraser`
-- generation_source_current: `diffueraser_only`
-- candidate_count: `PENDING`
-- successful_candidate_count: `PENDING`
-- failed_candidate_count: `PENDING`
-- fail_count_by_model: `PENDING`
-- selected_model_distribution: `PENDING`
-- quality_score_histogram: `PENDING`
-- too_bad_ratio: `PENDING`
-- eligible_ratio: `PENDING`
-- too_good_ratio: `PENDING`
-- selected_primary_distribution: `PENDING`
-- selected_secondary_distribution: `PENDING`
-- mask_area_distribution: `PENDING`
-- mask_motion_distribution: `PENDING`
-- outside_diff_check: `PENDING`
-- sample_visual_preview_paths: `PENDING`
-
-## Decision
-
-Full generation approval: `PENDING_CALIBRATION`
+- no preview paths recorded in candidates manifest

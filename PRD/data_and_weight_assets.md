@@ -47,25 +47,18 @@ comp uses `comp_loser_video_path` as `final_loser_video_path`; no-comp uses
 | ProPainter weights | FOUND | `/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter` |
 | CoCoCo weights | FOUND | backup `third_party_video_inpainting/weights/COCOCO_weight` |
 | MiniMax-Remover weights | FOUND | backup `third_party_video_inpainting/weights/minimax` |
-| DiffuEraser PCM weights | FOUND | `/mnt/nas/hj/weights/PCM_Weights/sd15/pcm_sd15_smallcfg_2step_converted.safetensors` |
-| CoCoCo SD inpainting root | FOUND | backup `third_party_video_inpainting/downloads/sd_inpaint_hf_extract/stable-diffusion-inpainting` |
-| Real one-sample generation smoke | PASSED | full and partial masks passed for all four generation models |
-| Full offline generated loser data | NOT GENERATED | launch only after disk/capacity preflight |
-| Partial K=4 raw/comp loser data | NOT GENERATED | launch only after disk/capacity preflight |
+| Real one-sample generation smoke | NOT RUN | required before full data generation |
+| Full offline generated loser data | NOT GENERATED | wait for real generation smoke |
+| Partial K=4 raw/comp loser data | NOT GENERATED | wait for real generation smoke |
 
-Current conclusion: asset paths and canonical one-sample generation smoke are
-ready for all four models. Full offline generation has not started and should
-still be launched only by an explicit command after disk/capacity preflight.
+Current conclusion: asset paths are ready enough to run one-sample generation
+smoke tests. Full offline generation should not start until each selected model
+passes real full-mask and partial-mask smoke with decode/fps/frame-count checks.
 
-Passing smoke evidence:
+The canonical smoke entrypoint is:
 
-| Model | Full Mask | Partial Mask | Report |
-| --- | --- | --- | --- |
-| DiffuEraser | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_085008/diffueraser/report.md` |
-| ProPainter | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_063024/propainter/report.md` |
-| CoCoCo | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070827/cococo/report.md` |
-| MiniMax-Remover | OK | OK | `outputs/asset_smoke_tests/parallel_generation_smoke_20260524_070018/minimax_remover/report.md` |
+```bash
+python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
+```
 
-All passing rows decoded 16 frames at 320x512, matching the canonical VideoDPO
-setting. Partial-mask comp rows reported outside-mask max absolute diff
-`0.000000`. The smoke tools do not train and do not launch full data generation.
+It does not train and does not launch full data generation.

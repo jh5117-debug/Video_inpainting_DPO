@@ -66,3 +66,4 @@ class OfficialVideoDPOFullMaskDataset(VideoDPOFullMaskDiffuEraserDataset):
             max_resample_attempts=int(max_resample_attempts),
         )
         super().__init__(args=args, tokenizer=tokenizer, dpo_data_root=data_root)
+

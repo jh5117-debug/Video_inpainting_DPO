@@ -455,30 +455,6 @@ def third_party_root() -> Path | None:
     ])
 
 
-def diffueraser_inference_options(mask_mode: str) -> tuple[str, str]:
-    """Return the DiffuEraser stack/prior policy for this generation mask.
-
-    Full-frame masks must not use a ProPainter prior because there is no
-    unmasked context for ProPainter to propagate. Partial masks keep the
-    historical OR stack where the prior is meaningful.
-    """
-    stack = os.environ.get("DIFFUERASER_INFERENCE_STACK", "").strip().lower()
-    prior_mode = os.environ.get("DIFFUERASER_PRIOR_MODE", "").strip().lower()
-    if not stack:
-        stack = "br" if mask_mode == "full" else "or"
-    if not prior_mode:
-        prior_mode = "noise" if mask_mode == "full" else "propainter"
-    if stack not in {"or", "br"}:
-        raise RuntimeError(f"invalid DIFFUERASER_INFERENCE_STACK={stack!r}")
-    if prior_mode not in {"propainter", "noise"}:
-        raise RuntimeError(f"invalid DIFFUERASER_PRIOR_MODE={prior_mode!r}")
-    if stack == "or" and prior_mode != "propainter":
-        raise RuntimeError("DiffuEraser OR stack requires DIFFUERASER_PRIOR_MODE=propainter")
-    if stack == "br" and prior_mode != "noise":
-        raise RuntimeError("DiffuEraser BR generated-loser path requires DIFFUERASER_PRIOR_MODE=noise")
-    return stack, prior_mode
-
-
 def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_dir: Path, mask_dir: Path, out_dir: Path, work_dir: Path) -> list[str]:
     repo = Path.cwd().resolve()
     n = setting.canonical_num_frames
@@ -489,7 +465,6 @@ def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_d
     third = third_party_root()
 
     if model == "diffueraser":
-        inference_stack, prior_mode = diffueraser_inference_options(mask_mode)
         base = first_existing([os.environ.get("BASE_MODEL_PATH"), "/mnt/nas/hj/weights/stable-diffusion-v1-5", repo / "weights" / "stable-diffusion-v1-5"])
         vae = first_existing([os.environ.get("VAE_PATH"), "/mnt/nas/hj/weights/sd-vae-ft-mse", repo / "weights" / "sd-vae-ft-mse"])
         diffueraser = first_existing([os.environ.get("DIFFUERASER_WEIGHT_ROOT"), repo / "weights" / "diffuEraser", repo / "weights" / "diffueraser"])
@@ -503,15 +478,7 @@ def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_d
             "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/PCM_Weights",
             "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/downloads/PCM_Weights",
         ])
-        required_assets = [
-            ("BASE_MODEL_PATH", base),
-            ("VAE_PATH", vae),
-            ("DIFFUERASER_WEIGHT_ROOT", diffueraser),
-            ("PCM_WEIGHTS_PATH", pcm),
-        ]
-        if inference_stack == "or":
-            required_assets.append(("PROPAINTER_WEIGHT_ROOT", propainter))
-        missing = [name for name, path in required_assets if path is None]
+        missing = [name for name, path in [("BASE_MODEL_PATH", base), ("VAE_PATH", vae), ("DIFFUERASER_WEIGHT_ROOT", diffueraser), ("PROPAINTER_WEIGHT_ROOT", propainter), ("PCM_WEIGHTS_PATH", pcm)] if path is None]
         if missing:
             raise RuntimeError(
                 f"missing DiffuEraser assets: {missing}; expected PCM file relative to "
@@ -527,14 +494,12 @@ def model_command(model: str, mask_mode: str, setting: CanonicalSetting, video_d
             "--base_model_path", str(base),
             "--vae_path", str(vae),
             "--diffueraser_path", str(diffueraser),
-            "--propainter_model_dir", str(propainter or repo),
+            "--propainter_model_dir", str(propainter),
             "--pcm_weights_path", str(pcm),
             f"--prompt={prompt}",
             "--num_frames", str(n),
             "--width", str(w),
             "--height", str(h),
-            "--inference_stack", inference_stack,
-            "--prior_mode", prior_mode,
         ]
 
     if model == "propainter":

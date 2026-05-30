@@ -183,13 +183,8 @@ def selected_manifest_row(candidate: dict[str, Any], role: str, final_type: str,
         "selected_role": role,
         "mask_id": candidate.get("mask_id"),
         "mask_path": candidate.get("mask_path"),
-        "mask_mode": candidate.get("mask_mode"),
-        "mask_convention": candidate.get("mask_convention"),
-        "comp": final_type == "comp",
         "mask_policy": candidate.get("mask_policy"),
         "generation_model": _model(candidate),
-        "generation_source": candidate.get("generation_source", ""),
-        "source_dataset": candidate.get("source_dataset", ""),
         "quality_score": _quality(candidate),
         "defect_bucket": _bucket(candidate),
         "selection_policy": selection_meta["selection_policy"],
@@ -268,7 +263,6 @@ def write_calibration_report(
     too_good = sum(1 for q in qs if q > qmax)
     primary = manifests.get("selected_primary_comp") or manifests.get("selected_primary_fullmask") or []
     secondary = manifests.get("selected_secondary_comp") or manifests.get("selected_secondary_fullmask") or []
-    generation_sources = Counter(str(r.get("generation_source") or "unknown") for r in rows)
     mask_areas = [float(r.get("mask_area_ratio", 0.0)) for r in rows if r.get("mask_area_ratio") is not None]
     outside_max = [
         float((r.get("comp_metrics") or {}).get("outside_mask_diff_max", 0.0))
@@ -283,7 +277,6 @@ def write_calibration_report(
         f"- candidate_count: {len(rows)}",
         f"- successful_candidate_count: {len(ok_rows)}",
         f"- failed_candidate_count: {len(failed_rows)}",
-        f"- generation_source_distribution: {dict(generation_sources)}",
         f"- fail_count_by_model: {dict(Counter(_model(r) for r in failed_rows))}",
         f"- quality_score_histogram: {histogram(qs, [0.0, 0.15, 0.30, 0.45, 0.65, 0.80, 1.0])}",
         f"- too_bad_ratio: {(too_bad / len(qs)) if qs else 0.0:.4f}",

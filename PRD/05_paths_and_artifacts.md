@@ -61,14 +61,11 @@ Generated losers must use the canonical VideoDPO setting verified from
 - `frame_stride=1`
 - `full_mask_value=0.0`
 
-The archived PAI command that records the exact sample-level proof is:
+The PAI command that records the exact sample-level proof is:
 
 ```bash
 python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
 ```
-
-This command is archived smoke evidence only. Current D1/D2 production data
-uses `generation_source=diffueraser_only`.
 
 ## PAI Recorded Artifact Roots
 

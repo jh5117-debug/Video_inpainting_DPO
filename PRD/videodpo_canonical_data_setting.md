@@ -1,7 +1,6 @@
 # VideoDPO Canonical Data Setting
 
-This checked-in file is a template. The archived 2026-05-24 all-model asset
-smoke overwrote it with:
+This checked-in file is a template. On PAI it is overwritten by:
 
 ```bash
 python tools/pai_videodpo_single_sample_generation_smoke.py --models all --mask_modes full,partial --run_generation
@@ -20,13 +19,6 @@ Expected canonical setting from the completed official DiffuEraser runs:
 - canonical_full_mask_value: `0.0` in the training mask tensor.
 - generator mask PNG value: `255` for the inpaint region.
 
-The 2026-05-24 PAI smoke runs used the first real VideoDPO winner sample from
-the PAI train YAML:
-
-- pair_index: `0`
-- winner_video_path: `/mnt/nas/hj/data/external/hf/vidpro10k-vc2-dataset/_extracted/home/liurt/liurt_data/haoyu/dataset/vidpro10k-vc2-dataset/winvideos/000000.mp4`
-- prompt source: VideoDPO pair metadata loaded from `VIDEO_DPO_TRAIN_DATA_YAML`
-
-Canonical full-mask and partial-mask one-sample smoke passed for all four
-generation models, but current production data generation is DiffuEraser-only:
-`generation_source=diffueraser_only`.
+Full data generation must wait until the PAI-generated version of this file
+records a real winner sample, prompt, raw video info, frame indices, and smoke
+status for the selected generation models.

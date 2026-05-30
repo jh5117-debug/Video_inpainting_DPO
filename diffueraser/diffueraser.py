@@ -329,15 +329,11 @@ class DiffuEraser:
                 nframes=22, seed=None, revision=None, guidance_scale=None, blended=True,
                 priori_frames=None, return_frames=False, anchor_frame=None,
                 keep_anchor=False, prompt="", n_prompt="", apply_composite=True,
-                blend_kernel=21, prior_mode="propainter"):
+                blend_kernel=21):
         """
         Args:
             priori: Path to priori video (will be deleted after reading)
             priori_frames: Optional list of RGB numpy arrays (use this to avoid video compression loss)
-            prior_mode: "propainter" encodes a prior video/frames as the initial
-                        latent; "noise" starts from random latents and skips any
-                        ProPainter prior. Use "noise" for full-frame masks where
-                        a ProPainter prior has no visual context.
             return_frames: If True, return list of RGB numpy arrays instead of just saving video
             anchor_frame: Optional PIL Image (RGB) — a pre-inpainted anchor frame.
                           If provided, it is prepended to the video sequence as additional
@@ -350,9 +346,6 @@ class DiffuEraser:
         validation_prompt = prompt if prompt else ""
         validation_n_prompt = n_prompt if n_prompt else ""
         guidance_scale_final = self.guidance_scale if guidance_scale==None else guidance_scale
-        prior_mode = (prior_mode or "propainter").strip().lower()
-        if prior_mode not in {"propainter", "noise"}:
-            raise ValueError(f"Unsupported prior_mode={prior_mode!r}; expected 'propainter' or 'noise'.")
 
         if (max_img_size<256 or max_img_size>1920):
             raise ValueError("The max_img_size must be larger than 256, smaller than 1920.")
@@ -362,30 +355,21 @@ class DiffuEraser:
 
         validation_masks_input, validation_images_input = read_mask(validation_mask, fps, video_len, img_size, mask_dilation_iter, frames)
   
-        # Read priori from frames if provided, otherwise from video file.
-        # For full-frame generation we can intentionally skip ProPainter and use
-        # pure random latents, because a full mask gives ProPainter no context.
-        if prior_mode == "noise":
-            prioris = None
-        elif priori_frames is not None:
+        # Read priori from frames if provided, otherwise from video file
+        if priori_frames is not None:
             prioris = read_priori_from_frames(priori_frames, img_size)
         else:
             prioris = read_priori(priori, fps, n_total_frames, img_size)
 
-        if prior_mode == "noise":
-            n_total_frames = min(len(frames), len(validation_masks_input))
-        else:
-            n_total_frames = min(min(len(frames), len(validation_masks_input)), len(prioris))
+        n_total_frames = min(min(len(frames), len(validation_masks_input)), len(prioris))
         if(n_total_frames<22):
             raise ValueError("The effective video duration is too short. Please make sure that the number of frames of video, mask, and priori is at least greater than 22 frames.")
         validation_masks_input = validation_masks_input[:n_total_frames]
         validation_images_input = validation_images_input[:n_total_frames]
         frames = frames[:n_total_frames]
-        if prioris is not None:
-            prioris = prioris[:n_total_frames]
+        prioris = prioris[:n_total_frames]
 
-        if prioris is not None:
-            prioris = resize_frames(prioris)
+        prioris = resize_frames(prioris)
         validation_masks_input = resize_frames(validation_masks_input)
         validation_images_input = resize_frames(validation_images_input)
         resized_frames = resize_frames(frames)
@@ -413,26 +397,22 @@ class DiffuEraser:
         noise_pre = randn_tensor(shape, device=torch.device(self.device), dtype=prompt_embeds_dtype, generator=generator) 
         noise = repeat(noise_pre, "t c h w->(repeat t) c h w", repeat=n_clip)[:real_video_length,...]
         
-        if prior_mode == "noise":
-            print("DiffuEraser prior_mode=noise: skipping ProPainter prior latents.")
-            latents = noise.clone()
-        else:
-            images_preprocessed = []
-            for image in prioris:
-                image = self.image_processor.preprocess(image, height=tar_height, width=tar_width).to(dtype=torch.float32)
-                image = image.to(device=torch.device(self.device), dtype=torch.float16)
-                images_preprocessed.append(image)
-            pixel_values = torch.cat(images_preprocessed)
+        images_preprocessed = []
+        for image in prioris:
+            image = self.image_processor.preprocess(image, height=tar_height, width=tar_width).to(dtype=torch.float32)
+            image = image.to(device=torch.device(self.device), dtype=torch.float16)
+            images_preprocessed.append(image)
+        pixel_values = torch.cat(images_preprocessed)
 
-            with torch.no_grad():
-                pixel_values = pixel_values.to(dtype=torch.float16)
-                latents = []
-                num=4
-                for i in range(0, pixel_values.shape[0], num):
-                    latents.append(self.vae.encode(pixel_values[i : i + num]).latent_dist.sample())
-                latents = torch.cat(latents, dim=0)
-            latents = latents * self.vae.config.scaling_factor
-            torch.cuda.empty_cache()
+        with torch.no_grad():
+            pixel_values = pixel_values.to(dtype=torch.float16)
+            latents = []
+            num=4
+            for i in range(0, pixel_values.shape[0], num):
+                latents.append(self.vae.encode(pixel_values[i : i + num]).latent_dist.sample())
+            latents = torch.cat(latents, dim=0)
+        latents = latents * self.vae.config.scaling_factor
+        torch.cuda.empty_cache()  
         timesteps = torch.tensor([0], device=self.device)
         timesteps = timesteps.long()
 
@@ -447,9 +427,8 @@ class DiffuEraser:
             validation_images_input_pre = [validation_images_input[i] for i in sample_index]
             latents_pre = torch.stack([latents[i] for i in sample_index])
 
-            if prior_mode != "noise":
-                noisy_latents_pre = self.noise_scheduler.add_noise(latents_pre, noise_pre, timesteps)
-                latents_pre = noisy_latents_pre
+            noisy_latents_pre = self.noise_scheduler.add_noise(latents_pre, noise_pre, timesteps) 
+            latents_pre = noisy_latents_pre
 
             with torch.no_grad():
                 latents_pre_out = self.pipeline(
@@ -539,9 +518,8 @@ class DiffuEraser:
             torch.cuda.empty_cache()
         # ============== End Anchor Injection ==============
 
-        if prior_mode != "noise":
-            noisy_latents = self.noise_scheduler.add_noise(latents, noise, timesteps)
-            latents = noisy_latents
+        noisy_latents = self.noise_scheduler.add_noise(latents, noise, timesteps) 
+        latents = noisy_latents
         with torch.no_grad():
             images = self.pipeline(
                 num_frames=nframes, 

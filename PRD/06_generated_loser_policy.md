@@ -46,15 +46,6 @@ The prompt is always preserved as source metadata. Text-conditioned generators
 
 Do not use arbitrary source resolution for generated loser data.
 
-Current省时版 production data must set:
-
-```text
-generation_source = diffueraser_only
-generation_model = diffueraser
-```
-
-Do not describe the active D2 partialmask K4 data as all-models source.
-
 ## Mask Policy V1
 
 Policy name: `videodpo_partialmask_policy_v1_medium_hard_k4`
@@ -128,46 +119,20 @@ For the later task partial-mask experiment:
 
 - `M_train = M_gen`
 
-Partialmask-specific DiffuEraser rule for current D2:
-
-```text
-diffueraser_inference_stack = or
-diffueraser_prior_mode = propainter
-```
-
-This is allowed for D2 because the partial mask preserves unmasked context for
-the OR/ProPainter prior path. Do not extrapolate the D1 fullmask failure to D2
-without a separate D2 visual and comp audit.
-
 ## Candidate Generation
 
-The original all-source design for partial-mask data was:
+For partial-mask data, each VideoDPO winner has:
 
 ```text
 K=4 masks x 4 generation models = up to 16 candidates
 ```
 
-Candidate source models in that original design:
+Generation models:
 
 - `diffueraser`
 - `propainter`
 - `cococo`
 - `minimax_remover`
-
-Active 2026-05-25 production mode is DiffuEraser-only and supersedes the
-original all-source design for the current D2 data. D1 is only a diagnostic
-validation path until a fullmask loser source passes quality:
-
-```text
-K=4 masks x 1 generation model = 4 candidates
-generation_model = diffueraser
-generation_source = diffueraser_only
-```
-
-This mode is chosen for throughput. It does not change the mask policy,
-manifest schema, comp/no-comp path contract, or training adapter. It only
-reduces the candidate source set so full data generation can complete before
-launching DPO training.
 
 Each candidate preserves:
 
@@ -189,6 +154,12 @@ data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/
         mask/
         diffueraser/raw/
         diffueraser/comp/
+        propainter/raw/
+        propainter/comp/
+        cococo/raw/
+        cococo/comp/
+        minimax_remover/raw/
+        minimax_remover/comp/
       mask_001/
       mask_002/
       mask_003/
@@ -280,10 +251,6 @@ Selection ranking:
 
 Every selection writes `selection_meta` with source counts, source weights, quality order, selected primary/secondary, and fallback reason.
 
-In DiffuEraser-only mode, source balancing is a no-op because all candidates
-come from `diffueraser`. Selection still uses the quality band and target score
-to choose primary and secondary candidates across the four masks.
-
 ## Primary And Secondary
 
 Save both:
@@ -324,56 +291,25 @@ Full-mask settings:
 
 - `mask_mode = full`
 - `num_masks_per_video = 1`
-- `generation_source = diffueraser_only`
-- `generation_model = diffueraser`
 - `mask_area_ratio = 1.0`
 - `final_loser = raw_loser`
 
-Fullmask-specific rule:
-
-```text
-diffueraser_inference_stack = br
-diffueraser_prior_mode = noise
-ProPainter prior = forbidden
-```
-
-Reason: a full-frame mask gives ProPainter no visible context. The old D1
-OR/fullmask run produced meaningless abstract/blurred losers and is invalid for
-training. The BR/no-prior replacement is technically runnable, but the 100-row
-quality gate still failed:
-
-```text
-rows = 100
-status = OK: 100
-propainter.mp4 count = 0
-diffueraser.mp4 count = 100
-selected_primary_fullmask.jsonl = 100
-quality buckets = too_bad: 95, texture_or_structure_shift: 5
-quality_score median = 0.1947
-quality_score max = 0.3315
-```
-
-Policy decision: do not full-generate D1 and do not train experiment 4 from the
-current fullmask generated-loser roots. Keep old OR/fullmask as failure-audit
-evidence and keep BR/no-prior as a diagnostic smoke result only.
-
-Use `medium_hard_balanced_selection_v1` and save:
+The four generation models are still candidates. Use `medium_hard_balanced_selection_v1` and save:
 
 - `candidates_all.jsonl`
 - `selected_primary_fullmask.jsonl`
 - `selected_secondary_fullmask.jsonl`
 
-First-version training would read `selected_primary_fullmask.jsonl`, but D1 is
-currently not approved as a training dataset because it failed the quality gate.
+First-version training reads `selected_primary_fullmask.jsonl`.
 
 ## Calibration Gate
 
-Before any full generation, run calibration:
+Before full generation, run calibration:
 
 ```text
 limit = 20 or 50 VideoDPO winners
-models = diffueraser
-partial masks K=4 for D2, full mask K=1 for D1
+models = all
+partial masks K=4
 save all candidates
 compute cheap metrics
 select primary/secondary
@@ -397,29 +333,14 @@ Required report content:
 
 Do not start full generation until calibration is reviewed.
 
-For fullmask D1, the reviewed result is currently negative: both old
-OR/fullmask and new BR/no-prior fullmask should be treated as diagnostic, not as
-accepted training data.
-
 PAI entrypoint:
 
 ```bash
 python tools/videodpo_generated_loser_calibration.py \
   --output_root data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4 \
-  --models diffueraser \
+  --models all \
   --limit 20 \
   --mask_policy_config configs/generation/videodpo_partialmask_policy_v1_medium_hard_k4.yaml \
   --selection_config configs/generation/medium_hard_balanced_selection_v1.yaml \
   --calibration_report PRD/generated_loser_calibration_report.md
 ```
-
-For the current DiffuEraser-only production pass, calibration/full-generation
-commands should use:
-
-```bash
---models diffueraser
-```
-
-Do not mix four-model pilot shards and DiffuEraser-only production shards in the
-same `_shards` directory. Archive old `_shards` before restarting with a
-different model set, inference stack, prior mode, or worker/shard policy.

@@ -9,7 +9,6 @@ Data-only diagnostic ablation.
 - final loser: raw loser.
 - training later: still official VideoDPO / DiffuEraser full-mask bridge.
 - changed variable: data only; diagnostic variable is comp vs no-comp.
-- current generation_source: `diffueraser_only`
 
 This reuses the same raw generation root as the comp experiment. The no-comp
 manifest points `final_loser_video_path` to `raw_loser_video_path`.
