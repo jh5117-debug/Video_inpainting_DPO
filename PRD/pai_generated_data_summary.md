@@ -3,22 +3,26 @@
 Updated from the 2026-05-24 PAI probe. This is the checked-in summary; the PAI
 node may also keep timestamped audit logs under `.tmp/codex_asset_prepare/`.
 
-## 2026-05-30 D2 Training Status
+## 2026-05-31 D2 Training Status
 
-D2 is ready and should not be regenerated for the beta10 reruns.
+D2 is ready and should not be regenerated for the winner-anchored reruns.
 
 | Manifest | Rows | Use |
 | --- | ---: | --- |
-| `selected_primary_comp.repaired.jsonl` | 10000 | Exp5 beta10 rerun |
-| `selected_primary_nocomp.repaired.jsonl` | 10000 | Exp6 beta10 rerun |
+| `selected_primary_comp.repaired.jsonl` | 10000 | Exp5 winner-anchored rerun |
+| `selected_primary_nocomp.repaired.jsonl` | 10000 | Exp6 winner-anchored rerun |
 | `selected_secondary_comp.repaired.jsonl` | 10000 | reserve / later diagnostic |
 | `selected_secondary_nocomp.repaired.jsonl` | 10000 | reserve / later diagnostic |
 
-Old Exp5 beta500 / 10000-step Stage1+Stage2 is failed/collapsed and diagnostic
-only. The failure is attributed to D2 generated losers plus full-mask full-loss
-DPO with `beta_dpo=500`, no SFT regularization, and long training. The rerun
-policy is `beta_dpo=10`, 4000 Stage1 steps, 4000 Stage2 steps, no in-training
-validation, followed by qual30 and full VBench.
+Old Exp5 beta500 / 10000-step Stage1+Stage2 and unanchored Exp5 beta10
+s1s2 4000 are failed/collapsed and diagnostic only. The failure is attributed to
+D2 generated losers plus full-mask full-loss DPO finding a degenerate ranking
+solution: the policy damages the winner and damages the loser even more, so DPO
+accuracy improves while visuals collapse. The current rerun policy is
+winner-anchored DPO with `beta_dpo=10`, `lose_gap_weight=0.25`,
+`winner_abs_reg_weight=0.05`, `winner_gap_reg_weight=1.0`, 4000 Stage1 steps,
+4000 Stage2 steps, no in-training validation, followed by qual30 and full
+VBench.
 
 ## Asset Status
 

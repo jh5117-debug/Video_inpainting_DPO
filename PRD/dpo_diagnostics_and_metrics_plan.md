@@ -3,33 +3,48 @@
 This is a plan for later training runs. The current asset-preparation phase
 does not start training and does not modify loss math.
 
-## 2026-05-30 Exp5 beta500 Collapse Interpretation
+## 2026-05-31 Exp5 Collapse Interpretation
 
-Old Exp5 beta500 is marked failed/collapsed/diagnostic only. The important
-diagnostic lesson is that DPO objective saturation is not visual quality:
+Old Exp5 beta500 and unanchored Exp5 beta10 s1s2 4000 are both marked
+failed/collapsed/diagnostic only. The important diagnostic lesson is that DPO
+objective saturation is not visual quality:
 
-- `acc=1`, `dpo=0`, and `loss=0` appeared early.
-- Stage2 10000 qualitative VBench outputs collapsed into high-frequency noise
-  and color explosion.
+- `acc=1`, low `dpo_loss`, and saturated `sigma_term` appeared early.
+- Stage2 qualitative VBench outputs collapsed into high-frequency noise,
+  universal stripe textures, and color explosion.
+- `mse_w >> ref_mse_w` and `mse_l >> ref_mse_l`: the policy damaged the winner
+  and damaged the loser even more.
+- `win_gap` and `lose_gap` grew while ranking accuracy remained high.
 - VBench dimensions such as dynamic degree, overall consistency, scene,
   spatial relationship, and object class were weak.
 
 This is interpreted as preference-data / optimization failure rather than task
 failure. Exp3 remains evidence that the DiffuEraser DPO task bridge can work.
 
-The immediate rerun keeps the loss math unchanged and changes only the
-optimization strength and duration:
+The next rerun changes the objective minimally by anchoring the winner:
 
 ```text
 beta_dpo = 10
+lose_gap_weight = 0.25
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+sft_reg_weight = 0.0
 stage1_max_steps = 4000
 stage2_max_steps = 4000
-sft_reg_weight = 0
 validation_steps = 999999
 ```
 
-Do not change `compute_dpo_loss`, add SFT regularization, or enable Exp8 region
-loss in this pass.
+The old default loss path must remain unchanged when the new weights are 0.
+Do not enable Exp8 region loss in this pass.
+
+Winner-anchor objective:
+
+```text
+L_total = L_DPO
+        + lambda_abs * model_losses_w.mean()
+        + lambda_gap * ReLU(model_losses_w - ref_losses_w - margin).mean()
+```
 
 ## Reuse Existing Diagnostics
 
@@ -49,6 +64,18 @@ new helper:
 - `dpo_loss`
 - `sft_reg_loss`
 - `total_loss`
+- `winner_abs_reg`
+- `winner_abs_reg_weight`
+- `winner_gap_reg`
+- `winner_gap_reg_weight`
+- `winner_gap_reg_margin`
+- `relu_win_gap_mean`
+- `relu_win_gap_max`
+- `win_gap_positive_ratio`
+- `mse_w_over_ref_mse_w`
+- `mse_l_over_ref_mse_l`
+- `anchored_total_loss`
+- `lose_gap_weight`
 
 Future launchers should expose:
 

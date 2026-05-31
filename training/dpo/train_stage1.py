@@ -328,6 +328,10 @@ def compute_dpo_loss(
     beta_dpo=500.0,
     sft_reg_weight=0.0,
     lose_gap_weight=1.0,
+    winner_abs_reg_weight=0.0,
+    winner_gap_reg_weight=0.0,
+    winner_gap_reg_margin=0.0,
+    winner_gap_reg_mode="relu",
     nframes=None,
 ):
     """
@@ -361,7 +365,21 @@ def compute_dpo_loss(
     # 训练 loss 保持原有 frame-level 目标；诊断统一按 video-pair 统计。
     dpo_loss = (-1.0 * F.logsigmoid(frame_inside_term)).mean()
     sft_loss = model_losses_w.mean()
-    loss = dpo_loss + float(sft_reg_weight) * sft_loss
+    winner_abs_reg = model_losses_w.mean()
+
+    winner_gap_reg_mode = str(winner_gap_reg_mode or "relu").lower()
+    if winner_gap_reg_mode != "relu":
+        raise ValueError(f"Unsupported winner_gap_reg_mode={winner_gap_reg_mode!r}; only 'relu' is supported.")
+    win_gap_vec = model_losses_w - ref_losses_w
+    relu_win_gap_vec = F.relu(win_gap_vec - float(winner_gap_reg_margin))
+    winner_gap_reg = relu_win_gap_vec.mean()
+
+    loss = (
+        dpo_loss
+        + float(sft_reg_weight) * sft_loss
+        + float(winner_abs_reg_weight) * winner_abs_reg
+        + float(winner_gap_reg_weight) * winner_gap_reg
+    )
 
     if nframes is None:
         nframes = per_win_gap.numel()
@@ -406,9 +424,21 @@ def compute_dpo_loss(
     diagnostics = {
         "dpo_loss": dpo_loss.detach().item(),
         "total_loss": loss.detach().item(),
+        "anchored_total_loss": loss.detach().item(),
         "sft_loss": sft_loss.detach().item(),
         "sft_reg_weight": float(sft_reg_weight),
         "lose_gap_weight": float(lose_gap_weight),
+        "winner_abs_reg": winner_abs_reg.detach().item(),
+        "winner_abs_reg_weight": float(winner_abs_reg_weight),
+        "winner_gap_reg": winner_gap_reg.detach().item(),
+        "winner_gap_reg_weight": float(winner_gap_reg_weight),
+        "winner_gap_reg_margin": float(winner_gap_reg_margin),
+        "winner_gap_reg_mode": winner_gap_reg_mode,
+        "relu_win_gap_mean": relu_win_gap_vec.detach().mean().item(),
+        "relu_win_gap_max": relu_win_gap_vec.detach().max().item(),
+        "win_gap_positive_ratio": (win_gap_vec > float(winner_gap_reg_margin)).float().mean().detach().item(),
+        "mse_w_over_ref_mse_w": (model_losses_w.mean() / ref_losses_w.mean().clamp(min=1e-8)).detach().item(),
+        "mse_l_over_ref_mse_l": (model_losses_l.mean() / ref_losses_l.mean().clamp(min=1e-8)).detach().item(),
         "implicit_acc": implicit_acc_local.detach().item(),
         "mse_w": model_losses_w.mean().detach().item(),
         "mse_l": model_losses_l.mean().detach().item(),
@@ -535,6 +565,8 @@ def format_dpo_diagnostics(step, diag, grad_norm=None, extra=None):
         (f"{scope_tag_local} L_total",       diag["total_loss"],   "↓ decreasing", "—"),
         (f"{scope_tag_local} L_dpo",         diag["dpo_loss"],     "↓ decreasing", status_icon(diag["dpo_loss"], "neg", 0.693)),
         (f"{scope_tag_local} L_sft",         diag["sft_loss"],     "↓ stable",     "—"),
+        (f"{scope_tag_local} Winner abs",    diag.get("winner_abs_reg", 0.0), "↓ bounded", "—"),
+        (f"{scope_tag_local} Winner gap reg",diag.get("winner_gap_reg", 0.0), "↓ near 0",  "—"),
         (f"{scope_tag_global} Implicit Acc",  diag["implicit_acc"], "0.5~0.9",      status_icon(diag["implicit_acc"], "mid")),
         (f"{scope_tag_local} Win Gap",       diag["win_gap"],      "< 0 (neg)",    status_icon(diag["win_gap"], "neg")),
         (f"{scope_tag_local} Lose Gap",      diag["lose_gap"],     "> 0 (pos)",    status_icon(diag["lose_gap"], "pos")),
@@ -596,6 +628,17 @@ def format_dpo_diagnostics_line(step, diag):
         f"inside_term_max={diag.get('inside_term_max', 0.0):.6f} "
         f"loser_dominant_ratio={diag.get('loser_degrade_ratio', 0.0):.6f} "
         f"dpo_loss={diag['dpo_loss']:.6f} "
+        f"anchored_total_loss={diag.get('anchored_total_loss', diag.get('total_loss', 0.0)):.6f} "
+        f"winner_abs_reg={diag.get('winner_abs_reg', 0.0):.6f} "
+        f"winner_gap_reg={diag.get('winner_gap_reg', 0.0):.6f} "
+        f"winner_gap_reg_weight={diag.get('winner_gap_reg_weight', 0.0):.6f} "
+        f"winner_gap_reg_margin={diag.get('winner_gap_reg_margin', 0.0):.6f} "
+        f"relu_win_gap_mean={diag.get('relu_win_gap_mean', 0.0):.6f} "
+        f"relu_win_gap_max={diag.get('relu_win_gap_max', 0.0):.6f} "
+        f"win_gap_positive_ratio={diag.get('win_gap_positive_ratio', 0.0):.6f} "
+        f"mse_w_over_ref_mse_w={diag.get('mse_w_over_ref_mse_w', 0.0):.6f} "
+        f"mse_l_over_ref_mse_l={diag.get('mse_l_over_ref_mse_l', 0.0):.6f} "
+        f"lose_gap_weight={diag.get('lose_gap_weight', 1.0):.6f} "
         f"mse_w={diag['mse_w']:.6f} "
         f"ref_mse_w={diag['ref_mse_w']:.6f} "
         f"mse_l={diag['mse_l']:.6f} "
@@ -622,7 +665,20 @@ DPO_DIAG_CSV_FIELDS = [
     "sigma_term",
     "grad_norm",
     "total_loss",
+    "anchored_total_loss",
     "sft_loss",
+    "sft_reg_weight",
+    "lose_gap_weight",
+    "winner_abs_reg",
+    "winner_abs_reg_weight",
+    "winner_gap_reg",
+    "winner_gap_reg_weight",
+    "winner_gap_reg_margin",
+    "relu_win_gap_mean",
+    "relu_win_gap_max",
+    "win_gap_positive_ratio",
+    "mse_w_over_ref_mse_w",
+    "mse_l_over_ref_mse_l",
     "reward_margin",
     "kl_divergence",
     "inside_term_mean",
@@ -659,7 +715,20 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "sigma_term": diag.get("sigma_term"),
         "grad_norm": grad_norm,
         "total_loss": diag.get("total_loss"),
+        "anchored_total_loss": diag.get("anchored_total_loss"),
         "sft_loss": diag.get("sft_loss"),
+        "sft_reg_weight": diag.get("sft_reg_weight"),
+        "lose_gap_weight": diag.get("lose_gap_weight"),
+        "winner_abs_reg": diag.get("winner_abs_reg"),
+        "winner_abs_reg_weight": diag.get("winner_abs_reg_weight"),
+        "winner_gap_reg": diag.get("winner_gap_reg"),
+        "winner_gap_reg_weight": diag.get("winner_gap_reg_weight"),
+        "winner_gap_reg_margin": diag.get("winner_gap_reg_margin"),
+        "relu_win_gap_mean": diag.get("relu_win_gap_mean"),
+        "relu_win_gap_max": diag.get("relu_win_gap_max"),
+        "win_gap_positive_ratio": diag.get("win_gap_positive_ratio"),
+        "mse_w_over_ref_mse_w": diag.get("mse_w_over_ref_mse_w"),
+        "mse_l_over_ref_mse_l": diag.get("mse_l_over_ref_mse_l"),
         "reward_margin": diag.get("reward_margin"),
         "kl_divergence": diag.get("kl_divergence"),
         "inside_term_mean": diag.get("inside_term_mean"),
@@ -992,6 +1061,14 @@ def parse_args(input_args=None):
                         help="Reg-DPO 风格的 winner-side SFT regularization 权重 rho")
     parser.add_argument("--lose_gap_weight", type=float, default=1.0,
                         help="DPO loss 中 loser/negative gap 的权重；1.0 为原始 DPO，0.0 为 winner-only ablation")
+    parser.add_argument("--winner_abs_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor absolute policy winner MSE regularization weight.")
+    parser.add_argument("--winner_gap_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor ReLU(policy winner MSE - ref winner MSE - margin) regularization weight.")
+    parser.add_argument("--winner_gap_reg_margin", type=float, default=0.0,
+                        help="Margin for winner gap regularization.")
+    parser.add_argument("--winner_gap_reg_mode", type=str, default="relu", choices=["relu"],
+                        help="Winner gap regularization mode.")
     parser.add_argument("--davis_oversample", type=int, default=10,
                         help="DAVIS 视频过采样倍数")
     parser.add_argument("--chunk_aligned", action="store_true",
@@ -1316,6 +1393,10 @@ def main(args):
     logger.info(f"  Beta DPO = {args.beta_dpo}")
     logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
     logger.info(f"  Lose Gap Weight = {args.lose_gap_weight}")
+    logger.info(f"  Winner Abs Reg Weight = {args.winner_abs_reg_weight}")
+    logger.info(f"  Winner Gap Reg Weight = {args.winner_gap_reg_weight}")
+    logger.info(f"  Winner Gap Reg Margin = {args.winner_gap_reg_margin}")
+    logger.info(f"  Winner Gap Reg Mode = {args.winner_gap_reg_mode}")
     logger.info(f"  VAE dtype = {vae_dtype}")
     logger.info(f"  Policy forward dtype = {policy_dtype}")
     logger.info(f"  Ref dtype = {ref_dtype}")
@@ -1522,6 +1603,10 @@ def main(args):
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,
+                    winner_abs_reg_weight=args.winner_abs_reg_weight,
+                    winner_gap_reg_weight=args.winner_gap_reg_weight,
+                    winner_gap_reg_margin=args.winner_gap_reg_margin,
+                    winner_gap_reg_mode=args.winner_gap_reg_mode,
                     nframes=args.nframes,
                 )
                 debug_stage("after dpo loss")
@@ -1624,6 +1709,16 @@ def main(args):
                     "rank0/sft_loss": diagnostics["sft_loss"],
                     "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
                     "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
+                    "rank0/winner_abs_reg": diagnostics["winner_abs_reg"],
+                    "rank0/winner_abs_reg_weight": diagnostics["winner_abs_reg_weight"],
+                    "rank0/winner_gap_reg": diagnostics["winner_gap_reg"],
+                    "rank0/winner_gap_reg_weight": diagnostics["winner_gap_reg_weight"],
+                    "rank0/winner_gap_reg_margin": diagnostics["winner_gap_reg_margin"],
+                    "rank0/relu_win_gap_mean": diagnostics["relu_win_gap_mean"],
+                    "rank0/relu_win_gap_max": diagnostics["relu_win_gap_max"],
+                    "rank0/win_gap_positive_ratio": diagnostics["win_gap_positive_ratio"],
+                    "rank0/mse_w_over_ref_mse_w": diagnostics["mse_w_over_ref_mse_w"],
+                    "rank0/mse_l_over_ref_mse_l": diagnostics["mse_l_over_ref_mse_l"],
                     f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
                     "rank0/mse_w": diagnostics["mse_w"],
                     "rank0/mse_l": diagnostics["mse_l"],

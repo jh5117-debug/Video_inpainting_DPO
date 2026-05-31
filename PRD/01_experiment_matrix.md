@@ -1,6 +1,6 @@
 # Experiment Matrix
 
-## 2026-05-30 beta500 Failure And beta10 Rerun
+## 2026-05-31 Exp5 Collapse And Winner-Anchored Rerun
 
 Old `exp5_d2_comp_k4_stage1/stage2_full` with `beta_dpo=500` and 10000-step
 Stage1/Stage2 is now marked **failed / collapsed / diagnostic only**.
@@ -15,11 +15,31 @@ The replacement reruns are:
 
 | Experiment | Status | Manifest | beta_dpo | Stage1 steps | Stage2 steps | Validation during training | Post Stage2 eval |
 | --- | --- | --- | ---: | ---: | ---: | --- | --- |
-| `exp5_d2_comp_k4_beta10_s1s2_4000` | planned/running | `selected_primary_comp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
-| `exp6_d2_nocomp_k4_beta10_s1s2_4000` | planned/running | `selected_primary_nocomp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
+| `exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000` | planned/running | `selected_primary_comp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
+| `exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000` | planned/running | `selected_primary_nocomp.repaired.jsonl` | 10 | 4000 | 4000 | disabled | qual30 + full VBench |
 
-Old H20 Exp6 beta500 is superseded by the beta10 rerun and should be stopped if
-still running.
+The intermediate `exp5_d2_comp_k4_beta10_s1s2_4000` rerun is also marked
+**failed / collapsed / diagnostic only**. Stage2 loaded Stage1 correctly, but
+diagnostics showed `mse_w >> ref_mse_w`, `mse_l >> ref_mse_l`, near-saturated
+`implicit_acc`, and low DPO loss while qualitative outputs became universal
+stripe/high-frequency textures. This confirms the problem is the unanchored DPO
+objective, not a launcher or evaluation bug.
+
+Old H20 Exp6 unanchored training is superseded by the winner-anchored rerun and
+should be stopped if still running.
+
+Winner-anchored rerun parameters:
+
+```text
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+lose_gap_weight = 0.25
+sft_reg_weight = 0.0
+stage1_steps = 4000
+stage2_steps = 4000
+```
 
 ## Core Ablation Directions This Week
 

@@ -473,6 +473,18 @@ def parse_args(input_args=None):
                         help="Ref model 权重路径 (SFT 后的完整 DiffuEraser 权重)")
     parser.add_argument("--beta_dpo", type=float, default=500.0,
                         help="DPO 温度系数 beta (推荐 500~1000，过大导致 sigmoid 饱和)")
+    parser.add_argument("--sft_reg_weight", type=float, default=0.0,
+                        help="Reg-DPO winner-side SFT regularization weight.")
+    parser.add_argument("--lose_gap_weight", type=float, default=1.0,
+                        help="DPO loss loser/negative gap weight; 1.0 preserves original DPO.")
+    parser.add_argument("--winner_abs_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor absolute policy winner MSE regularization weight.")
+    parser.add_argument("--winner_gap_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor ReLU(policy winner MSE - ref winner MSE - margin) regularization weight.")
+    parser.add_argument("--winner_gap_reg_margin", type=float, default=0.0,
+                        help="Margin for winner gap regularization.")
+    parser.add_argument("--winner_gap_reg_mode", type=str, default="relu", choices=["relu"],
+                        help="Winner gap regularization mode.")
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--chunk_aligned", action="store_true")
     parser.add_argument("--split_pos_neg_forward", action="store_true",
@@ -779,6 +791,12 @@ def main(args):
     logger.info(f"  Gradient Accumulation steps = {args.gradient_accumulation_steps}")
     logger.info(f"  Total optimization steps = {args.max_train_steps}")
     logger.info(f"  Beta DPO = {args.beta_dpo}")
+    logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
+    logger.info(f"  Lose Gap Weight = {args.lose_gap_weight}")
+    logger.info(f"  Winner Abs Reg Weight = {args.winner_abs_reg_weight}")
+    logger.info(f"  Winner Gap Reg Weight = {args.winner_gap_reg_weight}")
+    logger.info(f"  Winner Gap Reg Margin = {args.winner_gap_reg_margin}")
+    logger.info(f"  Winner Gap Reg Mode = {args.winner_gap_reg_mode}")
     logger.info(f"  VAE dtype = {vae_dtype}")
     logger.info(f"  Policy forward dtype = {policy_dtype}")
     logger.info(f"  Ref dtype = {ref_dtype}")
@@ -964,6 +982,12 @@ def main(args):
                 loss, diagnostics = compute_dpo_loss(
                     model_pred, ref_pred, noise,
                     beta_dpo=args.beta_dpo,
+                    sft_reg_weight=args.sft_reg_weight,
+                    lose_gap_weight=args.lose_gap_weight,
+                    winner_abs_reg_weight=args.winner_abs_reg_weight,
+                    winner_gap_reg_weight=args.winner_gap_reg_weight,
+                    winner_gap_reg_margin=args.winner_gap_reg_margin,
+                    winner_gap_reg_mode=args.winner_gap_reg_mode,
                     nframes=args.nframes,
                 )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
@@ -1047,6 +1071,20 @@ def main(args):
             scope_prefix = "global/" if diagnostics.get("_scope") == "global" else "rank0/"
             logs = {
                 "rank0/dpo_loss": diagnostics["dpo_loss"],
+                "rank0/total_loss": diagnostics["total_loss"],
+                "rank0/sft_loss": diagnostics["sft_loss"],
+                "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
+                "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
+                "rank0/winner_abs_reg": diagnostics["winner_abs_reg"],
+                "rank0/winner_abs_reg_weight": diagnostics["winner_abs_reg_weight"],
+                "rank0/winner_gap_reg": diagnostics["winner_gap_reg"],
+                "rank0/winner_gap_reg_weight": diagnostics["winner_gap_reg_weight"],
+                "rank0/winner_gap_reg_margin": diagnostics["winner_gap_reg_margin"],
+                "rank0/relu_win_gap_mean": diagnostics["relu_win_gap_mean"],
+                "rank0/relu_win_gap_max": diagnostics["relu_win_gap_max"],
+                "rank0/win_gap_positive_ratio": diagnostics["win_gap_positive_ratio"],
+                "rank0/mse_w_over_ref_mse_w": diagnostics["mse_w_over_ref_mse_w"],
+                "rank0/mse_l_over_ref_mse_l": diagnostics["mse_l_over_ref_mse_l"],
                 f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
                 "rank0/mse_w": diagnostics["mse_w"],
                 "rank0/mse_l": diagnostics["mse_l"],

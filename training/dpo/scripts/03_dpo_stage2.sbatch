@@ -91,6 +91,13 @@ TEXT_DTYPE=${TEXT_DTYPE:-auto}
 WANDB_PROJECT=${WANDB_PROJECT:-DPO_Diffueraser}
 REPORT_TO=${REPORT_TO:-wandb}
 BETA_DPO=${BETA_DPO:-500.0}
+SFT_REG_WEIGHT=${SFT_REG_WEIGHT:-0.0}
+LOSE_GAP_WEIGHT=${LOSE_GAP_WEIGHT:-${DPO_LOSE_GAP_WEIGHT:-1.0}}
+DPO_LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT}"
+WINNER_ABS_REG_WEIGHT=${WINNER_ABS_REG_WEIGHT:-0.0}
+WINNER_GAP_REG_WEIGHT=${WINNER_GAP_REG_WEIGHT:-0.0}
+WINNER_GAP_REG_MARGIN=${WINNER_GAP_REG_MARGIN:-0.0}
+WINNER_GAP_REG_MODE=${WINNER_GAP_REG_MODE:-relu}
 DAVIS_OVERSAMPLE=${DAVIS_OVERSAMPLE:-10}
 VIDEODPO_FRAME_STRIDE=${VIDEODPO_FRAME_STRIDE:-1}
 VIDEODPO_CLIP_LENGTH=${VIDEODPO_CLIP_LENGTH:-1.0}
@@ -271,6 +278,12 @@ python training/dpo/scripts/run_stage2.py \
   --report_to ${REPORT_TO} \
   --wandb_project ${WANDB_PROJECT} \
   --beta_dpo ${BETA_DPO} \
+  --sft_reg_weight ${SFT_REG_WEIGHT} \
+  --lose_gap_weight ${DPO_LOSE_GAP_WEIGHT} \
+  --winner_abs_reg_weight ${WINNER_ABS_REG_WEIGHT} \
+  --winner_gap_reg_weight ${WINNER_GAP_REG_WEIGHT} \
+  --winner_gap_reg_margin ${WINNER_GAP_REG_MARGIN} \
+  --winner_gap_reg_mode ${WINNER_GAP_REG_MODE} \
   --davis_oversample ${DAVIS_OVERSAMPLE} \
   --videodpo_frame_stride ${VIDEODPO_FRAME_STRIDE} \
   --videodpo_clip_length ${VIDEODPO_CLIP_LENGTH} \

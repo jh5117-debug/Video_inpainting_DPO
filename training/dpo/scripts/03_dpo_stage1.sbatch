@@ -93,7 +93,12 @@ RUN_NAME=${RUN_NAME:-sc-dpo-stage1-newdata-bf16-raw6-nodil}
 RUN_VERSION=${RUN_VERSION:-}
 WANDB_ENTITY=${WANDB_ENTITY:-jh5117-columbia-university}
 SFT_REG_WEIGHT=${SFT_REG_WEIGHT:-0.0}
-DPO_LOSE_GAP_WEIGHT=${DPO_LOSE_GAP_WEIGHT:-1.0}
+LOSE_GAP_WEIGHT=${LOSE_GAP_WEIGHT:-${DPO_LOSE_GAP_WEIGHT:-1.0}}
+DPO_LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT}"
+WINNER_ABS_REG_WEIGHT=${WINNER_ABS_REG_WEIGHT:-0.0}
+WINNER_GAP_REG_WEIGHT=${WINNER_GAP_REG_WEIGHT:-0.0}
+WINNER_GAP_REG_MARGIN=${WINNER_GAP_REG_MARGIN:-0.0}
+WINNER_GAP_REG_MODE=${WINNER_GAP_REG_MODE:-relu}
 CHUNK_ALIGNED=${CHUNK_ALIGNED:-1}
 XFORMERS=${XFORMERS:-0}
 GRADIENT_CHECKPOINTING=${GRADIENT_CHECKPOINTING:-1}
@@ -287,6 +292,10 @@ python training/dpo/scripts/run_stage1.py \
   --beta_dpo ${BETA_DPO} \
   --sft_reg_weight ${SFT_REG_WEIGHT} \
   --lose_gap_weight ${DPO_LOSE_GAP_WEIGHT} \
+  --winner_abs_reg_weight ${WINNER_ABS_REG_WEIGHT} \
+  --winner_gap_reg_weight ${WINNER_GAP_REG_WEIGHT} \
+  --winner_gap_reg_margin ${WINNER_GAP_REG_MARGIN} \
+  --winner_gap_reg_mode ${WINNER_GAP_REG_MODE} \
   --davis_oversample ${DAVIS_OVERSAMPLE} \
   --videodpo_frame_stride ${VIDEODPO_FRAME_STRIDE} \
   --videodpo_clip_length ${VIDEODPO_CLIP_LENGTH} \
