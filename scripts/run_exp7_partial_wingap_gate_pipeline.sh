@@ -15,9 +15,12 @@ export VBENCH_CONDA_ENV="${VBENCH_CONDA_ENV:-/mnt/nas/hj/conda_envs/videodpo}"
 
 export EXP_NAME="${EXP_NAME:-exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500}"
 export PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl}"
-export TRAIN_MASK_MODE="${TRAIN_MASK_MODE:-partial}"
-export MASK_FROM_MANIFEST="${MASK_FROM_MANIFEST:-true}"
-export LOSS_REGION_MODE="${LOSS_REGION_MODE:-full}"
+
+# Exp7 is specifically the partial-mask task-alignment gate. Force the task
+# definition even if the calling shell still exports Exp5/Exp6 full-mask values.
+export TRAIN_MASK_MODE="partial"
+export MASK_FROM_MANIFEST="true"
+export LOSS_REGION_MODE="full"
 
 export BETA_DPO="${BETA_DPO:-10}"
 export LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT:-0.25}"
