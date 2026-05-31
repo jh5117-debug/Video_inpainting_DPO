@@ -103,3 +103,36 @@ Task partial-mask ablation:
 - train mask becomes partial mask;
 - first version should use `M_train = M_gen`;
 - later loss-region studies can compare full, mask-only, and region-weighted losses.
+
+## Exp7 Gate Diagnostics
+
+`exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500` is the first
+winner-anchored partial-mask task gate. It keeps the D2 comp data and uses:
+
+```text
+train_mask_mode = partial
+mask_from_manifest = true
+loss_region_mode = full
+beta_dpo = 10
+lose_gap_weight = 0.25
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+stage1_steps = 1500
+stage2_steps = 1500
+```
+
+Gate validation is qual30 side-by-side plus DPO diagnostics summary. Full
+VBench is disabled by default for the gate.
+
+The gate summary must report mean, median, p90, max, and these fractions for
+Stage1 and Stage2:
+
+- `dpo_loss < 1e-3`
+- `implicit_acc > 0.99`
+- `mse_w_over_ref_mse_w > 5`
+- `win_gap > 0.5`
+- `sigma_term > 0.99`
+- `kl_divergence > 1.0`
+
+The summary writes a coarse verdict: `PASS_LIKELY`, `RISKY`, or `FAIL_LIKELY`.
+It is diagnostic only; do not auto-kill based on the verdict.

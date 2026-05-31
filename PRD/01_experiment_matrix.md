@@ -41,6 +41,29 @@ stage1_steps = 4000
 stage2_steps = 4000
 ```
 
+## 2026-05-31 Exp7 Partial-Mask Task Gate
+
+Exp5 winner-anchored improved the failure mode but is not final: the winner
+anchor held `win_gap` down, yet qualitative outputs still show texture/color
+attractors under the data-only full-mask/full-video bridge. Exp6 no-comp is
+running on H20 and must continue for the comp-vs-no-comp comparison.
+
+Exp7 is the next gate and is a **task ablation**, not a data-only run. It keeps
+the D2 comp manifest but changes the training task so DiffuEraser sees the same
+partial mask used during loser generation.
+
+| Experiment | Status | Manifest | Train mask | Mask source | beta_dpo | lose_gap_weight | winner_abs_reg | winner_gap_reg | Stage1 | Stage2 | Gate validation |
+| --- | --- | --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500` | planned / launching on PAI | `selected_primary_comp.repaired.jsonl` | partial | manifest `mask_path` | 10 | 0.25 | 0.05 | 1.0 | 1500 | 1500 | qual30 SBS + DPO diag summary |
+
+Exp7 interpretation rule:
+
+- If Exp7 gate is more stable than Exp5, D2 generated losers are not the sole
+  problem; the data-only full-mask objective was mismatched with the partial
+  mask generation process.
+- If Exp7 gate still collapses, the next change should be data/prompt quality
+  or a stronger winner-preservation strategy, not a direct full 4000+4000 run.
+
 ## Core Ablation Directions This Week
 
 The core plan has four directions, with Direction 2 split into 2A/2B:

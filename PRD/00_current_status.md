@@ -96,3 +96,43 @@ Replacement:
   `lose_gap_weight=0.25`, `winner_abs_reg_weight=0.05`,
   `winner_gap_reg_weight=1.0`, 4000 Stage1 steps, 4000 Stage2 steps, no
   validation during training, then automatic qual30 and full VBench.
+
+## 2026-05-31 Exp7 Partial-Mask Gate
+
+`exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000` is improved relative to the
+unanchored Exp5 runs: winner-gap regularization suppresses the universal blue
+stripe/high-frequency collapse mode. It is not yet a final success because the
+data-only full-mask/full-video objective still shows texture and color
+attractors in qualitative side-by-side videos.
+
+H20 `exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000` is running and must
+continue. Action: monitor only; do not kill. Purpose: no-comp data-only
+comparison against Exp5 comp.
+
+Next gate:
+
+```text
+EXP_NAME = exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500
+status = planned / launching on PAI
+purpose = test whether aligning the training task with D2 partial-mask loser
+          generation stabilizes training
+manifest = selected_primary_comp.repaired.jsonl
+train_mask_mode = partial
+mask_from_manifest = true
+M_train = M_gen from manifest mask_path
+loss_region_mode = full
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+lose_gap_weight = 0.25
+stage1_steps = 1500
+stage2_steps = 1500
+validation = qual30 side-by-side + dpo_diag summary
+full_vbench = disabled by default for gate
+```
+
+Exp5/6 remain data-only full-mask bridge experiments. Exp7 is a task-alignment
+gate: DiffuEraser receives the same partial mask used to generate the D2 loser.
+If Exp7 is more stable than Exp5, D2 is not inherently bad; the main issue is
+the data-only full-mask objective mismatch.

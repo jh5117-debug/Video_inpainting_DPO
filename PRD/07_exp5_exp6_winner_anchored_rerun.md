@@ -85,3 +85,44 @@ post_stage2_eval = qual30 + full VBench
 
 All active old Exp6 unanchored training processes should be stopped and marked
 superseded. Do not delete old outputs; keep them for failure audit evidence.
+
+Current H20 winner-anchored Exp6:
+
+```text
+name = exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000
+status = running / continue
+action = monitor only; do not kill
+purpose = no-comp data-only comparison against Exp5 comp
+```
+
+## Exp7 Partial-Mask Gate
+
+Exp5 winner-anchored is improved but not final. The winner anchor suppressed
+the worst unanchored collapse, but the run still shows texture/color attractors
+under a data-only full-mask/full-video objective.
+
+Exp7 tests task alignment:
+
+```text
+name = exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500
+manifest = selected_primary_comp.repaired.jsonl
+train_mask_mode = partial
+mask_from_manifest = true
+M_train = M_gen from manifest mask_path
+loss_region_mode = full
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+lose_gap_weight = 0.25
+sft_reg_weight = 0.0
+stage1_steps = 1500
+stage2_steps = 1500
+validation = qual30 side-by-side + dpo_diag summary
+full_vbench = disabled by default for gate
+```
+
+Exp5/6 are still data-only full-mask bridge experiments. Exp7 is a task gate:
+training uses the generated loser manifest mask as DiffuEraser's partial-mask
+condition. If Exp7 is more stable, the D2 data itself is likely usable and the
+main failure was objective/task mismatch.

@@ -216,6 +216,7 @@ export FFMPEG_BIN PYTHON_BIN
 export ENABLE_DPO_DIAG DPO_DIAG_LOG_EVERY DPO_DIAG_SAVE_CSV LINGBOT_PROCESS_NAME
 export WORLDMODELPHY_PROCESS_NAME PROCESS_TITLE TRAIN_HEIGHT TRAIN_WIDTH RESOLUTION NFRAMES
 export NUM_WORKERS LOGGING_STEPS MIXED_PRECISION VAE_DTYPE POLICY_DTYPE REF_DTYPE TEXT_DTYPE
+export BASELINE_WEIGHTS_PATH
 export SFT_REG_WEIGHT LOSE_GAP_WEIGHT DPO_LOSE_GAP_WEIGHT WINNER_ABS_REG_WEIGHT
 export WINNER_GAP_REG_WEIGHT WINNER_GAP_REG_MARGIN WINNER_GAP_REG_MODE
 export LR LR_SCHEDULER LR_WARMUP GRAD_ACCUM BATCH_SIZE
@@ -296,6 +297,10 @@ QUAL_EXP_VIDEO_DIR="${QUAL_EXP_OUT}/vbench_standard_named"
 if ! is_true "${SKIP_QUAL30}"; then
   log "Qual30 start"
   mkdir -p "${QUAL_ROOT}" "${QUAL_BASE_OUT}" "${QUAL_EXP_OUT}" "${QUAL_SBS_OUT}"
+  BASE_WEIGHTS_REAL="$(realpath -m "${BASELINE_WEIGHTS_PATH}")"
+  EXP_WEIGHTS_REAL="$(realpath -m "${STAGE2_RUN_DIR}/last_weights")"
+  [[ "${BASE_WEIGHTS_REAL}" != "${EXP_WEIGHTS_REAL}" ]] || die "DiffuEraser-base weights and experiment weights are identical: ${BASE_WEIGHTS_REAL}"
+  [[ "$(realpath -m "${QUAL_BASE_OUT}")" != "$(realpath -m "${QUAL_EXP_OUT}")" ]] || die "base and exp qual30 output dirs must differ"
   export PROMPTS_FILE QUAL_PROMPTS QUAL30_SEED
   "${PYTHON_BIN}" - <<'PY'
 import os
@@ -385,7 +390,7 @@ PY
     bash "${VBENCH_RUNNER}"
   ) > "${QUAL_ROOT}/exp_generation.log" 2>&1
 
-  export QUAL_BASE_VIDEO_DIR QUAL_EXP_VIDEO_DIR QUAL_SBS_OUT QUAL_ROOT EXP_NAME
+export QUAL_BASE_VIDEO_DIR QUAL_EXP_VIDEO_DIR QUAL_SBS_OUT QUAL_ROOT EXP_NAME
   "${PYTHON_BIN}" - <<'PY'
 import csv
 import html
@@ -399,6 +404,11 @@ exp = Path(os.environ["QUAL_EXP_VIDEO_DIR"])
 out = Path(os.environ["QUAL_SBS_OUT"])
 root = Path(os.environ["QUAL_ROOT"])
 name = os.environ["EXP_NAME"]
+base_weights = Path(os.environ["BASELINE_WEIGHTS_PATH"]).resolve()
+exp_weights = Path(os.environ["STAGE2_RUN_DIR"]) / "last_weights"
+exp_weights = exp_weights.resolve()
+if base_weights == exp_weights:
+    raise SystemExit(f"base and experiment weights are identical: {base_weights}")
 ffmpeg = os.environ.get("FFMPEG_BIN") or shutil.which("ffmpeg")
 if not ffmpeg:
     try:
@@ -416,10 +426,35 @@ if len(common) < 30:
 
 with (root / "pair_manifest.csv").open("w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f)
-    writer.writerow(["file", "diffueraser_base_video", "experiment_video", "side_by_side_video"])
-    for filename in common:
+    writer.writerow([
+        "prompt_id",
+        "prompt",
+        "base_video_path",
+        "exp_video_path",
+        "side_by_side_video_path",
+        "base_weights_dir",
+        "exp_weights_dir",
+        "base_model_kind",
+        "exp_model_kind",
+        "file",
+    ])
+    for idx, filename in enumerate(common):
         dst = out / filename
-        writer.writerow([filename, base_files[filename], exp_files[filename], dst])
+        if base_files[filename].resolve() == exp_files[filename].resolve():
+            raise SystemExit(f"base and experiment video are identical: {base_files[filename]}")
+        prompt = filename[:-6] if filename.endswith("-0.mp4") else Path(filename).stem
+        writer.writerow([
+            idx,
+            prompt,
+            base_files[filename],
+            exp_files[filename],
+            dst,
+            base_weights,
+            exp_weights,
+            "DiffuEraser-base",
+            name,
+            filename,
+        ])
         cmd = [
             ffmpeg, "-y",
             "-i", str(base_files[filename]),
