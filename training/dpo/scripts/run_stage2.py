@@ -121,6 +121,12 @@ def build_cmd(project_root, args):
         "--ref_dtype", args.ref_dtype,
         "--text_dtype", args.text_dtype,
         "--beta_dpo", str(args.beta_dpo),
+        "--sft_reg_weight", str(args.sft_reg_weight),
+        "--lose_gap_weight", str(args.lose_gap_weight),
+        "--winner_abs_reg_weight", str(args.winner_abs_reg_weight),
+        "--winner_gap_reg_weight", str(args.winner_gap_reg_weight),
+        "--winner_gap_reg_margin", str(args.winner_gap_reg_margin),
+        "--winner_gap_reg_mode", str(args.winner_gap_reg_mode),
         "--davis_oversample", str(args.davis_oversample),
         "--videodpo_frame_stride", str(args.videodpo_frame_stride),
         "--videodpo_clip_length", str(args.videodpo_clip_length),
@@ -195,6 +201,12 @@ def build_cmd(project_root, args):
             "num_workers": args.num_workers,
             "logging_steps": args.logging_steps,
             "beta_dpo": args.beta_dpo,
+            "sft_reg_weight": args.sft_reg_weight,
+            "lose_gap_weight": args.lose_gap_weight,
+            "winner_abs_reg_weight": args.winner_abs_reg_weight,
+            "winner_gap_reg_weight": args.winner_gap_reg_weight,
+            "winner_gap_reg_margin": args.winner_gap_reg_margin,
+            "winner_gap_reg_mode": args.winner_gap_reg_mode,
             "videodpo_frame_stride": args.videodpo_frame_stride,
             "videodpo_full_mask_value": args.videodpo_full_mask_value,
             "train_mask_mode": args.train_mask_mode,
@@ -340,6 +352,11 @@ def run(args=None):
     print(f"  Max Steps:          {args.max_train_steps}")
     print(f"  Max Epochs:         {args.num_train_epochs}")
     print(f"  Beta DPO:           {args.beta_dpo}")
+    print(f"  SFT Reg Weight:     {args.sft_reg_weight}")
+    print(f"  Lose Gap Weight:    {args.lose_gap_weight}")
+    print(f"  Winner Abs Reg:     {args.winner_abs_reg_weight}")
+    print(f"  Winner Gap Reg:     {args.winner_gap_reg_weight}")
+    print(f"  Winner Gap Mgn:     {args.winner_gap_reg_margin}")
     print(f"  LR:                 {args.learning_rate}")
     print(f"  Mixed Precision:    {args.mixed_precision}")
     print(f"  VAE dtype:          {args.vae_dtype}")
@@ -420,6 +437,12 @@ def parse_args():
     parser.add_argument("--wandb_project", type=str, default="DPO_Diffueraser")
     parser.add_argument("--wandb_entity", type=str, default=None)
     parser.add_argument("--beta_dpo", type=float, default=500.0)
+    parser.add_argument("--sft_reg_weight", type=float, default=0.0)
+    parser.add_argument("--lose_gap_weight", type=float, default=1.0)
+    parser.add_argument("--winner_abs_reg_weight", type=float, default=0.0)
+    parser.add_argument("--winner_gap_reg_weight", type=float, default=0.0)
+    parser.add_argument("--winner_gap_reg_margin", type=float, default=0.0)
+    parser.add_argument("--winner_gap_reg_mode", type=str, default="relu", choices=["relu"])
     parser.add_argument("--davis_oversample", type=int, default=10)
     parser.add_argument("--videodpo_frame_stride", type=int, default=1)
     parser.add_argument("--videodpo_clip_length", type=float, default=1.0)
