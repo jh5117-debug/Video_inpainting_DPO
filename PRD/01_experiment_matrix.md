@@ -64,6 +64,25 @@ Exp7 interpretation rule:
 - If Exp7 gate still collapses, the next change should be data/prompt quality
   or a stronger winner-preservation strategy, not a direct full 4000+4000 run.
 
+Exp7 gate1500 result update:
+
+| Experiment | Current status | Observed eval | Interpretation | Next action |
+| --- | --- | --- | --- | --- |
+| `exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500` | inconclusive / risky | full-mask qual30 failed; stripe-heavy; some samples worse than new Exp5 | task-mismatched eval because training is partial-mask inpainting | run true partial-mask manifest eval before deciding failure |
+
+Observed diagnostics:
+
+- `winner_gap_reg_weight=1.0` keeps `win_gap` relatively bounded.
+- `loser_dominant_ratio` can reach 1.0 for late steps.
+- `mse_l_over_ref_mse_l` can become very high, so loser degradation remains a
+  strong shortcut even with winner anchoring.
+
+Prepared but not launched:
+
+| Experiment | Status | Purpose |
+| --- | --- | --- |
+| `exp7_d2_comp_k4_partial_wingap_nolose_beta10_s1s2_gate1000` | script prepared only | cut `lose_gap_weight` to 0.0 if partial-mask eval confirms loser-degradation shortcut |
+
 ## Core Ablation Directions This Week
 
 The core plan has four directions, with Direction 2 split into 2A/2B:

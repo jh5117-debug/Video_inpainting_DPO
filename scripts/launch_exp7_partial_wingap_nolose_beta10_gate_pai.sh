@@ -1,0 +1,58 @@
+#!/bin/bash
+set -euo pipefail
+
+# Prepared gate only. Do not launch automatically from other scripts.
+# This cuts the loser-gap term to test whether Exp7 is still exploiting the
+# loser-degradation shortcut after the partial-mask task alignment.
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="${PROJECT_ROOT:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
+PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
+
+export PROJECT_ROOT
+export OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/nas/hj/H20_Video_inpainting_DPO}"
+export EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-/mnt/nas/hj/H20_Video_inpainting_DPO/experiments}"
+export WEIGHTS_DIR="${WEIGHTS_DIR:-/mnt/nas/hj/weights}"
+export CONDA_ENV_PREFIX="${CONDA_ENV_PREFIX:-/mnt/nas/hj/conda_envs/diffueraser}"
+export CONDA_ENV="${CONDA_ENV:-${CONDA_ENV_PREFIX}}"
+export VBENCH_CONDA_ENV="${VBENCH_CONDA_ENV:-/mnt/nas/hj/conda_envs/videodpo}"
+
+export EXP_NAME="exp7_d2_comp_k4_partial_wingap_nolose_beta10_s1s2_gate1000"
+export PREFERENCE_MANIFEST="/mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl"
+
+export TRAIN_MASK_MODE="partial"
+export MASK_FROM_MANIFEST="true"
+export LOSS_REGION_MODE="full"
+
+export BETA_DPO="10"
+export LOSE_GAP_WEIGHT="0.0"
+export DPO_LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT}"
+export WINNER_ABS_REG_WEIGHT="0.05"
+export WINNER_GAP_REG_WEIGHT="1.0"
+export WINNER_GAP_REG_MARGIN="0.0"
+export WINNER_GAP_REG_MODE="relu"
+export SFT_REG_WEIGHT="0.0"
+
+export STAGE1_MAX_STEPS="1000"
+export STAGE2_MAX_STEPS="1000"
+export NUM_GPUS="${NUM_GPUS:-8}"
+export VAL_STEPS="${VAL_STEPS:-999999}"
+export CKPT_STEPS="${CKPT_STEPS:-500}"
+export CKPT_LIMIT="${CKPT_LIMIT:-4}"
+export REPORT_TO="${REPORT_TO:-none}"
+export DPO_DIAG_SAVE_WANDB="${DPO_DIAG_SAVE_WANDB:-false}"
+export ENABLE_DPO_DIAG="${ENABLE_DPO_DIAG:-true}"
+export DPO_DIAG_SAVE_CSV="${DPO_DIAG_SAVE_CSV:-true}"
+export DPO_DIAG_LOG_EVERY="${DPO_DIAG_LOG_EVERY:-10}"
+export LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-worldphy}"
+export TRAIN_HEIGHT="${TRAIN_HEIGHT:-320}"
+export TRAIN_WIDTH="${TRAIN_WIDTH:-512}"
+export RESOLUTION="${RESOLUTION:-512}"
+export NFRAMES="${NFRAMES:-16}"
+export NUM_WORKERS="${NUM_WORKERS:-0}"
+export PROMPTS_FILE="${PROMPTS_FILE:-${PROJECT_ROOT}/external/VideoDPO/prompts/vbench_standard_prompts.txt}"
+export QUAL30_SEED="${QUAL30_SEED:-42}"
+export RUN_QUAL30="true"
+export RUN_FULL_VBENCH="false"
+
+exec bash "${PROJECT_ROOT}/scripts/run_exp7_partial_wingap_gate_pipeline.sh"

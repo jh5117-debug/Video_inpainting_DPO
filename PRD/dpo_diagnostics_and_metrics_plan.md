@@ -136,3 +136,51 @@ Stage1 and Stage2:
 
 The summary writes a coarse verdict: `PASS_LIKELY`, `RISKY`, or `FAIL_LIKELY`.
 It is diagnostic only; do not auto-kill based on the verdict.
+
+## 2026-06-01 Exp7 Partial-Mask Evaluation Addendum
+
+Exp7 gate1500 full-mask qual30 is now treated as **failed /
+task-mismatched**, not as a final task verdict. The run was trained with
+`train_mask_mode=partial` and `mask_from_manifest=true`, so the fair gate eval
+must use the same D2 manifest winner video and mask.
+
+Required partial-mask eval:
+
+```text
+script = scripts/eval_exp7_partialmask_gate.sh
+manifest = selected_primary_comp.repaired.jsonl
+base = DiffuEraser-base converted_weights_step48000
+exp checkpoints =
+  Stage1 checkpoint-500 if exported/evaluable
+  Stage1 checkpoint-1000 if exported/evaluable
+  Stage1 last_weights
+  Stage2 last_weights
+num_samples = 30
+num_samples_metric = 100
+seed = 42
+```
+
+Side-by-side format:
+
+```text
+winner / GT | mask overlay | DiffuEraser-base partial-mask comp | Exp7 partial-mask comp | optional D2 loser comp
+```
+
+Metrics:
+
+- `whole_video_psnr`, `whole_video_ssim`
+- `mask_region_psnr`, `mask_region_ssim`
+- `boundary_psnr`, `boundary_ssim`
+- `outside_region_diff_mean`, `outside_region_diff_max`
+- `temporal_diff`, `temporal_diff_delta_vs_gt`
+
+The report must answer:
+
+- whether Exp7 beats DiffuEraser-base on the true partial-mask task;
+- whether Stage1 early checkpoints beat Stage2 last;
+- whether collapse appears mainly in Stage2;
+- whether Exp7 full 4000+4000 is worth launching;
+- whether to start the prepared no-lose-gap gate.
+
+Do not run full Exp7, full VBench, or Exp8 until this partial-mask report is
+reviewed.

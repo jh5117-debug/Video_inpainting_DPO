@@ -126,3 +126,56 @@ Exp5/6 are still data-only full-mask bridge experiments. Exp7 is a task gate:
 training uses the generated loser manifest mask as DiffuEraser's partial-mask
 condition. If Exp7 is more stable, the D2 data itself is likely usable and the
 main failure was objective/task mismatch.
+
+## 2026-06-01 Exp7 Gate1500 Status
+
+Exp7 gate1500 completed Stage1 and Stage2 with:
+
+```text
+train_mask_mode = partial
+mask_from_manifest = true
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+lose_gap_weight = 0.25
+stage1_steps = 1500
+stage2_steps = 1500
+```
+
+The current full-mask-style qual30 is poor: many examples are stripe-heavy, and
+some look worse than the new Exp5 winner-anchored run. This is **not a fair
+final Exp7 evaluation** because Exp7 is a partial-mask task run, while that
+qualitative eval is still full-mask prompt generation.
+
+Current interpretation:
+
+- full-mask qual30 = failed / task-mismatched;
+- Exp7 gate status = inconclusive / risky;
+- partial-mask manifest evaluation is pending;
+- do not launch full Exp7 4000+4000, full VBench, or Exp8 from this result.
+
+Diagnostic readout so far:
+
+- Winner-gap regularization is doing useful work and keeps `win_gap` bounded
+  relative to the unanchored Exp5 collapse.
+- Loser degradation remains strong: `loser_dominant_ratio` reaches 1.0 and
+  `mse_l_over_ref_mse_l` can become very high.
+- The required next check is true partial-mask inpainting eval using D2
+  `win_video_path` and `mask_path`.
+
+Prepared fallback gate, not launched:
+
+```text
+name = exp7_d2_comp_k4_partial_wingap_nolose_beta10_s1s2_gate1000
+train_mask_mode = partial
+mask_from_manifest = true
+loss_region_mode = full
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+winner_gap_reg_margin = 0.0
+lose_gap_weight = 0.0
+stage1_steps = 1000
+stage2_steps = 1000
+```

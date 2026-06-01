@@ -136,3 +136,48 @@ Exp5/6 remain data-only full-mask bridge experiments. Exp7 is a task-alignment
 gate: DiffuEraser receives the same partial mask used to generate the D2 loser.
 If Exp7 is more stable than Exp5, D2 is not inherently bad; the main issue is
 the data-only full-mask objective mismatch.
+
+## 2026-06-01 Exp7 Gate1500 Evaluation Status
+
+`exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500` completed the
+planned gate training:
+
+```text
+train_mask_mode = partial
+mask_from_manifest = true
+beta_dpo = 10
+winner_abs_reg_weight = 0.05
+winner_gap_reg_weight = 1.0
+lose_gap_weight = 0.25
+stage1_steps = 1500
+stage2_steps = 1500
+```
+
+Observed with the current full-mask-style qual30:
+
+- Full-mask qual30 looks poor and stripe-heavy.
+- Some samples are worse than the new Exp5 winner-anchored full-mask run.
+- Winner-gap regularization keeps `win_gap` relatively bounded.
+- Loser degradation remains strong: `loser_dominant_ratio` reaches 1.0 and
+  `mse_l_over_ref_mse_l` can become very high.
+
+Interpretation:
+
+- Do not mark Exp7 as success.
+- Do not mark Exp7 as final failure yet.
+- The current qual30 is task-mismatched because Exp7 trains partial-mask
+  inpainting (`M_train = M_gen` from manifest `mask_path`), while the qual30
+  path is still full-mask prompt generation.
+- Current status: **inconclusive / risky**.
+- Record full-mask qual30 as **failed / task-mismatched** and run a true
+  partial-mask manifest evaluation before deciding whether Exp7 failed.
+
+Next required eval:
+
+```text
+scripts/eval_exp7_partialmask_gate.sh
+```
+
+This uses D2 `win_video_path` and `mask_path` to compare DiffuEraser-base and
+Exp7 checkpoints on the actual partial-mask inpainting task. Do not launch
+full Exp7 4000+4000, full VBench, or Exp8 before this report is reviewed.
