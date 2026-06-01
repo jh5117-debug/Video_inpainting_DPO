@@ -18,6 +18,8 @@ import json
 import math
 import os
 import random
+import shutil
+import subprocess
 import sys
 from dataclasses import dataclass
 from pathlib import Path
@@ -136,6 +138,29 @@ def image_files(path: Path) -> List[Path]:
     return sorted(p for p in path.iterdir() if p.is_file() and p.suffix.lower() in IMG_EXTS)
 
 
+def resolve_ffmpeg() -> str:
+    candidates = [
+        os.environ.get("FFMPEG_BINARY"),
+        shutil.which("ffmpeg"),
+    ]
+    try:
+        import imageio_ffmpeg  # type: ignore
+
+        candidates.append(imageio_ffmpeg.get_ffmpeg_exe())
+    except Exception:
+        pass
+    candidates.extend(
+        [
+            "/mnt/workspace/hongfeng/miniconda3/bin/ffmpeg",
+            "/home/ubuntu/.local/lib/python3.10/site-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2",
+        ]
+    )
+    for candidate in candidates:
+        if candidate and Path(candidate).exists():
+            return str(candidate)
+    raise RuntimeError("ffmpeg not found for video decoding")
+
+
 def read_video_frames(path: Path, num_frames: int, size: Tuple[int, int], is_mask: bool = False) -> List[Image.Image]:
     width, height = size
     frames: List[Image.Image] = []
@@ -149,16 +174,40 @@ def read_video_frames(path: Path, num_frames: int, size: Tuple[int, int], is_mas
         for frame_path in files[:num_frames]:
             frames.append(Image.open(frame_path).convert(mode).resize((width, height), resample))
     elif path.is_file() and path.suffix.lower() in VIDEO_EXTS:
-        reader = imageio.get_reader(str(path))
-        try:
-            for idx, frame in enumerate(reader):
-                if idx >= num_frames:
-                    break
-                arr = np.asarray(frame)
-                pil = Image.fromarray(arr).convert(mode).resize((width, height), resample)
-                frames.append(pil)
-        finally:
-            reader.close()
+        ffmpeg = resolve_ffmpeg()
+        pix_fmt = "gray" if is_mask else "rgb24"
+        channels = 1 if is_mask else 3
+        frame_size = width * height * channels
+        scale_filter = f"scale={width}:{height}:flags=neighbor" if is_mask else f"scale={width}:{height}"
+        cmd = [
+            ffmpeg,
+            "-v",
+            "error",
+            "-i",
+            str(path),
+            "-vf",
+            scale_filter,
+            "-frames:v",
+            str(num_frames),
+            "-f",
+            "rawvideo",
+            "-pix_fmt",
+            pix_fmt,
+            "-",
+        ]
+        proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=False)
+        count = len(proc.stdout) // frame_size
+        if count == 0:
+            raise RuntimeError(
+                f"ffmpeg decoded zero frames from {path}: {proc.stderr.decode(errors='replace')}"
+            )
+        for idx in range(min(count, num_frames)):
+            chunk = proc.stdout[idx * frame_size : (idx + 1) * frame_size]
+            if is_mask:
+                arr = np.frombuffer(chunk, dtype=np.uint8).reshape((height, width))
+            else:
+                arr = np.frombuffer(chunk, dtype=np.uint8).reshape((height, width, channels))
+            frames.append(Image.fromarray(arr).convert(mode))
     elif path.is_file() and path.suffix.lower() in IMG_EXTS:
         frames.append(Image.open(path).convert(mode).resize((width, height), resample))
     else:
@@ -705,19 +754,34 @@ def decision_report(
     if base and best:
         verdict = "yes" if beats_base else "no / inconclusive"
         lines.append(f"- Does Exp7 beat DiffuEraser-base on true partial-mask eval? {verdict}.")
+    stage1_better_than_stage2 = False
     if best_stage1 and stage2_last:
         stage1_score = score(best_stage1)
         stage2_score = score(stage2_last)
-        better = "Stage1 is better" if stage1_score > stage2_score else "Stage2_last is better"
+        stage1_better_than_stage2 = stage1_score > stage2_score
+        better = "Stage1 is better" if stage1_better_than_stage2 else "Stage2_last is better"
         lines.append(f"- Stage1-vs-Stage2: {better} by mask-region SSIM/PSNR.")
     elif stage2_last and not best_stage1:
         lines.append("- Stage1 early checkpoints were not directly evaluable as exported weights, so early-vs-Stage2 cannot be decided.")
-    lines.append(
-        "- Full Exp7 4000+4000 recommendation: hold unless this partial-mask report shows a clear visual and metric win over base."
-    )
-    lines.append(
-        "- No-lose-gap gate recommendation: prepare and use if partial-mask eval still shows loser-degradation artifacts."
-    )
+    if beats_base and stage1_better_than_stage2:
+        lines.append(
+            "- Full Exp7 4000+4000 recommendation: do not launch yet; Stage1 beats base on the true partial-mask task, but Stage2 regresses."
+        )
+        lines.append(
+            "- No-lose-gap gate recommendation: recommended next gate if visual review confirms Stage2 loser-degradation artifacts."
+        )
+    elif beats_base:
+        lines.append(
+            "- Full Exp7 4000+4000 recommendation: review visuals before launch; metrics beat base but checkpoint dynamics need confirmation."
+        )
+        lines.append("- No-lose-gap gate recommendation: keep prepared as the fallback.")
+    else:
+        lines.append(
+            "- Full Exp7 4000+4000 recommendation: hold unless this partial-mask report shows a clear visual and metric win over base."
+        )
+        lines.append(
+            "- No-lose-gap gate recommendation: prepare and use if partial-mask eval still shows loser-degradation artifacts."
+        )
     if dpo_summary_path:
         lines.append(f"- DPO diagnostics summary: `{dpo_summary_path}`.")
     lines.extend(["", "## Metric Table", ""])

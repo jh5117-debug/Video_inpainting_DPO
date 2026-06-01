@@ -184,3 +184,51 @@ The report must answer:
 
 Do not run full Exp7, full VBench, or Exp8 until this partial-mask report is
 reviewed.
+
+## 2026-06-02 Exp7-PM-Gate1500 Result
+
+The partial-mask eval completed successfully after the eval video reader was
+changed to ffmpeg rawvideo decoding. The original `imageio` path selected an
+incompatible `pyav` backend on PAI and failed with:
+
+```text
+AttributeError: 'av.format.ContainerFormat' object has no attribute 'variable_fps'
+```
+
+Completed eval:
+
+```text
+name = Exp7-PM-Gate1500
+output_root = /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260602_000500
+side_by_side = 60 mp4
+metrics = metrics/summary.csv
+report = report.md
+dpo_summary = /mnt/nas/hj/H20_Video_inpainting_DPO/reports/exp7_gate1500_dpo_diag_summary.md
+```
+
+Metric summary:
+
+| Model | mask_region_psnr_mean | mask_region_ssim_mean | outside_region_diff_mean_mean | temporal_diff_delta_vs_gt_mean |
+| --- | ---: | ---: | ---: | ---: |
+| DiffuEraser-base | 8.99765 | 0.272146 | 2.91477 | 5.58378 |
+| Stage1_last | 9.57079 | 0.288404 | 2.92006 | 12.7824 |
+| Stage2_last | 7.88448 | 0.235938 | 2.91600 | 6.52143 |
+
+Diagnostic interpretation:
+
+- Winner-gap control works well enough to prevent the old Exp5 winner damage:
+  Stage1/Stage2 `win_gap` stays bounded relative to the unanchored collapse.
+- Loser degradation remains the dominant shortcut: Stage2 diagnostics show
+  high `mse_l_over_ref_mse_l` and `loser_dominant_ratio` near 1.0 for many
+  steps.
+- The task-matched metrics indicate Stage1 learned useful partial-mask
+  behavior, but Stage2 moved the model in the wrong direction.
+
+Decision:
+
+- Exp7 is not a final success.
+- Exp7 is not a total failure either: partial-mask task alignment is validated
+  by `Stage1_last` beating DiffuEraser-base on mask-region PSNR/SSIM.
+- Do not run full Exp7 4000+4000 or full VBench yet.
+- Review the partial-mask side-by-side videos and then prefer the prepared
+  no-lose-gap gate or a Stage1-focused variant over another long Stage2.

@@ -64,7 +64,7 @@ Exp7 interpretation rule:
 - If Exp7 gate still collapses, the next change should be data/prompt quality
   or a stronger winner-preservation strategy, not a direct full 4000+4000 run.
 
-Exp7 gate1500 result update:
+Exp7 gate1500 full-mask qual30 result update:
 
 | Experiment | Current status | Observed eval | Interpretation | Next action |
 | --- | --- | --- | --- | --- |
@@ -76,6 +76,35 @@ Observed diagnostics:
 - `loser_dominant_ratio` can reach 1.0 for late steps.
 - `mse_l_over_ref_mse_l` can become very high, so loser degradation remains a
   strong shortcut even with winner anchoring.
+
+Exp7-PM-Gate1500 true partial-mask eval update:
+
+```text
+eval_name = Exp7-PM-Gate1500
+output = /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260602_000500
+metric_samples = 100
+qualitative_side_by_side = 60 videos
+base = DiffuEraser-base converted_weights_step48000
+evaluated_exp7 = Stage1_last, Stage2_last
+skipped = Stage1_ckpt500 and Stage1_ckpt1000 because exported paths were absent
+```
+
+| Model | mask-region PSNR | mask-region SSIM | Status |
+| --- | ---: | ---: | --- |
+| DiffuEraser-base | 8.99765 | 0.272146 | baseline |
+| Exp7 Stage1_last | 9.57079 | 0.288404 | best evaluated checkpoint; beats base on true partial-mask metrics |
+| Exp7 Stage2_last | 7.88448 | 0.235938 | regressed below base and Stage1 |
+
+Decision:
+
+- Exp7 full-mask qual30 remains failed / task-mismatched.
+- Exp7 partial-mask task alignment is promising because Stage1_last beats
+  DiffuEraser-base on the task-matched metric gate.
+- Stage2 appears harmful in this configuration, consistent with the
+  loser-degradation shortcut seen in diagnostics.
+- Do not launch Exp7 full 4000+4000 yet.
+- Review the 60 partial-mask side-by-side videos, then prefer a Stage1-focused
+  or no-lose-gap follow-up over a direct longer Stage2 run.
 
 Prepared but not launched:
 

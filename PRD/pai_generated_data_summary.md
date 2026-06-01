@@ -24,6 +24,40 @@ winner-anchored DPO with `beta_dpo=10`, `lose_gap_weight=0.25`,
 4000 Stage2 steps, no in-training validation, followed by qual30 and full
 VBench.
 
+## 2026-06-02 D2 Task-Matched Exp7 Gate
+
+D2 `selected_primary_comp.repaired.jsonl` was also used for the partial-mask
+task-alignment gate:
+
+```text
+name = exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500
+train_mask_mode = partial
+mask_from_manifest = true
+stage1_steps = 1500
+stage2_steps = 1500
+```
+
+The full-mask-style qual30 for this run is recorded as failed /
+task-mismatched, because Exp7 is a partial-mask inpainting task. The
+task-matched partial-mask eval completed at:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260602_000500
+```
+
+Summary:
+
+| Model | mask-region PSNR | mask-region SSIM | Interpretation |
+| --- | ---: | ---: | --- |
+| DiffuEraser-base | 8.99765 | 0.272146 | baseline |
+| Exp7 Stage1_last | 9.57079 | 0.288404 | best evaluated; beats base |
+| Exp7 Stage2_last | 7.88448 | 0.235938 | regressed |
+
+This supports the D2 partial-mask data direction but argues against simply
+extending the current Stage2 recipe. Do not regenerate D2; next decisions should
+use this same manifest and compare visual side-by-side outputs before launching
+another long run.
+
 ## Asset Status
 
 | Asset | Status | Path / Evidence |

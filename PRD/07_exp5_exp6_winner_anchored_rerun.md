@@ -1,6 +1,6 @@
 # Exp5 / Exp6 Winner-Anchored Rerun
 
-Updated: 2026-05-31
+Updated: 2026-06-02
 
 ## Failed Diagnostic Runs
 
@@ -95,6 +95,24 @@ action = monitor only; do not kill
 purpose = no-comp data-only comparison against Exp5 comp
 ```
 
+2026-06-02 monitor snapshot:
+
+```text
+current_stage = Stage2
+stage1_completed = 2026-06-01 22:51 CST
+stage2_progress = about 420 / 4000
+num_gpus = 6
+gpu_policy = GPU 0-5 only; GPU 6/7 idle
+stage2_loaded = Stage1 last_weights
+qual30 = pending
+full_vbench = pending
+```
+
+Stage2 diagnostics show the winner anchor is active (`winner_gap_reg` near
+zero; `mse_w_over_ref_mse_w` near 1), but the loser shortcut remains strong
+(`loser_dominant_ratio=1.0`, high `mse_l_over_ref_mse_l`, high `sigma_term`).
+This is still the intended no-comp comparison run and should continue.
+
 ## Exp7 Partial-Mask Gate
 
 Exp5 winner-anchored is improved but not final. The winner anchor suppressed
@@ -179,3 +197,47 @@ lose_gap_weight = 0.0
 stage1_steps = 1000
 stage2_steps = 1000
 ```
+
+## 2026-06-02 Exp7-PM-Gate1500 Partial-Mask Eval
+
+The task-matched partial-mask evaluation completed after replacing the eval
+tool's fragile `imageio` video reader with ffmpeg rawvideo decoding.
+
+```text
+eval_name = Exp7-PM-Gate1500
+output_root = /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260602_000500
+side_by_side = 60 videos
+metrics = metrics/summary.csv
+report = report.md
+```
+
+Evaluated checkpoints:
+
+| Checkpoint | Status |
+| --- | --- |
+| DiffuEraser-base | active |
+| Stage1_ckpt500 | skipped; exported path missing |
+| Stage1_ckpt1000 | skipped; exported path missing |
+| Stage1_last | active |
+| Stage2_last | active |
+
+Metric result:
+
+| Model | mask_region_psnr_mean | mask_region_ssim_mean | outside_region_diff_mean_mean | temporal_diff_delta_vs_gt_mean |
+| --- | ---: | ---: | ---: | ---: |
+| DiffuEraser-base | 8.99765 | 0.272146 | 2.91477 | 5.58378 |
+| Stage1_last | 9.57079 | 0.288404 | 2.92006 | 12.7824 |
+| Stage2_last | 7.88448 | 0.235938 | 2.91600 | 6.52143 |
+
+Interpretation:
+
+- The full-mask qual30 failure was task-mismatched and should not be the final
+  Exp7 verdict.
+- On the true partial-mask inpainting eval, Exp7 `Stage1_last` beats
+  DiffuEraser-base by mask-region PSNR and SSIM.
+- `Stage2_last` regresses below both `Stage1_last` and DiffuEraser-base.
+- Exp7 validates the partial-mask task-alignment direction, but not the current
+  Stage1+Stage2 recipe.
+- Do not launch full Exp7 4000+4000 yet.
+- Next decision should compare visual side-by-side quality and likely test
+  the prepared no-lose-gap gate if Stage2 artifacts match loser-degradation.

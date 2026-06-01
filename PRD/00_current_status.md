@@ -1,6 +1,6 @@
 # Current Status
 
-Updated: 2026-05-30
+Updated: 2026-06-02
 
 ## D2 Data Readiness
 
@@ -109,6 +109,26 @@ H20 `exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000` is running and must
 continue. Action: monitor only; do not kill. Purpose: no-comp data-only
 comparison against Exp5 comp.
 
+2026-06-02 H20 check:
+
+```text
+status = running
+current_stage = Stage2
+stage1_completed = 2026-06-01 22:51 CST
+stage2_progress = about 420 / 4000 steps
+num_gpus = 6
+gpu_policy = using GPU 0-5 only; GPU 6/7 idle
+stage2_handoff = loaded Stage1 last_weights
+qual30 = not started
+full_vbench = not started
+```
+
+Current H20 diagnostics remain mixed: winner anchoring keeps `win_gap` near
+zero and `mse_w_over_ref_mse_w` close to 1, but `loser_dominant_ratio=1.0`,
+`mse_l_over_ref_mse_l` is high, and `sigma_term` can approach saturation. This
+is still a valid no-comp comparison run; continue monitoring and do not stop it
+unless explicitly requested.
+
 Next gate:
 
 ```text
@@ -172,7 +192,7 @@ Interpretation:
 - Record full-mask qual30 as **failed / task-mismatched** and run a true
   partial-mask manifest evaluation before deciding whether Exp7 failed.
 
-Next required eval:
+Completed task-matched eval:
 
 ```text
 scripts/eval_exp7_partialmask_gate.sh
@@ -181,3 +201,53 @@ scripts/eval_exp7_partialmask_gate.sh
 This uses D2 `win_video_path` and `mask_path` to compare DiffuEraser-base and
 Exp7 checkpoints on the actual partial-mask inpainting task. Do not launch
 full Exp7 4000+4000, full VBench, or Exp8 before this report is reviewed.
+
+## 2026-06-02 Exp7-PM-Gate1500 Partial-Mask Eval
+
+Name:
+
+```text
+Exp7-PM-Gate1500 = D2-comp partial-mask task-alignment gate
+```
+
+Output:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260602_000500
+```
+
+Artifacts:
+
+```text
+side_by_side videos = 60
+index.html = present
+pair_manifest.csv = present
+metrics/summary.csv = present
+report.md = present
+```
+
+The PAI eval initially failed while reading generated mp4 files because
+`imageio` selected a `pyav` backend incompatible with the installed `av`
+version (`ContainerFormat.variable_fps` missing). The checked-in eval tool now
+uses ffmpeg rawvideo decoding for input videos.
+
+Result:
+
+| Model | mask_region_psnr_mean | mask_region_ssim_mean | outside_region_diff_mean_mean | temporal_diff_delta_vs_gt_mean |
+| --- | ---: | ---: | ---: | ---: |
+| DiffuEraser-base | 8.99765 | 0.272146 | 2.91477 | 5.58378 |
+| Stage1_last | 9.57079 | 0.288404 | 2.92006 | 12.7824 |
+| Stage2_last | 7.88448 | 0.235938 | 2.91600 | 6.52143 |
+
+Interpretation:
+
+- Full-mask qual30 remains failed / task-mismatched for Exp7.
+- True partial-mask eval shows `Stage1_last` beats DiffuEraser-base on
+  mask-region PSNR and SSIM.
+- `Stage2_last` regresses below both `Stage1_last` and DiffuEraser-base.
+- Stage1 checkpoint-500 and checkpoint-1000 were not available in the exported
+  run directory, so only Stage1 last and Stage2 last were evaluated.
+- Exp7 is no longer a total failure: partial-mask task alignment is promising.
+- Do not launch full Exp7 4000+4000 yet; Stage2 regression must be addressed.
+- The prepared no-lose-gap gate is the next likely diagnostic if visual review
+  confirms loser-degradation artifacts.
