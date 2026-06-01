@@ -112,6 +112,39 @@ Prepared but not launched:
 | --- | --- | --- |
 | `exp7_d2_comp_k4_partial_wingap_nolose_beta10_s1s2_gate1000` | script prepared only | cut `lose_gap_weight` to 0.0 if partial-mask eval confirms loser-degradation shortcut |
 
+## 2026-06-02 DPO-S1 + SFT-S2 Hybrid Correction
+
+The Exp7-PM-Gate1500 checkpoint comparison requires a stage-aware
+interpretation. DiffuEraser Stage1 is the spatial/appearance stage; Stage2 is
+the temporal/motion stage. Because Stage1_last beats DiffuEraser-base on true
+partial-mask metrics while Stage2_last regresses, the next candidate is not
+"Stage1-only inference." The correct candidate is:
+
+```text
+DPO Stage1 spatial/BrushNet/UNet2D weights
++
+frozen SFT Stage2 temporal/motion weights
+```
+
+Do not train DPO Stage2 in the next step. Do not load a full SFT Stage2
+checkpoint in a way that overwrites DPO Stage1 spatial weights.
+
+New matrix rows:
+
+| Experiment | Status | Stage1 source | Stage2 source | Task | Eval | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `exp7_pm_dpoS1_sftS2_hybrid_ckptsweep` | script prepared / audit first | Exp7 DPO Stage1 checkpoints and `last_weights` | best found SFT Stage2, then previous SFT, then official/base Stage2 | true partial-mask inpainting | partial-mask metrics + side-by-side only | First priority; no training and no full VBench. |
+| `exp7_pm_stage1only_ckptsweep_wingap_lose025_beta10` | launcher prepared only | DPO Stage1 train 3000 with ckpt every 500 | none during training | partial-mask DPO | no automatic eval | Prepared only to produce better DPO-S1 candidates; do not launch until hybrid audit says more Stage1 checkpoints are needed. |
+
+Hybrid evaluation must answer whether:
+
+- DPO Stage1 spatial weights are preserved.
+- SFT Stage2 motion weights are preserved.
+- YouTube-VOS SFT Stage2 exists and should be used.
+- The hybrid beats DiffuEraser-base.
+- The hybrid beats Exp7 DPO Stage1 + DPO Stage2.
+- Stage2 DPO should remain stopped.
+
 ## Core Ablation Directions This Week
 
 The core plan has four directions, with Direction 2 split into 2A/2B:

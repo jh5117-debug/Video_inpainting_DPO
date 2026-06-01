@@ -232,3 +232,54 @@ Decision:
 - Do not run full Exp7 4000+4000 or full VBench yet.
 - Review the partial-mask side-by-side videos and then prefer the prepared
   no-lose-gap gate or a Stage1-focused variant over another long Stage2.
+
+## 2026-06-02 DPO-S1 + SFT-S2 Hybrid Diagnostic Plan
+
+The Stage1/Stage2 roles change how Exp7 diagnostics should be read:
+
+- Stage1 diagnostics and partial-mask metrics primarily speak to spatial /
+  appearance quality.
+- Stage2 diagnostics primarily speak to temporal/motion adaptation.
+- Exp7 Stage1_last beating DiffuEraser-base does not mean final inference
+  should be Stage1-only.
+- Exp7 Stage2_last regressing means the current DPO Stage2 objective is
+  harmful and should stay stopped.
+
+Next diagnostic target:
+
+```text
+candidate = DPO Stage1 spatial weights + frozen SFT Stage2 motion weights
+eval = true partial-mask manifest eval
+full_vbench = disabled
+training = none
+```
+
+Hybrid eval metrics should keep the existing partial-mask set:
+
+- `whole_video_psnr`, `whole_video_ssim`
+- `mask_region_psnr`, `mask_region_ssim`
+- `boundary_psnr`, `boundary_ssim`
+- `outside_region_diff_mean`, `outside_region_diff_max`
+- `temporal_diff_delta_vs_gt`
+
+The hybrid report must answer:
+
+- whether the checkpoint structure safely separates DPO spatial and SFT motion
+  weights;
+- whether YouTube-VOS SFT Stage2 was found;
+- whether DPO Stage1 spatial/BrushNet weights were preserved;
+- whether SFT Stage2 motion/temporal weights were preserved;
+- which DPO Stage1 checkpoint + SFT Stage2 candidate is best;
+- whether the hybrid beats DiffuEraser-base;
+- whether the hybrid beats Exp7 DPO Stage1 + DPO Stage2;
+- whether DPO Stage2 should remain stopped.
+
+Prepared but not launched:
+
+```text
+scripts/launch_exp7_pm_stage1only_ckptsweep_pai.sh
+```
+
+This future script is only for producing better DPO Stage1 checkpoints
+(`3000` steps, checkpoint every `500`) if the hybrid audit says the current
+Stage1 candidates are insufficient. It must not launch Stage2 or full VBench.

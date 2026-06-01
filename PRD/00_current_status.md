@@ -251,3 +251,55 @@ Interpretation:
 - Do not launch full Exp7 4000+4000 yet; Stage2 regression must be addressed.
 - The prepared no-lose-gap gate is the next likely diagnostic if visual review
   confirms loser-degradation artifacts.
+
+## 2026-06-02 Critical Stage Interpretation Correction
+
+DiffuEraser is a two-stage model:
+
+- Stage1 mainly controls spatial generation quality, BrushNet, UNet2D, and
+  appearance.
+- Stage2 mainly controls video temporal consistency, motion module behavior,
+  and temporal modeling.
+
+Therefore the Exp7-PM-Gate1500 result must not be interpreted as "final
+inference should use Stage1 only." The correct candidate is:
+
+```text
+DPO-DiffuEraser-Stage1 spatial / appearance weights
++
+frozen SFT-DiffuEraser-Stage2 temporal / motion weights
+```
+
+Current conclusion:
+
+- Exp7 Stage1_last improves true partial-mask metrics over DiffuEraser-base.
+- Exp7 Stage2_last regresses below both Stage1_last and DiffuEraser-base.
+- DPO Stage2 is currently harmful and should remain stopped.
+- DPO should target Stage1 spatial quality first.
+- The temporal / motion prior should be preserved from a validated SFT Stage2
+  checkpoint, ideally the best YouTube-VOS SFT Stage2 if found.
+
+Important checkpoint rule:
+
+- Do not simply load a complete SFT Stage2 checkpoint over the DPO result.
+- A complete Stage2 checkpoint may contain both spatial and temporal weights.
+- The hybrid must keep DPO Stage1 spatial/appearance weights and only preserve
+  SFT Stage2 temporal/motion weights.
+
+New first-priority audit/eval:
+
+```text
+name = exp7_pm_dpoS1_sftS2_hybrid_ckptsweep
+task = true partial-mask manifest eval
+candidate = DPO Stage1 checkpoint X + frozen SFT Stage2 motion checkpoint Y
+full_vbench = disabled
+training = none
+```
+
+Prepared tooling:
+
+- `tools/inspect_diffueraser_stage_weights.py`
+- `tools/build_diffueraser_dpoS1_sftS2_hybrid.py`
+- `scripts/eval_exp7_dpoS1_sftS2_hybrid_partialmask.sh`
+- `scripts/launch_exp7_pm_stage1only_ckptsweep_pai.sh` prepared only; do not
+  run automatically.

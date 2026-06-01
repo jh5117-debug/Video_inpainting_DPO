@@ -51,3 +51,44 @@ The partial-mask eval tool now decodes input videos with ffmpeg rawvideo rather
 than `imageio.get_reader`. PAI selected an incompatible `pyav` backend and
 failed on `ContainerFormat.variable_fps`; the ffmpeg reader was smoke-tested on
 generated Exp7 eval mp4 files.
+
+## Stage-Aware Correction
+
+DiffuEraser Stage1 and Stage2 should be interpreted separately:
+
+| Stage | Main role |
+| --- | --- |
+| Stage1 | spatial generation quality, BrushNet, UNet2D, appearance |
+| Stage2 | video temporal consistency, motion module, temporal modeling |
+
+The Exp7-PM-Gate1500 result means:
+
+- DPO Stage1 learned useful partial-mask spatial behavior.
+- DPO Stage2 damaged the candidate under the current loser-driven objective.
+- The next candidate is **DPO Stage1 + frozen SFT Stage2**, not Stage1-only
+  inference.
+
+The desired hybrid is:
+
+```text
+spatial / appearance weights = Exp7 DPO Stage1
+temporal / motion weights = validated SFT Stage2
+```
+
+Do not simply overwrite the DPO checkpoint with a full SFT Stage2 checkpoint,
+because full Stage2 exports may contain spatial and temporal weights. The
+hybrid builder must keep DPO spatial modules and preserve only SFT temporal /
+motion modules.
+
+Prepared next audit:
+
+```text
+script = scripts/eval_exp7_dpoS1_sftS2_hybrid_partialmask.sh
+builder = tools/build_diffueraser_dpoS1_sftS2_hybrid.py
+inspector = tools/inspect_diffueraser_stage_weights.py
+output = logs/partialmask_eval/exp7_pm_dpoS1_sftS2_hybrid_<timestamp>/
+final_report = reports/exp7_dpoS1_sftS2_hybrid_eval_report.md
+```
+
+No new long training, DPO Stage2, full Exp7, full VBench, Exp8, D2 regen, or
+D3 full run should be started before this hybrid audit is reviewed.
