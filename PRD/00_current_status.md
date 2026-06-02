@@ -303,3 +303,33 @@ Prepared tooling:
 - `scripts/eval_exp7_dpoS1_sftS2_hybrid_partialmask.sh`
 - `scripts/launch_exp7_pm_stage1only_ckptsweep_pai.sh` prepared only; do not
   run automatically.
+## 2026-06-02 Mainline Correction: Target Domain
+
+The final evaluation and demo domains are **YouTube-VOS** and **DAVIS**.
+VideoDPO is a bridge domain only: it is useful for native VideoDPO repo
+integration, DiffuEraser adapter validation, generated-loser manifest plumbing,
+partial-mask support, DPO diagnostics, and Stage1/Stage2 loading ablations. It
+is not the final target domain.
+
+Do not continue planning VideoDPO partial-mask SFT warmup. If SFT is needed, it
+should be target-domain SFT or related video-inpainting data, not VideoDPO
+bridge warmup.
+
+Current priority:
+
+1. Run target-domain eval on YouTube-VOS / DAVIS using existing checkpoints and
+   stage compositions.
+2. Sync D3 YouTube-VOS generated-loser data to PAI only as background data
+   preparation.
+3. After D3 sync, run D3 post-generation audit, path rewrite, and readiness.
+4. Enter Exp9 target-domain DPO only if target-domain eval shows that
+   VideoDPO-bridge DPO does not transfer.
+
+H20 D3 audit:
+
+- root: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4`
+- report: `/home/nvme01/H20_Video_inpainting_DPO/reports/d3_h20_audit_report.md`
+- size/files: 249G / 1,819,879 files
+- selected primary rows: 3,327 comp and 3,327 no-comp
+- sampled 100 rows: status OK, 16 frames, 512x320, readable
+- all sampled paths are H20-only `/home/nvme01/...`; PAI path rewrite is required before training.

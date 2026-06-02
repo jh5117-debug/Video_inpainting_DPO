@@ -283,3 +283,49 @@ scripts/launch_exp7_pm_stage1only_ckptsweep_pai.sh
 This future script is only for producing better DPO Stage1 checkpoints
 (`3000` steps, checkpoint every `500`) if the hybrid audit says the current
 Stage1 candidates are insufficient. It must not launch Stage2 or full VBench.
+## 2026-06-02 Target-Domain Evaluation Priority
+
+Diagnostics must now distinguish bridge-domain health from final target-domain
+quality.
+
+Bridge domain:
+
+- VideoDPO
+- Purpose: integration, DPO loss behavior, generated-loser manifests,
+  partial-mask plumbing, Stage1/Stage2 loading, ablation.
+- Metrics: useful for debugging but not final success.
+
+Target domains:
+
+- YouTube-VOS
+- DAVIS
+- Purpose: final quality decision and demo/reporting.
+
+Current diagnostic interpretation:
+
+- Exp7 full-mask and partial-mask VideoDPO evaluations are diagnostic only.
+- DPO Stage2 remains risky because it regresses temporal/motion behavior.
+- VideoDPO SFT warmup is not current plan.
+- D3 YouTube-VOS generated-loser data is target-domain data preparation, not a
+  training trigger by itself.
+
+Required target-domain eval metrics:
+
+- whole-video PSNR / SSIM
+- mask-region PSNR / SSIM
+- boundary PSNR / SSIM
+- outside-region mean/max diff
+- temporal flicker or temporal-diff when available
+- qualitative side-by-side on YouTube-VOS and DAVIS
+
+Required target-domain eval settings:
+
+- denoise steps = 6
+- no PCM
+- no Gaussian blur
+- no unnecessary mask dilation
+- hard comp outside mask
+- frame-wise metric path
+
+If a script cannot guarantee these settings, it should write a preflight report
+and stop instead of running a mismatched eval.

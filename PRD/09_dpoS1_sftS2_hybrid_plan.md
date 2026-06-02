@@ -201,3 +201,27 @@ VAL_STEPS=999999
 
 This script must not start DPO Stage2 or full VBench. It should only be used
 if the hybrid audit shows that more DPO Stage1 checkpoints are needed.
+## 2026-06-02 Boundary Update
+
+This hybrid plan remains useful as a bridge-domain diagnostic, but it is not the
+final target-domain evaluation. The final target domains are YouTube-VOS and
+DAVIS.
+
+Current sampled-video interpretation:
+
+- `DiffuEraser-base` is visually stronger than Exp7 variants on sampled
+  partial-mask examples.
+- `Exp7_DPO_Stage1_last` improves some mask metrics but shows visible flicker
+  and unstable high-frequency artifacts.
+- `Exp7_DPO_S1_DPO_S2_last` and the official/base Stage2 hybrid do not solve
+  the quality issue and can preserve wrong-object priors.
+
+Therefore:
+
+- keep DPO Stage2 stopped;
+- do not jump directly to Exp8;
+- do not do VideoDPO partial-mask SFT warmup;
+- run target-domain eval on YouTube-VOS / DAVIS before deciding Exp9.
+
+D3 YouTube-VOS generated-loser data may sync to PAI in the background, but it is
+only data preparation until target-domain eval says Exp9 is needed.

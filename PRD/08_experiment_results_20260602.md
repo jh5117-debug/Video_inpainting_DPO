@@ -92,3 +92,52 @@ final_report = reports/exp7_dpoS1_sftS2_hybrid_eval_report.md
 
 No new long training, DPO Stage2, full Exp7, full VBench, Exp8, D2 regen, or
 D3 full run should be started before this hybrid audit is reviewed.
+## Mainline Correction: VideoDPO Bridge vs Target Domain
+
+After visually inspecting generated videos, the current interpretation is:
+
+- DiffuEraser-base remains visually stronger than Exp7 DPO variants on sampled
+  partial-mask videos.
+- Exp7 DPO Stage1 shows flicker and high-frequency artifacts in the masked
+  region.
+- Exp7 DPO Stage1 + DPO Stage2 can form more stable structures in some samples
+  but still has temporal artifacts and wrong-object priors.
+- The official/base Stage2 hybrid did not rescue the Exp7 DPO Stage1 output.
+
+This does not motivate jumping directly to Exp8. The larger issue is that
+VideoDPO is a bridge domain, while final evaluation is YouTube-VOS / DAVIS.
+Therefore the next decision gate is target-domain evaluation of existing
+checkpoints, not more VideoDPO loss tuning.
+
+Do not start VideoDPO SFT warmup. Do not start Exp8. Do not start Exp9 training
+until target-domain eval determines whether VideoDPO-bridge DPO transfers.
+
+## D3 H20 Audit Result
+
+H20 D3 root:
+
+```text
+/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4
+```
+
+Audit report:
+
+```text
+/home/nvme01/H20_Video_inpainting_DPO/reports/d3_h20_audit_report.md
+```
+
+Key numbers:
+
+- size: 249G
+- file count: 1,819,879
+- shard count: 3,327
+- candidates: 13,308
+- selected primary comp: 3,327
+- selected primary no-comp: 3,327
+- sampled selected-primary-comp rows: 100/100 status OK
+- sampled win/mask/final-loser frame checks: 300/300 readable
+- frame count/resolution: 16 frames, 512x320
+- path issue: all sampled manifest paths are H20-only `/home/nvme01/...`
+
+Conclusion: D3 is a valid-looking target-domain generated-loser asset on H20,
+but PAI must use repaired/path-rewritten manifests after sync.

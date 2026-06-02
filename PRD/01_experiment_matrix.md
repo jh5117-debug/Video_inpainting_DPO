@@ -208,3 +208,27 @@ Not first version: `online loser generation`.
 - More diverse negatives, but costly and stochastic.
 - Couples generation with training.
 - Harder to debug than offline manifest-driven data.
+## 2026-06-02 Target-Domain Boundary
+
+VideoDPO experiments are now classified as bridge-domain engineering and
+ablation work. The final target domains are YouTube-VOS and DAVIS.
+
+Implications:
+
+- Exp3 validates native VideoDPO DiffuEraser integration.
+- Exp5 and Exp6 validate generated-loser data-only DPO and stabilization
+  tricks; they are not final target-domain results.
+- Exp7 validates partial-mask task plumbing; its VideoDPO partial-mask eval is
+  diagnostic.
+- Do not run VideoDPO partial-mask SFT warmup.
+- Do not jump to Exp8 region loss before target-domain eval.
+- D3 YouTube-VOS generated-loser data is background preparation for possible
+  Exp9 only.
+
+New rows:
+
+| Experiment | Status | Domain | Data | Task | Eval | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `target_youtubevos_davis_existing_ckpts` | preflight script prepared | YouTube-VOS / DAVIS | existing target eval data | partial-mask / inpainting eval only | PSNR/SSIM/boundary/outside/temporal + qualitative | Mainline gate before Exp8/Exp9. |
+| `d3_youtubevos_partialmask_loser_k4` | H20 audited / PAI sync pending | YouTube-VOS | generated loser D3 | data asset only | post-sync audit/readiness | 3,327 selected primary rows; H20-only paths require PAI rewrite. |
+| `exp9_target_domain_dpo_stage1_gate` | planned only | YouTube-VOS-derived D3 | D3 selected-primary comp repaired | partial-mask Stage1 DPO | target-domain eval gate | Do not launch until target eval shows bridge DPO does not transfer. |
