@@ -22,7 +22,9 @@ export RUN_VERSION="${RUN_VERSION:-$(date +%Y%m%d_%H%M%S)}"
 D3_ROOT="${D3_ROOT:-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
 PAI_MANIFEST="${D3_ROOT}/manifests/selected_primary_comp.repaired.pai_paths.jsonl"
 DEFAULT_MANIFEST="${D3_ROOT}/manifests/selected_primary_comp.repaired.jsonl"
-if [[ -z "${PREFERENCE_MANIFEST:-}" ]]; then
+if [[ "${EXP9_ALLOW_MANIFEST_OVERRIDE:-false}" == "true" && -n "${PREFERENCE_MANIFEST:-}" ]]; then
+  echo "[exp9-stage1-gate] using explicit PREFERENCE_MANIFEST override: ${PREFERENCE_MANIFEST}"
+else
   if [[ -f "${PAI_MANIFEST}" ]]; then
     export PREFERENCE_MANIFEST="${PAI_MANIFEST}"
   else
@@ -32,6 +34,11 @@ fi
 
 if [[ ! -f "${PREFERENCE_MANIFEST}" ]]; then
   echo "[exp9-stage1-gate][ERROR] manifest missing: ${PREFERENCE_MANIFEST}" >&2
+  exit 1
+fi
+if [[ "${PREFERENCE_MANIFEST}" != *"official_videodpo_diffueraser_youtubevos_partialmask_loser_k4"* ]]; then
+  echo "[exp9-stage1-gate][ERROR] Exp9 must use D3 YouTube-VOS manifest, got: ${PREFERENCE_MANIFEST}" >&2
+  echo "[exp9-stage1-gate][ERROR] Unset stale PREFERENCE_MANIFEST or set EXP9_ALLOW_MANIFEST_OVERRIDE=true only with a D3 manifest." >&2
   exit 1
 fi
 if grep -m1 -q '/home/nvme01/H20_Video_inpainting_DPO' "${PREFERENCE_MANIFEST}"; then
