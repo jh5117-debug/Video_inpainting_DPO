@@ -230,5 +230,22 @@ New rows:
 | Experiment | Status | Domain | Data | Task | Eval | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `target_youtubevos_davis_existing_ckpts` | preflight script prepared | YouTube-VOS / DAVIS | existing target eval data | partial-mask / inpainting eval only | PSNR/SSIM/boundary/outside/temporal + qualitative | Mainline gate before Exp8/Exp9. |
-| `d3_youtubevos_partialmask_loser_k4` | H20 audited / PAI sync pending | YouTube-VOS | generated loser D3 | data asset only | post-sync audit/readiness | 3,327 selected primary rows; H20-only paths require PAI rewrite. |
+| `d3_youtubevos_partialmask_loser_k4` | primary-comp gate ready / full readiness false | YouTube-VOS | generated loser D3 | data asset only | post-sync audit/readiness | 3,327 selected primary rows; secondary manifests are absent in slim sync, so full readiness is false but the first Exp9 primary-comp Stage1 gate is not blocked. |
 | `exp9_target_domain_dpo_stage1_gate` | planned only | YouTube-VOS-derived D3 | D3 selected-primary comp repaired | partial-mask Stage1 DPO | target-domain eval gate | Do not launch until target eval shows bridge DPO does not transfer. |
+
+## 2026-06-03 Target-Domain / Metric.py Policy Matrix
+
+Metric boundary:
+
+- VBench is only for video-generation or full-mask prompt-generation tasks.
+- YouTube-VOS / DAVIS partial-mask video inpainting uses the project metric
+  module. In this checkout no file named exactly `metric.py` exists; the
+  existing metric backend is `inference/metrics.py`.
+- New target-domain scripts must call `tools/run_inpainting_metric_eval.py`,
+  which imports existing metric functions. Do not add new PSNR/SSIM formulas.
+
+| Experiment | Status | Domain | Training data | Stage policy | Eval backend | Launch rule |
+| --- | --- | --- | --- | --- | --- | --- |
+| `target_youtubevos_davis_existing_ckpts_metricpy` | script prepared | YouTube-VOS / DAVIS | none | eval only | `inference/metrics.py` via wrapper | Run before Exp9; no VBench. |
+| `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | launcher prepared; do not auto-run unless gate conditions hold | YouTube-VOS D3 | `selected_primary_comp.repaired.pai_paths.jsonl` or repaired manifest without H20 paths | Stage1 DPO only, no DPO Stage2 | target-domain metric wrapper | Start only after D3 primary readiness and target eval justify target-domain DPO. |
+| `exp9_youtubevos_d3_partialmask_wingap_nolose_stage1_gate1000` | prepared only | YouTube-VOS D3 | same as Exp9 first gate | Stage1 DPO only, `lose_gap_weight=0.0` | target-domain metric wrapper | Fallback if lose-gap gate still shows loser degradation or artifacts. |

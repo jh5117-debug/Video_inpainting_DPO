@@ -308,6 +308,11 @@ Current diagnostic interpretation:
 - VideoDPO SFT warmup is not current plan.
 - D3 YouTube-VOS generated-loser data is target-domain data preparation, not a
   training trigger by itself.
+- D3 readiness must be scoped: full readiness can be false if secondary
+  manifests are absent, while primary-comp gate readiness can be true for the
+  first Exp9 Stage1 gate.
+- `tools/d3_primary_comp_gate_readiness_check.py` writes the primary-comp gate
+  readiness report and should be used before launching Exp9.
 
 Required target-domain eval metrics:
 
@@ -329,3 +334,39 @@ Required target-domain eval settings:
 
 If a script cannot guarantee these settings, it should write a preflight report
 and stop instead of running a mismatched eval.
+
+## 2026-06-03 Metric Backend Rule
+
+Metric policy is task-specific:
+
+| Task | Backend |
+| --- | --- |
+| video generation / full-mask VBench prompt generation | VBench |
+| video inpainting / partial-mask inpainting | existing project metric module |
+
+In this checkout there is no file named exactly `metric.py`. The existing
+project metric module is `inference/metrics.py`; it provides `compute_psnr`,
+`compute_ssim`, `LPIPSMetric`, `EwarpMetric`, `TemporalConsistencyMetric`, and
+`MetricsCalculator.compute_video_metrics`.
+
+Rules for new target-domain eval code:
+
+- New scripts must import the existing metric module or call a thin wrapper
+  around it.
+- Do not add new PSNR/SSIM formulas.
+- Do not use VBench for YouTube-VOS / DAVIS partial-mask inpainting.
+- New code may organize prediction / GT / mask inputs and summarize outputs as
+  CSV/JSON/Markdown.
+- If metric inputs cannot be prepared with the correct partial-mask inpainting
+  layout, write a preflight report and stop.
+
+Wrapper:
+
+```text
+tools/run_inpainting_metric_eval.py
+```
+
+This wrapper is allowed to compute region layouts and call
+`inference.metrics.compute_psnr` / `compute_ssim` on whole frames, mask-cropped
+regions, boundary-cropped regions, and outside-composited frames. It must not
+reimplement the metric formulas.

@@ -98,12 +98,22 @@ manifests/selected_primary_comp.repaired.pai_paths.jsonl
 manifests/selected_primary_nocomp.repaired.pai_paths.jsonl
 ```
 
+Readiness split:
+
+- D3 full readiness can remain false when the PAI slim sync omits secondary
+  manifests.
+- D3 primary-comp gate readiness is the relevant condition for the first Exp9
+  Stage1 gate.
+- Use `tools/d3_primary_comp_gate_readiness_check.py` to confirm
+  `ready_primary_comp_gate=true`; do not let secondary-manifest absence block
+  the selected-primary-comp gate.
+
 ## Target-Domain Eval Gate
 
 Run preflight first:
 
 ```bash
-bash scripts/eval_target_youtubevos_davis_checkpoints.sh
+bash scripts/eval_target_youtubevos_davis_checkpoints_metricpy.sh
 ```
 
 The target eval must use the previous DiffuEraser best settings:
@@ -117,6 +127,18 @@ The target eval must use the previous DiffuEraser best settings:
 
 If the current eval backend cannot guarantee these settings, write a report and
 do not pretend the eval is valid.
+
+Metric backend:
+
+- Use VBench only for video generation / full-mask prompt generation.
+- Use the project metric module for YouTube-VOS / DAVIS partial-mask video
+  inpainting.
+- No exact `metric.py` exists in this checkout; the existing metric module is
+  `inference/metrics.py`.
+- `tools/run_inpainting_metric_eval.py` is the thin adapter that imports the
+  metric module and writes `summary.csv`, `summary.json`, and `summary.md`.
+- Do not reimplement PSNR, SSIM, LPIPS, or temporal metrics in target eval
+  scripts.
 
 Compare existing checkpoints:
 
@@ -138,8 +160,9 @@ YouTube-VOS / DAVIS and whether DPO-S1 + SFT-S2 beats DPO-S1 + DPO-S2.
 
 ## Exp9 Plan Boundary
 
-Do not start Exp9 now. Exp9 starts only if target-domain evaluation shows that
-VideoDPO-bridge DPO does not transfer and target-domain DPO data is required.
+Do not start Exp9 automatically. Exp9 starts only if D3 selected-primary
+readiness is true and target-domain evaluation shows that VideoDPO-bridge DPO
+does not transfer or target-domain DPO data is required.
 
 Exp9 first gate:
 
@@ -158,6 +181,16 @@ Exp9 first gate:
 - frozen SFT / target-domain Stage2
 - no DPO Stage2
 - 1000 or 1500 step gate before any long run
+
+Prepared launchers:
+
+```text
+scripts/launch_exp9_youtubevos_d3_partialmask_wingap_stage1_gate_pai.sh
+scripts/launch_exp9_youtubevos_d3_partialmask_wingap_nolose_stage1_gate_pai.sh
+```
+
+The no-lose script is a fallback only and must not be launched unless explicitly
+requested.
 
 ## Do Not Do
 

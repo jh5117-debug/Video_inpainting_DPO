@@ -141,3 +141,44 @@ Key numbers:
 
 Conclusion: D3 is a valid-looking target-domain generated-loser asset on H20,
 but PAI must use repaired/path-rewritten manifests after sync.
+
+## 2026-06-03 Target-Domain Direction
+
+New current decision:
+
+- VideoDPO is bridge-domain evidence only. It remains valuable for adapter,
+  manifest, mask-task, DPO diagnostic, and Stage1/Stage2 loading validation.
+- Final evaluation must be on YouTube-VOS / DAVIS.
+- Partial-mask inpainting evaluation must use the existing project metric
+  module, not VBench.
+
+Metric interface finding:
+
+- `find . -name "metric.py"` returns no exact `metric.py` file in this
+  checkout.
+- The existing project metric implementation is `inference/metrics.py`, with
+  `compute_psnr`, `compute_ssim`, `LPIPSMetric`, `EwarpMetric`, and
+  `MetricsCalculator`.
+- `tools/run_inpainting_metric_eval.py` is the thin adapter for target-domain
+  eval and must not reimplement metric formulas.
+
+D3 PAI current usable scope:
+
+- PAI slim sync is sufficient for selected-primary Exp9 preparation.
+- `selected_primary_comp.repaired.pai_paths.jsonl` is the preferred first gate
+  manifest.
+- D3 full readiness = false under the current slim sync because secondary
+  manifests are absent.
+- D3 primary-comp gate readiness = true when selected-primary-comp repaired
+  data has no H20-only paths and sampled primary-comp assets are readable.
+  Secondary count 0 must not block the first Stage1 gate.
+- Full D3 candidates and secondary manifests are not guaranteed by slim sync;
+  do not use them for candidate analysis or secondary training without an
+  additional sync/readiness check.
+
+Next experiment boundary:
+
+- Exp9 is the first target-domain DPO gate.
+- First run is Stage1-only, partial-mask, YouTube-VOS D3, no DPO Stage2.
+- Exp9 should only start after D3 primary readiness is confirmed and
+  target-domain eval of existing checkpoints justifies target-domain DPO.

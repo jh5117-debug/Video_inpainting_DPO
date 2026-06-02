@@ -333,3 +333,55 @@ H20 D3 audit:
 - selected primary rows: 3,327 comp and 3,327 no-comp
 - sampled 100 rows: status OK, 16 frames, 512x320, readable
 - all sampled paths are H20-only `/home/nvme01/...`; PAI path rewrite is required before training.
+
+## 2026-06-03 Target-Domain Mainline
+
+Current mainline:
+
+- VideoDPO is a bridge domain only. It validates model replacement, native
+  VideoDPO integration, generated-loser manifests, partial-mask plumbing,
+  winner-gap regularized DPO, diagnostics, and Stage1/Stage2 loading.
+- YouTube-VOS and DAVIS are the final target domains for evaluation and
+  reporting.
+- Do not start Exp8, VideoDPO warmup, DPO Stage2, full VBench, or any long
+  4000+4000 run in this phase.
+
+Metric policy:
+
+| Task type | Metric backend |
+| --- | --- |
+| video generation / full-mask VBench prompt generation | VBench |
+| video inpainting / partial-mask inpainting | project metric module (`inference/metrics.py`; no standalone `metric.py` exists in this checkout) |
+
+The target-domain YouTube-VOS / DAVIS partial-mask eval must use the existing
+project metric functions through `tools/run_inpainting_metric_eval.py`. Do not
+reimplement PSNR, SSIM, mask-region metrics, boundary metrics, or temporal
+metrics in new scripts. New wrappers may only organize inputs, call the
+existing metric module, and summarize results.
+
+D3 status:
+
+- D3 is the YouTube-VOS generated-loser data asset for Exp9.
+- PAI slim sync completed for selected-primary data.
+- D3 full readiness = false under the current slim sync because secondary
+  manifests are absent.
+- D3 primary-comp gate readiness = true once the selected-primary-comp repaired
+  manifest has clean PAI paths and the primary-comp sample audit has zero
+  issues. Secondary absence must not block the first Exp9 Stage1 gate.
+- `selected_primary_comp.repaired.pai_paths.jsonl` is the first Exp9 gate
+  training manifest if readiness checks pass on PAI.
+- Slim sync does not make candidates/secondary manifests fully ready; do not
+  run workflows that require full D3 candidates or secondary selections unless
+  they are synced separately.
+
+Exp9 boundary:
+
+- Exp9 is target-domain partial-mask DPO.
+- First run is Stage1-only gate:
+  `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500`.
+- Train with `train_mask_mode=partial`, `mask_from_manifest=true`,
+  `loss_region_mode=full`, winner anchoring, `beta_dpo=10`,
+  `lose_gap_weight=0.25`, `winner_abs_reg_weight=0.05`,
+  `winner_gap_reg_weight=1.0`, and `sft_reg_weight=0.0`.
+- Do not train DPO Stage2. Eval uses target-domain inpainting metrics, not
+  VBench.
