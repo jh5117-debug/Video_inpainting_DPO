@@ -273,10 +273,20 @@ H20 Exp9-nocomp:
 status = Stage1 gate completed
 checkpoints_present = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
 direct_eval_checkpoint = last_weights
-target_eval = launched for D3/YouTube-VOS-derived selected-primary-nocomp rows
+target_eval = completed for D3/YouTube-VOS-derived selected-primary-nocomp rows
 target_eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
 target_eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
 ```
+
+Summary on 100 metric samples:
+
+| model | mask PSNR | mask SSIM | boundary PSNR | outside mean diff | temporal delta vs GT |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| DiffuEraser-base | 11.2407 | 0.2885 | 23.3338 | 3.0861 | 8.7626 |
+| Exp9 nocomp last | 11.7119 | 0.2931 | 19.2961 | 3.1053 | 13.5626 |
+
+Nocomp last is a mixed result: slight mask-region gain, worse boundary and
+temporal stability. Wait for clean PAI comp before selecting the next run.
 
 DAVIS target-domain eval is still blocked because no validated DAVIS prediction
 pair manifest exists yet. The metric backend remains `inference/metrics.py`;

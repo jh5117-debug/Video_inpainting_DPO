@@ -31,10 +31,13 @@ note = checkpoint-500/1000/1500 are accelerator state dirs and need export
 H20 target-domain eval status:
 
 ```text
-youtubevos_d3_nocomp_eval = launched on H20 using D3 selected-primary-nocomp
-eval_pid = 3163411
+youtubevos_d3_nocomp_eval = completed on H20 using D3 selected-primary-nocomp
 eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
 eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
+samples = 200 generated videos, 30 side-by-side videos, 100 metric samples
+metric_summary = Exp9_nocomp_last improves mask PSNR/SSIM over base but worsens
+                 whole-video SSIM, boundary PSNR, outside max diff, and temporal
+                 delta; do not continue nocomp long training before comp eval.
 davis_eval = blocked until target prediction generation and pair_manifest are prepared
 metric_policy = use inference/metrics.py through project wrappers; no VBench
 ```

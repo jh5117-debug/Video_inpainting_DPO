@@ -269,7 +269,7 @@ Metric boundary:
 | Experiment | Host | Status | Eval status | Notes |
 | --- | --- | --- | --- | --- |
 | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | clean gate running | pending completion | Clean launch confirmed D3 comp PAI manifest, Stage1-only, `max_steps=1500`, `ckpt_steps=500`, `ckpt_limit=5`; wait for `checkpoint-500/1000/1500` and `last_weights`. |
-| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | completed | D3/YouTube-VOS eval launched; DAVIS blocked | H20 D3 nocomp eval output: `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243`; early checkpoints are accelerator states and need export before direct inference comparison. |
+| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | completed | D3/YouTube-VOS eval completed; DAVIS blocked | H20 D3 nocomp eval output: `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243`; `last_weights` improves mask PSNR/SSIM over base but has worse temporal/outside stability. Early checkpoints are accelerator states and need export before direct inference comparison. |
 
 Exp9 eval rule:
 

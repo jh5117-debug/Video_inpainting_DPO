@@ -259,13 +259,23 @@ verified = D3 selected-primary-comp PAI manifest, partial mask,
 H20 nocomp target eval:
 
 ```text
-status = launched for D3 selected-primary-nocomp / YouTube-VOS-derived rows
-pid = 3163411
+status = completed for D3 selected-primary-nocomp / YouTube-VOS-derived rows
 log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
 output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
 baseline = DiffuEraser-base
 candidate = Exp9 nocomp last_weights
 ```
+
+Metric summary:
+
+| model | mask PSNR | mask SSIM | boundary PSNR | outside mean diff | temporal delta vs GT |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| DiffuEraser-base | 11.2407 | 0.2885 | 23.3338 | 3.0861 | 8.7626 |
+| Exp9 nocomp last | 11.7119 | 0.2931 | 19.2961 | 3.1053 | 13.5626 |
+
+Interpretation: nocomp helps the masked crop slightly but worsens boundary
+PSNR, outside-region max/diff, and temporal stability. It is not enough to
+select nocomp for a 3000-step sweep until clean PAI comp is evaluated.
 
 Checkpoint-500, checkpoint-1000, and checkpoint-1500 are present but are
 accelerator state directories (`model.safetensors`, optimizer/scheduler state).

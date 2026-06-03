@@ -105,9 +105,12 @@ rerun with the stale-env-safe launcher before a fair comp-vs-nocomp comparison.
   `max_steps=1500`, `ckpt_steps=500`, `ckpt_limit=5`.
 - H20 Exp9-nocomp finished the Stage1 gate and has `checkpoint-500`,
   `checkpoint-1000`, `checkpoint-1500`, and `last_weights`.
-- H20 target eval has been launched for the D3 selected-primary-nocomp
+- H20 target eval has completed for the D3 selected-primary-nocomp
   YouTube-VOS-derived manifest:
   `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243`.
+- Nocomp last has a small mask-region metric gain over base but worse boundary
+  and temporal stability, so it is not selected for a 3000-step sweep before
+  the clean PAI comp eval.
 - DAVIS target eval remains blocked until prediction videos and a validated
   `pair_manifest` are produced.
 
