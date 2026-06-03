@@ -215,20 +215,21 @@ PAI Exp9 D3-comp:
 
 ```text
 experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
-status = waiting for manual monitor report
+status = manually stopped after overshooting gate
 expected_manifest = selected_primary_comp.repaired.pai_paths.jsonl
 expected_steps = 1500
-risk = earlier pasted monitor showed Epoch 4/25 and 1444/10000
+risk = realized; stop report showed about 4856 / 10000
 ```
 
-Do not claim PAI execution from Codex. The required PAI monitor writes:
+Do not claim PAI execution from Codex. The PAI stop report is:
 
 ```text
-reports/pai_exp9_comp_gate_manual_monitor_report.md
+reports/pai_exp9_comp_gate_stop_report.md
 ```
 
-If that report shows the run is headed to 10000 steps and `checkpoint-1500`
-exists, stop only this Exp9-comp run after manual confirmation.
+The final process check was empty for the Exp9/train/accelerate matcher, so
+the run appears stopped. The first run-dir lookup did not find checkpoints;
+locate the actual run directory before target-domain eval.
 
 H20 Exp9 D3-nocomp:
 
@@ -236,7 +237,7 @@ H20 Exp9 D3-nocomp:
 experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
 status = running normally
 monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
-current_step = about 190 / 1500
+current_step = about 341 / 1500
 max_steps_detected = 1500
 checkpoint_status = none yet
 dpo_diagnostics_csv = present

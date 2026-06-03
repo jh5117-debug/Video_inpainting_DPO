@@ -216,15 +216,14 @@ PAI comp gate:
 
 ```text
 experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
-status = manual monitor pending
-risk = earlier pasted log showed possible 10000-step training horizon
-policy = do not auto-kill from Codex; inspect manual report first
-manual_report = reports/pai_exp9_comp_gate_manual_monitor_report.md
+status = manually stopped after overshooting gate
+stop_evidence = about 4856 / 10000
+stop_report = reports/pai_exp9_comp_gate_stop_report.md
+checkpoint_status = run dir / checkpoint discovery pending
 ```
 
-If the manual report confirms a 10000-step run and the gate has reached or
-passed `checkpoint-1500`, stop only the PAI Exp9-comp process group. Do not
-kill unrelated PAI jobs.
+The run should not be resumed as a 10000-step long training. Locate the
+actual run directory and checkpoint set before target-domain evaluation.
 
 H20 nocomp gate:
 
@@ -234,7 +233,7 @@ status = running normally
 monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
 manifest = /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_nocomp.jsonl
 max_steps_detected = 1500
-current_step = about 190 / 1500 at 2026-06-03 14:21 CST
+current_step = about 341 / 1500 at 2026-06-03 15:10 CST
 checkpoint_status = no checkpoint yet
 ```
 

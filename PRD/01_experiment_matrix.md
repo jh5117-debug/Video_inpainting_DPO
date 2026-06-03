@@ -261,8 +261,8 @@ Metric boundary:
 
 | Experiment | Host | Status | Detected steps | Checkpoints | Eval readiness | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | manual monitor pending | unknown; earlier pasted log showed possible `1444/10000` risk | unknown until manual report | pending | Codex must not execute on PAI. Use manual monitor report before deciding whether to stop at gate. |
-| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | running normally | about `190/1500` at 2026-06-03 14:21 CST | none yet; wait for `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500` or `last_weights` | not ready yet | H20 report: `/home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md`; no DPO Stage2 and no VBench. |
+| `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | manually stopped after overshooting gate | about `4856/10000` at stop report time | run dir / checkpoint discovery pending; previous narrow find returned empty | pending | Stop report: `reports/pai_exp9_comp_gate_stop_report.md`; final process check was empty. Need locate checkpoint before eval. |
+| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | running normally | about `341/1500` at 2026-06-03 15:10 CST | none yet; wait for `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500` or `last_weights` | not ready yet | H20 report: `/home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md`; no DPO Stage2 and no VBench. |
 
 Exp9 eval rule:
 
