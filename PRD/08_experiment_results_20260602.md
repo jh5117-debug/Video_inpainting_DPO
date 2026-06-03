@@ -208,3 +208,40 @@ Target-domain implication:
 - The final decision must be based on YouTube-VOS / DAVIS partial-mask
   inpainting metrics and qualitative stability, not VideoDPO full-mask qual30
   alone.
+
+## 2026-06-03 Exp9 Gate Monitoring
+
+PAI Exp9 D3-comp:
+
+```text
+experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
+status = waiting for manual monitor report
+expected_manifest = selected_primary_comp.repaired.pai_paths.jsonl
+expected_steps = 1500
+risk = earlier pasted monitor showed Epoch 4/25 and 1444/10000
+```
+
+Do not claim PAI execution from Codex. The required PAI monitor writes:
+
+```text
+reports/pai_exp9_comp_gate_manual_monitor_report.md
+```
+
+If that report shows the run is headed to 10000 steps and `checkpoint-1500`
+exists, stop only this Exp9-comp run after manual confirmation.
+
+H20 Exp9 D3-nocomp:
+
+```text
+experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
+status = running normally
+monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
+current_step = about 190 / 1500
+max_steps_detected = 1500
+checkpoint_status = none yet
+dpo_diagnostics_csv = present
+errors = none detected in monitor scan
+```
+
+H20 nocomp is not evaluable yet. Do not stop it unless it crashes or the log
+later proves it has exceeded the gate horizon after writing checkpoint-1500.

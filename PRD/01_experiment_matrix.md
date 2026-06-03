@@ -256,3 +256,18 @@ Metric boundary:
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `new_exp6_prompt_length_audit` | prepared / running on H20 | H20 | VideoDPO bridge qual30 | existing Exp6 side-by-side | audit only | contact sheets + human labels | Tests long-prompt improvement hypothesis; not a final target-domain result. |
 | `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | prepared for H20 launch | H20 GPUs 0-5 | YouTube-VOS D3 | selected-primary-nocomp H20 manifest | Stage1 DPO only, no DPO Stage2 | target-domain metric wrapper | Complements PAI D3-comp gate for comp-vs-nocomp decision. |
+
+## 2026-06-03 Exp9 Comp / Nocomp Gate Monitor
+
+| Experiment | Host | Status | Detected steps | Checkpoints | Eval readiness | Notes |
+| --- | --- | --- | --- | --- | --- | --- |
+| `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | manual monitor pending | unknown; earlier pasted log showed possible `1444/10000` risk | unknown until manual report | pending | Codex must not execute on PAI. Use manual monitor report before deciding whether to stop at gate. |
+| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | running normally | about `190/1500` at 2026-06-03 14:21 CST | none yet; wait for `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500` or `last_weights` | not ready yet | H20 report: `/home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md`; no DPO Stage2 and no VBench. |
+
+Exp9 eval rule:
+
+- Evaluate only after both comp and nocomp gates expose comparable Stage1
+  checkpoints.
+- Use YouTube-VOS / DAVIS video inpainting metrics through
+  `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
+- Do not use VBench for this inpainting comparison.

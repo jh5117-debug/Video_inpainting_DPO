@@ -63,6 +63,40 @@ H20:
 - no DPO Stage2
 - no VBench for inpainting eval
 
+## 2026-06-03 Monitor Snapshot
+
+New Exp6 prompt-length audit:
+
+- The prompt-length contact sheets were generated under
+  `logs/analysis/new_exp6_prompt_length/`.
+- Human visual review supports the hypothesis that new Exp6 can beat
+  DiffuEraser-base on several longer prompts, but the result is still a
+  bridge-domain qualitative pattern rather than a final target-domain metric
+  conclusion.
+
+PAI Exp9-comp:
+
+```text
+status = manual monitor pending
+manual_report = reports/pai_exp9_comp_gate_manual_monitor_report.md
+expected_step_limit = 1500
+stop_rule = only after report confirms >1500 / 10000-step horizon and a gate checkpoint exists
+```
+
+H20 Exp9-nocomp:
+
+```text
+status = running normally
+report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
+current_step = about 190 / 1500
+max_steps_detected = 1500
+checkpoint_status = no checkpoint yet
+gpu_policy = launched on GPU 0-5 only
+```
+
+H20 nocomp should be allowed to reach checkpoint-500, checkpoint-1000, and
+checkpoint-1500. Do not stop it while it is progressing normally.
+
 ## Decision Matrix
 
 | result | next step |

@@ -210,9 +210,41 @@ Decision matrix:
 - If both fail, stop direct DPO and consider target-domain SFT warmup or a
   no-lose gate.
 
+## 2026-06-03 Gate Monitor Update
+
+PAI comp gate:
+
+```text
+experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
+status = manual monitor pending
+risk = earlier pasted log showed possible 10000-step training horizon
+policy = do not auto-kill from Codex; inspect manual report first
+manual_report = reports/pai_exp9_comp_gate_manual_monitor_report.md
+```
+
+If the manual report confirms a 10000-step run and the gate has reached or
+passed `checkpoint-1500`, stop only the PAI Exp9-comp process group. Do not
+kill unrelated PAI jobs.
+
+H20 nocomp gate:
+
+```text
+experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
+status = running normally
+monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
+manifest = /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_nocomp.jsonl
+max_steps_detected = 1500
+current_step = about 190 / 1500 at 2026-06-03 14:21 CST
+checkpoint_status = no checkpoint yet
+```
+
+Do not stop H20 nocomp while it is progressing normally. It becomes evaluable
+after `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500`, or `last_weights`
+is available.
+
 ## Do Not Do
 
-- Do not start Exp9 training now.
+- Do not start new Exp9 training beyond the current gates.
 - Do not jump to Exp8.
 - Do not continue VideoDPO warmup.
 - Do not run full VBench.

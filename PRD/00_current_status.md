@@ -2,6 +2,45 @@
 
 Updated: 2026-06-02
 
+## 2026-06-03 Exp9 Gate Monitoring Boundary
+
+PAI and H20 execution boundaries are explicit:
+
+- PAI is manual-only from Codex. Provide copy/paste shell blocks and wait for
+  pasted output before judging or stopping a run.
+- H20 can be inspected by SSH from HAL. H20 monitoring reports should be
+  written directly under `/home/nvme01/H20_Video_inpainting_DPO/reports/`.
+
+Current Exp9 target-domain gates:
+
+| Host | Experiment | Status | Manifest | Max steps | Action |
+| --- | --- | --- | --- | ---: | --- |
+| PAI | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | manual monitor pending; possible 10000-step risk from earlier pasted log | D3 selected-primary-comp PAI paths | expected 1500 | run manual monitor; stop only if report confirms current step >1500 and checkpoint-1500 exists |
+| H20 | `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | running normally | D3 selected-primary-nocomp H20 paths | 1500 confirmed | continue; do not stop |
+
+H20 monitor snapshot, 2026-06-03 14:21 CST:
+
+```text
+report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
+status = running
+current_step = about 190 / 1500
+max_steps_detected = 1500
+stage_policy = Stage1 only; no DPO Stage2; no VBench
+gpu_policy = GPU 0-5 only; GPU 6/7 idle in the initial launch check
+checkpoint_status = no checkpoint yet; wait for checkpoint-500 / 1000 / 1500
+dpo_diagnostics_csv = present
+errors = no Traceback / OOM / SIGFPE detected in monitor scan
+```
+
+Next after both gates have evaluable checkpoints:
+
+- Run target-domain video inpainting evaluation on YouTube-VOS / DAVIS.
+- Use `tools/run_inpainting_metric_eval.py`, which calls
+  `inference/metrics.py`.
+- Do not use VBench for Exp9 inpainting evaluation.
+- Do not train DPO Stage2, start Exp8, regenerate D2/D3, or launch a long run
+  before the comp-vs-nocomp gate report is reviewed.
+
 ## D2 Data Readiness
 
 The D2 generated-loser dataset is ready and must not be regenerated for the
