@@ -264,6 +264,13 @@ Metric boundary:
 | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | stopped; invalid as Exp9 gate | about `4856/10000` at stop report time | stale output dir has `checkpoint-2000` and `checkpoint-4000` under `20260603_065327_exp5_d2_comp_k4_stage2_full` | not comparable | Wrapper printed Exp9 header, but stale env set `RUN_NAME=exp5_d2_comp_k4_stage2_full`, `MAX_STEPS=10000`, `CKPT_STEPS=2000`; do not use as gate1500. |
 | `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | finished normally | `1500/1500` at 2026-06-04 01:08 CST | `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500`, `last_weights` | ready | H20 report: `/home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md`; no DPO Stage2 and no VBench. |
 
+## 2026-06-04 CST Exp9 Clean Gate / Eval Matrix
+
+| Experiment | Host | Status | Eval status | Notes |
+| --- | --- | --- | --- | --- |
+| `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | PAI | clean gate running | pending completion | Clean launch confirmed D3 comp PAI manifest, Stage1-only, `max_steps=1500`, `ckpt_steps=500`, `ckpt_limit=5`; wait for `checkpoint-500/1000/1500` and `last_weights`. |
+| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | H20 | completed | D3/YouTube-VOS eval launched; DAVIS blocked | H20 D3 nocomp eval output: `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414`; early checkpoints are accelerator states and need export before direct inference comparison. |
+
 Exp9 eval rule:
 
 - Evaluate only after both comp and nocomp gates expose comparable Stage1

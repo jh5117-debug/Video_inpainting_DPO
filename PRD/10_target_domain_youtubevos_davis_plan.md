@@ -244,6 +244,39 @@ checkpoint_status = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weigh
 H20 nocomp is ready for YouTube-VOS / DAVIS inpainting evaluation through
 `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
 
+## 2026-06-04 CST Eval Execution Update
+
+PAI clean comp gate:
+
+```text
+status = running
+launch_report = reports/pai_exp9_comp_clean_launch_report.md
+verified = D3 selected-primary-comp PAI manifest, partial mask,
+           mask_from_manifest=true, Stage1 only, max_steps=1500,
+           checkpoint every 500
+```
+
+H20 nocomp target eval:
+
+```text
+status = launched for D3 selected-primary-nocomp / YouTube-VOS-derived rows
+pid = 2491068
+log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
+output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+baseline = DiffuEraser-base
+candidate = Exp9 nocomp last_weights
+```
+
+Checkpoint-500, checkpoint-1000, and checkpoint-1500 are present but are
+accelerator state directories (`model.safetensors`, optimizer/scheduler state).
+They need conversion/export to `unet_main/` + `brushnet/` before direct
+inference evaluation. `last_weights` is already exported and is directly
+evaluable.
+
+DAVIS remains blocked until target-domain prediction videos and a validated
+pair manifest are produced. Do not substitute VBench for DAVIS inpainting
+metrics.
+
 ## Do Not Do
 
 - Do not start new Exp9 training beyond the current gates.

@@ -99,6 +99,18 @@ gpu_policy = launched on GPU 0-5 only; GPUs idle after completion
 H20 nocomp is ready for target-domain inpainting evaluation. PAI comp must be
 rerun with the stale-env-safe launcher before a fair comp-vs-nocomp comparison.
 
+2026-06-04 CST update:
+
+- PAI clean Exp9-comp is running with the stale-env-safe launcher and confirmed
+  `max_steps=1500`, `ckpt_steps=500`, `ckpt_limit=5`.
+- H20 Exp9-nocomp finished the Stage1 gate and has `checkpoint-500`,
+  `checkpoint-1000`, `checkpoint-1500`, and `last_weights`.
+- H20 target eval has been launched for the D3 selected-primary-nocomp
+  YouTube-VOS-derived manifest:
+  `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414`.
+- DAVIS target eval remains blocked until prediction videos and a validated
+  `pair_manifest` are produced.
+
 ## Decision Matrix
 
 | result | next step |

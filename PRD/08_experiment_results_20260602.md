@@ -255,3 +255,29 @@ errors = none detected in monitor scan
 ```
 
 H20 nocomp is now evaluable on the target-domain inpainting metric path.
+
+## 2026-06-04 CST Exp9 Clean Comp / Nocomp Eval Update
+
+PAI clean Exp9-comp:
+
+```text
+status = clean gate running
+manual_launch_report = reports/pai_exp9_comp_clean_launch_report.md
+confirmed_config = D3 comp PAI manifest, Stage1 only, partial mask,
+                   max_steps=1500, checkpoint every 500
+```
+
+H20 Exp9-nocomp:
+
+```text
+status = Stage1 gate completed
+checkpoints_present = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
+direct_eval_checkpoint = last_weights
+target_eval = launched for D3/YouTube-VOS-derived selected-primary-nocomp rows
+target_eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+target_eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
+```
+
+DAVIS target-domain eval is still blocked because no validated DAVIS prediction
+pair manifest exists yet. The metric backend remains `inference/metrics.py`;
+VBench is not used for Exp9 inpainting.

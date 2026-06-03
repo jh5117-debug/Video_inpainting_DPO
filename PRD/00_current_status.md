@@ -2,6 +2,43 @@
 
 Updated: 2026-06-02
 
+## 2026-06-04 CST Exp9 Clean Gate / Target Eval Update
+
+PAI clean Exp9-comp gate:
+
+```text
+experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
+status = clean gate running
+manual_launch_report = reports/pai_exp9_comp_clean_launch_report.md
+manifest = selected_primary_comp.repaired.pai_paths.jsonl
+config_confirmed = Stage1 only, partial mask, mask_from_manifest=true, beta=10,
+                   winner_gap=1.0, lose_gap=0.25, max_steps=1500,
+                   ckpt_steps=500, ckpt_limit=5
+invalid_old_run = do not evaluate
+```
+
+H20 Exp9-nocomp gate:
+
+```text
+experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
+status = Stage1 gate completed
+checkpoints = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
+directly_evaluable_now = last_weights
+note = checkpoint-500/1000/1500 are accelerator state dirs and need export
+       before direct inference eval
+```
+
+H20 target-domain eval status:
+
+```text
+youtubevos_d3_nocomp_eval = launched on H20 using D3 selected-primary-nocomp
+eval_pid = 2491068
+eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
+eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+davis_eval = blocked until target prediction generation and pair_manifest are prepared
+metric_policy = use inference/metrics.py through project wrappers; no VBench
+```
+
 ## 2026-06-03 Exp9 Gate Monitoring Boundary
 
 PAI and H20 execution boundaries are explicit:
