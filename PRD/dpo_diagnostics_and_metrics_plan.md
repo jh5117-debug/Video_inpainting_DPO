@@ -328,6 +328,29 @@ Required target-domain eval settings:
 - denoise steps = 6
 - no PCM
 - no Gaussian blur
+
+## Exp6 Prompt-Length Audit And Exp9 Nocomp Gate
+
+The new Exp6 no-comp qual30 long-prompt observation is a bridge-domain
+qualitative hypothesis. It must be audited with prompt-length buckets and
+contact sheets before any conclusion.
+
+Audit tool:
+
+```text
+tools/analyze_new_exp6_prompt_length_effect.py
+```
+
+H20 complementary target-domain gate:
+
+```text
+exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
+```
+
+This run uses D3 selected-primary-nocomp, Stage1 only, and GPUs 0-5 on H20. Its
+diagnostics should be compared with the PAI D3-comp gate. Inpainting metrics
+must continue to use `inference/metrics.py`; VBench is not valid for the
+partial-mask target-domain comparison.
 - no unnecessary mask dilation
 - hard comp outside mask
 - frame-wise metric path

@@ -249,3 +249,10 @@ Metric boundary:
 | `target_youtubevos_davis_existing_ckpts_metricpy` | script prepared | YouTube-VOS / DAVIS | none | eval only | `inference/metrics.py` via wrapper | Run before Exp9; no VBench. |
 | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | launcher prepared; do not auto-run unless gate conditions hold | YouTube-VOS D3 | `selected_primary_comp.repaired.pai_paths.jsonl` or repaired manifest without H20 paths | Stage1 DPO only, no DPO Stage2 | target-domain metric wrapper | Start only after D3 primary readiness and target eval justify target-domain DPO. |
 | `exp9_youtubevos_d3_partialmask_wingap_nolose_stage1_gate1000` | prepared only | YouTube-VOS D3 | same as Exp9 first gate | Stage1 DPO only, `lose_gap_weight=0.0` | target-domain metric wrapper | Fallback if lose-gap gate still shows loser degradation or artifacts. |
+
+## 2026-06-03 H20 Complementary Matrix
+
+| Experiment | Status | Host | Domain | Training data | Stage policy | Eval backend | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `new_exp6_prompt_length_audit` | prepared / running on H20 | H20 | VideoDPO bridge qual30 | existing Exp6 side-by-side | audit only | contact sheets + human labels | Tests long-prompt improvement hypothesis; not a final target-domain result. |
+| `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | prepared for H20 launch | H20 GPUs 0-5 | YouTube-VOS D3 | selected-primary-nocomp H20 manifest | Stage1 DPO only, no DPO Stage2 | target-domain metric wrapper | Complements PAI D3-comp gate for comp-vs-nocomp decision. |

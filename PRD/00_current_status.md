@@ -385,3 +385,28 @@ Exp9 boundary:
   `winner_gap_reg_weight=1.0`, and `sft_reg_weight=0.0`.
 - Do not train DPO Stage2. Eval uses target-domain inpainting metrics, not
   VBench.
+
+## 2026-06-03 H20 Complementary Work
+
+Current split:
+
+- PAI: Exp9 D3-comp Stage1 gate.
+- H20: Exp9 D3-nocomp Stage1 gate on GPUs 0-5.
+
+Reason:
+
+- New Exp6 no-comp full-mask qual30 has a qualitative hypothesis that longer
+  prompts may look better than DiffuEraser-base.
+- This observation is not a conclusion; it requires prompt-length stratified
+  audit via `tools/analyze_new_exp6_prompt_length_effect.py`.
+- Since PAI is running the comp target-domain gate, H20 should run the nocomp
+  target-domain gate to form a comp-vs-nocomp comparison.
+
+H20 nocomp gate:
+
+- `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20`
+- manifest: D3 `selected_primary_nocomp.repaired.jsonl` or readable H20-local
+  `selected_primary_nocomp.jsonl`
+- Stage1 only; no DPO Stage2
+- `CUDA_VISIBLE_DEVICES=0,1,2,3,4,5`
+- target-domain eval uses `inference/metrics.py`, not VBench

@@ -1,0 +1,83 @@
+# New Exp6 Prompt-Length Audit And Exp9 Nocomp Plan
+
+status: **active plan**
+
+## Current Global Status
+
+- VideoDPO is the bridge domain.
+- YouTube-VOS / DAVIS are the target domains.
+- PAI is running or preparing Exp9 D3-comp Stage1 gate.
+- H20 GPUs 0-5 are available for complementary work.
+
+H20 will be used for:
+
+- new Exp6 prompt-length stratified audit.
+- Exp9 D3-nocomp Stage1 gate.
+
+## Metric Policy
+
+| task | metric backend |
+| --- | --- |
+| video generation / full-mask prompt generation | VBench |
+| video inpainting / partial-mask inpainting | `inference/metrics.py` via wrapper |
+
+Do not reimplement PSNR, SSIM, LPIPS, or Ewarp.
+
+## New Exp6 Observation
+
+Observed qualitatively by human review: new Exp6 no-comp may look better than
+DiffuEraser-base on longer prompts in the full-mask qual30 side-by-side.
+
+Status: **hypothesis only**.
+
+Required audit:
+
+```text
+tools/analyze_new_exp6_prompt_length_effect.py
+```
+
+Outputs:
+
+```text
+logs/analysis/new_exp6_prompt_length/
+reports/new_exp6_prompt_length_audit.md
+```
+
+The audit must stratify prompts by character length and generate contact sheets.
+Do not turn the long-prompt observation into a conclusion without labels or a
+larger prompt set.
+
+## Exp9 D3 Comp Vs Nocomp
+
+PAI:
+
+- `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500`
+- data: D3 selected-primary-comp
+
+H20:
+
+- `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20`
+- data: D3 selected-primary-nocomp
+- GPUs: 0-5
+- Stage1 only
+- no DPO Stage2
+- no VBench for inpainting eval
+
+## Decision Matrix
+
+| result | next step |
+| --- | --- |
+| PAI Exp9-comp > base and H20 Exp9-nocomp <= base | use comp for target-domain DPO |
+| H20 Exp9-nocomp > base and PAI Exp9-comp <= base | use no-comp for target-domain DPO |
+| both improve | compare metric and qualitative stability, then consider Stage1 sweep to 3000 |
+| both fail | stop direct DPO; consider target-domain SFT warmup or no-lose gate |
+| long-prompt Exp6 effect appears prompt-dependent | document as bridge-domain prompt-conditioning effect only |
+
+## Do Not Do
+
+- Do not stop PAI Exp9.
+- Do not use VBench for inpainting.
+- Do not train DPO Stage2.
+- Do not start Exp8.
+- Do not regenerate D2 or D3.
+- Do not use broken manifest paths.

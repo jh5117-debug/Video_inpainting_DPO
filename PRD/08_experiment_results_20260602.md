@@ -182,3 +182,29 @@ Next experiment boundary:
 - First run is Stage1-only, partial-mask, YouTube-VOS D3, no DPO Stage2.
 - Exp9 should only start after D3 primary readiness is confirmed and
   target-domain eval of existing checkpoints justifies target-domain DPO.
+
+## 2026-06-03 Addendum: Exp6 Prompt-Length Hypothesis
+
+New Exp6 no-comp qual30:
+
+```text
+exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000
+```
+
+Human visual review suggests some longer full-mask prompts may look better than
+DiffuEraser-base. This is currently a hypothesis only. The planned audit is:
+
+```text
+tools/analyze_new_exp6_prompt_length_effect.py
+```
+
+The audit stratifies the 30 qual samples by prompt length, writes contact
+sheets, and records human labels before any conclusion is made.
+
+Target-domain implication:
+
+- PAI runs Exp9 D3-comp Stage1 gate.
+- H20 should use GPUs 0-5 for Exp9 D3-nocomp Stage1 gate.
+- The final decision must be based on YouTube-VOS / DAVIS partial-mask
+  inpainting metrics and qualitative stability, not VideoDPO full-mask qual30
+  alone.

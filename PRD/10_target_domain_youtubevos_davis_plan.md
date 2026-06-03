@@ -187,10 +187,28 @@ Prepared launchers:
 ```text
 scripts/launch_exp9_youtubevos_d3_partialmask_wingap_stage1_gate_pai.sh
 scripts/launch_exp9_youtubevos_d3_partialmask_wingap_nolose_stage1_gate_pai.sh
+scripts/launch_exp9_youtubevos_d3_nocomp_partialmask_wingap_stage1_gate_h20.sh
 ```
 
 The no-lose script is a fallback only and must not be launched unless explicitly
 requested.
+
+Comp-vs-nocomp target-domain plan:
+
+- PAI: D3 selected-primary-comp Stage1 gate.
+- H20: D3 selected-primary-nocomp Stage1 gate on GPUs 0-5.
+- Compare both on YouTube-VOS / DAVIS with `inference/metrics.py` through the
+  target-domain wrapper.
+- Do not use VBench for this inpainting comparison.
+
+Decision matrix:
+
+- If comp improves and nocomp does not, use comp.
+- If nocomp improves and comp does not, use nocomp.
+- If both improve, compare metrics and qualitative temporal stability before a
+  Stage1 sweep.
+- If both fail, stop direct DPO and consider target-domain SFT warmup or a
+  no-lose gate.
 
 ## Do Not Do
 
