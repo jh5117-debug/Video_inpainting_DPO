@@ -274,8 +274,8 @@ status = Stage1 gate completed
 checkpoints_present = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
 direct_eval_checkpoint = last_weights
 target_eval = launched for D3/YouTube-VOS-derived selected-primary-nocomp rows
-target_eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
-target_eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
+target_eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
+target_eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
 ```
 
 DAVIS target-domain eval is still blocked because no validated DAVIS prediction

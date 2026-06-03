@@ -107,7 +107,7 @@ rerun with the stale-env-safe launcher before a fair comp-vs-nocomp comparison.
   `checkpoint-1000`, `checkpoint-1500`, and `last_weights`.
 - H20 target eval has been launched for the D3 selected-primary-nocomp
   YouTube-VOS-derived manifest:
-  `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414`.
+  `logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243`.
 - DAVIS target eval remains blocked until prediction videos and a validated
   `pair_manifest` are produced.
 

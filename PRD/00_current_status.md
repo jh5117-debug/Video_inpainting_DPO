@@ -32,9 +32,9 @@ H20 target-domain eval status:
 
 ```text
 youtubevos_d3_nocomp_eval = launched on H20 using D3 selected-primary-nocomp
-eval_pid = 2491068
-eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
-eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+eval_pid = 3163411
+eval_log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
+eval_output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
 davis_eval = blocked until target prediction generation and pair_manifest are prepared
 metric_policy = use inference/metrics.py through project wrappers; no VBench
 ```

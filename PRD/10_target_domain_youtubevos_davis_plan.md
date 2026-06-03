@@ -260,9 +260,9 @@ H20 nocomp target eval:
 
 ```text
 status = launched for D3 selected-primary-nocomp / YouTube-VOS-derived rows
-pid = 2491068
-log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_022414.log
-output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+pid = 3163411
+log = logs/pipelines/exp9_d3_nocomp_target_eval_20260604_023243.log
+output = logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
 baseline = DiffuEraser-base
 candidate = Exp9 nocomp last_weights
 ```
