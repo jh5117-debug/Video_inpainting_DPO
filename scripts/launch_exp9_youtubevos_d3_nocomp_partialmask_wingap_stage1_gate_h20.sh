@@ -24,8 +24,22 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5}"
 export NUM_GPUS="${NUM_GPUS:-6}"
 
 export EXP_NAME="${EXP_NAME:-exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20}"
-export RUN_NAME="${RUN_NAME:-${EXP_NAME}_stage1}"
 export RUN_VERSION="${RUN_VERSION:-$(date +%Y%m%d_%H%M%S)}"
+
+# This launcher is a fixed H20 gate. Default behavior intentionally ignores
+# stale shell variables from older runs; use EXP9_H20_ALLOW_CONFIG_OVERRIDE=true
+# only for a deliberate custom rerun.
+if [[ "${EXP9_H20_ALLOW_CONFIG_OVERRIDE:-false}" == "true" ]]; then
+  export RUN_NAME="${RUN_NAME:-${EXP_NAME}_stage1}"
+else
+  export RUN_NAME="${EXP_NAME}_stage1"
+  export STAGE1_MAX_STEPS="1500"
+  export MAX_STEPS="1500"
+  export CKPT_STEPS="500"
+  export CKPT_LIMIT="5"
+  export VAL_STEPS="999999"
+  export LOGGING_STEPS="50"
+fi
 
 D3_ROOT="${D3_ROOT:-${PROJECT_ROOT}/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
 REPAIRED_MANIFEST="${D3_ROOT}/manifests/selected_primary_nocomp.repaired.jsonl"
@@ -106,6 +120,7 @@ mkdir -p "${OUTPUT_ROOT}/logs/train/${EXP_NAME}" "${OUTPUT_ROOT}/logs/pipelines"
   echo "[exp9-h20-nocomp] train_mask_mode=${TRAIN_MASK_MODE} mask_from_manifest=${MASK_FROM_MANIFEST}"
   echo "[exp9-h20-nocomp] beta=${BETA_DPO} winner_abs=${WINNER_ABS_REG_WEIGHT} winner_gap=${WINNER_GAP_REG_WEIGHT} lose_gap=${DPO_LOSE_GAP_WEIGHT}"
   echo "[exp9-h20-nocomp] max_steps=${MAX_STEPS} ckpt_steps=${CKPT_STEPS} ckpt_limit=${CKPT_LIMIT}"
+  echo "[exp9-h20-nocomp] config_override=${EXP9_H20_ALLOW_CONFIG_OVERRIDE:-false} run_name=${RUN_NAME}"
 } | tee "${OUTPUT_ROOT}/logs/pipelines/${EXP_NAME}.log"
 
 exec bash "${PROJECT_ROOT}/training/dpo/scripts/03_dpo_stage1.sbatch" \

@@ -77,26 +77,27 @@ New Exp6 prompt-length audit:
 PAI Exp9-comp:
 
 ```text
-status = manually stopped after overshooting gate
+status = manually stopped after overshooting gate; invalid as Exp9 gate
 stop_report = reports/pai_exp9_comp_gate_stop_report.md
 expected_step_limit = 1500
 observed_step = about 4856 / 10000
-checkpoint_status = run dir / checkpoint discovery pending
+checkpoint_status = checkpoint-2000 and checkpoint-4000 under stale Exp5-named output dir
+stale_output_dir = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_065327_exp5_d2_comp_k4_stage2_full
 ```
 
 H20 Exp9-nocomp:
 
 ```text
-status = running normally
+status = finished normally
 report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
-current_step = about 341 / 1500
+current_step = 1500 / 1500
 max_steps_detected = 1500
-checkpoint_status = no checkpoint yet
-gpu_policy = launched on GPU 0-5 only
+checkpoint_status = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
+gpu_policy = launched on GPU 0-5 only; GPUs idle after completion
 ```
 
-H20 nocomp should be allowed to reach checkpoint-500, checkpoint-1000, and
-checkpoint-1500. Do not stop it while it is progressing normally.
+H20 nocomp is ready for target-domain inpainting evaluation. PAI comp must be
+rerun with the stale-env-safe launcher before a fair comp-vs-nocomp comparison.
 
 ## Decision Matrix
 

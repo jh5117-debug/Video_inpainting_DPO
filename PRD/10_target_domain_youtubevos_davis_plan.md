@@ -216,30 +216,33 @@ PAI comp gate:
 
 ```text
 experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
-status = manually stopped after overshooting gate
+status = manually stopped after overshooting gate; invalid as Exp9 gate
 stop_evidence = about 4856 / 10000
 stop_report = reports/pai_exp9_comp_gate_stop_report.md
-checkpoint_status = run dir / checkpoint discovery pending
+checkpoint_status = checkpoint-2000 and checkpoint-4000 exist under stale Exp5-named output dir
+stale_output_dir = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_065327_exp5_d2_comp_k4_stage2_full
 ```
 
-The run should not be resumed as a 10000-step long training. Locate the
-actual run directory and checkpoint set before target-domain evaluation.
+The run should not be resumed as a 10000-step long training and should not be
+reported as a valid Exp9 gate. The launcher has been patched so future Exp9
+gate runs ignore stale `RUN_NAME`, `MAX_STEPS`, `CKPT_STEPS`, `CKPT_LIMIT`,
+`VAL_STEPS`, and `LOGGING_STEPS` unless an explicit config override flag is
+set.
 
 H20 nocomp gate:
 
 ```text
 experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
-status = running normally
+status = finished normally
 monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
 manifest = /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_nocomp.jsonl
 max_steps_detected = 1500
-current_step = about 341 / 1500 at 2026-06-03 15:10 CST
-checkpoint_status = no checkpoint yet
+current_step = 1500 / 1500 at 2026-06-04 01:08 CST
+checkpoint_status = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
 ```
 
-Do not stop H20 nocomp while it is progressing normally. It becomes evaluable
-after `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500`, or `last_weights`
-is available.
+H20 nocomp is ready for YouTube-VOS / DAVIS inpainting evaluation through
+`tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
 
 ## Do Not Do
 

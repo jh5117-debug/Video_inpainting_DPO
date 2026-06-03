@@ -215,7 +215,7 @@ PAI Exp9 D3-comp:
 
 ```text
 experiment = exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500
-status = manually stopped after overshooting gate
+status = manually stopped after overshooting gate; invalid as Exp9 gate
 expected_manifest = selected_primary_comp.repaired.pai_paths.jsonl
 expected_steps = 1500
 risk = realized; stop report showed about 4856 / 10000
@@ -228,21 +228,30 @@ reports/pai_exp9_comp_gate_stop_report.md
 ```
 
 The final process check was empty for the Exp9/train/accelerate matcher, so
-the run appears stopped. The first run-dir lookup did not find checkpoints;
-locate the actual run directory before target-domain eval.
+the run appears stopped. Follow-up log inspection showed stale configuration:
+
+```text
+pipeline_header = EXP_NAME looked like Exp9
+actual_max_steps = 10000
+actual_ckpt_steps = 2000
+actual_output_dir = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_065327_exp5_d2_comp_k4_stage2_full
+available_checkpoints = checkpoint-2000, checkpoint-4000
+```
+
+This is not a valid Exp9 gate1500 checkpoint set. It can be kept only as a
+contaminated diagnostic artifact.
 
 H20 Exp9 D3-nocomp:
 
 ```text
 experiment = exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20
-status = running normally
+status = finished normally
 monitor_report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp9_nocomp_gate_monitor_report.md
-current_step = about 341 / 1500
+current_step = 1500 / 1500
 max_steps_detected = 1500
-checkpoint_status = none yet
+checkpoint_status = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
 dpo_diagnostics_csv = present
 errors = none detected in monitor scan
 ```
 
-H20 nocomp is not evaluable yet. Do not stop it unless it crashes or the log
-later proves it has exceeded the gate horizon after writing checkpoint-1500.
+H20 nocomp is now evaluable on the target-domain inpainting metric path.

@@ -15,8 +15,8 @@ Current Exp9 target-domain gates:
 
 | Host | Experiment | Status | Manifest | Max steps | Action |
 | --- | --- | --- | --- | ---: | --- |
-| PAI | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | stopped manually after overshooting gate | D3 selected-primary-comp PAI paths | actual log showed 10000 | locate checkpoint/run_dir before eval |
-| H20 | `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | running normally | D3 selected-primary-nocomp H20 paths | 1500 confirmed | continue; do not stop |
+| PAI | `exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500` | stopped; invalid as Exp9 gate | D3 selected-primary-comp PAI paths | actual log showed 10000 | do not use as Exp9 gate; stale env wrote old Exp5 run name |
+| H20 | `exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20` | finished normally | D3 selected-primary-nocomp H20 paths | 1500 confirmed | ready for target-domain eval |
 
 H20 monitor snapshot, 2026-06-03 14:21 CST:
 
@@ -40,17 +40,20 @@ status = manually stopped
 evidence = global_step about 4850 and progress 4856 / 10000
 stopped_pid = 3400017
 final_process_check = empty for exp9/train_stage1/accelerate/lingbot-worldphy matcher
-checkpoint_status = run dir lookup did not match yet; locate run dir before eval
+checkpoint_status = saved under stale output dir, not an Exp9-named gate dir
+stale_output_dir = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_065327_exp5_d2_comp_k4_stage2_full
+available_checkpoints = checkpoint-2000, checkpoint-4000
+interpretation = invalid / contaminated by stale env; not comparable to gate1500
 ```
 
-Updated H20 monitor snapshot, 2026-06-03 15:10 CST:
+Updated H20 monitor snapshot, 2026-06-04 01:08 CST:
 
 ```text
-status = running
-current_step = about 341 / 1500
+status = finished normally
+current_step = 1500 / 1500
 max_steps_detected = 1500
-gpu_policy = GPU 0-5 active; GPU 6/7 idle
-checkpoint_status = no checkpoint yet
+gpu_policy = all GPUs idle after completion
+checkpoint_status = checkpoint-500, checkpoint-1000, checkpoint-1500, last_weights
 errors = no Traceback / OOM / SIGFPE detected
 ```
 
