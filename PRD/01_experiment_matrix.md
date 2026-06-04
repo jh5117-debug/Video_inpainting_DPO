@@ -1,5 +1,35 @@
 # Experiment Matrix
 
+## 2026-06-04 Naming And Artifact Registry Repair
+
+This matrix must be read together with:
+
+- `PRD/12_experiment_artifact_registry.md`
+- `PRD/13_dpo_diag_audit.md`
+- `PRD/14_pai_manual_artifact_search_commands.md`
+
+Naming is now fixed:
+
+| Presentation name | Correct experiment identity | Notes |
+| --- | --- | --- |
+| Exp4 | `official_videodpo_diffueraser_data_fullmask_loser` / full-mask generated-loser data-only smoke | Data changed only: VideoDPO winner stays winner; loser becomes DiffuEraser full-mask generated video. Task remains full-mask/video-generation bridge, not partial-mask reconstruction. |
+| Old Exp5 | `exp5_d2_comp_k4_stage1/stage2_full` and `exp5_d2_comp_k4_beta10_s1s2_4000` | Collapsed diagnostic runs. Ranking can look correct while visual quality is broken. |
+| New Exp5 | `exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000` | Winner-anchored comp data-only rerun. Separate from Old Exp5. |
+| New Exp6 | `exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000` | No-comp + changed loss diagnostic. This is **not** an ordinary standalone Exp6. |
+| Exp7 | `exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500` | First partial-mask task-alignment gate. |
+| Exp8 | `exp8_youtubevos_d3_comp_regionloss_wingap_lose025_stage1_gate1500` | Region-loss target-domain diagnostic; do not claim completed without PAI artifacts. |
+| Exp9 | D3 target-domain partial-mask gates | H20 nocomp and no-lose artifacts found; PAI clean comp still needs PAI artifact scan. |
+
+Artifact requirement for every row:
+
+- independent folder;
+- dpo-diag CSV for DPO runs;
+- qualitative videos or screenshots;
+- eval report and metrics;
+- checkpoint folder if training completed.
+
+Rows that lack any of those are `artifact gap` / `diag gap`, not complete.
+
 ## 2026-05-31 Exp5 Collapse And Winner-Anchored Rerun
 
 Old `exp5_d2_comp_k4_stage1/stage2_full` with `beta_dpo=500` and 10000-step

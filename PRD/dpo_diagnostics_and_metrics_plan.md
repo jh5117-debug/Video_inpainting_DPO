@@ -1,5 +1,40 @@
 # DPO Diagnostics And Metrics Plan
 
+## 2026-06-04 Mandatory dpo-diag Artifact Policy
+
+This plan is now paired with `PRD/13_dpo_diag_audit.md`.
+
+Every DPO experiment must produce and preserve:
+
+- `dpo_diagnostics.csv`
+- `run_manifest.json`
+- checkpoint-step mapping
+- eval report/metrics
+- qualitative side-by-side outputs
+
+If a run does not have `dpo_diagnostics.csv`, mark it **diag gap**. Do not
+present it as complete. If a run has videos but no dpo-diag, present it as
+qualitative-only evidence until the diagnostic artifact is recovered.
+
+Minimum diagnostic fields:
+
+- `global_step` / checkpoint step
+- `dpo_loss`, `total_loss` or `anchored_total_loss`
+- `implicit_acc`
+- `mse_w`, `ref_mse_w`, `win_gap`, `mse_w_over_ref_mse_w`
+- `mse_l`, `ref_mse_l`, `lose_gap`, `mse_l_over_ref_mse_l`
+- `reward_margin`, `inside_term_mean`, `inside_term_min`, `inside_term_max`
+- `sigma_term`, `kl_divergence`, `loser_dominant_ratio`
+- `winner_abs_reg_weight`, `winner_gap_reg_weight`, `winner_gap_reg_margin`,
+  `lose_gap_weight`
+
+Current audit status:
+
+- New Exp6: dpo-diag found on H20.
+- Exp9 H20 nocomp / no-lose: dpo-diag found on H20.
+- Old Exp5 / New Exp5 / Exp7 / Exp8 / PAI clean Exp9 comp: dpo-diag not found
+  in the H20 tree scanned on 2026-06-04; PAI manual search is required.
+
 This is a plan for later training runs. The current asset-preparation phase
 does not start training and does not modify loss math.
 

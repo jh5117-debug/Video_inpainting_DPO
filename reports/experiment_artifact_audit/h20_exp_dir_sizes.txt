@@ -1,0 +1,6 @@
+2.2M	./logs/analysis/new_exp6_prompt_length
+4.0K	./logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_022414
+20K	./logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023019
+61M	./logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243
+624K	./logs/train/exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20
+924K	./logs/train/exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20

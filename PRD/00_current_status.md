@@ -1,5 +1,46 @@
 # Current Status
 
+## 2026-06-04 Artifact Registry And Naming Repair
+
+This PRD is now aligned with the artifact registry:
+`PRD/12_experiment_artifact_registry.md`.
+
+Critical naming corrections:
+
+- **Old Exp5** = unanchored / collapsed comp data-only runs, including
+  `exp5_d2_comp_k4_stage1/stage2_full` and
+  `exp5_d2_comp_k4_beta10_s1s2_4000`.
+- **New Exp5** =
+  `exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000`; comp data-only rerun
+  with winner anchoring.
+- **New Exp6** =
+  `exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000`; no-comp diagnostic
+  using changed loss / winner anchoring. Do not present this as a generic
+  ordinary "Exp6".
+- Exp4 was a full-mask generated-loser data-only smoke/negative result, not a
+  complete final training result unless PAI artifact search returns the missing
+  full run folder and dpo-diag.
+
+Artifact policy:
+
+- Every experiment must have an independent artifact folder.
+- Every DPO experiment must have a `dpo_diagnostics.csv` or be marked
+  `diag gap`.
+- Every experiment without a located folder is marked `artifact gap` and must
+  be completed from PAI manual search if the run happened there.
+
+Current audit summary:
+
+- H20 visible project path: `/home/nvme01/H20_Video_inpainting_DPO`.
+- H20 found New Exp6 dpo-diag, Exp9 nocomp dpo-diag, and Exp9 no-lose dpo-diag.
+- H20 did not find complete Old Exp5/New Exp5/Exp7/Exp8 PAI-side run folders.
+- Local presentation visuals exist under `/home/hj/dpo-2-1-exp`, but visuals do
+  not replace dpo-diag or checkpoint folders.
+
+Next required action is **PAI artifact search**, using
+`PRD/14_pai_manual_artifact_search_commands.md`. Do not start new training to
+repair documentation gaps.
+
 Updated: 2026-05-30
 
 ## D2 Data Readiness
