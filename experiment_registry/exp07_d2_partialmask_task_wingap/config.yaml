@@ -1,0 +1,25 @@
+experiment_id: exp07_current_legacy
+experiment_name: Exp7 D2 partial-mask task wingap legacy registry alias
+status: legacy_alias_incomplete
+data_asset: D2 partial-mask comp generated losers
+source_domain: VideoDPO
+target_domain: partial-mask inpainting
+manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl
+train_task: partial-mask video inpainting
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: old D2 policy; audit pending
+prior_mode: eval prior suspicious; ProPainter prior not confirmed
+beta_dpo: 10
+lose_gap_weight: 0.25
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: full
+stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1
+stage2_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage2
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: /home/hj/dpo-2-1-exp/exp7-gate1500
+metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_metrics_pending_path
+vbench_dir: not used for inpainting
+conclusion: Legacy alias for exp07_partialmask_task_current_failed; current result is suspicious until prior and mask audit are fixed.

@@ -1,0 +1,25 @@
+experiment_id: exp09_nolose_legacy
+experiment_name: Exp9 D3 comp no-lose-gap gate legacy registry alias
+status: legacy_alias_h20_gate_complete_eval_pending
+data_asset: D3 YouTube-VOS comp generated losers
+source_domain: YouTube-VOS
+target_domain: DAVIS / target-domain inpainting
+manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.jsonl
+train_task: partial-mask video inpainting
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 existing policy
+prior_mode: must use fine-tuned SFT-48000 DiffuEraser for YouTube-VOS; H20 path unresolved due SSH block
+beta_dpo: 10
+lose_gap_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: full
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_080411_exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20_stage1
+stage2_run_dir: none
+dpo_diag_csv: reports/dpo_diag_snapshots/exp09_comp_nolose_stage1_dpo_diagnostics.csv
+qual_dir: pending
+metric_dir: pending
+vbench_dir: not used for inpainting
+conclusion: Legacy alias for exp09_d3_nolose_gate; tests whether removing lose_gap reduces loser-degradation shortcut.

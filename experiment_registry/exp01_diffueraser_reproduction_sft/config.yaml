@@ -1,0 +1,29 @@
+experiment_id: exp01
+experiment_name: DiffuEraser reproduction / SFT / metric setting
+short_name: diffueraser_reproduction_sft
+status: historical_complete_registry_partial
+machine: HAL/H20/PAI historical
+data_asset: DiffuEraser official/SFT assets
+source_domain: DAVIS/YouTube-VOS-style inpainting
+target_domain: video inpainting
+manifest: 'historical; see PRD/DPO_Project_Complete_Summary.md'
+train_task: DiffuEraser SFT/reproduction
+train_mask_mode: partial/full depending eval
+mask_from_manifest: n/a
+mask_area_range: n/a
+prior_mode: 'propainter for partial-mask inpainting; no-prior/noise for fullmask generation'
+loss_region_mode: SFT reconstruction
+beta_dpo: ''
+lose_gap_weight: ''
+winner_abs_reg_weight: ''
+winner_gap_reg_weight: ''
+winner_gap_reg_margin: ''
+sft_reg_weight: SFT MSE
+stage1_run_dir: historical path backfill needed
+stage2_run_dir: historical path backfill needed
+dpo_diag_csv: not DPO
+qual_dir: historical qualitative path backfill needed
+metric_dir: historical metrics path backfill needed
+vbench_dir: n/a for inpainting
+conclusion: 'Base/SFT and metric sanity check; YouTube-VOS SFT-48000 is a strong baseline, not a naked base.'
+next_action: 'Keep as baseline reference; do not call converted_weights_step48000 ordinary base.'

@@ -1,0 +1,8 @@
+# Path registry for exp04
+manifest: not found; exp4-data reportedly deleted
+stage1_run_dir: n/a
+stage2_run_dir: n/a
+dpo_diag_csv: not applicable; failed before useful DPO
+qual_dir: /home/hj/dpo-2-1-exp/exp4-data (deleted/missing)
+metric_dir: n/a
+vbench_dir: n/a

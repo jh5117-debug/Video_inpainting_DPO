@@ -1,0 +1,29 @@
+experiment_id: exp07_hybrid
+experiment_name: Exp7 DPO-S1 + frozen SFT/base-S2 hybrid
+short_name: dpoS1_sftS2_hybrid
+status: eval_complete_negative
+machine: PAI/H20 NAS
+data_asset: D2 partial-mask eval
+source_domain: VideoDPO
+target_domain: stage composition diagnostic
+manifest: same D2 selected_primary_comp.repaired.jsonl
+train_task: 'no training; hybrid checkpoint build/eval'
+train_mask_mode: partial inference
+mask_from_manifest: true
+mask_area_range: old D2 policy
+prior_mode: eval tool appears no ProPainter prior
+loss_region_mode: n/a
+beta_dpo: ''
+lose_gap_weight: ''
+winner_abs_reg_weight: ''
+winner_gap_reg_weight: ''
+winner_gap_reg_margin: ''
+sft_reg_weight: ''
+stage1_run_dir: Exp7 DPO Stage1 last_weights from D2 partial-mask comp gate
+stage2_run_dir: official/base/SFT Stage2 temporal weights
+dpo_diag_csv: 'not training; see Exp7 diag'
+qual_dir: /home/hj/dpo-2-1-exp/Hybrid_DPO_S1_last__Official_DiffuEraser_base_Stage2
+metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_pm_dpoS1_sftS2_hybrid_20260602_025336/metrics
+vbench_dir: not used
+conclusion: 'Did not rescue Exp7; confirms Stage2 DPO should remain stopped.'
+next_action: Do not treat as final candidate.

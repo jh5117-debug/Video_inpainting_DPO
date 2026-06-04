@@ -1,0 +1,29 @@
+experiment_id: exp07_fix
+experiment_name: 'Exp7 fix: VideoDPO small-mask 15-20 + ProPainter prior'
+short_name: fix_smallmask_prior
+status: planned_registry_ready_data_not_generated
+machine: PAI/H20 planned
+data_asset: new non-overwriting VideoDPO small-mask generated losers
+source_domain: VideoDPO clips mostly static
+target_domain: partial-mask inpainting sanity before D3
+manifest: data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/manifests/selected_primary_comp.repaired.jsonl
+train_task: Stage1-only partial-mask inpainting gate
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: 0.15-0.20
+prior_mode: propainter required for partial-mask generation/eval
+loss_region_mode: full
+beta_dpo: 10
+lose_gap_weight: '0.25 PAI; 0.0 H20 no-lose'
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+sft_reg_weight: 0
+stage1_run_dir: pending
+stage2_run_dir: 'none; DPO Stage2 disabled'
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: pending four-column visualization
+metric_dir: pending inference/metrics.py true partial-mask eval
+vbench_dir: not used
+conclusion: Planned correction for Exp7 before expanding D3.
+next_action: 'Generate smallmask data gate; then PAI lose_gap=0.25 and H20 no-lose Stage1 gates.'

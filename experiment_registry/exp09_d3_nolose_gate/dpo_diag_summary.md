@@ -1,0 +1,24 @@
+# DPO Diagnostics Summary: exp09_nolose
+
+- short_name: `d3_nolose_gate`
+- diag_file_status: `FOUND`
+- diag_status: `DPO_SATURATED;COLLAPSE_RISK`
+- dpo_diag_csv: `reports/dpo_diag_snapshots/exp09_comp_nolose_stage1_dpo_diagnostics.csv`
+- row_count: `101`
+- first_step: `1`
+- last_step: `1000`
+
+## Key Risk Fields
+
+- dpo_loss_median: `0.69124`
+- dpo_loss_frac_lt_1e_3: `0`
+- implicit_acc_mean: `0.991749`
+- win_gap_p90: `-4.90795e-05`
+- win_gap_frac_gt_0_5: `0`
+- mse_w_over_ref_mse_w_p90: `0.985498`
+- mse_w_over_ref_mse_w_frac_gt_5: `0`
+- mse_l_over_ref_mse_l_p90: `0.999991`
+- sigma_term_frac_gt_0_99: `0`
+- loser_dominant_ratio_mean: `0`
+
+If `diag_file_status` is `MISSING_DIAG`, this experiment is incomplete as DPO evidence even if videos or metrics exist.

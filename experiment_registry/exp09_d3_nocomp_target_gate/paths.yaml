@@ -1,0 +1,8 @@
+# Path registry for exp09_nocomp
+manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_nocomp.jsonl
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_131758_exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20_stage1
+stage2_run_dir: none
+dpo_diag_csv: reports/dpo_diag_snapshots/exp09_nocomp_stage1_dpo_diagnostics.csv
+qual_dir: /home/hj/dpo-2-1-exp/exp9_d3_nocomp_gate; H20 logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243/side_by_side
+metric_dir: /home/nvme01/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243/metrics
+vbench_dir: not used

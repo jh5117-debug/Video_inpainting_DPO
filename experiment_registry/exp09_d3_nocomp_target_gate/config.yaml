@@ -1,0 +1,29 @@
+experiment_id: exp09_nocomp
+experiment_name: Exp9 D3 no-comp Stage1 target-domain gate
+short_name: d3_nocomp_target_gate
+status: H20_complete_eval_complete
+machine: H20
+data_asset: D3 YouTube-VOS no-comp generated losers
+source_domain: YouTube-VOS train
+target_domain: DAVIS eval required eventually
+manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_nocomp.jsonl
+train_task: Stage1-only partial-mask inpainting
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 existing policy
+prior_mode: 'must use SFT-48000 for YouTube-VOS; H20 path unresolved due SSH block'
+loss_region_mode: full
+beta_dpo: 10
+lose_gap_weight: 0.25
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+sft_reg_weight: 0
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260603_131758_exp9_youtubevos_d3_nocomp_partialmask_wingap_lose025_stage1_gate1500_h20_stage1
+stage2_run_dir: none
+dpo_diag_csv: reports/dpo_diag_snapshots/exp09_nocomp_stage1_dpo_diagnostics.csv
+qual_dir: '/home/hj/dpo-2-1-exp/exp9_d3_nocomp_gate; H20 logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243/side_by_side'
+metric_dir: /home/nvme01/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243/metrics
+vbench_dir: not used
+conclusion: 'Completed, but qualitative review says both baseline and DPO can look poor; use as caution.'
+next_action: Compare only after baseline/prior path audit.

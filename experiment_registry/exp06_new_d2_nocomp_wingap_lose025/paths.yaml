@@ -1,0 +1,8 @@
+# Path registry for exp06_new
+manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_nocomp.repaired.jsonl
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage1
+stage2_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage2
+dpo_diag_csv: reports/dpo_diag_snapshots/exp06_new_stage1_dpo_diagnostics.csv
+qual_dir: /home/hj/dpo-2-1-exp/new-exp6; H20 qual_sbs_30 exp6_d2_nocomp...
+metric_dir: H20 qual_sbs and prompt-length reports
+vbench_dir: path backfill pending

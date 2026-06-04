@@ -1,0 +1,29 @@
+experiment_id: exp03
+experiment_name: official VideoDPO framework with DiffuEraser replacement
+short_name: official_videodpo_diffueraser
+status: historical_complete_registry_partial
+machine: PAI/H20 historical
+data_asset: official VideoDPO pairs with DiffuEraser model bridge
+source_domain: VideoDPO
+target_domain: bridge sanity check
+manifest: 'official VideoDPO manifest; path backfill needed'
+train_task: full-mask bridge / video-generation style
+train_mask_mode: full
+mask_from_manifest: false
+mask_area_range: n/a
+prior_mode: 'no ProPainter prior; fullmask bridge'
+loss_region_mode: full-video
+beta_dpo: historical/default
+lose_gap_weight: historical/default
+winner_abs_reg_weight: 0
+winner_gap_reg_weight: 0
+winner_gap_reg_margin: 0
+sft_reg_weight: historical/default
+stage1_run_dir: path backfill needed
+stage2_run_dir: path backfill needed
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: path backfill needed
+metric_dir: path backfill needed
+vbench_dir: path backfill needed
+conclusion: 'DiffuEraser can be wired into VideoDPO; later failures are objective/data issues.'
+next_action: Backfill artifacts if needed.

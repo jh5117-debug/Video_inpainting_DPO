@@ -1,0 +1,11 @@
+experiment_id: exp09_nolose
+short_name: d3_comp_nolose_gate
+machine: H20
+data_asset: D3 YouTube-VOS comp generated losers
+manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.jsonl
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_080411_exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20_stage1
+stage2_run_dir: none
+dpo_diag_csv: reports/dpo_diag_snapshots/exp09_comp_nolose_stage1_dpo_diagnostics.csv
+qual_dir: pending target eval / no copied videos yet
+metric_dir: pending target eval
+vbench_dir: not used

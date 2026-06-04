@@ -1,0 +1,29 @@
+experiment_id: exp05_old
+experiment_name: Old Exp5 D2 comp plain DPO / beta500 and beta10 plain
+short_name: old_d2_comp_plain_failed
+status: failed_collapse_pai_artifacts_need_diag_backfill
+machine: 'PAI likely; HAL visual evidence'
+data_asset: D2 partial-mask comp K=4 generated losers
+source_domain: VideoDPO
+target_domain: data-only bridge diagnostic
+manifest: 'D2 selected_primary_comp.repaired.jsonl; PAI exact path pending'
+train_task: 'data-only full-mask bridge; model did not see partial mask'
+train_mask_mode: full
+mask_from_manifest: false
+mask_area_range: 'old D2 policy roughly 20-30 or larger; audit pending'
+prior_mode: no-prior/noise for fullmask bridge training/eval
+loss_region_mode: full-video
+beta_dpo: '500 old; 10 intermediate plain'
+lose_gap_weight: 1.0
+winner_abs_reg_weight: 0
+winner_gap_reg_weight: 0
+winner_gap_reg_margin: 0
+sft_reg_weight: 0
+stage1_run_dir: '/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260526_172044_exp5_d2_comp_k4_stage1_full; beta10 path from PAI audit'
+stage2_run_dir: '/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260526_172044_exp5_d2_comp_k4_stage2_full; beta10 path from PAI audit'
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: /home/hj/dpo-2-1-exp/exp5
+metric_dir: PAI/H20 path pending
+vbench_dir: PAI/H20 path pending
+conclusion: 'Collapsed: ranking can be satisfied while winner visual quality breaks.'
+next_action: 'Recover PAI dpo_diag; keep as failed DPO evidence.'

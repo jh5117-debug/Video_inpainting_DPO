@@ -1,0 +1,8 @@
+# Path registry for exp07_fix
+manifest: data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/manifests/selected_primary_comp.repaired.jsonl
+stage1_run_dir: pending
+stage2_run_dir: none; DPO Stage2 disabled
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: pending four-column visualization
+metric_dir: pending inference/metrics.py true partial-mask eval
+vbench_dir: not used

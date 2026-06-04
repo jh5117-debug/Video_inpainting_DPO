@@ -1,0 +1,8 @@
+# Path registry for exp07_current
+manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl
+stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1
+stage2_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage2
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: /home/hj/dpo-2-1-exp/exp7-gate1500; Exp7_DPO_Stage1_last; Exp7_DPO_S1_DPO_S2_last
+metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_*/metrics
+vbench_dir: not valid for partial-mask inpainting

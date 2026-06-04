@@ -1,0 +1,29 @@
+experiment_id: exp02
+experiment_name: official VideoDPO / VC2 reproduction
+short_name: official_videodpo_vc2
+status: historical_complete_registry_partial
+machine: PAI/H20 historical
+data_asset: official VideoDPO pairs
+source_domain: VideoDPO
+target_domain: video generation preference reproduction
+manifest: 'official VideoDPO manifest; path backfill needed'
+train_task: official VideoDPO VC2
+train_mask_mode: full/video-generation
+mask_from_manifest: false
+mask_area_range: n/a
+prior_mode: 'no ProPainter prior; generation task'
+loss_region_mode: official full-video
+beta_dpo: official/default
+lose_gap_weight: official/default
+winner_abs_reg_weight: 0
+winner_gap_reg_weight: 0
+winner_gap_reg_margin: 0
+sft_reg_weight: official/default
+stage1_run_dir: path backfill needed
+stage2_run_dir: path backfill needed
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: path backfill needed
+metric_dir: path backfill needed
+vbench_dir: path backfill needed
+conclusion: Official pipeline sanity check.
+next_action: Backfill artifacts if needed for provenance.

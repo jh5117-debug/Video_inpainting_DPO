@@ -1,0 +1,8 @@
+# Path registry for exp02
+manifest: official VideoDPO manifest; path backfill needed
+stage1_run_dir: path backfill needed
+stage2_run_dir: path backfill needed
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: path backfill needed
+metric_dir: path backfill needed
+vbench_dir: path backfill needed

@@ -1,0 +1,11 @@
+experiment_id: exp08
+short_name: d3_comp_regionloss_gate
+machine: PAI intended
+data_asset: D3 YouTube-VOS comp generated losers
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+stage1_run_dir: pending
+stage2_run_dir: none
+dpo_diag_csv: MISSING_DIAG
+qual_dir: pending
+metric_dir: pending
+vbench_dir: not used

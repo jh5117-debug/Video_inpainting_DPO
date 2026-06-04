@@ -1,0 +1,29 @@
+experiment_id: exp09_comp
+experiment_name: Exp9 D3 comp Stage1 target-domain gate
+short_name: d3_comp_target_gate
+status: PAI_clean_gate_complete_eval_complete_diag_pending
+machine: PAI
+data_asset: D3 YouTube-VOS comp generated losers
+source_domain: YouTube-VOS train
+target_domain: DAVIS eval required eventually
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+train_task: Stage1-only partial-mask inpainting
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 existing policy
+prior_mode: 'must use fine-tuned DiffuEraser SFT-48000, not naked base; PAI path /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000'
+loss_region_mode: full
+beta_dpo: 10
+lose_gap_weight: 0.25
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+sft_reg_weight: 0
+stage1_run_dir: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_020643_exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500_stage1
+stage2_run_dir: none
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: /home/hj/dpo-2-1-exp/exp9_d3_comp_gate_pai_ckpt500
+metric_dir: logs/target_eval/exp9_d3_comp_gate_pai_20260604_044925/metrics
+vbench_dir: not used
+conclusion: 'ckpt500 is an early-window candidate relative to SFT-48000 baseline; longer DPO degraded.'
+next_action: Do not scale D3 until Exp7 smallmask/prior audit passes and PAI dpo_diag is recovered.

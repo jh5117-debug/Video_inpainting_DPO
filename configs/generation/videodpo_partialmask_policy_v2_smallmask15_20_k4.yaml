@@ -1,0 +1,32 @@
+policy_name: videodpo_partialmask_policy_v2_smallmask15_20_k4
+num_masks_per_video: 4
+seed: 20260604
+
+canonical:
+  height: 320
+  width: 512
+  num_frames: 16
+
+# Exp7-fix policy: keep masks small enough for normal partial-mask inpainting.
+mask_area_min: 0.15
+mask_area_max: 0.20
+mask_margin_ratio: 0.10
+mask_static_prob: 0.50
+mask_speed_min: 0.50
+mask_speed_max: 1.50
+mask_center_jitter_ratio: 0.04
+mask_motion_box_ratio: 0.16
+mask_dilation_iter: 0
+mask_shape: irregular_polygon
+mask_location: interior_constrained
+mask_motion: two_static_two_slow_or_equivalent_random_with_static_prob
+
+generation_policy:
+  data_root: data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4
+  source_domain: VideoDPO
+  num_winners_gate: 1000_or_2000
+  k_masks: 4
+  prior_mode: propainter
+  primary_manifest: selected_primary_comp
+  save_raw_and_comp: true
+  do_not_overwrite_old_d2: true

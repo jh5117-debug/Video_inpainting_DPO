@@ -1,0 +1,8 @@
+# Path registry for exp08
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260526_172044_exp8_youtubevos_d3_comp_regionloss_wingap_lose025_stage1_gate1500_stage1
+stage2_run_dir: none
+dpo_diag_csv: MISSING_DPO_DIAG
+qual_dir: pending
+metric_dir: pending
+vbench_dir: not used

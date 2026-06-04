@@ -1,0 +1,8 @@
+# Path registry for exp09_nolose
+manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.jsonl
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_080411_exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20_stage1
+stage2_run_dir: none
+dpo_diag_csv: reports/dpo_diag_snapshots/exp09_comp_nolose_stage1_dpo_diagnostics.csv
+qual_dir: pending
+metric_dir: pending
+vbench_dir: not used
