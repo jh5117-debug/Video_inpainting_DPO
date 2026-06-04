@@ -9,7 +9,7 @@ train_task: partial-mask video inpainting
 train_mask_mode: partial
 mask_from_manifest: true
 mask_area_range: D3 existing policy
-prior_mode: must use fine-tuned SFT-48000 DiffuEraser for YouTube-VOS; H20 path unresolved due SSH block
+prior_mode: must use fine-tuned SFT-48000 DiffuEraser for YouTube-VOS; H20 confirmed path: /home/nvme01/H20_Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000
 beta_dpo: 10
 lose_gap_weight: 0.0
 winner_abs_reg_weight: 0.05
