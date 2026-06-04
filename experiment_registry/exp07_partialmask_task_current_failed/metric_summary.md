@@ -1,7 +1,7 @@
 # Metric Summary
 
-- metric_dir: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_*/metrics`
-- vbench_dir: `not valid for partial-mask inpainting`
+Metric path: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260601_131656/metrics; exp7_gate1500_20260602_000500/metrics`
 
-Inpainting tasks must use `inference/metrics.py` through project wrappers, not VBench.
-VBench is only valid for video-generation/fullmask-generation style outputs.
+Conclusion: Task changed but quality is unstable; base also poor, so eval/prior/domain/mask must be audited before more DPO.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

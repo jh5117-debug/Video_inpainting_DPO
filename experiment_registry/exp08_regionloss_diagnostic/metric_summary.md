@@ -1,7 +1,7 @@
 # Metric Summary
 
-- metric_dir: `pending`
-- vbench_dir: `not used`
+Metric path: `pending`
 
-Inpainting tasks must use `inference/metrics.py` through project wrappers, not VBench.
-VBench is only valid for video-generation/fullmask-generation style outputs.
+Conclusion: Region-loss diagnostic is valid only if implementation and SFT-48000 baseline are confirmed.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

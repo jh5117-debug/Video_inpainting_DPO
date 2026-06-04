@@ -1,29 +1,34 @@
 experiment_id: exp07_current
 experiment_name: Exp7 current D2 partial-mask task gate
-short_name: partialmask_task_current_failed
-status: failed_or_suspicious_needs_prior_mask_audit
-machine: 'PAI/H20 NAS; HAL visual evidence'
+status: failed_or_suspicious_remote_diag_found
 data_asset: D2 comp manifest with generated partial masks
 source_domain: VideoDPO clips mostly static
 target_domain: partial-mask inpainting task alignment
-manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl
+manifest: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_comp.repaired.jsonl
 train_task: true partial-mask inpainting
 train_mask_mode: partial
 mask_from_manifest: true
-mask_area_range: 'old D2 policy; likely too large for current goal; audit pending'
-prior_mode: 'training uses manifest masks; eval tool currently appears no ProPainter prior'
-loss_region_mode: full
+mask_area_range: old D2 policy; likely too large for current goal; audit pending
+prior_mode: training uses manifest masks; eval tool currently appears no ProPainter prior
 beta_dpo: 10
 lose_gap_weight: 0.25
+sft_reg_weight: 0
 winner_abs_reg_weight: 0.05
 winner_gap_reg_weight: 1.0
 winner_gap_reg_margin: 0.0
-sft_reg_weight: 0
-stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1
-stage2_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage2
-dpo_diag_csv: MISSING_DPO_DIAG
-qual_dir: '/home/hj/dpo-2-1-exp/exp7-gate1500; Exp7_DPO_Stage1_last; Exp7_DPO_S1_DPO_S2_last'
-metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_*/metrics
-vbench_dir: not valid for partial-mask inpainting
-conclusion: 'Task changed but quality is unstable; base also poor, so eval/prior/domain/mask must be audited before more DPO.'
-next_action: Run Exp7 small-mask + ProPainter-prior fix gate only after audit.
+loss_region_mode: full
+stage1_run_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1
+stage2_run_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage2
+dpo_diag_csv: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1/dpo_diagnostics.csv;/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage2/dpo_diagnostics.csv
+qual_dir: |
+  /home/hj/dpo-2-1-exp/exp7-gate1500; /mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_20260601_065618
+metric_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/logs/partialmask_eval/exp7_gate1500_20260601_131656/metrics; exp7_gate1500_20260602_000500/metrics
+vbench_dir: not used
+conclusion: Task changed but quality is unstable; base also poor, so eval/prior/domain/mask must be audited before more DPO.
+loss_formula: |
+  L = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap). Task change: TRAIN_MASK_MODE=partial, MASK_FROM_MANIFEST=true.

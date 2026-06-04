@@ -1,16 +1,23 @@
 # DiffuEraser reproduction / SFT / metric setting
 
-- experiment_id: `exp01`
-- short_name: `diffueraser_reproduction_sft`
 - status: `historical_complete_registry_partial`
-- train_task: `DiffuEraser SFT/reproduction`
-- source_domain: `DAVIS/YouTube-VOS-style inpainting`
-- target_domain: `video inpainting`
+- short_name: `diffueraser_reproduction_sft`
+- task: DiffuEraser SFT/reproduction
+- data: DiffuEraser official/SFT assets
 
-## What This Experiment Tests
+## Loss
 
-Base/SFT and metric sanity check; YouTube-VOS SFT-48000 is a strong baseline, not a naked base.
+m_w = policy winner MSE; m_l = policy loser MSE; m_w_ref/m_l_ref are reference MSE.
+win_gap = m_w - m_w_ref; lose_gap = m_l - m_l_ref.
+inside = -0.5 * beta_dpo * (win_gap - lose_gap_weight * lose_gap).
+L_DPO = mean[-logsigmoid(inside)].
 
-## Registry Rule
+Experiment-specific loss: SFT reconstruction MSE, not DPO.
 
-This folder stores pointers and summaries only. Do not copy checkpoints, videos, datasets, or weights here.
+## Conclusion
+
+SFT-48000 is a strong YouTube-VOS-tuned baseline, not a naked base.
+
+## Next Action
+
+Keep as baseline reference; do not call converted_weights_step48000 ordinary base.

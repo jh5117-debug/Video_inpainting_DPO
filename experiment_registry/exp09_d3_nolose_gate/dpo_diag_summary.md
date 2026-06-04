@@ -21,4 +21,4 @@
 - sigma_term_frac_gt_0_99: `0`
 - loser_dominant_ratio_mean: `0`
 
-If `diag_file_status` is `MISSING_DIAG`, this experiment is incomplete as DPO evidence even if videos or metrics exist.
+If `diag_file_status` is `MISSING_DIAG` or `REMOTE_DIAG_PATH_FOUND`, this experiment still needs local diagnostic CSV backfill before numeric DPO claims are final.

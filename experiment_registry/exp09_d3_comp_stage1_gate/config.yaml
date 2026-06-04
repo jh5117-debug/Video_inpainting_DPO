@@ -1,25 +1,33 @@
-experiment_id: exp09_comp_legacy
-experiment_name: Exp9 D3 comp Stage1 target-domain gate legacy registry alias
-status: legacy_alias_pai_clean_gate_complete_eval_complete_diag_pending
+experiment_id: exp09_comp
+experiment_name: Exp9 D3 comp Stage1 target-domain gate
+status: PAI_clean_gate_complete_eval_complete_remote_diag_found
 data_asset: D3 YouTube-VOS comp generated losers
-source_domain: YouTube-VOS
-target_domain: DAVIS / target-domain inpainting
-manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
-train_task: partial-mask video inpainting
+source_domain: YouTube-VOS train
+target_domain: DAVIS eval required eventually
+manifest: |
+  /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+train_task: Stage1-only partial-mask inpainting
 train_mask_mode: partial
 mask_from_manifest: true
 mask_area_range: D3 existing policy
-prior_mode: must use fine-tuned SFT-48000 DiffuEraser for YouTube-VOS; ProPainter prior audit pending
+prior_mode: |
+  must use fine-tuned DiffuEraser SFT-48000, not naked base; PAI path /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
 beta_dpo: 10
 lose_gap_weight: 0.25
+sft_reg_weight: 0
 winner_abs_reg_weight: 0.05
 winner_gap_reg_weight: 1.0
 winner_gap_reg_margin: 0.0
 loss_region_mode: full
-stage1_run_dir: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_020643_exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500_stage1
+stage1_run_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_020643_exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500_stage1
 stage2_run_dir: none
-dpo_diag_csv: MISSING_DPO_DIAG
-qual_dir: /home/hj/dpo-2-1-exp/exp9_d3_comp_gate_pai_ckpt500
-metric_dir: logs/target_eval/exp9_d3_comp_gate_pai_20260604_044925/metrics
-vbench_dir: not used for inpainting
-conclusion: Legacy alias for exp09_d3_comp_target_gate; ckpt500 is the best early-window candidate but DPO degrades after longer training.
+dpo_diag_csv: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_020643_exp9_youtubevos_d3_partialmask_wingap_lose025_stage1_gate1500_stage1/dpo_diagnostics.csv
+qual_dir: |
+  /home/hj/dpo-2-1-exp/exp9_d3_comp_gate_pai_ckpt500; /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_comp_gate_pai_20260604_044925/side_by_side
+metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_comp_gate_pai_20260604_044925/metrics
+vbench_dir: not used
+conclusion: ckpt500 is an early-window candidate; longer DPO degraded. Baseline/prior validity still needs care.
+loss_formula: |
+  L = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap). Data source = YouTube-VOS D3 comp; Stage1 only.

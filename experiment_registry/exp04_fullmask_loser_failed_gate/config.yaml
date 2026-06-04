@@ -1,29 +1,27 @@
 experiment_id: exp04
 experiment_name: Exp4 fullmask generated loser quality gate
-short_name: fullmask_loser_failed_gate
 status: failed_quality_gate_deleted_artifact
-machine: 'HAL evidence; PAI/H20 path missing'
 data_asset: fullmask DiffuEraser generated losers from VideoDPO winners
 source_domain: VideoDPO
 target_domain: fullmask generated-loser diagnostic
-manifest: 'not found; exp4-data reportedly deleted'
-train_task: 'planned data-only full-mask bridge; no official useful training'
+manifest: not found; exp4-data reportedly deleted
+train_task: planned data-only full-mask bridge; no official useful training
 train_mask_mode: full
 mask_from_manifest: false
 mask_area_range: full frame
-prior_mode: 'no-prior/noise; fullmask has no context'
-loss_region_mode: full-video
+prior_mode: no-prior/noise; fullmask has no context
 beta_dpo: planned old default likely 500
-lose_gap_weight: planned 1
+lose_gap_weight: planned 1.0
+sft_reg_weight: 0
 winner_abs_reg_weight: 0
 winner_gap_reg_weight: 0
 winner_gap_reg_margin: 0
-sft_reg_weight: 0
+loss_region_mode: full-video
 stage1_run_dir: n/a
 stage2_run_dir: n/a
-dpo_diag_csv: 'not applicable; failed before useful DPO'
+dpo_diag_csv: not applicable; failed before useful DPO
 qual_dir: /home/hj/dpo-2-1-exp/exp4-data (deleted/missing)
 metric_dir: n/a
 vbench_dir: n/a
-conclusion: 'Generated fullmask losers were too poor; stopped as data negative evidence.'
-next_action: 'Do not continue Exp4; explain why partial-mask K=4 was introduced.'
+conclusion: Generated fullmask losers were too poor; stopped as data negative evidence.
+loss_formula: No reliable DPO training artifact; quality gate failed before formal DPO.

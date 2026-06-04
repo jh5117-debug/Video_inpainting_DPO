@@ -1,3 +1,1 @@
-# Links Or Symlinks
-
-This legacy alias folder stores path pointers only. Do not copy videos, weights, datasets, or checkpoints into the registry.
+Place only lightweight symlinks or path notes here. Do not copy videos, weights, or datasets into git.

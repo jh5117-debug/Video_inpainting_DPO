@@ -1,29 +1,30 @@
 experiment_id: exp09_nolose
 experiment_name: Exp9 D3 comp no-lose-gap gate
-short_name: d3_nolose_gate
-status: H20_gate_complete_eval_pending
-machine: H20
+status: H20_gate_complete_eval_pending_local_diag
 data_asset: D3 YouTube-VOS comp generated losers
 source_domain: YouTube-VOS train
 target_domain: DAVIS eval required eventually
-manifest: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.jsonl
+manifest: |
+  /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.jsonl
 train_task: Stage1-only partial-mask inpainting
 train_mask_mode: partial
 mask_from_manifest: true
 mask_area_range: D3 existing policy
-prior_mode: 'must use SFT-48000 for YouTube-VOS; H20 confirmed path: /home/nvme01/H20_Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000'
-loss_region_mode: full
+prior_mode: |
+  must use SFT-48000 for YouTube-VOS; H20 confirmed path /home/nvme01/H20_Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000
 beta_dpo: 10
 lose_gap_weight: 0.0
+sft_reg_weight: 0
 winner_abs_reg_weight: 0.05
 winner_gap_reg_weight: 1.0
 winner_gap_reg_margin: 0.0
-sft_reg_weight: 0
-stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_080411_exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20_stage1
+loss_region_mode: full
+stage1_run_dir: |
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260604_080411_exp9_youtubevos_d3_comp_wingap_nolose_stage1_gate1000_h20_stage1
 stage2_run_dir: none
 dpo_diag_csv: reports/dpo_diag_snapshots/exp09_comp_nolose_stage1_dpo_diagnostics.csv
 qual_dir: pending
 metric_dir: pending
 vbench_dir: not used
-conclusion: 'Tests removing loser-degradation incentive; do not evaluate as final until DAVIS/metric and prior baseline are fixed.'
-next_action: Hold D3 expansion until Exp7 fix.
+conclusion: Tests removing loser-degradation incentive; do not evaluate as final until DAVIS/metric and prior baseline are fixed.
+loss_formula: L = -logσ{-0.5 * 10 * win_gap} + 0.05 * m_w + ReLU(win_gap).

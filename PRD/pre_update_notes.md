@@ -26,3 +26,11 @@ Before more target-domain DPO:
 Training may use YouTube-VOS/D3, but final target eval should use DAVIS:
 
 `/mnt/workspace/hj/nas_hj/data/external/davis_432_240`
+## 2026-06-04 PAI Audit Backfill Notes
+
+- PAI audit found remote dpo diagnostics for Old Exp5, Exp5 beta10 plain, New Exp5, Exp7, Exp8, and Exp9-comp.
+- PPT should present Exp5 beta10 plain as its own failed diagnostic: lowering beta was not enough.
+- New Exp5 should be presented as winner-preserving DPO that improved quality relative to collapse but did not solve the final task.
+- New Exp6 should be presented as no-comp + same New Exp5 loss; do not call it plain Exp6.
+- Exp7-fix is now the priority before more D3: small mask 15%-20% plus ProPainter prior.
+

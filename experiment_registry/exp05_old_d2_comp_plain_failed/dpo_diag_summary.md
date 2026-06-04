@@ -1,9 +1,9 @@
 # DPO Diagnostics Summary: exp05_old
 
 - short_name: `old_d2_comp_plain_failed`
-- diag_file_status: `MISSING_DIAG`
-- diag_status: `MISSING_DIAG`
-- dpo_diag_csv: `MISSING_DPO_DIAG`
+- diag_file_status: `REMOTE_DIAG_PATH_FOUND`
+- diag_status: `INCOMPLETE`
+- dpo_diag_csv: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260526_172044_exp5_d2_comp_k4_stage1_full/dpo_diagnostics.csv;/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260527_181634_exp5_d2_comp_k4_stage2_full/dpo_diagnostics.csv`
 - row_count: `0`
 - first_step: ``
 - last_step: ``
@@ -21,4 +21,4 @@
 - sigma_term_frac_gt_0_99: ``
 - loser_dominant_ratio_mean: ``
 
-If `diag_file_status` is `MISSING_DIAG`, this experiment is incomplete as DPO evidence even if videos or metrics exist.
+If `diag_file_status` is `MISSING_DIAG` or `REMOTE_DIAG_PATH_FOUND`, this experiment still needs local diagnostic CSV backfill before numeric DPO claims are final.

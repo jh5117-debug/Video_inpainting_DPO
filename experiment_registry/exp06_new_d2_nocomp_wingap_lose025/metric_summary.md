@@ -1,7 +1,7 @@
 # Metric Summary
 
-- metric_dir: `H20 qual_sbs and prompt-length reports`
-- vbench_dir: `path backfill pending`
+Metric path: `H20 qual_sbs and prompt-length reports`
 
-Inpainting tasks must use `inference/metrics.py` through project wrappers, not VBench.
-VBench is only valid for video-generation/fullmask-generation style outputs.
+Conclusion: New Exp6 is no-comp + winner anchoring, not plain Exp6; promising qualitative progress but not final.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

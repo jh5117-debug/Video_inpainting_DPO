@@ -1,8 +1,14 @@
-# Path registry for exp01
-manifest: historical; see PRD/DPO_Project_Complete_Summary.md
-stage1_run_dir: historical path backfill needed
-stage2_run_dir: historical path backfill needed
-dpo_diag_csv: not DPO
-qual_dir: historical qualitative path backfill needed
-metric_dir: historical metrics path backfill needed
-vbench_dir: n/a for inpainting
+manifest: |
+  historical; see PRD/DPO_Project_Complete_Summary.md
+stage1_run_dir: |
+  historical path backfill needed
+stage2_run_dir: |
+  historical path backfill needed
+dpo_diag_csv: |
+  not DPO
+qual_dir: |
+  historical qualitative path backfill needed
+metric_dir: |
+  historical metrics path backfill needed
+vbench_dir: |
+  n/a for inpainting

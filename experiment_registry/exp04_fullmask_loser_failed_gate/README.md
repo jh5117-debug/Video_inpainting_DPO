@@ -1,16 +1,23 @@
 # Exp4 fullmask generated loser quality gate
 
-- experiment_id: `exp04`
-- short_name: `fullmask_loser_failed_gate`
 - status: `failed_quality_gate_deleted_artifact`
-- train_task: `planned data-only full-mask bridge; no official useful training`
-- source_domain: `VideoDPO`
-- target_domain: `fullmask generated-loser diagnostic`
+- short_name: `fullmask_loser_failed_gate`
+- task: planned data-only full-mask bridge; no official useful training
+- data: fullmask DiffuEraser generated losers from VideoDPO winners
 
-## What This Experiment Tests
+## Loss
+
+m_w = policy winner MSE; m_l = policy loser MSE; m_w_ref/m_l_ref are reference MSE.
+win_gap = m_w - m_w_ref; lose_gap = m_l - m_l_ref.
+inside = -0.5 * beta_dpo * (win_gap - lose_gap_weight * lose_gap).
+L_DPO = mean[-logsigmoid(inside)].
+
+Experiment-specific loss: No reliable DPO training artifact; quality gate failed before formal DPO.
+
+## Conclusion
 
 Generated fullmask losers were too poor; stopped as data negative evidence.
 
-## Registry Rule
+## Next Action
 
-This folder stores pointers and summaries only. Do not copy checkpoints, videos, datasets, or weights here.
+Do not continue Exp4; explain why partial-mask K=4 was introduced.

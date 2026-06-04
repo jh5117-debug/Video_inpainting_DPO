@@ -1,9 +1,5 @@
 # Status
 
-Status: `complete_on_h20_eval_complete`
-
-Conclusion: Completed and evaluable; qualitative review suggests both base and DPO can look poor on target-domain eval, so metrics need qualitative caveat.
-
-Next action: Use in comp-vs-nocomp report; avoid long sweep unless it beats comp/base robustly.
-
-Evidence rule: final claims require metric + qualitative + dpo_diag, or must be marked as incomplete/diagnostic-only.
+- status: `H20_complete_eval_complete_local_diag`
+- conclusion: Completed, but qualitative review says both baseline and DPO can look poor; use as caution.
+- next_action: Compare only after baseline/prior path audit.

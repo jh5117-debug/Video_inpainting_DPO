@@ -2,30 +2,20 @@
 
 Updated: 2026-06-04
 
-The weekly PPT was corrected outside the repo at:
+Outputs:
 
-`/home/hj/dpo-2-1-exp_presentation/Video_Inpainting_DPO_weekly_pre_CN_20260604.pptx`
+- `PRD/weekly_pre_revised_experiment_registry_diag.pptx`
+- `/home/hj/dpo-2-1-exp_presentation/Video_Inpainting_DPO_weekly_pre_CN_20260604.pptx`
 
-A repo copy is stored at:
+Added slides:
 
-`PRD/weekly_pre_revised_experiment_registry_diag.pptx`
+1. PAI audit backfill and registry/dpo_diag status.
+2. Real DPO loss formulas for Old Exp5, Exp5 beta10 plain, New Exp5, New Exp6, Exp7, Exp9, and no-lose candidate.
+3. Exp7-fix plan: small mask 15%-20% plus ProPainter prior before more D3 expansion.
 
-Required changes included:
+Naming fixes retained:
 
-- Split Old Exp5, Exp5 beta10 plain, New Exp5, and New Exp6.
-- Added exact DPO loss notation and weights.
-- Corrected Exp9 baseline: SFT-48000 DiffuEraser, not ordinary base.
-- Added/retained experiment registry and dpo-diagnostic framing.
-- Added Exp7 suspicion: prior/mask/eval path must be audited before more D3.
-
-No old PPT was deleted.
-
-## 2026-06-04 registry/diag slide addendum
-
-Added three Chinese slides to both the presentation copy and PRD copy:
-
-- `Experiment registry：每个实验一个文件夹`
-- `DPO diagnostics：不能只看视频`
-- `Exp7 reset：small mask + ProPainter prior`
-
-The deck now has 24 slides.
+- Old Exp5 and New Exp5 are separate.
+- Exp5 beta10 plain is a separate failed diagnostic.
+- New Exp6 is no-comp + winner-anchored loss, not plain Exp6.
+- DPO diagnostics are mandatory evidence.

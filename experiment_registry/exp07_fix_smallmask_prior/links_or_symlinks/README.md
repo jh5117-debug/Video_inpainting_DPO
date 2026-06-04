@@ -1,1 +1,1 @@
-Links are optional and should point to actual external artifacts only. Do not copy large files here.
+Place only lightweight symlinks or path notes here. Do not copy videos, weights, or datasets into git.

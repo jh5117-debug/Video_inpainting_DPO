@@ -1,5 +1,5 @@
 # Qualitative Summary
 
-- qual_dir: `/home/hj/dpo-2-1-exp/exp5`
+Qualitative/video path: `/home/hj/dpo-2-1-exp/exp5; PAI qual path pending`
 
-Required qualitative format for new runs: winner/GT, mask overlay, SFT-48000 baseline, current experiment, optional generated loser or hybrid columns.
+Notes: Collapsed: ranking can be satisfied while winner visual quality breaks.

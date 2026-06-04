@@ -1,5 +1,5 @@
 # Status
 
-- status: `failed_or_suspicious_needs_prior_mask_audit`
+- status: `failed_or_suspicious_remote_diag_found`
 - conclusion: Task changed but quality is unstable; base also poor, so eval/prior/domain/mask must be audited before more DPO.
-- next_action: Run Exp7 small-mask + ProPainter-prior fix gate only after audit.
+- next_action: Run Exp7 small-mask + ProPainter-prior fix gate only after data check.

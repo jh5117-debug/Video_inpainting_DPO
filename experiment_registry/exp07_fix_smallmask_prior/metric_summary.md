@@ -1,7 +1,7 @@
 # Metric Summary
 
-- metric_dir: `pending inference/metrics.py true partial-mask eval`
-- vbench_dir: `not used`
+Metric path: `pending inference/metrics.py true partial-mask eval`
 
-Inpainting tasks must use `inference/metrics.py` through project wrappers, not VBench.
-VBench is only valid for video-generation/fullmask-generation style outputs.
+Conclusion: Planned correction for Exp7 before expanding D3.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

@@ -1,8 +1,14 @@
-# Path registry for exp05_new
-manifest: D2 selected_primary_comp.repaired.jsonl; PAI exact path pending
-stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260531_134817_exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_stage1
-stage2_run_dir: stage2 path pending PAI audit
-dpo_diag_csv: MISSING_DPO_DIAG
-qual_dir: /home/hj/dpo-2-1-exp/new-exp5
-metric_dir: PAI/H20 path pending
-vbench_dir: PAI/H20 path pending
+manifest: |
+  D2 selected_primary_comp.repaired.jsonl; exact PAI path pending
+stage1_run_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260531_134817_exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_stage1
+stage2_run_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260531_134817_exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_stage2
+dpo_diag_csv: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260531_134817_exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_stage1/dpo_diagnostics.csv;/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260531_134817_exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_stage2/dpo_diagnostics.csv
+qual_dir: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/exp5_d2_comp_k4_wingap_lose025_beta10_s1s2_4000_20260531_134817; /home/hj/dpo-2-1-exp/new-exp5
+metric_dir: |
+  PAI/H20 path pending
+vbench_dir: |
+  PAI/H20 path pending

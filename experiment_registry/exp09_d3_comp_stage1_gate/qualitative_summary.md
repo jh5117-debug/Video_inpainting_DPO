@@ -1,9 +1,5 @@
 # Qualitative Summary
 
-Qualitative/video directory: `/home/hj/dpo-2-1-exp/exp9_d3_comp_gate_pai_ckpt500`
+Qualitative/video path: `/home/hj/dpo-2-1-exp/exp9_d3_comp_gate_pai_ckpt500; /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_comp_gate_pai_20260604_044925/side_by_side`
 
-Current qualitative note:
-
-ckpt500 beat base on mask/whole metrics in pasted PAI summary; 1000/1500/last were worse than ckpt500, supporting short-window conclusion.
-
-This registry stores paths only. Do not copy mp4/png artifacts into git.
+Notes: ckpt500 is an early-window candidate; longer DPO degraded. Baseline/prior validity still needs care.

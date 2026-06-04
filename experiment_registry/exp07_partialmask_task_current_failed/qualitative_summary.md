@@ -1,5 +1,5 @@
 # Qualitative Summary
 
-- qual_dir: `/home/hj/dpo-2-1-exp/exp7-gate1500; Exp7_DPO_Stage1_last; Exp7_DPO_S1_DPO_S2_last`
+Qualitative/video path: `/home/hj/dpo-2-1-exp/exp7-gate1500; /mnt/nas/hj/H20_Video_inpainting_DPO/logs/qual_sbs_30/exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_20260601_065618`
 
-Required qualitative format for new runs: winner/GT, mask overlay, SFT-48000 baseline, current experiment, optional generated loser or hybrid columns.
+Notes: Task changed but quality is unstable; base also poor, so eval/prior/domain/mask must be audited before more DPO.

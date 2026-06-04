@@ -1,5 +1,5 @@
 # Qualitative Summary
 
-- qual_dir: `historical qualitative path backfill needed`
+Qualitative/video path: `historical qualitative path backfill needed`
 
-Required qualitative format for new runs: winner/GT, mask overlay, SFT-48000 baseline, current experiment, optional generated loser or hybrid columns.
+Notes: SFT-48000 is a strong YouTube-VOS-tuned baseline, not a naked base.

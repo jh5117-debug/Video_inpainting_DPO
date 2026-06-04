@@ -1,7 +1,7 @@
 # Commands
 
-This experiment reuses shared project code. Exact historical commands may require PAI/H20 log backfill.
+No command is run from this registry file. Actual training/eval commands must be copied into this file before launch.
 
-## Current Next Action
+## Current command status
 
-Generate smallmask data gate; then PAI lose_gap=0.25 and H20 no-lose Stage1 gates.
+Generate/check smallmask data, then H20 Stage1 gate if data is ready.

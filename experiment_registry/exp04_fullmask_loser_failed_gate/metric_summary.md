@@ -1,7 +1,7 @@
 # Metric Summary
 
-- metric_dir: `n/a`
-- vbench_dir: `n/a`
+Metric path: `n/a`
 
-Inpainting tasks must use `inference/metrics.py` through project wrappers, not VBench.
-VBench is only valid for video-generation/fullmask-generation style outputs.
+Conclusion: Generated fullmask losers were too poor; stopped as data negative evidence.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

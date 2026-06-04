@@ -1,25 +1,23 @@
-# Exp9 D3 no-comp Stage1 gate
+# Exp9 D3 no-comp Stage1 target-domain gate
 
-Short name: `d3_nocomp_stage1_gate`
+- status: `H20_complete_eval_complete_local_diag`
+- short_name: `d3_nocomp_target_gate`
+- task: Stage1-only partial-mask inpainting
+- data: D3 YouTube-VOS no-comp generated losers
 
-Status: `complete_on_h20_eval_complete`
+## Loss
 
-## What This Experiment Does
+m_w = policy winner MSE; m_l = policy loser MSE; m_w_ref/m_l_ref are reference MSE.
+win_gap = m_w - m_w_ref; lose_gap = m_l - m_l_ref.
+inside = -0.5 * beta_dpo * (win_gap - lose_gap_weight * lose_gap).
+L_DPO = mean[-logsigmoid(inside)].
 
-Target-domain no-comp counterpart to Exp9 comp.
+Experiment-specific loss: L = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap). Data change: final_loser = raw_loser no-comp; Stage1 only.
 
-## How It Was Run / Intended
+## Conclusion
 
-Use D3 raw no-comp losers, partial-mask task, full loss, winner anchoring, Stage1-only gate1500.
-
-## Current Result
-
-H20 eval completed; no-comp did not clearly solve target-domain visual quality.
-
-## Conclusion Boundary
-
-Completed and evaluable; qualitative review suggests both base and DPO can look poor on target-domain eval, so metrics need qualitative caveat.
+Completed, but qualitative review says both baseline and DPO can look poor; use as caution.
 
 ## Next Action
 
-Use in comp-vs-nocomp report; avoid long sweep unless it beats comp/base robustly.
+Compare only after baseline/prior path audit.

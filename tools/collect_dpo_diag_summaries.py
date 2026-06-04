@@ -36,6 +36,13 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--registry", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--markdown", required=True, type=Path)
+    parser.add_argument(
+        "--path-audit",
+        action="append",
+        default=[],
+        type=Path,
+        help="Optional PAI/H20 registry audit CSV with a path column. If a diagnostic CSV is only present remotely, mark it as REMOTE_DIAG_PATH_FOUND.",
+    )
     return parser.parse_args()
 
 
@@ -111,11 +118,18 @@ def read_rows(path: Path) -> list[dict[str, str]]:
         return list(csv.DictReader(f))
 
 
-def resolve_path(path_text: str, base_dir: Path) -> Path | None:
+def split_diag_paths(path_text: str) -> list[str]:
     path_text = (path_text or "").strip()
     if not path_text or path_text.upper() in {"MISSING_DIAG", "MISSING_DPO_DIAG", "REMOTE_ONLY", "PENDING_PAI"}:
-        return None
+        return []
     if path_text.lower() in {"not dpo", "not_dpo", "n/a non-dpo"}:
+        return []
+    return [p.strip() for p in path_text.split(";") if p.strip()]
+
+
+def resolve_path(path_text: str, base_dir: Path) -> Path | None:
+    path_text = (path_text or "").strip()
+    if not path_text:
         return None
     p = Path(path_text)
     if p.is_absolute():
@@ -130,6 +144,22 @@ def collect_file(path: Path) -> tuple[list[dict[str, str]], str]:
     if not rows:
         return [], "INCOMPLETE"
     return rows, "FOUND"
+
+
+def read_audit_paths(paths: Iterable[Path]) -> set[str]:
+    out: set[str] = set()
+    for path in paths:
+        if not path.exists():
+            continue
+        try:
+            rows = read_rows(path)
+        except Exception:
+            continue
+        for row in rows:
+            p = (row.get("path") or "").strip()
+            if p:
+                out.add(p)
+    return out
 
 
 def values_for(rows: Iterable[dict[str, str]], column: str) -> list[float]:
@@ -158,6 +188,8 @@ def first_last_step(rows: list[dict[str, str]]) -> tuple[str, str]:
 def label_diag(summary: dict[str, str], found_status: str) -> str:
     if found_status == "NOT_DPO":
         return "NOT_DPO"
+    if found_status in {"REMOTE_DIAG_PATH_FOUND", "FOUND_PARTIAL"}:
+        return "INCOMPLETE"
     if found_status == "MISSING_DIAG":
         return "MISSING_DIAG"
     if found_status == "INCOMPLETE":
@@ -180,13 +212,33 @@ def label_diag(summary: dict[str, str], found_status: str) -> str:
     return ";".join(dict.fromkeys(labels))
 
 
-def summarize_registry_row(reg_row: dict[str, str], base_dir: Path) -> dict[str, str]:
+def summarize_registry_row(reg_row: dict[str, str], base_dir: Path, audit_paths: set[str]) -> dict[str, str]:
     diag_path_text = reg_row.get("dpo_diag_csv", "")
     if diag_path_text.strip().lower() in {"not dpo", "not_dpo", "n/a non-dpo"}:
         rows, found_status = [], "NOT_DPO"
     else:
-        diag_path = resolve_path(diag_path_text, base_dir)
-        rows, found_status = ([], "MISSING_DIAG") if diag_path is None else collect_file(diag_path)
+        rows = []
+        statuses = []
+        remote_found = False
+        for path_text in split_diag_paths(diag_path_text):
+            diag_path = resolve_path(path_text, base_dir)
+            file_rows, status = ([], "MISSING_DIAG") if diag_path is None else collect_file(diag_path)
+            if file_rows:
+                rows.extend(file_rows)
+            if status == "MISSING_DIAG" and path_text in audit_paths:
+                status = "REMOTE_DIAG_PATH_FOUND"
+                remote_found = True
+            statuses.append(status)
+        if rows and remote_found:
+            found_status = "FOUND_PARTIAL"
+        elif rows:
+            found_status = "FOUND"
+        elif remote_found:
+            found_status = "REMOTE_DIAG_PATH_FOUND"
+        elif statuses and all(s == "INCOMPLETE" for s in statuses):
+            found_status = "INCOMPLETE"
+        else:
+            found_status = "MISSING_DIAG"
     summary = {
         "experiment_id": reg_row.get("experiment_id", ""),
         "short_name": reg_row.get("short_name", ""),
@@ -235,7 +287,7 @@ def write_markdown(rows: list[dict[str, str]], path: Path) -> None:
         "# All Experiments DPO Diagnostic Summary",
         "",
         "This table is generated from `experiment_registry/experiment_matrix.csv`.",
-        "Experiments without a local diagnostic CSV are explicitly marked `MISSING_DIAG`.",
+        "Experiments without a local diagnostic CSV are explicitly marked `MISSING_DIAG`; remote paths found in PAI/H20 audits are marked `REMOTE_DIAG_PATH_FOUND`.",
         "",
         "|" + "|".join(columns) + "|",
         "|" + "|".join(["---"] * len(columns)) + "|",
@@ -280,7 +332,7 @@ def write_registry_summaries(rows: list[dict[str, str]], registry_path: Path) ->
             f"- sigma_term_frac_gt_0_99: `{row.get('sigma_term_frac_gt_0_99', '')}`",
             f"- loser_dominant_ratio_mean: `{row.get('loser_dominant_ratio_mean', '')}`",
             "",
-            "If `diag_file_status` is `MISSING_DIAG`, this experiment is incomplete as DPO evidence even if videos or metrics exist.",
+            "If `diag_file_status` is `MISSING_DIAG` or `REMOTE_DIAG_PATH_FOUND`, this experiment still needs local diagnostic CSV backfill before numeric DPO claims are final.",
         ]
         target.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -289,7 +341,8 @@ def main() -> None:
     args = parse_args()
     registry_rows = read_rows(args.registry)
     base_dir = args.registry.parent.parent.resolve()
-    summaries = [summarize_registry_row(row, base_dir) for row in registry_rows]
+    audit_paths = read_audit_paths(args.path_audit)
+    summaries = [summarize_registry_row(row, base_dir, audit_paths) for row in registry_rows]
     fieldnames = list(summaries[0].keys()) if summaries else [
         "experiment_id",
         "short_name",

@@ -1,5 +1,7 @@
 # Metric Summary
 
-Legacy alias folder. See `experiment_registry/exp09_d3_nocomp_target_gate/metric_summary.md`.
+Metric path: `/home/nvme01/H20_Video_inpainting_DPO/logs/target_eval/exp9_d3_nocomp_gate_h20_20260604_023243/metrics`
 
-Completed H20 target eval exists, but user qualitative review found both DiffuEraser and DPO outputs poor. Treat as cautionary evidence until prior mode and SFT-48000 baseline paths are confirmed.
+Conclusion: Completed, but qualitative review says both baseline and DPO can look poor; use as caution.
+
+For partial-mask inpainting use `inference/metrics.py` / wrapper, not VBench.

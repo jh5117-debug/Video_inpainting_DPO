@@ -1,29 +1,33 @@
 experiment_id: exp06_new
 experiment_name: New Exp6 D2 no-comp winner-gap regularized DPO
-short_name: new_d2_nocomp_wingap_lose025
-status: completed_h20_registry
-machine: H20
+status: completed_h20_diag_local
 data_asset: D2 partial-mask no-comp K=4 raw generated losers
 source_domain: VideoDPO
 target_domain: comp/no-comp diagnostic
-manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_nocomp.repaired.jsonl
-train_task: 'data-only full-mask bridge; model did not see partial mask'
+manifest: |
+  /mnt/nas/hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_data_partialmask_loser_k4/manifests/selected_primary_nocomp.repaired.jsonl
+train_task: data-only full-mask bridge; model did not see partial mask
 train_mask_mode: full
 mask_from_manifest: false
-mask_area_range: 'old D2 policy roughly 20-30 or larger; audit pending'
-prior_mode: no-prior/noise for fullmask bridge
-loss_region_mode: full-video
+mask_area_range: old D2 policy roughly 20-30% or larger; audit pending
+prior_mode: no ProPainter prior for fullmask bridge
 beta_dpo: 10
 lose_gap_weight: 0.25
+sft_reg_weight: 0
 winner_abs_reg_weight: 0.05
 winner_gap_reg_weight: 1.0
 winner_gap_reg_margin: 0.0
-sft_reg_weight: 0
-stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage1
-stage2_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage2
-dpo_diag_csv: reports/dpo_diag_snapshots/exp06_new_stage1_dpo_diagnostics.csv
-qual_dir: '/home/hj/dpo-2-1-exp/new-exp6; H20 qual_sbs_30 exp6_d2_nocomp...'
+loss_region_mode: full-video
+stage1_run_dir: |
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage1
+stage2_run_dir: |
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage2
+dpo_diag_csv: |
+  reports/dpo_diag_snapshots/exp06_new_stage1_dpo_diagnostics.csv;reports/dpo_diag_snapshots/exp06_new_stage2_dpo_diagnostics.csv
+qual_dir: |
+  /home/hj/dpo-2-1-exp/new-exp6; /home/nvme01/H20_Video_inpainting_DPO/logs/qual_sbs_30/exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_20260601_004753
 metric_dir: H20 qual_sbs and prompt-length reports
 vbench_dir: path backfill pending
-conclusion: 'New Exp6 is no-comp + winner anchoring, not plain Exp6; promising qualitative progress but not final.'
-next_action: 'Use for comp/no-comp story; do not rename as plain Exp6.'
+conclusion: New Exp6 is no-comp + winner anchoring, not plain Exp6; promising qualitative progress but not final.
+loss_formula: |
+  L = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap). Data change: final_loser = raw_loser, no comp.

@@ -1,22 +1,7 @@
 # Commands
 
-No commands are executed from this registry file.
+No command is run from this registry file. Actual training/eval commands must be copied into this file before launch.
 
-## Training / Eval Command Status
+## Current command status
 
-- Registry status: `pai_clean_gate_complete_eval_complete_diag_pending`
-- Any missing PAI commands or logs must be recovered by the PAI manual audit block.
-- Do not rerun training from this file.
-
-## Intended Configuration Snapshot
-
-```text
-train_task = Target-domain partial-mask inpainting
-train_mask_mode = partial
-mask_from_manifest = true
-loss_region_mode = full
-beta_dpo = 10
-winner_abs_reg_weight = 0.05
-winner_gap_reg_weight = 1.0
-lose_gap_weight = 0.25
-```
+Do not scale D3 until Exp7 smallmask/prior audit passes.
