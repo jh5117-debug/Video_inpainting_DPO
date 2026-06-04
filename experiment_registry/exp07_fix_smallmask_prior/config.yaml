@@ -1,7 +1,7 @@
 experiment_id: exp07_fix
 experiment_name: |
   Exp7 fix: VideoDPO small-mask 15-20 + ProPainter prior
-status: planned_registry_ready_data_check_pending
+status: data_generation_running_h20
 data_asset: new non-overwriting VideoDPO small-mask generated losers
 source_domain: VideoDPO clips mostly static
 target_domain: partial-mask inpainting sanity before D3

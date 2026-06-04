@@ -33,3 +33,23 @@ Updated: 2026-06-05 CST
 ## Next safe step
 
 Run only the preflight first. If it confirms the VideoDPO train yaml, ProPainter weights, smallmask config, and dry-run are valid, then start smallmask data generation. Only after `selected_primary_comp.repaired.jsonl` exists should the Stage1 gate launcher run.
+## 2026-06-05 CST Update: data generation launched
+
+- Data generation was launched on H20 after dry-run passed.
+- PID: `2590851`
+- Log: `/home/nvme01/H20_Video_inpainting_DPO/logs/pipelines/exp07_fix_smallmask_prior_data_generation_h20_20260605_050336.log`
+- PID file: `/home/nvme01/H20_Video_inpainting_DPO/logs/pipelines/exp07_fix_smallmask_prior_data_generation_h20.pid`
+- Output root: `/home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4`
+- GPU: `CUDA_VISIBLE_DEVICES=1`, `DIFFUERASER_GPU=1`
+- Scope: `limit=1000`, `models=diffueraser`, `K=4`, `mask_area=0.15-0.20`, `prior=propainter` via DiffuEraser wrapper.
+- Stage1 training was not launched. It must wait for `manifests/selected_primary_comp.jsonl` or repaired equivalent.
+
+Monitor snapshot at 05:04:46 CST:
+
+```text
+process = running
+GPU1 memory = 4 MiB, util = 0 at snapshot (likely startup / CPU decode stage)
+output candidate dirs count = 2
+fatal errors = none observed yet; log had not flushed key lines
+```
+
