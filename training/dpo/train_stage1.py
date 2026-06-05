@@ -325,6 +325,9 @@ def compute_dpo_loss(
     model_pred,
     ref_pred,
     noise,
+    loss_weight_map=None,
+    loss_region_mode="full",
+    region_stats=None,
     beta_dpo=500.0,
     sft_reg_weight=0.0,
     lose_gap_weight=1.0,
@@ -348,13 +351,30 @@ def compute_dpo_loss(
     """
     target = noise.repeat(2, 1, 1, 1)  # repeat 匹配 pos+neg
 
-    # ‖ε - ε_θ‖² per-sample
-    model_losses = (model_pred.float() - target.float()).pow(2).mean(dim=[1, 2, 3])
+    def per_sample_mse(pred, tgt, weight_map=None):
+        err = (pred.float() - tgt.float()).pow(2)
+        if weight_map is None:
+            return err.mean(dim=[1, 2, 3])
+        weight = weight_map.to(device=err.device, dtype=err.dtype)
+        if weight.shape[0] * 2 == err.shape[0]:
+            weight = weight.repeat(2, 1, 1, 1)
+        if weight.shape[0] != err.shape[0]:
+            raise ValueError(
+                f"loss_weight_map batch={weight.shape[0]} does not match prediction batch={err.shape[0]}"
+            )
+        if weight.shape[-2:] != err.shape[-2:]:
+            weight = F.interpolate(weight, size=err.shape[-2:], mode="nearest")
+        if weight.shape[1] == 1 and err.shape[1] != 1:
+            weight = weight.expand(-1, err.shape[1], -1, -1)
+        return (err * weight).mean(dim=[1, 2, 3])
+
+    # ‖ε - ε_θ‖² per-sample. In region mode this is region-weighted MSE.
+    model_losses = per_sample_mse(model_pred, target, loss_weight_map)
     model_losses_w, model_losses_l = model_losses.chunk(2)
 
     # ‖ε - ε_ref‖² (常量)
     with torch.no_grad():
-        ref_losses = (ref_pred.float() - target.float()).pow(2).mean(dim=[1, 2, 3])
+        ref_losses = per_sample_mse(ref_pred, target, loss_weight_map)
         ref_losses_w, ref_losses_l = ref_losses.chunk(2)
 
     scale_term = -0.5 * beta_dpo
@@ -422,6 +442,7 @@ def compute_dpo_loss(
         loser_degrade_ratio = loser_dominant_wins / n_correct.clamp(min=1)
 
     diagnostics = {
+        "loss_region_mode": str(loss_region_mode),
         "dpo_loss": dpo_loss.detach().item(),
         "total_loss": loss.detach().item(),
         "anchored_total_loss": loss.detach().item(),
@@ -459,12 +480,58 @@ def compute_dpo_loss(
         "n_correct_local": int(n_correct.detach().item()),
         "n_total_local": inside_term.size(0),
     }
+    if region_stats:
+        diagnostics.update({k: float(v) for k, v in region_stats.items()})
+        diagnostics.update(
+            {
+                "region_weighted_mse_w": model_losses_w.mean().detach().item(),
+                "region_weighted_mse_l": model_losses_l.mean().detach().item(),
+                "region_weighted_ref_mse_w": ref_losses_w.mean().detach().item(),
+                "region_weighted_ref_mse_l": ref_losses_l.mean().detach().item(),
+            }
+        )
     # 保留原始 tensor 供跨卡 gather
     diagnostics["_inside_term"] = inside_term.detach()
     diagnostics["_winner_improvement"] = winner_improvement.detach()
     diagnostics["_loser_degradation"] = loser_degradation.detach()
 
     return loss, diagnostics
+
+
+def build_region_loss_weight_map(
+    brushnet_masks,
+    mask_region_weight=1.0,
+    boundary_region_weight=0.5,
+    outside_region_weight=0.05,
+):
+    """Build latent-resolution region weights from DiffuEraser/BrushNet masks.
+
+    `brushnet_masks` follows the repository convention used by the current
+    manifest dataset: 0 means unknown/hole, 1 means known outside context.
+    Therefore the DPO mask region is `1 - brushnet_masks`.
+    """
+    if brushnet_masks.ndim != 5:
+        raise ValueError(f"expected masks as [B,F,1,H,W], got shape={tuple(brushnet_masks.shape)}")
+    if brushnet_masks.shape[2] != 1:
+        raise ValueError(f"expected one mask channel, got shape={tuple(brushnet_masks.shape)}")
+    hole = 1.0 - rearrange(brushnet_masks.float(), "b f c h w -> (b f) c h w")
+    mask_region = (hole > 0.5).float()
+    dilated = F.max_pool2d(mask_region, kernel_size=3, stride=1, padding=1)
+    eroded = 1.0 - F.max_pool2d(1.0 - mask_region, kernel_size=3, stride=1, padding=1)
+    boundary_region = ((dilated - eroded) > 0.0).float()
+    outside_region = (1.0 - torch.clamp(mask_region + boundary_region, 0.0, 1.0)).float()
+    weight = torch.full_like(mask_region, float(outside_region_weight))
+    weight = torch.where(boundary_region > 0.5, torch.full_like(weight, float(boundary_region_weight)), weight)
+    weight = torch.where(mask_region > 0.5, torch.full_like(weight, float(mask_region_weight)), weight)
+    stats = {
+        "region_mask_weight": float(mask_region_weight),
+        "region_boundary_weight": float(boundary_region_weight),
+        "region_outside_weight": float(outside_region_weight),
+        "mask_area_ratio": mask_region.mean().detach().item(),
+        "boundary_area_ratio": boundary_region.mean().detach().item(),
+        "outside_area_ratio": outside_region.mean().detach().item(),
+    }
+    return weight, stats
 
 
 def compute_dpo_grad_norm(loss, params_to_optimize):
@@ -684,6 +751,17 @@ DPO_DIAG_CSV_FIELDS = [
     "inside_term_mean",
     "inside_term_min",
     "inside_term_max",
+    "loss_region_mode",
+    "region_mask_weight",
+    "region_boundary_weight",
+    "region_outside_weight",
+    "mask_area_ratio",
+    "boundary_area_ratio",
+    "outside_area_ratio",
+    "region_weighted_mse_w",
+    "region_weighted_mse_l",
+    "region_weighted_ref_mse_w",
+    "region_weighted_ref_mse_l",
 ]
 
 
@@ -734,6 +812,17 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "inside_term_mean": diag.get("inside_term_mean"),
         "inside_term_min": diag.get("inside_term_min"),
         "inside_term_max": diag.get("inside_term_max"),
+        "loss_region_mode": diag.get("loss_region_mode"),
+        "region_mask_weight": diag.get("region_mask_weight"),
+        "region_boundary_weight": diag.get("region_boundary_weight"),
+        "region_outside_weight": diag.get("region_outside_weight"),
+        "mask_area_ratio": diag.get("mask_area_ratio"),
+        "boundary_area_ratio": diag.get("boundary_area_ratio"),
+        "outside_area_ratio": diag.get("outside_area_ratio"),
+        "region_weighted_mse_w": diag.get("region_weighted_mse_w"),
+        "region_weighted_mse_l": diag.get("region_weighted_mse_l"),
+        "region_weighted_ref_mse_w": diag.get("region_weighted_ref_mse_w"),
+        "region_weighted_ref_mse_l": diag.get("region_weighted_ref_mse_l"),
     }
     with open(path, "a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=DPO_DIAG_CSV_FIELDS)
@@ -1115,11 +1204,6 @@ def collate_fn(examples):
 # ============================================================
 def main(args):
     set_process_title_from_env()
-    if args.loss_region_mode == "region":
-        raise NotImplementedError(
-            "--loss_region_mode region is not implemented yet. "
-            "Use dataset smoke for experiment 8 and add a wrapper around compute_dpo_loss before training."
-        )
     if not args.enable_dpo_diag:
         args.disable_dpo_diagnostics = True
 
@@ -1488,6 +1572,15 @@ def main(args):
                     batch["masks"].to(dtype=policy_dtype),
                     size=(1, pos_latents.shape[-2], pos_latents.shape[-1])
                 )
+                loss_weight_map = None
+                region_stats = None
+                if args.loss_region_mode == "region":
+                    loss_weight_map, region_stats = build_region_loss_weight_map(
+                        masks,
+                        mask_region_weight=1.0,
+                        boundary_region_weight=0.5,
+                        outside_region_weight=0.05,
+                    )
 
                 # VAE encode 完毕，释放原始像素 tensor 节省显存
                 del batch["pixel_values_pos"], batch["pixel_values_neg"], batch["conditioning_pixel_values"]
@@ -1600,6 +1693,9 @@ def main(args):
                 debug_stage("before dpo loss")
                 loss, diagnostics = compute_dpo_loss(
                     model_pred, ref_pred, noise,
+                    loss_weight_map=loss_weight_map,
+                    loss_region_mode=args.loss_region_mode,
+                    region_stats=region_stats,
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,

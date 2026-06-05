@@ -1,0 +1,40 @@
+experiment_id: exp08_d3_comp_regionloss_davis_s1s2_2000
+experiment_name: Exp8 D3 comp region-loss DAVIS Stage1+Stage2 2000
+status: prepared_pai_manual_launch
+machine: PAI
+data_asset: D3 YouTube-VOS selected-primary comp generated losers
+source_domain: YouTube-VOS D3 training data
+target_domain: DAVIS partial-mask inpainting validation
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+train_task: partial-mask video inpainting
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 existing target-domain masks
+prior_mode: propainter required for DAVIS inference/validation
+diffueraser_weight_root: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+loss_region_mode: region
+region_mask_weight: 1.0
+region_boundary_weight: 0.5
+region_outside_weight: 0.05
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+stage1_steps: 2000
+stage2_steps: 2000
+checkpointing_steps: 500
+checkpoints_total_limit: 5
+stage1_run_dir: pending
+stage2_run_dir: pending
+dpo_diag_csv: pending stage1 and stage2 dpo_diagnostics.csv
+qual_dir: pending logs/target_eval/exp08_stage*_val_davis_*/
+metric_dir: pending logs/target_eval/exp08_stage*_val_davis_*/metrics
+vbench_dir: not used
+conclusion: Pending. This is a diagnostic for region-weighted DPO, not a success claim.
+loss_formula: |
+  m_w/m_l/m_w_ref/m_l_ref are region-weighted MSE values.
+  win_gap = m_w - m_w_ref
+  lose_gap = m_l - m_l_ref
+  L_total = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap)

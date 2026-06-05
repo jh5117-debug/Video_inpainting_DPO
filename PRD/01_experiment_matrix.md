@@ -50,6 +50,12 @@ Next planned gates after small-mask/prior data exists:
 
 Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanity gate is reviewed.
 
+## 2026-06-05 Exp8 DAVIS S1/S2 Region-Loss Row
+
+| Experiment | Status | Data | Task | Loss | Eval | Next |
+| --- | --- | --- | --- | --- | --- | --- |
+| Exp8 D3 comp region-loss DAVIS S1/S2 2000 | prepared for PAI manual launch | D3 selected-primary-comp repaired PAI manifest | partial-mask video inpainting | `L = -logσ{-0.5*10*(win_gap - 0.25*lose_gap)} + 0.05*m_w + ReLU(win_gap)`, with `m_w/m_l` as region-weighted MSE and weights mask=1.0, boundary=0.5, outside=0.05 | DAVIS four-column visualization and `tools/run_inpainting_metric_eval.py`; no VBench | Run only after PAI precheck passes; H20 remains untouched while data generation runs |
+
 # Experiment Matrix
 
 ## 2026-06-04 Experiment Registry / DPO-Diag Audit Update

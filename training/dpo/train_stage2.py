@@ -70,6 +70,7 @@ from libs.unet_motion_model import UNetMotionModel, MotionAdapter
 from training.common.dataset_imports import import_dataset_file_helpers
 from training.dpo.dataset.factory import build_dpo_dataset
 from training.dpo.train_stage1 import (
+    build_region_loss_weight_map,
     compute_dpo_loss,
     compute_dpo_grad_norm,
     append_dpo_diagnostics_csv,
@@ -537,11 +538,6 @@ def collate_fn(examples):
 # ============================================================
 def main(args):
     set_process_title_from_env()
-    if args.loss_region_mode == "region":
-        raise NotImplementedError(
-            "--loss_region_mode region is not implemented yet. "
-            "Use dataset smoke for experiment 8 and add a wrapper around compute_dpo_loss before training."
-        )
     if not args.enable_dpo_diag:
         args.disable_dpo_diagnostics = True
 
@@ -871,6 +867,15 @@ def main(args):
                     batch["masks"].to(dtype=policy_dtype),
                     size=(1, pos_latents.shape[-2], pos_latents.shape[-1])
                 )
+                loss_weight_map = None
+                region_stats = None
+                if args.loss_region_mode == "region":
+                    loss_weight_map, region_stats = build_region_loss_weight_map(
+                        masks,
+                        mask_region_weight=1.0,
+                        boundary_region_weight=0.5,
+                        outside_region_weight=0.05,
+                    )
 
                 # VAE encode 完毕，释放原始像素 tensor 节省显存
                 del batch["pixel_values_pos"], batch["pixel_values_neg"], batch["conditioning_pixel_values"]
@@ -981,6 +986,9 @@ def main(args):
                 # === DPO Loss ===
                 loss, diagnostics = compute_dpo_loss(
                     model_pred, ref_pred, noise,
+                    loss_weight_map=loss_weight_map,
+                    loss_region_mode=args.loss_region_mode,
+                    region_stats=region_stats,
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,

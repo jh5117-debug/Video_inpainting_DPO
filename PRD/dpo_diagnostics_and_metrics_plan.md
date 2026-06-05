@@ -50,6 +50,35 @@ Next planned gates after small-mask/prior data exists:
 
 Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanity gate is reviewed.
 
+## 2026-06-05 Exp8 Region-Loss Diagnostic Requirements
+
+Exp8 must produce both Stage1 and Stage2 diagnostics:
+
+- `reports/exp08_stage1_dpo_diag_summary.md`
+- `reports/exp08_stage2_dpo_diag_summary.md`
+- Stage run dirs must contain `dpo_diagnostics.csv`
+
+Additional region-loss diagnostics are required:
+
+- `loss_region_mode`
+- `region_mask_weight`
+- `region_boundary_weight`
+- `region_outside_weight`
+- `mask_area_ratio`
+- `boundary_area_ratio`
+- `outside_area_ratio`
+- `region_weighted_mse_w`
+- `region_weighted_mse_l`
+- `region_weighted_ref_mse_w`
+- `region_weighted_ref_mse_l`
+
+Metric policy remains unchanged:
+
+- `tools/run_inpainting_metric_eval.py` delegates PSNR/SSIM/LPIPS/Ewarp math to `inference/metrics.py`.
+- The wrapper handles manifests, masks, crops, and aggregation.
+- Do not use VBench for Exp8.
+- Do not draw a conclusion from videos alone.
+
 # DPO Diagnostics And Metrics Plan
 
 ## 2026-06-04 Experiment Registry / DPO-Diag Audit Update

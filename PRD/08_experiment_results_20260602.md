@@ -1,3 +1,16 @@
+## 2026-06-05 Exp8 Prepared, Not Yet Executed
+
+Exp8 is redefined as a target-domain DAVIS region-loss diagnostic:
+
+- train data: D3 YouTube-VOS selected-primary comp manifest on PAI
+- base/reference weights: SFT-48000 DiffuEraser at `/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`
+- partial-mask inference prior: ProPainter
+- training: Stage1 2000 steps, validate, then Stage2 2000 steps, validate
+- validation: DAVIS four-column video plus `inference/metrics.py` through `tools/run_inpainting_metric_eval.py`
+- no VBench
+
+No result claim exists yet. Any future conclusion must use qualitative + metric + dpo diagnostics together.
+
 ## 2026-06-04 PAI Audit Backfill / Registry Correction
 
 This update uses the returned PAI audit archive `pai_experiment_registry_reports.tar.gz` and `reports/pai_experiment_registry_paths.csv`.

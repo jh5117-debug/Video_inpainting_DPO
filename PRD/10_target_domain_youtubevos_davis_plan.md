@@ -1,3 +1,26 @@
+## 2026-06-05 Exp8 DAVIS Region-Loss Diagnostic
+
+Exp8 now has an explicit PAI-only manual launcher:
+
+```text
+scripts/launch_exp8_d3_comp_regionloss_s1s2_2000_davis_pai.sh
+```
+
+Required target-domain policy:
+
+- YouTube-VOS/D3 train or inference must use SFT-48000 DiffuEraser, not a naked base.
+- DAVIS partial-mask validation must use ProPainter prior.
+- Metrics must go through `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
+- VBench is only for video generation/full-mask prompt generation, not this inpainting task.
+
+Exp8 validation compares:
+
+1. SFT-48000 DiffuEraser baseline on DAVIS.
+2. DPO-Stage1 + frozen SFT-Stage2 hybrid on DAVIS.
+3. DPO-Stage1 + DPO-Stage2 on DAVIS.
+
+The Stage1 hybrid must be built with `tools/build_diffueraser_dpoS1_sftS2_hybrid.py`; Stage1 2D weights must not be evaluated as a full video model directly.
+
 ## 2026-06-04 PAI Audit Backfill / Registry Correction
 
 This update uses the returned PAI audit archive `pai_experiment_registry_reports.tar.gz` and `reports/pai_experiment_registry_paths.csv`.

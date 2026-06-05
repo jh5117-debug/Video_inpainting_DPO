@@ -1,3 +1,43 @@
+## 2026-06-05 Exp8 DAVIS Region-Loss Diagnostic Prepared
+
+Current execution boundary:
+
+- H20 is generating new Exp7-fix small-mask D2 data. Do not stop H20, kill jobs, start H20 training, or take H20 GPUs.
+- PAI is manual-only from Codex. The agent may prepare scripts and a copy/paste command block, but must not claim PAI execution.
+
+Prepared next PAI diagnostic:
+
+```text
+experiment = exp08_d3_comp_regionloss_wingap_lose025_s1s2_2000_davis_pai
+registry = experiment_registry/exp08_d3_comp_regionloss_davis_stage1stage2_2000
+launcher = scripts/launch_exp8_d3_comp_regionloss_s1s2_2000_davis_pai.sh
+data = D3 selected_primary_comp.repaired.pai_paths.jsonl
+task = partial-mask video inpainting
+weights = /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+prior = ProPainter prior required for DAVIS inference/validation
+loss_region_mode = region
+stage = Stage1 2000 -> DAVIS val -> Stage2 2000 -> DAVIS val
+metric = tools/run_inpainting_metric_eval.py using inference/metrics.py
+VBench = not used
+```
+
+Exp8 true loss:
+
+```text
+m_w, m_l, m_w_ref, m_l_ref are region-weighted MSE values.
+win_gap = m_w - m_w_ref
+lose_gap = m_l - m_l_ref
+
+L_total =
+    -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)}
+    + 0.05 * m_w
+    + ReLU(win_gap)
+
+region weights: mask=1.0, boundary=0.5, outside=0.05
+```
+
+The launcher must stop before training if the D3 PAI manifest, SFT-48000 weights, ProPainter weights, DAVIS data, region-loss implementation, or dpo diagnostics support is missing.
+
 ## 2026-06-04 PAI Audit Backfill / Registry Correction
 
 This update uses the returned PAI audit archive `pai_experiment_registry_reports.tar.gz` and `reports/pai_experiment_registry_paths.csv`.
