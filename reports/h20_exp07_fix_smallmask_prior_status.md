@@ -53,3 +53,30 @@ output candidate dirs count = 2
 fatal errors = none observed yet; log had not flushed key lines
 ```
 
+## 2026-06-05 10:21 CST monitor
+
+- SSH with the new key succeeded.
+- Data generation process is still running:
+  `PID=2590851`
+- Current command:
+  `tools/videodpo_generated_loser_calibration.py --output_root data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4 --models diffueraser --limit 1000 ... --mask_policy_config configs/generation/videodpo_partialmask_policy_v2_smallmask15_20_k4.yaml ... --skip_existing`
+- GPU snapshot:
+
+```text
+0, 28 MiB, 97871 MiB, 0%
+1, 6566 MiB, 97871 MiB, 0%
+2, 1 MiB, 97871 MiB, 0%
+3, 1 MiB, 97871 MiB, 0%
+4, 1 MiB, 97871 MiB, 0%
+5, 1 MiB, 97871 MiB, 0%
+6, 1 MiB, 97871 MiB, 0%
+7, 1 MiB, 97871 MiB, 0%
+```
+
+- Output progress:
+  - `candidates_all.jsonl`: 77 rows
+  - file counts: 10,148 png, 156 mp4, 78 log, 77 json, 1 jsonl
+  - latest observed file: `work/videodpo_pair000019/mask_001/diffueraser/run_or/sample/propainter.mp4`
+- Selected manifests are not ready yet:
+  `selected_primary_comp.jsonl` / `.repaired.jsonl` not present.
+- Stage1 training remains blocked until a selected primary comp manifest exists.
