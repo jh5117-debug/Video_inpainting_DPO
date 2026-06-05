@@ -29,6 +29,45 @@ Next planned gates after small-mask/prior data exists:
 
 Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanity gate is reviewed.
 
+## 2026-06-06 Exp8a / Exp8b Split
+
+The current PAI run should be recorded as `Exp8a`, not as the final region-loss experiment.
+
+Exp8a:
+
+- Purpose: establish a target-domain DAVIS baseline for D3 comp using the already-tested regularized DPO objective.
+- Data: D3 selected-primary comp repaired PAI manifest.
+- Task: partial-mask video inpainting.
+- Base weights: SFT-48000 DiffuEraser.
+- Prior: ProPainter prior for DAVIS partial-mask inference.
+- Loss mode: `LOSS_REGION_MODE=full`.
+- Stage policy: Stage1 2000 -> DAVIS validation -> Stage2 2000 -> DAVIS validation.
+- Status: Stage1 training completed; Stage1 DAVIS validation continuation is running on PAI from the user's pasted audit.
+
+Exp8a loss:
+
+```text
+win_gap  = m_w - m_w_ref
+lose_gap = m_l - m_l_ref
+
+L_total =
+    -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)}
+    + 0.05 * m_w
+    + ReLU(win_gap)
+```
+
+Exp8b:
+
+- Purpose: region-weighted-loss ablation after Exp8a establishes the ordinary regularized-DPO baseline.
+- Loss mode: `LOSS_REGION_MODE=region`.
+- Region-weighted MSE should be treated as a future ablation, not part of the currently active Exp8a result.
+
+Reason for this split:
+
+- The region-loss launcher initially introduced extra `--region_loss_*` CLI arguments that were not accepted by the current `train_stage1.py` parser.
+- The user chose to first run ordinary full-loss regularized DPO, then return to region weighting later.
+- This avoids changing target domain, Stage1/Stage2 policy, ProPainter-prior validation, and loss-region weighting all at once.
+
 # 12_exp8_regionloss_and_exp9_nolose_plan
 
 ## 2026-06-04 Experiment Registry / DPO-Diag Audit Update
@@ -54,5 +93,4 @@ Current audit status:
 - H20 dpo_diag snapshots found: New Exp6 Stage1/Stage2, Exp9 D3-nocomp Stage1, Exp9 D3-comp no-lose Stage1.
 - Missing / pending PAI dpo_diag: historical Exp1-3, Exp4, Old Exp5, New Exp5, Exp7, Exp7 hybrid, Exp8, Exp9 D3-comp clean gate.
 - PAI must be scanned manually with the fixed-glob audit command; do not recursively scan the whole NAS.
-
 

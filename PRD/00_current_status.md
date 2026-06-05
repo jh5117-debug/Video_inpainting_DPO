@@ -1,3 +1,64 @@
+## 2026-06-06 Exp8a Full-Loss Regularized DPO DAVIS Continuation
+
+Current PAI status is based on the user's pasted audit output. PAI remains manual-only for Codex: do not claim direct execution on PAI.
+
+Exp8 has been split into two evidence units:
+
+- `Exp8a`: D3 comp + ordinary full-loss regularized DPO. This is the active baseline now.
+- `Exp8b`: future region-weighted-loss ablation. Do not conflate it with the current run.
+
+Current Exp8a definition:
+
+```text
+experiment = exp08_d3_comp_fullloss_wingap_lose025_s1s2_2000_davis_pai
+data = D3 selected_primary_comp.repaired.pai_paths.jsonl
+task = partial-mask video inpainting
+weights = /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+prior = ProPainter prior required for DAVIS validation
+loss_region_mode = full
+stage = Stage1 2000 -> Stage1 DAVIS val -> Stage2 2000 -> Stage2 DAVIS val
+metric = tools/run_inpainting_metric_eval.py / inference/metrics.py
+VBench = not used
+```
+
+Exp8a true loss:
+
+```text
+m_w     = policy winner MSE
+m_l     = policy loser MSE
+m_w_ref = reference winner MSE
+m_l_ref = reference loser MSE
+win_gap  = m_w - m_w_ref
+lose_gap = m_l - m_l_ref
+
+L_total =
+    -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)}
+    + 0.05 * m_w
+    + ReLU(win_gap)
+```
+
+Current observed status:
+
+- Stage1 training completed on PAI at 2000/2000.
+- Stage1 run dir:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260605_142442_exp08_d3_comp_fullloss_wingap_lose025_s1_2000_davis_pai`
+- Confirmed Stage1 artifacts: `checkpoint-2000`, `last_weights`, `dpo_diagnostics.csv`.
+- Latest continuation log:
+  `logs/pipelines/exp08_d3_comp_fullloss_continue_after_s1_fixsafety_len24_pai_20260606_054617.log`
+- Latest continuation PID at pasted audit: `809695`.
+- Current phase at latest audit: Stage1 DAVIS validation, DiffuEraser-base inference producing 4-in-1 videos.
+- Current Stage1 validation output:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260605_142442_continue_fixsafety_len24_20260606_054617`
+- Not yet confirmed: `DPO-S1_SFT-S2` inference, `metrics/summary.csv`, Stage2 start, or Stage2 validation.
+
+Fixes already applied on PAI during continuation:
+
+- Added missing SD1.5 `feature_extractor/preprocessor_config.json`.
+- Disabled missing SD1.5 safety checker in `diffueraser/diffueraser.py` by passing `safety_checker=None`, `feature_extractor=None`, and `requires_safety_checker=False`.
+- Relaunched DAVIS validation with `DAVIS_VIDEO_LENGTH=24` after the 16-frame run failed because the effective duration was below the DiffuEraser/ProPainter minimum.
+
+Do not rerun Exp8a Stage1. Next action is only to monitor the active continuation and wait for Stage1 validation, Stage2 training, Stage2 validation, metrics, side-by-side videos, and dpo summaries.
+
 ## 2026-06-05 Exp8 DAVIS Region-Loss Diagnostic Prepared
 
 Current execution boundary:

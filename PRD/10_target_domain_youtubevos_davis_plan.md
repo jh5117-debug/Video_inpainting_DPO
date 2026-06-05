@@ -1,3 +1,39 @@
+## 2026-06-06 DAVIS Exp8a Validation Status
+
+Exp8 target-domain work is currently split into:
+
+- `Exp8a`: full-loss regularized DPO baseline on D3 comp, currently active on PAI.
+- `Exp8b`: planned region-loss ablation, postponed until Exp8a finishes.
+
+Current Exp8a target-domain policy:
+
+```text
+train data = YouTube-VOS/D3 selected-primary comp generated-loser data
+validation data = DAVIS at /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+base weights = /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+prior = ProPainter prior
+metric = inference/metrics.py through project wrappers
+VBench = not used
+```
+
+Current Exp8a state from pasted PAI audit:
+
+- Stage1 2000-step training is complete.
+- Stage1 `dpo_diagnostics.csv`, `checkpoint-2000`, and `last_weights` exist.
+- Active continuation log:
+  `logs/pipelines/exp08_d3_comp_fullloss_continue_after_s1_fixsafety_len24_pai_20260606_054617.log`
+- Active validation output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260605_142442_continue_fixsafety_len24_20260606_054617`
+- Latest observed phase: Stage1 DAVIS validation, DiffuEraser-base inference, writing 4-in-1 videos.
+- Stage2 has not been confirmed started yet.
+
+Do not report Exp8a as finished until both validation summaries exist:
+
+```text
+Stage1 val: metrics/summary.csv and side_by_side/comparison videos
+Stage2 val: metrics/summary.csv and side_by_side/comparison videos
+```
+
 ## 2026-06-05 Exp8 DAVIS Region-Loss Diagnostic
 
 Exp8 now has an explicit PAI-only manual launcher:
