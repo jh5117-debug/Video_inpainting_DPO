@@ -80,3 +80,43 @@ fatal errors = none observed yet; log had not flushed key lines
 - Selected manifests are not ready yet:
   `selected_primary_comp.jsonl` / `.repaired.jsonl` not present.
 - Stage1 training remains blocked until a selected primary comp manifest exists.
+
+## 2026-06-05 11:01 CST update: switched data generation to GPUs 0-5
+
+- User requested H20 generation to use GPUs 0-5 instead of one GPU.
+- Added and deployed sharded launcher:
+  `scripts/launch_exp07_fix_smallmask_prior_data_generation_h20_gpus0_5.sh`
+- The old single-GPU process was stopped safely:
+  `PID=2590851`
+- Its partial manifest was preserved:
+  `manifests/candidates_all.single_gpu_partial_<timestamp>.jsonl`
+- First sharded attempt failed before generation because `VIDEO_DPO_TRAIN_DATA_YAML`
+  still pointed to a PAI `/mnt/nas/...` path. The launcher was fixed to export the
+  H20-local train yaml explicitly.
+- Current 0-5 sharded run:
+  - PID: `503376`
+  - Log: `logs/pipelines/exp07_fix_smallmask_prior_data_generation_h20_gpus0_5_20260605_110124.log`
+  - Shards root:
+    `data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/_shards_gpu0_5_20260605_110124`
+  - Pair range: `[0, 1000)`
+  - GPUs: `0,1,2,3,4,5`
+  - workers per GPU: `1`
+  - shard size: `5`
+  - model: `diffueraser`
+  - mask policy: `videodpo_partialmask_policy_v2_smallmask15_20_k4`
+  - train yaml:
+    `/home/nvme01/H20_Video_inpainting_DPO/data/VideoDPO/configs/vc2_dpo/vidpro/train_data.absolute.yaml`
+- Launch log confirmed six initial shards:
+
+```text
+[launch] shard_000000_000005 gpu=0
+[launch] shard_000005_000010 gpu=1
+[launch] shard_000010_000015 gpu=2
+[launch] shard_000015_000020 gpu=3
+[launch] shard_000020_000025 gpu=4
+[launch] shard_000025_000030 gpu=5
+```
+
+- A later snapshot showed fresh shard files being written at 11:04 CST.
+- Stage1 training is still not launched. It remains blocked until the sharded
+  generator finishes merge/selection and writes `selected_primary_comp.jsonl`.
