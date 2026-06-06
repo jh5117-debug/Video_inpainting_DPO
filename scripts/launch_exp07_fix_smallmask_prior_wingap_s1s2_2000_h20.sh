@@ -113,8 +113,10 @@ export BASELINE_WEIGHTS_PATH="${BASELINE_WEIGHTS_PATH:-${WEIGHTS_DIR}/diffuErase
 export BASELINE_UNET_PATH="${BASELINE_UNET_PATH:-${WEIGHTS_DIR}/diffuEraser/converted_weights_step48000}"
 export VAL_DATA_DIR="${VAL_DATA_DIR:-${OUTPUT_ROOT}/data/external/davis_432_240}"
 
-# Keep this run focused on train stability. DAVIS/qual eval is a separate
-# explicit step once Stage1+Stage2 artifacts are present.
+# Keep the active training job focused on SIGFPE-safe H20 stability. The required
+# Exp8-style DAVIS validation is handled by the posthoc watcher script after
+# Stage2 finishes:
+#   scripts/run_exp07_fix_smallmask_prior_posthoc_davis_val_h20.sh
 export SKIP_QUAL30="${SKIP_QUAL30:-true}"
 export SKIP_FULL_VBENCH="${SKIP_FULL_VBENCH:-true}"
 

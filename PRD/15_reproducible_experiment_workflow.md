@@ -76,7 +76,7 @@ Exp7-fix 重新在 H20 上运行时必须使用 HAL/git 中的可复现脚本：
 - prior/data: ProPainter-prior generated loser
 - loss:
   `-logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap)) + 0.05 * m_w + ReLU(win_gap)`
-- stages: Stage1 2000 -> Stage2 2000
+- stages: Stage1 2000 -> DAVIS `DPO-S1_SFT-S2` validation -> Stage2 2000 -> DAVIS `DPO-S1_DPO-S2` validation
 - H20 GPU policy: use `CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7`; do not use GPU 0.
 - H20 SIGFPE profile: `MIXED_PRECISION=no`, `POLICY_DTYPE=fp32`, `VAE_DTYPE=fp32`, `REF_DTYPE=fp32`, `TEXT_DTYPE=fp32`, `SPLIT_POS_NEG_FORWARD=0`.
 
@@ -86,3 +86,18 @@ H20 main worktree is dirty and must not be reset. Use the clean H20 worktree che
 worktree commit `898f9c8` with run version `20260606_142555`. It was monitored
 through Stage1 `global_step=20`: `dpo_diagnostics.csv` is present, GPUs 1-7 are
 active, GPU 0 is idle, and no SIGFPE/OOM/Traceback was observed.
+
+2026-06-07 02:39 CST correction: the launched H20 Exp7 script completed Stage1
+and entered Stage2 but did not perform the intended Stage1 DAVIS validation
+before Stage2. This is a workflow miss, not an experiment design change. Recover
+with `scripts/run_exp07_fix_smallmask_prior_posthoc_davis_val_h20.sh`, launched
+from synced HAL/git code. The watcher waits for Stage2 `last_weights`, uses GPU
+1 by default, builds the Stage1 DPO + SFT Stage2 hybrid, then runs both DAVIS
+validations:
+
+- Stage1 validation: `DPO-S1_SFT-S2`
+- Stage2 validation: `DPO-S1_DPO-S2`
+
+For future Exp7 reruns, the one-shot launcher must either call this watcher or
+inline the same validation sequence; do not treat two-stage training alone as a
+complete experiment.
