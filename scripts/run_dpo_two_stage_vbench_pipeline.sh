@@ -152,10 +152,16 @@ require_path "${VAE_PATH}" "VAE"
 require_path "${REF_MODEL_PATH}" "DiffuEraser converted weights"
 require_path "${STAGE1_SCRIPT}" "Stage1 script"
 require_path "${STAGE2_SCRIPT}" "Stage2 script"
-require_path "${VBENCH_RUNNER}" "VBench runner"
-require_path "${PROMPTS_FILE}" "VBench prompts"
-require_path "${VBENCH_ROOT}/evaluate.py" "VBench evaluate.py"
-require_path "${BASELINE_WEIGHTS_PATH}" "DiffuEraser-base weights"
+if ! is_true "${SKIP_QUAL30}"; then
+  require_path "${VBENCH_RUNNER}" "VBench runner"
+  require_path "${PROMPTS_FILE}" "VBench prompts"
+  require_path "${BASELINE_WEIGHTS_PATH}" "DiffuEraser-base weights"
+fi
+if ! is_true "${SKIP_FULL_VBENCH}"; then
+  require_path "${VBENCH_RUNNER}" "VBench runner"
+  require_path "${PROMPTS_FILE}" "VBench prompts"
+  require_path "${VBENCH_ROOT}/evaluate.py" "VBench evaluate.py"
+fi
 
 PYTHON_BIN="$(resolve_python)"
 log "Using python: ${PYTHON_BIN}"
