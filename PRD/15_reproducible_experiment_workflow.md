@@ -60,3 +60,24 @@ Exp8c：
 - 禁止没有 experiment_registry 文件夹就启动新实验。
 - 禁止用 VBench 替代 DAVIS inpainting 指标。
 - 禁止把 H20 `/home/nvme01/...` 路径放进 PAI 训练 manifest。
+
+## 2026-06-06 Exp7 H20 重启规则
+
+Exp7-fix 重新在 H20 上运行时必须使用 HAL/git 中的可复现脚本：
+
+- `scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh`
+
+当前定义：
+
+- data: `exp07_fix_videodpo_smallmask15_20_prior_k4`
+- manifest: H20 本地 `selected_primary_comp.jsonl` 或修复版 `selected_primary_comp.repaired.jsonl`
+- task: partial-mask inpainting
+- mask: manifest mask, small-mask 15%-20%
+- prior/data: ProPainter-prior generated loser
+- loss:
+  `-logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap)) + 0.05 * m_w + ReLU(win_gap)`
+- stages: Stage1 2000 -> Stage2 2000
+- H20 GPU policy: use `CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7`; do not use GPU 0.
+- H20 SIGFPE profile: `MIXED_PRECISION=no`, `POLICY_DTYPE=fp32`, `VAE_DTYPE=fp32`, `REF_DTYPE=fp32`, `TEXT_DTYPE=fp32`, `SPLIT_POS_NEG_FORWARD=0`.
+
+H20 main worktree is dirty and must not be reset. Use the clean H20 worktree checked out from pushed HAL/git code, while pointing `OUTPUT_ROOT`, `DATA_ROOT`, and `WEIGHTS_DIR` to `/home/nvme01/H20_Video_inpainting_DPO`.

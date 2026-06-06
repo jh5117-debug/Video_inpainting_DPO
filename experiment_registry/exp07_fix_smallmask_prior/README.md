@@ -1,8 +1,8 @@
 # Exp7 fix: VideoDPO small-mask 15-20 + ProPainter prior
 
-- status: `planned_registry_ready_data_check_pending`
+- status: `h20_s1s2_launching`
 - short_name: `fix_smallmask_prior`
-- task: Stage1-only partial-mask inpainting gate
+- task: H20 Stage1+Stage2 partial-mask inpainting run
 - data: new non-overwriting VideoDPO small-mask generated losers
 
 ## Loss
@@ -20,4 +20,6 @@ Planned correction for Exp7 before expanding D3.
 
 ## Next Action
 
-Generate/check smallmask data, then H20 Stage1 gate if data is ready.
+H20 smallmask data is available. Launch Stage1+Stage2 with
+`scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh` from a
+clean git-synced H20 worktree, using GPUs 1-7 and the fp32 SIGFPE-safe profile.

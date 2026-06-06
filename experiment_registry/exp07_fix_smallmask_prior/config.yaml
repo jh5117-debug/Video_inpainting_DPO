@@ -1,12 +1,12 @@
 experiment_id: exp07_fix
 experiment_name: |
   Exp7 fix: VideoDPO small-mask 15-20 + ProPainter prior
-status: data_generation_running_h20
+status: h20_s1s2_launching
 data_asset: new non-overwriting VideoDPO small-mask generated losers
 source_domain: VideoDPO clips mostly static
 target_domain: partial-mask inpainting sanity before D3
 manifest: data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/manifests/selected_primary_comp.repaired.jsonl
-train_task: Stage1-only partial-mask inpainting gate
+train_task: H20 Stage1+Stage2 partial-mask inpainting run
 train_mask_mode: partial
 mask_from_manifest: true
 mask_area_range: 0.15-0.20
@@ -18,12 +18,16 @@ winner_abs_reg_weight: 0.05
 winner_gap_reg_weight: 1.0
 winner_gap_reg_margin: 0.0
 loss_region_mode: full
-stage1_run_dir: pending
-stage2_run_dir: none; DPO Stage2 disabled
+stage1_run_dir: pending H20 launch
+stage2_run_dir: pending H20 launch
 dpo_diag_csv: MISSING_DPO_DIAG
 qual_dir: pending four-column visualization
 metric_dir: pending inference/metrics.py true partial-mask eval
 vbench_dir: not used
-conclusion: Planned correction for Exp7 before expanding D3.
+conclusion: Planned correction for Exp7 before expanding D3; H20 two-stage run is the active restart path.
 loss_formula: |
   L = -logσ{-0.5 * 10 * (win_gap - 0.25 * lose_gap)} + 0.05 * m_w + ReLU(win_gap). Prior/data fix: small mask 15%-20% and ProPainter prior.
+h20_sigfpe_profile: |
+  Use CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7, MIXED_PRECISION=no,
+  POLICY_DTYPE=fp32, VAE_DTYPE=fp32, REF_DTYPE=fp32, TEXT_DTYPE=fp32,
+  SPLIT_POS_NEG_FORWARD=0.

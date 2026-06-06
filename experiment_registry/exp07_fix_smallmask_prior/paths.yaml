@@ -1,13 +1,13 @@
 manifest: |
   data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/manifests/selected_primary_comp.repaired.jsonl
 stage1_run_dir: |
-  pending
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/<RUN_VERSION>_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage1
 stage2_run_dir: |
-  none; DPO Stage2 disabled
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/<RUN_VERSION>_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage2
 dpo_diag_csv: |
-  MISSING_DPO_DIAG
+  stage1/stage2 dpo_diagnostics.csv pending H20 launch
 qual_dir: |
-  pending four-column visualization
+  skipped during stability run unless explicitly enabled
 metric_dir: |
   pending inference/metrics.py true partial-mask eval
 vbench_dir: |
