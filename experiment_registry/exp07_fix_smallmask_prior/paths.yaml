@@ -1,11 +1,12 @@
 manifest: |
   data/generated_losers/exp07_fix_videodpo_smallmask15_20_prior_k4/manifests/selected_primary_comp.repaired.jsonl
 stage1_run_dir: |
-  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/<RUN_VERSION>_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage1
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_142555_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage1
 stage2_run_dir: |
-  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/<RUN_VERSION>_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage2
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_142555_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage2
 dpo_diag_csv: |
-  stage1/stage2 dpo_diagnostics.csv pending H20 launch
+  /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_142555_exp07_fix_smallmask_prior_wingap_lose025_s1s2_2000_h20_stage1/dpo_diagnostics.csv
+  stage2 pending after Stage1 completes
 qual_dir: |
   skipped during stability run unless explicitly enabled
 metric_dir: |

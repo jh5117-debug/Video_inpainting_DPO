@@ -81,3 +81,8 @@ Exp7-fix 重新在 H20 上运行时必须使用 HAL/git 中的可复现脚本：
 - H20 SIGFPE profile: `MIXED_PRECISION=no`, `POLICY_DTYPE=fp32`, `VAE_DTYPE=fp32`, `REF_DTYPE=fp32`, `TEXT_DTYPE=fp32`, `SPLIT_POS_NEG_FORWARD=0`.
 
 H20 main worktree is dirty and must not be reset. Use the clean H20 worktree checked out from pushed HAL/git code, while pointing `OUTPUT_ROOT`, `DATA_ROOT`, and `WEIGHTS_DIR` to `/home/nvme01/H20_Video_inpainting_DPO`.
+
+2026-06-06 14:25 CST status: H20 Exp7-fix Stage1+Stage2 launched from clean
+worktree commit `898f9c8` with run version `20260606_142555`. It was monitored
+through Stage1 `global_step=20`: `dpo_diagnostics.csv` is present, GPUs 1-7 are
+active, GPU 0 is idle, and no SIGFPE/OOM/Traceback was observed.
