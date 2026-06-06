@@ -26,7 +26,7 @@ PAI precision policy:
 
 ```text
 MIXED_PRECISION=bf16
-POLICY_DTYPE=bf16
+POLICY_DTYPE=auto
 VAE_DTYPE=fp32
 REF_DTYPE=bf16
 TEXT_DTYPE=bf16

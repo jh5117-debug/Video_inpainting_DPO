@@ -43,7 +43,7 @@ h20_split_pos_neg_forward: 0
 h20_cuda_visible_devices: 1,2,3,4,5,6,7
 h20_gpu0_policy: reserved; not used
 pai_mixed_precision: bf16
-pai_policy_dtype: bf16
+pai_policy_dtype: auto
 pai_vae_dtype: fp32
 pai_ref_dtype: bf16
 pai_text_dtype: bf16

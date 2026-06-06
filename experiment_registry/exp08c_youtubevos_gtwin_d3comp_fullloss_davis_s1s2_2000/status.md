@@ -11,6 +11,11 @@
   was observed in the checked log tail.
 - 2026-06-06 12:36 CST: same run is still active and reached
   `global_step=150`; the compact error check is empty.
+- 2026-06-06 14:13 CST: first PAI launch from synced code exited before
+  training. Root cause: `POLICY_DTYPE=bf16` is not accepted by
+  `training/dpo/scripts/run_stage1.py` or `train_stage1.py`; valid choices are
+  `auto` and `fp32`. Fixed by keeping `MIXED_PRECISION=bf16` but changing PAI
+  `POLICY_DTYPE` to `auto`.
 
 Current conclusion: running diagnostic only. Do not report final success until
 Stage1/Stage2 DAVIS metrics, qualitative videos, and dpo_diag summaries exist.
