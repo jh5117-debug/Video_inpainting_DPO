@@ -1,0 +1,62 @@
+# 可复现实验联动规则
+
+本文件记录 2026-06-06 后必须执行的实验工作流。目标是避免 HAL、H20、PAI、Codex 之间出现代码分叉，尤其避免在 PAI/H20 终端临时改脚本但没有进入 git 的情况。
+
+## 强制顺序
+
+1. HAL 是代码源头。
+   - 所有实验脚本、训练逻辑、数据准备工具、评估工具、PRD 和 experiment_registry 更新，必须先在 HAL 的 git worktree 中修改。
+   - 不允许把实验关键逻辑只写在 PAI/H20 终端里。
+
+2. 每个实验必须有 registry 文件夹。
+   - 文件夹放在 `experiment_registry/<experiment_id_or_name>/`。
+   - 至少包含 `README.md`、`config.yaml`、`paths.yaml`、`commands.md`、`status.md`。
+   - 大文件、checkpoint、视频、数据集不进 git，只在 registry 中记录路径。
+
+3. HAL 修改后必须 git 化。
+   - 先 `git status --short`。
+   - 只提交本次实验相关代码和文档。
+   - 提交后 `git push origin main`。
+   - 如果必须在 PAI/H20 emergency patch，补丁必须立刻回写 HAL、提交并 push。
+
+4. H20 只从 git 接收代码。
+   - Codex 可 SSH 到 H20。
+   - H20 必须 `git fetch` + `git pull --ff-only` 或在干净 worktree 中 checkout/pull。
+   - 如果 H20 有未提交本地文件，先移动到备份或新 worktree；不要 `git reset --hard`。
+
+5. PAI 必须使用同一份已 push 代码。
+   - 首选 PAI 直接 `git pull --ff-only origin main`。
+   - 如果 PAI 访问 GitHub 不稳定，先让 H20 pull 最新代码，再从 H20 rsync 到 PAI。
+   - PAI 上只运行 git 中存在的脚本；不再把大段实验代码粘贴进终端临时执行。
+
+## 服务器职责
+
+- HAL/Codex：读代码、改代码、写 PRD、更新 registry、提交和 push。
+- H20：从 git pull 后跑 H20 训练或作为 PAI 同步源。
+- PAI：从 git/H20 同步后跑 PAI 训练和验证。
+
+## Exp8 当前约束
+
+Exp8a：
+
+- 已完成 PAI full-loss baseline。
+- 结论为负面：Stage1/Stage2 都低于 DiffuEraser-base，不能报告为成功，也不能混称 region-loss。
+- 后续不重跑 Exp8a，除非明确只为复现实验产物。
+
+Exp8c：
+
+- 目标：D3 comp loser/mask 不变，只把 winner 换成原始 YouTube-VOS GT，按 `canonical_frame_indices` 对齐。
+- loss 不变：`-logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap)) + 0.05 * m_w + ReLU(win_gap)`。
+- H20 因 SIGFPE 使用 `MIXED_PRECISION=no`、全 fp32、`SPLIT_POS_NEG_FORWARD=0`、GPU `1,2,3,4,5,6,7`。
+- PAI 不需要 H20 SIGFPE workaround，默认使用 bf16 mixed precision、`SPLIT_POS_NEG_FORWARD=1`、GPU `0,1,2,3,4,5,6,7`。
+- PAI 版本必须使用 git 中的：
+  - `tools/prepare_exp8c_gtwin_manifest.py`
+  - `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh`
+
+## 禁止事项
+
+- 禁止在 PAI/H20 只靠终端 sed/python heredoc 修改实验逻辑后直接训练。
+- 禁止出现“PAI 修了，HAL/H20/git 没修”的状态。
+- 禁止没有 experiment_registry 文件夹就启动新实验。
+- 禁止用 VBench 替代 DAVIS inpainting 指标。
+- 禁止把 H20 `/home/nvme01/...` 路径放进 PAI 训练 manifest。

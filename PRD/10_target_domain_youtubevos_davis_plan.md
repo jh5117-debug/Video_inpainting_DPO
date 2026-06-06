@@ -1,9 +1,9 @@
-## 2026-06-06 DAVIS Exp8a Validation Status
+## 2026-06-06 DAVIS Exp8a Validation Result
 
 Exp8 target-domain work is currently split into:
 
-- `Exp8a`: full-loss regularized DPO baseline on D3 comp, currently active on PAI.
-- `Exp8b`: planned region-loss ablation, postponed until Exp8a finishes.
+- `Exp8a`: full-loss regularized DPO baseline on D3 comp, completed on PAI with negative DAVIS results.
+- `Exp8b`: planned region-loss ablation, postponed until the ordinary full-loss baseline is understood.
 
 Current Exp8a target-domain policy:
 
@@ -20,19 +20,35 @@ Current Exp8a state from pasted PAI audit:
 
 - Stage1 2000-step training is complete.
 - Stage1 `dpo_diagnostics.csv`, `checkpoint-2000`, and `last_weights` exist.
-- Active continuation log:
-  `logs/pipelines/exp08_d3_comp_fullloss_continue_after_s1_fixsafety_len24_pai_20260606_054617.log`
-- Active validation output root:
-  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260605_142442_continue_fixsafety_len24_20260606_054617`
-- Latest observed phase: Stage1 DAVIS validation, DiffuEraser-base inference, writing 4-in-1 videos.
-- Stage2 has not been confirmed started yet.
+- Stage1 validation completed at:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260606_070556`
+- Stage2 2000-step training is complete.
+- Stage2 `dpo_diagnostics.csv`, `checkpoint-2000`, and `last_weights` exist at:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_070556_exp08_d3_comp_fullloss_wingap_lose025_s2_2000_davis_pai`
+- Stage2 validation completed at:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage2_val_davis_20260606_070556`
 
-Do not report Exp8a as finished until both validation summaries exist:
+DAVIS result:
 
 ```text
-Stage1 val: metrics/summary.csv and side_by_side/comparison videos
-Stage2 val: metrics/summary.csv and side_by_side/comparison videos
+Stage1 DPO-S1 + SFT-S2:
+  whole_video_psnr_mean = 23.9554 vs DiffuEraser-base 29.4647
+  whole_video_ssim_mean = 0.9017 vs DiffuEraser-base 0.9564
+  mask_region_psnr_mean = 15.6757 vs DiffuEraser-base 22.7633
+  boundary_psnr_mean = 16.1306 vs DiffuEraser-base 23.1742
+
+Stage2 DPO-S1 + DPO-S2:
+  whole_video_psnr_mean = 23.5677 vs DiffuEraser-base 29.3802
+  whole_video_ssim_mean = 0.8967 vs DiffuEraser-base 0.9558
+  mask_region_psnr_mean = 15.2577 vs DiffuEraser-base 22.6570
+  boundary_psnr_mean = 15.7133 vs DiffuEraser-base 23.0682
 ```
+
+Conclusion: Exp8a is a completed negative baseline. The full-loss D3 comp DPO
+objective substantially underperforms the SFT-48000 DiffuEraser baseline on
+DAVIS. Stage2 DPO does not improve over Stage1 validation. DPO diagnostics show
+high loser-dominant behavior and large loser/reference MSE ratios, so this is a
+loser-degradation shortcut rather than a target-domain improvement.
 
 ## 2026-06-05 Exp8 DAVIS Region-Loss Diagnostic
 
@@ -422,6 +438,130 @@ evaluable.
 DAVIS remains blocked until target-domain prediction videos and a validated
 pair manifest are produced. Do not substitute VBench for DAVIS inpainting
 metrics.
+
+## 2026-06-06 CST Exp8c: YouTube-VOS GT-Win D3-Comp Diagnostic on H20
+
+Exp8c is a follow-up to Exp8a. It keeps the same D3 comp loser setup and
+full-loss regularized DPO objective, but changes the winner target:
+
+- Exp8a winner: D3 manifest `win_video_path` cache.
+- Exp8c winner: original YouTube-VOS GT frames, aligned by each row's
+  `canonical_frame_indices`.
+- Exp8c loser: unchanged D3 selected-primary-comp `final_loser_video_path`.
+- Exp8c mask: unchanged D3 selected-primary-comp `mask_path`.
+
+This isolates whether cached D3 winner mismatch is weakening DPO, without
+changing the loser, mask, loss formula, DAVIS validation, or SFT-48000 base.
+
+H20 paths:
+
+```text
+clean worktree = /home/nvme01/H20_Video_inpainting_DPO_exp8c_gtwin
+source commit = 9c0eba6683992b8a15765e47475085ee475939cf
+prepared manifest = /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed/manifests/selected_primary_comp.gtwin.jsonl
+prepared rows = 3327
+prepare report = /home/nvme01/H20_Video_inpainting_DPO/reports/h20_exp8c_gtwin_manifest_prepare_report.md
+launcher = /home/nvme01/H20_Video_inpainting_DPO_exp8c_gtwin/scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_h20.sh
+```
+
+Training plan:
+
+```text
+experiment = exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1s2_2000_davis_h20
+Stage1 = 2000 steps
+Stage1 validation = DPO-S1 + SFT-S2 on DAVIS
+Stage2 = 2000 steps after Stage1 validation
+Stage2 validation = DPO-S1 + DPO-S2 on DAVIS
+train_mask_mode = partial
+mask_from_manifest = true
+loss_region_mode = full
+prior_mode for validation = ProPainter
+metric = inference/metrics.py via target-domain wrapper
+VBench = not used
+```
+
+Loss:
+
+```text
+L_total =
+  -logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap))
+  + 0.05 * m_w
+  + ReLU(win_gap)
+```
+
+H20 execution rule:
+
+The first Exp8c attempt failed at step 0 with `SIGFPE` under the default
+bf16/split path. A one-step smoke passed with the precision-safe H20 setting,
+and the formal run passed step 0 and reached `global_step=100`.
+
+Use this configuration for H20 Exp8c and similar DPO gates:
+
+```text
+MIXED_PRECISION=no
+POLICY_DTYPE=fp32
+VAE_DTYPE=fp32
+REF_DTYPE=fp32
+TEXT_DTYPE=fp32
+SPLIT_POS_NEG_FORWARD=0
+CUDA_VISIBLE_DEVICES=1,2,3,4,5,6,7
+GPU0 reserved
+```
+
+Current status at 2026-06-06 12:36 CST:
+
+```text
+formal pid = 333723
+formal log = /home/nvme01/H20_Video_inpainting_DPO_exp8c_gtwin/logs/pipelines/exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1s2_2000_davis_h20_fp32_nosplit_20260606_114413.log
+stage1_run_dir = /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_114414_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_h20
+dpo_diag = stage1 dpo_diagnostics.csv present
+latest checked step = global_step=150
+latest checked dpo_loss = 0.693146
+latest checked implicit_acc = 0.714286
+latest checked win_gap = 0.000044
+latest checked lose_gap = 0.000176
+latest checked error scan = empty for Traceback/ERROR/OutOfMemory/SIGFPE
+```
+
+Conclusion boundary:
+
+Exp8c is currently a running diagnostic, not a success conclusion. Do not
+compare it against Exp8a/Exp9 until it has Stage1 and Stage2 DAVIS metrics,
+four-column qualitative videos, and dpo_diag summaries.
+
+## 2026-06-06 CST Exp8c PAI Reproducible Launch Rule
+
+The PAI Exp8c run must start from git-tracked code, not terminal-only patches.
+The required HAL-authored files are:
+
+```text
+tools/prepare_exp8c_gtwin_manifest.py
+scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh
+experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/
+PRD/15_reproducible_experiment_workflow.md
+```
+
+PAI YouTube-VOS root:
+
+```text
+/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train
+```
+
+PAI precision policy:
+
+```text
+MIXED_PRECISION=bf16
+POLICY_DTYPE=bf16
+VAE_DTYPE=fp32
+REF_DTYPE=bf16
+TEXT_DTYPE=bf16
+SPLIT_POS_NEG_FORWARD=1
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7
+```
+
+H20 remains on the fp32/nosplit workaround because it has already reproduced
+`SIGFPE` under bf16/split. PAI does not need that workaround unless a fresh PAI
+smoke proves otherwise.
 
 ## Do Not Do
 

@@ -15,6 +15,7 @@ Every DPO experiment needs `dpo_diagnostics.csv` or an explicit `MISSING_DPO_DIA
 - New Exp6: D2 no-comp + same New Exp5 loss; not plain Exp6.
 - Exp7: changed task to partial-mask inpainting; current results are suspicious and need small-mask + ProPainter-prior fix.
 - Exp8: D3/YouTube-VOS region-loss diagnostic; only valid after implementation/baseline checks.
+- Exp8a: completed PAI full-loss DAVIS baseline; negative result, not region-loss, not a success.
 - Exp9: D3 target-domain gate family; ckpt500 early window is promising but long DPO degrades.
 
 See `experiment_matrix.md` for the full table.

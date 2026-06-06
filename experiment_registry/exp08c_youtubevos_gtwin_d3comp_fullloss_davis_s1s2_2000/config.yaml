@@ -1,0 +1,75 @@
+experiment_id: exp08c
+experiment_name: Exp8c YouTube-VOS GT winner with D3 comp loser full-loss S1/S2 DAVIS
+status: h20_stage1_running_pai_launcher_tracked_ready
+machine: H20 active; PAI ready-to-launch from git-tracked code
+code_worktree_h20: /home/nvme01/H20_Video_inpainting_DPO_exp8c_gtwin
+code_worktree_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+source_commit_h20_initial: 9c0eba6683992b8a15765e47475085ee475939cf
+code_sync_rule: HAL modifies code first, git push, H20 pulls, PAI pulls or rsyncs the H20-pulled code.
+launcher_pai: scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh
+manifest_tool: tools/prepare_exp8c_gtwin_manifest.py
+data_asset_h20: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed
+data_asset_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed_pai
+source_domain: YouTube-VOS D3
+target_domain: DAVIS partial-mask validation
+manifest_h20: /home/nvme01/H20_Video_inpainting_DPO/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed/manifests/selected_primary_comp.gtwin.jsonl
+manifest_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl
+source_d3_manifest_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+youtubevos_train_root_pai: /mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train
+manifest_rows: 3327
+winner_source: original YouTube-VOS GT frames aligned by canonical_frame_indices
+loser_source: unchanged D3 selected-primary-comp final_loser_video_path
+mask_source: unchanged D3 selected-primary-comp mask_path
+train_task: Stage1 2000 then Stage1 DAVIS val then Stage2 2000 then Stage2 DAVIS val
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 target-domain masks
+prior_mode: ProPainter prior required for DAVIS validation
+diffueraser_weight_root_h20: /home/nvme01/H20_Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000
+diffueraser_weight_root_pai: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: full
+h20_mixed_precision: "no"
+h20_policy_dtype: fp32
+h20_vae_dtype: fp32
+h20_ref_dtype: fp32
+h20_text_dtype: fp32
+h20_split_pos_neg_forward: 0
+h20_cuda_visible_devices: 1,2,3,4,5,6,7
+h20_gpu0_policy: reserved; not used
+pai_mixed_precision: bf16
+pai_policy_dtype: bf16
+pai_vae_dtype: fp32
+pai_ref_dtype: bf16
+pai_text_dtype: bf16
+pai_split_pos_neg_forward: 1
+pai_cuda_visible_devices: 0,1,2,3,4,5,6,7
+stage1_steps: 2000
+stage2_steps: 2000
+checkpointing_steps: 500
+checkpoints_total_limit: 5
+stage1_run_dir: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_114414_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_h20
+stage2_run_dir: pending automatic Stage2 after Stage1 DAVIS validation
+dpo_diag_csv: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_114414_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_h20/dpo_diagnostics.csv
+qual_dir: pending DAVIS four-column validation
+metric_dir: pending DAVIS inference/metrics.py validation
+vbench_dir: not used
+log: /home/nvme01/H20_Video_inpainting_DPO_exp8c_gtwin/logs/pipelines/exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1s2_2000_davis_h20_fp32_nosplit_20260606_114413.log
+pid: 333723
+sigfpe_fix: fp32_all_paths_and_disable_split_pos_neg_forward
+latest_checked_step: 150
+latest_checked_time_cst: 2026-06-06 12:36
+latest_checked_dpo_loss: 0.693146
+latest_checked_implicit_acc: 0.714286
+latest_checked_win_gap: 0.000044
+latest_checked_lose_gap: 0.000176
+conclusion: Running diagnostic only; no final success claim before DAVIS metrics, qualitative videos, and Stage1/Stage2 dpo_diag summaries.
+loss_formula: |
+  win_gap = m_w - m_w_ref
+  lose_gap = m_l - m_l_ref
+  L_total = -logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap)) + 0.05 * m_w + ReLU(win_gap)

@@ -6,19 +6,24 @@ PROJECT_ROOT="${PROJECT_ROOT:-$(cd "${SCRIPT_DIR}/.." && pwd)}"
 PROJECT_ROOT="$(cd "${PROJECT_ROOT}" && pwd)"
 cd "${PROJECT_ROOT}"
 
-EXP_NAME="${EXP_NAME:-exp08_d3_comp_regionloss_wingap_lose025_s1s2_2000_davis_pai}"
-STAGE1_RUN_NAME="${STAGE1_RUN_NAME:-exp08_d3_comp_regionloss_wingap_lose025_s1_2000_davis_pai}"
-STAGE2_RUN_NAME="${STAGE2_RUN_NAME:-exp08_d3_comp_regionloss_wingap_lose025_s2_2000_davis_pai}"
+EXP_NAME="${EXP_NAME:-exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1s2_2000_davis_pai}"
+STAGE1_RUN_NAME="${STAGE1_RUN_NAME:-exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_pai}"
+STAGE2_RUN_NAME="${STAGE2_RUN_NAME:-exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s2_2000_davis_pai}"
 RUN_VERSION="${RUN_VERSION:-$(date +%Y%m%d_%H%M%S)}"
 
 OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/nas/hj/H20_Video_inpainting_DPO}"
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO}"
 EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-${OUTPUT_ROOT}/experiments}"
-REG_DIR="${REG_DIR:-experiment_registry/exp08_d3_comp_regionloss_davis_stage1stage2_2000}"
-REPORT="${REPORT:-reports/exp08_d3_comp_regionloss_s1s2_2000_davis_report.md}"
+REG_DIR="${REG_DIR:-experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000}"
+REPORT="${REPORT:-reports/exp08c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai_report.md}"
 
-D3_ROOT="${D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
-PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-${D3_ROOT}/manifests/selected_primary_comp.repaired.pai_paths.jsonl}"
+SOURCE_D3_ROOT="${SOURCE_D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
+SOURCE_D3_MANIFEST="${SOURCE_D3_MANIFEST:-${SOURCE_D3_ROOT}/manifests/selected_primary_comp.repaired.pai_paths.jsonl}"
+YTBV_ROOT="${YTBV_ROOT:-/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train}"
+D3_ROOT="${D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed_pai}"
+PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-${D3_ROOT}/manifests/selected_primary_comp.gtwin.pai_paths.jsonl}"
+GT_WIN_CACHE="${GT_WIN_CACHE:-${D3_ROOT}/gt_win_cache}"
+
 DAVIS_ROOT="${DAVIS_ROOT:-/mnt/workspace/hj/nas_hj/data/external/davis_432_240}"
 DAVIS_VIDEO_ROOT="${DAVIS_VIDEO_ROOT:-${DAVIS_ROOT}/JPEGImages_432_240}"
 DAVIS_MASK_ROOT="${DAVIS_MASK_ROOT:-${DAVIS_ROOT}/test_masks}"
@@ -41,28 +46,39 @@ if [[ ! -x "${PYTHON_BIN}" ]]; then
   elif command -v python >/dev/null 2>&1; then
     PYTHON_BIN="$(command -v python)"
   else
-    echo "[Exp8][ERROR] python not found; set PYTHON_BIN or CONDA_ENV_PREFIX" >&2
+    echo "[Exp8c][ERROR] python not found; set PYTHON_BIN or CONDA_ENV_PREFIX" >&2
     exit 2
   fi
 fi
 
 NUM_GPUS="${NUM_GPUS:-8}"
+CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}"
+MAIN_PROCESS_PORT="${MAIN_PROCESS_PORT:-29561}"
+MIXED_PRECISION="${MIXED_PRECISION:-bf16}"
+POLICY_DTYPE="${POLICY_DTYPE:-bf16}"
+VAE_DTYPE="${VAE_DTYPE:-fp32}"
+REF_DTYPE="${REF_DTYPE:-bf16}"
+TEXT_DTYPE="${TEXT_DTYPE:-bf16}"
+SPLIT_POS_NEG_FORWARD="${SPLIT_POS_NEG_FORWARD:-1}"
+
 TRAIN_HEIGHT="${TRAIN_HEIGHT:-320}"
 TRAIN_WIDTH="${TRAIN_WIDTH:-512}"
 RESOLUTION="${RESOLUTION:-512}"
 NFRAMES="${NFRAMES:-16}"
-DAVIS_VIDEO_LENGTH="${DAVIS_VIDEO_LENGTH:-16}"
+DAVIS_VIDEO_LENGTH="${DAVIS_VIDEO_LENGTH:-24}"
 DAVIS_NUM_QUAL="${DAVIS_NUM_QUAL:-30}"
 EVAL_GPU="${EVAL_GPU:-0}"
 EVAL_WIDTH="${EVAL_WIDTH:-432}"
 EVAL_HEIGHT="${EVAL_HEIGHT:-240}"
 COMPUTE_LPIPS="${COMPUTE_LPIPS:-0}"
 COMPUTE_EWARP="${COMPUTE_EWARP:-0}"
+EXP8C_FORCE_PREPARE="${EXP8C_FORCE_PREPARE:-0}"
+EXP8C_PREPARE_OVERWRITE="${EXP8C_PREPARE_OVERWRITE:-0}"
 
 mkdir -p reports logs/pipelines "${REG_DIR}" "${OUTPUT_ROOT}/logs/target_eval" "${OUTPUT_ROOT}/reports"
 
 die() {
-  echo "[Exp8][ERROR] $*" >&2
+  echo "[Exp8c][ERROR] $*" >&2
   {
     echo
     echo "## FAILED"
@@ -102,10 +118,46 @@ find_propainter_root() {
   return 1
 }
 
+bool_on() {
+  case "${1,,}" in
+    1|true|yes|on) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+prepare_manifest_if_needed() {
+  if [[ -f "${PREFERENCE_MANIFEST}" ]] && ! bool_on "${EXP8C_FORCE_PREPARE}"; then
+    echo "[Exp8c] GT-win manifest exists: ${PREFERENCE_MANIFEST}"
+    return 0
+  fi
+
+  require_path "${SOURCE_D3_MANIFEST}" "source D3 selected-primary-comp PAI manifest"
+  require_path "${YTBV_ROOT}" "YouTube-VOS train root"
+  require_path "${PROJECT_ROOT}/tools/prepare_exp8c_gtwin_manifest.py" "Exp8c GT-win manifest tool"
+
+  local overwrite_arg=()
+  if bool_on "${EXP8C_PREPARE_OVERWRITE}"; then
+    overwrite_arg=(--overwrite)
+  fi
+
+  echo "[Exp8c] preparing GT-win manifest: ${PREFERENCE_MANIFEST}"
+  "${PYTHON_BIN}" tools/prepare_exp8c_gtwin_manifest.py \
+    --source_manifest "${SOURCE_D3_MANIFEST}" \
+    --youtubevos_train_root "${YTBV_ROOT}" \
+    --output_root "${D3_ROOT}" \
+    --output_manifest "${PREFERENCE_MANIFEST}" \
+    --cache_root "${GT_WIN_CACHE}" \
+    --link_mode symlink \
+    --strict \
+    --report_path "reports/exp08c_gtwin_manifest_prepare_pai_${RUN_VERSION}.md" \
+    "${overwrite_arg[@]}"
+}
+
 precheck() {
-  echo "[Exp8] precheck start"
+  echo "[Exp8c] precheck start"
   require_path "${REG_DIR}" "experiment registry folder"
-  require_path "${PREFERENCE_MANIFEST}" "D3 selected-primary-comp PAI manifest"
+  prepare_manifest_if_needed
+  require_path "${PREFERENCE_MANIFEST}" "Exp8c GT-win PAI manifest"
   require_path "${DAVIS_ROOT}" "DAVIS root"
   require_path "${DAVIS_VIDEO_ROOT}" "DAVIS video root"
   require_path "${DAVIS_MASK_ROOT}" "DAVIS mask root"
@@ -121,7 +173,10 @@ precheck() {
   require_path "${PROJECT_ROOT}/inference/run_BR.py" "DAVIS BR inference wrapper"
 
   if grep -m1 -q '/home/nvme01/' "${PREFERENCE_MANIFEST}"; then
-    die "D3 PAI manifest still contains H20 /home/nvme01 paths: ${PREFERENCE_MANIFEST}"
+    die "Exp8c PAI manifest still contains H20 /home/nvme01 paths: ${PREFERENCE_MANIFEST}"
+  fi
+  if ! grep -q "requires_safety_checker=False" diffueraser/diffueraser.py; then
+    die "diffueraser/diffueraser.py is missing the tracked PAI safety_checker disable patch"
   fi
 
   PROPAINTER_WEIGHT_ROOT="$(find_propainter_root)" || die "ProPainter weights not found; set PROPAINTER_WEIGHT_ROOT"
@@ -130,37 +185,42 @@ precheck() {
     RAFT_MODEL_PATH="${PROPAINTER_WEIGHT_ROOT}/raft-things.pth"
   fi
 
-  grep -q "build_region_loss_weight_map" training/dpo/train_stage1.py || die "Stage1 region loss helper missing"
-  grep -q "build_region_loss_weight_map" training/dpo/train_stage2.py || die "Stage2 region loss helper missing"
-  if grep -R "loss_region_mode.*region.*not implemented" training/dpo/train_stage1.py training/dpo/train_stage2.py >/dev/null 2>&1; then
-    die "LOSS_REGION_MODE=region still has a not-implemented guard"
-  fi
-  grep -q -- "--propainter_model_dir" inference/run_BR.py || die "DAVIS inference wrapper does not expose ProPainter prior"
-
-  "${PYTHON_BIN}" -m py_compile training/dpo/train_stage1.py training/dpo/train_stage2.py tools/run_inpainting_metric_eval.py tools/build_diffueraser_dpoS1_sftS2_hybrid.py
+  "${PYTHON_BIN}" -m py_compile \
+    tools/prepare_exp8c_gtwin_manifest.py \
+    training/dpo/train_stage1.py \
+    training/dpo/train_stage2.py \
+    tools/run_inpainting_metric_eval.py \
+    tools/build_diffueraser_dpoS1_sftS2_hybrid.py
 
   {
-    echo "# Exp8 D3 Comp Region-Loss S1/S2 2000 DAVIS Report"
+    echo "# Exp8c YouTube-VOS GT-Win D3-Comp Full-Loss S1/S2 DAVIS PAI Report"
     echo
     date
     echo
     echo "## Precheck"
     echo
     echo "- exp_name: \`${EXP_NAME}\`"
-    echo "- manifest: \`${PREFERENCE_MANIFEST}\`"
+    echo "- source_manifest: \`${SOURCE_D3_MANIFEST}\`"
+    echo "- gtwin_manifest: \`${PREFERENCE_MANIFEST}\`"
     echo "- manifest_rows: \`$(wc -l < "${PREFERENCE_MANIFEST}")\`"
+    echo "- youtubevos_train_root: \`${YTBV_ROOT}\`"
+    echo "- gt_win_cache: \`${GT_WIN_CACHE}\`"
     echo "- davis_root: \`${DAVIS_ROOT}\`"
     echo "- diffueraser_weight_path: \`${DIFFUERASER_WEIGHT_ROOT}\`"
     echo "- prior_mode: \`propainter\`"
     echo "- propainter_weight_path: \`${PROPAINTER_WEIGHT_ROOT}\`"
     echo "- raft_model_path: \`${RAFT_MODEL_PATH:-missing_optional}\`"
-    echo "- loss_region_mode: \`region\`"
-    echo "- region_weights: mask=1.0, boundary=0.5, outside=0.05"
-    echo "- metric_wrapper: \`tools/run_inpainting_metric_eval.py\`"
+    echo "- loss_region_mode: \`full\`"
+    echo "- mixed_precision: \`${MIXED_PRECISION}\`"
+    echo "- policy_dtype: \`${POLICY_DTYPE}\`"
+    echo "- ref_dtype: \`${REF_DTYPE}\`"
+    echo "- text_dtype: \`${TEXT_DTYPE}\`"
+    echo "- vae_dtype: \`${VAE_DTYPE}\`"
+    echo "- split_pos_neg_forward: \`${SPLIT_POS_NEG_FORWARD}\`"
     echo "- metric_backend: \`inference/metrics.py\`"
     echo "- VBench: not used"
   } > "${REPORT}"
-  echo "[Exp8] precheck ok"
+  echo "[Exp8c] precheck ok"
 }
 
 summarize_diag_csv() {
@@ -168,84 +228,68 @@ summarize_diag_csv() {
   local out_path="$2"
   local stage_label="$3"
   "${PYTHON_BIN}" - "$csv_path" "$out_path" "$stage_label" <<'PY'
-import csv, math, sys
+import csv
+import math
+import sys
 from pathlib import Path
 
 csv_path = Path(sys.argv[1])
 out_path = Path(sys.argv[2])
 stage_label = sys.argv[3]
 metrics = [
-    "dpo_loss", "implicit_acc", "mse_w", "ref_mse_w", "mse_l", "ref_mse_l",
-    "win_gap", "lose_gap", "winner_abs_reg", "winner_gap_reg",
-    "mse_w_over_ref_mse_w", "mse_l_over_ref_mse_l", "sigma_term",
-    "kl_divergence", "loser_dominant_ratio", "grad_norm",
-    "region_weighted_mse_w", "region_weighted_mse_l",
-    "region_weighted_ref_mse_w", "region_weighted_ref_mse_l",
-    "mask_area_ratio", "boundary_area_ratio", "outside_area_ratio",
+    "dpo_loss", "implicit_acc", "win_gap", "lose_gap", "mse_w",
+    "ref_mse_w", "mse_l", "ref_mse_l", "mse_w_over_ref_mse_w",
+    "mse_l_over_ref_mse_l", "sigma_term", "kl_divergence",
+    "loser_dominant_ratio", "winner_abs_reg", "winner_gap_reg",
+    "grad_norm",
 ]
 
-def f(x):
+def parse_float(value):
     try:
-        v = float(x)
+        out = float(value)
     except Exception:
         return None
-    if math.isnan(v) or math.isinf(v):
+    if math.isnan(out) or math.isinf(out):
         return None
-    return v
+    return out
 
-def percentile(vals, q):
-    vals = sorted(vals)
-    if not vals:
+def percentile(values, q):
+    values = sorted(values)
+    if not values:
         return None
-    if len(vals) == 1:
-        return vals[0]
-    pos = (len(vals)-1)*q
-    lo = int(math.floor(pos)); hi = int(math.ceil(pos))
+    if len(values) == 1:
+        return values[0]
+    pos = (len(values) - 1) * q
+    lo = int(math.floor(pos))
+    hi = int(math.ceil(pos))
     if lo == hi:
-        return vals[lo]
-    return vals[lo]*(hi-pos)+vals[hi]*(pos-lo)
+        return values[lo]
+    return values[lo] * (hi - pos) + values[hi] * (pos - lo)
 
-def fmt(v):
-    return "" if v is None else f"{v:.6g}"
+def fmt(value):
+    return "" if value is None else f"{value:.6g}"
 
 rows = []
 if csv_path.exists():
-    with csv_path.open(newline="") as fh:
-        rows = list(csv.DictReader(fh))
+    with csv_path.open(newline="", errors="ignore") as f:
+        rows = list(csv.DictReader(f))
 
-lines = [f"# {stage_label} DPO Diagnostics Summary", ""]
-lines += [f"csv: `{csv_path}`", f"rows: {len(rows)}", ""]
+lines = [f"# {stage_label} DPO Diagnostics Summary", "", f"csv: `{csv_path}`", f"rows: {len(rows)}", ""]
 if not rows:
-    lines += ["status: MISSING_DPO_DIAG", ""]
+    lines.append("status: MISSING_DPO_DIAG")
 else:
-    lines += ["| metric | mean | median | p90 | max | frac key |", "| --- | ---: | ---: | ---: | ---: | ---: |"]
+    lines.extend(["| metric | mean | median | p90 | max |", "| --- | ---: | ---: | ---: | ---: |"])
     for key in metrics:
-        vals = [f(r.get(key)) for r in rows]
-        vals = [v for v in vals if v is not None]
-        if not vals:
+        values = [parse_float(row.get(key)) for row in rows]
+        values = [value for value in values if value is not None]
+        if not values:
             continue
-        frac = ""
-        if key == "dpo_loss":
-            frac = sum(v < 1e-3 for v in vals) / len(vals)
-        elif key == "implicit_acc":
-            frac = sum(v > 0.99 for v in vals) / len(vals)
-        elif key == "win_gap":
-            frac = sum(v > 0.5 for v in vals) / len(vals)
-        elif key == "mse_w_over_ref_mse_w":
-            frac = sum(v > 5.0 for v in vals) / len(vals)
-        elif key == "sigma_term":
-            frac = sum(v > 0.99 for v in vals) / len(vals)
-        elif key == "kl_divergence":
-            frac = sum(v > 1.0 for v in vals) / len(vals)
-        elif key == "loser_dominant_ratio":
-            frac = sum(v > 0.9 for v in vals) / len(vals)
         lines.append(
-            f"| `{key}` | {fmt(sum(vals)/len(vals))} | {fmt(percentile(vals,0.5))} | {fmt(percentile(vals,0.9))} | {fmt(max(vals))} | {fmt(frac) if frac != '' else ''} |"
+            f"| `{key}` | {fmt(sum(values) / len(values))} | {fmt(percentile(values, 0.5))} | {fmt(percentile(values, 0.9))} | {fmt(max(values))} |"
         )
-    lines.append("")
 
 out_path.parent.mkdir(parents=True, exist_ok=True)
-out_path.write_text("\n".join(lines), encoding="utf-8")
+out_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 print(f"[diag-summary] {out_path}")
 PY
 }
@@ -258,12 +302,18 @@ make_pair_manifest_and_side_by_side() {
   local pair_manifest="${eval_out}/pair_manifest.csv"
   local side_dir="${eval_out}/side_by_side/${current_label}"
   mkdir -p "${side_dir}"
-  "${PYTHON_BIN}" - "$DAVIS_GT_ROOT" "$DAVIS_MASK_ROOT" "$base_pred_root" "$current_pred_root" "$pair_manifest" "$side_dir" "$current_label" "$DAVIS_NUM_QUAL" "$DAVIS_VIDEO_LENGTH" <<'PY'
-import csv, os, sys
+  "${PYTHON_BIN}" - "$DAVIS_GT_ROOT" "$DAVIS_MASK_ROOT" "$base_pred_root" "$current_pred_root" "$pair_manifest" "$side_dir" "$current_label" "$DAVIS_NUM_QUAL" "$DAVIS_VIDEO_LENGTH" "$EVAL_WIDTH" "$EVAL_HEIGHT" <<'PY'
+import csv
+import sys
 from pathlib import Path
+
 import cv2
-import imageio
 import numpy as np
+
+try:
+    import imageio.v2 as imageio
+except Exception:
+    imageio = None
 
 gt_root = Path(sys.argv[1])
 mask_root = Path(sys.argv[2])
@@ -274,21 +324,22 @@ side_dir = Path(sys.argv[6])
 cur_label = sys.argv[7]
 num_qual = int(sys.argv[8])
 max_frames = int(sys.argv[9])
+width = int(sys.argv[10])
+height = int(sys.argv[11])
 
-def image_files(d):
-    return sorted([p for p in d.iterdir() if p.suffix.lower() in {".jpg",".jpeg",".png",".bmp",".webp"}])
+def image_files(path):
+    return sorted(p for p in path.iterdir() if p.suffix.lower() in {".jpg", ".jpeg", ".png", ".bmp", ".webp"})
 
-def read_frames(path, is_mask=False, size=(432,240)):
-    w, h = size
+def read_frames(path, is_mask=False):
     frames = []
     if path.is_dir():
-        for p in image_files(path)[:max_frames]:
+        for item in image_files(path)[:max_frames]:
             flag = cv2.IMREAD_GRAYSCALE if is_mask else cv2.IMREAD_COLOR
-            arr = cv2.imread(str(p), flag)
+            arr = cv2.imread(str(item), flag)
             if arr is None:
                 continue
             interp = cv2.INTER_NEAREST if is_mask else cv2.INTER_AREA
-            arr = cv2.resize(arr, (w,h), interpolation=interp)
+            arr = cv2.resize(arr, (width, height), interpolation=interp)
             if is_mask:
                 frames.append((arr > 0).astype(np.uint8) * 255)
             else:
@@ -302,31 +353,49 @@ def read_frames(path, is_mask=False, size=(432,240)):
             interp = cv2.INTER_NEAREST if is_mask else cv2.INTER_AREA
             if is_mask:
                 arr = cv2.cvtColor(arr, cv2.COLOR_BGR2GRAY)
-                arr = cv2.resize(arr, (w,h), interpolation=interp)
+                arr = cv2.resize(arr, (width, height), interpolation=interp)
                 frames.append((arr > 0).astype(np.uint8) * 255)
             else:
                 arr = cv2.cvtColor(arr, cv2.COLOR_BGR2RGB)
-                arr = cv2.resize(arr, (w,h), interpolation=interp)
+                arr = cv2.resize(arr, (width, height), interpolation=interp)
                 frames.append(arr)
         cap.release()
     return frames
 
 def label_frame(frame, label):
     out = frame.copy()
-    cv2.rectangle(out, (0, 0), (out.shape[1], 26), (0,0,0), -1)
-    cv2.putText(out, label, (8, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255,255,255), 1, cv2.LINE_AA)
+    cv2.rectangle(out, (0, 0), (out.shape[1], 26), (0, 0, 0), -1)
+    cv2.putText(out, label, (8, 18), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (255, 255, 255), 1, cv2.LINE_AA)
     return out
 
 def overlay_mask(gt, mask):
     out = gt.copy()
     red = np.zeros_like(out)
-    red[...,0] = 255
-    m = mask > 0
-    out[m] = (0.55*out[m] + 0.45*red[m]).astype(np.uint8)
+    red[..., 0] = 255
+    active = mask > 0
+    out[active] = (0.55 * out[active] + 0.45 * red[active]).astype(np.uint8)
     return out
 
+def write_video(path, frames):
+    if imageio is not None:
+        try:
+            imageio.mimsave(path, frames, fps=12, codec="libx264")
+            return
+        except Exception as exc:
+            imageio_error = exc
+    else:
+        imageio_error = RuntimeError("imageio is unavailable")
+    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
+    h, w = frames[0].shape[:2]
+    writer = cv2.VideoWriter(str(path), fourcc, 12, (w, h))
+    if not writer.isOpened():
+        raise RuntimeError(f"Could not open cv2 VideoWriter for {path}") from imageio_error
+    for frame in frames:
+        writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
+    writer.release()
+
 rows = []
-names = sorted([p.name for p in gt_root.iterdir() if p.is_dir()])
+names = sorted(p.name for p in gt_root.iterdir() if p.is_dir())
 qual_written = 0
 for name in names:
     gt = gt_root / name
@@ -343,45 +412,38 @@ for name in names:
     mask_frames = read_frames(mask, is_mask=True)
     base_frames = read_frames(base_pred, is_mask=False)
     cur_frames = read_frames(cur_pred, is_mask=False)
-    n = min(len(gt_frames), len(mask_frames), len(base_frames), len(cur_frames))
-    if n == 0:
+    count = min(len(gt_frames), len(mask_frames), len(base_frames), len(cur_frames))
+    if count == 0:
         continue
     side_frames = []
-    for i in range(n):
-        columns = [
-            label_frame(gt_frames[i], "winner/GT"),
-            label_frame(overlay_mask(gt_frames[i], mask_frames[i]), "mask overlay"),
-            label_frame(base_frames[i], "DiffuEraser-base"),
-            label_frame(cur_frames[i], cur_label),
-        ]
-        side_frames.append(np.concatenate(columns, axis=1))
-    out_path = side_dir / f"{name}.mp4"
-    try:
-        imageio.mimsave(out_path, side_frames, fps=12, codec="libx264")
-    except Exception as imageio_error:
-        fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-        h, w = side_frames[0].shape[:2]
-        writer = cv2.VideoWriter(str(out_path), fourcc, 12, (w, h))
-        if not writer.isOpened():
-            raise RuntimeError(f"Could not open cv2 VideoWriter for {out_path}") from imageio_error
-        for frame in side_frames:
-            writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
-        writer.release()
+    for i in range(count):
+        side_frames.append(
+            np.concatenate(
+                [
+                    label_frame(gt_frames[i], "winner/GT"),
+                    label_frame(overlay_mask(gt_frames[i], mask_frames[i]), "mask overlay"),
+                    label_frame(base_frames[i], "DiffuEraser-base"),
+                    label_frame(cur_frames[i], cur_label),
+                ],
+                axis=1,
+            )
+        )
+    write_video(side_dir / f"{name}.mp4", side_frames)
     qual_written += 1
 
 pair_manifest.parent.mkdir(parents=True, exist_ok=True)
-with pair_manifest.open("w", newline="", encoding="utf-8") as fh:
-    writer = csv.DictWriter(fh, fieldnames=["sample_id","model_label","gt_video_path","prediction_video_path","mask_path"])
+with pair_manifest.open("w", newline="", encoding="utf-8") as f:
+    writer = csv.DictWriter(f, fieldnames=["sample_id", "model_label", "gt_video_path", "prediction_video_path", "mask_path"])
     writer.writeheader()
     writer.writerows(rows)
 
 index = pair_manifest.parent / "index.html"
 items = sorted(side_dir.glob("*.mp4"))
-html = ["<!doctype html><html><head><meta charset='utf-8'><title>Exp8 DAVIS side-by-side</title></head><body>"]
-html.append(f"<h1>Exp8 DAVIS side-by-side: {cur_label}</h1>")
-for p in items:
-    rel = p.relative_to(index.parent)
-    html.append(f"<h3>{p.stem}</h3><video src='{rel.as_posix()}' controls width='1200'></video>")
+html = ["<!doctype html><html><head><meta charset='utf-8'><title>Exp8c DAVIS side-by-side</title></head><body>"]
+html.append(f"<h1>Exp8c DAVIS side-by-side: {cur_label}</h1>")
+for item in items:
+    rel = item.relative_to(index.parent)
+    html.append(f"<h3>{item.stem}</h3><video src='{rel.as_posix()}' controls width='1200'></video>")
 html.append("</body></html>")
 index.write_text("\n".join(html), encoding="utf-8")
 print(f"[davis-pairs] rows={len(rows)} pair_manifest={pair_manifest} side_by_side={side_dir}")
@@ -392,8 +454,8 @@ run_metric_wrapper() {
   local eval_out="$1"
   local pair_manifest="${eval_out}/pair_manifest.csv"
   local flags=()
-  case "${COMPUTE_LPIPS,,}" in 1|true|yes|on) flags+=(--compute_lpips) ;; esac
-  case "${COMPUTE_EWARP,,}" in 1|true|yes|on) flags+=(--compute_ewarp) ;; esac
+  bool_on "${COMPUTE_LPIPS}" && flags+=(--compute_lpips)
+  bool_on "${COMPUTE_EWARP}" && flags+=(--compute_ewarp)
   "${PYTHON_BIN}" tools/run_inpainting_metric_eval.py \
     --pair_manifest "${pair_manifest}" \
     --output_dir "${eval_out}" \
@@ -412,7 +474,7 @@ run_br_inference() {
     raft_arg=(--raft_model_path "${RAFT_MODEL_PATH}")
   fi
   mkdir -p "${out_dir}"
-  echo "[Exp8][DAVIS] ${label} weights=${weights_path} out=${out_dir}"
+  echo "[Exp8c][DAVIS] ${label} weights=${weights_path} out=${out_dir}"
   CUDA_VISIBLE_DEVICES="${EVAL_GPU}" "${PYTHON_BIN}" inference/run_BR.py \
     --dataset davis \
     --video_root "${DAVIS_VIDEO_ROOT}" \
@@ -441,7 +503,7 @@ run_davis_validation() {
   local current_weights="$3"
   local eval_out="$4"
   mkdir -p "${eval_out}/inference" "${eval_out}/metrics" "${eval_out}/side_by_side"
-  echo "[Exp8] ${stage_label} DAVIS validation current=${current_label}"
+  echo "[Exp8c] ${stage_label} DAVIS validation current=${current_label}"
   run_br_inference "DiffuEraser-base" "${DIFFUERASER_WEIGHT_ROOT}" "${eval_out}/inference/DiffuEraser-base"
   run_br_inference "${current_label}" "${current_weights}" "${eval_out}/inference/${current_label}"
   make_pair_manifest_and_side_by_side \
@@ -469,16 +531,16 @@ EOF
 }
 
 run_stage1() {
-  echo "[Exp8] Stage1 start: ${STAGE1_RUN_NAME}"
+  echo "[Exp8c] Stage1 start: ${STAGE1_RUN_NAME}"
   export PROJECT_ROOT OUTPUT_ROOT EXPERIMENTS_DIR
   export DATA="${OUTPUT_ROOT}"
-  export WEIGHTS_DIR="${WEIGHTS_DIR}"
+  export WEIGHTS_DIR
   export DPO_DATA_ROOT="${D3_ROOT}"
   export DPO_DATASET_TYPE="generated_loser_manifest"
   export PREFERENCE_MANIFEST
   export TRAIN_MASK_MODE="partial"
   export MASK_FROM_MANIFEST="true"
-  export LOSS_REGION_MODE="region"
+  export LOSS_REGION_MODE="full"
   export ENABLE_DPO_DIAG="true"
   export DPO_DIAG_LOG_EVERY="${DPO_DIAG_LOG_EVERY:-10}"
   export DPO_DIAG_SAVE_CSV="true"
@@ -487,38 +549,39 @@ run_stage1() {
   export REF_MODEL_PATH="${DIFFUERASER_WEIGHT_ROOT}"
   export RUN_NAME="${STAGE1_RUN_NAME}"
   export RUN_VERSION
-  export NUM_GPUS
-  export MAX_STEPS="2000"
-  export CKPT_STEPS="500"
-  export CKPT_LIMIT="5"
-  export VAL_STEPS="999999"
+  export NUM_GPUS CUDA_VISIBLE_DEVICES MAIN_PROCESS_PORT
+  export MIXED_PRECISION POLICY_DTYPE VAE_DTYPE REF_DTYPE TEXT_DTYPE SPLIT_POS_NEG_FORWARD
+  export MAX_STEPS="${STAGE1_MAX_STEPS:-2000}"
+  export CKPT_STEPS="${CKPT_STEPS:-500}"
+  export CKPT_LIMIT="${CKPT_LIMIT:-5}"
+  export VAL_STEPS="${VAL_STEPS:-999999}"
   export LOGGING_STEPS="${LOGGING_STEPS:-10}"
   export TRAIN_HEIGHT TRAIN_WIDTH RESOLUTION NFRAMES
-  export BETA_DPO="10"
-  export SFT_REG_WEIGHT="0.0"
-  export LOSE_GAP_WEIGHT="0.25"
-  export DPO_LOSE_GAP_WEIGHT="0.25"
-  export WINNER_ABS_REG_WEIGHT="0.05"
-  export WINNER_GAP_REG_WEIGHT="1.0"
-  export WINNER_GAP_REG_MARGIN="0.0"
+  export BETA_DPO="${BETA_DPO:-10}"
+  export SFT_REG_WEIGHT="${SFT_REG_WEIGHT:-0.0}"
+  export LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT:-0.25}"
+  export DPO_LOSE_GAP_WEIGHT="${DPO_LOSE_GAP_WEIGHT:-${LOSE_GAP_WEIGHT}}"
+  export WINNER_ABS_REG_WEIGHT="${WINNER_ABS_REG_WEIGHT:-0.05}"
+  export WINNER_GAP_REG_WEIGHT="${WINNER_GAP_REG_WEIGHT:-1.0}"
+  export WINNER_GAP_REG_MARGIN="${WINNER_GAP_REG_MARGIN:-0.0}"
   export REPORT_TO="${REPORT_TO:-none}"
-  export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser_Exp8}"
+  export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser_Exp8c}"
   export CONDA_ENV_PREFIX
   bash training/dpo/scripts/03_dpo_stage1.sbatch
 }
 
 run_stage2() {
   local stage1_last="$1"
-  echo "[Exp8] Stage2 start: ${STAGE2_RUN_NAME}"
+  echo "[Exp8c] Stage2 start: ${STAGE2_RUN_NAME}"
   export PROJECT_ROOT OUTPUT_ROOT EXPERIMENTS_DIR
   export DATA="${OUTPUT_ROOT}"
-  export WEIGHTS_DIR="${WEIGHTS_DIR}"
+  export WEIGHTS_DIR
   export DPO_DATA_ROOT="${D3_ROOT}"
   export DPO_DATASET_TYPE="generated_loser_manifest"
   export PREFERENCE_MANIFEST
   export TRAIN_MASK_MODE="partial"
   export MASK_FROM_MANIFEST="true"
-  export LOSS_REGION_MODE="region"
+  export LOSS_REGION_MODE="full"
   export ENABLE_DPO_DIAG="true"
   export DPO_DIAG_LOG_EVERY="${DPO_DIAG_LOG_EVERY:-10}"
   export DPO_DIAG_SAVE_CSV="true"
@@ -529,22 +592,23 @@ run_stage2() {
   export REF_MODEL_PATH="${DIFFUERASER_WEIGHT_ROOT}"
   export RUN_NAME="${STAGE2_RUN_NAME}"
   export RUN_VERSION
-  export NUM_GPUS
-  export MAX_STEPS="2000"
-  export CKPT_STEPS="500"
-  export CKPT_LIMIT="5"
-  export VAL_STEPS="999999"
+  export NUM_GPUS CUDA_VISIBLE_DEVICES MAIN_PROCESS_PORT
+  export MIXED_PRECISION POLICY_DTYPE VAE_DTYPE REF_DTYPE TEXT_DTYPE SPLIT_POS_NEG_FORWARD
+  export MAX_STEPS="${STAGE2_MAX_STEPS:-2000}"
+  export CKPT_STEPS="${CKPT_STEPS:-500}"
+  export CKPT_LIMIT="${CKPT_LIMIT:-5}"
+  export VAL_STEPS="${VAL_STEPS:-999999}"
   export LOGGING_STEPS="${LOGGING_STEPS:-10}"
   export TRAIN_HEIGHT TRAIN_WIDTH RESOLUTION NFRAMES
-  export BETA_DPO="10"
-  export SFT_REG_WEIGHT="0.0"
-  export LOSE_GAP_WEIGHT="0.25"
-  export DPO_LOSE_GAP_WEIGHT="0.25"
-  export WINNER_ABS_REG_WEIGHT="0.05"
-  export WINNER_GAP_REG_WEIGHT="1.0"
-  export WINNER_GAP_REG_MARGIN="0.0"
+  export BETA_DPO="${BETA_DPO:-10}"
+  export SFT_REG_WEIGHT="${SFT_REG_WEIGHT:-0.0}"
+  export LOSE_GAP_WEIGHT="${LOSE_GAP_WEIGHT:-0.25}"
+  export DPO_LOSE_GAP_WEIGHT="${DPO_LOSE_GAP_WEIGHT:-${LOSE_GAP_WEIGHT}}"
+  export WINNER_ABS_REG_WEIGHT="${WINNER_ABS_REG_WEIGHT:-0.05}"
+  export WINNER_GAP_REG_WEIGHT="${WINNER_GAP_REG_WEIGHT:-1.0}"
+  export WINNER_GAP_REG_MARGIN="${WINNER_GAP_REG_MARGIN:-0.0}"
   export REPORT_TO="${REPORT_TO:-none}"
-  export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser_Exp8}"
+  export WANDB_PROJECT="${WANDB_PROJECT:-DPO_Diffueraser_Exp8c}"
   export CONDA_ENV_PREFIX
   bash training/dpo/scripts/03_dpo_stage2.sbatch
 }
@@ -558,18 +622,23 @@ latest_run_dir() {
 
 main() {
   precheck
+  if bool_on "${EXP8C_PRECHECK_ONLY:-0}"; then
+    echo "[Exp8c] precheck-only complete"
+    return 0
+  fi
+
   {
     echo
     echo "## Training Configuration"
     echo
     echo "- Stage1 run_name: \`${STAGE1_RUN_NAME}\`"
     echo "- Stage2 run_name: \`${STAGE2_RUN_NAME}\`"
-    echo "- Stage1 steps: 2000"
-    echo "- Stage2 steps: 2000"
-    echo "- checkpointing_steps: 500"
+    echo "- Stage1 steps: \`${STAGE1_MAX_STEPS:-2000}\`"
+    echo "- Stage2 steps: \`${STAGE2_MAX_STEPS:-2000}\`"
+    echo "- checkpointing_steps: \`${CKPT_STEPS:-500}\`"
     echo "- train_mask_mode: partial"
     echo "- mask_from_manifest: true"
-    echo "- loss_region_mode: region"
+    echo "- loss_region_mode: full"
     echo "- prior_mode_validation: propainter"
   } >> "${REPORT}"
 
@@ -580,20 +649,20 @@ main() {
   require_path "${STAGE1_LAST}/unet_main/config.json" "Stage1 last_weights unet_main"
   require_path "${STAGE1_LAST}/brushnet/config.json" "Stage1 last_weights brushnet"
   require_path "${STAGE1_RUN_DIR}/dpo_diagnostics.csv" "Stage1 dpo_diagnostics.csv"
-  summarize_diag_csv "${STAGE1_RUN_DIR}/dpo_diagnostics.csv" "reports/exp08_stage1_dpo_diag_summary.md" "Exp8 Stage1"
+  summarize_diag_csv "${STAGE1_RUN_DIR}/dpo_diagnostics.csv" "reports/exp08c_stage1_dpo_diag_summary_pai.md" "Exp8c PAI Stage1"
 
   HYBRID_DIR="${OUTPUT_ROOT}/experiments/hybrid/${RUN_VERSION}_${STAGE1_RUN_NAME}_dpoS1_sftS2"
-  echo "[Exp8] build Stage1 hybrid: ${HYBRID_DIR}"
+  echo "[Exp8c] build Stage1 hybrid: ${HYBRID_DIR}"
   "${PYTHON_BIN}" tools/build_diffueraser_dpoS1_sftS2_hybrid.py \
     --dpo_stage1_weights "${STAGE1_LAST}" \
     --sft_stage2_weights "${SFT_STAGE2_WEIGHTS}" \
     --output_dir "${HYBRID_DIR}" \
     --strict false \
-    --report_path "reports/exp08_stage1_hybrid_key_merge_report.md"
+    --report_path "reports/exp08c_stage1_hybrid_key_merge_report_pai.md"
   require_path "${HYBRID_DIR}/last_weights/unet_main/config.json" "Stage1 hybrid full weights"
 
-  STAGE1_VAL_DIR="${OUTPUT_ROOT}/logs/target_eval/exp08_stage1_val_davis_${RUN_VERSION}"
-  run_davis_validation "Exp8 Stage1 DPO + SFT Stage2" "DPO-S1_SFT-S2" "${HYBRID_DIR}/last_weights" "${STAGE1_VAL_DIR}"
+  STAGE1_VAL_DIR="${OUTPUT_ROOT}/logs/target_eval/exp08c_youtubevos_gtwin_stage1_val_davis_${RUN_VERSION}"
+  run_davis_validation "Exp8c Stage1 DPO + SFT Stage2" "DPO-S1_SFT-S2" "${HYBRID_DIR}/last_weights" "${STAGE1_VAL_DIR}"
 
   run_stage2 "${STAGE1_LAST}"
   STAGE2_RUN_DIR="$(latest_run_dir stage2 "${STAGE2_RUN_NAME}")"
@@ -602,10 +671,10 @@ main() {
   require_path "${STAGE2_LAST}/unet_main/config.json" "Stage2 last_weights unet_main"
   require_path "${STAGE2_LAST}/brushnet/config.json" "Stage2 last_weights brushnet"
   require_path "${STAGE2_RUN_DIR}/dpo_diagnostics.csv" "Stage2 dpo_diagnostics.csv"
-  summarize_diag_csv "${STAGE2_RUN_DIR}/dpo_diagnostics.csv" "reports/exp08_stage2_dpo_diag_summary.md" "Exp8 Stage2"
+  summarize_diag_csv "${STAGE2_RUN_DIR}/dpo_diagnostics.csv" "reports/exp08c_stage2_dpo_diag_summary_pai.md" "Exp8c PAI Stage2"
 
-  STAGE2_VAL_DIR="${OUTPUT_ROOT}/logs/target_eval/exp08_stage2_val_davis_${RUN_VERSION}"
-  run_davis_validation "Exp8 Stage1 DPO + Stage2 DPO" "DPO-S1_DPO-S2" "${STAGE2_LAST}" "${STAGE2_VAL_DIR}"
+  STAGE2_VAL_DIR="${OUTPUT_ROOT}/logs/target_eval/exp08c_youtubevos_gtwin_stage2_val_davis_${RUN_VERSION}"
+  run_davis_validation "Exp8c Stage1 DPO + Stage2 DPO" "DPO-S1_DPO-S2" "${STAGE2_LAST}" "${STAGE2_VAL_DIR}"
 
   {
     echo
@@ -613,26 +682,22 @@ main() {
     echo
     echo "- stage1_run_dir: \`${STAGE1_RUN_DIR}\`"
     echo "- stage1_dpo_diag: \`${STAGE1_RUN_DIR}/dpo_diagnostics.csv\`"
-    echo "- stage1_diag_summary: \`reports/exp08_stage1_dpo_diag_summary.md\`"
+    echo "- stage1_diag_summary: \`reports/exp08c_stage1_dpo_diag_summary_pai.md\`"
     echo "- stage1_hybrid: \`${HYBRID_DIR}/last_weights\`"
     echo "- stage1_val: \`${STAGE1_VAL_DIR}\`"
     echo "- stage2_run_dir: \`${STAGE2_RUN_DIR}\`"
     echo "- stage2_dpo_diag: \`${STAGE2_RUN_DIR}/dpo_diagnostics.csv\`"
-    echo "- stage2_diag_summary: \`reports/exp08_stage2_dpo_diag_summary.md\`"
+    echo "- stage2_diag_summary: \`reports/exp08c_stage2_dpo_diag_summary_pai.md\`"
     echo "- stage2_val: \`${STAGE2_VAL_DIR}\`"
     echo
-    echo "## Decision Questions"
+    echo "## Decision Boundary"
     echo
-    echo "1. Does Stage1 DPO + SFT Stage2 improve over SFT-48000 DiffuEraser on DAVIS?"
-    echo "2. Does Stage2 DPO improve or degrade relative to Stage1 validation?"
-    echo "3. Does region loss improve mask/boundary metrics?"
-    echo "4. Does DPO-diag show less win_gap / loser-dominant collapse?"
-    echo "5. Should next step be shorter checkpoint, no-lose-gap, target-domain SFT warmup, or stop DPO?"
+    echo "Exp8c is diagnostic only until DAVIS metrics, side-by-side videos, and dpo_diag summaries are reviewed."
   } >> "${REPORT}"
 
-  cp "${REPORT}" "${OUTPUT_ROOT}/reports/exp08_d3_comp_regionloss_s1s2_2000_davis_report.md" 2>/dev/null || true
-  echo "[Exp8] complete"
-  echo "[Exp8] report=${REPORT}"
+  cp "${REPORT}" "${OUTPUT_ROOT}/reports/exp08c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai_report.md" 2>/dev/null || true
+  echo "[Exp8c] complete"
+  echo "[Exp8c] report=${REPORT}"
 }
 
 main "$@"

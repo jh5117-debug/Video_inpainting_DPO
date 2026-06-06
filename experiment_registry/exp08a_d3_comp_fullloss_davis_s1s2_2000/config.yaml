@@ -1,0 +1,46 @@
+experiment_id: exp08a
+experiment_name: Exp8a D3 comp full-loss DAVIS Stage1+Stage2 2000
+status: completed_negative_davis_metrics_and_diag_present
+machine: PAI manual
+data_asset: D3 YouTube-VOS selected-primary comp generated losers
+source_domain: YouTube-VOS D3 training data
+target_domain: DAVIS partial-mask inpainting validation
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+train_task: Stage1 2000 then Stage1 DAVIS val then Stage2 2000 then Stage2 DAVIS val
+train_mask_mode: partial
+mask_from_manifest: true
+mask_area_range: D3 existing target-domain masks
+prior_mode: ProPainter prior required for DAVIS validation; SFT-48000 DiffuEraser required
+diffueraser_weight_root: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: full
+stage1_steps: 2000
+stage2_steps: 2000
+checkpointing_steps: 500
+checkpoints_total_limit: 5
+stage1_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260605_142442_exp08_d3_comp_fullloss_wingap_lose025_s1_2000_davis_pai
+stage2_run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_070556_exp08_d3_comp_fullloss_wingap_lose025_s2_2000_davis_pai
+dpo_diag_csv: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260605_142442_exp08_d3_comp_fullloss_wingap_lose025_s1_2000_davis_pai/dpo_diagnostics.csv
+stage1_dpo_diag_csv: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260605_142442_exp08_d3_comp_fullloss_wingap_lose025_s1_2000_davis_pai/dpo_diagnostics.csv
+stage2_dpo_diag_csv: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_070556_exp08_d3_comp_fullloss_wingap_lose025_s2_2000_davis_pai/dpo_diagnostics.csv
+qual_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260606_070556/inference and /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage2_val_davis_20260606_070556/inference
+metric_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260606_070556/metrics and /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage2_val_davis_20260606_070556/metrics
+vbench_dir: not used
+continuation_log: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/logs/pipelines/exp08_d3_comp_fullloss_continue_after_s1_fixsafety_len24_writerpatched_pai_20260606_070556.log
+audit_report: reports/pai_exp8a_safe_audit_py_20260606_122809.md
+stage1_val_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage1_val_davis_20260606_070556
+stage2_val_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08a_fullloss_stage2_val_davis_20260606_070556
+stage1_vs_base_whole_video_psnr_mean: 23.9554 vs 29.4647
+stage2_vs_base_whole_video_psnr_mean: 23.5677 vs 29.3802
+stage1_final_mse_l_over_ref_mse_l: 300.585236
+stage2_final_mse_l_over_ref_mse_l: 51.705112
+conclusion: Completed negative baseline. Full-loss regularized DPO underperforms DiffuEraser-base on DAVIS for Stage1 and Stage2 and shows loser-degradation shortcut in dpo_diag. Not region-loss and not success.
+loss_formula: |
+  win_gap = m_w - m_w_ref
+  lose_gap = m_l - m_l_ref
+  L_total = -logsigmoid(-0.5 * 10 * (win_gap - 0.25 * lose_gap)) + 0.05 * m_w + ReLU(win_gap)
