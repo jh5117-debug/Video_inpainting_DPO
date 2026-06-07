@@ -135,7 +135,7 @@ fi
 
 # Reuse the Exp8c DAVIS helper functions without executing its main().
 helper_file="$(mktemp)"
-awk '/^run_stage1\\(\\)/ {exit} {print}' \
+awk '/^run_stage1\(\)/ {exit} {print}' \
   "${PROJECT_ROOT}/scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh" > "${helper_file}"
 # shellcheck source=/dev/null
 source "${helper_file}"
