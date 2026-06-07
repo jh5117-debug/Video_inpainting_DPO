@@ -141,13 +141,17 @@ awk '/^run_stage1\(\)/ {exit} {print}' \
 source "${helper_file}"
 rm -f "${helper_file}"
 
-echo "[exp07-posthoc-davis] build Stage1 hybrid: ${HYBRID_DIR}"
-"${PYTHON_BIN}" "${PROJECT_ROOT}/tools/build_diffueraser_dpoS1_sftS2_hybrid.py" \
-  --dpo_stage1_weights "${STAGE1_LAST}" \
-  --sft_stage2_weights "${SFT_STAGE2_WEIGHTS}" \
-  --output_dir "${HYBRID_DIR}" \
-  --strict false \
-  --report_path "${OUTPUT_ROOT}/reports/exp07_fix_smallmask_prior_stage1_hybrid_key_merge_report_h20.md"
+if [[ -f "${HYBRID_DIR}/last_weights/unet_main/config.json" && -f "${HYBRID_DIR}/last_weights/brushnet/config.json" ]]; then
+  echo "[exp07-posthoc-davis] reuse existing Stage1 hybrid: ${HYBRID_DIR}"
+else
+  echo "[exp07-posthoc-davis] build Stage1 hybrid: ${HYBRID_DIR}"
+  "${PYTHON_BIN}" "${PROJECT_ROOT}/tools/build_diffueraser_dpoS1_sftS2_hybrid.py" \
+    --dpo_stage1_weights "${STAGE1_LAST}" \
+    --sft_stage2_weights "${SFT_STAGE2_WEIGHTS}" \
+    --output_dir "${HYBRID_DIR}" \
+    --strict false \
+    --report_path "${OUTPUT_ROOT}/reports/exp07_fix_smallmask_prior_stage1_hybrid_key_merge_report_h20.md"
+fi
 require_path "${HYBRID_DIR}/last_weights/unet_main/config.json" "Stage1 hybrid full weights"
 
 run_davis_validation "Exp7 Fix Stage1 DPO + SFT Stage2" \
