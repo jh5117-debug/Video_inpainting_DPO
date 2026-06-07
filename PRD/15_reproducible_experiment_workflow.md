@@ -53,6 +53,37 @@ Exp8c：
   - `tools/prepare_exp8c_gtwin_manifest.py`
   - `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh`
 
+## PAI validation 权重路径红线
+
+2026-06-07 记录：PAI Exp8c Stage2 DAVIS validation 曾因 RAFT 权重路径错误失败。
+这不是 Exp8c 训练错误，而是 validation 的 ProPainter 权重目录被指到了另一份全局路径，
+触发了重新下载并留下损坏的 `raft-things.pth`。
+
+必须遵守：
+
+- PAI Exp8c validation 必须优先使用已经成功完成 Stage1 DAVIS validation 的 repo-local ProPainter 权重目录：
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp8c_pai_sync/weights/propainter`
+- 该目录下的 RAFT 权重必须显式传入：
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp8c_pai_sync/weights/propainter/raft-things.pth`
+- 不要把 Exp8c validation 的 `PROPAINTER_WEIGHT_ROOT` 指到
+  `/mnt/workspace/hj/nas_hj/weights/propainter`，除非先用 `torch.load(..., map_location="cpu")`
+  验证其中的 `raft-things.pth` 可读。
+- 如果某次 validation 日志出现
+  `Downloading ... raft-things.pth to /mnt/workspace/hj/nas_hj/weights/propainter/raft-things.pth`，
+  说明它没有复用已验证的 repo-local 权重路径，应立即停止并修正环境变量后重跑。
+- 补跑 PAI Exp8c Stage2 DAVIS validation 时必须设置：
+  `PROPAINTER_WEIGHT_ROOT=/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp8c_pai_sync/weights/propainter`
+  和
+  `RAFT_MODEL_PATH=/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp8c_pai_sync/weights/propainter/raft-things.pth`。
+- 对发现的损坏全局 RAFT 文件，只能移动到 `.corrupt_<timestamp>` 备份名；不要让后续脚本继续读取。
+
+成功输出判据：
+
+- Stage1 validation `DPO-S1_SFT-S2` side-by-side：
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08c_youtubevos_gtwin_stage1_val_davis_20260606_144527/side_by_side/DPO-S1_SFT-S2`
+- Stage2 validation `DPO-S1_DPO-S2` side-by-side：
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08c_youtubevos_gtwin_stage2_val_davis_20260606_144527/side_by_side/DPO-S1_DPO-S2`
+
 ## 禁止事项
 
 - 禁止在 PAI/H20 只靠终端 sed/python heredoc 修改实验逻辑后直接训练。
