@@ -822,10 +822,20 @@ def main() -> int:
     parser.add_argument("--skip_existing", action="store_true")
     parser.add_argument("--show_progress", action="store_true")
     parser.add_argument("--no_d2_loser", action="store_true", help="Do not add D2 generated-loser videos as the optional fifth column.")
+    parser.add_argument("--num_shards", type=int, default=1, help="Split generation samples into this many disjoint shards.")
+    parser.add_argument("--shard_index", type=int, default=0, help="Zero-based shard index for this worker.")
+    parser.add_argument("--generate_only", action="store_true", help="Only generate sample videos; skip metrics, side-by-side, and reports.")
     parser.add_argument("--stage1_diag_csv", type=Path, default=None)
     parser.add_argument("--stage2_diag_csv", type=Path, default=None)
     parser.add_argument("--dpo_summary_out", type=Path, default=None)
     args = parser.parse_args()
+
+    if args.num_shards < 1:
+        raise ValueError("--num_shards must be >= 1")
+    if args.shard_index < 0 or args.shard_index >= args.num_shards:
+        raise ValueError("--shard_index must be in [0, num_shards)")
+    if args.num_shards > 1 and not args.generate_only:
+        raise ValueError("--num_shards > 1 is for --generate_only workers; run one final unsharded pass to write metrics/report")
 
     args.output_dir.mkdir(parents=True, exist_ok=True)
     samples_dir = args.output_dir / "samples"
@@ -843,6 +853,18 @@ def main() -> int:
     for sample in qual_samples:
         all_samples.setdefault(sample.sample_id, sample)
     ordered_samples = list(all_samples.values())
+    unsharded_sample_count = len(ordered_samples)
+    if args.num_shards > 1:
+        ordered_samples = [
+            sample
+            for sample_pos, sample in enumerate(ordered_samples)
+            if sample_pos % args.num_shards == args.shard_index
+        ]
+        print(
+            "[partialmask-eval] shard "
+            f"{args.shard_index}/{args.num_shards}: "
+            f"{len(ordered_samples)}/{unsharded_sample_count} samples"
+        )
 
     model_statuses: List[ModelStatus] = []
     active_models: List[ModelSpec] = []
@@ -873,6 +895,11 @@ def main() -> int:
         "num_samples": args.num_samples,
         "num_samples_metric": args.num_samples_metric,
         "seed": args.seed,
+        "num_shards": args.num_shards,
+        "shard_index": args.shard_index,
+        "generate_only": args.generate_only,
+        "unsharded_sample_count": unsharded_sample_count,
+        "active_sample_count": len(ordered_samples),
         "base_weights_dir": str(args.base_weights_dir),
         "checkpoints": [{"label": label, "path": str(path)} for label, path in args.checkpoint],
         "model_statuses": [status.__dict__ for status in model_statuses],
@@ -904,6 +931,10 @@ def main() -> int:
             del pipeline
             if device.type == "cuda":
                 torch.cuda.empty_cache()
+
+    if args.generate_only:
+        print(f"[partialmask-eval] generate_only complete output={args.output_dir}")
+        return 0
 
     metric_rows: List[Dict[str, Any]] = []
     for sample in metric_samples:
