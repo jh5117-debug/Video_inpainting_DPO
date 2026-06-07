@@ -141,6 +141,13 @@ awk '/^run_stage1\(\)/ {exit} {print}' \
 source "${helper_file}"
 rm -f "${helper_file}"
 
+PROPAINTER_WEIGHT_ROOT="$(find_propainter_root)" || die "ProPainter weights not found; set PROPAINTER_WEIGHT_ROOT"
+export PROPAINTER_WEIGHT_ROOT
+if [[ -z "${RAFT_MODEL_PATH}" && -f "${PROPAINTER_WEIGHT_ROOT}/raft-things.pth" ]]; then
+  RAFT_MODEL_PATH="${PROPAINTER_WEIGHT_ROOT}/raft-things.pth"
+fi
+export RAFT_MODEL_PATH
+
 if [[ -f "${HYBRID_DIR}/last_weights/unet_main/config.json" && -f "${HYBRID_DIR}/last_weights/brushnet/config.json" ]]; then
   echo "[exp07-posthoc-davis] reuse existing Stage1 hybrid: ${HYBRID_DIR}"
 else
