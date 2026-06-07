@@ -11,6 +11,8 @@
 2. 每个实验必须有 registry 文件夹。
    - 文件夹放在 `experiment_registry/<experiment_id_or_name>/`。
    - 至少包含 `README.md`、`config.yaml`、`paths.yaml`、`commands.md`、`status.md`。
+   - 实验专属代码必须放在 `experiment_registry/<experiment_id_or_name>/code/`。
+   - 顶层 `scripts/`、`tools/` 只允许放共享基础设施，或向实验目录转发的 thin wrapper；不能再作为新实验主逻辑所在地。
    - 大文件、checkpoint、视频、数据集不进 git，只在 registry 中记录路径。
 
 3. HAL 修改后必须 git 化。
@@ -50,8 +52,9 @@ Exp8c：
 - H20 因 SIGFPE 使用 `MIXED_PRECISION=no`、全 fp32、`SPLIT_POS_NEG_FORWARD=0`、GPU `1,2,3,4,5,6,7`。
 - PAI 不需要 H20 SIGFPE workaround，默认使用 bf16 mixed precision、`SPLIT_POS_NEG_FORWARD=1`、GPU `0,1,2,3,4,5,6,7`。
 - PAI 版本必须使用 git 中的：
-  - `tools/prepare_exp8c_gtwin_manifest.py`
-  - `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh`
+  - `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/code/prepare_gtwin_manifest.py`
+  - `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/code/launch_s1s2_pai.sh`
+  - 兼容入口 `tools/prepare_exp8c_gtwin_manifest.py` 和 `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh` 只能转发到上面的实验目录代码。
 
 ## PAI validation 权重路径红线
 
@@ -89,6 +92,7 @@ Exp8c：
 - 禁止在 PAI/H20 只靠终端 sed/python heredoc 修改实验逻辑后直接训练。
 - 禁止出现“PAI 修了，HAL/H20/git 没修”的状态。
 - 禁止没有 experiment_registry 文件夹就启动新实验。
+- 禁止把新实验主脚本直接放在顶层 `scripts/` 或 `tools/`；顶层只能是兼容 wrapper 或共享工具。
 - 禁止用 VBench 替代 DAVIS inpainting 指标。
 - 禁止把 H20 `/home/nvme01/...` 路径放进 PAI 训练 manifest。
 
@@ -96,7 +100,8 @@ Exp8c：
 
 Exp7-fix 重新在 H20 上运行时必须使用 HAL/git 中的可复现脚本：
 
-- `scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh`
+- canonical: `experiment_registry/exp07_fix_smallmask_prior/code/launch_s1s2_h20.sh`
+- compatibility wrapper: `scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh`
 
 当前定义：
 

@@ -2,7 +2,7 @@
 
 - status: `h20_stage2_running_step580_posthoc_davis_watcher_required`
 - conclusion: Planned correction for Exp7 before expanding D3; current run tests Stage1+Stage2 with the same regularized full-loss setting as Exp8. The original H20 launch script ran two-stage training only and skipped the intended Exp8-style DAVIS validation handoff, so a posthoc DAVIS watcher must be launched from synced git code.
-- next_action: Let Stage2 finish, then run `scripts/run_exp07_fix_smallmask_prior_posthoc_davis_val_h20.sh` to validate `DPO-S1_SFT-S2` and `DPO-S1_DPO-S2` on DAVIS without using GPU 0.
+- next_action: Let Stage2 finish, then run canonical `experiment_registry/exp07_fix_smallmask_prior/code/posthoc_davis_val_h20.sh` to validate `DPO-S1_SFT-S2` and `DPO-S1_DPO-S2` on DAVIS without using GPU 0. The old `scripts/run_exp07_fix_smallmask_prior_posthoc_davis_val_h20.sh` path is a compatibility wrapper only.
 
 ## H20 data generation
 

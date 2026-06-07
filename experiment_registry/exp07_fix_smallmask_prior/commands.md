@@ -3,7 +3,8 @@
 ## Current command status
 
 H20 smallmask data exists and the active restart is a two-stage run using the
-git-tracked wrapper below.
+git-tracked registry code below. Top-level `scripts/` paths are compatibility
+wrappers only.
 
 ## H20 data generation command
 
@@ -38,7 +39,7 @@ REF_DTYPE=fp32 \
 TEXT_DTYPE=fp32 \
 SPLIT_POS_NEG_FORWARD=0 \
 MAIN_PROCESS_PORT=29571 \
-nohup bash scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh > "$LOG" 2>&1 &
+nohup bash experiment_registry/exp07_fix_smallmask_prior/code/launch_s1s2_h20.sh > "$LOG" 2>&1 &
 
 echo $! > "$PID_FILE"
 ```

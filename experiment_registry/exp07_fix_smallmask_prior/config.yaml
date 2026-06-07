@@ -2,6 +2,14 @@ experiment_id: exp07_fix
 experiment_name: |
   Exp7 fix: VideoDPO small-mask 15-20 + ProPainter prior
 status: h20_s1s2_launching
+canonical_code_dir: experiment_registry/exp07_fix_smallmask_prior/code
+launcher_h20: experiment_registry/exp07_fix_smallmask_prior/code/launch_s1s2_h20.sh
+posthoc_davis_val_h20: experiment_registry/exp07_fix_smallmask_prior/code/posthoc_davis_val_h20.sh
+smallD2_eval_h20: experiment_registry/exp07_fix_smallmask_prior/code/smallD2_two_variant_eval_sharded_h20.sh
+compatibility_wrappers: |
+  scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh
+  scripts/run_exp07_fix_smallmask_prior_posthoc_davis_val_h20.sh
+  scripts/run_exp7a_smallD2_two_variant_eval_sharded_h20.sh
 data_asset: new non-overwriting VideoDPO small-mask generated losers
 source_domain: VideoDPO clips mostly static
 target_domain: partial-mask inpainting sanity before D3

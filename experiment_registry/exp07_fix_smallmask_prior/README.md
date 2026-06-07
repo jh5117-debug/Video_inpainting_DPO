@@ -21,5 +21,15 @@ Planned correction for Exp7 before expanding D3.
 ## Next Action
 
 H20 smallmask data is available. Launch Stage1+Stage2 with
-`scripts/launch_exp07_fix_smallmask_prior_wingap_s1s2_2000_h20.sh` from a
+`experiment_registry/exp07_fix_smallmask_prior/code/launch_s1s2_h20.sh` from a
 clean git-synced H20 worktree, using GPUs 1-7 and the fp32 SIGFPE-safe profile.
+
+## Code Ownership
+
+Canonical experiment-specific code lives under this registry folder:
+
+- `code/launch_s1s2_h20.sh`
+- `code/posthoc_davis_val_h20.sh`
+- `code/smallD2_two_variant_eval_sharded_h20.sh`
+
+The matching top-level `scripts/` entries are compatibility wrappers only.

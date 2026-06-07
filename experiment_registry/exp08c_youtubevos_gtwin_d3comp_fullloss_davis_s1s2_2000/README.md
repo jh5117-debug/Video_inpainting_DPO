@@ -16,8 +16,9 @@ fp32/nosplit configuration and has reached `global_step=150` with
 PAI status at 2026-06-06: ready to launch from git-tracked code, not from
 terminal-only patches.
 
-- manifest tool: `tools/prepare_exp8c_gtwin_manifest.py`
-- PAI launcher: `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh`
+- manifest tool: `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/code/prepare_gtwin_manifest.py`
+- PAI launcher: `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/code/launch_s1s2_pai.sh`
+- compatibility wrappers: `tools/prepare_exp8c_gtwin_manifest.py`, `scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh`
 - PAI YouTube-VOS root: `/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train`
 - PAI source D3 manifest: `data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl`
 - PAI generated manifest: `data/generated_losers/exp08c_youtubevos_gtwin_d3comp_lose_fixed_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl`

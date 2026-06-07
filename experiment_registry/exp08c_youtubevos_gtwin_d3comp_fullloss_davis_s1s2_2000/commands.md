@@ -45,7 +45,7 @@ REF_DTYPE=bf16 \
 TEXT_DTYPE=bf16 \
 SPLIT_POS_NEG_FORWARD=1 \
 YTBV_ROOT=/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train \
-nohup bash scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh \
+nohup bash experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/code/launch_s1s2_pai.sh \
   > "$LOG" 2>&1 &
 
 echo $! > "$PID_FILE"
