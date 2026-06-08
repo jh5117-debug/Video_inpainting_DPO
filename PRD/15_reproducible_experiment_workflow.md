@@ -60,6 +60,36 @@ ssh-add /home/hj/.ssh/hj_pai_ed25519
 ssh -i /home/hj/.ssh/hj_pai_ed25519 <pai-user>@<pai-host>
 ```
 
+2026-06-08 14:51 CST verification: HAL/Codex can connect directly to PAI
+through the administrator-installed public key.
+
+```text
+pai_ssh_host = root@47.103.26.60
+pai_ssh_port = 22
+pai_hostname = dsw-753014-dc85766cb-4v2jj
+pai_workspace_symlink = /mnt/workspace/hj/nas_hj -> /mnt/nas/hj
+active_exp09_10_11_sync = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync
+active_exp09_10_11_synced_commit = 7d31184
+```
+
+Codex subprocesses do not automatically inherit the user's interactive
+`ssh-agent`. Before direct PAI inspection, discover the live agent socket and
+confirm that the `hj-pai-20260608` key is loaded:
+
+```bash
+find /tmp -maxdepth 2 -type s -name 'agent.*' 2>/dev/null
+SSH_AUTH_SOCK=<agent-sock> ssh-add -l
+SSH_AUTH_SOCK=<agent-sock> \
+ssh -i /home/hj/.ssh/hj_pai_ed25519 -p 22 root@47.103.26.60 \
+  'hostname; whoami; pwd'
+```
+
+Do not hard-code the current `SSH_AUTH_SOCK` in committed scripts; it is
+ephemeral and changes when the agent restarts. Use direct PAI SSH for audits,
+log checks, and file surveys. PAI training launch policy remains explicit:
+start or restart PAI experiments only when the user asks for that operation, and
+never paste new experiment logic directly into PAI without HAL/git first.
+
 ## Exp8 当前约束
 
 Exp8a：

@@ -961,3 +961,60 @@ stage2 = not started
 The H20 Exp10 run is slow but healthy. It records `loss_region_mode=region`,
 `gap_normalization=log_ratio`, raw and normalized win/lose gaps, clipped loser
 gap, and region-local MSE fields in `dpo_diagnostics.csv`.
+
+## 2026-06-08 PAI Direct SSH / Exp9 Live Status
+
+HAL/Codex direct SSH to PAI is now verified through the `hj-pai-20260608`
+ED25519 key recorded in `PRD/15_reproducible_experiment_workflow.md`.
+Operational boundary: Codex may use direct SSH for PAI audits, log checks, and
+file surveys. Starting or restarting PAI training still requires an explicit
+user request.
+
+PAI direct survey at 2026-06-08 14:55 CST:
+
+```text
+pai_host = dsw-753014-dc85766cb-4v2jj
+pai_user = root
+ssh = root@47.103.26.60 -p 22
+workspace = /mnt/workspace/hj/nas_hj -> /mnt/nas/hj
+active_sync_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync
+active_sync_commit_marker = 7d31184
+```
+
+Top-level PAI `/mnt/workspace/hj/nas_hj` code/data roots visible in the survey:
+
+```text
+H20_Video_inpainting_DPO
+H20_Video_inpainting_DPO_exp09_10_11_pai_sync
+H20_Video_inpainting_DPO_exp8c_pai_sync
+conda_envs
+data
+external
+official_repos
+weights
+world_model_phys
+```
+
+Current Exp9 PAI run:
+
+```text
+experiment = exp09_logratio_gap_dpo_s1s2_2000_davis_pai
+run_version = 20260608_121243
+launcher_pid = 3678169
+process_name = lingbot-worldmodel
+gpu = 4,5,6,7
+stage = Stage1 running
+stage1_dir = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260608_121243_exp9_logratio_gap_dpo_s1_2000_davis_pai
+log = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync/logs/pipelines/exp09_logratio_gap_dpo_s1s2_2000_davis_pai_lingbot_worldmodel_gpus4_7_20260608_141428.log
+latest_observed_global_step = 350
+dpo_diag_rows = 56
+latest_checkpoint = checkpoint-350 saved at 14:55 CST
+```
+
+The latest observed Exp9 diagnostics confirm the intended Exp9 setting:
+`gap_normalization=log_ratio`, `lose_gap_clip_tau=1.0`,
+`loss_region_mode=full`, raw and normalized gap fields present, and no
+Traceback/OOM/SIGFPE/SIGTERM in the inspected log window. Earlier incomplete
+checkpoints from the SIGTERM-interrupted run were moved under
+`_bad_incomplete_checkpoints_*`; the current run resumed cleanly and now writes
+complete checkpoints again.
