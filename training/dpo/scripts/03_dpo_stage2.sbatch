@@ -121,7 +121,14 @@ SPLIT_POS_NEG_FORWARD=${SPLIT_POS_NEG_FORWARD:-1}
 USE_8BIT_ADAM=${USE_8BIT_ADAM:-0}
 MAIN_PROCESS_PORT=${MAIN_PROCESS_PORT:-0}
 
-if [[ -n "${CONDA_ENV_PREFIX:-}" ]]; then
+CONDA_PREFIX_READY=0
+if [[ -n "${CONDA_ENV_PREFIX:-}" && -x "${CONDA_ENV_PREFIX}/bin/python" ]]; then
+  CONDA_ENV="${CONDA_ENV_PREFIX}"
+  CONDA_PREFIX_READY=1
+elif [[ -z "${CONDA_ENV:-}" && -x "${DEFAULT_CONDA_ENV_PREFIX}/bin/python" ]]; then
+  CONDA_ENV="${DEFAULT_CONDA_ENV_PREFIX}"
+  CONDA_PREFIX_READY=1
+elif [[ -n "${CONDA_ENV_PREFIX:-}" ]]; then
   CONDA_ENV="${CONDA_ENV_PREFIX}"
 elif [[ -z "${CONDA_ENV:-}" && -d "${DEFAULT_CONDA_ENV_PREFIX}" ]]; then
   CONDA_ENV="${DEFAULT_CONDA_ENV_PREFIX}"
@@ -129,21 +136,26 @@ else
   CONDA_ENV="${CONDA_ENV:-diffueraser}"
 fi
 
-if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
-  :
-elif [[ -n "${CONDA_EXE:-}" ]]; then
-  CONDA_BASE="$("${CONDA_EXE}" info --base)"
-elif command -v conda >/dev/null 2>&1; then
-  CONDA_BASE="$(conda info --base)"
-elif [[ -x "${PROJECT_PARENT}/miniconda3/bin/conda" ]]; then
-  CONDA_BASE="${PROJECT_PARENT}/miniconda3"
+if [[ "${CONDA_PREFIX_READY}" == "1" ]]; then
+  export CONDA_PREFIX="${CONDA_ENV}"
+  export PATH="${CONDA_ENV}/bin:${PATH}"
 else
-  echo "conda not found; set CONDA_EXE or install Miniconda." >&2
-  exit 1
-fi
+  if [[ -n "${CONDA_BASE:-}" && -x "${CONDA_BASE}/bin/conda" ]]; then
+    :
+  elif [[ -n "${CONDA_EXE:-}" ]]; then
+    CONDA_BASE="$("${CONDA_EXE}" info --base)"
+  elif command -v conda >/dev/null 2>&1; then
+    CONDA_BASE="$(conda info --base)"
+  elif [[ -x "${PROJECT_PARENT}/miniconda3/bin/conda" ]]; then
+    CONDA_BASE="${PROJECT_PARENT}/miniconda3"
+  else
+    echo "conda not found; set CONDA_EXE, CONDA_ENV_PREFIX, or install Miniconda." >&2
+    exit 1
+  fi
 
-source "${CONDA_BASE}/etc/profile.d/conda.sh"
-conda activate "${CONDA_ENV}"
+  source "${CONDA_BASE}/etc/profile.d/conda.sh"
+  conda activate "${CONDA_ENV}"
+fi
 cd "$PROJECT_ROOT"
 
 echo "[dpo-stage2] dataset_type=${DPO_DATASET_TYPE}"

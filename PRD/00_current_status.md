@@ -1051,3 +1051,31 @@ experiments:
 
 The Exp9/10/11 launcher and experiment configs were updated to default to
 24-frame training and 24-frame DAVIS validation.
+
+## 2026-06-09 CST PAI Non-Interactive Conda Prefix Rule
+
+The first 24-frame PAI relaunch exited immediately at Stage1 with:
+
+```text
+conda not found; set CONDA_EXE or install Miniconda.
+```
+
+Root cause: the PAI diffueraser runtime is available as a full environment
+prefix:
+
+```text
+/mnt/nas/hj/conda_envs/diffueraser/bin/python
+```
+
+but this non-interactive environment does not expose a `conda` executable. The
+Stage1/Stage2 sbatch wrappers must accept `CONDA_ENV_PREFIX` as a runnable env
+prefix by prepending `${CONDA_ENV_PREFIX}/bin` to `PATH` and setting
+`CONDA_PREFIX`, instead of requiring `conda activate`.
+
+Rule: for PAI nohup / setsid launches, always pass:
+
+```text
+CONDA_ENV_PREFIX=/mnt/nas/hj/conda_envs/diffueraser
+```
+
+and the sbatch wrapper should run from that prefix even when `conda` is absent.
