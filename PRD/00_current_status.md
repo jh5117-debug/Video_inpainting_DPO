@@ -927,3 +927,37 @@ Common hard rules:
 - DAVIS eval uses raw6, no PCM, no mask dilation, no Gaussian blur, hard comp;
 - inpainting metrics use `tools/run_inpainting_metric_eval.py` and
   `inference/metrics.py`; VBench is not valid for this task.
+
+## 2026-06-08 Exp11 GPU Availability Does Not Override Audit Block
+
+PAI snapshot at 2026-06-08 14:19 CST:
+
+```text
+GPU0-3: only lightweight python3 processes, about 0.9 GiB each
+GPU4-7: Exp9 `lingbot-worldmodel` training, about 66-67 GiB each on 4-6 and
+        about 124 GiB on GPU7
+```
+
+Although GPU0-3 appear available, Exp11 must not be launched there yet. The
+current launcher and PRD intentionally mark Exp11 as blocked because train-time
+flow / ProPainter-prior / boundary consistency is not safely implemented in the
+Stage1/Stage2 DPO loops. Running `RUN_EXPERIMENTS=exp11` should only write
+`reports/exp11_flow_prior_implementation_audit.md` and stop unless a future
+implementation audit passes. Do not bypass this with `EXP11_ENABLE_TRAINING=1`.
+
+H20 Exp10 status at 2026-06-08 14:20 CST:
+
+```text
+host = H20
+pid = 956576
+log = /home/nvme01/H20_Video_inpainting_DPO_pai_sync_latest/logs/pipelines/exp10_region_local_dpo_s1s2_2000_davis_pai_gpus4_7_fp32_20260608_132413_h20_exp10_fp32.log
+stage1_dir = /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260608_132413_h20_exp10_fp32_exp10_region_local_dpo_s1_2000_davis_pai
+status = Stage1 running, fp32 / no split-forward H20 profile
+latest observed global_step = 210
+dpo_diag rows = 22
+stage2 = not started
+```
+
+The H20 Exp10 run is slow but healthy. It records `loss_region_mode=region`,
+`gap_normalization=log_ratio`, raw and normalized win/lose gaps, clipped loser
+gap, and region-local MSE fields in `dpo_diagnostics.csv`.

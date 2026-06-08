@@ -43,3 +43,17 @@ train-time prior consistency loss.
 
 Rule: do not launch Exp11 training until
 `reports/exp11_flow_prior_implementation_audit.md` passes.
+
+## 2026-06-08 GPU Availability Note
+
+PAI GPU0-3 were observed as mostly free while Exp9 used GPU4-7. This does not
+change the Exp11 launch rule. Hardware availability is not the blocker; the
+blocker is missing safe train-time implementation for:
+
+- differentiable flow consistency;
+- model-output / predicted-clean-sample versus ProPainter-prior consistency;
+- audited boundary consistency integrated with the DPO Stage1/Stage2 loops.
+
+Until those pieces are implemented and the audit passes, Exp11 must remain a
+prepared but blocked experiment. Do not start it by setting
+`EXP11_ENABLE_TRAINING=1` merely because GPUs are idle.
