@@ -74,6 +74,8 @@ from training.dpo.train_stage1 import (
     compute_dpo_loss,
     compute_dpo_grad_norm,
     append_dpo_diagnostics_csv,
+    append_dpo_gap_samples_jsonl_gz,
+    append_dpo_gap_trace_csv,
     dpo_diagnostics_enabled,
     dpo_diagnostics_interval,
     gather_dpo_diagnostics,
@@ -463,6 +465,14 @@ def parse_args(input_args=None):
     parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"])
     parser.add_argument("--mask_from_manifest", type=parse_bool_arg, default=False)
     parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"])
+    parser.add_argument("--gap_normalization", type=str, default="raw", choices=["raw", "log_ratio"])
+    parser.add_argument("--gap_eps", type=float, default=1e-6)
+    parser.add_argument("--lose_gap_clip_tau", type=str, default="")
+    parser.add_argument("--mask_region_weight", type=float, default=1.0)
+    parser.add_argument("--boundary_region_weight", type=float, default=0.5)
+    parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--dpo_gap_trace_csv", type=str, default="")
+    parser.add_argument("--dpo_gap_samples_jsonl_gz", type=str, default="")
     parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True)
     parser.add_argument("--dpo_diag_log_every", type=int, default=10)
     parser.add_argument("--dpo_diag_save_csv", type=parse_bool_arg, default=True)
@@ -530,6 +540,12 @@ def collate_fn(examples):
         "conditioning_pixel_values": conditioning_pixel_values,
         "masks": masks,
         "input_ids": input_ids,
+        "sample_id": [e.get("sample_id") for e in examples],
+        "pair_index": [e.get("pair_index") for e in examples],
+        "mask_area_ratio": [
+            float((1.0 - e["masks"].float()).mean().item()) if "masks" in e else None
+            for e in examples
+        ],
     }
 
 
@@ -872,9 +888,9 @@ def main(args):
                 if args.loss_region_mode == "region":
                     loss_weight_map, region_stats = build_region_loss_weight_map(
                         masks,
-                        mask_region_weight=1.0,
-                        boundary_region_weight=0.5,
-                        outside_region_weight=0.05,
+                        mask_region_weight=args.mask_region_weight,
+                        boundary_region_weight=args.boundary_region_weight,
+                        outside_region_weight=args.outside_region_weight,
                     )
 
                 # VAE encode 完毕，释放原始像素 tensor 节省显存
@@ -989,6 +1005,9 @@ def main(args):
                     loss_weight_map=loss_weight_map,
                     loss_region_mode=args.loss_region_mode,
                     region_stats=region_stats,
+                    gap_normalization=args.gap_normalization,
+                    gap_eps=args.gap_eps,
+                    lose_gap_clip_tau=args.lose_gap_clip_tau,
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,
@@ -998,6 +1017,22 @@ def main(args):
                     winner_gap_reg_mode=args.winner_gap_reg_mode,
                     nframes=args.nframes,
                 )
+                local_gap_diagnostics = dict(diagnostics)
+                next_global_step = global_step + 1
+                if (
+                    accelerator.is_main_process
+                    and dpo_diagnostics_enabled(args)
+                    and (next_global_step % dpo_diagnostics_interval(args) == 0 or next_global_step == 1)
+                    and args.dpo_gap_samples_jsonl_gz
+                ):
+                    append_dpo_gap_samples_jsonl_gz(
+                        args.output_dir,
+                        next_global_step,
+                        local_gap_diagnostics,
+                        batch,
+                        args.nframes,
+                        explicit_path=args.dpo_gap_samples_jsonl_gz,
+                    )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
                 diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)
 
@@ -1030,6 +1065,13 @@ def main(args):
                         logger.info(diag_table)
                         if args.dpo_diag_save_csv:
                             append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
+                        if args.dpo_gap_trace_csv:
+                            append_dpo_gap_trace_csv(
+                                args.output_dir,
+                                global_step,
+                                diagnostics,
+                                explicit_path=args.dpo_gap_trace_csv,
+                            )
 
                     if global_step % args.checkpointing_steps == 0:
                         if args.checkpoints_total_limit is not None:
@@ -1098,6 +1140,11 @@ def main(args):
                 "rank0/mse_l": diagnostics["mse_l"],
                 "rank0/win_gap": diagnostics["win_gap"],
                 "rank0/lose_gap": diagnostics["lose_gap"],
+                "rank0/raw_win_gap": diagnostics.get("raw_win_gap", diagnostics["win_gap"]),
+                "rank0/raw_lose_gap": diagnostics.get("raw_lose_gap", diagnostics["lose_gap"]),
+                "rank0/norm_win_gap": diagnostics.get("norm_win_gap", 0.0),
+                "rank0/norm_lose_gap": diagnostics.get("norm_lose_gap", 0.0),
+                "rank0/norm_lose_gap_clipped": diagnostics.get("norm_lose_gap_clipped", 0.0),
                 "rank0/reward_margin": diagnostics["reward_margin"],
                 "rank0/sigma_term": diagnostics["sigma_term"],
                 "rank0/kl_divergence": diagnostics["kl_divergence"],

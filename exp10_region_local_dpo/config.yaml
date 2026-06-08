@@ -1,0 +1,38 @@
+experiment_id: exp10
+experiment_name: exp10_region_local_dpo_s1s2_2000_davis_pai
+inherits_from: exp9_logratio_gap_dpo
+loss:
+  gap_normalization: log_ratio
+  gap_eps: 1.0e-6
+  lose_gap_clip_tau: 1.0
+  beta_dpo: 10
+  lose_gap_weight: 0.25
+  sft_reg_weight: 0.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  winner_gap_reg_margin: 0.0
+  loss_region_mode: region
+  mask_region_weight: 1.0
+  boundary_region_weight: 0.5
+  outside_region_weight: 0.05
+training:
+  stage1_steps: 2000
+  stage2_steps: 2000
+  train_mask_mode: partial
+  mask_from_manifest: true
+  nframes: 16
+  train_height: 320
+  train_width: 512
+validation:
+  dataset: DAVIS
+  prior_mode: propainter
+  num_inference_steps: 6
+  use_pcm: false
+  mask_dilation: 0
+  apply_gaussian_blur: false
+  hard_comp: true
+diagnostics:
+  save_dpo_diagnostics_csv: true
+  save_gap_trace_csv: true
+  save_gap_samples_jsonl_gz: true
+  save_region_mse_fields: true

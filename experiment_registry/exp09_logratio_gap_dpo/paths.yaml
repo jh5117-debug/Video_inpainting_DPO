@@ -1,0 +1,4 @@
+experiment_folder: exp9_logratio_gap_dpo
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO
+davis_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240

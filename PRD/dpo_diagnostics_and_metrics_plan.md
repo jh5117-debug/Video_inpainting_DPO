@@ -499,3 +499,62 @@ This wrapper is allowed to compute region layouts and call
 `inference.metrics.compute_psnr` / `compute_ssim` on whole frames, mask-cropped
 regions, boundary-cropped regions, and outside-composited frames. It must not
 reimplement the metric formulas.
+
+## 2026-06-08 Exp9 / Exp10 / Exp11 Diagnostic Contract
+
+All new target-domain DPO experiments must save:
+
+```text
+dpo_diagnostics.csv
+dpo_gap_trace.csv
+dpo_gap_samples.jsonl.gz
+dpo_diag_summary.md
+```
+
+Required shared diagnostic fields:
+
+```text
+raw_win_gap
+raw_lose_gap
+norm_win_gap
+norm_lose_gap
+norm_lose_gap_clipped
+lose_gap_clip_tau
+gap_normalization
+m_w
+m_w_ref
+m_l
+m_l_ref
+mse_w_over_ref_mse_w
+mse_l_over_ref_mse_l
+dpo_loss
+implicit_acc
+sigma_term
+kl_divergence
+loser_dominant_ratio
+grad_norm
+```
+
+Exp10 and Exp11 additionally require:
+
+```text
+mask_region_mse
+boundary_region_mse
+outside_region_mse
+mask_area_ratio
+boundary_area_ratio
+outside_area_ratio
+region_weight_sum
+```
+
+Exp11 additionally requires `flow_loss`, `prior_loss`, `boundary_loss`, and
+flow-confidence statistics if available. If those train-time quantities are
+not safely implemented, Exp11 must stop and write an implementation audit.
+
+For region-local DPO, weighted MSE must be:
+
+```text
+sum(region_weight_map * mse_map) / (sum(region_weight_map) + eps)
+```
+
+Do not use `mean(region_weight_map * mse_map)`.

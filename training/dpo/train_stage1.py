@@ -20,6 +20,7 @@ import atexit
 import csv
 import contextlib
 import gc
+import gzip
 import warnings
 import logging
 import math
@@ -328,6 +329,9 @@ def compute_dpo_loss(
     loss_weight_map=None,
     loss_region_mode="full",
     region_stats=None,
+    gap_normalization="raw",
+    gap_eps=1e-6,
+    lose_gap_clip_tau=None,
     beta_dpo=500.0,
     sft_reg_weight=0.0,
     lose_gap_weight=1.0,
@@ -366,7 +370,9 @@ def compute_dpo_loss(
             weight = F.interpolate(weight, size=err.shape[-2:], mode="nearest")
         if weight.shape[1] == 1 and err.shape[1] != 1:
             weight = weight.expand(-1, err.shape[1], -1, -1)
-        return (err * weight).mean(dim=[1, 2, 3])
+        numer = (err * weight).sum(dim=[1, 2, 3])
+        denom = weight.sum(dim=[1, 2, 3]).clamp(min=1e-8)
+        return numer / denom
 
     # ‖ε - ε_θ‖² per-sample. In region mode this is region-weighted MSE.
     model_losses = per_sample_mse(model_pred, target, loss_weight_map)
@@ -377,10 +383,53 @@ def compute_dpo_loss(
         ref_losses = per_sample_mse(ref_pred, target, loss_weight_map)
         ref_losses_w, ref_losses_l = ref_losses.chunk(2)
 
+    if loss_weight_map is not None and region_stats is not None:
+        with torch.no_grad():
+            err_w_map = (model_pred[: noise.shape[0]].float() - noise.float()).pow(2).mean(dim=1, keepdim=True)
+            weight = loss_weight_map.to(device=err_w_map.device, dtype=err_w_map.dtype)
+            if weight.shape[-2:] != err_w_map.shape[-2:]:
+                weight = F.interpolate(weight, size=err_w_map.shape[-2:], mode="nearest")
+
+            def region_mean_mse(region_mask):
+                denom = region_mask.sum().clamp(min=1.0)
+                return ((err_w_map * region_mask).sum() / denom).detach().item()
+
+            mask_w = float(region_stats.get("region_mask_weight", 1.0))
+            boundary_w = float(region_stats.get("region_boundary_weight", 0.5))
+            outside_w = float(region_stats.get("region_outside_weight", 0.05))
+            def region_selector(value):
+                value_tensor = torch.tensor(value, device=weight.device, dtype=weight.dtype)
+                return torch.isclose(weight, value_tensor, rtol=0.0, atol=1e-4).float()
+
+            region_stats["mask_region_mse"] = region_mean_mse(region_selector(mask_w))
+            region_stats["boundary_region_mse"] = region_mean_mse(region_selector(boundary_w))
+            region_stats["outside_region_mse"] = region_mean_mse(region_selector(outside_w))
+
+    gap_normalization = str(gap_normalization or "raw").lower()
+    if gap_normalization in {"none", "identity"}:
+        gap_normalization = "raw"
+    if gap_normalization not in {"raw", "log_ratio"}:
+        raise ValueError(f"Unsupported gap_normalization={gap_normalization!r}")
+
     scale_term = -0.5 * beta_dpo
-    per_win_gap = model_losses_w - ref_losses_w
-    per_lose_gap = model_losses_l - ref_losses_l
-    frame_inside_term = scale_term * (per_win_gap - float(lose_gap_weight) * per_lose_gap)
+    raw_win_gap_vec = model_losses_w - ref_losses_w
+    raw_lose_gap_vec = model_losses_l - ref_losses_l
+    eps = float(gap_eps)
+    norm_win_gap_vec = torch.log((model_losses_w.clamp(min=0) + eps) / (ref_losses_w.clamp(min=0) + eps))
+    norm_lose_gap_vec = torch.log((model_losses_l.clamp(min=0) + eps) / (ref_losses_l.clamp(min=0) + eps))
+    if gap_normalization == "log_ratio":
+        dpo_win_gap_vec = norm_win_gap_vec
+        dpo_lose_gap_vec = norm_lose_gap_vec
+    else:
+        dpo_win_gap_vec = raw_win_gap_vec
+        dpo_lose_gap_vec = raw_lose_gap_vec
+
+    clip_tau = None
+    if lose_gap_clip_tau is not None and str(lose_gap_clip_tau).strip().lower() not in {"", "none", "inf", "infinity"}:
+        clip_tau = float(lose_gap_clip_tau)
+    dpo_lose_gap_clipped_vec = torch.clamp(dpo_lose_gap_vec, max=clip_tau) if clip_tau is not None else dpo_lose_gap_vec
+    norm_lose_gap_clipped_vec = torch.clamp(norm_lose_gap_vec, max=clip_tau) if clip_tau is not None else norm_lose_gap_vec
+    frame_inside_term = scale_term * (dpo_win_gap_vec - float(lose_gap_weight) * dpo_lose_gap_clipped_vec)
 
     # 训练 loss 保持原有 frame-level 目标；诊断统一按 video-pair 统计。
     dpo_loss = (-1.0 * F.logsigmoid(frame_inside_term)).mean()
@@ -390,7 +439,7 @@ def compute_dpo_loss(
     winner_gap_reg_mode = str(winner_gap_reg_mode or "relu").lower()
     if winner_gap_reg_mode != "relu":
         raise ValueError(f"Unsupported winner_gap_reg_mode={winner_gap_reg_mode!r}; only 'relu' is supported.")
-    win_gap_vec = model_losses_w - ref_losses_w
+    win_gap_vec = dpo_win_gap_vec
     relu_win_gap_vec = F.relu(win_gap_vec - float(winner_gap_reg_margin))
     winner_gap_reg = relu_win_gap_vec.mean()
 
@@ -402,17 +451,26 @@ def compute_dpo_loss(
     )
 
     if nframes is None:
-        nframes = per_win_gap.numel()
+        nframes = raw_win_gap_vec.numel()
     nframes = int(nframes)
-    if nframes <= 0 or per_win_gap.numel() % nframes != 0:
+    if nframes <= 0 or raw_win_gap_vec.numel() % nframes != 0:
         raise ValueError(
             f"nframes={nframes} must divide the number of frame losses "
-            f"({per_win_gap.numel()}) for pair-level DPO diagnostics."
+            f"({raw_win_gap_vec.numel()}) for pair-level DPO diagnostics."
         )
 
-    pair_win_gap = per_win_gap.view(-1, nframes).mean(dim=1)
-    pair_lose_gap = per_lose_gap.view(-1, nframes).mean(dim=1)
-    inside_term = scale_term * (pair_win_gap - float(lose_gap_weight) * pair_lose_gap)
+    pair_model_losses_w = model_losses_w.view(-1, nframes).mean(dim=1)
+    pair_ref_losses_w = ref_losses_w.view(-1, nframes).mean(dim=1)
+    pair_model_losses_l = model_losses_l.view(-1, nframes).mean(dim=1)
+    pair_ref_losses_l = ref_losses_l.view(-1, nframes).mean(dim=1)
+    pair_raw_win_gap = raw_win_gap_vec.view(-1, nframes).mean(dim=1)
+    pair_raw_lose_gap = raw_lose_gap_vec.view(-1, nframes).mean(dim=1)
+    pair_norm_win_gap = norm_win_gap_vec.view(-1, nframes).mean(dim=1)
+    pair_norm_lose_gap = norm_lose_gap_vec.view(-1, nframes).mean(dim=1)
+    pair_norm_lose_gap_clipped = norm_lose_gap_clipped_vec.view(-1, nframes).mean(dim=1)
+    pair_dpo_win_gap = dpo_win_gap_vec.view(-1, nframes).mean(dim=1)
+    pair_dpo_lose_gap_clipped = dpo_lose_gap_clipped_vec.view(-1, nframes).mean(dim=1)
+    inside_term = scale_term * (pair_dpo_win_gap - float(lose_gap_weight) * pair_dpo_lose_gap_clipped)
 
     # 本卡的 pair-level implicit_acc (后续会跨卡 gather 得到全局值)
     implicit_acc_local = (inside_term > 0).sum().float() / inside_term.size(0)
@@ -434,8 +492,8 @@ def compute_dpo_loss(
     #   loser_dominant iff loser_degradation > winner_improvement
     with torch.no_grad():
         correct_mask = inside_term > 0
-        winner_improvement = (-pair_win_gap).clamp(min=0)  # 取正部: policy 在 winner 上改善的量
-        loser_degradation = pair_lose_gap.clamp(min=0)     # 取正部: policy 在 loser 上退化的量
+        winner_improvement = (-pair_dpo_win_gap).clamp(min=0)  # 取正部: policy 在 winner 上改善的量
+        loser_degradation = pair_dpo_lose_gap_clipped.clamp(min=0)     # 取正部: policy 在 loser 上退化的量
         loser_dominant_mask = loser_degradation > winner_improvement
         loser_dominant_wins = (correct_mask & loser_dominant_mask).sum().float()
         n_correct = correct_mask.sum().float()
@@ -443,6 +501,9 @@ def compute_dpo_loss(
 
     diagnostics = {
         "loss_region_mode": str(loss_region_mode),
+        "gap_normalization": gap_normalization,
+        "gap_eps": eps,
+        "lose_gap_clip_tau": clip_tau if clip_tau is not None else "",
         "dpo_loss": dpo_loss.detach().item(),
         "total_loss": loss.detach().item(),
         "anchored_total_loss": loss.detach().item(),
@@ -465,8 +526,13 @@ def compute_dpo_loss(
         "mse_l": model_losses_l.mean().detach().item(),
         "ref_mse_w": ref_losses_w.mean().detach().item(),
         "ref_mse_l": ref_losses_l.mean().detach().item(),
-        "win_gap": win_gap.detach().item(),
-        "lose_gap": lose_gap.detach().item(),
+        "win_gap": dpo_win_gap_vec.mean().detach().item(),
+        "lose_gap": dpo_lose_gap_clipped_vec.mean().detach().item(),
+        "raw_win_gap": raw_win_gap_vec.mean().detach().item(),
+        "raw_lose_gap": raw_lose_gap_vec.mean().detach().item(),
+        "norm_win_gap": norm_win_gap_vec.mean().detach().item(),
+        "norm_lose_gap": norm_lose_gap_vec.mean().detach().item(),
+        "norm_lose_gap_clipped": norm_lose_gap_clipped_vec.mean().detach().item(),
         "reward_margin": reward_margin.detach().item(),
         "sigma_term": sigma_term.detach().item(),
         "kl_divergence": kl_div.detach().item(),
@@ -494,6 +560,15 @@ def compute_dpo_loss(
     diagnostics["_inside_term"] = inside_term.detach()
     diagnostics["_winner_improvement"] = winner_improvement.detach()
     diagnostics["_loser_degradation"] = loser_degradation.detach()
+    diagnostics["_pair_raw_win_gap"] = pair_raw_win_gap.detach()
+    diagnostics["_pair_raw_lose_gap"] = pair_raw_lose_gap.detach()
+    diagnostics["_pair_norm_win_gap"] = pair_norm_win_gap.detach()
+    diagnostics["_pair_norm_lose_gap"] = pair_norm_lose_gap.detach()
+    diagnostics["_pair_norm_lose_gap_clipped"] = pair_norm_lose_gap_clipped.detach()
+    diagnostics["_pair_m_w"] = pair_model_losses_w.detach()
+    diagnostics["_pair_m_w_ref"] = pair_ref_losses_w.detach()
+    diagnostics["_pair_m_l"] = pair_model_losses_l.detach()
+    diagnostics["_pair_m_l_ref"] = pair_ref_losses_l.detach()
 
     return loss, diagnostics
 
@@ -530,6 +605,7 @@ def build_region_loss_weight_map(
         "mask_area_ratio": mask_region.mean().detach().item(),
         "boundary_area_ratio": boundary_region.mean().detach().item(),
         "outside_area_ratio": outside_region.mean().detach().item(),
+        "region_weight_sum": weight.sum(dim=[1, 2, 3]).mean().detach().item(),
     }
     return weight, stats
 
@@ -554,6 +630,20 @@ def gather_dpo_diagnostics(diagnostics, accelerator):
     inside_term_local = diagnostics.get("_inside_term")
     winner_imp_local = diagnostics.get("_winner_improvement")
     loser_deg_local = diagnostics.get("_loser_degradation")
+    pair_gap_keys = {
+        "_pair_raw_win_gap": "raw_win_gap",
+        "_pair_raw_lose_gap": "raw_lose_gap",
+        "_pair_norm_win_gap": "norm_win_gap",
+        "_pair_norm_lose_gap": "norm_lose_gap",
+        "_pair_norm_lose_gap_clipped": "norm_lose_gap_clipped",
+    }
+
+    def add_gap_stats(prefix, tensor):
+        tensor = tensor.detach().float()
+        diagnostics[f"{prefix}_mean"] = tensor.mean().item()
+        diagnostics[f"{prefix}_p50"] = tensor.quantile(0.5).item()
+        diagnostics[f"{prefix}_p90"] = tensor.quantile(0.9).item()
+        diagnostics[f"{prefix}_max"] = tensor.max().item()
 
     if inside_term_local is None:
         diagnostics["_scope"] = "rank0"
@@ -586,6 +676,12 @@ def gather_dpo_diagnostics(diagnostics, accelerator):
         diagnostics["n_correct_global"] = int(n_correct_global.item())
         diagnostics["n_total_global"] = n_total_global
         diagnostics["_scope"] = "global"
+        for tensor_key, prefix in pair_gap_keys.items():
+            tensor = diagnostics.get(tensor_key)
+            if tensor is not None:
+                add_gap_stats(prefix, accelerator.gather(tensor))
+        diagnostics["mask_area_ratio_mean"] = diagnostics.get("mask_area_ratio")
+        diagnostics["boundary_area_ratio_mean"] = diagnostics.get("boundary_area_ratio")
     except Exception as e:
         # gather 失败: 打 warning + 标记 scope 为 rank0，不静默吞掉
         if accelerator.is_main_process:
@@ -596,6 +692,18 @@ def gather_dpo_diagnostics(diagnostics, accelerator):
     diagnostics.pop("_inside_term", None)
     diagnostics.pop("_winner_improvement", None)
     diagnostics.pop("_loser_degradation", None)
+    for key in [
+        "_pair_raw_win_gap",
+        "_pair_raw_lose_gap",
+        "_pair_norm_win_gap",
+        "_pair_norm_lose_gap",
+        "_pair_norm_lose_gap_clipped",
+        "_pair_m_w",
+        "_pair_m_w_ref",
+        "_pair_m_l",
+        "_pair_m_l_ref",
+    ]:
+        diagnostics.pop(key, None)
     return diagnostics
 
 
@@ -694,6 +802,8 @@ def format_dpo_diagnostics_line(step, diag):
         f"inside_term_min={diag.get('inside_term_min', 0.0):.6f} "
         f"inside_term_max={diag.get('inside_term_max', 0.0):.6f} "
         f"loser_dominant_ratio={diag.get('loser_degrade_ratio', 0.0):.6f} "
+        f"gap_normalization={diag.get('gap_normalization', 'raw')} "
+        f"lose_gap_clip_tau={diag.get('lose_gap_clip_tau', '')} "
         f"dpo_loss={diag['dpo_loss']:.6f} "
         f"anchored_total_loss={diag.get('anchored_total_loss', diag.get('total_loss', 0.0)):.6f} "
         f"winner_abs_reg={diag.get('winner_abs_reg', 0.0):.6f} "
@@ -712,6 +822,11 @@ def format_dpo_diagnostics_line(step, diag):
         f"ref_mse_l={diag['ref_mse_l']:.6f} "
         f"win_gap={diag['win_gap']:.6f} "
         f"lose_gap={diag['lose_gap']:.6f} "
+        f"raw_win_gap={diag.get('raw_win_gap', diag['win_gap']):.6f} "
+        f"raw_lose_gap={diag.get('raw_lose_gap', diag['lose_gap']):.6f} "
+        f"norm_win_gap={diag.get('norm_win_gap', 0.0):.6f} "
+        f"norm_lose_gap={diag.get('norm_lose_gap', 0.0):.6f} "
+        f"norm_lose_gap_clipped={diag.get('norm_lose_gap_clipped', 0.0):.6f} "
         f"reward_margin={diag['reward_margin']:.6f} "
         f"sigma_term={diag['sigma_term']:.6f} "
         f"kl_divergence={diag['kl_divergence']:.6f}"
@@ -724,6 +839,14 @@ DPO_DIAG_CSV_FIELDS = [
     "implicit_acc",
     "win_gap",
     "lose_gap",
+    "raw_win_gap",
+    "raw_lose_gap",
+    "norm_win_gap",
+    "norm_lose_gap",
+    "norm_lose_gap_clipped",
+    "gap_normalization",
+    "gap_eps",
+    "lose_gap_clip_tau",
     "mse_w",
     "ref_mse_w",
     "mse_l",
@@ -758,6 +881,10 @@ DPO_DIAG_CSV_FIELDS = [
     "mask_area_ratio",
     "boundary_area_ratio",
     "outside_area_ratio",
+    "region_weight_sum",
+    "mask_region_mse",
+    "boundary_region_mse",
+    "outside_region_mse",
     "region_weighted_mse_w",
     "region_weighted_mse_l",
     "region_weighted_ref_mse_w",
@@ -785,6 +912,14 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "implicit_acc": diag.get("implicit_acc"),
         "win_gap": diag.get("win_gap"),
         "lose_gap": diag.get("lose_gap"),
+        "raw_win_gap": diag.get("raw_win_gap"),
+        "raw_lose_gap": diag.get("raw_lose_gap"),
+        "norm_win_gap": diag.get("norm_win_gap"),
+        "norm_lose_gap": diag.get("norm_lose_gap"),
+        "norm_lose_gap_clipped": diag.get("norm_lose_gap_clipped"),
+        "gap_normalization": diag.get("gap_normalization"),
+        "gap_eps": diag.get("gap_eps"),
+        "lose_gap_clip_tau": diag.get("lose_gap_clip_tau"),
         "mse_w": diag.get("mse_w"),
         "ref_mse_w": diag.get("ref_mse_w"),
         "mse_l": diag.get("mse_l"),
@@ -819,6 +954,10 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "mask_area_ratio": diag.get("mask_area_ratio"),
         "boundary_area_ratio": diag.get("boundary_area_ratio"),
         "outside_area_ratio": diag.get("outside_area_ratio"),
+        "region_weight_sum": diag.get("region_weight_sum"),
+        "mask_region_mse": diag.get("mask_region_mse"),
+        "boundary_region_mse": diag.get("boundary_region_mse"),
+        "outside_region_mse": diag.get("outside_region_mse"),
         "region_weighted_mse_w": diag.get("region_weighted_mse_w"),
         "region_weighted_mse_l": diag.get("region_weighted_mse_l"),
         "region_weighted_ref_mse_w": diag.get("region_weighted_ref_mse_w"),
@@ -829,6 +968,80 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         if not exists:
             writer.writeheader()
         writer.writerow(row)
+
+
+DPO_GAP_TRACE_FIELDS = [
+    "step",
+    "raw_win_gap_mean",
+    "raw_win_gap_p50",
+    "raw_win_gap_p90",
+    "raw_win_gap_max",
+    "raw_lose_gap_mean",
+    "raw_lose_gap_p50",
+    "raw_lose_gap_p90",
+    "raw_lose_gap_max",
+    "norm_win_gap_mean",
+    "norm_win_gap_p50",
+    "norm_win_gap_p90",
+    "norm_win_gap_max",
+    "norm_lose_gap_mean",
+    "norm_lose_gap_p50",
+    "norm_lose_gap_p90",
+    "norm_lose_gap_max",
+    "norm_lose_gap_clipped_mean",
+    "norm_lose_gap_clipped_p90",
+    "mask_area_ratio_mean",
+    "boundary_area_ratio_mean",
+]
+
+
+def append_dpo_gap_trace_csv(output_dir, step, diag, explicit_path=""):
+    path = explicit_path or os.path.join(output_dir, "dpo_gap_trace.csv")
+    exists = os.path.exists(path)
+    row = {"step": step}
+    for key in DPO_GAP_TRACE_FIELDS:
+        if key == "step":
+            continue
+        row[key] = diag.get(key)
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=DPO_GAP_TRACE_FIELDS)
+        if not exists:
+            writer.writeheader()
+        writer.writerow(row)
+
+
+def append_dpo_gap_samples_jsonl_gz(output_dir, step, diag, batch, nframes, explicit_path=""):
+    path = explicit_path or os.path.join(output_dir, "dpo_gap_samples.jsonl.gz")
+    sample_ids = batch.get("sample_id") or []
+    pair_indices = batch.get("pair_index") or []
+    mask_area_ratios = batch.get("mask_area_ratio")
+    tensors = {
+        "raw_win_gap": diag.get("_pair_raw_win_gap"),
+        "raw_lose_gap": diag.get("_pair_raw_lose_gap"),
+        "norm_win_gap": diag.get("_pair_norm_win_gap"),
+        "norm_lose_gap": diag.get("_pair_norm_lose_gap"),
+        "norm_lose_gap_clipped": diag.get("_pair_norm_lose_gap_clipped"),
+        "m_w": diag.get("_pair_m_w"),
+        "m_w_ref": diag.get("_pair_m_w_ref"),
+        "m_l": diag.get("_pair_m_l"),
+        "m_l_ref": diag.get("_pair_m_l_ref"),
+    }
+    if any(value is None for value in tensors.values()):
+        return
+    n = int(tensors["raw_win_gap"].numel())
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with gzip.open(path, "at", encoding="utf-8") as f:
+        for i in range(n):
+            row = {
+                "step": int(step),
+                "sample_id": str(sample_ids[i]) if i < len(sample_ids) and sample_ids[i] is not None else "",
+                "pair_index": pair_indices[i] if i < len(pair_indices) else "",
+                "mask_area_ratio": float(mask_area_ratios[i]) if mask_area_ratios is not None and i < len(mask_area_ratios) else None,
+            }
+            for key, tensor in tensors.items():
+                row[key] = float(tensor.detach().float().cpu()[i].item())
+            f.write(json.dumps(row, ensure_ascii=True) + "\n")
 
 
 # ============================================================
@@ -1129,7 +1342,19 @@ def parse_args(input_args=None):
     parser.add_argument("--mask_from_manifest", type=parse_bool_arg, default=False,
                         help="Use mask_path from the manifest as M_train.")
     parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"],
-                        help="DPO loss region mode. region is declared but not implemented yet.")
+                        help="DPO loss region mode. region uses sum(weight*mse)/sum(weight).")
+    parser.add_argument("--gap_normalization", type=str, default="raw", choices=["raw", "log_ratio"],
+                        help="Gap transform used inside DPO. log_ratio uses log((m+eps)/(m_ref+eps)).")
+    parser.add_argument("--gap_eps", type=float, default=1e-6)
+    parser.add_argument("--lose_gap_clip_tau", type=str, default="",
+                        help="Optional max clamp for the DPO loser gap after normalization.")
+    parser.add_argument("--mask_region_weight", type=float, default=1.0)
+    parser.add_argument("--boundary_region_weight", type=float, default=0.5)
+    parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--dpo_gap_trace_csv", type=str, default="",
+                        help="Optional path for aggregate raw/norm gap trace CSV.")
+    parser.add_argument("--dpo_gap_samples_jsonl_gz", type=str, default="",
+                        help="Optional path for per-diagnostic-batch raw/norm gap samples.")
     parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True,
                         help="Enable DPO diagnostics. Prefer this over --disable_dpo_diagnostics for new runs.")
     parser.add_argument("--dpo_diag_log_every", type=int, default=10,
@@ -1196,6 +1421,12 @@ def collate_fn(examples):
         "conditioning_pixel_values": conditioning_pixel_values,
         "masks": masks,
         "input_ids": input_ids,
+        "sample_id": [e.get("sample_id") for e in examples],
+        "pair_index": [e.get("pair_index") for e in examples],
+        "mask_area_ratio": [
+            float((1.0 - e["masks"].float()).mean().item()) if "masks" in e else None
+            for e in examples
+        ],
     }
 
 
@@ -1577,9 +1808,9 @@ def main(args):
                 if args.loss_region_mode == "region":
                     loss_weight_map, region_stats = build_region_loss_weight_map(
                         masks,
-                        mask_region_weight=1.0,
-                        boundary_region_weight=0.5,
-                        outside_region_weight=0.05,
+                        mask_region_weight=args.mask_region_weight,
+                        boundary_region_weight=args.boundary_region_weight,
+                        outside_region_weight=args.outside_region_weight,
                     )
 
                 # VAE encode 完毕，释放原始像素 tensor 节省显存
@@ -1696,6 +1927,9 @@ def main(args):
                     loss_weight_map=loss_weight_map,
                     loss_region_mode=args.loss_region_mode,
                     region_stats=region_stats,
+                    gap_normalization=args.gap_normalization,
+                    gap_eps=args.gap_eps,
+                    lose_gap_clip_tau=args.lose_gap_clip_tau,
                     beta_dpo=args.beta_dpo,
                     sft_reg_weight=args.sft_reg_weight,
                     lose_gap_weight=args.lose_gap_weight,
@@ -1706,6 +1940,22 @@ def main(args):
                     nframes=args.nframes,
                 )
                 debug_stage("after dpo loss")
+                local_gap_diagnostics = dict(diagnostics)
+                next_global_step = global_step + 1
+                if (
+                    accelerator.is_main_process
+                    and dpo_diagnostics_enabled(args)
+                    and (next_global_step % dpo_diagnostics_interval(args) == 0 or next_global_step == 1)
+                    and args.dpo_gap_samples_jsonl_gz
+                ):
+                    append_dpo_gap_samples_jsonl_gz(
+                        args.output_dir,
+                        next_global_step,
+                        local_gap_diagnostics,
+                        batch,
+                        args.nframes,
+                        explicit_path=args.dpo_gap_samples_jsonl_gz,
+                    )
                 # 跨卡 gather: 全局 implicit_acc / inside_term 统计
                 diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)
                 debug_stage("after diagnostics gather")
@@ -1748,6 +1998,13 @@ def main(args):
                         logger.info(diag_table)
                         if args.dpo_diag_save_csv:
                             append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
+                        if args.dpo_gap_trace_csv:
+                            append_dpo_gap_trace_csv(
+                                args.output_dir,
+                                global_step,
+                                diagnostics,
+                                explicit_path=args.dpo_gap_trace_csv,
+                            )
 
                     # Checkpoint 保存
                     if global_step % args.checkpointing_steps == 0:
@@ -1820,6 +2077,11 @@ def main(args):
                     "rank0/mse_l": diagnostics["mse_l"],
                     "rank0/win_gap": diagnostics["win_gap"],
                     "rank0/lose_gap": diagnostics["lose_gap"],
+                    "rank0/raw_win_gap": diagnostics.get("raw_win_gap", diagnostics["win_gap"]),
+                    "rank0/raw_lose_gap": diagnostics.get("raw_lose_gap", diagnostics["lose_gap"]),
+                    "rank0/norm_win_gap": diagnostics.get("norm_win_gap", 0.0),
+                    "rank0/norm_lose_gap": diagnostics.get("norm_lose_gap", 0.0),
+                    "rank0/norm_lose_gap_clipped": diagnostics.get("norm_lose_gap_clipped", 0.0),
                     "rank0/reward_margin": diagnostics["reward_margin"],
                     "rank0/sigma_term": diagnostics["sigma_term"],
                     "rank0/kl_divergence": diagnostics["kl_divergence"],

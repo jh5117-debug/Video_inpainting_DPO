@@ -135,6 +135,17 @@ def parse_input_size(size_str):
                     pass
     raise ValueError(f"Invalid input_size format: '{size_str}'. Use 'WxH' (e.g., '432x240')")
 
+def parse_bool(value):
+    """Parse shell-friendly booleans for explicit eval settings."""
+    if isinstance(value, bool):
+        return value
+    text = str(value).strip().lower()
+    if text in {"1", "true", "yes", "y", "on"}:
+        return True
+    if text in {"0", "false", "no", "n", "off"}:
+        return False
+    raise argparse.ArgumentTypeError(f"invalid boolean value: {value!r}")
+
 def list_video_names(video_root: Path):
     return [p.name for p in sorted(video_root.iterdir())
             if p.is_dir() and any(f.suffix.lower() in IMG_EXTS for f in p.iterdir())]
@@ -504,6 +515,14 @@ def main():
     parser.add_argument('--neighbor_length', type=int, default=20)
     parser.add_argument('--subvideo_length', type=int, default=80)
     parser.add_argument('--mask_dilation_iter', type=int, default=0)
+    parser.add_argument('--num_inference_steps', type=int, default=6,
+                        help="DiffuEraser denoise steps. DAVIS reproduction uses raw6.")
+    parser.add_argument('--use_pcm', type=parse_bool, default=False,
+                        help="Use PCM LoRA/scheduler. Target-domain DAVIS eval sets this to false.")
+    parser.add_argument('--apply_gaussian_blur', type=parse_bool, default=False,
+                        help="Feather DiffuEraser composite mask edges. DAVIS metrics set this to false.")
+    parser.add_argument('--hard_comp', type=parse_bool, default=True,
+                        help="Use hard binary mask composite with GT. Kept explicit for audit logs.")
     parser.add_argument('--mask_inverse', action='store_true',
                         help="Invert mask: use when BLACK=hole (e.g., RORD dataset). Default assumes WHITE=hole (DAVIS).")
     parser.add_argument('--save_comparison', action='store_true')
@@ -568,6 +587,8 @@ def main():
     else:
         print(f"Input Size: Original resolution (auto)")
     print(f"Mask Convention: {'BLACK=hole (RORD)' if args.mask_inverse else 'WHITE=hole (DAVIS)'}")
+    print(f"DiffuEraser Eval: num_inference_steps={args.num_inference_steps}, use_pcm={args.use_pcm}, "
+          f"hard_comp={args.hard_comp}, apply_gaussian_blur={args.apply_gaussian_blur}")
 
     if args.offload_models:
         print(f"GPU Offloading: Enabled")
@@ -595,7 +616,9 @@ def main():
         _prev_level = logging.root.manager.disable
         logging.disable(logging.WARNING)
         de = DiffuEraser(device, args.base_model_path, args.vae_path, args.diffueraser_path,
-                         pcm_weights_path=args.pcm_weights_path)
+                         pcm_weights_path=args.pcm_weights_path,
+                         use_pcm=args.use_pcm,
+                         num_inference_steps_override=args.num_inference_steps)
         logging.disable(_prev_level)
 
 
@@ -748,7 +771,7 @@ def main():
                 output_path=str(save_root / name / "diffueraser.mp4"),
                 max_img_size=max(proc_w, proc_h) + 100,
                 video_length=args.video_length, mask_dilation_iter=args.mask_dilation_iter,
-                nframes=22, seed=None, blended=False, priori_frames=pp_frames, return_frames=True,
+                nframes=22, seed=None, blended=args.apply_gaussian_blur, priori_frames=pp_frames, return_frames=True,
                 guidance_scale=text_guidance_scale, prompt=prompt, n_prompt=n_prompt)
             print(f"{time()-t1:.1f}s  Inference time: {time()-t1:.2f}s")
             de_comp, _ = composite_with_gt(de_frames, gt_frames, masks, mask_inverse=args.mask_inverse)

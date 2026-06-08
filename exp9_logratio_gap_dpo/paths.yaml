@@ -1,0 +1,8 @@
+manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+davis_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+diffueraser_sft_48000: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO
+stage1_run_glob: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/*_exp9_logratio_gap_dpo_s1_2000_davis_pai
+stage2_run_glob: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/*_exp9_logratio_gap_dpo_s2_2000_davis_pai
+stage1_val_glob: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp9_logratio_gap_dpo_s1s2_2000_davis_pai_stage1_val_davis_*
+stage2_val_glob: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp9_logratio_gap_dpo_s1s2_2000_davis_pai_stage2_val_davis_*

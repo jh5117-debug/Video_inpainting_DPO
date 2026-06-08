@@ -884,3 +884,46 @@ tools/prepare_exp8c_gtwin_manifest.py
 scripts/launch_exp8c_youtubevos_gtwin_d3comp_fullloss_s1s2_2000_davis_pai.sh
 experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000/
 ```
+
+## 2026-06-08 Exp9 / Exp10 / Exp11 Core Sequence
+
+New target-domain experiments use numeric names only:
+
+```text
+Exp9  = log-ratio / normalized-gap DPO
+Exp10 = region-local DPO
+Exp11 = flow-prior consistency DPO
+```
+
+Do not use `Exp9a`, `Exp10a`, or A/B/C suffixes for this sequence.
+
+Execution boundary:
+
+- PAI is manual-launch only from a copy-paste command block.
+- H20 should not start these trainings unless explicitly requested.
+- Default launch is Exp9 only.
+- Exp10 and Exp11 require explicit `RUN_EXPERIMENTS`.
+- Exp11 is blocked until `reports/exp11_flow_prior_implementation_audit.md`
+  passes.
+
+Canonical folders:
+
+```text
+exp9_logratio_gap_dpo/
+exp10_region_local_dpo/
+exp11_flow_prior_consistency_dpo/
+experiment_registry/exp09_logratio_gap_dpo/
+experiment_registry/exp10_region_local_dpo/
+experiment_registry/exp11_flow_prior_consistency_dpo/
+```
+
+Common hard rules:
+
+- target-domain winner is GT / clean clip via `win_video_path`;
+- loser is D3 generated loser via `final_loser_video_path`;
+- reject PAI manifests containing `/home/nvme01`;
+- use SFT-48000 DiffuEraser weights for YouTube-VOS/DAVIS;
+- partial-mask inpainting uses ProPainter prior;
+- DAVIS eval uses raw6, no PCM, no mask dilation, no Gaussian blur, hard comp;
+- inpainting metrics use `tools/run_inpainting_metric_eval.py` and
+  `inference/metrics.py`; VBench is not valid for this task.

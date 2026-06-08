@@ -43,6 +43,14 @@ PREFERENCE_MANIFEST=${PREFERENCE_MANIFEST:-}
 TRAIN_MASK_MODE=${TRAIN_MASK_MODE:-full}
 MASK_FROM_MANIFEST=${MASK_FROM_MANIFEST:-false}
 LOSS_REGION_MODE=${LOSS_REGION_MODE:-full}
+GAP_NORMALIZATION=${GAP_NORMALIZATION:-raw}
+GAP_EPS=${GAP_EPS:-1e-6}
+LOSE_GAP_CLIP_TAU=${LOSE_GAP_CLIP_TAU:-}
+MASK_REGION_WEIGHT=${MASK_REGION_WEIGHT:-1.0}
+BOUNDARY_REGION_WEIGHT=${BOUNDARY_REGION_WEIGHT:-0.5}
+OUTSIDE_REGION_WEIGHT=${OUTSIDE_REGION_WEIGHT:-0.05}
+DPO_GAP_TRACE_CSV=${DPO_GAP_TRACE_CSV:-}
+DPO_GAP_SAMPLES_JSONL_GZ=${DPO_GAP_SAMPLES_JSONL_GZ:-}
 ENABLE_DPO_DIAG=${ENABLE_DPO_DIAG:-true}
 DPO_DIAG_LOG_EVERY=${DPO_DIAG_LOG_EVERY:-10}
 DPO_DIAG_SAVE_CSV=${DPO_DIAG_SAVE_CSV:-true}
@@ -245,6 +253,14 @@ python training/dpo/scripts/run_stage2.py \
   --train_mask_mode "${TRAIN_MASK_MODE}" \
   --mask_from_manifest "${MASK_FROM_MANIFEST}" \
   --loss_region_mode "${LOSS_REGION_MODE}" \
+  --gap_normalization "${GAP_NORMALIZATION}" \
+  --gap_eps "${GAP_EPS}" \
+  --lose_gap_clip_tau "${LOSE_GAP_CLIP_TAU}" \
+  --mask_region_weight "${MASK_REGION_WEIGHT}" \
+  --boundary_region_weight "${BOUNDARY_REGION_WEIGHT}" \
+  --outside_region_weight "${OUTSIDE_REGION_WEIGHT}" \
+  --dpo_gap_trace_csv "${DPO_GAP_TRACE_CSV}" \
+  --dpo_gap_samples_jsonl_gz "${DPO_GAP_SAMPLES_JSONL_GZ}" \
   --enable_dpo_diag "${ENABLE_DPO_DIAG}" \
   --dpo_diag_log_every "${DPO_DIAG_LOG_EVERY}" \
   --dpo_diag_save_csv "${DPO_DIAG_SAVE_CSV}" \

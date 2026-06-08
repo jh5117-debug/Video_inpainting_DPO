@@ -1,0 +1,9 @@
+experiment_id: exp9
+experiment_name: exp9_logratio_gap_dpo_s1s2_2000_davis_pai
+experiment_folder: exp9_logratio_gap_dpo
+stage1_run_name: exp9_logratio_gap_dpo_s1_2000_davis_pai
+stage2_run_name: exp9_logratio_gap_dpo_s2_2000_davis_pai
+gap_normalization: log_ratio
+lose_gap_clip_tau: 1.0
+loss_region_mode: full
+status: prepared

@@ -361,3 +361,18 @@ Exp9 eval rule:
 - Use YouTube-VOS / DAVIS video inpainting metrics through
   `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
 - Do not use VBench for this inpainting comparison.
+
+## 2026-06-08 Core Exp9 / Exp10 / Exp11 Matrix
+
+The following rows supersede older A/B/C naming for the next PAI core sequence.
+Historical Exp9 gates remain historical records and should not be confused with
+this numeric sequence.
+
+| Experiment | Status | Domain | Data | Stage policy | Loss focus | Eval |
+| --- | --- | --- | --- | --- | --- | --- |
+| `Exp9` / `exp9_logratio_gap_dpo_s1s2_2000_davis_pai` | prepared; default PAI launch | YouTube-VOS D3 + DAVIS val | D3 selected-primary comp repaired PAI manifest | Stage1 2000 -> DAVIS, Stage2 2000 -> DAVIS | log-ratio normalized gaps, clipped loser gap, still DPO | DAVIS raw6 no-PCM ProPainter-prior four-column videos + metrics |
+| `Exp10` / `exp10_region_local_dpo_s1s2_2000_davis_pai` | prepared; explicit launch only | YouTube-VOS D3 + DAVIS val | same as Exp9 | Stage1 2000 -> DAVIS, Stage2 2000 -> DAVIS | Exp9 + normalized region-local MSE | same |
+| `Exp11` / `exp11_flow_prior_consistency_dpo_s1s2_2000_davis_pai` | prepared but blocked | YouTube-VOS D3 + DAVIS val | same as Exp9 | do not train until audit passes | Exp10 + flow/prior/boundary consistency | same after audit |
+
+No-lose-gap remains diagnostic only. Removing lose-gap makes the loser branch
+weak and damages the pairwise DPO interpretation, so it is not a main method.

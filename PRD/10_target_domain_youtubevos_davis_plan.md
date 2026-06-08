@@ -573,3 +573,36 @@ smoke proves otherwise.
 - Do not delete or overwrite D3 H20 originals.
 - Do not train from manifests containing `/home/nvme01/...` paths on PAI.
 - Do not treat VideoDPO partial-mask eval as final result.
+
+## 2026-06-08 Exp9 / Exp10 / Exp11 Target-Domain Plan
+
+The next PAI sequence is:
+
+1. Exp9: log-ratio / normalized-gap DPO.
+2. Exp10: Exp9 plus region-local MSE.
+3. Exp11: Exp10 plus flow/prior/boundary consistency, only after audit passes.
+
+Default PAI launch runs Exp9 only:
+
+```text
+RUN_EXPERIMENTS=exp9
+```
+
+Common target-domain rules:
+
+- D3 manifest:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl`
+- Stop if the manifest is missing or contains `/home/nvme01`.
+- Winner must be GT / clean clip through `win_video_path`.
+- Loser must be D3 generated loser through `final_loser_video_path`.
+- `TRAIN_MASK_MODE=partial`.
+- `MASK_FROM_MANIFEST=true`.
+- Validation prior: `prior_mode=propainter`.
+- Use SFT-48000 DiffuEraser weights:
+  `/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`.
+- DAVIS validation path:
+  `/mnt/workspace/hj/nas_hj/data/external/davis_432_240`.
+- DAVIS eval settings:
+  raw6, no PCM, mask dilation off, Gaussian blur off, hard comp outside mask.
+- Metrics: `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
+- VBench: not used.

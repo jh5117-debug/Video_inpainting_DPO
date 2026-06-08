@@ -1,0 +1,12 @@
+experiment_id: exp10
+experiment_name: exp10_region_local_dpo_s1s2_2000_davis_pai
+experiment_folder: exp10_region_local_dpo
+stage1_run_name: exp10_region_local_dpo_s1_2000_davis_pai
+stage2_run_name: exp10_region_local_dpo_s2_2000_davis_pai
+gap_normalization: log_ratio
+lose_gap_clip_tau: 1.0
+loss_region_mode: region
+mask_region_weight: 1.0
+boundary_region_weight: 0.5
+outside_region_weight: 0.05
+status: prepared

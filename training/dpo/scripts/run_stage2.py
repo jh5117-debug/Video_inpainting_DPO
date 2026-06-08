@@ -96,6 +96,14 @@ def build_cmd(project_root, args):
         "--train_mask_mode", args.train_mask_mode,
         "--mask_from_manifest", str(args.mask_from_manifest).lower(),
         "--loss_region_mode", args.loss_region_mode,
+        "--gap_normalization", args.gap_normalization,
+        "--gap_eps", str(args.gap_eps),
+        "--lose_gap_clip_tau", str(args.lose_gap_clip_tau),
+        "--mask_region_weight", str(args.mask_region_weight),
+        "--boundary_region_weight", str(args.boundary_region_weight),
+        "--outside_region_weight", str(args.outside_region_weight),
+        "--dpo_gap_trace_csv", str(args.dpo_gap_trace_csv),
+        "--dpo_gap_samples_jsonl_gz", str(args.dpo_gap_samples_jsonl_gz),
         "--enable_dpo_diag", str(args.enable_dpo_diag).lower(),
         "--dpo_diag_log_every", str(args.dpo_diag_log_every),
         "--dpo_diag_save_csv", str(args.dpo_diag_save_csv).lower(),
@@ -212,6 +220,14 @@ def build_cmd(project_root, args):
             "train_mask_mode": args.train_mask_mode,
             "mask_from_manifest": args.mask_from_manifest,
             "loss_region_mode": args.loss_region_mode,
+            "gap_normalization": args.gap_normalization,
+            "gap_eps": args.gap_eps,
+            "lose_gap_clip_tau": args.lose_gap_clip_tau,
+            "mask_region_weight": args.mask_region_weight,
+            "boundary_region_weight": args.boundary_region_weight,
+            "outside_region_weight": args.outside_region_weight,
+            "dpo_gap_trace_csv": args.dpo_gap_trace_csv,
+            "dpo_gap_samples_jsonl_gz": args.dpo_gap_samples_jsonl_gz,
             "enable_dpo_diag": args.enable_dpo_diag,
             "dpo_diag_log_every": args.dpo_diag_log_every,
             "dpo_diag_save_csv": args.dpo_diag_save_csv,
@@ -395,6 +411,14 @@ def parse_args():
     parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"])
     parser.add_argument("--mask_from_manifest", type=str, default="false")
     parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"])
+    parser.add_argument("--gap_normalization", type=str, default="raw", choices=["raw", "log_ratio"])
+    parser.add_argument("--gap_eps", type=float, default=1e-6)
+    parser.add_argument("--lose_gap_clip_tau", type=str, default="")
+    parser.add_argument("--mask_region_weight", type=float, default=1.0)
+    parser.add_argument("--boundary_region_weight", type=float, default=0.5)
+    parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--dpo_gap_trace_csv", type=str, default="")
+    parser.add_argument("--dpo_gap_samples_jsonl_gz", type=str, default="")
     parser.add_argument("--enable_dpo_diag", type=str, default="true")
     parser.add_argument("--dpo_diag_log_every", type=int, default=10)
     parser.add_argument("--dpo_diag_save_csv", type=str, default="true")
