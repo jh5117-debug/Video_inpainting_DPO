@@ -57,3 +57,16 @@ blocker is missing safe train-time implementation for:
 Until those pieces are implemented and the audit passes, Exp11 must remain a
 prepared but blocked experiment. Do not start it by setting
 `EXP11_ENABLE_TRAINING=1` merely because GPUs are idle.
+
+## 2026-06-09 Frame-Length Rule
+
+When Exp11 becomes trainable, it must inherit the Exp9/10 target-domain frame
+rule:
+
+```text
+NFRAMES=24
+DAVIS_VIDEO_LENGTH=24
+```
+
+Do not run 16-frame DAVIS validation. The DiffuEraser/ProPainter inference path
+requires effective video, mask, and prior duration greater than 22 frames.

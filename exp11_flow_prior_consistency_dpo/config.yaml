@@ -24,8 +24,10 @@ training:
   stage2_steps: 2000
   train_mask_mode: partial
   mask_from_manifest: true
+  nframes: 24
 validation:
   dataset: DAVIS
+  video_length: 24
   prior_mode: propainter
   num_inference_steps: 6
   use_pcm: false

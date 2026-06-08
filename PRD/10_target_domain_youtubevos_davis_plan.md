@@ -604,5 +604,10 @@ Common target-domain rules:
   `/mnt/workspace/hj/nas_hj/data/external/davis_432_240`.
 - DAVIS eval settings:
   raw6, no PCM, mask dilation off, Gaussian blur off, hard comp outside mask.
+- Frame length:
+  use `NFRAMES=24` and `DAVIS_VIDEO_LENGTH=24` for Exp9/10/11. The
+  DiffuEraser/ProPainter inference path requires effective video, mask, and
+  prior duration greater than 22 frames, so 16-frame DAVIS validation is invalid.
+  Keep training and validation frame counts aligned for new target-domain runs.
 - Metrics: `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
 - VBench: not used.

@@ -49,4 +49,7 @@ region_weight_sum
 Run policy:
 
 - Prepared but not launched by default.
+- New PAI runs use `NFRAMES=24`.
+- DAVIS validation uses `DAVIS_VIDEO_LENGTH=24`; 16-frame validation is invalid
+  because DiffuEraser/ProPainter requires effective duration greater than 22.
 - Launch only with explicit `RUN_EXPERIMENTS=exp10` or a sequential list.

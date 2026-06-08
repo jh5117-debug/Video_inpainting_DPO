@@ -1018,3 +1018,36 @@ Traceback/OOM/SIGFPE/SIGTERM in the inspected log window. Earlier incomplete
 checkpoints from the SIGTERM-interrupted run were moved under
 `_bad_incomplete_checkpoints_*`; the current run resumed cleanly and now writes
 complete checkpoints again.
+
+## 2026-06-09 CST Exp9/10/11 Frame-Length Rule
+
+Exp9 Stage1 finished on PAI with the old default `NFRAMES=16`, but the following
+DAVIS validation failed before producing videos:
+
+```text
+ValueError: The effective video duration is too short. Please make sure that
+the number of frames of video, mask, and priori is at least greater than 22
+frames.
+```
+
+Root cause: `scripts/launch_exp09_10_11_pai.sh` still defaulted both training
+and validation to 16 frames:
+
+```text
+NFRAMES=16
+DAVIS_VIDEO_LENGTH=16
+```
+
+Hard rule for target-domain Exp9/10/11 and future partial-mask inpainting
+experiments:
+
+- use at least 24 frames for DiffuEraser/ProPainter validation;
+- keep training and inference frame counts aligned for new runs;
+- default `NFRAMES=24` and `DAVIS_VIDEO_LENGTH=24`;
+- never rerun DAVIS validation with `DAVIS_VIDEO_LENGTH=16`;
+- if auditing an older 16-frame training run, validation still needs
+  `DAVIS_VIDEO_LENGTH>=24` because the inference stack requires effective
+  duration greater than 22.
+
+The Exp9/10/11 launcher and experiment configs were updated to default to
+24-frame training and 24-frame DAVIS validation.
