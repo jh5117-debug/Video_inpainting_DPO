@@ -83,8 +83,12 @@ def build_cmd(project_root, args):
     ]
     if args.main_process_port is not None:
         cmd.extend(["--main_process_port", str(args.main_process_port)])
+    train_entrypoint = os.environ.get(
+        "DPO_STAGE2_ENTRYPOINT",
+        "training/dpo/lingbot-worldmodel-stage2.py",
+    )
     cmd.extend([
-        "training/dpo/train_stage2.py",
+        train_entrypoint,
         "--base_model_name_or_path", os.path.join(weights_dir, "stable-diffusion-v1-5"),
         "--pretrained_dpo_stage1", pretrained_dpo_stage1,
         "--baseline_unet_path", baseline_unet_path,
