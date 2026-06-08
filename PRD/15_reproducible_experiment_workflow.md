@@ -37,6 +37,29 @@
 - H20：从 git pull 后跑 H20 训练或作为 PAI 同步源。
 - PAI：从 git/H20 同步后跑 PAI 训练和验证。
 
+## PAI SSH Access Key
+
+2026-06-08 HAL generated an ED25519 keypair for direct SSH access to PAI.
+Only non-secret metadata is recorded here.
+
+```text
+private_key_path = /home/hj/.ssh/hj_pai_ed25519
+public_key_path  = /home/hj/.ssh/hj_pai_ed25519.pub
+fingerprint      = SHA256:p0oV6HnWatduql7l1SJNomkbKUSnHL1xUdmFF7hIdH4
+comment          = hj-pai-20260608
+public_key       = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMoVItpWdCLF8aor74Jw4ItRTRYVmC5vmsPCu7vERdxU hj-pai-20260608
+```
+
+Security rule: do not record the private key or private-key passphrase in PRD,
+git, shell history, launch scripts, or reports. The passphrase is local user
+secret material. Use `ssh-agent` to avoid retyping it for every SSH command:
+
+```bash
+eval "$(ssh-agent -s)"
+ssh-add /home/hj/.ssh/hj_pai_ed25519
+ssh -i /home/hj/.ssh/hj_pai_ed25519 <pai-user>@<pai-host>
+```
+
 ## Exp8 当前约束
 
 Exp8a：
