@@ -41,7 +41,8 @@ WINNER_GAP_REG_MARGIN=0.0
 Run policy:
 
 - Stage1 2000 steps.
-- New PAI runs use `NFRAMES=24`.
+- Current non-regeneration PAI runs use `NFRAMES=16` because the existing D3
+  generated-loser clips contain 16 frames.
 - DAVIS validation: DPO-S1 + SFT-S2.
 - DAVIS validation uses `DAVIS_VIDEO_LENGTH=24`; 16-frame validation is invalid
   because DiffuEraser/ProPainter requires effective duration greater than 22.

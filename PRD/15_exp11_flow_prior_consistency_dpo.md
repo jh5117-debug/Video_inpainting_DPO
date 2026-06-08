@@ -60,13 +60,15 @@ prepared but blocked experiment. Do not start it by setting
 
 ## 2026-06-09 Frame-Length Rule
 
-When Exp11 becomes trainable, it must inherit the Exp9/10 target-domain frame
-rule:
+When Exp11 becomes trainable on the current non-regeneration D3 data, it must
+inherit the Exp9/10 target-domain frame rule:
 
 ```text
-NFRAMES=24
+NFRAMES=16
 DAVIS_VIDEO_LENGTH=24
 ```
 
 Do not run 16-frame DAVIS validation. The DiffuEraser/ProPainter inference path
-requires effective video, mask, and prior duration greater than 22 frames.
+requires effective video, mask, and prior duration greater than 22 frames. Do not
+pad or repeat frames to fake 24-frame training; true 24-frame training requires
+regenerating D3 clips at that length.

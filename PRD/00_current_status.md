@@ -1038,21 +1038,27 @@ NFRAMES=16
 DAVIS_VIDEO_LENGTH=16
 ```
 
-Hard rule for target-domain Exp9/10/11 and future partial-mask inpainting
-experiments:
+Follow-up PAI retry showed the existing D3 generated-loser training clips only
+contain 16 frames:
 
-- use at least 24 frames for DiffuEraser/ProPainter validation;
-- keep training and inference frame counts aligned for new runs;
-- default `NFRAMES=24` and `DAVIS_VIDEO_LENGTH=24`;
-- never rerun DAVIS validation with `DAVIS_VIDEO_LENGTH=16`;
-- if auditing an older 16-frame training run, validation still needs
-  `DAVIS_VIDEO_LENGTH>=24` because the inference stack requires effective
-  duration greater than 22.
+```text
+RuntimeError: Expected at least 24 frames under .../gt_win_cache/.../win,
+found 16
+```
 
-The Exp9/10/11 launcher and experiment configs were updated to default to
-24-frame training and 24-frame DAVIS validation. The shared Stage1/Stage2 sbatch
-fallback `NFRAMES` default was also moved to 24 so direct sbatch launches do not
-silently fall back to the invalid 16-frame target-domain setting.
+Therefore the correct rule for the current non-regeneration Exp9/10/11 run is:
+
+- existing D3 generated-loser training remains `NFRAMES=16`;
+- DAVIS / ProPainter validation must use `DAVIS_VIDEO_LENGTH=24`;
+- do not rerun DAVIS validation with `DAVIS_VIDEO_LENGTH=16`;
+- do not fake 24-frame training by padding or repeating frames;
+- training/validation frame-count parity can only be restored by regenerating
+  D3 loser/winner/mask clips at a length greater than 22, which is explicitly out
+  of scope for the current run.
+
+The Exp9/10/11 launcher and experiment configs were corrected to default to
+`NFRAMES=16` for existing D3 training and `DAVIS_VIDEO_LENGTH=24` for DAVIS
+validation.
 
 ## 2026-06-09 CST PAI Non-Interactive Conda Prefix Rule
 

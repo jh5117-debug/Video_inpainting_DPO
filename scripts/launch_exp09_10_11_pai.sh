@@ -60,9 +60,9 @@ CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1,2,3,4,5,6,7}"
 TRAIN_HEIGHT="${TRAIN_HEIGHT:-320}"
 TRAIN_WIDTH="${TRAIN_WIDTH:-512}"
 RESOLUTION="${RESOLUTION:-512}"
-# DiffuEraser/ProPainter validation requires effective duration >22 frames.
-# Keep target-domain training and DAVIS validation on the same safe length.
-NFRAMES="${NFRAMES:-24}"
+# Existing D3 generated-loser clips are 16-frame training clips. DiffuEraser /
+# ProPainter validation requires effective duration >22, so DAVIS val uses 24.
+NFRAMES="${NFRAMES:-16}"
 DAVIS_VIDEO_LENGTH="${DAVIS_VIDEO_LENGTH:-24}"
 DAVIS_NUM_QUAL="${DAVIS_NUM_QUAL:-30}"
 EVAL_GPU="${EVAL_GPU:-0}"

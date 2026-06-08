@@ -20,7 +20,7 @@ training:
   stage2_steps: 2000
   train_mask_mode: partial
   mask_from_manifest: true
-  nframes: 24
+  nframes: 16
   train_height: 320
   train_width: 512
 validation:

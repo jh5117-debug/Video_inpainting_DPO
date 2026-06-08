@@ -605,9 +605,12 @@ Common target-domain rules:
 - DAVIS eval settings:
   raw6, no PCM, mask dilation off, Gaussian blur off, hard comp outside mask.
 - Frame length:
-  use `NFRAMES=24` and `DAVIS_VIDEO_LENGTH=24` for Exp9/10/11. The
+  existing D3 generated-loser clips are 16-frame training clips, so current
+  non-regeneration Exp9/10/11 training uses `NFRAMES=16`. The
   DiffuEraser/ProPainter inference path requires effective video, mask, and
-  prior duration greater than 22 frames, so 16-frame DAVIS validation is invalid.
-  Keep training and validation frame counts aligned for new target-domain runs.
+  prior duration greater than 22 frames, so DAVIS validation must use
+  `DAVIS_VIDEO_LENGTH=24`; 16-frame DAVIS validation is invalid. Do not pad or
+  repeat frames to fake 24-frame training. Training/validation frame-count
+  parity requires regenerating D3 at >22 frames, which is out of scope here.
 - Metrics: `tools/run_inpainting_metric_eval.py` and `inference/metrics.py`.
 - VBench: not used.

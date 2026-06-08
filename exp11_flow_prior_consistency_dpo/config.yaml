@@ -24,7 +24,7 @@ training:
   stage2_steps: 2000
   train_mask_mode: partial
   mask_from_manifest: true
-  nframes: 24
+  nframes: 16
 validation:
   dataset: DAVIS
   video_length: 24
