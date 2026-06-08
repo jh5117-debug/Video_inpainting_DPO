@@ -35,6 +35,7 @@ PCM_WEIGHTS_PATH="${PCM_WEIGHTS_PATH:-${WEIGHTS_DIR}/PCM_Weights}"
 PROPAINTER_WEIGHT_ROOT="${PROPAINTER_WEIGHT_ROOT:-}"
 RAFT_MODEL_PATH="${RAFT_MODEL_PATH:-}"
 CHECK_RAFT_LOAD="${CHECK_RAFT_LOAD:-1}"
+ALLOW_HOME_NVME01_PATHS="${ALLOW_HOME_NVME01_PATHS:-0}"
 LINGBOT_PROCESS_NAME="${LINGBOT_PROCESS_NAME:-lingbot-worldmodel}"
 PROCESS_TITLE="${PROCESS_TITLE:-${LINGBOT_PROCESS_NAME}}"
 DPO_STAGE1_ENTRYPOINT="${DPO_STAGE1_ENTRYPOINT:-training/dpo/lingbot-worldmodel-stage1.py}"
@@ -120,12 +121,13 @@ find_propainter_root() {
 }
 
 validate_manifest() {
-  "${PYTHON_BIN}" - "${PREFERENCE_MANIFEST}" <<'PY'
+  "${PYTHON_BIN}" - "${PREFERENCE_MANIFEST}" "${ALLOW_HOME_NVME01_PATHS}" <<'PY'
 import json
 import sys
 from pathlib import Path
 
 path = Path(sys.argv[1])
+allow_home_nvme01 = str(sys.argv[2]).lower() in {"1", "true", "yes", "y"}
 if not path.exists():
     raise SystemExit(f"manifest missing: {path}")
 rows = []
@@ -170,7 +172,7 @@ with path.open("r", encoding="utf-8") as fh:
 
 if not rows:
     raise SystemExit(f"manifest has zero rows: {path}")
-if bad_nvme:
+if bad_nvme and not allow_home_nvme01:
     raise SystemExit(f"manifest contains /home/nvme01 paths: count={bad_nvme}")
 if missing:
     raise SystemExit(f"manifest missing required fields; examples={missing[:5]}")
