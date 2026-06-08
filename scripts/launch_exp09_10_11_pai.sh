@@ -13,8 +13,13 @@ OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/nas/hj/H20_Video_inpainting_DPO}"
 WORKSPACE_ROOT="${WORKSPACE_ROOT:-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO}"
 EXPERIMENTS_DIR="${EXPERIMENTS_DIR:-${OUTPUT_ROOT}/experiments}"
 
-D3_ROOT="${D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
-PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-${D3_ROOT}/manifests/selected_primary_comp.repaired.pai_paths.jsonl}"
+SOURCE_D3_ROOT="${SOURCE_D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4}"
+SOURCE_D3_MANIFEST="${SOURCE_D3_MANIFEST:-${SOURCE_D3_ROOT}/manifests/selected_primary_comp.repaired.pai_paths.jsonl}"
+YTBV_ROOT="${YTBV_ROOT:-/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train}"
+AUTO_PREPARE_GTWIN="${AUTO_PREPARE_GTWIN:-1}"
+
+D3_ROOT="${D3_ROOT:-${WORKSPACE_ROOT}/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai}"
+PREFERENCE_MANIFEST="${PREFERENCE_MANIFEST:-${D3_ROOT}/manifests/selected_primary_comp.gtwin.pai_paths.jsonl}"
 
 DAVIS_ROOT="${DAVIS_ROOT:-/mnt/workspace/hj/nas_hj/data/external/davis_432_240}"
 DAVIS_VIDEO_ROOT="${DAVIS_VIDEO_ROOT:-${DAVIS_ROOT}/JPEGImages_432_240}"
@@ -141,8 +146,16 @@ with path.open("r", encoding="utf-8") as fh:
         lose = str(row.get("final_loser_video_path", "") or "")
         if win and lose and win == lose:
             same_paths.append(line_no)
-        lowered = win.lower()
-        if any(token in lowered for token in ["generated_losers", "final_loser", "raw_loser", "comp_loser", "candidate"]):
+        lowered = win.lower().replace("\\", "/")
+        win_source = str(row.get("win_source", "") or "").lower()
+        source_is_gt = any(
+            marker in win_source
+            for marker in ["youtubevos_gt", "gt_aligned", "clean", "ground_truth"]
+        )
+        if not source_is_gt and any(
+            token in lowered
+            for token in ["/candidates/", "final_loser", "raw_loser", "comp_loser"]
+        ):
             generated_win.append((line_no, win))
         if len(rows) <= 20:
             for key in required:
@@ -171,8 +184,63 @@ print("[manifest-check] win_video_path accepted as GT/clean by field contract an
 PY
 }
 
+prepare_gtwin_manifest_if_needed() {
+  if [[ "${AUTO_PREPARE_GTWIN}" != "1" ]]; then
+    return 0
+  fi
+  if [[ -f "${PREFERENCE_MANIFEST}" ]]; then
+    local ok
+    ok="$("${PYTHON_BIN}" - "${PREFERENCE_MANIFEST}" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+ok = 0
+total = 0
+with path.open("r", encoding="utf-8") as fh:
+    for line in fh:
+        if not line.strip():
+            continue
+        row = json.loads(line)
+        total += 1
+        source = str(row.get("win_source", "") or "").lower()
+        win = str(row.get("win_video_path", "") or "").lower().replace("\\", "/")
+        if ("youtubevos_gt" in source or "gt_aligned" in source or "ground_truth" in source) and "/candidates/" not in win:
+            ok += 1
+        if total >= 20:
+            break
+print("1" if total and ok == total else "0")
+PY
+)"
+    if [[ "${ok}" == "1" ]]; then
+      echo "[gtwin] existing GT-win manifest accepted: ${PREFERENCE_MANIFEST}"
+      return 0
+    fi
+    echo "[gtwin] existing manifest is not GT-win; regenerating: ${PREFERENCE_MANIFEST}"
+  fi
+
+  require_path "${SOURCE_D3_MANIFEST}" "source D3 repaired PAI manifest"
+  require_path "${YTBV_ROOT}" "YouTube-VOS train root"
+  require_path "${PROJECT_ROOT}/tools/prepare_exp8c_gtwin_manifest.py" "GT-win manifest preparation tool"
+  mkdir -p "${D3_ROOT}/manifests" reports
+  echo "[gtwin] preparing GT-win manifest"
+  echo "[gtwin] source=${SOURCE_D3_MANIFEST}"
+  echo "[gtwin] output=${PREFERENCE_MANIFEST}"
+  "${PYTHON_BIN}" tools/prepare_exp8c_gtwin_manifest.py \
+    --source_manifest "${SOURCE_D3_MANIFEST}" \
+    --youtubevos_train_root "${YTBV_ROOT}" \
+    --output_root "${D3_ROOT}" \
+    --output_manifest "${PREFERENCE_MANIFEST}" \
+    --cache_root "${D3_ROOT}/gt_win_cache" \
+    --link_mode symlink \
+    --strict \
+    --report_path "reports/exp09_10_11_gtwin_manifest_prepare_${RUN_VERSION}.md"
+}
+
 precheck_common() {
   echo "[Exp9-11] common precheck start"
+  prepare_gtwin_manifest_if_needed
   require_path "${PREFERENCE_MANIFEST}" "D3 selected-primary-comp PAI manifest"
   require_path "${DAVIS_ROOT}" "DAVIS root"
   require_path "${DAVIS_VIDEO_ROOT}" "DAVIS video root"
@@ -238,6 +306,9 @@ PY
 - run_experiments: \`${RUN_EXPERIMENTS}\`
 - default_run: \`exp9\`
 - manifest: \`${PREFERENCE_MANIFEST}\`
+- source_d3_manifest: \`${SOURCE_D3_MANIFEST}\`
+- gtwin_auto_prepare: \`${AUTO_PREPARE_GTWIN}\`
+- youtubevos_train_root: \`${YTBV_ROOT}\`
 - manifest_rows: \`$(wc -l < "${PREFERENCE_MANIFEST}")\`
 - winner_contract: \`win_video_path must be GT/clean and not generated\`
 - loser_contract: \`final_loser_video_path\`
