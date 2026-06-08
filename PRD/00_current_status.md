@@ -1050,7 +1050,9 @@ experiments:
   duration greater than 22.
 
 The Exp9/10/11 launcher and experiment configs were updated to default to
-24-frame training and 24-frame DAVIS validation.
+24-frame training and 24-frame DAVIS validation. The shared Stage1/Stage2 sbatch
+fallback `NFRAMES` default was also moved to 24 so direct sbatch launches do not
+silently fall back to the invalid 16-frame target-domain setting.
 
 ## 2026-06-09 CST PAI Non-Interactive Conda Prefix Rule
 
