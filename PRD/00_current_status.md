@@ -1161,3 +1161,57 @@ The stage sbatch wrappers must call `${PYTHON_BIN}` for
 `python -m accelerate.commands.launch` through
 `DPO_ACCELERATE_PYTHON_BIN`. This is required so the actual torch distributed
 GPU worker executable is no longer the generic `python` process name.
+
+## 2026-06-09 CST PAI SIGTERM Still External After Process Rename
+
+Follow-up audit after the process-name mitigation:
+
+- Exp10 policy-init continuation was launched foreground over SSH on GPUs 0-3
+  and still received external `SIGTERM` at about step 40.
+- The actual worker Python executable was then changed to
+  `/mnt/nas/hj/conda_envs/diffueraser/bin/lingbot-worldmodel`; the run still
+  received external `SIGTERM` while saving `checkpoint-25`, leaving that
+  checkpoint incomplete.
+- The actual worker Python executable was then changed to
+  `/mnt/nas/hj/conda_envs/diffueraser/bin/lingbotworld-phy`, matching the
+  process name of long-lived existing PAI workers. The printed stage log
+  confirmed:
+
+```text
+[dpo-stage1] python_runner=/mnt/nas/hj/conda_envs/diffueraser/bin/lingbotworld-phy
+[dpo-stage1] accelerate_python=/mnt/nas/hj/conda_envs/diffueraser/bin/lingbotworld-phy
+```
+
+That run still received:
+
+```text
+traceback : Signal 15 (SIGTERM) received by PID 2672520
+```
+
+at about step 6. Local PAI evidence at inspection time did not show CUDA OOM,
+host OOM, `SIGFPE`, or a Python code exception. `dmesg` had no OOM-kill record
+for the inspected PIDs, and the visible `nohang` log did not prove it killed
+the workers. Therefore the current blocker is an external PAI/DSW/admin-side
+termination policy or sender that is not identifiable from the experiment code.
+
+Do not keep relaunching Exp10/Exp11 on PAI until the external `SIGTERM` sender
+is identified or the job/process is allowlisted. Repeated relaunches produce
+partial runs and incomplete checkpoints. The administrator should inspect node
+or platform logs around these CST timestamps and worker PIDs:
+
+```text
+2026-06-09 13:16:58 CST: Exp10 foreground SSH policy-init run, workers around 2665045-2665048.
+2026-06-09 13:31:49 CST: Exp10 named Python run, workers around 2669008-2669011.
+2026-06-09 13:38:50 CST: Exp10 lingbotworld-phy run, workers around 2672520-2672523.
+```
+
+Current verified experiment state:
+
+- Exp9 completed Stage1, Stage2, Stage1 DAVIS validation, and Stage2 DAVIS
+  validation under `RUN_VERSION=20260609_025331_d3n16_val24`.
+- Exp10 original PAI Stage1 reached step 1350 with complete checkpoints at 500
+  and 1000, then was externally terminated. The exported
+  `checkpoint-1000_policy_init` loads successfully, but continuation attempts
+  are also externally terminated.
+- Exp11 remains implementation-blocked by the flow/prior consistency audit and
+  must not be launched merely because GPUs are free.

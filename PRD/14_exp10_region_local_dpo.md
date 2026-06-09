@@ -54,3 +54,19 @@ Run policy:
 - DAVIS validation uses `DAVIS_VIDEO_LENGTH=24`; 16-frame validation is invalid
   because DiffuEraser/ProPainter requires effective duration greater than 22.
 - Launch only with explicit `RUN_EXPERIMENTS=exp10` or a sequential list.
+
+## 2026-06-09 PAI Runtime Status
+
+Exp10 is implementation-ready but PAI execution is externally blocked by
+repeated `SIGTERM` events:
+
+- original Stage1 reached step 1350 with complete `checkpoint-500` and
+  `checkpoint-1000`;
+- `checkpoint-1000` was exported to `checkpoint-1000_policy_init`;
+- policy-init continuation runs were killed by external `SIGTERM` under
+  foreground SSH, `lingbot-worldmodel`, and `lingbotworld-phy` worker executable
+  names.
+
+This is not a CUDA OOM, host OOM, `SIGFPE`, or DPO loss implementation error
+based on the inspected logs. Do not keep relaunching Exp10 on PAI until the
+administrator identifies or removes the external termination source.
