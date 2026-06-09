@@ -1111,9 +1111,15 @@ format, launch a new continuation run with:
 ```text
 POLICY_INIT_PATH=<exported_checkpoint_weights>
 RESUME_FROM_CHECKPOINT=none
+STAGE1_MAX_STEPS=<remaining_stage1_steps>
+STAGE2_MAX_STEPS=2000
 ```
 
 `POLICY_INIT_PATH` must initialize only the trainable policy UNet/BrushNet.
 The frozen reference model must still come from the 48000-step SFT DiffuEraser
 weights so DPO reward semantics are preserved. Do not set `REF_MODEL_PATH` to
 the DPO checkpoint for this fallback.
+
+`STAGE1_MAX_STEPS` is only for the replacement Stage1 continuation run. It must
+not shorten Stage2; Stage2 remains a full 2000-step run unless a separate,
+explicit Stage2 recovery plan says otherwise.
