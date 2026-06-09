@@ -1087,3 +1087,33 @@ CONDA_ENV_PREFIX=/mnt/nas/hj/conda_envs/diffueraser
 ```
 
 and the sbatch wrapper should run from that prefix even when `conda` is absent.
+
+## 2026-06-09 CST PAI SIGTERM Resume Fallback
+
+During Exp10 Stage1 on PAI, the run reached step 1350 after complete
+checkpoint-500 and checkpoint-1000 saves, then the distributed workers received
+external `SIGTERM`:
+
+```text
+traceback : Signal 15 (SIGTERM) received by PID ...
+```
+
+This was not an OOM/SIGFPE/code exception. A full-state resume from
+`checkpoint-1000` also received `SIGTERM` shortly after model weights loaded,
+before optimizer/scheduler state loading finished. The PAI `nohang` log showed
+high available host memory and no visible corrective action at the inspected
+timestamps, so the exact external sender is not proven from local logs.
+
+Fallback rule: when full accelerator-state resume repeatedly dies by external
+`SIGTERM`, export the last complete checkpoint to DiffuEraser `last_weights`
+format, launch a new continuation run with:
+
+```text
+POLICY_INIT_PATH=<exported_checkpoint_weights>
+RESUME_FROM_CHECKPOINT=none
+```
+
+`POLICY_INIT_PATH` must initialize only the trainable policy UNet/BrushNet.
+The frozen reference model must still come from the 48000-step SFT DiffuEraser
+weights so DPO reward semantics are preserved. Do not set `REF_MODEL_PATH` to
+the DPO checkpoint for this fallback.

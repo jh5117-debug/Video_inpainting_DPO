@@ -131,8 +131,12 @@ def build_cmd(project_root, args):
         "--report_to", args.report_to,
         "--tracker_project_name", args.wandb_project,
         "--set_grads_to_none",
-        "--resume_from_checkpoint", "latest",
     ])
+    if args.policy_init_path:
+        cmd.extend(["--policy_init_path", args.policy_init_path])
+    resume_from_checkpoint = str(args.resume_from_checkpoint or "").strip()
+    if resume_from_checkpoint.lower() not in {"", "none", "false", "no", "off", "0"}:
+        cmd.extend(["--resume_from_checkpoint", resume_from_checkpoint])
     if args.max_train_steps is not None:
         cmd.extend(["--max_train_steps", str(args.max_train_steps)])
     if args.num_train_epochs is not None:
@@ -174,6 +178,7 @@ def build_cmd(project_root, args):
             "dpo_dataset_type": args.dpo_dataset_type,
             "preference_manifest": args.preference_manifest,
             "ref_model_path": ref_model_path,
+            "policy_init_path": args.policy_init_path,
             "val_data_dir": eval_dir,
             "weights_dir": weights_dir,
         },
@@ -212,6 +217,7 @@ def build_cmd(project_root, args):
             "dpo_diag_log_every": args.dpo_diag_log_every,
             "dpo_diag_save_csv": args.dpo_diag_save_csv,
             "dpo_diag_save_wandb": args.dpo_diag_save_wandb,
+            "resume_from_checkpoint": args.resume_from_checkpoint,
         },
     )
 
@@ -403,6 +409,8 @@ def parse_args():
     parser.add_argument("--dpo_diag_save_csv", type=str, default="true")
     parser.add_argument("--dpo_diag_save_wandb", type=str, default="true")
     parser.add_argument("--ref_model_path", type=str, default=None)
+    parser.add_argument("--policy_init_path", type=str, default=None)
+    parser.add_argument("--resume_from_checkpoint", type=str, default="latest")
     parser.add_argument("--val_data_dir", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     parser.add_argument("--experiments_dir", type=str, default=None)

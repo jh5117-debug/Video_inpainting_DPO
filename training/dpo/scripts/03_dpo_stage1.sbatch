@@ -57,6 +57,8 @@ DPO_DIAG_SAVE_CSV=${DPO_DIAG_SAVE_CSV:-true}
 DPO_DIAG_SAVE_WANDB=${DPO_DIAG_SAVE_WANDB:-true}
 VAL_DATA_DIR=${VAL_DATA_DIR:-${DATA}/davis_432_240}
 REF_MODEL_PATH=${REF_MODEL_PATH:-}
+POLICY_INIT_PATH=${POLICY_INIT_PATH:-}
+RESUME_FROM_CHECKPOINT=${RESUME_FROM_CHECKPOINT:-latest}
 BATCH_SIZE=${BATCH_SIZE:-1}
 GRAD_ACCUM=${GRAD_ACCUM:-1}
 NUM_WORKERS=${NUM_WORKERS:-0}
@@ -170,6 +172,20 @@ REF_MODEL_ARG=()
 if [[ -n "${REF_MODEL_PATH}" ]]; then
   REF_MODEL_ARG=(--ref_model_path "${REF_MODEL_PATH}")
 fi
+
+POLICY_INIT_ARG=()
+if [[ -n "${POLICY_INIT_PATH}" ]]; then
+  POLICY_INIT_ARG=(--policy_init_path "${POLICY_INIT_PATH}")
+fi
+
+RESUME_FROM_CHECKPOINT_ARG=()
+case "${RESUME_FROM_CHECKPOINT,,}" in
+  ""|0|false|no|off|none)
+    ;;
+  *)
+    RESUME_FROM_CHECKPOINT_ARG=(--resume_from_checkpoint "${RESUME_FROM_CHECKPOINT}")
+    ;;
+esac
 
 RUN_VERSION_ARG=()
 if [[ -n "${RUN_VERSION}" ]]; then
@@ -338,4 +354,6 @@ python training/dpo/scripts/run_stage1.py \
   "${DEBUG_FIRST_BATCH_STAGES_ARG[@]}" \
   "${DPO_DIAGNOSTICS_ARG[@]}" \
   "${REF_MODEL_ARG[@]}" \
+  "${POLICY_INIT_ARG[@]}" \
+  "${RESUME_FROM_CHECKPOINT_ARG[@]}" \
   "${RUN_VERSION_ARG[@]}"

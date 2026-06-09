@@ -1279,6 +1279,15 @@ def parse_args(input_args=None):
     parser.add_argument("--checkpointing_steps", type=int, default=2000)
     parser.add_argument("--checkpoints_total_limit", type=int, default=3)
     parser.add_argument("--resume_from_checkpoint", type=str, default=None)
+    parser.add_argument(
+        "--policy_init_path",
+        type=str,
+        default=None,
+        help=(
+            "Optional DiffuEraser weights directory used to initialize only the trainable "
+            "policy UNet/BrushNet. The frozen reference model still comes from ref_model_path."
+        ),
+    )
     parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
     parser.add_argument("--gradient_checkpointing", action="store_true")
     parser.add_argument("--learning_rate", type=float, default=1e-6)
@@ -1576,6 +1585,37 @@ def main(args):
 
     logger.info(f"Loading policy BrushNet from {args.ref_model_path}")
     brushnet = BrushNetModel.from_pretrained(args.ref_model_path, subfolder="brushnet")
+
+    if args.policy_init_path:
+        policy_init_path = str(args.policy_init_path)
+        policy_unet_config_path = os.path.join(policy_init_path, "unet_main", "config.json")
+        policy_is_motion_model = False
+        if os.path.exists(policy_unet_config_path):
+            import json
+
+            with open(policy_unet_config_path) as f:
+                policy_unet_cfg = json.load(f)
+            policy_is_motion_model = policy_unet_cfg.get("_class_name", "") == "UNetMotionModel"
+        logger.info(f"Overriding trainable policy weights from policy_init_path={policy_init_path}")
+        del unet_main
+        del brushnet
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        if policy_is_motion_model:
+            logger.info("Loading policy init UNet via UNetMotionModel (extracting 2D weights)")
+            _policy_motion_unet = UNetMotionModel.from_pretrained(policy_init_path, subfolder="unet_main")
+            unet_main = _extract_2d_from_motion(
+                _policy_motion_unet,
+                args.base_model_name_or_path,
+                args.revision,
+                args.variant,
+            )
+            del _policy_motion_unet
+        else:
+            logger.info("Loading policy init UNet2D directly")
+            unet_main = UNet2DConditionModel.from_pretrained(policy_init_path, subfolder="unet_main")
+        logger.info("Loading policy init BrushNet")
+        brushnet = BrushNetModel.from_pretrained(policy_init_path, subfolder="brushnet")
 
     # ===== Ref model: 从同一路径加载，冻结 =====
     if is_motion_model:
