@@ -1129,3 +1129,35 @@ Implementation guard: `training/dpo/scripts/run_stage1.py` must not default to
 from the final printed command line: a policy-init fallback run must contain
 `--policy_init_path <...>` and must not contain `--resume_from_checkpoint
 latest`.
+
+## 2026-06-09 CST PAI SIGTERM Process-Name Mitigation
+
+Follow-up SIGTERM audit: Exp10 policy-init recovery was relaunched through a
+foreground SSH session on GPUs 0-3, but rank0 still received `SIGTERM` at
+step 40. This proves that the failure is not caused only by `nohup`, `setsid`,
+or terminal disconnection.
+
+The earlier `LINGBOT_PROCESS_NAME`, `PROCESS_TITLE`, and
+`lingbot-worldmodel-stage*.py` entrypoint names are not sufficient by
+themselves. The GPU workers are still spawned by the conda Python executable
+unless the launcher explicitly runs accelerate through a renamed Python binary.
+For PAI protected runs, create/use a copied Python executable such as:
+
+```text
+/mnt/nas/hj/conda_envs/diffueraser/bin/lingbot-worldmodel
+```
+
+and launch with:
+
+```text
+PYTHON_BIN=/mnt/nas/hj/conda_envs/diffueraser/bin/lingbot-worldmodel
+DPO_ACCELERATE_PYTHON_BIN=/mnt/nas/hj/conda_envs/diffueraser/bin/lingbot-worldmodel
+LINGBOT_PROCESS_NAME=lingbot-worldmodel
+PROCESS_TITLE=lingbot-worldmodel
+```
+
+The stage sbatch wrappers must call `${PYTHON_BIN}` for
+`training/dpo/scripts/run_stage*.py`, and the Python runner must invoke
+`python -m accelerate.commands.launch` through
+`DPO_ACCELERATE_PYTHON_BIN`. This is required so the actual torch distributed
+GPU worker executable is no longer the generic `python` process name.

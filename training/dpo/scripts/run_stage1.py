@@ -32,6 +32,13 @@ def get_project_root():
     return str(Path(__file__).resolve().parents[3])
 
 
+def accelerate_launch_prefix():
+    python_bin = os.environ.get("DPO_ACCELERATE_PYTHON_BIN", "").strip()
+    if python_bin:
+        return [python_bin, "-m", "accelerate.commands.launch"]
+    return ["accelerate", "launch"]
+
+
 def build_cmd(project_root, args):
     weights_dir = args.weights_dir or os.path.join(project_root, "weights")
     dpo_data_root = args.dpo_data_root or first_existing(
@@ -63,7 +70,7 @@ def build_cmd(project_root, args):
     )
 
     cmd = [
-        "accelerate", "launch",
+        *accelerate_launch_prefix(),
         "--num_processes", str(args.num_gpus),
         "--mixed_precision", args.mixed_precision,
     ]

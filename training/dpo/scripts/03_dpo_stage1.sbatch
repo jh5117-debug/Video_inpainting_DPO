@@ -283,7 +283,14 @@ export HF_ENDPOINT="${HF_ENDPOINT:-https://hf-mirror.com}"
 export PYTHONPATH="${PROJECT_ROOT}:${PYTHONPATH:-}"
 mkdir -p "${HF_HOME}" "${TMPDIR}"
 
-python training/dpo/scripts/run_stage1.py \
+PYTHON_RUNNER="${PYTHON_BIN:-python}"
+if [[ -n "${PYTHON_BIN:-}" ]]; then
+  export DPO_ACCELERATE_PYTHON_BIN="${DPO_ACCELERATE_PYTHON_BIN:-${PYTHON_BIN}}"
+fi
+echo "[dpo-stage1] python_runner=${PYTHON_RUNNER}"
+echo "[dpo-stage1] accelerate_python=${DPO_ACCELERATE_PYTHON_BIN:-accelerate-bin}"
+
+"${PYTHON_RUNNER}" training/dpo/scripts/run_stage1.py \
   --num_gpus ${NUM_GPUS} \
   --weights_dir ${WEIGHTS_DIR} \
   --dpo_data_root ${DPO_DATA_ROOT} \
