@@ -1123,3 +1123,9 @@ the DPO checkpoint for this fallback.
 `STAGE1_MAX_STEPS` is only for the replacement Stage1 continuation run. It must
 not shorten Stage2; Stage2 remains a full 2000-step run unless a separate,
 explicit Stage2 recovery plan says otherwise.
+
+Implementation guard: `training/dpo/scripts/run_stage1.py` must not default to
+`--resume_from_checkpoint latest` internally. Recovery correctness is checked
+from the final printed command line: a policy-init fallback run must contain
+`--policy_init_path <...>` and must not contain `--resume_from_checkpoint
+latest`.

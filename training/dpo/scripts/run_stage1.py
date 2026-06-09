@@ -410,7 +410,7 @@ def parse_args():
     parser.add_argument("--dpo_diag_save_wandb", type=str, default="true")
     parser.add_argument("--ref_model_path", type=str, default=None)
     parser.add_argument("--policy_init_path", type=str, default=None)
-    parser.add_argument("--resume_from_checkpoint", type=str, default="latest")
+    parser.add_argument("--resume_from_checkpoint", type=str, default="none")
     parser.add_argument("--val_data_dir", type=str, default=None)
     parser.add_argument("--output_dir", type=str, default=None)
     parser.add_argument("--experiments_dir", type=str, default=None)
