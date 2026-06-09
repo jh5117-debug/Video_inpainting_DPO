@@ -1,5 +1,22 @@
 # Exp11: Flow-Prior Consistency DPO
 
+## Current Status
+
+Status: blocked.
+
+Do not launch Exp11 by simply reusing Exp10 region-local DPO settings. That
+would create a mislabeled experiment. Exp11 requires train-time flow/prior
+consistency losses to be implemented and audited.
+
+Required before launch:
+
+- `L_flow` has a real train-time differentiable temporal warp target.
+- `L_prior` compares the model output / x0 target against a valid ProPainter
+  prior target in the correct space.
+- `L_boundary` is wired into the training loss and diagnostics.
+- `reports/exp11_flow_prior_implementation_audit.md` is updated from blocked to
+  passed.
+
 Experiment name:
 
 ```text

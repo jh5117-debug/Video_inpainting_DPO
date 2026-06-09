@@ -84,6 +84,7 @@ Ask the PAI/DSW administrator to inspect node or platform logs around:
 2026-06-09 13:16:58 CST: workers around 2665045-2665048
 2026-06-09 13:31:49 CST: workers around 2669008-2669011
 2026-06-09 13:38:50 CST: workers around 2672520-2672523
+2026-06-09 14:55:32 CST: fresh no-resume worker PID 2698917
 ```
 
 Required outcome before relaunching PAI Exp10/Exp11:
@@ -94,3 +95,31 @@ Required outcome before relaunching PAI Exp10/Exp11:
 
 Until then, relaunching on PAI is expected to waste time and create incomplete
 checkpoints.
+
+## Fresh No-Resume Retry Evidence
+
+A fresh Exp10 run was launched on PAI to test whether the previous failures were
+caused by a corrupted/interrupted resume checkpoint.
+
+```text
+RUN_VERSION=20260609_145145_exp10_fresh_d3n16_val24
+log=logs/pipelines/exp10_region_local_dpo_s1s2_2000_davis_pai_20260609_145145_exp10_fresh_d3n16_val24_fresh_gpus0_6_20260609_145145.log
+CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6
+NUM_GPUS=7
+RESUME_FROM_CHECKPOINT=none
+POLICY_INIT_PATH=
+```
+
+Observed failure:
+
+```text
+06/09/2026 14:54:41 - Total optimization steps = 2000
+06/09/2026 14:54:51 - [dpo_diag] global_step=1 ...
+W0609 14:55:32 ... Sending process 2698918 closing signal SIGTERM
+traceback : Signal 15 (SIGTERM) received by PID 2698917
+training/dpo/lingbot-worldmodel-stage1.py FAILED
+```
+
+Conclusion: the fresh run also receives external SIGTERM around step 6. This
+rules out the interrupted `checkpoint-1000_policy_init` resume path as the
+primary explanation.

@@ -2,6 +2,11 @@
 
 This file is generated from `experiment_matrix.csv`. It separates Old Exp5, Exp5 beta10 plain, New Exp5, and New Exp6, and marks remote PAI diagnostics as paths that still need local backfill for numeric claims.
 
+Current active experiment surface is maintained in `current_active.md`. Rows in
+this generated matrix that refer to generic Exp8 region-loss gates or old Exp9
+D3 comp/no-comp/no-lose gates are historical context only; their registry
+folders have been moved to `../pending_delete/legacy_experiment_registry/`.
+
 | id | experiment | status | task | loss | dpo_diag | conclusion |
 | --- | --- | --- | --- | --- | --- | --- |
 | exp01 | DiffuEraser reproduction / SFT / metric setting | historical_complete_registry_partial | DiffuEraser SFT/reproduction | SFT reconstruction MSE, not DPO. | not DPO | SFT-48000 is a strong YouTube-VOS-tuned baseline, not a naked base. |

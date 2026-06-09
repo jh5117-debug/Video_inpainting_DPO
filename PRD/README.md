@@ -2,6 +2,7 @@
 
 Start here:
 
+0. `../experiment_registry/current_active.md` - compact current experiment ledger and naming policy.
 1. `pai_audit_current_state.md` - current environment and artifact audit.
 2. `00_current_status.md` - completed experiments and current best settings.
 3. `01_experiment_matrix.md` - active and planned experiment matrix.
@@ -19,3 +20,6 @@ Start here:
 15. `videodpo_canonical_data_setting.md` - generated on PAI by the single-sample smoke tool; records the canonical VideoDPO H/W/T sampling contract.
 
 `archive/` contains historical plans and handoff notes. Archive files are useful context, but they do not define the current experiment plan unless the information has been migrated into the active PRDs above.
+
+`../pending_delete/` is the non-destructive holding area for legacy experiment
+files that should not be part of the active code/registry structure.

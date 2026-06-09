@@ -1,3 +1,35 @@
+## 2026-06-09 Active Experiment Ledger
+
+The active experiment list has been compacted. Legacy gates that are no longer
+part of the main structure are kept under `pending_delete/` rather than deleted.
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| pre-Exp5 historical setup | historical context | `experiment_registry/exp01_*` to `exp04_*` |
+| Exp5 | failed diagnostics | `experiment_registry/exp05_old_d2_comp_plain_failed`, `experiment_registry/exp05_beta10_plain_failed` |
+| NewExp5 | completed, improved but not final | `experiment_registry/exp05_new_d2_comp_wingap_lose025` |
+| NewExp6 | completed diagnostic | `experiment_registry/exp06_new_d2_nocomp_wingap_lose025` |
+| Exp7a-1 | completed/evaluated artifact family | `experiment_registry/exp07_fix_smallmask_prior` / Exp7a evidence |
+| Exp7a-2 | completed/evaluated artifact family | `experiment_registry/exp07_fix_smallmask_prior` / Exp7a evidence |
+| Exp8a-1 | completed negative | `experiment_registry/exp08a_d3_comp_fullloss_davis_s1s2_2000` |
+| Exp8a-2 | completed negative | `experiment_registry/exp08a_d3_comp_fullloss_davis_s1s2_2000` |
+| Exp8c-1 | completed/diagnostic | `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000` |
+| Exp8c-2 | completed/diagnostic | `experiment_registry/exp08c_youtubevos_gtwin_d3comp_fullloss_davis_s1s2_2000` |
+| Exp9-1 | complete | `experiment_registry/exp09_logratio_gap_dpo` Stage1 DPO + SFT Stage2 DAVIS |
+| Exp9-2 | complete | `experiment_registry/exp09_logratio_gap_dpo` Stage1 DPO + Stage2 DPO DAVIS |
+| Exp10-1 | partially complete; fresh no-resume retry also SIGTERM-killed | `experiment_registry/exp10_region_local_dpo` |
+| Exp11 | blocked | `experiment_registry/exp11_flow_prior_consistency_dpo`; audit must pass before training |
+
+Exp10 retry rule: do not resume the interrupted PAI checkpoint unless explicitly
+debugging checkpoint loading. Use a fresh run:
+
+```bash
+bash scripts/pai_launch_exp10_fresh_gpus0_6.sh
+```
+
+Exp11 rule: no fake training. If train-time flow/prior consistency is not
+implemented and audited, Exp11 remains blocked.
+
 ## 2026-06-04 PAI Audit Backfill / Registry Correction
 
 This update uses the returned PAI audit archive `pai_experiment_registry_reports.tar.gz` and `reports/pai_experiment_registry_paths.csv`.

@@ -1,3 +1,61 @@
+## 2026-06-09 Current Active Experiment State
+
+The active experiment surface is now defined by
+`experiment_registry/current_active.md`. Older exploratory Exp8/Exp9 gate files
+that conflict with the current naming are moved, without deletion, to
+`pending_delete/`.
+
+Current completed / tracked experiment names:
+
+```text
+pre-Exp5 historical setup
+Exp5
+NewExp5
+NewExp6
+Exp7a-1
+Exp7a-2
+Exp8a-1
+Exp8a-2
+Exp8c-1
+Exp8c-2
+Exp9-1
+Exp9-2
+Exp10-1 partial
+```
+
+Current PAI target-domain status:
+
+- Exp9 is complete.
+  - Exp9-1 = Stage1 DPO + SFT Stage2 DAVIS validation.
+  - Exp9-2 = Stage1 DPO + Stage2 DPO DAVIS validation.
+  - Both have `dpo_diagnostics.csv`, DAVIS metrics, `index.html`, and
+    four-column qualitative videos.
+- Exp10-1 is not complete. The previous PAI run reached partial Stage1 and then
+  repeated external `SIGTERM` events. A fresh no-resume/no-policy-init retry was
+  also externally terminated:
+  `RUN_VERSION=20260609_145145_exp10_fresh_d3n16_val24`, signal at
+  `2026-06-09 14:55:32 CST`, `Signal 15 (SIGTERM) received by PID 2698917`.
+  This rules out the old interrupted checkpoint as the primary cause.
+- Exp11 remains blocked. Do not launch an Exp11 run that is only an Exp10 clone.
+  Exp11 requires a passed train-time flow/prior consistency audit.
+
+Frame policy:
+
+- Existing D3 generated-loser training clips are 16-frame clips; keep
+  `NFRAMES=16` unless D3 data is regenerated.
+- DAVIS / ProPainter validation requires effective duration greater than 22
+  frames; use `DAVIS_VIDEO_LENGTH=24`.
+- Do not run DAVIS validation with 16 frames and do not fake 24-frame training by
+  padding/repeating frames.
+
+Execution policy:
+
+- PAI is the current target for Exp10/Exp11 work, but Exp10 is currently blocked
+  by repeated external SIGTERM even on fresh training.
+- H20 should only be used when explicitly requested in the current instruction.
+- Git-linked workflow remains: edit on HAL, push, then sync to PAI/H20 only when
+  required for execution.
+
 ## 2026-06-06 Exp8a Full-Loss Regularized DPO DAVIS Result
 
 Current PAI status is based on the user's pasted audit output. PAI remains manual-only for Codex: do not claim direct execution on PAI.

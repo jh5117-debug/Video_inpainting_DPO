@@ -1,5 +1,42 @@
 # Exp10: Region-Local DPO
 
+## 2026-06-09 PAI Retry Rule
+
+Exp10-1 is partially complete, not complete. The interrupted PAI run produced a
+usable partial diagnostic trail, but repeated `SIGTERM` events occurred during
+continuation attempts. The next run must test the checkpoint-corruption
+hypothesis by starting fresh:
+
+```text
+RUN_EXPERIMENTS=exp10
+RESUME_FROM_CHECKPOINT=none
+POLICY_INIT_PATH=
+RUN_VERSION=<new timestamp>_exp10_fresh_d3n16_val24
+```
+
+Use:
+
+```bash
+bash scripts/pai_launch_exp10_fresh_gpus0_6.sh
+```
+
+Fresh retry result:
+
+```text
+RUN_VERSION=20260609_145145_exp10_fresh_d3n16_val24
+log=logs/pipelines/exp10_region_local_dpo_s1s2_2000_davis_pai_20260609_145145_exp10_fresh_d3n16_val24_fresh_gpus0_6_20260609_145145.log
+result=failed
+failure=Signal 15 (SIGTERM) received by PID 2698917
+time=2026-06-09 14:55:32 CST
+stage=Stage1, around global_step=6
+resume=disabled
+policy_init_path=disabled
+```
+
+Conclusion: the repeated Exp10 termination is not primarily caused by the old
+interrupted checkpoint/resume path. Treat the cause as external PAI
+policy/process termination unless platform logs prove otherwise.
+
 Experiment name:
 
 ```text
