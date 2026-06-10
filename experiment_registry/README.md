@@ -13,6 +13,9 @@ Every DPO experiment needs `dpo_diagnostics.csv` or an explicit `MISSING_DPO_DIA
 
 ## Corrected Lineage
 
+- Exp1: DiffuEraser reproduction + SFT + metric-setting baseline; no DPO, no winner/loser gap.
+- Exp2: official VideoDPO / VC2 reproduction; official pipeline sanity check.
+- Exp3: official VideoDPO framework with DiffuEraser replacement; integration check.
 - Exp4: fullmask generated loser quality gate failed; no useful DPO training.
 - Old Exp5: D2 comp + plain beta500 DPO; collapsed.
 - Exp5 beta10 plain: beta lowered to 10, still collapsed; shows beta alone was not enough.
@@ -30,3 +33,6 @@ Every DPO experiment needs `dpo_diagnostics.csv` or an explicit `MISSING_DPO_DIA
 - Exp11: blocked until train-time flow/prior consistency audit passes.
 
 See `experiment_matrix.md` for the full table.
+
+Plain-language data / how / why / conclusion lineage lives in
+`../PRD/19_experiment_lineage_data_how_why_conclusion.md`.
