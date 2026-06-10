@@ -34,6 +34,7 @@ COMPUTE_LPIPS="${COMPUTE_LPIPS:-0}"
 COMPUTE_VFID="${COMPUTE_VFID:-0}"
 COMPUTE_TC="${COMPUTE_TC:-0}"
 COMPUTE_EWARP="${COMPUTE_EWARP:-0}"
+SAVE_VIDEOS="${SAVE_VIDEOS:-1}"
 I3D_MODEL_PATH="${I3D_MODEL_PATH:-${PROJECT_ROOT}/weights/i3d_rgb_imagenet.pt}"
 TC_MODEL_PATH="${TC_MODEL_PATH:-}"
 RAFT_MODEL_PATH="${RAFT_MODEL_PATH:-${PROP}/raft-things.pth}"
@@ -79,12 +80,14 @@ run_one() {
   local out="$OUT_ROOT/$safe_label"
   local log="$LOG_ROOT/${safe_label}.log"
   echo "[launch] gpu=$gpu label=$label out=$out log=$log"
+  local save_args=()
+  [[ "$SAVE_VIDEOS" == "1" ]] && save_args+=(--save_videos)
   CUDA_VISIBLE_DEVICES="$gpu" "$PY" tools/run_davis50_framewise_protocol_eval.py \
     "${COMMON[@]}" \
     --label "$label" \
     --diffueraser_path "$weights" \
     --save_path "$out" \
-    --save_videos > "$log" 2>&1
+    "${save_args[@]}" > "$log" 2>&1
   echo "[done] gpu=$gpu label=$label rc=$?"
 }
 

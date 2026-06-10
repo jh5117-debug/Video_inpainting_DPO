@@ -1,4 +1,4 @@
-# DAVIS-50 Frame-wise raw6 Metric Table
+# Exp9/10/11 DAVIS-50 Frame-wise raw6 Comparison
 
 Protocol: DAVIS-50, 24 frames, raw6, no PCM, D+G off, hard comp, frame-wise in-memory metrics from `inference/metrics.py`.
 
