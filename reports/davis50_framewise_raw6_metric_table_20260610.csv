@@ -1,0 +1,8 @@
+Method,Weight,Step,D+G,PSNR,SSIM,LPIPS,VFID,TC,Rows,Notes
+DiffuEraser,step48000,raw6,off,32.7018,0.9710,TBD,TBD,TBD,50,SFT48000 baseline; frame-wise hard comp
+Exp9-1,DPO-S1 + SFT-S2,raw6,off,32.7402,0.9719,TBD,TBD,TBD,50,Log-ratio gap DPO Stage1 hybrid
+Exp9-2,DPO-S1 + DPO-S2,raw6,off,32.8080,0.9717,TBD,TBD,TBD,50,Log-ratio gap DPO Stage2
+Exp10-1,DPO-S1 + SFT-S2,raw6,off,32.9083,0.9716,TBD,TBD,TBD,50,Best current PSNR; region-local DPO Stage1 hybrid
+Exp10-2,DPO-S1 + DPO-S2,raw6,off,32.8791,0.9715,TBD,TBD,TBD,50,Region-local DPO Stage2
+Exp11-1,DPO-S1 + SFT-S2,raw6,off,32.8726,0.9716,TBD,TBD,TBD,50,Flow/prior consistency Stage1 hybrid
+Exp11-2,DPO-S1 + DPO-S2,raw6,off,32.9034,0.9716,TBD,TBD,TBD,50,Very close to Exp10-1; flow/prior consistency Stage2
