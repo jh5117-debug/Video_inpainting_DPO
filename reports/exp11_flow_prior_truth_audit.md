@@ -7,13 +7,14 @@ does not start training and does not regenerate data.
 
 ## Verdict
 
-Exp11 is **not** a valid flow-prior consistency DPO result under the current
-implementation standard.
+Exp11 is **not** a valid real optical-flow / ProPainter-prior consistency DPO
+result under the current implementation standard. The existing completed run is
+usable only as an `Exp11-proxy` result.
 
 Status:
 
 ```text
-invalid / mislabeled / blocked
+valid_as_proxy_only / real_flow_prior_blocked
 ```
 
 Reason:
@@ -28,8 +29,9 @@ Reason:
 - Its `L_flow` is adjacent-frame residual consistency on
   `policy_epsilon - ref_epsilon`, not optical-flow warp consistency and not
   flow-confidence weighted.
-- Therefore old Exp11 metric rows must be retained only as historical proxy
-  numbers, not as method evidence.
+- Therefore old Exp11 metric rows must be retained only under the label
+  `Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO`,
+  not as real flow-prior method evidence.
 
 ## Checklist
 
@@ -46,12 +48,13 @@ Reason:
 ## Code-State Fix
 
 `exp11_flow_prior_consistency_dpo/scripts/launch_exp11_pai.sh` now writes a
-blocked audit and exits before training. It no longer enables proxy training.
+blocked audit and exits before new training. The existing PAI proxy run has
+complete Stage1/Stage2 weights and diagnostics; it does not need retraining.
 
 The registry status is downgraded to:
 
 ```text
-invalid_mislabeled_blocked
+proxy_complete_real_flow_prior_blocked
 ```
 
 ## Required Before Re-enabling Exp11

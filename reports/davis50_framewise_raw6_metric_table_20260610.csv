@@ -4,5 +4,5 @@ Exp9-1,DPO-S1 + SFT-S2,raw6,off,32.7511,0.9715,0.0162,0.1794,0.9712,50,Log-ratio
 Exp9-2,DPO-S1 + DPO-S2,raw6,off,32.7161,0.9714,0.0163,0.1981,0.9712,50,Log-ratio gap DPO Stage2
 Exp10-1,DPO-S1 + SFT-S2,raw6,off,32.8410,0.9715,0.0154,0.1894,0.9715,50,Region-local DPO Stage1 hybrid
 Exp10-2,DPO-S1 + DPO-S2,raw6,off,32.9491,0.9723,0.0154,0.1912,0.9714,50,Region-local DPO Stage2
-Exp11-1,DPO-S1 + SFT-S2,raw6,off,32.8914,0.9716,0.0157,0.1930,0.9712,50,INVALID/MISLABELED proxy; not true flow-prior consistency DPO
-Exp11-2,DPO-S1 + DPO-S2,raw6,off,32.8839,0.9719,0.0157,0.1829,0.9711,50,INVALID/MISLABELED proxy; not true flow-prior consistency DPO
+Exp11-1,DPO-S1 + SFT-S2,raw6,off,32.8914,0.9716,0.0157,0.1930,0.9712,50,EXP11-PROXY only; not true flow-prior consistency DPO
+Exp11-2,DPO-S1 + DPO-S2,raw6,off,32.8839,0.9719,0.0157,0.1829,0.9711,50,EXP11-PROXY only; not true flow-prior consistency DPO

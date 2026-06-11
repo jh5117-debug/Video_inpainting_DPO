@@ -12,7 +12,7 @@ cat > reports/exp11_flow_prior_implementation_audit.md <<'EOF'
 
 Date: 2026-06-11
 
-status: blocked_invalid_proxy
+status: proxy_complete_real_flow_prior_blocked
 
 Exp11 must not be launched from this wrapper.
 
@@ -24,8 +24,9 @@ Truth-audit result:
   ProPainter prior frame/tensor aligned to predicted clean output.
 - Its `L_flow` is an adjacent-frame residual proxy, not optical-flow or
   flow-confidence weighted warp consistency.
-- Therefore old Exp11 outputs are invalid / mislabeled as flow-prior
-  consistency DPO and must not be used as method results.
+- Therefore existing Exp11 outputs are valid only under the label
+  `Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO`.
+  They must not be used as real flow-prior method results.
 
 Required before Exp11 can run:
 
@@ -35,7 +36,7 @@ Required before Exp11 can run:
 - a new audit that marks the implementation as passed.
 EOF
 
-echo "[Exp11] blocked_invalid_proxy"
+echo "[Exp11] proxy_complete_real_flow_prior_blocked"
 echo "[Exp11] Wrote reports/exp11_flow_prior_implementation_audit.md"
-echo "[Exp11] Do not train Exp11 until real train-time prior/flow targets are implemented."
+echo "[Exp11] Do not start new Exp11 training from this wrapper."
 exit 1

@@ -381,3 +381,27 @@ temporal stability. Wait for clean PAI comp before selecting the next run.
 DAVIS target-domain eval is still blocked because no validated DAVIS prediction
 pair manifest exists yet. The metric backend remains `inference/metrics.py`;
 VBench is not used for Exp9 inpainting.
+
+## 2026-06-11 Exp11 Existing Run Audit
+
+Status: `Exp11-proxy`, not real optical-flow / ProPainter-prior consistency DPO.
+
+- Stage1 complete: `true`.
+- Stage2 complete: `true`.
+- Stage1 last weights: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s1_2000_davis_pai/last_weights`.
+- Stage2 last weights: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s2_2000_davis_pai/last_weights`.
+- Stage1 dpo_diag: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s1_2000_davis_pai/dpo_diagnostics.csv`.
+- Stage2 dpo_diag: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s2_2000_davis_pai/dpo_diagnostics.csv`.
+- Existing whole-frame / bbox all-metric DAVIS eval complete: `true`.
+- Strict mask-pixel metrics present in existing eval: `false`.
+
+Correct label:
+
+```text
+Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO
+```
+
+Do not claim real ProPainter prior consistency, real RAFT / optical-flow warp
+consistency, or real flow-prior DPO for this run. A future `Exp11-real` requires
+image-space ProPainter prior tensors, optical-flow warp consistency, and a flow
+confidence mask.

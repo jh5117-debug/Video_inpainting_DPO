@@ -28,13 +28,13 @@ Output root:
 - Best VFID (lower is better): Exp9-1 (0.1794).
 - Best TC: Exp10-1 (0.9715, very close to Exp10-2).
 - All valid Exp9/10 variants improve PSNR over the SFT48000 baseline under this all-metric run.
-- Exp11 rows are retained only as historical proxy numbers. The 2026-06-11 truth audit marks them invalid / mislabeled because they do not contain real train-time ProPainter-prior or optical-flow consistency losses.
+- Exp11 rows are retained as `Exp11-proxy` numbers only. The 2026-06-11 truth audit confirms they do not contain real train-time ProPainter-prior or optical-flow consistency losses.
 - This table is whole-frame hard-comp evidence. It is not strict mask-pixel evidence; rerun the patched wrapper to populate `strict_mask_pixel_psnr`.
 
 ## Conclusion
 
 The fixed all-metric pass confirms that Exp10 is the strongest valid quantitative family in the current table. Exp10-2 is best on whole-frame PSNR/SSIM, while Exp10-1 is best or tied on LPIPS/TC. Exp9 improves over baseline but is weaker than Exp10 on distortion metrics.
 
-Exp11 should be removed from method claims or explicitly marked invalid / mislabeled until a real flow-prior implementation is audited and retrained.
+Exp11 should be labeled `Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO`. It should be removed from real flow-prior method claims until `Exp11-real` is implemented, audited, and retrained.
 
 The earlier PSNR-only run remains useful for reproducibility, but this 20260611 all-metric pass should be treated as the current table because PSNR/SSIM/LPIPS/VFID/TC were computed from the same in-memory outputs.

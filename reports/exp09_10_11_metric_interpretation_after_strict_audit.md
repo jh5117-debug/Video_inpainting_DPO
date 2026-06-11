@@ -26,11 +26,11 @@ No. In the current whole-frame table:
 Unknown until the patched wrapper is rerun. The previous table does not contain
 `strict_mask_pixel_psnr`.
 
-### Is Exp11 a real method result?
+### Is Exp11 a real flow-prior method result?
 
-No. Exp11 is invalid / mislabeled / blocked as a flow-prior consistency method.
-Existing Exp11 rows should be treated as historical proxy rows and should not
-be used as method claims.
+No. Exp11 is valid only as `Exp11-proxy`. Existing Exp11 rows should be treated
+as proxy rows and should not be used as real optical-flow / ProPainter-prior
+method claims.
 
 ### Can current results be called SOTA?
 
@@ -40,8 +40,8 @@ No. The current defensible statement is narrower:
 Under our fixed DAVIS-50 frame-wise raw6 hard-comp protocol, Exp10 variants
 improve whole-frame PSNR/SSIM over the SFT48000 DiffuEraser baseline.
 Strict mask-pixel PSNR must be rerun with the patched wrapper before claiming
-mask-region superiority. Exp11 rows are invalid as flow-prior consistency
-results.
+mask-region superiority. Exp11 rows are proxy-only, not real flow-prior
+consistency results.
 ```
 
 ## Required Table Correction
@@ -49,5 +49,5 @@ results.
 Keep Exp11 numeric rows only if explicitly labeled:
 
 ```text
-INVALID / MISLABELED proxy, not true flow-prior consistency DPO.
+EXP11-PROXY only, not true flow-prior consistency DPO.
 ```

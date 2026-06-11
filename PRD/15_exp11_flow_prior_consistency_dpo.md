@@ -63,23 +63,52 @@ Rule: do not launch Exp11 training until
 
 ## 2026-06-11 Truth Audit Correction
 
-Status: invalid / mislabeled / blocked.
+Status: valid as `Exp11-proxy` only; blocked as real flow-prior consistency.
 
-The 2026-06-11 truth audit found that the isolated proxy code under
-`exp11_flow_prior_consistency_dpo/code/` is not a valid flow-prior consistency
-DPO implementation:
+The 2026-06-11 truth audit found that the existing Exp11 run is a proxy
+implementation, not a real optical-flow / ProPainter-prior consistency DPO
+implementation:
 
 - `L_prior` uses frozen SFT / reference epsilon prediction as a proxy target,
   not train-time ProPainter prior frames or tensors aligned to predicted clean
   output.
 - `L_flow` is an adjacent-frame residual proxy, not optical-flow or
   flow-confidence weighted warp consistency.
-- old Exp11 metric rows are therefore historical proxy numbers only and must
-  not be reported as flow-prior consistency method results.
+- old Exp11 metric rows are therefore usable only under the label
+  `Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO`.
+  They must not be reported as real flow-prior consistency method results.
 
 The canonical Exp11 launcher now writes a blocked audit report and exits before
 training. Exp11 can be re-enabled only after a new implementation audit confirms
 real train-time prior and, if claimed, real flow targets.
+
+## 2026-06-11 Existing Run Audit
+
+Status: `Exp11-proxy`, not real optical-flow / ProPainter-prior consistency DPO.
+
+- Stage1 complete: `true`.
+- Stage2 complete: `true`.
+- Stage1 last weights: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s1_2000_davis_pai/last_weights`.
+- Stage2 last weights: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s2_2000_davis_pai/last_weights`.
+- Stage1 dpo_diag: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s1_2000_davis_pai/dpo_diagnostics.csv`.
+- Stage2 dpo_diag: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260609_2331_exp11_n16_gpus4_7_scratch_exp11_flow_prior_consistency_dpo_s2_2000_davis_pai/dpo_diagnostics.csv`.
+- Existing whole-frame / bbox all-metric DAVIS eval complete: `true`.
+- Strict mask-pixel metrics present in existing eval: `false`.
+
+Correct label:
+
+```text
+Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO
+```
+
+Future item:
+
+```text
+Exp11-real: image-space ProPainter prior tensor + optical-flow warp consistency + flow confidence mask
+```
+
+Do not retrain Exp11-proxy unless Stage1/Stage2 weights or dpo_diag are missing.
+They are present in the audited run.
 
 ## 2026-06-08 GPU Availability Note
 

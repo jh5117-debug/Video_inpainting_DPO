@@ -2,8 +2,15 @@
 
 Canonical experiment folder: `exp11_flow_prior_consistency_dpo/`
 
-Status: invalid / mislabeled / blocked.
+Status: valid as `Exp11-proxy` only; blocked as real flow-prior consistency.
 
-Old Exp11 outputs are historical proxy numbers only. They are not valid
-flow-prior consistency DPO method results because the truth audit found no real
-train-time ProPainter-prior target or optical-flow warp consistency target.
+Audited label:
+
+```text
+Exp11-proxy: frozen-ref prior + boundary + temporal residual proxy DPO
+```
+
+The existing Stage1/Stage2 run is complete and has dpo_diag, so no retraining is
+needed for the proxy result. It is not a valid real flow-prior consistency DPO
+method result because the audit found no train-time ProPainter-prior target and
+no optical-flow warp consistency target.

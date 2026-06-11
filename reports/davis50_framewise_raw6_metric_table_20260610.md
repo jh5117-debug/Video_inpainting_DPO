@@ -28,8 +28,8 @@ Output root:
 - Best VFID (lower is better): Exp9-1 (0.1794).
 - Best TC: Exp10-1 (0.9715, very close to Exp10-2).
 - All valid Exp9/10 variants improve PSNR over the SFT48000 baseline under this all-metric run.
-- Exp11 rows are retained only as historical proxy numbers. They are invalid /
-  mislabeled as flow-prior consistency DPO because the truth audit found no real
+- Exp11 rows are retained only as `Exp11-proxy` numbers. They are not real
+  flow-prior consistency DPO because the truth audit found no real
   train-time ProPainter-prior or optical-flow consistency loss.
 - This table is whole-frame hard-comp evidence. It is not strict mask-pixel
   evidence; rerun the patched wrapper for `strict_mask_pixel_psnr`.
