@@ -1,0 +1,7 @@
+stage1_weights: "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260526_172044_exp5_d2_comp_k4_stage1_full/last_weights"
+stage2_weights: "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260527_181634_exp5_d2_comp_k4_stage2_full/last_weights"
+dpo_diag_csv:
+  - "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260526_172044_exp5_d2_comp_k4_stage1_full/dpo_diagnostics.csv"
+  - "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260527_181634_exp5_d2_comp_k4_stage2_full/dpo_diagnostics.csv"
+metric_summary: "null"
+qual_video_dir: "/home/hj/dpo-2-1-exp/exp5"

@@ -558,3 +558,38 @@ sum(region_weight_map * mse_map) / (sum(region_weight_map) + eps)
 ```
 
 Do not use `mean(region_weight_map * mse_map)`.
+
+## 2026-06-10 Evidence Chain And DAVIS Protocol Audit
+
+- Experiment registry has been repaired into one folder per experiment for exp5/newexp5/newexp6/exp7a/exp8a/exp8c/exp9/exp10/exp11.
+- DPO diagnostics were collected into `reports/all_current_experiments_dpo_diag_summary.csv`.
+- DAVIS set audit confirms current Exp9/10/11 val24 used 50 videos; `val24` means 24 frames per video.
+- Current Exp9/10/11 target-eval summaries are mp4-wrapper metrics, not the old frame-wise SFT48000 protocol.
+- Old SFT48000 protocol recovery is documented in `PRD/17_sft48000_davis_metric_protocol.md`.
+- Exp9/10/11 current comparison is documented in `PRD/18_exp09_10_11_davis_comparison.md`.
+
+<!-- BEGIN FINAL_DPO_DIAG_20260611 -->
+## Final DPO diagnostics update 2026-06-11
+
+# Final All Experiments DPO Diagnostic Summary
+
+| experiment | rows | flags | dpo_loss_mean | implicit_acc_mean | loser_dominant_ratio_mean | grad_norm_max | prior_loss_mean | boundary_loss_mean | flow_loss_mean |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| exp5 | 2082 | COLLAPSE_RISK;DPO_SATURATED;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.038973 | 0.992795 | 0.998894 | 175.504849 |  |  |  |
+| newexp5 | 802 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.521324 | 0.922382 | 0.688797 | 211.704636 |  |  |  |
+| newexp6 | 802 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.314314 | 0.960308 | 0.899917 | 2291 |  |  |  |
+| exp7a-1 | 151 | LOSER_DOMINANT | 0.503999 | 0.898179 | 0.931488 | 173.418631 |  |  |  |
+| exp7a-2 | 302 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.422761 | 0.879553 | 0.965744 | 173.418631 |  |  |  |
+| exp8a-1 | 201 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.441029 | 0.906183 | 0.957652 | 405.044144 |  |  |  |
+| exp8a-2 | 402 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.384083 | 0.869447 | 0.946488 | 405.044144 |  |  |  |
+| exp8c-1 | 219 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.347569 | 0.941129 | 0.999429 | 598.075086 |  |  |  |
+| exp8c-2 | 450 | COLLAPSE_RISK;LOSER_DOMINANT;WIN_GAP_EXPLODED | 0.262079 | 0.94754 | 0.999722 | 598.075086 |  |  |  |
+| exp9-1 | 201 | LOSER_DOMINANT | 0.407822 | 0.988628 | 0.975124 | 249.463843 |  |  |  |
+| exp9-2 | 402 | LOSER_DOMINANT | 0.39716 | 0.979744 | 0.98543 | 249.463843 |  |  |  |
+| exp10-1 | 201 | COLLAPSE_RISK;LOSER_DOMINANT | 0.455818 | 0.976368 | 0.992537 | 1460 |  |  |  |
+| exp10-2 | 402 | COLLAPSE_RISK;LOSER_DOMINANT | 0.42307 | 0.981965 | 0.995647 | 1460 |  |  |  |
+| exp11-1 | 201 | COLLAPSE_RISK;LOSER_DOMINANT | 0.481473 | 0.972637 | 0.997512 | 1472 | 0.005192 | 0.004798 | 0.006263 |
+| exp11-2 | 402 | COLLAPSE_RISK;LOSER_DOMINANT | 0.421345 | 0.982587 | 0.998134 | 1472 | 0.003495 | 0.003352 | 0.004521 |
+
+Note: Exp11 diagnostic columns `prior_loss`, `boundary_loss`, and `flow_loss` refer to proxy consistency losses, not real optical-flow / ProPainter-prior losses.
+<!-- END FINAL_DPO_DIAG_20260611 -->

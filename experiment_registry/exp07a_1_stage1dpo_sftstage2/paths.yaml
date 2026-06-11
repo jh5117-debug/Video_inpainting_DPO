@@ -1,0 +1,6 @@
+stage1_weights: "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1/last_weights"
+stage2_weights: "/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000"
+dpo_diag_csv:
+  - "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_065618_exp7_d2_comp_k4_partial_wingap_lose025_beta10_s1s2_gate1500_stage1/dpo_diagnostics.csv"
+metric_summary: "null"
+qual_video_dir: "/home/hj/dpo-2-1-exp/exp7a-1"

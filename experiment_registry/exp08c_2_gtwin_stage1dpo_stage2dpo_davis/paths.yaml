@@ -1,0 +1,7 @@
+stage1_weights: "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_144527_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_pai/last_weights"
+stage2_weights: "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_144527_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s2_2000_davis_pai/last_weights"
+dpo_diag_csv:
+  - "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260606_144527_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s1_2000_davis_pai/dpo_diagnostics.csv"
+  - "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260606_144527_exp08c_youtubevos_gtwin_d3comp_fullloss_wingap_lose025_s2_2000_davis_pai/dpo_diagnostics.csv"
+metric_summary: "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08c_youtubevos_gtwin_stage2_val_davis_20260606_144527/metrics/summary.csv"
+qual_video_dir: "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp08c_youtubevos_gtwin_stage2_val_davis_20260606_144527/inference"

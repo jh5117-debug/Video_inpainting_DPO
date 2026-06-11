@@ -1,0 +1,3 @@
+# Metric Summary
+
+DAVIS50 raw6 hard-comp: PSNR 32.7511, SSIM 0.9715, LPIPS 0.0162, VFID 0.1794, TC 0.9712.

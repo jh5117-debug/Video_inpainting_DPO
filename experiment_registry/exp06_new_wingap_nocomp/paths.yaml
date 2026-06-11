@@ -1,0 +1,7 @@
+stage1_weights: "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage1/last_weights"
+stage2_weights: "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260601_004753_exp6_d2_nocomp_k4_wingap_lose025_beta10_s1s2_4000_stage2/last_weights"
+dpo_diag_csv:
+  - "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync/reports/dpo_diag_snapshots/exp06_new_stage1_dpo_diagnostics.csv"
+  - "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync/reports/dpo_diag_snapshots/exp06_new_stage2_dpo_diagnostics.csv"
+metric_summary: "null"
+qual_video_dir: "/home/hj/dpo-2-1-exp/new-exp6"
