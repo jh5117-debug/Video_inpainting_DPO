@@ -27,4 +27,9 @@ Output root:
 - Best LPIPS (lower is better): Exp10-1 (0.0154, nearly tied with Exp10-2).
 - Best VFID (lower is better): Exp9-1 (0.1794).
 - Best TC: Exp10-1 (0.9715, very close to Exp10-2).
-- All Exp9/10/11 variants improve PSNR over the SFT48000 baseline under this all-metric run.
+- All valid Exp9/10 variants improve PSNR over the SFT48000 baseline under this all-metric run.
+- Exp11 rows are retained only as historical proxy numbers. They are invalid /
+  mislabeled as flow-prior consistency DPO because the truth audit found no real
+  train-time ProPainter-prior or optical-flow consistency loss.
+- This table is whole-frame hard-comp evidence. It is not strict mask-pixel
+  evidence; rerun the patched wrapper for `strict_mask_pixel_psnr`.

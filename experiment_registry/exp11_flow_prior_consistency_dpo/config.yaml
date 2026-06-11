@@ -9,4 +9,5 @@ loss_region_mode: region
 lambda_flow: 0.1
 lambda_prior: 0.1
 lambda_boundary: 0.2
-status: prepared_blocked
+status: invalid_mislabeled_blocked
+implementation_scope: blocked_proxy_not_true_flow_prior

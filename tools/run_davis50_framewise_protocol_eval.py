@@ -108,6 +108,43 @@ def crop_metric(gt: np.ndarray, pred: np.ndarray, mask: np.ndarray) -> Tuple[flo
     )
 
 
+def masked_pixel_psnr(gt: np.ndarray, pred: np.ndarray, mask: np.ndarray) -> float:
+    """Strict mask-pixel PSNR over mask==1 pixels only.
+
+    This intentionally does not call crop_metric: a mask bbox includes non-mask
+    context pixels and is not a strict inpainting-region score.
+    """
+    mask_bool = np.asarray(mask) > 0
+    if not np.any(mask_bool):
+        return float("nan")
+    if gt.shape != pred.shape:
+        raise ValueError(f"Shape mismatch: {gt.shape} vs {pred.shape}")
+    diff = gt.astype(np.float64) - pred.astype(np.float64)
+    diff = diff[mask_bool]
+    if diff.size == 0:
+        return float("nan")
+    mse = float(np.mean(diff ** 2))
+    return float("inf") if mse == 0 else 20.0 * math.log10(255.0 / math.sqrt(mse))
+
+
+def boundary_mask(mask: np.ndarray, pixels: int = 3) -> np.ndarray:
+    pixels = max(1, int(pixels))
+    binary = (np.asarray(mask) > 0).astype(np.uint8)
+    kernel = np.ones((pixels * 2 + 1, pixels * 2 + 1), dtype=np.uint8)
+    dilated = cv2.dilate(binary, kernel, iterations=1)
+    eroded = cv2.erode(binary, kernel, iterations=1)
+    return ((dilated - eroded) > 0).astype(np.uint8)
+
+
+def outside_diff(gt: np.ndarray, pred: np.ndarray, mask: np.ndarray) -> Tuple[float, float]:
+    outside = np.asarray(mask) <= 0
+    if not np.any(outside):
+        return float("nan"), float("nan")
+    diff = np.abs(pred.astype(np.float32) - gt.astype(np.float32))
+    vals = diff[outside]
+    return float(vals.mean()), float(vals.max())
+
+
 def finite_values(values: Iterable[float]) -> List[float]:
     out: List[float] = []
     for value in values:
@@ -299,21 +336,25 @@ def main() -> int:
 
             psnr_vals: List[float] = []
             ssim_vals: List[float] = []
-            mask_psnr_vals: List[float] = []
-            mask_ssim_vals: List[float] = []
-            outside_vals: List[float] = []
+            mask_bbox_psnr_vals: List[float] = []
+            mask_bbox_ssim_vals: List[float] = []
+            strict_mask_pixel_psnr_vals: List[float] = []
+            boundary_pixel_psnr_vals: List[float] = []
+            outside_mean_vals: List[float] = []
+            outside_max_vals: List[float] = []
             lpips_vals: List[float] = []
 
             for gt, comp, mask in zip(gt_frames, comp_frames, masks01):
                 psnr_vals.append(metric_backend.compute_psnr(gt, comp))
                 ssim_vals.append(metric_backend.compute_ssim(gt, comp))
-                mask_psnr, mask_ssim = crop_metric(gt, comp, mask)
-                mask_psnr_vals.append(mask_psnr)
-                mask_ssim_vals.append(mask_ssim)
-                outside = mask <= 0
-                if outside.any():
-                    diff = np.abs(comp.astype(np.float32) - gt.astype(np.float32))
-                    outside_vals.append(float(diff[outside].mean()))
+                mask_bbox_psnr, mask_bbox_ssim = crop_metric(gt, comp, mask)
+                mask_bbox_psnr_vals.append(mask_bbox_psnr)
+                mask_bbox_ssim_vals.append(mask_bbox_ssim)
+                strict_mask_pixel_psnr_vals.append(masked_pixel_psnr(gt, comp, mask))
+                boundary_pixel_psnr_vals.append(masked_pixel_psnr(gt, comp, boundary_mask(mask)))
+                outside_mean, outside_max = outside_diff(gt, comp, mask)
+                outside_mean_vals.append(outside_mean)
+                outside_max_vals.append(outside_max)
                 if args.compute_lpips:
                     lpips_vals.append(float(metric_backend.LPIPSMetric.compute(gt, comp, device=device)))
 
@@ -323,9 +364,15 @@ def main() -> int:
                 "frames": n,
                 "whole_video_psnr": finite_mean(psnr_vals),
                 "whole_video_ssim": finite_mean(ssim_vals),
-                "mask_region_psnr": finite_mean(mask_psnr_vals),
-                "mask_region_ssim": finite_mean(mask_ssim_vals),
-                "outside_region_diff_mean": finite_mean(outside_vals),
+                "mask_region_psnr": finite_mean(mask_bbox_psnr_vals),
+                "mask_region_ssim": finite_mean(mask_bbox_ssim_vals),
+                "mask_bbox_psnr": finite_mean(mask_bbox_psnr_vals),
+                "mask_bbox_ssim": finite_mean(mask_bbox_ssim_vals),
+                "strict_mask_pixel_psnr": finite_mean(strict_mask_pixel_psnr_vals),
+                "boundary_pixel_psnr": finite_mean(boundary_pixel_psnr_vals),
+                "outside_diff_mean": finite_mean(outside_mean_vals),
+                "outside_diff_max": finite_mean(outside_max_vals),
+                "outside_region_diff_mean": finite_mean(outside_mean_vals),
             }
             if args.compute_lpips:
                 row["whole_video_lpips"] = finite_mean(lpips_vals)

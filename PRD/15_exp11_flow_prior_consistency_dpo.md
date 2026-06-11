@@ -61,6 +61,26 @@ train-time prior consistency loss.
 Rule: do not launch Exp11 training until
 `reports/exp11_flow_prior_implementation_audit.md` passes.
 
+## 2026-06-11 Truth Audit Correction
+
+Status: invalid / mislabeled / blocked.
+
+The 2026-06-11 truth audit found that the isolated proxy code under
+`exp11_flow_prior_consistency_dpo/code/` is not a valid flow-prior consistency
+DPO implementation:
+
+- `L_prior` uses frozen SFT / reference epsilon prediction as a proxy target,
+  not train-time ProPainter prior frames or tensors aligned to predicted clean
+  output.
+- `L_flow` is an adjacent-frame residual proxy, not optical-flow or
+  flow-confidence weighted warp consistency.
+- old Exp11 metric rows are therefore historical proxy numbers only and must
+  not be reported as flow-prior consistency method results.
+
+The canonical Exp11 launcher now writes a blocked audit report and exits before
+training. Exp11 can be re-enabled only after a new implementation audit confirms
+real train-time prior and, if claimed, real flow targets.
+
 ## 2026-06-08 GPU Availability Note
 
 PAI GPU0-3 were observed as mostly free while Exp9 used GPU4-7. This does not

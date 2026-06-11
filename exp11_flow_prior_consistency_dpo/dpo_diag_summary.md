@@ -1,5 +1,7 @@
 # Exp11 DPO Diagnostic Summary
 
-status: blocked
+status: invalid_mislabeled_blocked
 
-No training diagnostics should be produced until the flow/prior consistency audit passes.
+Old proxy diagnostics, if present, should not be interpreted as real
+flow-prior consistency evidence. A valid future Exp11 run must record real
+`prior_loss`, `boundary_loss`, and `flow_loss` components from audited targets.

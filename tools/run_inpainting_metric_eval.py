@@ -149,6 +149,26 @@ def crop_metric(gt: np.ndarray, pred: np.ndarray, mask: np.ndarray) -> Tuple[flo
     return metric_pair(gt[y0:y1, x0:x1], pred[y0:y1, x0:x1])
 
 
+def masked_pixel_psnr(gt: np.ndarray, pred: np.ndarray, mask: np.ndarray) -> float:
+    """Strict mask-pixel PSNR over mask==1 pixels only.
+
+    The wrapper computes masked MSE and converts it to PSNR. SSIM is not exposed
+    as strict masked SSIM because the project SSIM backend operates on images or
+    crops, not arbitrary pixel sets.
+    """
+    mask_bool = np.asarray(mask) > 0
+    if not np.any(mask_bool):
+        return float("nan")
+    if gt.shape != pred.shape:
+        raise ValueError(f"Shape mismatch: {gt.shape} vs {pred.shape}")
+    diff = gt.astype(np.float64) - pred.astype(np.float64)
+    diff = diff[mask_bool]
+    if diff.size == 0:
+        return float("nan")
+    mse = float(np.mean(diff ** 2))
+    return float("inf") if mse == 0 else 20.0 * math.log10(255.0 / math.sqrt(mse))
+
+
 def boundary_mask(mask: np.ndarray, pixels: int) -> np.ndarray:
     pixels = max(1, int(pixels))
     kernel = np.ones((pixels * 2 + 1, pixels * 2 + 1), dtype=np.uint8)
@@ -216,7 +236,9 @@ def evaluate_row(row: Dict[str, str], args: argparse.Namespace, manifest_dir: Pa
     gt_frames, pred_frames, mask_frames = gt_frames[:n], pred_frames[:n], mask_frames[:n]
 
     whole_psnr, whole_ssim = [], []
-    mask_psnr, mask_ssim = [], []
+    mask_bbox_psnr, mask_bbox_ssim = [], []
+    strict_mask_pixel_psnr = []
+    boundary_pixel_psnr = []
     bound_psnr, bound_ssim = [], []
     out_mean, out_max = [], []
     lpips_vals = []
@@ -227,13 +249,15 @@ def evaluate_row(row: Dict[str, str], args: argparse.Namespace, manifest_dir: Pa
         whole_ssim.append(s)
 
         p, s = crop_metric(gt, pred, mask)
-        mask_psnr.append(p)
-        mask_ssim.append(s)
+        mask_bbox_psnr.append(p)
+        mask_bbox_ssim.append(s)
+        strict_mask_pixel_psnr.append(masked_pixel_psnr(gt, pred, mask))
 
         bmask = boundary_mask(mask, args.boundary_pixels)
         p, s = crop_metric(gt, pred, bmask)
         bound_psnr.append(p)
         bound_ssim.append(s)
+        boundary_pixel_psnr.append(masked_pixel_psnr(gt, pred, bmask))
 
         mean_diff, max_diff = outside_diff(gt, pred, mask)
         out_mean.append(mean_diff)
@@ -247,10 +271,16 @@ def evaluate_row(row: Dict[str, str], args: argparse.Namespace, manifest_dir: Pa
             "num_frames": n,
             "whole_video_psnr": finite_mean(whole_psnr),
             "whole_video_ssim": finite_mean(whole_ssim),
-            "mask_region_psnr": finite_mean(mask_psnr),
-            "mask_region_ssim": finite_mean(mask_ssim),
+            "mask_region_psnr": finite_mean(mask_bbox_psnr),
+            "mask_region_ssim": finite_mean(mask_bbox_ssim),
+            "mask_bbox_psnr": finite_mean(mask_bbox_psnr),
+            "mask_bbox_ssim": finite_mean(mask_bbox_ssim),
+            "strict_mask_pixel_psnr": finite_mean(strict_mask_pixel_psnr),
             "boundary_psnr": finite_mean(bound_psnr),
             "boundary_ssim": finite_mean(bound_ssim),
+            "boundary_pixel_psnr": finite_mean(boundary_pixel_psnr),
+            "outside_diff_mean": finite_mean(out_mean),
+            "outside_diff_max": finite_mean(out_max),
             "outside_region_diff_mean": finite_mean(out_mean),
             "outside_region_diff_max": finite_mean(out_max),
         }
@@ -326,12 +356,18 @@ def write_summary_md(path: Path, args: argparse.Namespace, per_sample: Sequence[
     cols = [
         "model_label",
         "rows",
+        "strict_mask_pixel_psnr_mean",
+        "boundary_pixel_psnr_mean",
+        "mask_bbox_psnr_mean",
+        "mask_bbox_ssim_mean",
         "mask_region_psnr_mean",
         "mask_region_ssim_mean",
         "boundary_psnr_mean",
         "boundary_ssim_mean",
         "whole_video_psnr_mean",
         "whole_video_ssim_mean",
+        "outside_diff_mean_mean",
+        "outside_diff_max_mean",
         "outside_region_diff_mean_mean",
         "outside_region_diff_max_mean",
         "temporal_diff_delta_vs_gt_mean",
@@ -346,7 +382,9 @@ def write_summary_md(path: Path, args: argparse.Namespace, per_sample: Sequence[
         f"rows_skipped: {len(skipped)}",
         "",
         "PSNR/SSIM/LPIPS/Ewarp are delegated to the existing project metric backend.",
-        "The wrapper only handles manifest pairing, mask/boundary crops, and aggregation.",
+        "The wrapper handles manifest pairing, mask/boundary crops, strict mask-pixel PSNR, and aggregation.",
+        "`mask_region_psnr` is retained for backward compatibility and remains the mask-bbox PSNR.",
+        "Use `strict_mask_pixel_psnr` for mask==1 pixels only.",
         "",
         "## Summary",
         "",

@@ -1,7 +1,8 @@
 experiment_id: exp11
 experiment_name: exp11_flow_prior_consistency_dpo_s1s2_2000_davis_pai
 inherits_from: exp10_region_local_dpo
-status: blocked_until_flow_prior_audit_passes
+status: invalid_mislabeled_blocked
+implementation_scope: blocked_proxy_not_true_flow_prior
 loss:
   gap_normalization: log_ratio
   gap_eps: 1.0e-6
@@ -38,4 +39,4 @@ diagnostics:
   save_dpo_diagnostics_csv: true
   save_gap_trace_csv: true
   save_gap_samples_jsonl_gz: true
-  flow_prior_fields: blocked
+  flow_prior_fields: blocked_invalid_proxy

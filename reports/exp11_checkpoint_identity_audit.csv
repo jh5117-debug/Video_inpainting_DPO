@@ -1,0 +1,4 @@
+artifact,stage_combination,expected_run_name,local_checkpoint_path,dpo_diag_status,identity_result,notes
+Exp11-1,DPO-S1 + SFT-S2,exp11_flow_prior_consistency_dpo_s1_2000_davis_pai,not_available_locally,not_verified,invalid_mislabeled,"Local metric rows exist, but this audit found no proof of a true train-time ProPainter-prior/flow implementation."
+Exp11-2,DPO-S1 + DPO-S2,exp11_flow_prior_consistency_dpo_s2_2000_davis_pai,not_available_locally,not_verified,invalid_mislabeled,"Local metric rows exist, but this audit found no proof of a true train-time ProPainter-prior/flow implementation."
+isolated_proxy_code,proxy implementation,exp11_flow_prior_consistency_dpo/code,local_untracked_code_present,not_applicable,proxy_not_method,"Uses frozen-ref epsilon and temporal residual proxy; not valid as flow-prior consistency DPO."

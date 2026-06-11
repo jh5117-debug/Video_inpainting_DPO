@@ -21,8 +21,8 @@ This PRD keeps the experiment story in one place. It is intentionally written in
 | exp9-2 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 在 normalized-gap 基础上继续训练 Stage2。 | 看 normalized gap 是否让 Stage2 更安全。 | 指标继续略升，但 dpo-diag 仍有 loser-dominant，需要结合定性判断。 |
 | exp10-1 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 把 MSE 从 full-frame 改成 mask / boundary / outside 加权区域 MSE。 | 让 DPO 优化关注真实补洞区域和边界，而不是被整帧背景稀释。 | SSIM 表现较好，但仍有 collapse-risk 标记。 |
 | exp10-2 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | region-local objective 下完整训练 S1 / S2。 | 看 region-local 是否支持完整 spatial + temporal DPO。 | 当前固定 DAVIS50 frame-wise protocol 中 PSNR 最好，但仍必须结合 dpo-diag 和定性，不应只看单个指标。 |
-| exp11-1 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 在 region-local normalized DPO 上加入当前实现版本的 consistency 项。 | 尝试压紫雾、贴片、边界不连续和 temporal flicker。 | 提升保守，SSIM 没明显超过 baseline；flow / prior 仍是当前实现版本，不应过度宣称。 |
-| exp11-2 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 在 consistency proxy 基础上继续训练 Stage2。 | 测试完整 consistency DPO 是否优于只动 Stage1。 | 当前 SSIM 最好，采样定性没有明显大块紫雾，但仍需要按固定 protocol 和 dpo-diag 共同报告。 |
+| exp11-1 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 原计划是在 region-local normalized DPO 上加入 flow / prior / boundary consistency；truth audit 后确认旧实现只是 proxy，不是真正 ProPainter-prior / optical-flow consistency。 | 原本要验证能否压紫雾、贴片、边界不连续和 temporal flicker。 | invalid / mislabeled / blocked；旧数字只能作为历史 proxy 记录，不能作为 Exp11 方法结果。 |
+| exp11-2 | win: D3 / YouTube-VOS GT clean clip。<br>lose: D3 generated loser。 | 原计划在真实 consistency DPO 基础上继续训练 Stage2；truth audit 后确认旧 Stage2 仍不是有效 flow-prior 方法。 | 原本要测试完整 consistency DPO 是否优于只动 Stage1。 | invalid / mislabeled / blocked；不能用于 flow-prior consistency 结论，需要真实 prior/flow loss 实现后重新训练。 |
 
 ## Notes
 
