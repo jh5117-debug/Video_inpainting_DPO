@@ -1,31 +1,21 @@
 # Status
 
-Status: isolated trainer implemented; gate2000 blocked until PAI preflight passes.
+Status: blocked_before_preflight.
 
-Reason:
+PAI sync strategy: clean_worktree.
 
-- VideoPainter repo and training entry pass audit.
-- Direct Diff-DPO is feasible by design.
-- The isolated adapter trainer now exists at
-  `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`.
-- User requested skipping smoke and going directly to gate2000.
-- Gate2000 still must wait for the trainer preflight, because this is the first
-  check that policy/reference winner/loser losses and backward pass work on PAI.
+Clean repo:
+`/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate`
 
-Latest PAI attempt:
+What passed:
+- Exp14 trainer and launcher are present.
+- Static checks pass.
+- VideoPainter code repo is present.
+- Data and manifest are present.
+- GPUs are available.
 
-```text
-date = 2026-06-16 CST
-status = blocked_before_preflight
-reason = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO has local tracked
-         changes and untracked files; git pull --ff-only would overwrite them.
-saved_state = .tmp/pre_videopainter_adapter_gate_20260616_001304/
-```
+Blocker:
+- Missing `CogVideoX-5b-I2V` base model.
+- Missing VideoPainter branch checkpoint.
 
-Next action:
-
-```text
-Sync Exp14 to PAI and run the gate2000 launcher. The launcher now runs
-`--preflight_only` first, then starts 2000-step only if preflight succeeds. Do
-not launch upstream VideoPainter training as if it were DPO.
-```
+No preflight, gate2000 training, dpo_diag, checkpoint, or DAVIS eval was run.

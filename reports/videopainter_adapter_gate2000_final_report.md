@@ -1,39 +1,17 @@
 # VideoPainter Adapter Gate2000 Final Report
 
-Status: blocked before launch.
+Date: 2026-06-16 CST
 
-## Answers
+## Status
 
-1. VideoPainter 2000-step training succeeded?
-   No. It was not launched.
+blocked_before_preflight
 
-2. Frozen reference model constructed?
-   No. The isolated adapter trainer that would construct the reference does not
-   exist yet.
+No 2000-step training was launched. No checkpoint, dpo_diag, or DAVIS eval was produced.
 
-3. Adapter type?
-   `direct_diff_dpo_blocked_pending_isolated_trainer`. The model structure can
-   support direct Diff-DPO in principle, but the trainer is not implemented.
+## Reason
 
-4. dpo_diag normal?
-   No dpo_diag exists for gate2000 because no run started.
+VideoPainter code and project data are available, but the required VideoPainter / CogVideoX weights are missing. Without them, the isolated trainer cannot create the trainable policy and frozen reference model, so direct Diff-DPO cannot be computed.
 
-5. NaN / OOM / collapse?
-   Not applicable.
+## Conclusion
 
-6. DAVIS metric?
-   Not available.
-
-7. Visualization?
-   Not available.
-
-8. Worth longer training?
-   Not decidable until the adapter trainer exists and gate2000 can run.
-
-9. Worth writing as adapter experiment?
-   Not yet.
-
-10. Main failure point?
-    Missing isolated VideoPainter DPO adapter trainer and pair dataloader.
-    Upstream VideoPainter training code cannot be launched as a DPO adapter
-    without policy/reference winner/loser loss integration.
+Exp14 remains feasible in code but blocked in execution until the correct VideoPainter checkpoints are provided.

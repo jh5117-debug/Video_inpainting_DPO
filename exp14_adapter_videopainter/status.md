@@ -1,6 +1,6 @@
 # Exp14 Status
 
-Status: **isolated trainer implemented; gate2000 blocked until PAI preflight passes**.
+Status: **isolated trainer implemented; PAI blocked before preflight because VideoPainter weights are missing**.
 
 What passed:
 
@@ -26,16 +26,44 @@ What changed on 2026-06-15:
 
 What has not passed yet:
 
-- PAI has not run the required trainer preflight yet.
+- PAI did not run the required trainer preflight because the hard weight
+  precheck failed.
 - The 2000-step gate has not been launched.
 - Multi-GPU sharding is not implemented in the isolated trainer; the first
   PAI preflight must verify memory feasibility.
+
+Latest PAI attempt:
+
+```text
+date = 2026-06-16 CST
+sync_strategy = clean_worktree
+clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+status = blocked_before_preflight
+blocker = missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint
+```
+
+What passed on PAI:
+
+- Exp14 clean worktree synced to commit `2e187ee`.
+- Trainer `py_compile` passed.
+- Gate launcher `bash -n` passed.
+- VideoPainter code repo was rsynced from HAL.
+- YouTube-VOS, DAVIS, and DPO manifest exist.
+- Manifest does not contain `/home/nvme01`.
+- GPUs are available.
+
+Missing weights:
+
+```text
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+```
 
 Decision:
 
 ```text
 Do not launch 2000-step training from the upstream VideoPainter script alone.
-Rerun the gate2000 script after syncing Exp14 to PAI; it now runs
-`--preflight_only` first and launches gate2000 only if policy/reference DPO loss
-and backward pass succeed.
+Provide/mount the VideoPainter weights first, then rerun the gate2000 script;
+it runs `--preflight_only` first and launches gate2000 only if
+policy/reference DPO loss and backward pass succeed.
 ```

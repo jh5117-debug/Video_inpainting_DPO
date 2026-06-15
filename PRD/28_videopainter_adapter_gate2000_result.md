@@ -123,23 +123,46 @@ Latest PAI attempt on 2026-06-16 CST:
 
 ```text
 status = blocked_before_preflight
-reason = priority PAI repo has local tracked changes and untracked files;
-         git pull --ff-only origin main would overwrite them.
+sync_strategy = clean_worktree
+clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+reason = VideoPainter / CogVideoX weights are missing.
 ```
 
-Saved PAI state:
+The dirty priority repo was not modified. A clean Exp14 worktree was created
+instead because the priority PAI repo has local tracked changes and untracked
+files that block `git pull --ff-only`.
 
 ```text
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/.tmp/pre_videopainter_adapter_gate_20260616_001304/
+source_commit = 2e187ee
+trainer = exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
 ```
 
-The dirty repo must be cleaned/archived by a safe procedure, or the user must
-explicitly allow a fresh clean worktree for Exp14. Do not reset or overwrite the
-existing PAI repo.
+What passed:
+
+- Exp14 files synced in the clean worktree.
+- `python -m py_compile` passed.
+- `bash -n` passed for the gate launcher.
+- VideoPainter code repo was rsynced from HAL to PAI.
+- YouTube-VOS, DAVIS, and the generated-loser manifest exist.
+- Manifest does not contain `/home/nvme01`.
+- GPUs are available.
+
+Current blocker:
+
+```text
+missing = third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+missing = third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+```
+
+Equivalent weight paths under `/mnt/nas/hj/weights`, `/mnt/nas/hj/official_repos`,
+and HAL `/home/hj/dpo-2-1-exp` were also checked and missing.
+
+No trainer preflight, gate2000 training, dpo_diag, checkpoint, or DAVIS eval was
+run.
 
 ## Next Required Work
 
-Sync the Exp14 folder and VideoPainter repo / weights to PAI, then rerun:
+Provide or mount the official VideoPainter / CogVideoX weights on PAI, then rerun:
 
 ```text
 exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh

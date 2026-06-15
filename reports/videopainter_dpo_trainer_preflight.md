@@ -1,86 +1,67 @@
 # VideoPainter DPO Trainer Preflight
 
-Date: 2026-06-15
+Date: 2026-06-16 CST
+Host: dsw-753014-dc85766cb-4v2jj
 
 ## Status
 
-Trainer implemented locally; PAI preflight not run yet.
+blocked_before_preflight
 
-## Implemented Trainer
+## What Passed
 
-```text
-exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
-```
+- Clean Exp14 worktree was created at:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate`
+- Exp14 trainer exists and passes `py_compile`.
+- Exp14 gate launcher passes `bash -n`.
+- VideoPainter code repo was synced from HAL to:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter`
+- Required VideoPainter code entries exist:
+  - `train/VideoPainter.sh`
+  - `train/train_cogvideox_inpainting_i2v_video.py`
+  - `infer/inpaint.py`
+  - `evaluate/eval_inpainting.py`
+- YouTube-VOS train data exists.
+- DAVIS eval data exists.
+- Generated-loser manifest exists and does not contain `/home/nvme01`.
+- GPUs are available.
 
-The file passes local `python -m py_compile`.
+## Blocker
 
-It implements an isolated VideoPainter branch-adapter DPO trainer without
-modifying upstream VideoPainter or shared `training/dpo` code.
+The required VideoPainter weights are missing on both PAI and HAL:
 
-## Preflight Requirement
+- `third_party/VideoPainter/ckpt/CogVideoX-5b-I2V`
+- `third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch`
+- `/mnt/nas/hj/weights/CogVideoX-5b-I2V`
+- `/mnt/nas/hj/weights/VideoPainter`
+- HAL checked paths under `/home/hj/dpo-2-1-exp` and `/home/hj/weights`
 
-The requested preflight requires:
+Without these weights, the trainer cannot construct:
 
-- load policy VideoPainter;
-- load frozen reference VideoPainter;
-- load one winner / loser / mask pair;
-- compute `m_w`, `m_l`, `m_w_ref`, `m_l_ref`;
-- compute normalized-gap DPO loss;
-- run one backward pass;
-- verify reference has no gradients.
+- trainable VideoPainter policy branch
+- frozen VideoPainter reference branch
+- same-checkpoint policy/reference pair
 
-The trainer now supports this through:
+Therefore it cannot compute:
 
-```text
---preflight_only
-```
-
-The gate2000 launcher has been updated to run preflight first and only launch
-2000-step training if preflight writes both:
-
-```text
-exp14_adapter_videopainter/runs/preflight/preflight_report.json
-exp14_adapter_videopainter/dpo_diag/preflight_dpo_diagnostics.csv
-```
-
-## What the Trainer Defines
-
-- `VideoPainterPairDataset` for the current frame-directory DPO manifest.
-- Policy branch and frozen reference branch from the same VideoPainter branch
-  checkpoint.
-- Winner / loser forward passes on the same sampled noise and timestep.
-- `m_w`, `m_l`, `m_w_ref`, `m_l_ref` as region-local denoising MSE.
-- Exp11 outer b0.75 S2 style normalized-gap DPO:
-
-```text
-g_w = log((m_w + eps) / (m_w_ref + eps))
-g_l = log((m_l + eps) / (m_l_ref + eps))
-g_l_clip = clip(g_l, max=1.0)
-
-L_DPO = mean[-logsigmoid(-0.5 * 10 * (g_w - 0.25 * g_l_clip))]
-L_total = L_DPO + 0.05 * m_w + ReLU(g_w)
-```
-
-Region setting:
-
-```text
-boundary_mode = outer
-mask_weight = 1.0
-boundary_weight = 0.75
-outside_weight = 0.05
-```
-
-## Pending PAI Check
-
-The preflight still needs to run on PAI with real VideoPainter weights:
-
-- `VIDEO_PAINTER_BASE_MODEL`
-- `VIDEO_PAINTER_CHECKPOINT_ROOT`
-- `VIDEO_PAINTER_REFERENCE_CHECKPOINT_ROOT`
-
-If those paths are missing, or if the policy/reference forward cannot compute
-finite losses, gate2000 remains blocked.
+- `m_w`
+- `m_l`
+- `m_w_ref`
+- `m_l_ref`
 
 ## Decision
 
-Do not start `exp14_adapter_videopainter_gate2000` until PAI preflight passes.
+Do not run trainer preflight.
+Do not launch gate2000.
+Do not run upstream VideoPainter official training as a fallback.
+Do not download giant unknown weights automatically.
+
+## Required Next Step
+
+Provide or mount the official VideoPainter / CogVideoX checkpoints, then rerun the gate launcher with:
+
+```bash
+VIDEO_PAINTER_BASE_MODEL=/path/to/CogVideoX-5b-I2V \
+VIDEO_PAINTER_CHECKPOINT_ROOT=/path/to/VideoPainter/checkpoints/branch \
+VIDEO_PAINTER_REFERENCE_CHECKPOINT_ROOT=/path/to/VideoPainter/checkpoints/branch \
+bash exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
+```

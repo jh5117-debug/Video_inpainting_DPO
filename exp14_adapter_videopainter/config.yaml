@@ -1,5 +1,5 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: isolated_trainer_implemented_preflight_pending
+status: blocked_before_preflight_missing_videopainter_weights
 current_best_source_method: exp11_outer_b075_s2
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
@@ -28,8 +28,8 @@ data:
   train: YouTube-VOS / D3 GT-win generated-loser pairs after VideoPainter format conversion
   eval: DAVIS / YouTubeVOS with fixed raw6 hard-comp metric where compatible
 gate2000:
-  status: blocked_until_preflight_passes
-  reason: isolated VideoPainter DPO adapter trainer is implemented locally; PAI preflight has not been run
+  status: blocked_before_preflight
+  reason: PAI clean worktree is synced and trainer is implemented, but CogVideoX-5b-I2V and VideoPainter branch checkpoint are missing
   max_steps: 2000
   checkpointing_steps: 500
   eval_metric: inference/metrics.py
@@ -38,5 +38,15 @@ trainer:
   path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
   implemented: true
   preflight_required: true
-  preflight_status: not_run
+  preflight_status: blocked_missing_weights
   notes: policy/reference branch Diff-DPO trainer; upstream VideoPainter official training is still not used
+pai_attempt_20260616:
+  sync_strategy: clean_worktree
+  clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+  source_commit: 2e187ee
+  videopainter_code_synced: true
+  data_ready: true
+  gpu_ready: true
+  missing_weights:
+    - third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+    - third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch

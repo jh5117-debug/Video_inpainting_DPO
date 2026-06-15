@@ -1,131 +1,112 @@
-# VideoPainter Adapter Gate2000 Precheck
+# VideoPainter Adapter Gate2000 Hard Precheck
 
-Date: 2026-06-15
+Date: Tue Jun 16 00:29:08 CST 2026
+Host: dsw-753014-dc85766cb-4v2jj
+Repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+Head: 2e187ee Document PAI VideoPainter gate sync block
 
-## Status
+## Final Status
 
-Trainer implemented after the original block. The 2000-step gate is still
-**not** launched until PAI trainer preflight passes.
+status: blocked_before_trainer_preflight
 
-## PAI Sync Attempt: 2026-06-16 CST
+sync_strategy: clean_worktree
 
-PAI was reachable:
+What passed:
+
+- Clean Exp14 worktree exists on PAI.
+- Exp14 trainer and launcher static checks passed.
+- VideoPainter code repo was rsynced from HAL after the initial missing-repo
+  check:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter`
+- YouTube-VOS, DAVIS, and generated-loser manifest exist.
+- Manifest does not contain `/home/nvme01`.
+- GPUs are available.
+
+Hard blocker:
 
 ```text
-host: dsw-753014-dc85766cb-4v2jj
+missing third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+missing third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
 ```
 
-The priority repo existed:
+The trainer preflight was not run because policy/reference VideoPainter cannot
+be constructed without these weights. Gate2000 was not launched.
 
-```text
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
-```
-
-State was saved under:
-
-```text
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/.tmp/pre_videopainter_adapter_gate_20260616_001304/
-```
-
-including:
-
-```text
-context.txt
-git_status_before.txt
-git_diff_before.patch
-git_diff_before.stat
-pull_blocked_report.md
-```
-
-`git fetch --no-tags origin main` succeeded, but:
-
-```text
-git pull --ff-only origin main
-```
-
-failed because tracked local changes and untracked files would be overwritten.
-
-Therefore no Exp14 static check, trainer preflight, or 2000-step training was
-run on PAI in this attempt.
-
-Per the execution boundary, do not reset, force overwrite, or fall back to
-upstream VideoPainter training. A clean PAI repo/worktree is required before
-the next gate attempt.
-
-## User Request
-
-The user explicitly requested skipping VideoPainter smoke1/smoke20 and going
-directly to the 2000-step gate, but still required the minimum hard precheck:
-
-- VideoPainter repo / training entry exists.
-- Data exists.
-- Weights exist.
-- Frozen reference model can be constructed.
-- Output directory is writable.
-- GPU is available.
-- Loss can be connected to policy/reference winner/loser losses.
-
-## HAL Precheck
-
-Passed:
-
-- Local VideoPainter repo exists:
-  `/home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter`
-- Repo URL:
-  `https://github.com/TencentARC/VideoPainter`
-- Commit:
-  `bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a`
-- Upstream training/inference/eval entries exist:
-  - `train/VideoPainter.sh`
-  - `train/train_cogvideox_inpainting_i2v_video.py`
-  - `infer/inpaint.py`
-  - `evaluate/eval_inpainting.py`
-
-Now implemented:
-
-- Isolated adapter trainer:
-  `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`
-- Local static checks passed:
-  - `python -m py_compile`
-  - `bash -n` for the gate launcher
-- The trainer defines:
-  - `m_w`
-  - `m_l`
-  - `m_w_ref`
-  - `m_l_ref`
-  - region-local normalized-gap DPO loss
-  - VideoPainter adapter diagnostics
-
-Still pending:
-
-- PAI has not yet run the trainer preflight with real VideoPainter weights.
-- Gate2000 remains blocked until that preflight passes.
-
-## PAI Precheck
-
-PAI connection succeeded:
-
-```text
-host: dsw-753014-dc85766cb-4v2jj
-```
-
-Checked PAI repo roots:
-
-```text
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync
-```
-
-Findings:
-
-- Data exists:
-  - `/mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240`
-  - `/mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100`
-  - `/mnt/workspace/hj/nas_hj/data/external/davis_432_240`
-  - `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl`
-- GPUs are idle enough for a run:
-
-```text
+## Narrow path checks
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/third_party/VideoPainter
+- MISSING: /mnt/workspace/hj/nas_hj/third_party/VideoPainter
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync/third_party/VideoPainter
+- MISSING: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter
+- MISSING: /mnt/nas/hj/third_party/VideoPainter
+- MISSING: /mnt/nas/hj/VideoPainter
+## parent listings
+### /mnt/workspace/hj/nas_hj
+lrwxrwxrwx 1 root root 11 May 12 00:05 /mnt/workspace/hj/nas_hj -> /mnt/nas/hj
+### /mnt/nas/hj
+total 144
+drwxr-xr-x 23 root   root   4096 Jun 16 00:25 .
+drwxrwxrwt  9 root   root   4096 May 12 00:05 ..
+drwxr-xr-x  2 root   root   4096 May 13 19:48 .hf_cache
+drwxr-xr-x  5 root   root   4096 May 13 19:48 .wandb_cache
+drwxr-xr-x 37 root   root   4096 Jun  5 09:49 H20_Video_inpainting_DPO
+drwxrwxr-x 41   1038 1038   4096 Jun 15 04:32 H20_Video_inpainting_DPO_exp09_10_11_pai_sync
+drwxr-xr-x 41 root   root   4096 Jun 16 00:26 H20_Video_inpainting_DPO_exp14_videopainter_gate
+drwxrwxr-x 34 ubuntu root   4096 Jun  6 14:43 H20_Video_inpainting_DPO_exp8c_pai_sync
+drwxr-xr-x 27 root   root   4096 May 15 10:19 H20_Video_inpainting_DPO_scp_backup_20260515_101902
+drwxr-xr-x  4 root   root   4096 May 17 01:04 conda_envs
+drwxr-xr-x  5 root   root   4096 May 14 17:31 data
+drwxr-xr-x  2 root   root   4096 May 19 10:49 env_packs
+-rw-r--r--  1 root   root 133126 Jun  9 23:26 exp11_impl_sync_20260609.tgz
+drwxr-xr-x  3 root   root   4096 May 14 17:32 external
+drwxr-xr-x  3 root   root   4096 May 16 12:13 h20_vbench_assets
+drwxr-xr-x  4 root   root   4096 May 15 22:51 hf_New_DPO_data
+drwxr-xr-x  3 root   root   4096 May 15 23:46 hf_fullmask_assets
+drwxr-xr-x 12 root   root   4096 May 14 22:52 logs
+drwxr-xr-x  4 root   root   4096 May 21 06:20 official_repos
+drwxr-xr-x  5 root   root   4096 May 14 04:30 pai_pre_pull_untracked_backup_20260514_043017
+drwx------  2 root   root   4096 May 12 00:05 tmp
+drwx------  2 root   root   4096 May 15 11:08 transfer_logs
+drwxr-xr-x 10 ubuntu root   4096 Apr 18 10:32 weights
+drwxr-xr-x 18 ubuntu root   4096 May 14 06:00 world_model_phys
+### /mnt/nas/hj/weights
+total 5
+drwxr-xr-x 10 ubuntu root 4096 Apr 18 10:32 .
+drwxr-xr-x 23 root   root 4096 Jun 16 00:25 ..
+drwxr-xr-x  6 ubuntu root 4096 Feb  6 10:52 PCM_Weights
+drwxr-xr-x  3 root   root 4096 May 15 09:41 Qwen2.5-VL-7B-Instruct
+drwxr-xr-x  3 root   root 4096 May 15 09:41 animatediff-motion-adapter-v1-5-2
+drwxr-xr-x  6 ubuntu root 4096 Mar 24 15:12 diffuEraser
+drwxr-xr-x  2 root   root 4096 May 15 09:41 metrics
+drwxr-xr-x  2 root   root 4096 Jun  7 23:37 propainter
+drwxr-xr-x  3 ubuntu root 4096 Feb  6 10:47 sd-vae-ft-mse
+drwxr-xr-x 10 ubuntu root 4096 Feb  6 10:46 stable-diffusion-v1-5
+### /mnt/nas/hj/data/third_party_video_inpainting
+total 2
+drwxr-xr-x 3 root root 4096 May 14 17:31 .
+drwxr-xr-x 5 root root 4096 May 14 17:31 ..
+lrwxrwxrwx 1 root root   71 Apr 29 09:15 envs -> /home/nvme01/H20_Video_inpainting_DPO/third_party_video_inpainting/envs
+lrwxrwxrwx 1 root root   72 Apr 29 09:15 repos -> /home/nvme01/H20_Video_inpainting_DPO/third_party_video_inpainting/repos
+drwxr-xr-x 4 root root 4096 May 14 17:31 weights
+### /mnt/workspace/hj/nas_hj/weights
+total 5
+drwxr-xr-x 10 ubuntu root 4096 Apr 18 10:32 .
+drwxr-xr-x 23 root   root 4096 Jun 16 00:25 ..
+drwxr-xr-x  6 ubuntu root 4096 Feb  6 10:52 PCM_Weights
+drwxr-xr-x  3 root   root 4096 May 15 09:41 Qwen2.5-VL-7B-Instruct
+drwxr-xr-x  3 root   root 4096 May 15 09:41 animatediff-motion-adapter-v1-5-2
+drwxr-xr-x  6 ubuntu root 4096 Mar 24 15:12 diffuEraser
+drwxr-xr-x  2 root   root 4096 May 15 09:41 metrics
+drwxr-xr-x  2 root   root 4096 Jun  7 23:37 propainter
+drwxr-xr-x  3 ubuntu root 4096 Feb  6 10:47 sd-vae-ft-mse
+drwxr-xr-x 10 ubuntu root 4096 Feb  6 10:46 stable-diffusion-v1-5
+## data
+- OK: /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240
+- OK: /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
+- OK: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+- OK: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+## GPU
 0, 0, 143771, 0
 1, 0, 143771, 0
 2, 0, 143771, 0
@@ -134,49 +115,92 @@ Findings:
 5, 4, 143771, 0
 6, 292, 143771, 0
 7, 58071, 143771, 0
-```
 
-Original PAI failure:
-
-- PAI checked repos did not contain `exp14_adapter_videopainter`.
-- PAI checked repos did not contain the adapter trainer.
-- The VideoPainter repo was not found in the checked project paths.
-
-Required before the next PAI run:
-
-- sync this Exp14 folder to PAI;
-- place or verify VideoPainter repo / base model / branch checkpoint paths;
-- run the updated gate launcher, which performs `--preflight_only` before
-  starting 2000-step.
-
-## Decision
-
-Do not start 2000-step training until PAI preflight passes.
-
-Starting upstream VideoPainter training here would only train the official
-VideoPainter objective, not the requested Exp11 outer b0.75 S2 style DPO
-adapter. That would create a mislabeled experiment.
-
-## Required Next Implementation
-
-Before the gate can run on PAI, sync and preflight the isolated trainer:
-
-```text
-exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
-```
-
-It must:
-
-- load a trainable VideoPainter policy;
-- load a frozen VideoPainter reference from the same checkpoint;
-- convert/read GT winner + generated loser + mask pairs;
-- run policy/reference winner/loser forward passes on the same timestep/noise;
-- compute region-local MSE with `boundary_mode=outer`,
-  `mask=1.0`, `boundary=0.75`, `outside=0.05`;
-- compute log-ratio normalized gaps and clipped loser gap;
-- write `dpo_diagnostics.csv`;
-- save checkpoints and last weights;
-- run DAVIS eval with the project metric wrapper.
-
-The trainer is now implemented locally, but DAVIS eval wiring after gate2000 is
-still pending and should remain blocked until training itself completes.
+## VideoPainter weight path checks
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+- MISSING: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+- MISSING: /mnt/nas/hj/weights/CogVideoX-5b-I2V
+- MISSING: /mnt/nas/hj/weights/VideoPainter
+- MISSING: /mnt/nas/hj/weights/videopainter
+- MISSING: /mnt/nas/hj/weights/cogvideox
+- MISSING: /mnt/nas/hj/official_repos/VideoPainter
+- MISSING: /mnt/nas/hj/data/third_party_video_inpainting/weights/VideoPainter
+- MISSING: /mnt/nas/hj/data/third_party_video_inpainting/weights/videopainter
+- MISSING: /mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+## nearby official_repos
+- /mnt/nas/hj/official_repos
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/branches
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/hooks
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/info
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/logs
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/objects
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/.git/refs
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/OmniScore
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/assets
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/assets/vc2-dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/assets/vc2-init
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/checkpoints
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/checkpoints/vc2
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/configs
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/configs/inference
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/configs/t2v_turbo_dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/configs/vc2_dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/data
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/data/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/log_image
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/log_image/images
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/lvdm
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/lvdm/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/lvdm/models
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/lvdm/modules
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/lvdm/samplers
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/prompts
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/scripts
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/scripts/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/scripts/turbo_inference
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/scripts_sh
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/utils
+- /mnt/nas/hj/official_repos/VideoDPO_official_1febdb4/utils/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/branches
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/hooks
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/info
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/logs
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/objects
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/.git/refs
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/OmniScore
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/assets
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/assets/vc2-dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/assets/vc2-init
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/configs
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/configs/inference
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/configs/t2v_turbo_dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/configs/vc2_dpo
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/data
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/data/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/lvdm
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/lvdm/models
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/lvdm/modules
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/lvdm/samplers
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/prompts
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/scripts
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/scripts/__pycache__
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/scripts/turbo_inference
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/scripts_sh
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/utils
+- /mnt/nas/hj/official_repos/VideoDPO_official_diffueraser_1febdb4/utils/__pycache__
+## selected ckpt-like dirs under weights
+- /mnt/nas/hj/weights/propainter
+- /mnt/nas/hj/weights/stable-diffusion-v1-5
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/.cache
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/.cache/huggingface
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/feature_extractor
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/safety_checker
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/scheduler
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/text_encoder
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/tokenizer
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/unet
+- /mnt/nas/hj/weights/stable-diffusion-v1-5/vae

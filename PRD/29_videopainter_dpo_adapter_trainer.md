@@ -135,8 +135,8 @@ Implemented modules:
 
 ## Current Gate Blocker
 
-Gate2000 is not launched yet because the trainer has not passed PAI preflight
-with real model weights and actual memory pressure.
+Gate2000 is not launched yet because PAI does not currently have the required
+VideoPainter / CogVideoX weights.
 
 Required PAI paths:
 
@@ -156,6 +156,41 @@ exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
 If preflight fails, it must report blocked and must not launch upstream
 VideoPainter training as a substitute.
 
+## Latest PAI Attempt
+
+Date: 2026-06-16 CST
+
+```text
+sync_strategy = clean_worktree
+clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+source_commit = 2e187ee
+status = blocked_before_preflight
+```
+
+What passed:
+
+- Exp14 clean worktree created without touching the dirty priority repo.
+- Exp14 trainer and launcher are present.
+- Static checks passed.
+- VideoPainter code repo was synced from HAL.
+- YouTube-VOS, DAVIS, and DPO manifest paths are present.
+- The manifest is PAI-safe.
+- GPUs are available.
+
+Hard blocker:
+
+```text
+missing VideoPainter base model:
+  third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+
+missing VideoPainter branch checkpoint:
+  third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+```
+
+Without these weights, the trainer cannot construct a trainable policy branch
+or a frozen reference branch, so it cannot compute `m_w`, `m_l`, `m_w_ref`, or
+`m_l_ref`.
+
 ## Preflight Requirement
 
 The user does not want smoke experiments, but the trainer must pass a minimum
@@ -173,7 +208,7 @@ This preflight is not an experiment result.
 ```text
 adapter_type = direct_diff_dpo_isolated_trainer
 gate2000 = not_launched
-preflight = not_run
+preflight = blocked_missing_weights
 trainer = implemented_locally
 ```
 

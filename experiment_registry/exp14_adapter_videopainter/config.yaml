@@ -1,5 +1,5 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: isolated_trainer_implemented_preflight_pending
+status: blocked_before_preflight_missing_videopainter_weights
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
 repo_url: https://github.com/TencentARC/VideoPainter
@@ -7,7 +7,13 @@ repo_commit_hal: bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a
 current_best_source_method: exp11_outer_b075_s2
 smoke1: skipped_by_user_request
 smoke20: skipped_by_user_request
-gate2000: blocked_until_preflight_passes
-gate2000_blocker: isolated trainer exists, but PAI preflight has not passed yet
+gate2000: blocked_before_preflight
+gate2000_blocker: missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint on PAI/HAL
 trainer_path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
-trainer_preflight: not_run
+trainer_preflight: blocked_missing_weights
+pai_sync_strategy: clean_worktree
+pai_clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+pai_source_commit: 2e187ee
+videopainter_code_synced_to_pai: true
+data_ready_on_pai: true
+gpu_ready_on_pai: true
