@@ -1,0 +1,29 @@
+experiment_name: exp12_adaptive_normalization
+status: prepared
+base_experiment: exp10_region_local_dpo
+data_asset: D3 YouTube-VOS generated-loser with GT-win manifest
+win_source: GT clean video
+lose_source: generated rollout loser
+task: partial-mask video inpainting
+prior_mode: propainter
+gap_normalization: log_ratio
+adaptive_norm_mode: batch_zscore
+adaptive_norm_eps: 1.0e-6
+lose_gap_clip_tau: 1.0
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: region
+mask_weight: 1.0
+boundary_mode: exp10_default
+boundary_weight: 0.5
+outside_weight: 0.05
+launch_variant: exp12_batch_adaptive_norm_s1s2_2000
+prepared_not_launched:
+  - exp12_timestep_adaptive_norm_s1s2_2000
+gpu: "4,5,6,7"
+max_steps_per_stage: 2000
+eval_protocol: DAVIS50 raw6 no-PCM no-dilation no-gaussian hard-comp frame-wise

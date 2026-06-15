@@ -30,13 +30,13 @@ INPUT_SIZE="${INPUT_SIZE:-432x240}"
 GPU_LIST_CSV="${GPU_LIST:-0,1,2,3}"
 MAX_PARALLEL="${MAX_PARALLEL:-4}"
 
-COMPUTE_LPIPS="${COMPUTE_LPIPS:-0}"
-COMPUTE_VFID="${COMPUTE_VFID:-0}"
-COMPUTE_TC="${COMPUTE_TC:-0}"
+COMPUTE_LPIPS="${COMPUTE_LPIPS:-1}"
+COMPUTE_VFID="${COMPUTE_VFID:-1}"
+COMPUTE_TC="${COMPUTE_TC:-1}"
 COMPUTE_EWARP="${COMPUTE_EWARP:-0}"
 SAVE_VIDEOS="${SAVE_VIDEOS:-1}"
 I3D_MODEL_PATH="${I3D_MODEL_PATH:-${PROJECT_ROOT}/weights/i3d_rgb_imagenet.pt}"
-TC_MODEL_PATH="${TC_MODEL_PATH:-}"
+TC_MODEL_PATH="${TC_MODEL_PATH:-${PROJECT_ROOT}/weights/open_clip_vit_h14}"
 RAFT_MODEL_PATH="${RAFT_MODEL_PATH:-${PROP}/raft-things.pth}"
 
 SFT48000="${SFT48000:-/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000}"
@@ -119,6 +119,10 @@ for path in "$VIDEO_ROOT" "$MASK_ROOT" "$GT_ROOT" "$SFT48000" "$EXP9_1" "$EXP9_2
 done
 if [[ "$COMPUTE_VFID" == "1" && ! -f "$I3D_MODEL_PATH" ]]; then
   echo "[missing] I3D_MODEL_PATH=$I3D_MODEL_PATH" >&2
+  exit 3
+fi
+if [[ "$COMPUTE_TC" == "1" && ! -f "${TC_MODEL_PATH}/open_clip_pytorch_model.bin" ]]; then
+  echo "[missing] TC_MODEL_PATH=${TC_MODEL_PATH}/open_clip_pytorch_model.bin" >&2
   exit 3
 fi
 

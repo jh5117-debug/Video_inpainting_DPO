@@ -1,0 +1,8 @@
+repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp09_10_11_pai_sync
+workspace_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO
+source_manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+gtwin_manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl
+sft48000_weights: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+davis_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+propainter_weight_root: /mnt/nas/hj/data/third_party_video_inpainting/weights/propainter

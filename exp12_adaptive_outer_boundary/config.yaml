@@ -1,0 +1,37 @@
+experiment_name: exp12_adaptive_outer_boundary
+status: complete_ablation
+base_experiment: exp10_region_local_dpo
+comparison_target: exp11_boundary_outer_b075_s2
+data_asset: D3 YouTube-VOS generated-loser with GT-win manifest
+win_source: GT clean video
+lose_source: generated rollout loser
+task: partial-mask video inpainting
+prior_mode: propainter
+gap_normalization: log_ratio
+adaptive_norm_mode: batch_zscore
+adaptive_norm_eps: 1.0e-6
+lose_gap_clip_tau: 1.0
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: region
+mask_weight: 1.0
+boundary_mode: outer
+boundary_definition: "dilate(mask) - mask; mask convention is 1=hole after conversion from BrushNet mask"
+boundary_weight: 0.75
+outside_weight: 0.05
+launch_variant: exp12_batch_adaptive_outer_b075_s1s2_2000
+prepared_not_launched:
+  - exp12_timestep_adaptive_norm_s1s2_2000
+gpu: "4,5,6,7"
+max_steps_per_stage: 2000
+eval_protocol: DAVIS50 raw6 no-PCM no-dilation no-gaussian hard-comp frame-wise
+metric_protocol_fixed: "DAVIS50 raw6 hard-comp / D+G off / no PCM / frame-wise in-memory metric"
+stage1_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260615_043419_exp12_adaptive_outer_exp12_batch_adaptive_outer_b075_s1s2_2000_s1_2000_davis_pai/last_weights
+stage2_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260615_043419_exp12_adaptive_outer_exp12_batch_adaptive_outer_b075_s1s2_2000_s2_2000_davis_pai/last_weights
+stage1_metric_summary: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp12_batch_adaptive_outer_b075_s1s2_2000_stage1_val_davis_20260615_043419_exp12_adaptive_outer/metrics/summary.csv
+stage2_metric_summary: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp12_batch_adaptive_outer_b075_s1s2_2000_stage2_val_davis_20260615_043419_exp12_adaptive_outer/metrics/summary.csv
+conclusion: improves over local SFT baseline but does not beat Exp11_boundary_outer_b075_S2; keep as adaptive-normalization ablation

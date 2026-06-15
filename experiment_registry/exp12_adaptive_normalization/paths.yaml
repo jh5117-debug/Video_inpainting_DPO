@@ -1,0 +1,5 @@
+experiment_folder: exp12_adaptive_normalization
+code_stage1: exp12_adaptive_normalization/code/train_stage1.py
+code_stage2: exp12_adaptive_normalization/code/train_stage2.py
+pai_logs: logs/pipelines/exp12_adaptive_normalization_gpu4_7.log
+pai_pid: logs/pipelines/exp12_adaptive_normalization_gpu4_7.pid

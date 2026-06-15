@@ -1,0 +1,5 @@
+experiment_folder: exp11_region_boundary_ablation
+code_stage1: exp11_region_boundary_ablation/code/train_stage1.py
+code_stage2: exp11_region_boundary_ablation/code/train_stage2.py
+pai_logs: logs/pipelines/exp11_region_boundary_ablation_gpu0_3.log
+pai_pid: logs/pipelines/exp11_region_boundary_ablation_gpu0_3.pid

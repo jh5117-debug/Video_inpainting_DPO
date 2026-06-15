@@ -69,8 +69,13 @@ DAVIS_NUM_QUAL="${DAVIS_NUM_QUAL:-30}"
 EVAL_GPU="${EVAL_GPU:-0}"
 EVAL_WIDTH="${EVAL_WIDTH:-432}"
 EVAL_HEIGHT="${EVAL_HEIGHT:-240}"
-COMPUTE_LPIPS="${COMPUTE_LPIPS:-0}"
+DAVIS_METRIC_PROTOCOL="${DAVIS_METRIC_PROTOCOL:-framewise_hard_comp}"
+COMPUTE_LPIPS="${COMPUTE_LPIPS:-1}"
+COMPUTE_VFID="${COMPUTE_VFID:-1}"
+COMPUTE_TC="${COMPUTE_TC:-1}"
 COMPUTE_EWARP="${COMPUTE_EWARP:-0}"
+I3D_MODEL_PATH="${I3D_MODEL_PATH:-${PROJECT_ROOT}/weights/i3d_rgb_imagenet.pt}"
+TC_MODEL_PATH="${TC_MODEL_PATH:-${PROJECT_ROOT}/weights/open_clip_vit_h14}"
 
 NUM_INFERENCE_STEPS="${NUM_INFERENCE_STEPS:-6}"
 USE_PCM="${USE_PCM:-false}"
@@ -263,7 +268,8 @@ precheck_common() {
   require_path "${PROJECT_ROOT}/training/dpo/scripts/03_dpo_stage1.sbatch" "Stage1 launcher"
   require_path "${PROJECT_ROOT}/training/dpo/scripts/03_dpo_stage2.sbatch" "Stage2 launcher"
   require_path "${PROJECT_ROOT}/tools/build_diffueraser_dpoS1_sftS2_hybrid.py" "hybrid builder"
-  require_path "${PROJECT_ROOT}/tools/run_inpainting_metric_eval.py" "metric wrapper"
+  require_path "${PROJECT_ROOT}/tools/run_davis50_framewise_protocol_eval.py" "canonical DAVIS50 frame-wise metric wrapper"
+  require_path "${PROJECT_ROOT}/tools/run_inpainting_metric_eval.py" "legacy pair-manifest metric wrapper"
   require_path "${PROJECT_ROOT}/inference/run_BR.py" "DAVIS BR inference wrapper"
   require_path "${PROJECT_ROOT}/inference/metrics.py" "DAVIS metric backend"
 
@@ -276,6 +282,14 @@ precheck_common() {
   fi
   require_path "${PROPAINTER_WEIGHT_ROOT}" "ProPainter prior weight root"
   require_path "${RAFT_MODEL_PATH}" "RAFT prior/metric weight"
+  if [[ "${DAVIS_METRIC_PROTOCOL}" == "framewise_hard_comp" ]]; then
+    case "${COMPUTE_VFID,,}" in
+      1|true|yes|on) require_path "${I3D_MODEL_PATH}" "I3D VFID weight" ;;
+    esac
+    case "${COMPUTE_TC,,}" in
+      1|true|yes|on) require_path "${TC_MODEL_PATH}/open_clip_pytorch_model.bin" "local OpenCLIP TC weight" ;;
+    esac
+  fi
 
   if [[ "${CHECK_RAFT_LOAD}" == "1" ]]; then
     "${PYTHON_BIN}" - "${RAFT_MODEL_PATH}" <<'PY'
@@ -302,6 +316,7 @@ PY
     training/dpo/scripts/run_stage1.py \
     training/dpo/scripts/run_stage2.py \
     tools/run_inpainting_metric_eval.py \
+    tools/run_davis50_framewise_protocol_eval.py \
     tools/build_diffueraser_dpoS1_sftS2_hybrid.py \
     inference/run_BR.py \
     inference/metrics.py
@@ -329,7 +344,8 @@ PY
 - raft_model_path: \`${RAFT_MODEL_PATH}\`
 - diffueraser_sft_48000: \`${DIFFUERASER_WEIGHT_ROOT}\`
 - davis_root: \`${DAVIS_ROOT}\`
-- metric_wrapper: \`tools/run_inpainting_metric_eval.py\`
+- metric_protocol: \`${DAVIS_METRIC_PROTOCOL}\`
+- metric_wrapper: \`tools/run_davis50_framewise_protocol_eval.py\`
 - metric_backend: \`inference/metrics.py\`
 - vbench: \`not used\`
 - process_name: \`${LINGBOT_PROCESS_NAME}\`
@@ -561,17 +577,120 @@ PY
 
 run_metric_wrapper() {
   local eval_out="$1"
+  local current_label="$2"
+  local current_weights="$3"
   local pair_manifest="${eval_out}/pair_manifest.csv"
+  local protocol="${DAVIS_METRIC_PROTOCOL:-framewise_hard_comp}"
   local flags=()
+
+  if [[ "${protocol}" == "generic_pair_manifest" ]]; then
+    case "${COMPUTE_LPIPS,,}" in 1|true|yes|on) flags+=(--compute_lpips) ;; esac
+    case "${COMPUTE_EWARP,,}" in 1|true|yes|on) flags+=(--compute_ewarp) ;; esac
+    "${PYTHON_BIN}" tools/run_inpainting_metric_eval.py \
+      --pair_manifest "${pair_manifest}" \
+      --output_dir "${eval_out}" \
+      --max_frames "${DAVIS_VIDEO_LENGTH}" \
+      --width "${EVAL_WIDTH}" \
+      --height "${EVAL_HEIGHT}" \
+      "${flags[@]}"
+    return
+  fi
+
+  [[ "${protocol}" == "framewise_hard_comp" ]] || die "Unsupported DAVIS_METRIC_PROTOCOL=${protocol}"
   case "${COMPUTE_LPIPS,,}" in 1|true|yes|on) flags+=(--compute_lpips) ;; esac
+  case "${COMPUTE_VFID,,}" in 1|true|yes|on) flags+=(--compute_vfid --i3d_model_path "${I3D_MODEL_PATH}") ;; esac
+  case "${COMPUTE_TC,,}" in 1|true|yes|on) flags+=(--compute_tc --tc_model_path "${TC_MODEL_PATH}") ;; esac
   case "${COMPUTE_EWARP,,}" in 1|true|yes|on) flags+=(--compute_ewarp) ;; esac
-  "${PYTHON_BIN}" tools/run_inpainting_metric_eval.py \
-    --pair_manifest "${pair_manifest}" \
-    --output_dir "${eval_out}" \
-    --max_frames "${DAVIS_VIDEO_LENGTH}" \
-    --width "${EVAL_WIDTH}" \
-    --height "${EVAL_HEIGHT}" \
+
+  local metric_root="${eval_out}/framewise_metric"
+  mkdir -p "${metric_root}" "${eval_out}/metrics"
+  CUDA_VISIBLE_DEVICES="${EVAL_GPU}" "${PYTHON_BIN}" tools/run_davis50_framewise_protocol_eval.py \
+    --video_root "${DAVIS_VIDEO_ROOT}" \
+    --mask_root "${DAVIS_MASK_ROOT}" \
+    --gt_root "${DAVIS_GT_ROOT}" \
+    --base_model_path "${BASE_MODEL_PATH}" \
+    --vae_path "${VAE_PATH}" \
+    --propainter_model_dir "${PROPAINTER_WEIGHT_ROOT}" \
+    --pcm_weights_path "${PCM_WEIGHTS_PATH}" \
+    --input_size "${EVAL_WIDTH}x${EVAL_HEIGHT}" \
+    --video_length "${DAVIS_VIDEO_LENGTH}" \
+    --num_inference_steps "${NUM_INFERENCE_STEPS}" \
+    --use_pcm "${USE_PCM}" \
+    --mask_dilation_iter "${MASK_DILATION}" \
+    --raft_model_path "${RAFT_MODEL_PATH}" \
+    --label "DiffuEraser-base" \
+    --diffueraser_path "${DIFFUERASER_WEIGHT_ROOT}" \
+    --save_path "${metric_root}/DiffuEraser-base" \
     "${flags[@]}"
+  CUDA_VISIBLE_DEVICES="${EVAL_GPU}" "${PYTHON_BIN}" tools/run_davis50_framewise_protocol_eval.py \
+    --video_root "${DAVIS_VIDEO_ROOT}" \
+    --mask_root "${DAVIS_MASK_ROOT}" \
+    --gt_root "${DAVIS_GT_ROOT}" \
+    --base_model_path "${BASE_MODEL_PATH}" \
+    --vae_path "${VAE_PATH}" \
+    --propainter_model_dir "${PROPAINTER_WEIGHT_ROOT}" \
+    --pcm_weights_path "${PCM_WEIGHTS_PATH}" \
+    --input_size "${EVAL_WIDTH}x${EVAL_HEIGHT}" \
+    --video_length "${DAVIS_VIDEO_LENGTH}" \
+    --num_inference_steps "${NUM_INFERENCE_STEPS}" \
+    --use_pcm "${USE_PCM}" \
+    --mask_dilation_iter "${MASK_DILATION}" \
+    --raft_model_path "${RAFT_MODEL_PATH}" \
+    --label "${current_label}" \
+    --diffueraser_path "${current_weights}" \
+    --save_path "${metric_root}/${current_label}" \
+    "${flags[@]}"
+
+  "${PYTHON_BIN}" - "${metric_root}" "${eval_out}/metrics" <<'PY'
+import csv
+import json
+import sys
+from pathlib import Path
+
+metric_root = Path(sys.argv[1])
+out_dir = Path(sys.argv[2])
+rows = []
+for path in sorted(metric_root.glob("*/metrics/summary.csv")):
+    with path.open(newline="", encoding="utf-8") as handle:
+        row = next(csv.DictReader(handle))
+    row["result_dir"] = str(path.parents[1])
+    rows.append(row)
+if not rows:
+    raise SystemExit(f"no frame-wise summary rows found under {metric_root}")
+out_dir.mkdir(parents=True, exist_ok=True)
+keys = []
+for row in rows:
+    for key in row:
+        if key not in keys:
+            keys.append(key)
+with (out_dir / "summary.csv").open("w", newline="", encoding="utf-8") as handle:
+    writer = csv.DictWriter(handle, fieldnames=keys)
+    writer.writeheader()
+    writer.writerows(rows)
+(out_dir / "summary.json").write_text(json.dumps(rows, indent=2, ensure_ascii=False), encoding="utf-8")
+cols = [
+    ("model_label", "Method"),
+    ("whole_video_psnr_mean", "PSNR"),
+    ("whole_video_ssim_mean", "SSIM"),
+    ("whole_video_lpips_mean", "LPIPS"),
+    ("vfid", "VFID"),
+    ("tc_mean", "TC"),
+    ("mask_region_psnr_mean", "Mask PSNR"),
+]
+cols = [(key, label) for key, label in cols if any(key in row for row in rows)]
+lines = [
+    "# DAVIS50 frame-wise raw6 hard-comp Summary",
+    "",
+    "Protocol: raw6, D+G off, no PCM, no mask dilation, no Gaussian blur, in-memory hard comp.",
+    "",
+    "| " + " | ".join(label for _, label in cols) + " |",
+    "|" + "|".join(["---"] * len(cols)) + "|",
+]
+for row in rows:
+    lines.append("| " + " | ".join(str(row.get(key, "")) for key, _ in cols) + " |")
+(out_dir / "summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+print(f"[framewise-metric] wrote {out_dir / 'summary.csv'}")
+PY
 }
 
 run_br_inference() {
@@ -621,7 +740,7 @@ run_davis_validation() {
     "${current_label}" \
     "${eval_out}/inference/DiffuEraser-base" \
     "${eval_out}/inference/${current_label}"
-  run_metric_wrapper "${eval_out}"
+  run_metric_wrapper "${eval_out}" "${current_label}" "${current_weights}"
   cat > "${eval_out}/report.md" <<EOF
 # ${stage_label} DAVIS Validation
 
@@ -633,7 +752,8 @@ status: complete
 - prior_mode: \`propainter\`
 - propainter_weight_path: \`${PROPAINTER_WEIGHT_ROOT}\`
 - metric_backend: \`inference/metrics.py\`
-- metric_wrapper: \`tools/run_inpainting_metric_eval.py\`
+- metric_protocol: \`${DAVIS_METRIC_PROTOCOL}\`
+- metric_wrapper: \`tools/run_davis50_framewise_protocol_eval.py\`
 - side_by_side: \`${eval_out}/side_by_side/${current_label}\`
 - metrics: \`${eval_out}/metrics/summary.csv\`
 - num_inference_steps: \`${NUM_INFERENCE_STEPS}\`

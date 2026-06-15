@@ -1,0 +1,35 @@
+experiment_name: exp11_region_boundary_ablation
+status: prepared
+base_experiment: exp10_region_local_dpo
+data_asset: D3 YouTube-VOS generated-loser with GT-win manifest
+win_source: GT clean video
+lose_source: generated rollout loser
+task: partial-mask video inpainting
+prior_mode: propainter
+gap_normalization: log_ratio
+lose_gap_clip_tau: 1.0
+beta_dpo: 10
+lose_gap_weight: 0.25
+sft_reg_weight: 0.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+winner_gap_reg_margin: 0.0
+loss_region_mode: region
+mask_weight: 1.0
+outside_weight: 0.05
+variants:
+  - name: exp11_boundary_inner_b075_o005_s1s2_2000
+    boundary_mode: inner
+    boundary_weight: 0.75
+  - name: exp11_boundary_outer_b075_o005_s1s2_2000
+    boundary_mode: outer
+    boundary_weight: 0.75
+  - name: exp11_boundary_both_b075_o005_s1s2_2000
+    boundary_mode: both
+    boundary_weight: 0.75
+  - name: exp11_boundary_both_b100_o005_s1s2_2000
+    boundary_mode: both
+    boundary_weight: 1.0
+gpu: "0,1,2,3"
+max_steps_per_stage: 2000
+eval_protocol: DAVIS50 raw6 no-PCM no-dilation no-gaussian hard-comp frame-wise
