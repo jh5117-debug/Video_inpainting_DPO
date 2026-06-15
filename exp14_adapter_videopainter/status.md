@@ -1,6 +1,6 @@
 # Exp14 Status
 
-Status: **blocked before smoke**.
+Status: **gate2000 precheck blocked**.
 
 What passed:
 
@@ -15,15 +15,15 @@ What passed:
 What has not passed:
 
 - No VideoPainter DPO adapter training script exists yet.
-- No PAI 1-step smoke was run from this HAL session.
-- No 20-step smoke was run.
-- No Gate2000 script should be launched.
+- No implemented policy/reference DPO loss entry exists under
+  `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`.
+- PAI precheck found data and idle GPUs, but did not find Exp14 adapter code.
 
 Decision:
 
 ```text
-Do not launch 2000-step training.
-Implement/copy a dedicated VideoPainter DPO adapter trainer first, then run
-PAI smoke1, then smoke20, then ask for user confirmation.
+Do not launch 2000-step training from the upstream VideoPainter script alone.
+Implement/copy a dedicated VideoPainter DPO adapter trainer first, then rerun
+the gate2000 precheck. Smoke is skipped by user request, but the trainer and
+reference/loss interface are still hard requirements.
 ```
-

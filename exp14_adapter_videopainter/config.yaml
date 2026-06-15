@@ -1,5 +1,5 @@
-experiment_name: exp14_adapter_videopainter
-status: feasibility_smoke_planning
+experiment_name: exp14_adapter_videopainter_gate2000
+status: gate2000_precheck_blocked
 current_best_source_method: exp11_outer_b075_s2
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_design_feasible_not_implemented
@@ -27,13 +27,10 @@ proposed_dpo_loss:
 data:
   train: YouTube-VOS / D3 GT-win generated-loser pairs after VideoPainter format conversion
   eval: DAVIS / YouTubeVOS with fixed raw6 hard-comp metric where compatible
-smoke1:
-  status: not_run
-  reason: not running PAI smoke from HAL; adapter train script not implemented
-smoke20:
-  status: not_run
-  reason: smoke1 not run/passed
 gate2000:
-  status: not_ready
-  reason: requires adapter implementation plus smoke1/smoke20 pass and user confirmation
-
+  status: precheck_blocked
+  reason: isolated VideoPainter DPO adapter trainer is not implemented
+  max_steps: 2000
+  checkpointing_steps: 500
+  eval_metric: inference/metrics.py
+  vbench: false

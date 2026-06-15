@@ -111,7 +111,7 @@ Recommendation: do not claim MiniMax-Remover is trainable for DPO adapter unless
 
 | Candidate | Open source | Training code verified | Diffusion / DiT | Can train on our YouTubeVOS now | Direct Diff-DPO fit | Current class | Action |
 |---|---:|---:|---:|---:|---:|---|---|
-| VideoPainter | yes | yes | yes | needs conversion | possible after code integration | B: needs modification | prepare adapter gate only after confirmation |
+| VideoPainter | yes | yes | yes | needs conversion | possible after code integration | B: needs modification | gate2000 precheck blocked because isolated adapter trainer is missing |
 | MiniMax-Remover | yes | no | yes | no | not now | C: frozen baseline | no training; frozen baseline only |
 
 ## Do Not Launch Training
