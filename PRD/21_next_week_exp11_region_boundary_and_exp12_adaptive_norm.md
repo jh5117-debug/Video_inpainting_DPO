@@ -113,6 +113,63 @@ Decision rule:
 - If it does not, keep `Exp11 outer b0.75 S2` as the current best and keep the
   original Exp12 as a normalization ablation.
 
+Final status on 2026-06-15:
+
+- `Exp12 adaptive + outer b0.75` completed Stage1, Stage1 DAVIS eval, Stage2,
+  and Stage2 DAVIS eval on PAI.
+- It improved over its local SFT-48000 baseline but did not beat
+  `Exp11_boundary_outer_b075_S2`.
+- Current best remains `Exp11_boundary_outer_b075_S2`.
+
+Canonical DAVIS50 scores:
+
+| Method | Stage | PSNR | SSIM | LPIPS | VFID | TC | Mask PSNR |
+|---|---|---:|---:|---:|---:|---:|---:|
+| SFT-48000 baseline | SFT base | 32.731391 | 0.970533 | 0.016660 | 0.201792 | 0.971200 | 23.884924 |
+| Exp11 boundary outer b0.75 | DPO-S1 + SFT-S2 | 32.901188 | 0.971859 | 0.015104 | 0.188015 | 0.971287 | 24.054721 |
+| Exp11 boundary outer b0.75 | DPO-S1 + DPO-S2 | 33.013954 | 0.972295 | 0.015363 | 0.175423 | 0.971122 | 24.167487 |
+| Exp12 adaptive norm | DPO-S1 + DPO-S2 | 32.902760 | 0.972035 | 0.015377 | 0.184785 | 0.970914 | 24.056294 |
+| Exp12 adaptive + outer b0.75 | DPO-S1 + DPO-S2 | 32.856975 | 0.971585 | 0.015605 | 0.193578 | 0.971475 | 24.010508 |
+
+Interpretation:
+
+- The most defensible claim is not "adaptive normalization wins"; it does not
+  win under the fixed protocol.
+- The current best method is the region-local normalized DPO with outer-boundary
+  weighting, `boundary_mode=outer`, `boundary_weight=0.75`, full Stage1+Stage2.
+- Exp12 remains useful as a negative/ablation result: batch z-score normalization
+  did not improve over the simpler log-ratio normalized region-local DPO with
+  the best boundary setting.
+
+Artifact archive on HAL:
+
+- dirty pre-cleanup archive:
+  `/home/hj/dpo-2-1-exp/local_dirty_archive/H20_hal_dirty_20260615_054311`
+- this-week metric and dpo-diag archive:
+  `/home/hj/dpo-2-1-exp/this_week_exp11_exp12`
+- selected visual evidence run:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/20260615_exp11_outer_b075_s2_selected_visuals`
+- selected visual evidence copied to HAL:
+  `/home/hj/dpo-2-1-exp/this_week_exp11_exp12/visual_evidence/exp11_outer_b075_s2_selected_visuals`
+
+Selected DAVIS visual candidates were chosen by per-video improvement over
+SFT-48000, prioritizing mask-region PSNR / mask-region SSIM / LPIPS. The
+2026-06-15 evidence rerun confirmed the strongest positive examples are:
+
+- `boat`
+- `rhino`
+- `dog-agility`
+- `lucia`
+- `blackswan`
+
+`boat` is the clearest paper/PPT qualitative example: SFT-48000 produces a
+visible white fog / patch over the boat wake and hull, while Exp11 outer b0.75
+S2 keeps cleaner water texture and boundary continuity. `rhino` and
+`dog-agility` are also useful because the mask crosses foreground object
+boundaries. `dance-jump` and `soccerball` should be treated as failure or
+cautionary examples in this selected rerun because their per-video PSNR/SSIM
+decreased versus SFT-48000.
+
 ## DPO Loss
 
 Both experiments inherit Exp10's region-local normalized DPO:
@@ -138,6 +195,33 @@ Do not run OR experiments in this batch. OR is deferred because there is no OR t
 Do not run DPO adapter experiments on other baselines in this batch. Future work must first check whether the baseline has open training code, diffusion-style reference compatibility, and a viable DPO adapter path.
 
 Do not run Exp11-real flow-prior long training in this batch. The old Exp11 line is proxy consistency, not real RAFT/ProPainter flow-prior consistency.
+
+## Baseline Adapter Follow-Up
+
+The next possible direction is to treat the winning Exp11 outer-boundary loss as
+a BR/inpainting adapter objective for other public inpainting baselines. This is
+not part of the Exp11/Exp12 training batch and must stay isolated.
+
+Rules:
+
+- Do not copy any baseline into shared training code.
+- Each baseline must live under its own isolated folder and registry.
+- Use YouTube-VOS for training and DAVIS/DAVIS-test-style evaluation where the
+  dataset contract can be matched.
+- Keep the fixed DAVIS50 raw6 hard-comp metric protocol for DiffuEraser
+  comparisons.
+- If a baseline only provides inference code and no training code, do not claim
+  a trainable adapter.
+
+Current public-code audit:
+
+- `VideoPainter`: public training entrypoints exist; this is the first viable
+  adapter candidate.
+- `COCOCO`: training code appears not yet public / under preparation.
+- `VACE`: inference/preprocess style code found; no validated training entry.
+- `VideoComposer/VideoComp`: partial utilities exist, but no clean train entry
+  for this adapter path was validated.
+- `FloED`: no reliable public training repository validated yet.
 
 ## Launch
 
