@@ -12,6 +12,16 @@ Reason:
 - Gate2000 still must wait for the trainer preflight, because this is the first
   check that policy/reference winner/loser losses and backward pass work on PAI.
 
+Latest PAI attempt:
+
+```text
+date = 2026-06-16 CST
+status = blocked_before_preflight
+reason = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO has local tracked
+         changes and untracked files; git pull --ff-only would overwrite them.
+saved_state = .tmp/pre_videopainter_adapter_gate_20260616_001304/
+```
+
 Next action:
 
 ```text

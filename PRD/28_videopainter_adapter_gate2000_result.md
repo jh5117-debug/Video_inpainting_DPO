@@ -119,6 +119,24 @@ No checkpoint was written.
 No gate2000 dpo_diag was written.
 No DAVIS eval was run.
 
+Latest PAI attempt on 2026-06-16 CST:
+
+```text
+status = blocked_before_preflight
+reason = priority PAI repo has local tracked changes and untracked files;
+         git pull --ff-only origin main would overwrite them.
+```
+
+Saved PAI state:
+
+```text
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/.tmp/pre_videopainter_adapter_gate_20260616_001304/
+```
+
+The dirty repo must be cleaned/archived by a safe procedure, or the user must
+explicitly allow a fresh clean worktree for Exp14. Do not reset or overwrite the
+existing PAI repo.
+
 ## Next Required Work
 
 Sync the Exp14 folder and VideoPainter repo / weights to PAI, then rerun:

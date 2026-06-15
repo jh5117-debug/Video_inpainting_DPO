@@ -7,6 +7,51 @@ Date: 2026-06-15
 Trainer implemented after the original block. The 2000-step gate is still
 **not** launched until PAI trainer preflight passes.
 
+## PAI Sync Attempt: 2026-06-16 CST
+
+PAI was reachable:
+
+```text
+host: dsw-753014-dc85766cb-4v2jj
+```
+
+The priority repo existed:
+
+```text
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+```
+
+State was saved under:
+
+```text
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/.tmp/pre_videopainter_adapter_gate_20260616_001304/
+```
+
+including:
+
+```text
+context.txt
+git_status_before.txt
+git_diff_before.patch
+git_diff_before.stat
+pull_blocked_report.md
+```
+
+`git fetch --no-tags origin main` succeeded, but:
+
+```text
+git pull --ff-only origin main
+```
+
+failed because tracked local changes and untracked files would be overwritten.
+
+Therefore no Exp14 static check, trainer preflight, or 2000-step training was
+run on PAI in this attempt.
+
+Per the execution boundary, do not reset, force overwrite, or fall back to
+upstream VideoPainter training. A clean PAI repo/worktree is required before
+the next gate attempt.
+
 ## User Request
 
 The user explicitly requested skipping VideoPainter smoke1/smoke20 and going
