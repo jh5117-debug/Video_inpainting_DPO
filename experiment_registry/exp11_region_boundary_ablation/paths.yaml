@@ -17,3 +17,5 @@ youtubevos100_eval_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/ex
 youtubevos100_eval_hal_metrics: /home/hj/dpo-2-1-exp/this_week_exp11_exp12/youtubevos100_eval/exp11_outer_b075_s2_youtubevos100_20260615_194218_youtubevos100_raw6_hardcomp
 final_20_visual_cases_hal: /home/hj/dpo-2-1-exp/final_20_visual_cases_for_paper
 final_20_visual_cases_report: reports/final_20_visual_cases_for_paper.md
+final_20_visual_cases_summary: reports/final_20_visual_cases_for_paper_summary.md
+paper_materials_prd: PRD/25_paper_materials_and_writing_plan.md

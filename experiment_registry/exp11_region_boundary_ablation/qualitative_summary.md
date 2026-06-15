@@ -36,4 +36,10 @@ Report:
 ```text
 reports/final_20_visual_cases_for_paper.md
 reports/final_20_visual_cases_for_paper.csv
+reports/final_20_visual_cases_for_paper_summary.md
+reports/final_20_visual_cases_for_paper_summary.csv
 ```
+
+The paper-facing summary records, for each of the final 20 cases, the dataset,
+baseline failure mode, Exp11 improvement, remaining caveat, and per-video metric
+delta.

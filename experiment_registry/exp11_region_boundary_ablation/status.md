@@ -43,3 +43,9 @@ Final 20 paper/PPT visual cases are archived at:
 ```text
 /home/hj/dpo-2-1-exp/final_20_visual_cases_for_paper
 ```
+
+Paper material and writing plan:
+
+```text
+PRD/25_paper_materials_and_writing_plan.md
+```
