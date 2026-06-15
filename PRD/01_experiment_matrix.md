@@ -1,3 +1,29 @@
+## 2026-06-15 Exp11/Exp12 Boundary-Normalization Batch
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp11 boundary inner b0.75 | complete | `experiment_registry/exp11_region_boundary_ablation` |
+| Exp11 boundary outer b0.75 S1 | complete | `experiment_registry/exp11_region_boundary_ablation` |
+| Exp11 boundary outer b0.75 S2 | **current best** | `experiment_registry/exp11_region_boundary_ablation`, `PRD/22_this_week_exp11_outer_b075_s2_best_and_visual_cases.md` |
+| Exp11 boundary both b0.75 | complete | `experiment_registry/exp11_region_boundary_ablation` |
+| Exp11 boundary both b1.0 | complete | `experiment_registry/exp11_region_boundary_ablation` |
+| Exp12 adaptive norm | complete negative/ablation | `experiment_registry/exp12_adaptive_normalization` |
+| Exp12 adaptive + outer b0.75 | complete negative/ablation | `experiment_registry/exp12_adaptive_outer_boundary` |
+| YouTubeVOS100 extension | running / collecting evidence | `PRD/23_youtubevos100_davis50_extended_eval.md` |
+| Adapter feasibility | complete, no training launched | `PRD/24_dpo_adapter_baseline_feasibility.md` |
+
+Fixed metric protocol for all current claims:
+
+```text
+DAVIS50 / YouTubeVOS100 raw6 hard-comp, D+G off, no PCM, frame-wise in-memory metrics.
+```
+
+Current best:
+
+```text
+Exp11 boundary outer b0.75 S2, PSNR=33.013954, SSIM=0.972295, LPIPS=0.015363, VFID=0.175423, TC=0.971122.
+```
+
 ## 2026-06-09 Active Experiment Ledger
 
 The active experiment list has been compacted. Legacy gates that are no longer

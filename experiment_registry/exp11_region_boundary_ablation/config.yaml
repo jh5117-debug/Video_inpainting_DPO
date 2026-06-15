@@ -1,5 +1,5 @@
 experiment_name: exp11_region_boundary_ablation
-status: prepared
+status: completed
 data_asset: D3 YouTube-VOS generated-loser with GT winner
 source_domain: YouTube-VOS
 target_domain: DAVIS
@@ -21,4 +21,16 @@ winner_gap_reg_margin: 0.0
 gap_normalization: log_ratio
 loss_region_mode: region
 variants: inner/outer/both boundary sweep
-conclusion: pending
+best_variant: exp11_boundary_outer_b075_o005_s1s2_2000
+best_stage_combination: DPO-S1 + DPO-S2
+best_boundary_mode: outer
+best_mask_weight: 1.0
+best_boundary_weight: 0.75
+best_outside_weight: 0.05
+best_davis50_psnr: 33.013954
+best_davis50_ssim: 0.972295
+best_davis50_lpips: 0.015363
+best_davis50_vfid: 0.175423
+best_davis50_tc: 0.971122
+best_davis50_mask_psnr: 24.167487
+conclusion: Exp11 boundary outer b0.75 Stage2 is the current best fixed-protocol DAVIS50 result.

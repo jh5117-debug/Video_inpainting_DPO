@@ -1,3 +1,60 @@
+## 2026-06-15 Current Best / Evidence Status
+
+Current best under the fixed DAVIS50 raw6 hard-comp protocol is:
+
+```text
+Exp11 boundary outer b0.75 S2
+stage = DPO-S1 + DPO-S2
+protocol = raw6, D+G off, no PCM, no mask dilation, no Gaussian blur, hard comp, frame-wise in-memory metric
+```
+
+Canonical DAVIS50 score:
+
+```text
+PSNR 33.013954
+SSIM 0.972295
+LPIPS 0.015363
+VFID 0.175423
+TC 0.971122
+mask PSNR 24.167487
+```
+
+Selected visual evidence has been verified complete on HAL:
+
+```text
+/home/hj/dpo-2-1-exp/this_week_exp11_exp12/visual_evidence/exp11_outer_b075_s2_selected_visuals
+```
+
+The strongest positive case is `boat`. Usable positive cases are `rhino`,
+`dog-agility`, `lucia`, and `blackswan`. `dance-jump` and `soccerball` are
+caution/failure cases and should not be used as positive paper examples.
+
+Exp11 outer b0.75 dpo diagnostics are present for Stage1 and Stage2 and copied
+to the this-week archive. The diagnostic label is `LOSER_DOMINANT` for both
+stages, but without the old raw-DPO winner-gap explosion. Report metrics and
+visuals together with this residual diagnostic risk.
+
+YouTubeVOS100 extension status:
+
+- HAL source: `/home/hj/Video_inpainting_DPO/data/external/youtubevos_432_240`
+- PAI target: `/mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100`
+- fixed-seed sample manifest: `/home/hj/dpo-2-1-exp/this_week_exp11_exp12/youtubevos100/sample_manifest.csv`
+- PAI eval launcher: `scripts/run_exp11_outer_youtubevos100_framewise_protocol_pai.sh`
+- Compare only SFT-48000 baseline vs Exp11 boundary outer b0.75 S2.
+- Completed result: Exp11 improves over SFT-48000 on YouTubeVOS100
+  (`PSNR 33.7238 vs 33.3968`, `SSIM 0.9711 vs 0.9701`,
+  `LPIPS 0.0168 vs 0.0176`, `VFID 0.1925 vs 0.2007`).
+- Final paper/PPT visual package:
+  `/home/hj/dpo-2-1-exp/final_20_visual_cases_for_paper`.
+
+Adapter feasibility status:
+
+- Do not launch adapter training yet.
+- First direct diffusion candidates: `VideoPainter`, then `FFF-VDI`.
+- Output-level only candidates: `ProPainter`, `E2FGVI`, `STTN`.
+- Frozen / related-work only for now: `MiniMax-Remover`, `CoCoCo`, `FloED`,
+  `VACE`, `LGVI`, `RT-Remover`, `VideoComp`.
+
 ## 2026-06-09 Current Active Experiment State
 
 The active experiment surface is now defined by

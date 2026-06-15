@@ -1,0 +1,108 @@
+# PRD 23: YouTubeVOS100 + DAVIS50 Extended Eval
+
+Date: 2026-06-15
+
+## Goal
+
+Extend the current best method beyond DAVIS50 by evaluating:
+
+- SFT-48000 DiffuEraser baseline
+- Exp11 boundary outer b0.75 S2
+
+on:
+
+- DAVIS50
+- YouTubeVOS100
+
+## YouTubeVOS100 Dataset
+
+HAL source:
+
+```text
+/home/hj/Video_inpainting_DPO/data/external/youtubevos_432_240
+```
+
+PAI target:
+
+```text
+/mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
+```
+
+Sample manifest:
+
+```text
+/home/hj/dpo-2-1-exp/this_week_exp11_exp12/youtubevos100/sample_manifest.csv
+```
+
+Sampling:
+
+- fixed seed: `20260615`
+- eligible videos: videos with at least 24 common image/mask frames
+- selected videos: 100
+- directory structure preserved
+
+## Fixed Protocol
+
+Use the same setting as DAVIS50:
+
+```text
+raw6
+no PCM
+no mask dilation
+no Gaussian blur
+hard comp
+frame-wise in-memory metric
+metric backend = inference/metrics.py via tools/run_davis50_framewise_protocol_eval.py
+```
+
+PAI launcher:
+
+```text
+scripts/run_exp11_outer_youtubevos100_framewise_protocol_pai.sh
+```
+
+Expected output:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp11_outer_b075_s2_youtubevos100_<timestamp>/
+```
+
+The final paper/PPT case pool should combine DAVIS50 and YouTubeVOS100, then
+select approximately 20 cases with visible baseline weakness and Exp11
+improvement, not by metric alone.
+
+## Status
+
+YouTubeVOS100 has been copied to PAI and evaluated successfully. The evaluation
+compares only SFT-48000 baseline and Exp11 boundary outer b0.75 S2.
+
+Output:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp11_outer_b075_s2_youtubevos100_20260615_194218_youtubevos100_raw6_hardcomp
+```
+
+HAL metrics snapshot:
+
+```text
+/home/hj/dpo-2-1-exp/this_week_exp11_exp12/youtubevos100_eval/exp11_outer_b075_s2_youtubevos100_20260615_194218_youtubevos100_raw6_hardcomp
+```
+
+Summary:
+
+| Dataset | Method | Rows | PSNR | SSIM | LPIPS | VFID | TC | Mask PSNR |
+|---|---|---:|---:|---:|---:|---:|---:|---:|
+| DAVIS50 | SFT-48000 | 50 | 32.7314 | 0.9705 | 0.0167 | 0.2018 | 0.9712 | 23.8849 |
+| DAVIS50 | Exp11 outer b0.75 S2 | 50 | 33.0140 | 0.9723 | 0.0154 | 0.1754 | 0.9711 | 24.1675 |
+| YouTubeVOS100 | SFT-48000 | 100 | 33.3968 | 0.9701 | 0.0176 | 0.2007 | 0.9819 | 24.4262 |
+| YouTubeVOS100 | Exp11 outer b0.75 S2 | 100 | 33.7238 | 0.9711 | 0.0168 | 0.1925 | 0.9821 | 24.7532 |
+
+Exp11 outer b0.75 S2 improves over SFT-48000 on both DAVIS50 and
+YouTubeVOS100 under the fixed raw6 hard-comp protocol.
+
+Report:
+
+```text
+reports/exp11_outer_b075_s2_youtubevos100_davis50_eval.md
+reports/exp11_outer_b075_s2_youtubevos100_davis50_eval.csv
+```
