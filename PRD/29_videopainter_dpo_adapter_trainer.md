@@ -136,7 +136,8 @@ Implemented modules:
 ## Current Gate Blocker
 
 Gate2000 is not launched yet because PAI does not currently have the required
-VideoPainter / CogVideoX weights.
+VideoPainter / CogVideoX weights, and PAI cannot download them from Hugging
+Face in the current network environment.
 
 Required PAI paths:
 
@@ -165,6 +166,7 @@ sync_strategy = clean_worktree
 clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
 source_commit = 2e187ee
 status = blocked_before_preflight
+reason = missing weights + PAI Hugging Face network unreachable
 ```
 
 What passed:
@@ -191,6 +193,28 @@ Without these weights, the trainer cannot construct a trainable policy branch
 or a frozen reference branch, so it cannot compute `m_w`, `m_l`, `m_w_ref`, or
 `m_l_ref`.
 
+Download attempts:
+
+```text
+huggingface-cli download TencentARC/VideoPainter
+  -> deprecated / exits failure
+
+hf download TencentARC/VideoPainter
+  -> httpx.ConnectError: [Errno 101] Network is unreachable
+```
+
+Required final layout:
+
+```text
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/model_index.json
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/transformer/
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/vae/
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/tokenizer/
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/text_encoder/
+third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch/config.json
+third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch/diffusion_pytorch_model.safetensors
+```
+
 ## Preflight Requirement
 
 The user does not want smoke experiments, but the trainer must pass a minimum
@@ -208,7 +232,7 @@ This preflight is not an experiment result.
 ```text
 adapter_type = direct_diff_dpo_isolated_trainer
 gate2000 = not_launched
-preflight = blocked_missing_weights
+preflight = blocked_missing_weights_and_pai_hf_network_unreachable
 trainer = implemented_locally
 ```
 

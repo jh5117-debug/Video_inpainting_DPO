@@ -1,5 +1,5 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: blocked_before_preflight_missing_videopainter_weights
+status: blocked_missing_weights_and_pai_hf_network_unreachable
 current_best_source_method: exp11_outer_b075_s2
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
@@ -29,7 +29,7 @@ data:
   eval: DAVIS / YouTubeVOS with fixed raw6 hard-comp metric where compatible
 gate2000:
   status: blocked_before_preflight
-  reason: PAI clean worktree is synced and trainer is implemented, but CogVideoX-5b-I2V and VideoPainter branch checkpoint are missing
+  reason: PAI clean worktree is synced and trainer is implemented, but CogVideoX-5b-I2V and VideoPainter branch checkpoint are missing; HF download fails with Network is unreachable
   max_steps: 2000
   checkpointing_steps: 500
   eval_metric: inference/metrics.py
@@ -38,7 +38,7 @@ trainer:
   path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
   implemented: true
   preflight_required: true
-  preflight_status: blocked_missing_weights
+  preflight_status: blocked_missing_weights_and_pai_hf_network_unreachable
   notes: policy/reference branch Diff-DPO trainer; upstream VideoPainter official training is still not used
 pai_attempt_20260616:
   sync_strategy: clean_worktree
@@ -50,3 +50,5 @@ pai_attempt_20260616:
   missing_weights:
     - third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
     - third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+  hf_download_attempted: true
+  hf_download_error: "httpx.ConnectError: [Errno 101] Network is unreachable"

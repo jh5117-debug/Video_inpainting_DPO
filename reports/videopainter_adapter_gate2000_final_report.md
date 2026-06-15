@@ -4,14 +4,19 @@ Date: 2026-06-16 CST
 
 ## Status
 
-blocked_before_preflight
+blocked_missing_weights_and_pai_hf_network_unreachable
 
-No 2000-step training was launched. No checkpoint, dpo_diag, or DAVIS eval was produced.
+No trainer preflight was run. No gate2000 training was launched. No dpo_diag, checkpoint, DAVIS eval, or visualization was produced.
 
-## Reason
+## Exact Blocker
 
-VideoPainter code and project data are available, but the required VideoPainter / CogVideoX weights are missing. Without them, the isolated trainer cannot create the trainable policy and frozen reference model, so direct Diff-DPO cannot be computed.
+The required weights are not present:
+
+- `third_party/VideoPainter/ckpt/CogVideoX-5b-I2V`
+- `third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch`
+
+PAI cannot download them from Hugging Face because network access to HF fails with `Network is unreachable`.
 
 ## Conclusion
 
-Exp14 remains feasible in code but blocked in execution until the correct VideoPainter checkpoints are provided.
+The Exp14 code path is ready, but the experiment cannot proceed until the official VideoPainter / CogVideoX checkpoints are provided on PAI.

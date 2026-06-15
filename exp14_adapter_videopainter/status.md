@@ -1,6 +1,6 @@
 # Exp14 Status
 
-Status: **isolated trainer implemented; PAI blocked before preflight because VideoPainter weights are missing**.
+Status: **isolated trainer implemented; PAI blocked before preflight because VideoPainter weights are missing and HF is unreachable**.
 
 What passed:
 
@@ -39,7 +39,8 @@ date = 2026-06-16 CST
 sync_strategy = clean_worktree
 clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
 status = blocked_before_preflight
-blocker = missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint
+blocker = missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint;
+          hf download fails with Network is unreachable
 ```
 
 What passed on PAI:
@@ -57,6 +58,13 @@ Missing weights:
 ```text
 third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
 third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+```
+
+HF attempt:
+
+```text
+hf download TencentARC/VideoPainter
+-> httpx.ConnectError: [Errno 101] Network is unreachable
 ```
 
 Decision:

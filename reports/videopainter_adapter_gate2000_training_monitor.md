@@ -2,4 +2,4 @@
 
 Status: not_launched
 
-Reason: hard precheck failed before trainer preflight because VideoPainter / CogVideoX weights are missing.
+Reason: blocked before trainer preflight due to missing weights and PAI Hugging Face network failure.

@@ -1,6 +1,6 @@
 # Status
 
-Status: blocked_before_preflight.
+Status: blocked_missing_weights_and_pai_hf_network_unreachable.
 
 PAI sync strategy: clean_worktree.
 
@@ -17,5 +17,6 @@ What passed:
 Blocker:
 - Missing `CogVideoX-5b-I2V` base model.
 - Missing VideoPainter branch checkpoint.
+- `hf download TencentARC/VideoPainter` fails on PAI with `Network is unreachable`.
 
-No preflight, gate2000 training, dpo_diag, checkpoint, or DAVIS eval was run.
+No trainer preflight, gate2000 training, dpo_diag, checkpoint, or DAVIS eval was run.

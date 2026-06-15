@@ -125,7 +125,7 @@ Latest PAI attempt on 2026-06-16 CST:
 status = blocked_before_preflight
 sync_strategy = clean_worktree
 clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
-reason = VideoPainter / CogVideoX weights are missing.
+reason = VideoPainter / CogVideoX weights are missing and PAI cannot reach Hugging Face.
 ```
 
 The dirty priority repo was not modified. A clean Exp14 worktree was created
@@ -157,12 +157,43 @@ missing = third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
 Equivalent weight paths under `/mnt/nas/hj/weights`, `/mnt/nas/hj/official_repos`,
 and HAL `/home/hj/dpo-2-1-exp` were also checked and missing.
 
+HF download was attempted on PAI:
+
+```text
+huggingface-cli download TencentARC/VideoPainter
+hf download TencentARC/VideoPainter
+```
+
+Result:
+
+```text
+huggingface-cli = deprecated / exits failure
+hf download = httpx.ConnectError: [Errno 101] Network is unreachable
+```
+
 No trainer preflight, gate2000 training, dpo_diag, checkpoint, or DAVIS eval was
 run.
 
 ## Next Required Work
 
 Provide or mount the official VideoPainter / CogVideoX weights on PAI, then rerun:
+
+```text
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/
+third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch/
+```
+
+Suggested transfer from a machine with Hugging Face access:
+
+```bash
+rsync -az /path/to/CogVideoX-5b-I2V/ \
+  root@47.103.26.60:/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/CogVideoX-5b-I2V/
+
+rsync -az /path/to/VideoPainter/ \
+  root@47.103.26.60:/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/
+```
+
+Then rerun:
 
 ```text
 exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh

@@ -1,5 +1,5 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: blocked_before_preflight_missing_videopainter_weights
+status: blocked_missing_weights_and_pai_hf_network_unreachable
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
 repo_url: https://github.com/TencentARC/VideoPainter
@@ -8,12 +8,14 @@ current_best_source_method: exp11_outer_b075_s2
 smoke1: skipped_by_user_request
 smoke20: skipped_by_user_request
 gate2000: blocked_before_preflight
-gate2000_blocker: missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint on PAI/HAL
+gate2000_blocker: missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint on PAI/HAL; PAI hf download fails with Network is unreachable
 trainer_path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
-trainer_preflight: blocked_missing_weights
+trainer_preflight: blocked_missing_weights_and_pai_hf_network_unreachable
 pai_sync_strategy: clean_worktree
 pai_clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
 pai_source_commit: 2e187ee
 videopainter_code_synced_to_pai: true
 data_ready_on_pai: true
 gpu_ready_on_pai: true
+hf_download_attempted_on_pai: true
+hf_download_error: "httpx.ConnectError: [Errno 101] Network is unreachable"
