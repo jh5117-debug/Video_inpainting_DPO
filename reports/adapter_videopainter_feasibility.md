@@ -68,6 +68,12 @@ inpainting_loss_weight=1.0
 
 Class: **B. needs modification before training**.
 
+Exp14 follow-up audit refined the label to:
+
+```text
+direct_diff_dpo_design_feasible_not_implemented
+```
+
 VideoPainter is the only current adapter candidate with verified local training code and a diffusion/DiT architecture. It is feasible as a future isolated adapter gate, but not safe to launch directly from the current DiffuEraser scripts.
 
 Required gate before training:
@@ -80,3 +86,24 @@ Required gate before training:
 6. Keep evaluation fixed to raw6, hard comp, D+G off, frame-wise metrics.
 
 Do not launch training until the user explicitly approves a VideoPainter adapter gate.
+
+## Exp14 Status
+
+Exp14 folder:
+
+```text
+exp14_adapter_videopainter/
+experiment_registry/exp14_adapter_videopainter/
+```
+
+Smoke status:
+
+- Smoke1: not run.
+- Smoke20: not run.
+- Gate2000: not ready.
+
+Reason:
+
+The upstream VideoPainter loop exposes the right diffusion tensors, but the
+DPO adapter trainer has not been implemented yet. Do not start 2000-step
+training until an isolated trainer exists and Smoke1 / Smoke20 pass on PAI.

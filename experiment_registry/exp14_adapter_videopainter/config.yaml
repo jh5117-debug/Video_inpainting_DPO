@@ -1,0 +1,11 @@
+experiment_name: exp14_adapter_videopainter
+status: blocked_before_smoke
+adapter_target: VideoPainter
+adapter_type: direct_diff_dpo_design_feasible_not_implemented
+repo_url: https://github.com/TencentARC/VideoPainter
+repo_commit_hal: bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a
+current_best_source_method: exp11_outer_b075_s2
+smoke1: not_run
+smoke20: not_run
+gate2000: not_ready
+

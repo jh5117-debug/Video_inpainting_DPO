@@ -40,9 +40,18 @@ Report:
 
 ```text
 reports/adapter_videopainter_feasibility.md
+PRD/26_videopainter_adapter_feasibility.md
+PRD/27_videopainter_adapter_feasibility_and_smoke.md
+exp14_adapter_videopainter/
+experiment_registry/exp14_adapter_videopainter/
 ```
 
-Conclusion: **B. needs modification before training**.
+Conclusion: **B. needs modification before training**. After the Exp14 audit,
+the more precise label is:
+
+```text
+direct_diff_dpo_design_feasible_not_implemented
+```
 
 Why:
 
@@ -70,7 +79,8 @@ But it is not plug-and-play for our DPO objective:
 - our fixed DAVIS / YouTubeVOS raw6 hard-comp evaluation wrapper must be connected to its frame outputs;
 - likely compute cost is high.
 
-Recommendation: prepare a small isolated smoke gate only after explicit confirmation. Do not launch now.
+Recommendation: implement an isolated adapter trainer first, then run Smoke1 on
+PAI. Do not launch 2000-step training now.
 
 ## MiniMax-Remover Feasibility
 

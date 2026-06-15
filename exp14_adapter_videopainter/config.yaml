@@ -1,0 +1,39 @@
+experiment_name: exp14_adapter_videopainter
+status: feasibility_smoke_planning
+current_best_source_method: exp11_outer_b075_s2
+adapter_target: VideoPainter
+adapter_type: direct_diff_dpo_design_feasible_not_implemented
+repo_url: https://github.com/TencentARC/VideoPainter
+local_repo_path_hal: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter
+repo_commit_hal: bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a
+license: VideoPainter academic/research license plus CogVideoX license
+training_entry:
+  - train/VideoPainter.sh
+  - train/VideoPainterID.sh
+  - train/train_cogvideox_inpainting_i2v_video.py
+  - train/train_cogvideox_inpainting_i2v_video_resample.py
+base_loss: CogVideoX velocity/latent denoising loss plus mask inpainting loss
+proposed_dpo_loss:
+  gap_normalization: log_ratio
+  beta_dpo: 10.0
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  boundary_mode: outer
+  mask_weight: 1.0
+  boundary_weight: 0.75
+  outside_weight: 0.05
+data:
+  train: YouTube-VOS / D3 GT-win generated-loser pairs after VideoPainter format conversion
+  eval: DAVIS / YouTubeVOS with fixed raw6 hard-comp metric where compatible
+smoke1:
+  status: not_run
+  reason: not running PAI smoke from HAL; adapter train script not implemented
+smoke20:
+  status: not_run
+  reason: smoke1 not run/passed
+gate2000:
+  status: not_ready
+  reason: requires adapter implementation plus smoke1/smoke20 pass and user confirmation
+

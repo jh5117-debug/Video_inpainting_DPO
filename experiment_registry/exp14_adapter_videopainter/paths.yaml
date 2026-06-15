@@ -1,0 +1,15 @@
+experiment_folder: exp14_adapter_videopainter
+local_videopainter_repo_hal: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter
+repo_audit: exp14_adapter_videopainter/reports/videopainter_repo_audit.md
+training_entry_audit: exp14_adapter_videopainter/reports/videopainter_training_entry_audit.md
+loss_interface_audit: exp14_adapter_videopainter/reports/videopainter_loss_interface_audit.md
+reference_model_audit: exp14_adapter_videopainter/reports/videopainter_reference_model_audit.md
+smoke1_report: exp14_adapter_videopainter/reports/smoke1_report.md
+smoke20_report: exp14_adapter_videopainter/reports/smoke20_report.md
+global_repo_audit: reports/videopainter_repo_audit.md
+global_training_entry_audit: reports/videopainter_training_entry_audit.md
+global_loss_interface_audit: reports/videopainter_loss_interface_audit.md
+global_reference_model_audit: reports/videopainter_reference_model_audit.md
+prd26: PRD/26_videopainter_adapter_feasibility.md
+prd27: PRD/27_videopainter_adapter_feasibility_and_smoke.md
+
