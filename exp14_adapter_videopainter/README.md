@@ -1,6 +1,6 @@
 # Exp14: VideoPainter Adapter Feasibility
 
-Status: feasibility / smoke planning only. No 2000-step training has been launched.
+Status: direct-gate precheck blocked. No 2000-step training has been launched.
 
 Goal:
 
@@ -16,9 +16,9 @@ Current decision:
 - VideoPainter is diffusion / DiT based through CogVideoX.
 - Direct Diff-DPO is structurally feasible, because the training loop exposes
   timestep, noise, target, mask, policy prediction, and inpainting loss tensors.
-- The adapter is **not implemented yet**, so 1-step / 20-step smoke has not been
-  run from HAL.
-- Gate2000 is **not ready** until adapter code, smoke1, and smoke20 pass on PAI.
+- The adapter is **not implemented yet**.
+- The user requested skipping smoke, but Gate2000 is still blocked until the
+  isolated trainer and minimum preflight pass on PAI.
 
 Key reports:
 
@@ -30,4 +30,3 @@ exp14_adapter_videopainter/reports/videopainter_reference_model_audit.md
 exp14_adapter_videopainter/reports/smoke1_report.md
 exp14_adapter_videopainter/reports/smoke20_report.md
 ```
-

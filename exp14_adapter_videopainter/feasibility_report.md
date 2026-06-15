@@ -6,7 +6,7 @@ adapter training script is implemented in this experiment folder.
 Classification:
 
 ```text
-adapter_type = direct_diff_dpo_design_feasible_not_implemented
+adapter_type = direct_diff_dpo_blocked_pending_isolated_trainer
 ```
 
 Why feasible:
@@ -24,6 +24,6 @@ Why blocked:
   reconstruction target.
 - It does not load winner/loser pairs.
 - It does not run frozen reference forward.
+- It does not read the current frame-directory winner / loser / mask manifest.
 - It does not compute `m_w`, `m_l`, `m_w_ref`, `m_l_ref`.
 - It does not record DPO diagnostics.
-

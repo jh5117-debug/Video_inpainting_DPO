@@ -25,12 +25,12 @@ m_l_ref = frozen reference loser loss
 ## Adapter Type
 
 ```text
-adapter_type = direct_diff_dpo_design_feasible_not_implemented
+adapter_type = direct_diff_dpo_blocked_pending_isolated_trainer
 ```
 
 This is stronger than output-level preference because the model exposes latent
-denoising loss tensors. But it is not ready for smoke until the adapter trainer
-exists.
+denoising loss tensors. But it is not runnable until the isolated adapter
+trainer and pair dataloader exist.
 
 ## Proposed Exp11 Outer Loss
 
@@ -53,14 +53,14 @@ outside = 0.05
 
 ## Blocking Gaps
 
-- No winner/loser pair dataset in VideoPainter format.
+- No winner/loser pair dataloader for the current frame-directory manifest.
 - No policy/reference dual forward.
 - No DPO loss implementation.
 - No adapter diagnostics.
-- No PAI smoke memory measurement.
+- No PAI reference-memory measurement.
 
 ## Decision
 
-Do not run 1-step or 20-step smoke yet. First implement the adapter trainer in
-the isolated `exp14_adapter_videopainter/code/` directory.
-
+Do not run gate2000 yet. First implement the adapter trainer in the isolated
+`exp14_adapter_videopainter/code/` directory. The user requested skipping
+smoke, but the minimum preflight cannot run without the trainer.

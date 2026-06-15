@@ -20,7 +20,7 @@ Decision: **possible future adapter gate, but needs modification before training
 Exp14 status:
 
 ```text
-direct_diff_dpo_design_feasible_not_implemented
+direct_diff_dpo_blocked_pending_isolated_trainer
 ```
 
 Why it is the only realistic adapter-gate candidate now:
@@ -35,9 +35,9 @@ Why not launch yet:
 - data format conversion is required;
 - DPO policy/reference integration is non-trivial;
 - compute cost is high;
-- the current task is PRD/report cleanup only.
 - the dedicated adapter trainer is not implemented yet;
-- Smoke1 and Smoke20 have not passed.
+- user requested skipping Smoke1 and Smoke20;
+- the minimum preflight still cannot run because the isolated trainer is missing.
 
 ### MiniMax-Remover
 
@@ -55,5 +55,5 @@ Do not launch anything now.
 
 If the user later approves an adapter gate, first implement an isolated
 VideoPainter DPO adapter trainer under `exp14_adapter_videopainter/code/`, then
-run Smoke1 and Smoke20 on PAI. Only after both pass should Gate2000 be prepared
-for actual launch confirmation.
+run the minimum preflight on PAI. Only after that passes should Gate2000 be
+launched.

@@ -50,7 +50,7 @@ Conclusion: **B. needs modification before training**. After the Exp14 audit,
 the more precise label is:
 
 ```text
-direct_diff_dpo_design_feasible_not_implemented
+direct_diff_dpo_blocked_pending_isolated_trainer
 ```
 
 Why:
@@ -74,12 +74,12 @@ train/train_cogvideox_inpainting_i2v_video_resample.py
 
 But it is not plug-and-play for our DPO objective:
 
-- data format must be converted from our YouTube-VOS/D3 manifest into VideoPainter CSV/raw-video format;
+- data format must be connected through a new pair dataloader for our frame-directory manifest;
 - policy/reference forward passes must be inserted around its CogVideoX/branch training tensors;
 - our fixed DAVIS / YouTubeVOS raw6 hard-comp evaluation wrapper must be connected to its frame outputs;
 - likely compute cost is high.
 
-Recommendation: implement an isolated adapter trainer first, then run Smoke1 on
+Recommendation: implement an isolated adapter trainer first, then run the minimum preflight on
 PAI. Do not launch 2000-step training now.
 
 ## MiniMax-Remover Feasibility

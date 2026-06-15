@@ -15,6 +15,13 @@ gate2000_precheck_blocked
 
 The run was not launched.
 
+After a deeper structure audit, the conclusion is refined:
+
+```text
+VideoPainter direct Diff-DPO is structurally possible,
+but blocked until an isolated trainer is implemented.
+```
+
 ## Why Blocked
 
 The required isolated adapter trainer is missing:
@@ -63,10 +70,24 @@ Upstream entries exist:
 
 PAI was reachable and has the expected data paths and idle GPUs.
 
+The upstream VideoPainter training loop is diffusion / denoising based and
+therefore exposes the kind of latent loss needed for direct DPO in principle.
+
 ## What Failed
 
 PAI checked project roots did not contain the Exp14 adapter folder or trainer.
 HAL also does not contain the trainer.
+
+The current DPO manifest is also not in upstream VideoPainter CSV +
+`all_masks.npz` format. It uses frame directories:
+
+```text
+win_video_path
+final_loser_video_path
+mask_path
+```
+
+An isolated pair dataloader is required.
 
 ## Current Status
 
@@ -80,3 +101,10 @@ No DAVIS eval was run.
 Implement the isolated adapter trainer under `exp14_adapter_videopainter/code/`.
 Only after that trainer exists should the gate script be rerun.
 
+See:
+
+```text
+PRD/29_videopainter_dpo_adapter_trainer.md
+reports/videopainter_model_structure_audit.md
+reports/videopainter_dpo_trainer_preflight.md
+```

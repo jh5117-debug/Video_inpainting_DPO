@@ -12,7 +12,8 @@ Status: blocked before launch.
    exist yet.
 
 3. Adapter type?
-   Planned adapter type is direct Diff-DPO, but it is not implemented.
+   `direct_diff_dpo_blocked_pending_isolated_trainer`. The model structure can
+   support direct Diff-DPO in principle, but the trainer is not implemented.
 
 4. dpo_diag normal?
    No dpo_diag exists for gate2000 because no run started.
@@ -33,7 +34,6 @@ Status: blocked before launch.
    Not yet.
 
 10. Main failure point?
-    Missing isolated VideoPainter DPO adapter trainer. Upstream VideoPainter
-    training code cannot be launched as a DPO adapter without policy/reference
-    winner/loser loss integration.
-
+    Missing isolated VideoPainter DPO adapter trainer and pair dataloader.
+    Upstream VideoPainter training code cannot be launched as a DPO adapter
+    without policy/reference winner/loser loss integration.

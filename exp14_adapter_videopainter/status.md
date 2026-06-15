@@ -17,13 +17,15 @@ What has not passed:
 - No VideoPainter DPO adapter training script exists yet.
 - No implemented policy/reference DPO loss entry exists under
   `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`.
+- No VideoPainter pair dataloader exists for the current frame-directory DPO
+  manifest.
 - PAI precheck found data and idle GPUs, but did not find Exp14 adapter code.
 
 Decision:
 
 ```text
 Do not launch 2000-step training from the upstream VideoPainter script alone.
-Implement/copy a dedicated VideoPainter DPO adapter trainer first, then rerun
-the gate2000 precheck. Smoke is skipped by user request, but the trainer and
-reference/loss interface are still hard requirements.
+Implement/copy a dedicated VideoPainter DPO adapter trainer and pair dataloader
+first, then rerun the gate2000 precheck. Smoke is skipped by user request, but
+the trainer and reference/loss interface are still hard requirements.
 ```

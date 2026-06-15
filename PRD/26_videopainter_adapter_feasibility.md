@@ -15,10 +15,10 @@ can be adapted to VideoPainter.
 ## Current Stage
 
 ```text
-feasibility + smoke planning only
+feasibility + direct-gate precheck blocked
 ```
 
-No 2000-step training is allowed yet.
+No 2000-step training has launched.
 
 ## Current Best Loss Idea
 
@@ -49,7 +49,7 @@ VideoPainter has official training code and is CogVideoX / DiT diffusion-based.
 ## Adapter Decision
 
 ```text
-adapter_type = direct_diff_dpo_design_feasible_not_implemented
+adapter_type = direct_diff_dpo_blocked_pending_isolated_trainer
 ```
 
 It is feasible because VideoPainter exposes diffusion timesteps, noise, latent
@@ -73,4 +73,3 @@ exp14_adapter_videopainter/reports/videopainter_training_entry_audit.md
 exp14_adapter_videopainter/reports/videopainter_loss_interface_audit.md
 exp14_adapter_videopainter/reports/videopainter_reference_model_audit.md
 ```
-

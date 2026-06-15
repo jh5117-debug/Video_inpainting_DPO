@@ -1,6 +1,6 @@
 # Experiment Registry: Exp14 VideoPainter Adapter
 
-Status: feasibility / smoke planning only.
+Status: direct-gate precheck blocked.
 
 VideoPainter is a future adapter candidate for the current best DPO objective:
 
@@ -8,5 +8,5 @@ VideoPainter is a future adapter candidate for the current best DPO objective:
 Exp11 outer b0.75 S2
 ```
 
-No smoke or long training has been run yet.
-
+No long training has been run yet. Smoke was skipped by user request, but the
+minimum preflight is blocked because the isolated trainer is missing.
