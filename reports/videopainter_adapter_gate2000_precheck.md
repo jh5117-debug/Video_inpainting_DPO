@@ -4,7 +4,8 @@ Date: 2026-06-15
 
 ## Status
 
-Blocked. The 2000-step gate was **not** launched.
+Trainer implemented after the original block. The 2000-step gate is still
+**not** launched until PAI trainer preflight passes.
 
 ## User Request
 
@@ -35,17 +36,25 @@ Passed:
   - `infer/inpaint.py`
   - `evaluate/eval_inpainting.py`
 
-Failed:
+Now implemented:
 
-- The isolated adapter trainer is missing:
+- Isolated adapter trainer:
   `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`
-- Therefore the gate cannot compute:
+- Local static checks passed:
+  - `python -m py_compile`
+  - `bash -n` for the gate launcher
+- The trainer defines:
   - `m_w`
   - `m_l`
   - `m_w_ref`
   - `m_l_ref`
   - region-local normalized-gap DPO loss
   - VideoPainter adapter diagnostics
+
+Still pending:
+
+- PAI has not yet run the trainer preflight with real VideoPainter weights.
+- Gate2000 remains blocked until that preflight passes.
 
 ## PAI Precheck
 
@@ -82,16 +91,22 @@ Findings:
 7, 58071, 143771, 0
 ```
 
-Failed:
+Original PAI failure:
 
 - PAI checked repos did not contain `exp14_adapter_videopainter`.
-- PAI checked repos did not contain
-  `exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py`.
+- PAI checked repos did not contain the adapter trainer.
 - The VideoPainter repo was not found in the checked project paths.
+
+Required before the next PAI run:
+
+- sync this Exp14 folder to PAI;
+- place or verify VideoPainter repo / base model / branch checkpoint paths;
+- run the updated gate launcher, which performs `--preflight_only` before
+  starting 2000-step.
 
 ## Decision
 
-Do not start 2000-step training.
+Do not start 2000-step training until PAI preflight passes.
 
 Starting upstream VideoPainter training here would only train the official
 VideoPainter objective, not the requested Exp11 outer b0.75 S2 style DPO
@@ -99,7 +114,7 @@ adapter. That would create a mislabeled experiment.
 
 ## Required Next Implementation
 
-Before the gate can run, implement an isolated trainer:
+Before the gate can run on PAI, sync and preflight the isolated trainer:
 
 ```text
 exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
@@ -118,3 +133,5 @@ It must:
 - save checkpoints and last weights;
 - run DAVIS eval with the project metric wrapper.
 
+The trainer is now implemented locally, but DAVIS eval wiring after gate2000 is
+still pending and should remain blocked until training itself completes.

@@ -6,6 +6,7 @@ EXP="exp14_adapter_videopainter_gate2000"
 
 VP_ROOT="${VIDEO_PAINTER_ROOT:-$ROOT/third_party/VideoPainter}"
 ADAPTER_TRAIN="${ADAPTER_TRAIN:-$ROOT/exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py}"
+VP_BASE_MODEL="${VIDEO_PAINTER_BASE_MODEL:-$VP_ROOT/ckpt/CogVideoX-5b-I2V}"
 VP_CKPT="${VIDEO_PAINTER_CHECKPOINT_ROOT:-$VP_ROOT/ckpt/VideoPainter/checkpoints/branch}"
 VP_REF_CKPT="${VIDEO_PAINTER_REFERENCE_CHECKPOINT_ROOT:-$VP_CKPT}"
 
@@ -27,6 +28,7 @@ echo "===== Exp14 VideoPainter Adapter Gate2000 Precheck + Launch ====="
 date
 echo "ROOT=$ROOT"
 echo "VP_ROOT=$VP_ROOT"
+echo "VP_BASE_MODEL=$VP_BASE_MODEL"
 echo "ADAPTER_TRAIN=$ADAPTER_TRAIN"
 echo "RUN_DIR=$RUN_DIR"
 echo "LOG=$LOG"
@@ -42,6 +44,7 @@ fail() {
     echo
     echo "root: $ROOT"
     echo "videopainter_repo: $VP_ROOT"
+    echo "videopainter_base_model: $VP_BASE_MODEL"
     echo "adapter_train: $ADAPTER_TRAIN"
     echo "policy_checkpoint: $VP_CKPT"
     echo "reference_checkpoint: $VP_REF_CKPT"
@@ -62,6 +65,7 @@ test -f "$VP_ROOT/infer/inpaint.py" || fail "VideoPainter inference entry missin
 test -f "$VP_ROOT/evaluate/eval_inpainting.py" || fail "VideoPainter evaluation entry missing"
 
 test -f "$ADAPTER_TRAIN" || fail "isolated VideoPainter DPO adapter trainer is not implemented"
+test -e "$VP_BASE_MODEL" || fail "VideoPainter CogVideoX base model path missing"
 test -e "$VP_CKPT" || fail "VideoPainter policy checkpoint root missing"
 test -e "$VP_REF_CKPT" || fail "VideoPainter reference checkpoint root missing"
 test -d "$YTVOS_ROOT" || fail "YouTube-VOS train root missing"
@@ -103,6 +107,7 @@ python -m py_compile "$ADAPTER_TRAIN" || fail "adapter trainer py_compile failed
   echo "time: $(date)"
   echo "root: $ROOT"
   echo "videopainter_repo: $VP_ROOT"
+  echo "videopainter_base_model: $VP_BASE_MODEL"
   echo "adapter_train: $ADAPTER_TRAIN"
   echo "policy_checkpoint: $VP_CKPT"
   echo "reference_checkpoint: $VP_REF_CKPT"
@@ -114,6 +119,41 @@ python -m py_compile "$ADAPTER_TRAIN" || fail "adapter trainer py_compile failed
   echo "log: $LOG"
 } > "$PRECHECK_REPORT"
 
+PREFLIGHT_DIR="$ROOT/exp14_adapter_videopainter/runs/preflight"
+PREFLIGHT_DIAG="$ROOT/exp14_adapter_videopainter/dpo_diag/preflight_dpo_diagnostics.csv"
+mkdir -p "$PREFLIGHT_DIR"
+
+echo "===== Running trainer preflight ====="
+python "$ADAPTER_TRAIN" \
+  --preflight_only \
+  --max_train_steps 1 \
+  --mixed_precision bf16 \
+  --report_to none \
+  --dpo_diag_log_every 1 \
+  --dpo_diag_csv "$PREFLIGHT_DIAG" \
+  --videopainter_root "$VP_ROOT" \
+  --pretrained_model_name_or_path "$VP_BASE_MODEL" \
+  --policy_checkpoint "$VP_CKPT" \
+  --reference_checkpoint "$VP_REF_CKPT" \
+  --pair_manifest "$PAIR_MANIFEST" \
+  --youtubevos_root "$YTVOS_ROOT" \
+  --davis_root "$DAVIS_ROOT" \
+  --output_dir "$PREFLIGHT_DIR" \
+  --beta_dpo 10 \
+  --lose_gap_weight 0.25 \
+  --lose_gap_clip_tau 1.0 \
+  --winner_abs_reg_weight 0.05 \
+  --winner_gap_reg_weight 1.0 \
+  --winner_gap_reg_margin 0.0 \
+  --boundary_mode outer \
+  --mask_weight 1.0 \
+  --boundary_weight 0.75 \
+  --outside_weight 0.05 \
+  || fail "trainer preflight failed; gate2000 not launched"
+
+test -f "$PREFLIGHT_DIR/preflight_report.json" || fail "trainer preflight did not write preflight_report.json"
+test -s "$PREFLIGHT_DIAG" || fail "trainer preflight did not write diagnostics"
+
 echo "===== Launching gate2000 ====="
 setsid nohup python "$ADAPTER_TRAIN" \
   --max_train_steps 2000 \
@@ -124,6 +164,7 @@ setsid nohup python "$ADAPTER_TRAIN" \
   --dpo_diag_log_every 10 \
   --dpo_diag_csv "$ROOT/exp14_adapter_videopainter/dpo_diag/dpo_diagnostics.csv" \
   --videopainter_root "$VP_ROOT" \
+  --pretrained_model_name_or_path "$VP_BASE_MODEL" \
   --policy_checkpoint "$VP_CKPT" \
   --reference_checkpoint "$VP_REF_CKPT" \
   --pair_manifest "$PAIR_MANIFEST" \

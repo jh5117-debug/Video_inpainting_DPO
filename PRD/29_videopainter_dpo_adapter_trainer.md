@@ -5,8 +5,9 @@ Date: 2026-06-15
 ## Summary
 
 VideoPainter can support direct Diff-DPO in principle because its official
-training loop is diffusion / denoising based. However, the actual isolated DPO
-adapter trainer is not implemented yet, so gate2000 remains blocked.
+training loop is diffusion / denoising based. An isolated first-pass DPO
+adapter trainer has now been implemented under Exp14, but gate2000 remains
+blocked until the PAI preflight passes with real VideoPainter weights.
 
 ## Why Direct Diff-DPO Is Structurally Possible
 
@@ -60,15 +61,31 @@ L_DPO = mean[-logsigmoid(-0.5 * beta_dpo * (g_w - lose_gap_weight * g_l_clip))]
 L_total = L_DPO + 0.05 * m_w + ReLU(g_w)
 ```
 
-## Why Current Gate Is Blocked
+## Implemented Isolated Trainer
 
-The missing file is:
+Implemented file:
 
 ```text
 exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
 ```
 
-The upstream training code is insufficient because it:
+This trainer is isolated from old Exp9 / Exp10 / Exp11 code and does not modify
+shared `training/dpo`.
+
+It implements:
+
+- a JSONL pair dataloader for `win_video_path`, `final_loser_video_path`, and
+  `mask_path`;
+- VideoPainter policy branch and frozen reference branch;
+- winner / loser forward passes on shared noise and timestep;
+- region-local MSE with `boundary_mode=outer`, `mask=1.0`,
+  `boundary=0.75`, `outside=0.05`;
+- normalized-gap clipped-loser-gap winner-anchored DPO;
+- `dpo_diagnostics.csv`;
+- `--preflight_only`;
+- checkpoint / `last_weights` saving for the policy branch.
+
+The upstream training code is still insufficient by itself because it:
 
 - reads one clean video and one mask, not GT winner + generated loser pairs;
 - uses VideoPainter CSV + `all_masks.npz`, not our frame-directory manifest;
@@ -78,15 +95,15 @@ The upstream training code is insufficient because it:
 - does not record `dpo_diagnostics.csv`;
 - does not run the project fixed metric / four-column eval.
 
-## Required Implementation Plan
+## Trainer Design
 
-The trainer must be implemented only under:
+The trainer remains only under:
 
 ```text
 exp14_adapter_videopainter/code/
 ```
 
-Required modules:
+Implemented modules:
 
 1. `VideoPainterPairDataset`
    - reads JSONL manifest;
@@ -116,6 +133,29 @@ Required modules:
    - uses VideoPainter baseline and adapter output;
    - writes project-standard metrics and four-column visualizations.
 
+## Current Gate Blocker
+
+Gate2000 is not launched yet because the trainer has not passed PAI preflight
+with real model weights and actual memory pressure.
+
+Required PAI paths:
+
+```text
+VIDEO_PAINTER_ROOT
+VIDEO_PAINTER_BASE_MODEL
+VIDEO_PAINTER_CHECKPOINT_ROOT
+VIDEO_PAINTER_REFERENCE_CHECKPOINT_ROOT
+```
+
+The updated gate launcher runs preflight before training:
+
+```text
+exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
+```
+
+If preflight fails, it must report blocked and must not launch upstream
+VideoPainter training as a substitute.
+
 ## Preflight Requirement
 
 The user does not want smoke experiments, but the trainer must pass a minimum
@@ -131,8 +171,14 @@ This preflight is not an experiment result.
 ## Current Status
 
 ```text
-adapter_type = direct_diff_dpo_blocked_pending_isolated_trainer
+adapter_type = direct_diff_dpo_isolated_trainer
 gate2000 = not_launched
 preflight = not_run
+trainer = implemented_locally
 ```
 
+Limitations:
+
+- This is a branch-adapter DPO trainer, not full VideoPainter model finetuning.
+- Multi-GPU sharding is not implemented in the isolated trainer.
+- DAVIS four-column eval integration remains pending after gate2000 training.

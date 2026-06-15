@@ -18,13 +18,15 @@ The run was not launched.
 After a deeper structure audit, the conclusion is refined:
 
 ```text
-VideoPainter direct Diff-DPO is structurally possible,
-but blocked until an isolated trainer is implemented.
+VideoPainter direct Diff-DPO is structurally possible.
+The isolated trainer is now implemented locally.
+Gate2000 is still blocked until PAI preflight passes.
 ```
 
-## Why Blocked
+## Original Blocker
 
-The required isolated adapter trainer is missing:
+The original precheck blocked because the required isolated adapter trainer was
+missing:
 
 ```text
 exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
@@ -45,6 +47,26 @@ adapter objective:
 
 Launching the upstream VideoPainter training script would train the official
 VideoPainter objective, not a DPO adapter. It would be a mislabeled experiment.
+
+## Current Implementation
+
+Implemented after the original block:
+
+```text
+exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
+```
+
+It implements:
+
+- a pair dataloader for the current frame-directory manifest;
+- policy branch + frozen reference branch;
+- shared noise / timestep winner and loser forwards;
+- `m_w`, `m_l`, `m_w_ref`, `m_l_ref`;
+- region-local outer-boundary MSE;
+- log-ratio normalized-gap clipped-loser-gap winner-anchored DPO;
+- diagnostics CSV;
+- checkpoint and `last_weights` saving;
+- `--preflight_only`.
 
 ## What Passed
 
@@ -73,10 +95,10 @@ PAI was reachable and has the expected data paths and idle GPUs.
 The upstream VideoPainter training loop is diffusion / denoising based and
 therefore exposes the kind of latent loss needed for direct DPO in principle.
 
-## What Failed
+## What Still Needs PAI Validation
 
-PAI checked project roots did not contain the Exp14 adapter folder or trainer.
-HAL also does not contain the trainer.
+PAI checked project roots did not contain the Exp14 adapter folder or trainer
+at the time of the original precheck. The new trainer must be synced to PAI.
 
 The current DPO manifest is also not in upstream VideoPainter CSV +
 `all_masks.npz` format. It uses frame directories:
@@ -87,19 +109,26 @@ final_loser_video_path
 mask_path
 ```
 
-An isolated pair dataloader is required.
+The new trainer includes a pair dataloader for this format, but it has not yet
+been run against the real PAI VideoPainter weights.
 
 ## Current Status
 
 No training was started.
 No checkpoint was written.
-No dpo_diag was written.
+No gate2000 dpo_diag was written.
 No DAVIS eval was run.
 
 ## Next Required Work
 
-Implement the isolated adapter trainer under `exp14_adapter_videopainter/code/`.
-Only after that trainer exists should the gate script be rerun.
+Sync the Exp14 folder and VideoPainter repo / weights to PAI, then rerun:
+
+```text
+exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
+```
+
+The launcher now runs trainer preflight first. If preflight fails, gate2000 must
+remain blocked.
 
 See:
 
