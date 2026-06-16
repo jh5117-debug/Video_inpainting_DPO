@@ -108,8 +108,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--preflight_only", action="store_true")
     parser.add_argument("--limit_train_samples", type=int, default=0)
 
-    parser.add_argument("--height", type=int, default=320)
-    parser.add_argument("--width", type=int, default=512)
+    parser.add_argument("--height", type=int, default=480)
+    parser.add_argument("--width", type=int, default=720)
     parser.add_argument("--num_frames", type=int, default=16)
     parser.add_argument("--first_frame_gt", action=argparse.BooleanOptionalAction, default=True)
     parser.add_argument("--prompt_max_sequence_length", type=int, default=226)
@@ -144,6 +144,16 @@ def setup_videopainter_imports(videopainter_root: str):
     for p in (str(diffusers_src), str(train_dir), str(root)):
         if p not in sys.path:
             sys.path.insert(0, p)
+
+    # VideoPainter vendors a Diffusers snapshot that still imports this
+    # Transformers constant. Newer Transformers releases removed the re-export.
+    try:
+        import transformers.utils as transformers_utils
+
+        if not hasattr(transformers_utils, "FLAX_WEIGHTS_NAME"):
+            transformers_utils.FLAX_WEIGHTS_NAME = "flax_model.msgpack"
+    except Exception:
+        pass
 
     train_file = train_dir / "train_cogvideox_inpainting_i2v_video.py"
     if not train_file.exists():

@@ -58,7 +58,7 @@ fail() {
 }
 
 test -d "$ROOT" || fail "project root missing"
-test -d "$VP_ROOT/.git" || fail "VideoPainter repo missing or not a git repo"
+test -d "$VP_ROOT" || fail "VideoPainter repo directory missing"
 test -f "$VP_ROOT/train/VideoPainter.sh" || fail "VideoPainter train/VideoPainter.sh missing"
 test -f "$VP_ROOT/train/train_cogvideox_inpainting_i2v_video.py" || fail "VideoPainter Python training entry missing"
 test -f "$VP_ROOT/infer/inpaint.py" || fail "VideoPainter inference entry missing"
@@ -149,6 +149,8 @@ python "$ADAPTER_TRAIN" \
   --mask_weight 1.0 \
   --boundary_weight 0.75 \
   --outside_weight 0.05 \
+  --height 480 \
+  --width 720 \
   || fail "trainer preflight failed; gate2000 not launched"
 
 test -f "$PREFLIGHT_DIR/preflight_report.json" || fail "trainer preflight did not write preflight_report.json"
@@ -181,6 +183,8 @@ setsid nohup python "$ADAPTER_TRAIN" \
   --mask_weight 1.0 \
   --boundary_weight 0.75 \
   --outside_weight 0.05 \
+  --height 480 \
+  --width 720 \
   > "$RUN_DIR/train.log" 2>&1 < /dev/null &
 
 echo $! > "$PID_FILE"

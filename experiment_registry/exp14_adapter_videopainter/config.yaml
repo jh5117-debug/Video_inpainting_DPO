@@ -1,21 +1,61 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: blocked_missing_weights_and_pai_hf_network_unreachable
+status: completed_training_eval_blocked
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
 repo_url: https://github.com/TencentARC/VideoPainter
 repo_commit_hal: bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a
 current_best_source_method: exp11_outer_b075_s2
-smoke1: skipped_by_user_request
-smoke20: skipped_by_user_request
-gate2000: blocked_before_preflight
-gate2000_blocker: missing CogVideoX-5b-I2V base model and VideoPainter branch checkpoint on PAI/HAL; PAI hf download fails with Network is unreachable
-trainer_path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
-trainer_preflight: blocked_missing_weights_and_pai_hf_network_unreachable
-pai_sync_strategy: clean_worktree
-pai_clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
-pai_source_commit: 2e187ee
-videopainter_code_synced_to_pai: true
-data_ready_on_pai: true
-gpu_ready_on_pai: true
-hf_download_attempted_on_pai: true
-hf_download_error: "httpx.ConnectError: [Errno 101] Network is unreachable"
+
+loss:
+  type: region-local normalized-gap clipped-loser-gap winner-anchored DPO
+  beta_dpo: 10.0
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  winner_gap_reg_margin: 0.0
+  boundary_mode: outer
+  mask_weight: 1.0
+  boundary_weight: 0.75
+  outside_weight: 0.05
+
+trainer:
+  path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
+  preflight_status: passed_on_pai
+  upstream_training_used: false
+
+pai:
+  sync_strategy: clean_worktree
+  clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+  source_commit: 2e187ee
+  gpu: 0
+  pid: 659269
+  status: running
+  final_status: completed_training
+
+weights:
+  hal_root: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter/ckpt
+  pai_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt
+  sources:
+    - TencentARC/VideoPainter
+    - THUDM/CogVideoX-5b-I2V
+  transfer_method: rsync_partial_append_verify
+
+training:
+  max_steps: 2000
+  checkpointing_steps: 500
+  checkpoint_500: present
+  checkpoint_1000: present
+  checkpoint_1500: present
+  checkpoint_2000: present
+  last_weights: present
+  dpo_diag: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/exp14_adapter_videopainter/dpo_diag/dpo_diagnostics.csv
+  run_dir: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/exp14_adapter_videopainter/runs/gate2000
+  log: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/logs/pipelines/exp14_adapter_videopainter_gate2000.log
+  train_log: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/exp14_adapter_videopainter/runs/gate2000/train.log
+
+eval:
+  dataset: DAVIS
+  metric_backend: inference/metrics.py or compatible wrapper
+  vbench: false
+  status: blocked_pending_exp14_thin_eval_adapter

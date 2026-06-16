@@ -6,8 +6,8 @@ Date: 2026-06-15
 
 VideoPainter can support direct Diff-DPO in principle because its official
 training loop is diffusion / denoising based. An isolated first-pass DPO
-adapter trainer has now been implemented under Exp14, but gate2000 remains
-blocked until the PAI preflight passes with real VideoPainter weights.
+adapter trainer has now been implemented under Exp14. The PAI preflight passed
+with real VideoPainter weights, and gate2000 completed 2000 steps.
 
 ## Why Direct Diff-DPO Is Structurally Possible
 
@@ -135,8 +135,8 @@ Implemented modules:
 
 ## Current Gate Blocker
 
-Gate2000 is not launched yet because PAI does not currently have the required
-VideoPainter / CogVideoX weights, and PAI cannot download them from Hugging
+Resolved. Gate2000 was previously blocked because PAI did not have the required
+VideoPainter / CogVideoX weights, and PAI could not download them from Hugging
 Face in the current network environment.
 
 Required PAI paths:
@@ -148,7 +148,8 @@ VIDEO_PAINTER_CHECKPOINT_ROOT
 VIDEO_PAINTER_REFERENCE_CHECKPOINT_ROOT
 ```
 
-The updated gate launcher runs preflight before training:
+The weights were downloaded on HAL and transferred to PAI. The updated gate
+launcher runs preflight before training:
 
 ```text
 exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
@@ -157,7 +158,28 @@ exp14_adapter_videopainter/scripts/launch_videopainter_adapter_gate2000_pai.sh
 If preflight fails, it must report blocked and must not launch upstream
 VideoPainter training as a substitute.
 
-## Latest PAI Attempt
+PAI preflight status:
+
+```text
+status = passed
+loss = 0.7026171684
+dpo_loss = 0.6931471825
+m_w = 0.1893996745
+m_l = 0.2312944233
+m_w_ref = 0.1893996745
+m_l_ref = 0.2312944233
+reference_has_grad = false
+```
+
+Implementation fixes needed for the PAI preflight:
+
+- add a Transformers compatibility shim for the vendored VideoPainter /
+  Diffusers import path;
+- use VideoPainter's native `480x720` resolution rather than the earlier
+  `320x512` DPO default;
+- install the missing lightweight `ffmpeg-python` import dependency on PAI.
+
+## Latest PAI Run
 
 Date: 2026-06-16 CST
 
@@ -165,8 +187,8 @@ Date: 2026-06-16 CST
 sync_strategy = clean_worktree
 clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
 source_commit = 2e187ee
-status = blocked_before_preflight
-reason = missing weights + PAI Hugging Face network unreachable
+status = completed_2000_steps
+davis_eval = blocked_pending_exp14_thin_eval_adapter
 ```
 
 What passed:
@@ -178,22 +200,20 @@ What passed:
 - YouTube-VOS, DAVIS, and DPO manifest paths are present.
 - The manifest is PAI-safe.
 - GPUs are available.
+- Missing weights were resolved by downloading on HAL and transferring to PAI.
+- Trainer preflight passed.
+- Gate2000 completed 2000 steps.
+- `checkpoint-500`, `checkpoint-1000`, `checkpoint-1500`, `checkpoint-2000`,
+  and `last_weights` exist.
 
-Hard blocker:
+Resolved weight blocker:
 
 ```text
-missing VideoPainter base model:
-  third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
-
-missing VideoPainter branch checkpoint:
-  third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+third_party/VideoPainter/ckpt/CogVideoX-5b-I2V
+third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
 ```
 
-Without these weights, the trainer cannot construct a trainable policy branch
-or a frozen reference branch, so it cannot compute `m_w`, `m_l`, `m_w_ref`, or
-`m_l_ref`.
-
-Download attempts:
+Historical PAI download failure:
 
 ```text
 huggingface-cli download TencentARC/VideoPainter
@@ -201,6 +221,13 @@ huggingface-cli download TencentARC/VideoPainter
 
 hf download TencentARC/VideoPainter
   -> httpx.ConnectError: [Errno 101] Network is unreachable
+```
+
+Resolution:
+
+```text
+HAL downloaded TencentARC/VideoPainter and THUDM/CogVideoX-5b-I2V.
+HAL transferred weights to PAI via rsync --partial --append-verify.
 ```
 
 Required final layout:
@@ -231,9 +258,10 @@ This preflight is not an experiment result.
 
 ```text
 adapter_type = direct_diff_dpo_isolated_trainer
-gate2000 = not_launched
-preflight = blocked_missing_weights_and_pai_hf_network_unreachable
+gate2000 = completed_2000_steps
+preflight = passed_on_pai
 trainer = implemented_locally
+davis_eval = blocked_pending_exp14_thin_eval_adapter
 ```
 
 Limitations:
@@ -241,3 +269,7 @@ Limitations:
 - This is a branch-adapter DPO trainer, not full VideoPainter model finetuning.
 - Multi-GPU sharding is not implemented in the isolated trainer.
 - DAVIS four-column eval integration remains pending after gate2000 training.
+  The upstream VideoPainter eval path is not the fixed raw6 hard-comp protocol,
+  fails without the Exp14 import shim, and expects an additional `ckpt/flux_inp`
+  model in the DAVIS path. This is recorded as an eval blocker rather than a
+  completed metric result.
