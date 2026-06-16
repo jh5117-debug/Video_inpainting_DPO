@@ -1,0 +1,10 @@
+method,status,num_videos,num_success,num_failed,PSNR_bg,SSIM_bg_ignore_mask,TC_bg,notes
+propainter,ok,50,50,0,35.52744975483371,0.9926804626215981,35.76638031030585,
+videocomposer,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions
+cococo,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions
+floed,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions
+diffueraser_sft48000,ok,50,50,0,28.67730677176694,0.9686230499256183,28.85051911409697,
+videopainter,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions
+vace,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions
+ours_exp11_outer_b075_s2,ok,50,50,0,28.679494195003223,0.9684639760316165,28.868220680332364,
+minimax_remover,failed_or_blocked,50,0,50,nan,nan,nan,no successful predictions

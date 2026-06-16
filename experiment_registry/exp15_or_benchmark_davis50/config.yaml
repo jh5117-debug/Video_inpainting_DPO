@@ -1,0 +1,23 @@
+experiment_name: exp15_or_benchmark_davis50
+task: OR / object removal
+dataset: DAVIS2017 foreground object masks, DAVIS50 subset
+comp_for_metric: false
+metric:
+  primary:
+    - PSNR_bg
+    - SSIM_bg_ignore_mask
+  optional:
+    - TC_bg
+vbench: false
+methods:
+  ready_to_run:
+    - propainter
+    - diffueraser_sft48000
+    - ours_exp11_outer_b075_s2
+  blocked:
+    - cococo
+    - videocomposer
+    - floed
+    - videopainter
+    - vace
+    - minimax_remover

@@ -1,0 +1,14 @@
+hal_davis2017_root: /home/hj/Video_inpainting_DPO/data/external/davis_2017_full_resolution/DAVIS
+pai_davis2017_or_eval50_root: /mnt/nas/hj/data/external/davis_2017_full_resolution_or_eval50/DAVIS
+pai_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+pai_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50
+manifest: exp15_or_benchmark_davis50/manifests/davis50_or_manifest.csv
+diffueraser_sft48000_weights: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+ours_exp11_outer_b075_s2_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
+propainter_weights: /mnt/nas/hj/data/third_party_video_inpainting/weights/propainter
+cococo_repo: /mnt/nas/hj/official_repos/COCOCO_9ebe984
+cococo_weights: /mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/COCOCO_weight
+minimax_repo: /mnt/nas/hj/official_repos/MiniMax-Remover_28e12b4
+minimax_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current
+videopainter_repo: /mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter
+videopainter_weights: /mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt

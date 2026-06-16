@@ -1,0 +1,27 @@
+experiment_name: exp15_or_benchmark_davis50
+task: OR / object removal
+dataset: DAVIS2017 foreground object masks, DAVIS50 subset
+status: preparing
+comp_for_metric: false
+vbench: false
+eval_metric:
+  primary:
+    - PSNR_bg
+    - SSIM_bg_ignore_mask
+  optional:
+    - TC_bg
+    - LPIPS_if_available
+    - VFID_if_available
+note: OR metrics are background-region metrics and are not directly comparable with BR full-frame PSNR/SSIM.
+methods:
+  main:
+    - propainter
+    - videocomposer
+    - cococo
+    - floed
+    - diffueraser_sft48000
+    - videopainter
+    - vace
+    - ours_exp11_outer_b075_s2
+  extra:
+    - minimax_remover

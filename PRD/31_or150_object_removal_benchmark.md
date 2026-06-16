@@ -2,23 +2,49 @@
 
 Date: 2026-06-16
 
+## 2026-06-16 Update: Reduced To DAVIS50 Only
+
+The OR150 plan is paused for this stage. The active benchmark is now:
+
+```text
+Exp15 OR DAVIS50 only
+```
+
+This means:
+
+- do not run YouTubeVOS100 in this gate;
+- do not report OR150 numbers;
+- use DAVIS2017 foreground object masks only;
+- run full DAVIS50 for methods with a verified runtime;
+- keep blocked methods explicit in tables and visual grids.
+
+Current implementation folder:
+
+```text
+exp15_or_benchmark_davis50/
+```
+
 ## Goal
 
 Move from the current BR/inpainting story into an object-removal benchmark that
 uses true foreground masks where available.
 
-The target comparison requested for paper/PPT is:
+The target comparison requested for the current DAVIS50 OR benchmark is:
 
 ```text
-MiniMax-Remover
-COCOCO
+ProPainter
+VideoComp / VideoComposer
+CoCoCo
 FloED
 DiffuEraser SFT-48000
 VideoPainter
 VACE
-VideoComp / VideoComposer
 DiffuEraser Exp11 outer b0.75 S2
 ```
+
+MiniMax-Remover is tracked as an extra method. If it becomes runnable, it can be
+added to the auxiliary table and visual grids, but it should not block the main
+8-method table.
 
 This is frozen inference/evaluation only. It is not adapter training.
 
@@ -44,7 +70,8 @@ This is a different evaluation task from the previous BR/DAVIS432 masks.
 
 ### YouTubeVOS100 OR
 
-Use the fixed YouTubeVOS100 eval subset already staged on PAI:
+Paused for this stage. The path below remains a future option, but it is not
+used in the DAVIS50-only benchmark:
 
 ```text
 /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
@@ -58,11 +85,10 @@ exp15_or_benchmark/manifests/youtubevos100_or_manifest.csv
 
 ### Combined Manifest
 
-```text
-exp15_or_benchmark/manifests/or150_manifest.csv
-```
+The OR150 combined manifest is historical/future context only. It is not the
+active run.
 
-Counts:
+Historical planned counts:
 
 | Split | Videos |
 |---|---:|
@@ -86,28 +112,29 @@ DAVIS2017 foreground masks.
 
 ## Runtime Readiness
 
-| Method | OR150 Status | Notes |
+| Method | DAVIS50 OR Status | Notes |
 |---|---|---|
-| DiffuEraser SFT-48000 | ready | Use project OR wrapper and SFT-48000 weights. |
-| DiffuEraser Exp11 outer b0.75 S2 | ready with rerun | Must rerun on OR150 true masks before claiming OR result. |
-| MiniMax-Remover | ready frozen baseline, env pending | Real weights and official repo are present; needs isolated env with newer diffusers before inference. |
-| COCOCO | ready after one-video env smoke | Real weights and official repo exist on PAI/NAS. |
-| VideoPainter | ready frozen baseline | Use official inference setting and project metric wrapper. |
-| FloED | blocked | No verified local/PAI repo+weights+OR wrapper yet. |
-| VACE | blocked | No verified local/PAI repo+weights+OR wrapper yet. |
-| VideoComp / VideoComposer | blocked | No clean OR-compatible runtime validated. |
+| ProPainter | completed 50/50 | Existing wrapper and weights ran successfully. |
+| DiffuEraser SFT-48000 | completed 50/50 | Exp15 isolated DiffuEraser OR wrapper, no comp metric. |
+| DiffuEraser Exp11 outer b0.75 S2 | completed 50/50 | Same wrapper using Exp11 outer b0.75 S2 last weights. |
+| CoCoCo | blocked | Repo/checkpoints exist but required SD inpainting dependency is incomplete. |
+| VideoPainter | blocked | No verified DAVIS2017 foreground-mask OR wrapper. |
+| FloED | blocked | No verified local/PAI repo+weights+OR wrapper. |
+| VACE | blocked | No verified local/PAI repo+weights+OR wrapper. |
+| VideoComp / VideoComposer | blocked | No verified local/PAI repo+weights+OR wrapper. |
+| MiniMax-Remover | blocked extra | Requires isolated newer env; do not run in DiffuEraser env. |
 
 ## Visualization
 
-The desired method comparison is 8 method outputs:
+The DAVIS50 visual grids use the requested 8 method slots:
 
-1. MiniMax-Remover
-2. COCOCO
-3. FloED
-4. DiffuEraser SFT-48000
-5. VideoPainter
-6. VACE
-7. VideoComp / VideoComposer
+1. ProPainter
+2. VideoComp / VideoComposer
+3. CoCoCo
+4. FloED
+5. DiffuEraser SFT-48000
+6. VideoPainter
+7. VACE
 8. DiffuEraser Exp11 outer b0.75 S2
 
 GT/original and mask overlay should still be saved for every case. For PPT,
@@ -116,20 +143,27 @@ panel. If the final figure must be exactly 8 visual columns, use the 8 method
 outputs above and put GT/mask in the caption or a separate row. Do not include
 fake outputs for blocked methods.
 
+Generated Exp15 grids explicitly show blocked methods as unavailable
+placeholders, rather than silently dropping them.
+
 ## Metric Protocol
 
-- Use project `inference/metrics.py` / metric wrapper.
+- Use the Exp15 OR metric wrapper, which uses project image/video IO and keeps
+  the metric definition explicit in `reports/exp15_or_metric_protocol.md`.
 - No VBench.
 - Do not compute metrics through mp4 round-trip.
-- Hard comp for metric frames:
+- No hard comp for OR metric frames:
 
 ```text
-comp = prediction_inside_mask + GT_outside_mask
+input  = original frame
+output = raw method output
+bg     = mask == 0
 ```
 
-- No mask dilation during evaluation unless a baseline's own official inference
-  requires a preprocessing mask; if it does, record it as method-specific
-  inference setting.
+- Primary metrics are `PSNR_bg`, `SSIM_bg_ignore_mask`, and `TC_bg` if
+  available.
+- Mask-inside quality is judged through visual comparison, because OR has no
+  true removed-background GT inside the object mask.
 
 ## Storage Rule
 
@@ -141,17 +175,16 @@ Do not commit weights, videos, generated frames, or full metric outputs.
 
 ## Next Gate
 
-Run one-video OR smoke on PAI for the methods currently ready:
+Current DAVIS50 gate directly ran DAVIS50 for methods that were ready. No smoke
+was used in this gate.
 
 ```text
+ProPainter
 DiffuEraser SFT-48000
 DiffuEraser Exp11 outer b0.75 S2
-COCOCO
-VideoPainter
-MiniMax-Remover after isolated env is built
 ```
 
-If smoke passes, launch full OR150 inference/eval for those ready methods.
+Blocked methods remain explicit placeholders and must not be fabricated.
 
 Known PAI repo paths for frozen baselines:
 

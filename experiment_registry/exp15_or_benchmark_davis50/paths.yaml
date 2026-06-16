@@ -1,0 +1,6 @@
+project_root_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+davis_or_root_pai: /mnt/nas/hj/data/external/davis_2017_full_resolution_or_eval50/DAVIS
+manifest: exp15_or_benchmark_davis50/manifests/davis50_or_manifest.csv
+output_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50
+metrics_dir_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50/metrics
+visual_grids_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50/visual_grids
