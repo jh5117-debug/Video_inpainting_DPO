@@ -1,0 +1,27 @@
+experiment_name: exp15_or_benchmark
+task: object_removal
+status: dataset_ready_baseline_runtime_feasibility
+train: false
+vbench: false
+metric_backend: inference/metrics.py
+datasets:
+  davis50_or:
+    pai_root: /mnt/nas/hj/data/external/davis_2017_full_resolution_or_eval50/DAVIS
+    mask_source: DAVIS2017 foreground annotations
+    videos: 50
+  youtubevos100_or:
+    pai_root: /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
+    videos: 100
+methods:
+  ready:
+    - DiffuEraser SFT-48000
+    - DiffuEraser Exp11 outer b0.75 S2
+    - COCOCO
+    - VideoPainter
+  ready_but_needs_isolated_env:
+    - MiniMax-Remover
+  ready_after_repo_env_check: []
+  blocked_missing_runtime:
+    - FloED
+    - VACE
+    - VideoComp_or_VideoComposer

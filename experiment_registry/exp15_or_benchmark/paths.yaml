@@ -1,0 +1,12 @@
+hal_repo: /home/hj/H20_Video_inpainting_DPO_hal
+pai_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+davis50_or_pai: /mnt/nas/hj/data/external/davis_2017_full_resolution_or_eval50/DAVIS
+youtubevos100_or_pai: /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
+or150_manifest_hal: /home/hj/H20_Video_inpainting_DPO_hal/exp15_or_benchmark/manifests/or150_manifest.csv
+or150_manifest_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/exp15_or_benchmark/manifests/or150_manifest.csv
+minimax_weights_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current
+minimax_repo_pai: /mnt/nas/hj/official_repos/MiniMax-Remover_28e12b4
+cococo_weights_pai: /mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/COCOCO_weight
+cococo_repo_pai: /mnt/nas/hj/official_repos/COCOCO_9ebe984
+videopainter_weights_pai: /mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt
+diffueraser_sft48000_pai: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000

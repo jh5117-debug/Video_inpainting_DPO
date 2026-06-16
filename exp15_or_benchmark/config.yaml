@@ -1,0 +1,25 @@
+experiment_name: exp15_or_benchmark
+task: object_removal
+status: preparing_or150_dataset_and_baseline_feasibility
+datasets:
+  davis50:
+    source: /home/hj/Video_inpainting_DPO/data/external/davis_2017_full_resolution/DAVIS
+    pai_target: /mnt/nas/hj/data/external/davis_2017_full_resolution_or_eval50/DAVIS
+    mask_semantics: DAVIS2017 annotation foreground object, mask=1 remove
+    split: same 50 names as current DAVIS50 protocol
+  youtubevos100:
+    pai_existing: /mnt/workspace/hj/nas_hj/data/external/youtubevos_432_240_eval100
+    mask_semantics: existing test_masks, mask=1 remove
+    split: fixed seed sample_manifest.csv from 20260615
+methods:
+  - MiniMax-Remover
+  - CoCoCo
+  - FloED
+  - DiffuEraser SFT-48000
+  - VideoPainter
+  - VACE
+  - VideoComp_or_VideoComposer
+  - DiffuEraser Exp11 outer b0.75 S2
+metric_backend: inference/metrics.py
+vbench: false
+visual_grid: 8_rows_by_method_columns
