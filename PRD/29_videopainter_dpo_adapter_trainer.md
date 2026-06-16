@@ -188,7 +188,7 @@ sync_strategy = clean_worktree
 clean_repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
 source_commit = 2e187ee
 status = completed_2000_steps
-davis_eval = blocked_pending_exp14_thin_eval_adapter
+davis_eval = completed_davis50_with_thin_eval_adapter
 ```
 
 What passed:
@@ -261,15 +261,52 @@ adapter_type = direct_diff_dpo_isolated_trainer
 gate2000 = completed_2000_steps
 preflight = passed_on_pai
 trainer = implemented_locally
-davis_eval = blocked_pending_exp14_thin_eval_adapter
+davis_eval = completed_davis50_with_thin_eval_adapter
 ```
 
 Limitations:
 
 - This is a branch-adapter DPO trainer, not full VideoPainter model finetuning.
 - Multi-GPU sharding is not implemented in the isolated trainer.
-- DAVIS four-column eval integration remains pending after gate2000 training.
-  The upstream VideoPainter eval path is not the fixed raw6 hard-comp protocol,
-  fails without the Exp14 import shim, and expects an additional `ckpt/flux_inp`
-  model in the DAVIS path. This is recorded as an eval blocker rather than a
-  completed metric result.
+- DAVIS four-column eval integration is now implemented by an Exp14 thin eval
+  adapter. It does not use upstream VideoPainter eval as the final metric path.
+- Full DAVIS50 eval is negative for the adapter: VideoPainter baseline scores
+  31.6124 PSNR / 0.9608 SSIM, while the DPO adapter scores 29.8028 PSNR /
+  0.9580 SSIM.
+
+## DAVIS Eval Adapter
+
+Implemented file:
+
+```text
+exp14_adapter_videopainter/code/eval_videopainter_adapter_davis.py
+```
+
+Launch script:
+
+```text
+exp14_adapter_videopainter/scripts/run_videopainter_adapter_davis_eval_pai.sh
+```
+
+Responsibilities:
+
+- load VideoPainter official baseline branch;
+- load Exp14 gate2000 `last_weights`;
+- verify adapter weights differ from baseline;
+- generate baseline and adapter outputs on DAVIS50;
+- apply hard comp with GT outside the mask;
+- avoid mask dilation / Gaussian blur / VBench;
+- call the project metric backend from `inference/metrics.py`;
+- save four-column videos, contact sheets, frame-by-frame images, and metrics.
+
+Eval output:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/logs/target_eval/exp14_videopainter_adapter_gate2000_davis
+```
+
+Conclusion:
+
+The trainer is technically functional, but the current Exp11-style DPO adapter
+does not transfer successfully to VideoPainter. Do not continue longer training
+without redesigning the adapter objective / data pairing.

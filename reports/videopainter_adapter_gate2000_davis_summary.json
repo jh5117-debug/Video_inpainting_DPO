@@ -1,0 +1,24 @@
+[
+  {
+    "method": "VideoPainter adapter",
+    "model": "adapter",
+    "PSNR": 29.802756917793353,
+    "SSIM": 0.9579541300611826,
+    "strict_mask_pixel_psnr": 18.1594574149052,
+    "LPIPS": NaN,
+    "number_of_videos": 50,
+    "number_of_frames": 2366,
+    "eval_protocol": "DAVIS frame-wise hard-comp, no mask dilation, no Gaussian blur, no VBench"
+  },
+  {
+    "method": "VideoPainter baseline",
+    "model": "baseline",
+    "PSNR": 31.61239218545971,
+    "SSIM": 0.9607946258068816,
+    "strict_mask_pixel_psnr": 19.96909268257156,
+    "LPIPS": NaN,
+    "number_of_videos": 50,
+    "number_of_frames": 2366,
+    "eval_protocol": "DAVIS frame-wise hard-comp, no mask dilation, no Gaussian blur, no VBench"
+  }
+]

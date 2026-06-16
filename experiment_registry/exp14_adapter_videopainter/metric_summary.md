@@ -1,23 +1,37 @@
 # Metric Summary
 
-Status: training_completed_eval_blocked.
+Status: completed_davis50_eval.
 
-Gate2000 completed 2000 training steps, but no DAVIS metric table exists yet.
-
-Reason:
-
-- Upstream VideoPainter eval is not the project fixed raw6 hard-comp protocol.
-- Upstream eval does not call the project `inference/metrics.py` backend.
-- Upstream eval currently needs additional compatibility work and expects the
-  optional `ckpt/flux_inp` path in the DAVIS branch.
-
-Required next step:
-
-Implement an Exp14-only thin DAVIS eval adapter that loads:
+DAVIS50 eval path:
 
 ```text
-VideoPainter baseline branch
-VideoPainter + DPO adapter last_weights
+/mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/logs/target_eval/exp14_videopainter_adapter_gate2000_davis
 ```
 
-and then generates raw6 hard-comp outputs for project metric evaluation.
+Local metric snapshots:
+
+```text
+reports/videopainter_adapter_gate2000_davis_summary.csv
+reports/videopainter_adapter_gate2000_davis_per_video.csv
+exp14_adapter_videopainter/metrics/davis_summary.csv
+exp14_adapter_videopainter/metrics/davis_per_video.csv
+```
+
+Protocol:
+
+- DAVIS50, 50 videos, 2366 frames;
+- VideoPainter inference steps: 50;
+- hard comp with GT outside mask;
+- no mask dilation;
+- no Gaussian blur;
+- no VBench;
+- metric backend: `inference/metrics.py`.
+
+| method | PSNR | SSIM | strict mask PSNR | LPIPS | videos | frames |
+|---|---:|---:|---:|---:|---:|---:|
+| VideoPainter baseline | 31.6124 | 0.9608 | 19.9691 | n/a | 50 | 2366 |
+| VideoPainter + DPO adapter | 29.8028 | 0.9580 | 18.1595 | n/a | 50 | 2366 |
+
+Conclusion: the adapter underperforms baseline by 1.8096 PSNR and 0.0028 SSIM.
+It improved 16 / 50 videos but dropped on 34 / 50, so the full-set result is
+negative.

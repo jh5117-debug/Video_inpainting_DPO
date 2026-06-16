@@ -1,5 +1,5 @@
 experiment_name: exp14_adapter_videopainter_gate2000
-status: completed_training_eval_blocked
+status: completed_negative_gate
 adapter_target: VideoPainter
 adapter_type: direct_diff_dpo_isolated_trainer
 repo_url: https://github.com/TencentARC/VideoPainter
@@ -30,8 +30,8 @@ pai:
   source_commit: 2e187ee
   gpu: 0
   pid: 659269
-  status: running
-  final_status: completed_training
+  status: finished
+  final_status: completed_training_and_davis50_eval
 
 weights:
   hal_root: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter/ckpt
@@ -58,4 +58,17 @@ eval:
   dataset: DAVIS
   metric_backend: inference/metrics.py or compatible wrapper
   vbench: false
-  status: blocked_pending_exp14_thin_eval_adapter
+  status: completed_davis50
+  output: /mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/logs/target_eval/exp14_videopainter_adapter_gate2000_davis
+  videos: 50
+  frames: 2366
+  protocol: "VideoPainter inference steps 50, hard comp, no mask dilation, no Gaussian blur, no VBench"
+  baseline:
+    psnr: 31.6124
+    ssim: 0.9608
+    strict_mask_pixel_psnr: 19.9691
+  adapter:
+    psnr: 29.8028
+    ssim: 0.9580
+    strict_mask_pixel_psnr: 18.1595
+  conclusion: adapter_underperforms_baseline

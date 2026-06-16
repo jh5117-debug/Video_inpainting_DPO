@@ -5,13 +5,15 @@ Date: 2026-06-16
 ## Current Status
 
 ```text
-status = completed_training_eval_blocked
+status = completed_training_and_davis50_eval
 adapter_type = direct_diff_dpo_isolated_trainer
+result = adapter_underperforms_videopainter_baseline
 ```
 
 The VideoPainter adapter gate2000 completed 2000 optimization steps on PAI
 after resolving the previous missing-weight blocker and passing the trainer
-preflight.
+preflight. The follow-up Exp14 thin eval adapter has now completed full DAVIS50
+evaluation.
 
 This run uses the isolated Exp14 trainer:
 
@@ -170,17 +172,67 @@ mean_loser_dominant_ratio = 0.840796
 max_grad_norm = 80.3213
 ```
 
-DAVIS evaluation remains blocked pending an Exp14-specific thin eval adapter.
+DAVIS evaluation is no longer blocked. The Exp14 thin eval adapter loaded both
+the official VideoPainter baseline branch and the gate2000 `last_weights`
+adapter checkpoint, then evaluated full DAVIS50 with hard comp and the project
+metric backend.
 
-## Evaluation Caveat
+## DAVIS50 Evaluation
 
-The upstream VideoPainter evaluation scripts reference an optional first-frame
-image-inpainting dependency:
+Checkpoint loading audit:
 
 ```text
-ckpt/flux_inp
+baseline_checkpoint = third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch
+adapter_checkpoint = exp14_adapter_videopainter/runs/gate2000/last_weights
+fallback_used = false
+weights_different = true
 ```
 
-If DAVIS eval is blocked by that missing dependency, the Exp14 report must say
-so explicitly. We should not replace the requested adapter evaluation with
-upstream training or claim metrics that were not actually produced.
+Eval protocol:
+
+```text
+dataset = DAVIS50
+videos = 50
+frames = 2366
+VideoPainter inference steps = 50
+hard comp = prediction inside mask + GT outside mask
+mask dilation = off
+Gaussian blur = off
+VBench = off
+metric backend = inference/metrics.py
+```
+
+VideoPainter does not use DiffuEraser's `raw6` convention, so generation uses
+VideoPainter's inference-step setting. The metric protocol is still the project
+hard-comp / no-dilation / no-blur / frame-wise rule.
+
+| method | PSNR | SSIM | strict mask PSNR | LPIPS | videos | frames |
+|---|---:|---:|---:|---:|---:|---:|
+| VideoPainter baseline | 31.6124 | 0.9608 | 19.9691 | n/a | 50 | 2366 |
+| VideoPainter + DPO adapter | 29.8028 | 0.9580 | 18.1595 | n/a | 50 | 2366 |
+
+Delta adapter minus baseline:
+
+```text
+PSNR = -1.8096
+SSIM = -0.0028
+strict_mask_pixel_psnr = -1.8096
+```
+
+Per-video split:
+
+```text
+16 / 50 videos improved in PSNR
+34 / 50 videos dropped in PSNR
+median PSNR delta = -1.4387
+```
+
+The adapter has visible positive cases, but the full-set metric result is
+negative. This matches the saturated / loser-dominant DPO diagnostics.
+
+## Final Decision
+
+This is a completed negative adapter gate. The infrastructure works, the
+adapter checkpoint is real, and the eval is complete. However, this exact
+Exp11-style VideoPainter branch adapter should not be continued as a longer run
+or claimed as a useful result without redesigning the adapter objective.

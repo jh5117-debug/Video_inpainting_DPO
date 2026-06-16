@@ -6,7 +6,9 @@ Date: 2026-06-16
 
 ```text
 training_status = completed_2000_steps
-eval_status = blocked_pending_exp14_thin_eval_adapter
+eval_status = completed_davis50
+adapter_type = direct_diff_dpo_branch_adapter
+conclusion = adapter_underperforms_baseline
 ```
 
 The Exp14 VideoPainter adapter gate2000 completed 2000 optimization steps on
@@ -42,11 +44,10 @@ exp14_adapter_videopainter/runs/gate2000/checkpoint-2000
 exp14_adapter_videopainter/runs/gate2000/last_weights
 ```
 
-Logs:
+DAVIS eval:
 
 ```text
-logs/pipelines/exp14_adapter_videopainter_gate2000.log
-exp14_adapter_videopainter/runs/gate2000/train.log
+/mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/logs/target_eval/exp14_videopainter_adapter_gate2000_davis
 ```
 
 ## Training Result
@@ -65,13 +66,6 @@ last_weights/run_manifest.json
 ```
 
 ## DPO Diagnostics
-
-Summary report:
-
-```text
-reports/videopainter_adapter_gate2000_dpo_diag_summary.md
-exp14_adapter_videopainter/reports/dpo_diag_summary.md
-```
 
 Labels:
 
@@ -99,27 +93,19 @@ last_loser_dominant_ratio = 1.0
 Interpretation:
 
 The trainer is functional and completed, but the DPO signal is highly saturated
-and frequently loser-dominant. This is not enough evidence to claim the
-VideoPainter adapter improves inpainting quality.
+and frequently loser-dominant.
 
-## DAVIS Eval Status
+## DAVIS50 Eval
 
-DAVIS eval did not complete in this run.
+DAVIS50 eval completed with the Exp14 thin eval adapter.
 
-Reason:
+| method | PSNR | SSIM | strict mask PSNR | LPIPS | videos | frames |
+|---|---:|---:|---:|---:|---:|---:|
+| VideoPainter baseline | 31.6124 | 0.9608 | 19.9691 | n/a | 50 | 2366 |
+| VideoPainter + DPO adapter | 29.8028 | 0.9580 | 18.1595 | n/a | 50 | 2366 |
 
-- Upstream `evaluate/eval_inpainting.py` is not the project fixed raw6
-  hard-comp protocol.
-- It imports VideoPainter's vendored Diffusers without the Exp14 compatibility
-  shim and fails on `FLAX_WEIGHTS_NAME` in the current PAI environment.
-- It unconditionally calls `FluxFillPipeline.from_pretrained(args.img_inpainting_model)`
-  in the DAVIS path; the required `ckpt/flux_inp` model is not present.
-- It uses VideoPainter's own metrics and mask dilation path, not the project
-  `inference/metrics.py` / raw6 / no dilation / hard-comp protocol.
-
-Therefore no VideoPainter baseline-vs-adapter DAVIS metric table is available
-yet. A separate isolated Exp14 thin eval adapter is required before producing
-paper-quality VideoPainter adapter metrics or four-column videos.
+The adapter is lower by 1.8096 PSNR and 0.0028 SSIM. It improves some individual
+videos but fails overall.
 
 ## Conclusion
 
@@ -127,8 +113,6 @@ paper-quality VideoPainter adapter metrics or four-column videos.
 - Reference model: constructed and frozen in preflight / training path.
 - Adapter type: direct Diff-DPO branch adapter.
 - dpo_diag: present and finite, but saturated / loser-dominant.
-- DAVIS eval: blocked pending a proper Exp14 eval adapter.
-- Recommendation: do not claim VideoPainter adapter improvement yet. Next step
-  is to implement a small Exp14-only DAVIS inference/eval wrapper that loads
-  baseline branch and `last_weights`, generates raw6 hard-comp outputs, and
-  calls the project metric backend.
+- DAVIS eval: completed on full DAVIS50.
+- Recommendation: do not continue this VideoPainter adapter as a longer run
+  without redesigning the adapter objective / pair construction.
