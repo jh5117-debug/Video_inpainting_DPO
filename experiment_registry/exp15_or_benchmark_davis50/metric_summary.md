@@ -1,6 +1,6 @@
 # Metric Summary
 
-DAVIS50 OR background-region metrics completed on PAI.
+DAVIS50 OR background-region metrics completed on PAI with the fixed protocol naming.
 
 Protocol:
 
@@ -8,9 +8,10 @@ Protocol:
 - raw method outputs;
 - foreground mask is object/remove region;
 - primary scores are background-region metrics (`mask == 0`);
+- `TC_bg_pixel_proxy` is not MiniMax paper CLIP-feature TC;
 - OR table is separate from BR hard-comp table.
 
-| Method | Status | Success | PSNR_bg | SSIM_bg_ignore_mask | TC_bg |
+| Method | Status | Success | PSNR_bg | SSIM_bg | TC_bg_pixel_proxy |
 |---|---|---:|---:|---:|---:|
 | ProPainter | ok | 50/50 | 35.5274 | 0.9927 | 35.7664 |
 | DiffuEraser SFT-48000 | ok | 50/50 | 28.6773 | 0.9686 | 28.8505 |
@@ -25,13 +26,13 @@ Blocked methods are retained in the full summary with empty metrics:
 - VACE: no verified repo+weights+OR wrapper.
 - MiniMax-Remover: isolated newer env required.
 
-Full table:
+Full fixed table:
 
 ```text
-reports/exp15_or_davis50_quantitative_summary.csv
-reports/exp15_or_davis50_quantitative_summary.md
+reports/exp15_or_davis50_fixed_quantitative_summary.csv
+reports/exp15_or_davis50_fixed_quantitative_summary.md
 ```
 
 Interpretation: ProPainter is the strongest runnable method for background
 preservation. Exp11 outer b0.75 S2 is approximately tied with SFT-48000 under
-this OR protocol and should not be claimed as the best OR method.
+this DAVIS50 OR subset protocol and should not be claimed as the best OR method.

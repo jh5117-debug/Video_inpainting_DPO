@@ -5,6 +5,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+import os
+import shutil
+import subprocess
+import sys
+import tempfile
 from pathlib import Path
 from typing import Dict, List, Sequence
 
@@ -64,12 +69,64 @@ def placeholder(size: tuple[int, int], text: str) -> np.ndarray:
     return np.asarray(img, dtype=np.uint8)
 
 
+def ffmpeg_binary() -> str:
+    if os.environ.get("EXP15_FFMPEG_BIN"):
+        return os.environ["EXP15_FFMPEG_BIN"]
+    vendor = Path(__file__).resolve().parents[1] / "vendor" / "imageio_ffmpeg_pkg"
+    if vendor.exists():
+        sys.path.insert(0, str(vendor))
+    try:
+        import imageio_ffmpeg  # type: ignore
+
+        return imageio_ffmpeg.get_ffmpeg_exe()
+    except Exception:
+        pass
+    if Path("/usr/bin/ffmpeg").exists():
+        return "/usr/bin/ffmpeg"
+    return shutil.which("ffmpeg") or "ffmpeg"
+
+
 def write_mp4(frames: Sequence[np.ndarray], path: Path, fps: int) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     if not frames:
         return
+    # Some players render OpenCV/mp4v outputs with a green cast for wide grids.
+    # Use an explicit H.264/yuv420p encode so the visual evidence is portable.
+    with tempfile.TemporaryDirectory(prefix=f".{path.stem}_frames_", dir=str(path.parent)) as tmp:
+        tmp_dir = Path(tmp)
+        for idx, frame in enumerate(frames):
+            Image.fromarray(frame).save(tmp_dir / f"frame_{idx:05d}.png")
+        ffmpeg_bin = ffmpeg_binary()
+        cmd = [
+            ffmpeg_bin,
+            "-y",
+            "-hide_banner",
+            "-loglevel",
+            "error",
+            "-framerate",
+            str(fps),
+            "-i",
+            str(tmp_dir / "frame_%05d.png"),
+            "-c:v",
+            "libx264",
+            "-pix_fmt",
+            "yuv420p",
+            "-movflags",
+            "+faststart",
+            str(path),
+        ]
+        try:
+            ffmpeg_env = os.environ.copy()
+            ffmpeg_env.pop("LD_LIBRARY_PATH", None)
+            subprocess.run(cmd, check=True, env=ffmpeg_env)
+            return
+        except Exception as exc:  # noqa: BLE001
+            print(f"[visual] ffmpeg encode failed for {path}: {exc}; falling back to OpenCV mp4v", flush=True)
+
     h, w = frames[0].shape[:2]
     writer = cv2.VideoWriter(str(path), cv2.VideoWriter_fourcc(*"mp4v"), fps, (w, h))
+    if not writer.isOpened():
+        raise RuntimeError(f"failed to open VideoWriter for {path}")
     for frame in frames:
         writer.write(cv2.cvtColor(frame, cv2.COLOR_RGB2BGR))
     writer.release()

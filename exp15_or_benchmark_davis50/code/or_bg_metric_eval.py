@@ -121,8 +121,9 @@ def evaluate_video(frame_dir: Path, mask_dir: Path, pred_dir: Path, max_frames: 
     return {
         "num_frames": n,
         "PSNR_bg": finite_mean(psnr_vals),
+        "SSIM_bg": finite_mean(ssim_vals),
         "SSIM_bg_ignore_mask": finite_mean(ssim_vals),
-        "TC_bg": temporal_bg_score(gt_frames, pred_frames, masks),
+        "TC_bg_pixel_proxy": temporal_bg_score(gt_frames, pred_frames, masks),
     }
 
 
@@ -137,8 +138,9 @@ def evaluate_task(task: Tuple[str, dict, str, int]) -> dict:
         "issue": "",
         "num_frames": 0,
         "PSNR_bg": float("nan"),
+        "SSIM_bg": float("nan"),
         "SSIM_bg_ignore_mask": float("nan"),
-        "TC_bg": float("nan"),
+        "TC_bg_pixel_proxy": float("nan"),
     }
     try:
         if not pred_dir.is_dir():
@@ -191,7 +193,17 @@ def main() -> None:
     with per_csv.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=["method", "video_name", "status", "issue", "num_frames", "PSNR_bg", "SSIM_bg_ignore_mask", "TC_bg"],
+            fieldnames=[
+                "method",
+                "video_name",
+                "status",
+                "issue",
+                "num_frames",
+                "PSNR_bg",
+                "SSIM_bg",
+                "SSIM_bg_ignore_mask",
+                "TC_bg_pixel_proxy",
+            ],
         )
         writer.writeheader()
         writer.writerows(per_rows)
@@ -211,8 +223,12 @@ def main() -> None:
                 "num_success": len(ok),
                 "num_failed": len(rows) - len(ok),
                 "PSNR_bg": finite_mean(float(r["PSNR_bg"]) for r in ok),
+                "SSIM_bg": finite_mean(float(r["SSIM_bg"]) for r in ok),
                 "SSIM_bg_ignore_mask": finite_mean(float(r["SSIM_bg_ignore_mask"]) for r in ok),
-                "TC_bg": finite_mean(float(r["TC_bg"]) for r in ok),
+                "TC_bg_pixel_proxy": finite_mean(float(r["TC_bg_pixel_proxy"]) for r in ok),
+                "LPIPS_if_available": "not_available",
+                "VFID_if_available": "not_available",
+                "metric_protocol": "minimax_compatible_or_davis_subset_no_comp_bg_proxy",
                 "notes": "" if ok else "no successful predictions",
             }
         )
@@ -221,19 +237,38 @@ def main() -> None:
     with summary_csv.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(
             handle,
-            fieldnames=["method", "status", "num_videos", "num_success", "num_failed", "PSNR_bg", "SSIM_bg_ignore_mask", "TC_bg", "notes"],
+            fieldnames=[
+                "method",
+                "status",
+                "num_videos",
+                "num_success",
+                "num_failed",
+                "PSNR_bg",
+                "SSIM_bg",
+                "SSIM_bg_ignore_mask",
+                "TC_bg_pixel_proxy",
+                "LPIPS_if_available",
+                "VFID_if_available",
+                "metric_protocol",
+                "notes",
+            ],
         )
         writer.writeheader()
         writer.writerows(summary_rows)
     (metrics_dir / "summary.json").write_text(json.dumps(summary_rows, indent=2), encoding="utf-8")
-    md = ["# Exp15 DAVIS50 OR Quantitative Summary", "", "| Method | Status | Success | PSNR_bg | SSIM_bg_ignore_mask | TC_bg | Notes |", "|---|---|---:|---:|---:|---:|---|"]
+    md = [
+        "# Exp15 DAVIS50 OR Quantitative Summary",
+        "",
+        "| Method | Status | Success | PSNR_bg | SSIM_bg | TC_bg_pixel_proxy | Notes |",
+        "|---|---|---:|---:|---:|---:|---|",
+    ]
     for row in summary_rows:
         md.append(
             f"| {row['method']} | {row['status']} | {row['num_success']}/{row['num_videos']} | "
-            f"{float(row['PSNR_bg']):.4f} | {float(row['SSIM_bg_ignore_mask']):.4f} | {float(row['TC_bg']):.4f} | {row['notes']} |"
+            f"{float(row['PSNR_bg']):.4f} | {float(row['SSIM_bg']):.4f} | {float(row['TC_bg_pixel_proxy']):.4f} | {row['notes']} |"
         )
     md.append("")
-    md.append("Protocol: no comp; metrics are computed on raw method outputs. PSNR_bg is strict mask-outside pixels. SSIM_bg_ignore_mask ignores foreground by zeroing it in both images.")
+    md.append("Protocol: no comp; metrics are computed on raw method outputs. PSNR_bg is strict mask-outside pixels. SSIM_bg is a background-preservation proxy implemented as SSIM_bg_ignore_mask. TC_bg_pixel_proxy is not the MiniMax paper CLIP-feature TC.")
     (metrics_dir / "summary.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     print(f"[metrics] wrote {summary_csv}")
 

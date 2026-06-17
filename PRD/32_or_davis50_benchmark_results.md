@@ -50,14 +50,14 @@ runtimes are executed.
 
 | Method | Runtime status |
 |---|---|
-| ProPainter | READY_TO_RUN |
+| ProPainter | COMPLETED_50_50 |
 | VideoComposer / VideoComp | BLOCKED_NO_REPO |
 | CoCoCo | BLOCKED_NO_WEIGHT |
 | FloED | BLOCKED_NO_REPO |
-| DiffuEraser SFT-48000 | READY_TO_RUN |
+| DiffuEraser SFT-48000 | COMPLETED_50_50 |
 | VideoPainter | BLOCKED_NO_OR_WRAPPER |
 | VACE | BLOCKED_NO_REPO |
-| Ours Exp11 outer b0.75 S2 | READY_TO_RUN |
+| Ours Exp11 outer b0.75 S2 | COMPLETED_50_50 |
 | MiniMax-Remover | BLOCKED_IMPORT_ERROR |
 
 Runtime status report:
@@ -73,11 +73,11 @@ Completed on PAI for the runnable methods.
 Output:
 
 ```text
-reports/exp15_or_davis50_quantitative_summary.csv
-reports/exp15_or_davis50_quantitative_summary.md
+reports/exp15_or_davis50_fixed_quantitative_summary.csv
+reports/exp15_or_davis50_fixed_quantitative_summary.md
 ```
 
-| Method | Status | Success | PSNR_bg | SSIM_bg_ignore_mask | TC_bg | Notes |
+| Method | Status | Success | PSNR_bg | SSIM_bg | TC_bg_pixel_proxy | Notes |
 |---|---|---:|---:|---:|---:|---|
 | ProPainter | ok | 50/50 | 35.5274 | 0.9927 | 35.7664 | Strongest background preservation among runnable methods. |
 | VideoComposer / VideoComp | failed_or_blocked | 0/50 | n/a | n/a | n/a | No verified PAI repo+weights+OR wrapper. |
@@ -86,21 +86,21 @@ reports/exp15_or_davis50_quantitative_summary.md
 | DiffuEraser SFT-48000 | ok | 50/50 | 28.6773 | 0.9686 | 28.8505 | Runnable DiffuEraser baseline. |
 | VideoPainter | failed_or_blocked | 0/50 | n/a | n/a | n/a | No verified DAVIS2017 OR wrapper. |
 | VACE | failed_or_blocked | 0/50 | n/a | n/a | n/a | No verified PAI repo+weights+OR wrapper. |
-| Ours Exp11 outer b0.75 S2 | ok | 50/50 | 28.6795 | 0.9685 | 28.8682 | Nearly tied with SFT on bg metrics; slightly higher PSNR_bg/TC, slightly lower SSIM_bg. |
+| Ours Exp11 outer b0.75 S2 | ok | 50/50 | 28.6795 | 0.9685 | 28.8682 | Nearly tied with SFT on bg metrics; slightly higher PSNR_bg/TC_bg_pixel_proxy, slightly lower SSIM_bg. |
 | MiniMax-Remover | failed_or_blocked | 0/50 | n/a | n/a | n/a | Needs isolated newer env; not run in shared DiffuEraser env. |
 
 Interpretation:
 
 - ProPainter is much stronger for this OR background-preservation protocol.
 - Exp11 outer b0.75 S2 remains the best BR/DAVIS hard-comp configuration, but it is not an OR winner here.
-- Ours is approximately tied with SFT-48000 on OR background metrics: +0.0022 PSNR_bg, -0.0002 SSIM_bg, +0.0177 TC_bg.
+- Ours is approximately tied with SFT-48000 on OR background metrics: +0.0022 PSNR_bg, -0.0002 SSIM_bg, +0.0177 TC_bg_pixel_proxy.
 
 ## Visual Result
 
 Output:
 
 ```text
-/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50/visual_grids
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50_fixed/visual_grids
 reports/exp15_or_davis50_visual_case_report.md
 reports/exp15_or_davis50_paper_ready_cases.md
 ```
@@ -113,10 +113,10 @@ Visual grids use two rows:
 HAL copy:
 
 ```text
-/home/hj/dpo-2-1-exp/exp15_or_benchmark_davis50_visuals
+/home/hj/dpo-2-1-exp/exp15_or_benchmark_davis50_visuals_fixed
 ```
 
-The 20-case file is metric-preselected from DAVIS50 and should be treated as a
+The fixed visual grids replace the older OpenCV/mp4v outputs. The 20-case file is metric-preselected from DAVIS50 and should be treated as a
 candidate list for paper/PPT figures. Final figure selection still needs human
 visual review because OR mask-inside removal quality has no GT target.
 
@@ -131,3 +131,7 @@ not this OR table:
 | DAVIS50 | Exp11 outer b0.75 S2 | 33.0140 | 0.9723 | 0.0154 | 0.1754 | 0.9711 |
 
 Do not mix these BR values into the OR metric table.
+
+## MiniMax Alignment Caveat
+
+Current fixed Exp15 results are still DAVIS50-subset diagnostics. They are not a reproduction of MiniMax Table 2 because the paper uses DAVIS90, CLIP-feature TC, and GPT-O3 VQ/Succ. See `PRD/34_or_eval_protocol_minimax_alignment.md`.

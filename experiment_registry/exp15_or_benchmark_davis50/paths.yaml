@@ -4,3 +4,7 @@ manifest: exp15_or_benchmark_davis50/manifests/davis50_or_manifest.csv
 output_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50
 metrics_dir_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50/metrics
 visual_grids_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50/visual_grids
+
+fixed_metrics_dir_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50_fixed/metrics
+fixed_visual_grids_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp15_or_benchmark_davis50_fixed/visual_grids
+fixed_visual_grids_hal: /home/hj/dpo-2-1-exp/exp15_or_benchmark_davis50_visuals_fixed
