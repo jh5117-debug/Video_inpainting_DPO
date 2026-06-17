@@ -121,7 +121,7 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
 | Exp16 Prior-Confidence Gated DPO | Stage1 500 limit=100 + DAVIS10 sanity completed; weak positive signal vs SFT, not better than Exp11; do not full-train yet | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md`, `reports/exp16_stage1_500_visual_case_judgement.md`, `reports/exp16_stage1_500_davis10_metric_summary.md` |
-| Exp17 Saturation-Aware Positive DPO | prepared for overnight Stage1 gates; targets DPO saturation / loser-dominant risk | `exp17_saturation_positive_dpo/`, `experiment_registry/exp17_saturation_positive_dpo/`, `PRD/37_exp17_saturation_positive_dpo.md` |
+| Exp17 Saturation-Aware Positive DPO | Stage1 1000 gates completed; negative ablation; best variant Exp17b still below Exp11, so no Stage1 2000 / Stage2 | `exp17_saturation_positive_dpo/`, `experiment_registry/exp17_saturation_positive_dpo/`, `PRD/37_exp17_saturation_positive_dpo.md`, `reports/exp17_davis10_gate_metric_summary.md`, `reports/exp17_visual_case_judgement.md` |
 
 Exp16 inherits the current best setting from Exp11 boundary outer b0.75 S2, but
 adds prior-confidence gated latent-x0 losses. The limit=100 prior cache,
@@ -143,8 +143,9 @@ Paused while Exp16 is explored:
 - adaptive normalization new variants
 - additional Exp11 / Exp12 tuning
 
-Exp17 supersedes Exp16 expansion for the next overnight gate. Exp16 full prior
-cache and full training remain paused.
+Exp17 was run as the next overnight gate and completed as a negative ablation.
+Exp16 full prior cache and full training remain paused. Current best remains
+Exp11 boundary outer b0.75 S2.
 
 ## 2026-06-04 Experiment Registry / DPO-Diag Audit Update
 

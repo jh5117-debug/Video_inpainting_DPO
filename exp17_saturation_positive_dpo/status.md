@@ -1,13 +1,24 @@
 # Status
 
-`PREPARED_FOR_PAI_OVERNIGHT_GATE`
+`COMPLETED_NEGATIVE_STAGE1_GATES`
 
-No Exp17 training has completed yet in this registry snapshot.
+Exp17 Stage1-1000 gates completed on PAI for:
 
-Planned gate:
+- `exp17a_positive_s1_1000`
+- `exp17b_saturation_s1_1000`
+- `exp17c_combined_s1_1000`
 
-- Exp17a positive Stage1 1000.
-- Exp17b saturation Stage1 1000.
-- Exp17c combined Stage1 1000.
-- DAVIS10 quick metric / visual eval for each.
-- Stop unless metric + visual + dpo_diag justify extension.
+All variants were evaluated on DAVIS10 against SFT-48000 and Exp11 outer b0.75
+S2. The best Exp17 variant was `exp17b_saturation_s1_1000`, but it did not beat
+Exp11 on primary metrics or visual inspection.
+
+No Stage1-2000 extension was launched.
+No Stage2 was launched.
+No VBench was used.
+
+Decision:
+
+```text
+Stop Exp17 as a negative ablation for now.
+Current best remains Exp11 outer b0.75 S2.
+```

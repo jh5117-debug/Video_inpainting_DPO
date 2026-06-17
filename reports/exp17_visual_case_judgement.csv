@@ -1,0 +1,13 @@
+variant,video,category,metric_relation_to_exp11,visual_judgement,notes
+exp17a_positive_s1_1000,boat,weak_positive,PSNR +0.6727 / SSIM +0.0096 / strict-mask +0.6727,partially better,"Boat body and water texture can look closer to GT than Exp11, but shoreline/wake texture remains unstable; not enough to justify full expansion."
+exp17a_positive_s1_1000,kite-surf,tie,PSNR +0.0642 / SSIM roughly tie / strict-mask +0.0642,near tie,"Small numerical gain, visually almost indistinguishable from Exp11."
+exp17b_saturation_s1_1000,breakdance,weak_positive,PSNR +0.1836 / SSIM +0.0018 / strict-mask +0.1836,slightly better,"Some body/texture details look marginally cleaner, but boundary PSNR is still lower than Exp11."
+exp17b_saturation_s1_1000,lucia,weak_positive,PSNR +0.1783 / SSIM -0.0002 / strict-mask +0.1783,near tie to slight positive,"Figure/grass are close to Exp11; the gain is small and not visually decisive."
+exp17b_saturation_s1_1000,bear,tie,PSNR -0.1127 / SSIM -0.0001 / strict-mask -0.1127,near tie,"No meaningful visible improvement over Exp11."
+exp17b_saturation_s1_1000,rhino,failure,PSNR -2.2621 / SSIM -0.0193 / strict-mask -2.2621,worse,"Rhino head/body and foreground transition are blurrier than Exp11; this is a clear negative case."
+exp17b_saturation_s1_1000,dog-agility,failure,PSNR -0.3600 / SSIM -0.0036 / strict-mask -0.3600,worse,"Fast-motion dog structure and pole boundaries are not improved; Exp11 remains cleaner."
+exp17b_saturation_s1_1000,dance-jump,failure,PSNR -1.0377 / SSIM -0.0039 / strict-mask -1.0377,worse,"Motion/body region degrades relative to Exp11."
+exp17b_saturation_s1_1000,soccerball,failure,PSNR -0.3248 / SSIM -0.0068 / strict-mask -0.3248,worse,"No visible improvement; boundary and object region remain less stable than Exp11."
+exp17c_combined_s1_1000,blackswan,failure,PSNR -1.0829 / SSIM -0.0088 / strict-mask -1.0829,worse,"Mask-region feather/water texture is flatter and blurrier than Exp11."
+exp17c_combined_s1_1000,boat,failure,PSNR -0.0375 / SSIM -0.0043 / strict-mask -0.0375,near tie to worse,"No advantage over Exp11; the combined loss does not preserve the weak positive seen in Exp17a."
+exp17c_combined_s1_1000,overall,failure,mean PSNR 29.5117 vs Exp11 30.2950,worse,"Combined positive+saturation is the worst of the three on DAVIS10."

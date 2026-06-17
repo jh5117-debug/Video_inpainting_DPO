@@ -104,6 +104,36 @@ Registry:
 experiment_registry/exp17_saturation_positive_dpo/
 ```
 
+Current status:
+
+```text
+COMPLETED_NEGATIVE_STAGE1_GATES
+```
+
+DAVIS10 result:
+
+| Method | PSNR | SSIM | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: |
+| Exp11 boundary outer b0.75 S2 | 30.2950 | 0.9664 | 18.7651 | 24.7722 |
+| SFT-48000 baseline | 29.6227 | 0.9616 | 18.0928 | 24.1247 |
+| Exp17a positive S1-1000 | 29.7313 | 0.9632 | 18.2014 | 24.4509 |
+| Exp17b saturation S1-1000 | 29.8542 | 0.9623 | 18.3243 | 24.4384 |
+| Exp17c combined S1-1000 | 29.5117 | 0.9609 | 17.9818 | 24.4214 |
+
+Decision:
+
+```text
+Exp17b is the best Exp17 variant, but no variant beats Exp11.
+Do not run Exp17 Stage1 2000 or Stage2.
+Current best remains Exp11 boundary outer b0.75 S2.
+```
+
+Reason:
+
+- dpo_diag still shows high loser dominance.
+- The saturation gate did not meaningfully trigger under the tested margin.
+- Visual positives are isolated and not stable enough.
+
 ## 2026-06-15 Current Best / Evidence Status
 
 Current best under the fixed DAVIS50 raw6 hard-comp protocol is:

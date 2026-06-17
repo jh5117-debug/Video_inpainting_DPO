@@ -1,0 +1,5 @@
+{
+  "best_variant": "exp17b_saturation_s1_1000",
+  "metric_positive": false,
+  "reason": "no variant beats Exp11 on DAVIS10 primary metrics"
+}
