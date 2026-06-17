@@ -1,0 +1,11 @@
+experiment_folder: exp17_saturation_positive_dpo
+code: exp17_saturation_positive_dpo/code
+scripts: exp17_saturation_positive_dpo/scripts
+reports: exp17_saturation_positive_dpo/reports
+registry: experiment_registry/exp17_saturation_positive_dpo
+train_entrypoint: exp17_saturation_positive_dpo/code/train_exp17_stage1.py
+overnight_launcher: exp17_saturation_positive_dpo/scripts/launch_exp17_overnight_pai.sh
+sft48000: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+exp11_outer_b075_s2: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
+source_manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+davis_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240

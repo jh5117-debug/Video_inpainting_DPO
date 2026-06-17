@@ -1,0 +1,9 @@
+experiment_folder: exp17_saturation_positive_dpo
+code: exp17_saturation_positive_dpo/code
+scripts: exp17_saturation_positive_dpo/scripts
+reports: exp17_saturation_positive_dpo/reports
+launcher: exp17_saturation_positive_dpo/scripts/launch_exp17_overnight_pai.sh
+prd: PRD/37_exp17_saturation_positive_dpo.md
+metric_summary: reports/exp17_davis10_gate_metric_summary.md
+dpo_diag_summary: reports/exp17_dpo_diag_summary.md
+qualitative_summary: reports/exp17_visual_case_judgement.md

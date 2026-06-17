@@ -1,0 +1,10 @@
+experiment_name: exp17_saturation_positive_dpo
+status: prepared_for_pai_gate
+base: Exp11 boundary outer b0.75 S2
+stage1_gate_steps: 1000
+stage2_launched: false
+vbench: false
+variants:
+  - exp17a_positive_s1_1000
+  - exp17b_saturation_s1_1000
+  - exp17c_combined_s1_1000

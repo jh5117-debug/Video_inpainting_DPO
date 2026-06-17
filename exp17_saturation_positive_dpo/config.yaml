@@ -1,0 +1,39 @@
+experiment_name: exp17_saturation_positive_dpo
+base: Exp11 boundary outer b0.75 S2
+task: partial-mask video inpainting
+train_dataset: YouTube-VOS generated-loser manifest
+win: GT clean video
+lose: generated loser
+base_weights: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+loss_base: region-local normalized-gap clipped-loser-gap winner-anchored DPO
+boundary_mode: outer
+mask_weight: 1.0
+boundary_weight: 0.75
+outside_weight: 0.05
+beta_dpo: 10
+lose_gap_weight: 0.25
+lose_gap_clip_tau: 1.0
+variants:
+  exp17a_positive:
+    exp17_variant: positive
+    lambda_abs: 0.05
+    lambda_pos: 2.0
+    margin_pos: 0.0
+  exp17b_saturation:
+    exp17_variant: saturation
+    lambda_abs: 0.05
+    lambda_pos: 1.0
+    target_margin: 1.0
+    saturation_kappa: 5.0
+  exp17c_combined:
+    exp17_variant: combined
+    lambda_abs: 0.05
+    lambda_pos: 2.0
+    target_margin: 1.0
+    saturation_kappa: 5.0
+first_gate:
+  stage: stage1
+  steps: 1000
+  eval: DAVIS10
+  stage2: false
+  vbench: false

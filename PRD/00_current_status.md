@@ -71,6 +71,39 @@ If Exp16 continues, first adjust lambda_prior / lambda_gen / confidence alpha or
 add a schedule, then rerun a small gate.
 ```
 
+## 2026-06-17 Exp17 Saturation-Aware Positive DPO
+
+Current next direction:
+
+```text
+Exp17 Saturation-Aware DPO-Positive Region Loss
+```
+
+Reason: Exp11 outer b0.75 S2 remains the best method, but dpo_diag still shows
+DPO saturation / loser-dominant risk. Exp16 prior-confidence was an
+implementation validation and did not beat Exp11, so the next attempt focuses on
+the DPO objective itself instead of adding more prior losses.
+
+Exp17 variants:
+
+- Exp17a: stronger DPOP-style positive preservation.
+- Exp17b: saturation-aware margin DPO.
+- Exp17c: combined positive + saturation.
+
+First gate:
+
+```text
+Stage1 1000 for each variant + DAVIS10 visual/metric sanity.
+No Stage2.
+No VBench.
+```
+
+Registry:
+
+```text
+experiment_registry/exp17_saturation_positive_dpo/
+```
+
 ## 2026-06-15 Current Best / Evidence Status
 
 Current best under the fixed DAVIS50 raw6 hard-comp protocol is:
