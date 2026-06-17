@@ -150,9 +150,14 @@ run_stage1_variant() {
   export DPO_GAP_TRACE_CSV="${stage_dir}/dpo_gap_trace.csv"
   export DPO_GAP_SAMPLES_JSONL_GZ="${stage_dir}/dpo_gap_samples.jsonl.gz"
 
-  "${PY}" training/dpo/scripts/run_stage1.py \
-    --num_gpus "${NUM_GPUS}" \
-    --weights_dir "${WEIGHTS_DIR}" \
+  "${PY}" -m accelerate.commands.launch \
+    --num_processes "${NUM_GPUS}" \
+    --mixed_precision "${MIXED_PRECISION}" \
+    --main_process_port "${MAIN_PROCESS_PORT}" \
+    exp17_saturation_positive_dpo/code/train_exp17_stage1.py \
+    --base_model_name_or_path "${BASE_MODEL}" \
+    --vae_path "${VAE}" \
+    --ref_model_path "${REF_MODEL_PATH}" \
     --dpo_data_root "${DPO_DATA_ROOT}" \
     --dpo_dataset_type "${DPO_DATASET_TYPE}" \
     --preference_manifest "${PREFERENCE_MANIFEST}" \
@@ -172,11 +177,10 @@ run_stage1_variant() {
     --dpo_diag_save_csv "${DPO_DIAG_SAVE_CSV}" \
     --dpo_diag_save_wandb "${DPO_DIAG_SAVE_WANDB}" \
     --val_data_dir "${VAL_DATA_DIR}" \
-    --experiments_dir "${EXPERIMENTS_DIR}" \
-    --run_name "${RUN_NAME}" \
-    --batch_size 1 \
+    --output_dir "${stage_dir}" \
+    --train_batch_size 1 \
     --gradient_accumulation_steps 1 \
-    --num_workers 0 \
+    --dataloader_num_workers 0 \
     --learning_rate 1e-6 \
     --lr_scheduler constant \
     --lr_warmup_steps 500 \
@@ -198,7 +202,7 @@ run_stage1_variant() {
     --ref_dtype "${REF_DTYPE}" \
     --text_dtype "${TEXT_DTYPE}" \
     --report_to "${REPORT_TO}" \
-    --wandb_project "${WANDB_PROJECT}" \
+    --tracker_project_name "${WANDB_PROJECT}" \
     --beta_dpo "${BETA_DPO}" \
     --sft_reg_weight "${SFT_REG_WEIGHT}" \
     --lose_gap_weight "${DPO_LOSE_GAP_WEIGHT}" \
@@ -207,11 +211,9 @@ run_stage1_variant() {
     --winner_gap_reg_margin "${WINNER_GAP_REG_MARGIN}" \
     --winner_gap_reg_mode relu \
     --davis_oversample 10 \
+    --gradient_checkpointing \
     --chunk_aligned \
-    --split_pos_neg_forward \
-    --ref_model_path "${REF_MODEL_PATH}" \
-    --run_version "${RUN_VERSION}" \
-    --main_process_port "${MAIN_PROCESS_PORT}" > "${train_log}" 2>&1
+    --split_pos_neg_forward > "${train_log}" 2>&1
   require_path "${stage_dir}/last_weights" "${variant} last_weights"
   cp "${stage_dir}/dpo_diagnostics.csv" "exp17_saturation_positive_dpo/dpo_diag/${variant}_stage1_1000_dpo_diagnostics.csv" || true
 
