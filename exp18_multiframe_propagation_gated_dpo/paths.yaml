@@ -1,0 +1,9 @@
+experiment_folder: exp18_multiframe_propagation_gated_dpo
+source_manifest_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl
+fallback_source_manifest_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+cache_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp18_multiframe_propagation_cache_limit100
+cache_manifest_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp18_multiframe_propagation_cache_limit100/manifests/exp18_train_with_multiframe_prop_limit100.jsonl
+sft48000_pai: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+davis50_pai: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+exp11_best_stage2: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
+

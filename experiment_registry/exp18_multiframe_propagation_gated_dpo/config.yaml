@@ -1,0 +1,9 @@
+experiment_name: exp18_multiframe_propagation_gated_dpo
+status: IMPLEMENTATION_READY_PAI_RUN_PENDING
+base_method: Exp11 outer b0.75 S2
+task: BR / video inpainting
+variants:
+  - exp18a_prop_only
+  - exp18b_prop_gen
+  - exp18c_oracle
+

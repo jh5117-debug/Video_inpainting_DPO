@@ -1,0 +1,42 @@
+experiment_name: exp18_multiframe_propagation_gated_dpo
+task: BR / video inpainting
+base_method: Exp11 outer b0.75 S2
+base_model: DiffuEraser SFT-48000
+win: GT clean video
+lose: generated rollout loser
+mask: partial mask from generated-loser manifest
+eval_protocol: raw6 hard-comp, D+G off, no PCM, no mask dilation, no Gaussian blur, frame-wise metric
+vbench: false
+propagation:
+  method: farneback_multisource_agreement
+  source_window: 3
+  tau_conf: 0.5
+  limit_first: 100
+  oracle_upper_bound: true
+loss:
+  base: region-local normalized-gap clipped-loser-gap winner-anchored DPO
+  boundary_mode: outer
+  mask_weight: 1.0
+  boundary_weight: 0.75
+  outside_weight: 0.05
+  lambda_prop: 0.1
+  lambda_gen: 0.05
+  lambda_boundary_extra: 0.1
+variants:
+  exp18a_prop_only:
+    lambda_prop: 0.1
+    lambda_gen: 0.0
+    lambda_boundary_extra: 0.1
+    confidence_mode: flow_agreement
+  exp18b_prop_gen:
+    lambda_prop: 0.1
+    lambda_gen: 0.05
+    lambda_boundary_extra: 0.1
+    confidence_mode: flow_agreement
+  exp18c_oracle:
+    lambda_prop: 0.1
+    lambda_gen: 0.05
+    lambda_boundary_extra: 0.1
+    confidence_mode: oracle
+    paper_claim: false
+

@@ -116,6 +116,17 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 # Experiment Matrix
 
+## 2026-06-17 Exp18 Mainline Candidate
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp18 Multi-frame Propagation-Confidence Gated DPO | implementation prepared; PAI cache/training pending | `exp18_multiframe_propagation_gated_dpo/`, `experiment_registry/exp18_multiframe_propagation_gated_dpo/`, `PRD/39_exp18_multiframe_propagation_gated_dpo.md`, `reports/exp18_context_and_code_audit.md` |
+
+Exp18 is a new branch after Exp16/Exp17 negative gates. It is not a result yet.
+The first required run is limit=100 propagation cache plus Exp18a/b/c Stage1-500
+gates and DAVIS10 visual/metric sanity. Current best remains Exp11 boundary
+outer b0.75 S2 until Exp18 has real cache, dpo-diag, metrics, and videos.
+
 ## 2026-06-17 Exp16 Mainline Candidate
 
 | User-facing name | Status | Evidence / registry |

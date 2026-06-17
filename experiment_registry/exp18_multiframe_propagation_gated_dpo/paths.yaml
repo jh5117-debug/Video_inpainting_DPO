@@ -1,0 +1,6 @@
+experiment_folder: exp18_multiframe_propagation_gated_dpo
+prd: PRD/39_exp18_multiframe_propagation_gated_dpo.md
+context_audit: reports/exp18_context_and_code_audit.md
+propagation_cache_report: reports/exp18_propagation_cache_quality_limit100.md
+cache_manifest_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp18_multiframe_propagation_cache_limit100/manifests/exp18_train_with_multiframe_prop_limit100.jsonl
+

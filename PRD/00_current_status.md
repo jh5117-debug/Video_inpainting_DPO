@@ -1,3 +1,52 @@
+## 2026-06-17 Exp18 Multi-frame Propagation-Confidence Gated DPO
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Paused directions:
+
+- OR / object-removal benchmark
+- BR / VideoPainter adapter direction
+- adaptive normalization variants
+- Exp16 full prior cache / full training
+- Exp17 saturation-positive follow-up
+
+New direction:
+
+```text
+Exp18 Multi-frame Propagation-Confidence Gated DPO
+```
+
+Motivation: Exp16 used real ProPainter prior cache but its confidence was a
+GT-error training oracle and did not beat Exp11. Exp18 instead asks which masked
+pixels can be reliably propagated from other frames, and gates the DPO/x0 losses
+between propagation-preservation and generation regions.
+
+Implemented artifacts:
+
+```text
+exp18_multiframe_propagation_gated_dpo/
+experiment_registry/exp18_multiframe_propagation_gated_dpo/
+PRD/39_exp18_multiframe_propagation_gated_dpo.md
+reports/exp18_context_and_code_audit.md
+reports/exp18_propagation_confidence_audit.md
+reports/exp18_x0_latent_loss_implementation_audit.md
+```
+
+Current execution status:
+
+```text
+IMPLEMENTATION_READY_ON_HAL
+PAI_RUN_BLOCKED_IN_THIS_SESSION_BY_MISSING_PAI_MOUNT_OR_SSH
+```
+
+No Exp18 training, metric, or visual result exists yet. Do not compare Exp18
+against Exp11 until the limit=100 propagation cache, Exp18a/b/c Stage1-500
+gates, DAVIS10 eval, dpo-diag, and visual judgement are complete.
+
 ## 2026-06-17 Exp16 Prior-Confidence Gated DPO
 
 Current mainline remains:
