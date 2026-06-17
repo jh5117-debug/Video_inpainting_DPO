@@ -1,3 +1,51 @@
+## 2026-06-17 Exp16 Prior-Confidence Gated DPO
+
+Current mainline remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Paused for now:
+
+- OR / object-removal benchmark
+- BR / VideoPainter adapter direction
+- adaptive normalization new variants
+- further Exp11 / Exp12 boundary tuning
+
+New direction:
+
+```text
+Exp16 Prior-Confidence Gated DPO
+```
+
+Motivation: Exp11 outer b0.75 S2 proved that region-local / boundary-aware DPO
+helps, but DPO still does not know where the ProPainter prior is reliable. Exp16
+adds a prior-confidence gate so reliable prior regions are preserved, unreliable
+regions are generated with GT/context preference, and the outer boundary remains
+seam-constrained.
+
+Current implementation status:
+
+- folder: `exp16_prior_confidence_gated_dpo/`
+- registry: `experiment_registry/exp16_prior_confidence_gated_dpo/`
+- PRD: `PRD/36_exp16_prior_confidence_gated_dpo.md`
+- context audit: `reports/exp16_prior_confidence_context_audit.md`
+- confidence audit: `reports/exp16_prior_confidence_map_audit.md`
+- x0 audit: `reports/exp16_x0_prior_loss_implementation_audit.md`
+
+Current status is blocked, not launched:
+
+```text
+BLOCKED_PENDING_REAL_PRIOR_CACHE_AND_FULL_X0_TRAINER_INTEGRATION
+```
+
+Reason: the current generated-loser manifest does not expose a verified real
+ProPainter prior path, and the copied Exp11 training scripts still compute the
+old epsilon/noise DPO unless the Exp16 x0 prior-loss integration is completed.
+The Exp16 scripts intentionally block rather than falling back to frozen-ref
+epsilon proxy.
+
 ## 2026-06-15 Current Best / Evidence Status
 
 Current best under the fixed DAVIS50 raw6 hard-comp protocol is:

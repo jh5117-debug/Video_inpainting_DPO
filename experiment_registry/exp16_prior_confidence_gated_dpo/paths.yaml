@@ -1,0 +1,10 @@
+experiment_folder: exp16_prior_confidence_gated_dpo
+code: exp16_prior_confidence_gated_dpo/code
+scripts: exp16_prior_confidence_gated_dpo/scripts
+reports: exp16_prior_confidence_gated_dpo/reports
+registry: experiment_registry/exp16_prior_confidence_gated_dpo
+context_audit: reports/exp16_prior_confidence_context_audit.md
+confidence_audit: reports/exp16_prior_confidence_map_audit.md
+x0_audit: reports/exp16_x0_prior_loss_implementation_audit.md
+preflight_report: reports/exp16_preflight_report.md
+

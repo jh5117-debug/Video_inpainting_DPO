@@ -1,0 +1,32 @@
+{
+  "status": "blocked",
+  "blocked_reason": "manifest lacks real ProPainter prior paths; build exp16 prior cache first",
+  "manifest_audit": {
+    "manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl",
+    "exists": false,
+    "total": 0,
+    "with_prior": 0,
+    "missing_prior": 0
+  },
+  "tensor_sanity": {
+    "tensor_sanity": "passed",
+    "extra_loss": 0.002685723826289177,
+    "prior_conf_mean": 0.22777195274829865,
+    "prior_conf_p10": 0.12395203858613968,
+    "prior_conf_p50": 0.22903794050216675,
+    "prior_conf_p90": 0.32737860083580017,
+    "mask_area_ratio": 0.25,
+    "L_prior": 0.02560148574411869,
+    "L_gen": 0.0008679062593728304,
+    "L_boundary_extra": 0.0008217995055019855,
+    "lambda_prior": 0.1,
+    "lambda_gen": 0.05,
+    "lambda_boundary_extra": 0.1,
+    "reliable_area_ratio": 0.25,
+    "generate_area_ratio": 0.25,
+    "boundary_area_ratio": 0.25,
+    "prior_target_mode": "latent_x0",
+    "confidence_mode": "gt_error"
+  },
+  "x0_prior_loss_proxy": false
+}

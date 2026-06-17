@@ -116,6 +116,24 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 # Experiment Matrix
 
+## 2026-06-17 Exp16 Mainline Candidate
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp16 Prior-Confidence Gated DPO | blocked pending real ProPainter prior cache + full x0 trainer integration | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md` |
+
+Exp16 inherits the current best setting from Exp11 boundary outer b0.75 S2, but
+adds prior-confidence gated latent-x0 losses. It must not be reported as a
+completed result until the prior cache, preflight, Stage1/Stage2 training,
+dpo-diag, DAVIS/YouTubeVOS metrics, and visual evidence exist.
+
+Paused while Exp16 is explored:
+
+- OR benchmark
+- BR / VideoPainter adapter
+- adaptive normalization new variants
+- additional Exp11 / Exp12 tuning
+
 ## 2026-06-04 Experiment Registry / DPO-Diag Audit Update
 
 A formal `experiment_registry/` has been added as the source-of-truth artifact ledger. Each experiment now has an independent folder with README, paths, commands, dpo_diag, metrics, qualitative, and status notes.

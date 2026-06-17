@@ -1,0 +1,35 @@
+experiment_name: exp16_prior_confidence_gated_dpo
+status: blocked_until_real_prior_cache_and_x0_trainer_preflight
+base_method: Exp11 boundary outer b0.75 S2
+task: partial-mask video inpainting
+model: DiffuEraser SFT-48000
+train_data: YouTube-VOS generated-loser manifest
+win: GT clean video
+lose: generated DiffuEraser loser
+mask: partial mask from manifest
+prior: real ProPainter prior frames
+confidence_mode: gt_error
+confidence_alpha: 5.0
+base_loss:
+  type: region-local normalized-gap clipped-loser-gap winner-anchored DPO
+  beta_dpo: 10
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  winner_gap_reg_margin: 0.0
+region:
+  boundary_mode: outer
+  mask_weight: 1.0
+  boundary_weight: 0.75
+  outside_weight: 0.05
+exp16_extra_loss:
+  prior_target_mode: latent_x0
+  lambda_prior: 0.1
+  lambda_gen: 0.05
+  lambda_boundary_extra: 0.1
+eval:
+  davis50_protocol: raw6 hard-comp D+G off no PCM no mask dilation no Gaussian blur frame-wise
+  metric_backend: inference/metrics.py
+  vbench: false
+
