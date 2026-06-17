@@ -150,7 +150,68 @@ run_stage1_variant() {
   export DPO_GAP_TRACE_CSV="${stage_dir}/dpo_gap_trace.csv"
   export DPO_GAP_SAMPLES_JSONL_GZ="${stage_dir}/dpo_gap_samples.jsonl.gz"
 
-  bash training/dpo/scripts/03_dpo_stage1.sbatch > "${train_log}" 2>&1
+  "${PY}" training/dpo/scripts/run_stage1.py \
+    --num_gpus "${NUM_GPUS}" \
+    --weights_dir "${WEIGHTS_DIR}" \
+    --dpo_data_root "${DPO_DATA_ROOT}" \
+    --dpo_dataset_type "${DPO_DATASET_TYPE}" \
+    --preference_manifest "${PREFERENCE_MANIFEST}" \
+    --train_mask_mode "${TRAIN_MASK_MODE}" \
+    --mask_from_manifest "${MASK_FROM_MANIFEST}" \
+    --loss_region_mode "${LOSS_REGION_MODE}" \
+    --gap_normalization "${GAP_NORMALIZATION}" \
+    --gap_eps "${GAP_EPS}" \
+    --lose_gap_clip_tau "${LOSE_GAP_CLIP_TAU}" \
+    --mask_region_weight "${MASK_REGION_WEIGHT}" \
+    --boundary_region_weight "${BOUNDARY_REGION_WEIGHT}" \
+    --outside_region_weight "${OUTSIDE_REGION_WEIGHT}" \
+    --dpo_gap_trace_csv "${DPO_GAP_TRACE_CSV}" \
+    --dpo_gap_samples_jsonl_gz "${DPO_GAP_SAMPLES_JSONL_GZ}" \
+    --enable_dpo_diag "${ENABLE_DPO_DIAG}" \
+    --dpo_diag_log_every "${DPO_DIAG_LOG_EVERY}" \
+    --dpo_diag_save_csv "${DPO_DIAG_SAVE_CSV}" \
+    --dpo_diag_save_wandb "${DPO_DIAG_SAVE_WANDB}" \
+    --val_data_dir "${VAL_DATA_DIR}" \
+    --experiments_dir "${EXPERIMENTS_DIR}" \
+    --run_name "${RUN_NAME}" \
+    --batch_size 1 \
+    --gradient_accumulation_steps 1 \
+    --num_workers 0 \
+    --learning_rate 1e-6 \
+    --lr_scheduler constant \
+    --lr_warmup_steps 500 \
+    --max_train_steps "${MAX_STEPS}" \
+    --checkpointing_steps "${CKPT_STEPS}" \
+    --checkpoints_total_limit "${CKPT_LIMIT}" \
+    --validation_steps "${VAL_STEPS}" \
+    --logging_steps "${LOGGING_STEPS}" \
+    --val_num_inference_steps 6 \
+    --val_mask_dilation_iter 0 \
+    --resolution "${RESOLUTION}" \
+    --train_height "${TRAIN_HEIGHT}" \
+    --train_width "${TRAIN_WIDTH}" \
+    --nframes "${NFRAMES}" \
+    --seed 42 \
+    --mixed_precision "${MIXED_PRECISION}" \
+    --vae_dtype "${VAE_DTYPE}" \
+    --policy_dtype "${POLICY_DTYPE}" \
+    --ref_dtype "${REF_DTYPE}" \
+    --text_dtype "${TEXT_DTYPE}" \
+    --report_to "${REPORT_TO}" \
+    --wandb_project "${WANDB_PROJECT}" \
+    --beta_dpo "${BETA_DPO}" \
+    --sft_reg_weight "${SFT_REG_WEIGHT}" \
+    --lose_gap_weight "${DPO_LOSE_GAP_WEIGHT}" \
+    --winner_abs_reg_weight "${WINNER_ABS_REG_WEIGHT}" \
+    --winner_gap_reg_weight "${WINNER_GAP_REG_WEIGHT}" \
+    --winner_gap_reg_margin "${WINNER_GAP_REG_MARGIN}" \
+    --winner_gap_reg_mode relu \
+    --davis_oversample 10 \
+    --chunk_aligned \
+    --split_pos_neg_forward \
+    --ref_model_path "${REF_MODEL_PATH}" \
+    --run_version "${RUN_VERSION}" \
+    --main_process_port "${MAIN_PROCESS_PORT}" > "${train_log}" 2>&1
   require_path "${stage_dir}/last_weights" "${variant} last_weights"
   cp "${stage_dir}/dpo_diagnostics.csv" "exp17_saturation_positive_dpo/dpo_diag/${variant}_stage1_1000_dpo_diagnostics.csv" || true
 
