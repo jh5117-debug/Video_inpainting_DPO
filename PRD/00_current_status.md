@@ -37,7 +37,7 @@ Current implementation status:
 Current status:
 
 ```text
-EXP16_STAGE1_500_LIMIT100_COMPLETED
+EXP16_STAGE1_500_LIMIT100_DAVIS10_SANITY_COMPLETED
 ```
 
 What changed on 2026-06-17:
@@ -49,14 +49,27 @@ What changed on 2026-06-17:
   reconstructed predicted latent x0.
 - Stage1 500 on the limit=100 cache completed and saved diagnostics,
   `checkpoint-250`, `checkpoint-500`, and `last_weights`.
+- A DAVIS10 visual/metric sanity eval has been completed using an Exp16
+  DPO-S1 + SFT-S2 hybrid checkpoint.
+- Confidence diagnostics were fixed with mass-based inside-mask fields.
+- DAVIS10 result: Exp16 improves over SFT-48000 but does not exceed Exp11
+  outer b0.75 S2 on the primary PSNR / strict-mask / boundary metrics.
 
 Remaining guardrails:
 
 - Stage2 is not wired for Exp16 and must not be launched.
 - Full cache and full 2000+2000 training are not approved.
-- No DAVIS/YouTubeVOS metric claim exists for Exp16 yet.
+- No DAVIS50/YouTubeVOS100 full metric claim exists for Exp16 yet.
 - DPO diagnostics show high `implicit_acc` and high `loser_dominant_ratio`, so
   this is implementation validation, not a final method result.
+
+Current Exp16 decision:
+
+```text
+Do not launch full prior cache or Stage1 2000 yet.
+If Exp16 continues, first adjust lambda_prior / lambda_gen / confidence alpha or
+add a schedule, then rerun a small gate.
+```
 
 ## 2026-06-15 Current Best / Evidence Status
 

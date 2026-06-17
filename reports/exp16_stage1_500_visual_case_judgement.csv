@@ -1,0 +1,11 @@
+video,group,judgement,exp16_minus_exp11_psnr,exp16_minus_exp11_ssim,exp16_minus_exp11_strict_mask_psnr,visual_note,metric_support
+lucia,better,Exp16 slightly better,0.609235,0.001457,0.609235,"Grass/person boundary looks a little more coherent; no obvious new purple fog/grid artifact.","yes"
+dance-jump,better,Exp16 slightly better,0.225886,0.001601,0.225886,"Pavement and seam area are marginally smoother; improvement is modest.","yes"
+soccerball,better,Exp16 better than weak Exp11 result,1.250825,0.016920,1.250825,"Vegetation/fence area is more stable than Exp11, but all outputs remain visually close.","yes"
+bear,tie,near tie with Exp11 slightly safer,-0.440652,-0.000545,-0.440652,"Small mask and simple background; all methods look similar.","partially"
+kite-surf,tie,near tie with Exp11 slightly safer,-0.174849,-0.000532,-0.174849,"Water texture remains plausible; Exp11 is marginally safer numerically.","partially"
+boat,worse,Exp16 slightly worse,-0.164402,0.000910,-0.164402,"Boat wake and water edge are less stable than Exp11 despite similar SSIM.","mixed"
+rhino,worse,Exp16 clearly worse,-2.182222,-0.015250,-2.182222,"Large structured region becomes softer/less faithful near the mask.","yes"
+dog-agility,worse,Exp16 worse than Exp11 but better than SFT,-0.402095,-0.002381,-0.402095,"Thin poles and fast motion are cleaner with Exp11.","yes"
+blackswan,worse,Exp16 worse,-0.533585,-0.002016,-0.533585,"Water texture and bird body region are less stable than Exp11.","yes"
+breakdance,worse,Exp16 clearly worse,-0.463349,-0.002041,-0.463349,"Pink/paste-like residual is more visible around the dancer/crowd.","yes"

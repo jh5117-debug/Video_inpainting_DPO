@@ -89,13 +89,27 @@ def main() -> int:
             hole = load_hole_mask_stack(str(mask), args.nframes, size)
             conf, stats = compute_prior_confidence_from_gt_error(prior_rgb, gt_rgb, hole, args.alpha)
             boundary = boundary_outer_from_hole(hole.reshape(args.nframes, 1, args.height, args.width))
-            reliable = hole.reshape(args.nframes, 1, args.height, args.width) * conf.reshape(args.nframes, 1, args.height, args.width)
-            generate = hole.reshape(args.nframes, 1, args.height, args.width) * (1.0 - conf.reshape(args.nframes, 1, args.height, args.width))
+            hole4 = hole.reshape(args.nframes, 1, args.height, args.width)
+            conf4 = conf.reshape(args.nframes, 1, args.height, args.width)
+            reliable = hole4 * conf4
+            generate = hole4 * (1.0 - conf4)
+            hole_sum = hole4.sum().clamp(min=1e-6)
+            conf_inside = conf4[hole4 > 0.5] if (hole4 > 0.5).any() else conf4.reshape(-1)
+            reliable_weight_mass = float(reliable.sum() / hole_sum)
+            generate_weight_mass = float(generate.sum() / hole_sum)
             out = {
                 "sample_id": sample_id,
                 **stats,
                 "reliable_area_ratio": float((reliable > 1e-4).float().mean()),
                 "generate_area_ratio": float((generate > 1e-4).float().mean()),
+                "prior_conf_mean_inside_mask": float(conf_inside.float().mean()),
+                "prior_conf_std_inside_mask": float(conf_inside.float().std(unbiased=False)),
+                "prior_conf_p10_inside_mask": float(torch.quantile(conf_inside.float(), 0.10)),
+                "prior_conf_p50_inside_mask": float(torch.quantile(conf_inside.float(), 0.50)),
+                "prior_conf_p90_inside_mask": float(torch.quantile(conf_inside.float(), 0.90)),
+                "reliable_weight_mass": reliable_weight_mass,
+                "generate_weight_mass": generate_weight_mass,
+                "reliable_generate_mass_sum": reliable_weight_mass + generate_weight_mass,
                 "boundary_area_ratio": float((boundary > 0.5).float().mean()),
                 "confidence_mode": "gt_error",
                 "confidence_alpha": args.alpha,
@@ -117,8 +131,16 @@ def main() -> int:
         "prior_conf_p10",
         "prior_conf_p50",
         "prior_conf_p90",
+        "prior_conf_mean_inside_mask",
+        "prior_conf_std_inside_mask",
+        "prior_conf_p10_inside_mask",
+        "prior_conf_p50_inside_mask",
+        "prior_conf_p90_inside_mask",
         "reliable_area_ratio",
         "generate_area_ratio",
+        "reliable_weight_mass",
+        "generate_weight_mass",
+        "reliable_generate_mass_sum",
         "mask_area_ratio",
         "boundary_area_ratio",
     ]

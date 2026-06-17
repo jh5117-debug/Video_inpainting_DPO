@@ -114,7 +114,13 @@ def compute_prior_confidence_from_gt_error(
         "prior_conf_p10": float(torch.quantile(conf_inside.float(), 0.10).detach().cpu()),
         "prior_conf_p50": float(torch.quantile(conf_inside.float(), 0.50).detach().cpu()),
         "prior_conf_p90": float(torch.quantile(conf_inside.float(), 0.90).detach().cpu()),
+        "prior_conf_mean_inside_mask": float(conf_inside.mean().detach().cpu()),
+        "prior_conf_std_inside_mask": float(conf_inside.std(unbiased=False).detach().cpu()),
+        "prior_conf_p10_inside_mask": float(torch.quantile(conf_inside.float(), 0.10).detach().cpu()),
+        "prior_conf_p50_inside_mask": float(torch.quantile(conf_inside.float(), 0.50).detach().cpu()),
+        "prior_conf_p90_inside_mask": float(torch.quantile(conf_inside.float(), 0.90).detach().cpu()),
         "mask_area_ratio": float((hole > 0.5).float().mean().detach().cpu()),
+        "confidence_alpha": float(alpha),
     }
     return conf, stats
 
@@ -179,6 +185,10 @@ def compute_prior_gated_losses(
     boundary = boundary_outer_from_hole(hole)
     reliable = (hole * conf).clamp(0.0, 1.0)
     generate = (hole * (1.0 - conf)).clamp(0.0, 1.0)
+    hole_sum = hole.float().sum().clamp(min=float(cfg.eps))
+    conf_inside = conf[hole > 0.5] if (hole > 0.5).any() else conf.reshape(-1)
+    reliable_mass = reliable.float().sum() / hole_sum
+    generate_mass = generate.float().sum() / hole_sum
 
     l_prior = weighted_l1(z_hat_x0, z_prior, reliable, cfg.eps)
     l_gen = weighted_l1(z_hat_x0, z_gt, generate, cfg.eps)
@@ -199,6 +209,15 @@ def compute_prior_gated_losses(
         "prior_conf_p10": float(torch.quantile(conf.reshape(-1).float(), 0.10).detach().cpu()),
         "prior_conf_p50": float(torch.quantile(conf.reshape(-1).float(), 0.50).detach().cpu()),
         "prior_conf_p90": float(torch.quantile(conf.reshape(-1).float(), 0.90).detach().cpu()),
+        "prior_conf_mean_inside_mask": float(conf_inside.float().mean().detach().cpu()),
+        "prior_conf_std_inside_mask": float(conf_inside.float().std(unbiased=False).detach().cpu()),
+        "prior_conf_p10_inside_mask": float(torch.quantile(conf_inside.float(), 0.10).detach().cpu()),
+        "prior_conf_p50_inside_mask": float(torch.quantile(conf_inside.float(), 0.50).detach().cpu()),
+        "prior_conf_p90_inside_mask": float(torch.quantile(conf_inside.float(), 0.90).detach().cpu()),
+        "reliable_weight_mass": float(reliable_mass.detach().cpu()),
+        "generate_weight_mass": float(generate_mass.detach().cpu()),
+        "reliable_generate_mass_sum": float((reliable_mass + generate_mass).detach().cpu()),
+        "confidence_alpha": float(cfg.confidence_alpha),
         "prior_target_mode": "latent_x0",
         "confidence_mode": cfg.confidence_mode,
     }

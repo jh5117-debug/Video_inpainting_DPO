@@ -120,13 +120,20 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp16 Prior-Confidence Gated DPO | Stage1 500 limit=100 completed; engineering gate passed, not a final metric result | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md`, `reports/exp16_dpo_diag_summary_limit100.md` |
+| Exp16 Prior-Confidence Gated DPO | Stage1 500 limit=100 + DAVIS10 sanity completed; weak positive signal vs SFT, not better than Exp11; do not full-train yet | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md`, `reports/exp16_stage1_500_visual_case_judgement.md`, `reports/exp16_stage1_500_davis10_metric_summary.md` |
 
 Exp16 inherits the current best setting from Exp11 boundary outer b0.75 S2, but
 adds prior-confidence gated latent-x0 losses. The limit=100 prior cache,
-preflight, and Stage1 500 small gate completed on PAI. It must not be reported
-as a completed result until Stage2 wiring/full training, dpo-diag review,
-DAVIS/YouTubeVOS metrics, and visual evidence exist.
+preflight, Stage1 500 small gate, confidence diagnostic fix, and DAVIS10 sanity
+eval completed on PAI. It must not be reported as a completed result: DAVIS10
+shows weak positive signal over SFT-48000, but Exp16 does not beat Exp11 outer
+b0.75 S2 and negative cases remain.
+
+Current Exp16 decision:
+
+```text
+Do not run full prior cache / Stage1 2000 / Stage2 2000 yet.
+```
 
 Paused while Exp16 is explored:
 
