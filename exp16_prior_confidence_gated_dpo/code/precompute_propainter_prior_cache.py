@@ -27,7 +27,16 @@ def read_jsonl(path: Path) -> Iterable[dict[str, Any]]:
 
 
 def prior_field(row: dict[str, Any]) -> str | None:
-    for key in ("prior_frame_dir", "propainter_frame_dir", "prior_video_path", "propainter_video_path", "propainter_mp4"):
+    for key in (
+        "prior_frame_dir",
+        "propainter_prior_frame_dir",
+        "propainter_frame_dir",
+        "prior_video_path",
+        "propainter_prior_video_path",
+        "propainter_video_path",
+        "propainter_mp4",
+        "propainter_path",
+    ):
         if row.get(key):
             return str(row[key])
     return None
@@ -93,6 +102,7 @@ def main() -> int:
     parser.add_argument("--neighbor_length", type=int, default=25)
     parser.add_argument("--subvideo_length", type=int, default=80)
     parser.add_argument("--mask_dilation", type=int, default=0)
+    parser.add_argument("--output_manifest_name", default="")
     args = parser.parse_args()
 
     input_manifest = Path(args.input_manifest).expanduser()
@@ -101,7 +111,8 @@ def main() -> int:
     manifest_dir = output_root / "manifests"
     report_dir = output_root / "reports"
     failed_path = report_dir / "failed_cases.csv"
-    out_manifest = manifest_dir / "exp16_train_with_prior.jsonl"
+    default_manifest_name = f"exp16_train_with_prior_limit{args.limit}.jsonl" if args.limit else "exp16_train_with_prior.jsonl"
+    out_manifest = manifest_dir / (args.output_manifest_name or default_manifest_name)
     manifest_dir.mkdir(parents=True, exist_ok=True)
     report_dir.mkdir(parents=True, exist_ok=True)
     frames_root.mkdir(parents=True, exist_ok=True)
@@ -121,14 +132,17 @@ def main() -> int:
             existing = prior_field(row)
             if existing and validate_prior_dir(Path(existing), args.nframes):
                 row["prior_frame_dir"] = existing
+                row["propainter_prior_frame_dir"] = existing
                 reused += 1
             else:
                 prior_dir = frames_root / sample_id
                 if args.resume and validate_prior_dir(prior_dir, args.nframes):
                     row["prior_frame_dir"] = str(prior_dir)
+                    row["propainter_prior_frame_dir"] = str(prior_dir)
                     reused += 1
                 elif args.dry_run:
                     row["prior_frame_dir"] = str(prior_dir)
+                    row["propainter_prior_frame_dir"] = str(prior_dir)
                     generated += 1
                 else:
                     try:
@@ -136,10 +150,16 @@ def main() -> int:
                         if not validate_prior_dir(prior_dir, args.nframes):
                             raise RuntimeError(f"prior frame count under {prior_dir} is too small")
                         row["prior_frame_dir"] = str(prior_dir)
+                        row["propainter_prior_frame_dir"] = str(prior_dir)
                         generated += 1
                     except Exception as exc:  # noqa: BLE001
                         failed.append({"sample_id": sample_id, "error": repr(exc)})
                         continue
+            row["gt_frame_dir"] = row.get("gt_frame_dir") or row.get("win_video_path")
+            row["gt_video_path"] = row.get("gt_video_path") or row.get("win_video_path")
+            row["loser_frame_dir"] = row.get("loser_frame_dir") or row.get("final_loser_video_path")
+            row["loser_video_path"] = row.get("loser_video_path") or row.get("final_loser_video_path")
+            row["mask_frame_dir"] = row.get("mask_frame_dir") or row.get("mask_path")
             out.write(json.dumps(row, ensure_ascii=False) + "\n")
             rows_written += 1
 
@@ -170,4 +190,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

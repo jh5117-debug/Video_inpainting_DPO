@@ -80,6 +80,15 @@ from training.dpo.dataset.factory import build_dpo_dataset
 
 FileClient, imfrombytes = import_dataset_file_helpers(PROJECT_ROOT)
 
+from exp16_dataset import Exp16PriorManifestDataset  # noqa: E402
+from exp16_loss import (  # noqa: E402
+    PriorConfidenceConfig,
+    brushnet_known_to_hole_mask,
+    compute_prior_confidence_from_gt_error,
+    compute_prior_gated_losses,
+    predict_x0_from_model_output,
+)
+
 
 if is_wandb_available():
     import wandb
@@ -871,7 +880,9 @@ def format_dpo_diagnostics_line(step, diag):
 
 
 DPO_DIAG_CSV_FIELDS = [
+    "step",
     "global_step",
+    "loss",
     "dpo_loss",
     "implicit_acc",
     "win_gap",
@@ -934,6 +945,26 @@ DPO_DIAG_CSV_FIELDS = [
     "region_weighted_mse_l",
     "region_weighted_ref_mse_w",
     "region_weighted_ref_mse_l",
+    "L_base",
+    "L_prior",
+    "L_gen",
+    "L_boundary_extra",
+    "lambda_prior",
+    "lambda_gen",
+    "lambda_boundary_extra",
+    "exp16_extra_loss",
+    "m_w",
+    "m_l",
+    "m_w_ref",
+    "m_l_ref",
+    "prior_conf_mean",
+    "prior_conf_p10",
+    "prior_conf_p50",
+    "prior_conf_p90",
+    "reliable_area_ratio",
+    "generate_area_ratio",
+    "confidence_mode",
+    "prior_target_mode",
 ]
 
 
@@ -952,7 +983,9 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
     path = os.path.join(output_dir, "dpo_diagnostics.csv")
     exists = os.path.exists(path)
     row = {
+        "step": step,
         "global_step": step,
+        "loss": diag.get("total_loss"),
         "dpo_loss": diag.get("dpo_loss"),
         "implicit_acc": diag.get("implicit_acc"),
         "win_gap": diag.get("win_gap"),
@@ -1015,6 +1048,26 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "region_weighted_mse_l": diag.get("region_weighted_mse_l"),
         "region_weighted_ref_mse_w": diag.get("region_weighted_ref_mse_w"),
         "region_weighted_ref_mse_l": diag.get("region_weighted_ref_mse_l"),
+        "L_base": diag.get("L_base"),
+        "L_prior": diag.get("L_prior"),
+        "L_gen": diag.get("L_gen"),
+        "L_boundary_extra": diag.get("L_boundary_extra"),
+        "lambda_prior": diag.get("lambda_prior"),
+        "lambda_gen": diag.get("lambda_gen"),
+        "lambda_boundary_extra": diag.get("lambda_boundary_extra"),
+        "exp16_extra_loss": diag.get("exp16_extra_loss"),
+        "m_w": diag.get("m_w", diag.get("mse_w")),
+        "m_l": diag.get("m_l", diag.get("mse_l")),
+        "m_w_ref": diag.get("m_w_ref", diag.get("ref_mse_w")),
+        "m_l_ref": diag.get("m_l_ref", diag.get("ref_mse_l")),
+        "prior_conf_mean": diag.get("prior_conf_mean"),
+        "prior_conf_p10": diag.get("prior_conf_p10"),
+        "prior_conf_p50": diag.get("prior_conf_p50"),
+        "prior_conf_p90": diag.get("prior_conf_p90"),
+        "reliable_area_ratio": diag.get("reliable_area_ratio"),
+        "generate_area_ratio": diag.get("generate_area_ratio"),
+        "confidence_mode": diag.get("confidence_mode"),
+        "prior_target_mode": diag.get("prior_target_mode"),
     }
     with open(path, "a", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=DPO_DIAG_CSV_FIELDS)
@@ -1451,6 +1504,15 @@ def parse_args(input_args=None):
                         help="是否根据 meta.json chunk 边界对齐采样")
     parser.add_argument("--split_pos_neg_forward", action="store_true",
                         help="分别 forward positive/negative，降低显存峰值，DPO loss 保持不变")
+    parser.add_argument("--exp16_require_prior", type=parse_bool_arg, default=True,
+                        help="Require real ProPainter prior paths and use the Exp16 prior-aware dataset.")
+    parser.add_argument("--confidence_mode", type=str, default="gt_error", choices=["gt_error"])
+    parser.add_argument("--confidence_alpha", type=float, default=5.0)
+    parser.add_argument("--lambda_prior", type=float, default=0.1)
+    parser.add_argument("--lambda_gen", type=float, default=0.05)
+    parser.add_argument("--lambda_boundary_extra", type=float, default=0.1)
+    parser.add_argument("--preflight_only", action="store_true",
+                        help="Run one Exp16 batch forward/backward and write diagnostics, then exit before optimizer.step.")
 
     if input_args is not None:
         args = parser.parse_args(input_args)
@@ -1477,7 +1539,7 @@ def collate_fn(examples):
     masks = torch.stack([e["masks"] for e in examples]).float()
     input_ids = torch.stack([e["input_ids"] for e in examples])
 
-    return {
+    batch = {
         "pixel_values_pos": pixel_values_pos,
         "pixel_values_neg": pixel_values_neg,
         "conditioning_pixel_values": conditioning_pixel_values,
@@ -1490,6 +1552,10 @@ def collate_fn(examples):
             for e in examples
         ],
     }
+    if "prior_pixel_values" in examples[0]:
+        batch["prior_pixel_values"] = torch.stack([e["prior_pixel_values"] for e in examples]).float()
+        batch["prior_frame_dir"] = [e.get("prior_frame_dir") for e in examples]
+    return batch
 
 
 # ============================================================
@@ -1739,7 +1805,11 @@ def main(args):
         eps=args.adam_epsilon,
     )
 
-    train_dataset = build_dpo_dataset(args, tokenizer)
+    if args.exp16_require_prior:
+        train_dataset = Exp16PriorManifestDataset(args, tokenizer)
+        logger.info("Using Exp16PriorManifestDataset with real ProPainter prior paths.")
+    else:
+        raise ValueError("Exp16 training requires --exp16_require_prior true; proxy/no-prior mode is not allowed.")
     train_dataloader = torch.utils.data.DataLoader(
         train_dataset, shuffle=True, collate_fn=collate_fn,
         batch_size=args.train_batch_size, num_workers=args.dataloader_num_workers,
@@ -1882,6 +1952,24 @@ def main(args):
                 neg_latents = neg_latents.to(dtype=policy_dtype)
                 debug_stage("after vae neg encode")
 
+                if "prior_pixel_values" not in batch:
+                    raise RuntimeError("Exp16 requires prior_pixel_values from a real ProPainter prior manifest.")
+                debug_stage("before exp16 prior confidence")
+                prior_confidence, prior_conf_stats = compute_prior_confidence_from_gt_error(
+                    batch["prior_pixel_values"].to(dtype=torch.float32),
+                    batch["pixel_values_pos"].to(dtype=torch.float32),
+                    brushnet_known_to_hole_mask(batch["masks"]),
+                    alpha=args.confidence_alpha,
+                )
+                debug_stage("after exp16 prior confidence")
+
+                debug_stage("before vae prior encode")
+                prior_latents = vae.encode(
+                    rearrange(batch["prior_pixel_values"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
+                ).latent_dist.sample() * vae.config.scaling_factor
+                prior_latents = prior_latents.to(dtype=policy_dtype)
+                debug_stage("after vae prior encode")
+
                 # BrushNet conditioning: GT masked image + mask
                 n_batch = batch["conditioning_pixel_values"].shape[0]
                 debug_stage("before vae conditioning encode")
@@ -1907,7 +1995,7 @@ def main(args):
                     )
 
                 # VAE encode 完毕，释放原始像素 tensor 节省显存
-                del batch["pixel_values_pos"], batch["pixel_values_neg"], batch["conditioning_pixel_values"]
+                del batch["pixel_values_pos"], batch["pixel_values_neg"], batch["conditioning_pixel_values"], batch["prior_pixel_values"]
 
                 brushnet_cond = rearrange(
                     torch.concat([cond_latents, masks], 2),
@@ -2032,6 +2120,42 @@ def main(args):
                     winner_gap_reg_mode=args.winner_gap_reg_mode,
                     nframes=args.nframes,
                 )
+                base_loss = loss
+                model_pred_winner = model_pred[: noise.shape[0]]
+                z_hat_x0 = predict_x0_from_model_output(
+                    noisy_pos,
+                    model_pred_winner,
+                    timesteps_expanded,
+                    noise_scheduler,
+                ).to(dtype=policy_dtype)
+                exp16_cfg = PriorConfidenceConfig(
+                    confidence_mode=args.confidence_mode,
+                    confidence_alpha=args.confidence_alpha,
+                    mask_weight=args.mask_region_weight,
+                    boundary_weight=args.boundary_region_weight,
+                    outside_weight=args.outside_region_weight,
+                    lambda_prior=args.lambda_prior,
+                    lambda_gen=args.lambda_gen,
+                    lambda_boundary_extra=args.lambda_boundary_extra,
+                    eps=args.gap_eps,
+                )
+                extra_loss, exp16_diag = compute_prior_gated_losses(
+                    z_hat_x0,
+                    prior_latents,
+                    pos_latents,
+                    masks,
+                    prior_confidence,
+                    exp16_cfg,
+                )
+                loss = base_loss + extra_loss
+                diagnostics["L_base"] = base_loss.detach().item()
+                diagnostics.update(prior_conf_stats)
+                diagnostics.update(exp16_diag)
+                diagnostics["exp16_extra_loss"] = extra_loss.detach().item()
+                diagnostics["total_loss"] = loss.detach().item()
+                diagnostics["anchored_total_loss"] = loss.detach().item()
+                diagnostics["prior_target_mode"] = "latent_x0"
+                diagnostics["confidence_mode"] = args.confidence_mode
                 debug_stage("after dpo loss")
                 local_gap_diagnostics = dict(diagnostics)
                 next_global_step = global_step + 1
@@ -2065,6 +2189,19 @@ def main(args):
                 if accelerator.sync_gradients:
                     debug_stage("before grad norm and clip")
                     grad_norm = compute_dpo_grad_norm(loss, params_to_optimize)
+                    if args.preflight_only:
+                        if accelerator.is_main_process:
+                            os.makedirs(args.output_dir, exist_ok=True)
+                            append_dpo_diagnostics_csv(args.output_dir, next_global_step, diagnostics, grad_norm=grad_norm)
+                            preflight_dir = Path("exp16_prior_confidence_gated_dpo") / "dpo_diag"
+                            preflight_dir.mkdir(parents=True, exist_ok=True)
+                            shutil.copyfile(
+                                os.path.join(args.output_dir, "dpo_diagnostics.csv"),
+                                preflight_dir / "preflight_dpo_diagnostics.csv",
+                            )
+                            logger.info("Exp16 preflight passed: wrote one DPO diagnostic row and skipped optimizer.step().")
+                        accelerator.end_training()
+                        return
                     accelerator.clip_grad_norm_(params_to_optimize, args.max_grad_norm)
                     debug_stage("after grad norm and clip")
 
@@ -2231,16 +2368,6 @@ def main(args):
 
 
 if __name__ == "__main__":
-    if os.environ.get("EXP16_ENABLE_REAL_PRIOR_X0_TRAINING", "0") != "1":
-        print(
-            "BLOCKED: train_exp16_stage1.py is an isolated copy of Exp11 Stage1. "
-            "Do not run it as Exp16 until real ProPainter prior loading, "
-            "z_hat_x0 reconstruction, and L_prior/L_gen/L_boundary_extra are "
-            "integrated into total_loss. Set EXP16_ENABLE_REAL_PRIOR_X0_TRAINING=1 "
-            "only after reports/exp16_x0_prior_loss_implementation_audit.md passes.",
-            file=sys.stderr,
-        )
-        raise SystemExit(2)
     args = parse_args()
     try:
         main(args)

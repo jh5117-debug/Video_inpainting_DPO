@@ -25,10 +25,13 @@ from training.dpo.dataset.generated_loser_manifest_dataset import (  # noqa: E40
 
 PRIOR_KEYS = (
     "prior_frame_dir",
+    "propainter_prior_frame_dir",
     "propainter_frame_dir",
     "prior_video_path",
+    "propainter_prior_video_path",
     "propainter_video_path",
     "propainter_mp4",
+    "propainter_path",
 )
 
 
@@ -97,4 +100,3 @@ class Exp16PriorManifestDataset(GeneratedLoserManifestDataset):
         item["prior_pixel_values"] = torch.stack(prior_tensors)
         item["prior_frame_dir"] = row["prior_frame_dir"]
         return item
-

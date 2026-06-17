@@ -42,9 +42,9 @@ exp16_prior_confidence_gated_dpo/code/exp16_loss.py
 It raises if the scheduler does not expose `alphas_cumprod` or uses an
 unsupported prediction type.
 
-## Not Yet Passed
+## Passed For Stage1 Small Gate
 
-The full Stage1 / Stage2 training loops have not yet been updated to:
+The isolated Stage1 trainer has been updated and verified to:
 
 1. load `prior_pixel_values` from a prior manifest;
 2. encode `z_prior` through the DiffuEraser VAE;
@@ -55,12 +55,18 @@ The full Stage1 / Stage2 training loops have not yet been updated to:
 Therefore:
 
 ```text
-status = BLOCKED_PENDING_FULL_TRAINER_INTEGRATION
+status = STAGE1_PASSED_LIMIT100_PREFLIGHT_AND_SMALL_GATE
 ```
 
-The copied Stage1 / Stage2 scripts are guarded by
-`EXP16_ENABLE_REAL_PRIOR_X0_TRAINING`. Without that environment variable they
-exit with `BLOCKED` instead of running the old Exp11 loss.
+Evidence:
+
+```text
+preflight_diag = exp16_prior_confidence_gated_dpo/dpo_diag/preflight_dpo_diagnostics.csv
+stage1_diag = exp16_prior_confidence_gated_dpo/dpo_diag/stage1_500_dpo_diagnostics.csv
+stage1_run = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260617_exp16_limit100_exp16_prior_confidence_s1_500_limit100_pai
+```
+
+Stage2 has not been updated with this wiring and remains blocked.
 
 ## Not A Proxy
 
@@ -73,4 +79,3 @@ generated loser as prior target
 ```
 
 The current implementation blocks rather than falling back to any of these.
-

@@ -1,6 +1,18 @@
 # Status
 
-`BLOCKED_PENDING_REAL_PRIOR_CACHE_AND_FULL_X0_TRAINER_INTEGRATION`
+`STAGE1_500_LIMIT100_COMPLETED`
 
-No Stage1/Stage2 training has been launched.
+Completed on PAI:
 
+- limit=100 real ProPainter prior cache;
+- confidence audit;
+- Stage1 preflight;
+- Stage1 500 small gate;
+- checkpoint-250, checkpoint-500, `last_weights`, and dpo_diag.
+
+Not launched:
+
+- Stage2;
+- full prior cache;
+- full 2000+2000 training;
+- DAVIS/YouTubeVOS eval.

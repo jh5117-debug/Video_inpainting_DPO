@@ -14,7 +14,15 @@ The new idea is to add a real ProPainter-prior confidence gate:
 - unreliable prior region: allow GT/context/preference-driven generation;
 - outer boundary: keep the seam constrained.
 
-This folder intentionally blocks training until a manifest with real ProPainter
-prior paths is available and `z_hat_x0` latent consistency is integrated into
-the training loss. It must not fall back to the old frozen-ref proxy.
+Current state:
 
+```text
+Stage1 500 limit=100 engineering gate completed.
+```
+
+The limit=100 gate used real ProPainter prior frames, reconstructed predicted
+latent x0, and nonzero `L_prior`, `L_gen`, and `L_boundary_extra` terms in
+`total_loss`. It must not fall back to the old frozen-ref proxy.
+
+This is not a final method result: Stage2 is not wired, full prior cache/full
+training are not launched, and DAVIS/YouTubeVOS metrics do not exist yet.

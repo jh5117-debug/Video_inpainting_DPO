@@ -34,17 +34,29 @@ Current implementation status:
 - confidence audit: `reports/exp16_prior_confidence_map_audit.md`
 - x0 audit: `reports/exp16_x0_prior_loss_implementation_audit.md`
 
-Current status is blocked, not launched:
+Current status:
 
 ```text
-BLOCKED_PENDING_REAL_PRIOR_CACHE_AND_FULL_X0_TRAINER_INTEGRATION
+EXP16_STAGE1_500_LIMIT100_COMPLETED
 ```
 
-Reason: the current generated-loser manifest does not expose a verified real
-ProPainter prior path, and the copied Exp11 training scripts still compute the
-old epsilon/noise DPO unless the Exp16 x0 prior-loss integration is completed.
-The Exp16 scripts intentionally block rather than falling back to frozen-ref
-epsilon proxy.
+What changed on 2026-06-17:
+
+- Existing manifests did not expose verified ProPainter prior paths.
+- A real ProPainter prior cache was generated for `limit=100`.
+- Confidence maps were computed with GT-error confidence.
+- Stage1 preflight passed with real prior frames, VAE latent targets, and
+  reconstructed predicted latent x0.
+- Stage1 500 on the limit=100 cache completed and saved diagnostics,
+  `checkpoint-250`, `checkpoint-500`, and `last_weights`.
+
+Remaining guardrails:
+
+- Stage2 is not wired for Exp16 and must not be launched.
+- Full cache and full 2000+2000 training are not approved.
+- No DAVIS/YouTubeVOS metric claim exists for Exp16 yet.
+- DPO diagnostics show high `implicit_acc` and high `loser_dominant_ratio`, so
+  this is implementation validation, not a final method result.
 
 ## 2026-06-15 Current Best / Evidence Status
 

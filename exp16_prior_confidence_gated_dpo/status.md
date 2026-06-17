@@ -1,6 +1,6 @@
 # Status
 
-Status: `BLOCKED_PENDING_REAL_PRIOR_CACHE_AND_FULL_X0_TRAINER_INTEGRATION`
+Status: `STAGE1_500_LIMIT100_COMPLETED`
 
 What is ready:
 
@@ -10,12 +10,19 @@ What is ready:
 - preflight script that blocks without real ProPainter prior paths;
 - launcher that does not start old Exp11 loss as Exp16.
 
+Completed:
+
+- real ProPainter prior cache, limit=100;
+- confidence audit on the cache;
+- Stage1 preflight with real prior frames and latent-x0 target losses;
+- Stage1 500 small gate;
+- checkpoint-250, checkpoint-500, last_weights, and dpo_diag.
+
 What is not ready:
 
-- full Stage1/Stage2 trainer integration for `L_prior`, `L_gen`, and
-  `L_boundary_extra`;
+- Stage2 trainer integration for `L_prior`, `L_gen`, and `L_boundary_extra`;
 - full ProPainter prior cache for the training manifest;
-- PAI-side preflight with real model tensors.
+- full 2000+2000 training;
+- DAVIS/YouTubeVOS metric and visual evidence.
 
-No Exp16 training has been launched.
-
+Stage1 500 was launched and completed. Stage2/full training was not launched.

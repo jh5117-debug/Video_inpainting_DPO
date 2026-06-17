@@ -1,8 +1,12 @@
 experiment_name: exp16_prior_confidence_gated_dpo
-status: blocked_pending_real_prior_cache_and_x0_trainer
+status: stage1_500_limit100_completed
 base: Exp11 boundary outer b0.75 S2
 loss: region-local normalized-gap DPO + prior-confidence gated latent x0 losses
 prior_required: true
 proxy_allowed: false
 vbench: false
-
+limit100_gate:
+  status: completed
+  stage1_steps: 500
+  stage2_launched: false
+  full_training_launched: false

@@ -1,9 +1,12 @@
 # Commands
 
-PAI launcher:
+PAI launcher used for the completed limit=100 gate:
 
 ```bash
-CUDA_VISIBLE_DEVICES=0,1,2,3 bash exp16_prior_confidence_gated_dpo/scripts/launch_exp16_pai.sh
+cd /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+CUDA_VISIBLE_DEVICES=0 RUN_VERSION=20260617_exp16_limit100 \
+  bash exp16_prior_confidence_gated_dpo/scripts/launch_exp16_pai.sh \
+  2>&1 | tee logs/pipelines/exp16_prior_confidence_limit100_20260617.log
 ```
 
 Build a small prior-cache readiness subset first:
@@ -20,7 +23,8 @@ python exp16_prior_confidence_gated_dpo/code/precompute_propainter_prior_cache.p
 Run implementation preflight against a prior manifest:
 
 ```bash
-python exp16_prior_confidence_gated_dpo/code/preflight_exp16.py \
-  --manifest exp16_prior_confidence_gated_dpo/cache/exp16_propainter_prior_cache/manifests/exp16_train_with_prior.jsonl
+bash exp16_prior_confidence_gated_dpo/scripts/launch_exp16_pai.sh
 ```
 
+The launcher performs prior-cache check/generation, confidence audit, Stage1
+preflight, and Stage1 500. It does not launch Stage2 or full training.

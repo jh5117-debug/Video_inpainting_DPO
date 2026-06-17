@@ -41,24 +41,30 @@ exp16_prior_confidence_gated_dpo/code/exp16_loss.py
 Tensor-level sanity is implemented in:
 
 ```text
-exp16_prior_confidence_gated_dpo/code/preflight_exp16.py
+exp16_prior_confidence_gated_dpo/code/exp16_loss.py
 ```
 
-Real dataset statistics are pending because the training manifest does not yet
-have a verified real ProPainter prior cache.
-
-Required future dataset stats:
+Real dataset statistics were computed from the PAI limit=100 ProPainter prior
+cache:
 
 ```text
-prior_conf_mean
-prior_conf_p10
-prior_conf_p50
-prior_conf_p90
-reliable_area_ratio
-generate_area_ratio
-mask_area_ratio
-boundary_area_ratio
+manifest = /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp16_propainter_prior_cache_limit100/manifests/exp16_train_with_prior_limit100.jsonl
+rows_ok = 100
+rows_failed = 0
+confidence_mode = gt_error
+confidence_alpha = 5.0
 ```
+
+| metric | mean |
+|---|---:|
+| prior_conf_mean | 0.656014 |
+| prior_conf_p10 | 0.239536 |
+| prior_conf_p50 | 0.725268 |
+| prior_conf_p90 | 0.940553 |
+| reliable_area_ratio | 0.256022 |
+| generate_area_ratio | 0.254534 |
+| mask_area_ratio | 0.256022 |
+| boundary_area_ratio | 0.008180 |
 
 ## Mask Convention
 
@@ -74,8 +80,7 @@ bilinear interpolation because it is continuous.
 
 ## Status
 
-`PENDING_REAL_PRIOR_CACHE`
+`PASSED_LIMIT100_CACHE_AUDIT`
 
-No training should start until this audit is updated with real prior-cache
-statistics from PAI.
-
+Stage1 500 small gate has run. Do not start Stage2/full training until the
+Stage1 500 diagnostics and a small visual/validation check are reviewed.

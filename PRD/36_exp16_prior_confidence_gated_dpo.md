@@ -133,7 +133,7 @@ Implemented in isolated folder:
 exp16_prior_confidence_gated_dpo/
 ```
 
-Ready:
+Completed in the current small gate:
 
 - context audit;
 - prior-cache builder;
@@ -143,27 +143,50 @@ Ready:
 - latent prior / generation / boundary extra loss helper;
 - preflight script;
 - PAI launcher that blocks if prior manifest is missing;
-- Stage1 / Stage2 copied scripts guarded against accidental old-loss training.
+- limit=100 real ProPainter prior cache on PAI;
+- confidence-map audit on the limit=100 cache;
+- Stage1 preflight with real prior frames, VAE latent targets, reconstructed
+  predicted latent x0, and one dpo_diag row;
+- Stage1 500 training on the limit=100 cache.
 
-Blocked:
+Current status:
 
-- Current training manifest does not expose a verified ProPainter prior field in
-  the local audit.
-- Full Stage1 / Stage2 trainer integration is not complete; copied Exp11 scripts
-  are guarded and cannot be launched as Exp16.
-- PAI-side model preflight has not been run.
+```text
+stage1_500_limit100_completed
+```
+
+Still not done:
+
+- Stage2 is not wired for Exp16 prior-confidence loss and must remain disabled.
+- Full prior cache has not been built.
+- Full 2000+2000 training has not been launched or authorized.
+- DAVIS50 / YouTubeVOS100 Exp16 evaluation has not been run.
+- This is not a final method result.
+
+Artifacts:
+
+```text
+prior_cache = /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp16_propainter_prior_cache_limit100
+prior_manifest = /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp16_propainter_prior_cache_limit100/manifests/exp16_train_with_prior_limit100.jsonl
+stage1_500 = /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260617_exp16_limit100_exp16_prior_confidence_s1_500_limit100_pai
+```
+
+Diagnostic summary:
+
+```text
+reports/exp16_dpo_diag_summary_limit100.md
+```
 
 ## Decision Rule
 
-Do not launch Exp16 training until:
+Do not launch full Exp16 training until:
 
-1. `exp16_train_with_prior.jsonl` exists and every row has a real ProPainter
-   prior path.
-2. PAI preflight loads one batch, encodes GT/prior latents, reconstructs
-   `z_hat_x0`, computes `L_base`, `L_prior`, `L_gen`, `L_boundary_extra`, and
-   writes a diagnostic row.
-3. `reports/exp16_x0_prior_loss_implementation_audit.md` is updated from
-   blocked to passed.
+1. Stage2 receives the same real-prior latent-x0 wiring as Stage1.
+2. A full prior cache plan is approved.
+3. The Stage1 500 diagnostics are reviewed, especially high `implicit_acc` and
+   high `loser_dominant_ratio`.
+4. A small decode / validation check confirms that the Stage1 500 checkpoint is
+   not visually harmful.
 
 ## Expected Evidence
 
@@ -174,4 +197,3 @@ If training passes:
 - YouTubeVOS100 metric summary if wrapper is ready
 - five-column visual comparison:
   GT / mask / SFT-48000 / Exp11 outer b0.75 S2 / Exp16
-

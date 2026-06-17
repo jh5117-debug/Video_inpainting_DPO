@@ -120,12 +120,13 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp16 Prior-Confidence Gated DPO | blocked pending real ProPainter prior cache + full x0 trainer integration | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md` |
+| Exp16 Prior-Confidence Gated DPO | Stage1 500 limit=100 completed; engineering gate passed, not a final metric result | `exp16_prior_confidence_gated_dpo/`, `experiment_registry/exp16_prior_confidence_gated_dpo/`, `PRD/36_exp16_prior_confidence_gated_dpo.md`, `reports/exp16_dpo_diag_summary_limit100.md` |
 
 Exp16 inherits the current best setting from Exp11 boundary outer b0.75 S2, but
-adds prior-confidence gated latent-x0 losses. It must not be reported as a
-completed result until the prior cache, preflight, Stage1/Stage2 training,
-dpo-diag, DAVIS/YouTubeVOS metrics, and visual evidence exist.
+adds prior-confidence gated latent-x0 losses. The limit=100 prior cache,
+preflight, and Stage1 500 small gate completed on PAI. It must not be reported
+as a completed result until Stage2 wiring/full training, dpo-diag review,
+DAVIS/YouTubeVOS metrics, and visual evidence exist.
 
 Paused while Exp16 is explored:
 

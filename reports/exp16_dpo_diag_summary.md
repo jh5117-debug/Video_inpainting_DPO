@@ -1,53 +1,24 @@
 # Exp16 DPO Diagnostic Summary
 
-Status: `MISSING_DPO_DIAG`
+Latest status: Stage1 500 limit=100 completed on PAI with real ProPainter prior
+frames and latent-x0 prior/generation/boundary losses.
 
-No Exp16 training has been launched.
-
-Reason:
-
-```text
-BLOCKED_PENDING_REAL_PRIOR_CACHE_AND_FULL_X0_TRAINER_INTEGRATION
-```
-
-Expected diagnostic columns once training is enabled:
+Primary summary:
 
 ```text
-step
-loss
-L_base
-dpo_loss
-L_prior
-L_gen
-L_boundary_extra
-lambda_prior
-lambda_gen
-lambda_boundary_extra
-m_w
-m_l
-m_w_ref
-m_l_ref
-raw_win_gap
-raw_lose_gap
-norm_win_gap
-norm_lose_gap
-norm_lose_gap_clipped
-winner_abs_reg
-winner_gap_reg
-mse_w_over_ref_mse_w
-mse_l_over_ref_mse_l
-loser_dominant_ratio
-grad_norm
-lr
-mask_area_ratio
-boundary_area_ratio
-prior_conf_mean
-prior_conf_p10
-prior_conf_p50
-prior_conf_p90
-reliable_area_ratio
-generate_area_ratio
-prior_target_mode
-confidence_mode
+reports/exp16_dpo_diag_summary_limit100.md
 ```
 
+Local diagnostic CSVs:
+
+```text
+exp16_prior_confidence_gated_dpo/dpo_diag/preflight_dpo_diagnostics.csv
+exp16_prior_confidence_gated_dpo/dpo_diag/stage1_500_dpo_diagnostics.csv
+```
+
+Short interpretation:
+
+- `L_prior`, `L_gen`, and `L_boundary_extra` are nonzero and enter total loss.
+- Stage1 500 completed and saved `last_weights`.
+- `implicit_acc` remains 1.0 and `loser_dominant_ratio` is high, so this is an
+  implementation small gate, not a final method result.

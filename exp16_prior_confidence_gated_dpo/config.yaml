@@ -1,5 +1,5 @@
 experiment_name: exp16_prior_confidence_gated_dpo
-status: blocked_until_real_prior_cache_and_x0_trainer_preflight
+status: stage1_500_limit100_completed
 base_method: Exp11 boundary outer b0.75 S2
 task: partial-mask video inpainting
 model: DiffuEraser SFT-48000
@@ -32,4 +32,9 @@ eval:
   davis50_protocol: raw6 hard-comp D+G off no PCM no mask dilation no Gaussian blur frame-wise
   metric_backend: inference/metrics.py
   vbench: false
-
+limit100_gate:
+  prior_manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp16_propainter_prior_cache_limit100/manifests/exp16_train_with_prior_limit100.jsonl
+  stage1_run: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260617_exp16_limit100_exp16_prior_confidence_s1_500_limit100_pai
+  dpo_diag: exp16_prior_confidence_gated_dpo/dpo_diag/stage1_500_dpo_diagnostics.csv
+  full_training_launched: false
+  stage2_launched: false

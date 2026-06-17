@@ -1,0 +1,45 @@
+#!/usr/bin/env python3
+"""Exp16 diagnostic schema helpers."""
+
+from __future__ import annotations
+
+
+EXP16_DPO_DIAG_COLUMNS = [
+    "step",
+    "loss",
+    "total_loss",
+    "L_base",
+    "dpo_loss",
+    "L_prior",
+    "L_gen",
+    "L_boundary_extra",
+    "lambda_prior",
+    "lambda_gen",
+    "lambda_boundary_extra",
+    "m_w",
+    "m_l",
+    "m_w_ref",
+    "m_l_ref",
+    "raw_win_gap",
+    "raw_lose_gap",
+    "norm_win_gap",
+    "norm_lose_gap",
+    "norm_lose_gap_clipped",
+    "winner_abs_reg",
+    "winner_gap_reg",
+    "mse_w_over_ref_mse_w",
+    "mse_l_over_ref_mse_l",
+    "loser_dominant_ratio",
+    "grad_norm",
+    "lr",
+    "prior_conf_mean",
+    "prior_conf_p10",
+    "prior_conf_p50",
+    "prior_conf_p90",
+    "reliable_area_ratio",
+    "generate_area_ratio",
+    "mask_area_ratio",
+    "boundary_area_ratio",
+    "confidence_mode",
+    "prior_target_mode",
+]
