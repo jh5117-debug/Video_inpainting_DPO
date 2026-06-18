@@ -1,4 +1,3 @@
-# Qualitative Summary
+# Exp19 Qualitative Summary
 
-No Exp19 visual cases exist because training/eval was blocked at architecture
-preflight.
+No visual conclusion yet. Existing visual report is a guard because real Exp19 inference outputs have not been generated.

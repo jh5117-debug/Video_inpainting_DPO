@@ -1,9 +1,9 @@
-# Status
+# Exp19 Status
 
-```text
-BLOCKED_AT_ARCHITECTURE_PREFLIGHT
-```
+status: `TRAINING_GATE_COMPLETED_EVAL_BLOCKED`
 
-Training was not launched. The shared `UNetMotionModel` path is unsafe for the
-requested multi-scale flow adapter because down residuals can be double-added
-when combined with a mid residual. Current best remains Exp11 outer b0.75 S2.
+- PAI flow cache limit100: completed
+- isolated wrapper preflight: passed
+- Exp19b Stage2 adapter-only 500 steps: completed
+- DAVIS10 eval: blocked pending Exp19 inference wrapper
+- do not run 1000/DAVIS50/full-cache until DAVIS10 adapter inference is implemented and positive gate is measurable

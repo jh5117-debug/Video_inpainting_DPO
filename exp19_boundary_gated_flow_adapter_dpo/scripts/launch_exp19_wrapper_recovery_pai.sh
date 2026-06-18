@@ -7,18 +7,14 @@ if [[ ! -d "${ROOT}" ]]; then
 fi
 cd "${ROOT}"
 
-mkdir -p logs/pipelines reports exp19_boundary_gated_flow_adapter_dpo/reports
-LOG="logs/pipelines/exp19_boundary_gated_flow_adapter_dpo_overnight.log"
-PY="${PY:-/mnt/nas/hj/conda_envs/diffueraser/bin/python}"
-
+mkdir -p logs/pipelines reports
+LOG="logs/pipelines/exp19_wrapper_recovery.log"
 {
-  echo "[Exp19] start $(date)"
-  echo "[Exp19] host $(hostname)"
-  echo "[Exp19] root ${ROOT}"
+  echo "[Exp19-wrapper] start $(date)"
+  echo "[Exp19-wrapper] host $(hostname)"
   nvidia-smi || true
-  "${PY}" -m py_compile exp19_boundary_gated_flow_adapter_dpo/code/*.py
+  python -m py_compile exp19_boundary_gated_flow_adapter_dpo/code/*.py
   bash -n exp19_boundary_gated_flow_adapter_dpo/scripts/*.sh
-
   bash exp19_boundary_gated_flow_adapter_dpo/scripts/prepare_exp19_flow_cache_limit100_pai.sh
   bash exp19_boundary_gated_flow_adapter_dpo/scripts/run_exp19_preflight_pai.sh
   bash exp19_boundary_gated_flow_adapter_dpo/scripts/launch_exp19_variants500_pai.sh
@@ -26,5 +22,5 @@ PY="${PY:-/mnt/nas/hj/conda_envs/diffueraser/bin/python}"
   bash exp19_boundary_gated_flow_adapter_dpo/scripts/eval_exp19_davis10_pai.sh
   bash exp19_boundary_gated_flow_adapter_dpo/scripts/make_exp19_visuals_pai.sh
   set -e
-  echo "[Exp19] done $(date)"
+  echo "[Exp19-wrapper] done $(date)"
 } 2>&1 | tee "${LOG}"

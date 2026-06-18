@@ -39,6 +39,7 @@ EXP19_DIAG_COLUMNS = [
     "gate_p10",
     "gate_p50",
     "gate_p90",
+    "nonzero_gate_ratio",
     "flow_conf_mean",
     "valid_flow_ratio",
     "mean_flow_magnitude",

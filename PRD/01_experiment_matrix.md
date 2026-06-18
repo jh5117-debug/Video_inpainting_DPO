@@ -1,3 +1,24 @@
+## 2026-06-18 Exp19 Flow-Adapter Gate
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp19b boundary-gated Stage2 flow adapter 500 | training gate completed; eval blocked | `experiment_registry/exp19_boundary_gated_flow_adapter_dpo`, `reports/exp19_final_report.md` |
+
+Summary:
+
+- isolated Stage2 hook wrapper implemented under `exp19_boundary_gated_flow_adapter_dpo/`.
+- unsafe `additional_residuals` interfaces are no longer used.
+- flow cache limit100 completed with ProPainter completed bidirectional flow and forward-backward confidence.
+- zero-init / gradient preflight passed.
+- Exp19b adapter-only 500-step gate completed and saved `checkpoint-250`, `checkpoint-500`, and `last_weights`.
+- DAVIS10 metric/visual gate is blocked pending a safe Exp19 inference wrapper that can pass flow context through DiffuEraser context windows.
+
+Decision:
+
+```text
+Do not expand Exp19 to 1000 / DAVIS50 / full-cache until DAVIS10 adapter inference is implemented and positive.
+```
+
 ## 2026-06-15 Exp11/Exp12 Boundary-Normalization Batch
 
 | User-facing name | Status | Evidence / registry |

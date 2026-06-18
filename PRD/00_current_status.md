@@ -17,19 +17,36 @@ PRD/40_exp19_boundary_gated_flow_adapter_dpo.md
 Status:
 
 ```text
-BLOCKED_AT_ARCHITECTURE_PREFLIGHT
+TRAINING_GATE_COMPLETED_EVAL_BLOCKED
 ```
 
-Reason: the shared `UNetMotionModel.forward` residual interface is unsafe for
-the requested multi-scale down+mid flow adapter. Passing both down and mid
-additional residuals can double-add down residuals; passing only down residuals
-uses a different legacy T2I-adapter shape contract. A mid-only adapter would not
-match the Exp19 method definition. No training, DAVIS eval, or visual result was
-produced.
+What changed:
 
-Next safe path, if Exp19 is revisited: copy the UNet/pipeline into Exp19,
-implement a clean Exp19-only residual interface and matching inference wrapper,
-then rerun flow-cache and zero-init preflight before any 500-step gate.
+- Recovered the architecture block with an isolated hook-based Stage2 wrapper
+  under `exp19_boundary_gated_flow_adapter_dpo/`.
+- The unsafe `additional_residuals` interfaces are no longer used.
+- Flow adapters inject at:
+  - `mid_block.motion_modules.0`
+  - `up_blocks.0.motion_modules.0`
+  - `up_blocks.1.motion_modules.0`
+- Zero-init / gradient preflight passed:
+  - enabled adapter output equals frozen Exp11 output
+  - `base_grad_norm = 0`
+  - adapter gradient is non-zero
+- Exp19b boundary-gated Stage2 adapter-only 500 steps completed on PAI.
+- `checkpoint-250`, `checkpoint-500`, and `last_weights` were saved.
+
+Current blocker:
+
+```text
+DAVIS10_EVAL_BLOCKED_PENDING_EXP19_INFERENCE_WRAPPER
+```
+
+The existing DAVIS evaluator can load normal DiffuEraser checkpoints but cannot
+load external flow-adapter weights or pass completed-flow tensors through the
+DiffuEraser context-window denoising loop. Do not expand to 1000 steps or
+DAVIS50 until a safe Exp19 inference wrapper produces DAVIS10 metrics and
+visual evidence.
 
 ## 2026-06-18 Exp18 PAI Gate Result
 

@@ -141,13 +141,21 @@ def build_flow_condition(batch: dict[str, torch.Tensor], variant: str) -> tuple[
     conf = batch["flow_confidence"].float()
     hole = batch["hole_mask"].float()
     boundary = batch["outer_boundary"].float()
+    height = max(float(f.shape[-2]), 1.0)
+    width = max(float(f.shape[-1]), 1.0)
+    f_norm = f.clone()
+    b_norm = b.clone()
+    f_norm[:, :, 0] = f_norm[:, :, 0] / width
+    b_norm[:, :, 0] = b_norm[:, :, 0] / width
+    f_norm[:, :, 1] = f_norm[:, :, 1] / height
+    b_norm[:, :, 1] = b_norm[:, :, 1] / height
     if variant == "global":
         gate = conf
-    elif variant in {"boundary", "boundary_warp"}:
+    elif variant in {"boundary", "boundary_warp", "exp19b"}:
         gate = conf * batch["flow_gate_mask"].float()
     else:
         raise ValueError(f"Unknown Exp19 variant gate: {variant}")
-    cond = torch.cat([f * gate, b * gate, conf, hole, boundary], dim=2)
+    cond = torch.cat([f_norm, b_norm, conf, hole, boundary], dim=2)
     finite_conf = conf.detach()
     finite_gate = gate.detach()
     stats = {
@@ -155,6 +163,7 @@ def build_flow_condition(batch: dict[str, torch.Tensor], variant: str) -> tuple[
         "gate_p10": float(torch.quantile(finite_gate.flatten(), 0.10).cpu()),
         "gate_p50": float(torch.quantile(finite_gate.flatten(), 0.50).cpu()),
         "gate_p90": float(torch.quantile(finite_gate.flatten(), 0.90).cpu()),
+        "nonzero_gate_ratio": float((finite_gate > 1e-6).float().mean().cpu()),
         "flow_conf_mean": float(finite_conf.mean().cpu()),
         "valid_flow_ratio": float((finite_conf > 0.05).float().mean().cpu()),
         "mean_flow_magnitude": float(torch.sqrt((f.pow(2).sum(dim=2) + b.pow(2).sum(dim=2)) * 0.5).mean().cpu()),

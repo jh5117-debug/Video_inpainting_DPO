@@ -1,76 +1,39 @@
-# Exp19 Final Report
+# Exp19 Final PAI Gate Report
 
-Date: 2026-06-18
+## Status
 
-Status:
+- Exp19b Stage2 boundary-gated flow adapter 500-step gate: **completed**.
+- Adapter type: isolated hook-based Stage2 flow adapter.
+- Base model: Exp11 outer b0.75 S2 Stage2, frozen.
+- Trainable params: Exp19 flow projectors only.
+- Flow cache: limit100 ProPainter completed bidirectional flow, forward-backward confidence, no GT confidence.
+- DAVIS10 eval: **blocked**, because the existing evaluator cannot pass external flow tensors/context windows into the pipeline UNet and would silently fall back to Exp11 behavior if used directly.
 
-```text
-BLOCKED_AT_ARCHITECTURE_PREFLIGHT
-```
+## Paths
 
-The PAI launcher did not export full flow cache, train, or evaluate because the
-requested multi-scale flow-adapter injection is unsafe through the shared
-UNetMotionModel residual interface. See:
+- flow cache: `/mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_propainter_completed_flow_limit100/`
+- run dir: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/`
+- last adapter weights: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/last_weights/flow_adapter.pt`
+- dpo diag: `exp19_boundary_gated_flow_adapter_dpo/dpo_diag/exp19b_stage2_500_dpo_diagnostics.csv`
+- preflight report: `reports/exp19_isolated_wrapper_preflight.md`
+- eval blocker report: `reports/exp19_eval_wrapper_status.md`
 
-```text
-reports/exp19_preflight_report.md
-```
+## Training Result
 
-## PAI Run
-
-```text
-host = dsw-753014-dc85766cb-4v2jj
-repo = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
-launcher = exp19_boundary_gated_flow_adapter_dpo/scripts/launch_exp19_overnight_pai.sh
-exit = 3
-```
-
-PAI GPU check showed GPUs 0-6 idle and GPU 7 partially occupied, but no GPU
-training was started.
-
-## Implemented Artifacts
-
-```text
-exp19_boundary_gated_flow_adapter_dpo/
-experiment_registry/exp19_boundary_gated_flow_adapter_dpo/
-PRD/40_exp19_boundary_gated_flow_adapter_dpo.md
-reports/exp19_context_architecture_audit.md
-reports/exp19_injection_point_audit.md
-reports/exp19_pai_run_report.md
-```
-
-Implemented but not trained:
-
-- ProPainter completed-flow exporter.
-- Forward-backward flow confidence helper.
-- Flow manifest dataset extension.
-- Zero-initialized residual adapter builder.
-- Architecture preflight guard.
-- PAI launcher guard.
-
-## Blocker
-
-The shared `UNetMotionModel.forward` has an unsafe residual interface for the
-requested multi-scale adapter:
-
-1. Passing both `down_block_additional_residuals` and
-   `mid_block_additional_residual` activates a ControlNet-style path.
-2. The same down residuals are then added again by a second unconditional branch.
-3. Passing only down residuals falls into a legacy T2I-adapter path with a
-   different shape contract.
-4. Running only a mid-block adapter would no longer be Exp19.
-
-The existing DAVIS eval wrapper also cannot load external flow-adapter weights
-or feed flow tensors into DiffuEraser, so a matching Exp19 inference wrapper is
-required before any metrics can be trusted.
+- completed steps: `500`
+- checkpoint-250 saved: yes
+- checkpoint-500 saved: yes
+- last_weights saved: yes
+- NaN/OOM/Traceback: none observed in training log
+- zero-init equality: passed
+- base_grad_norm max: `0.0`
+- adapter_grad_norm mean: `0.000468085`
+- adapter_residual_norm max: `0.21669`
+- gate_mean mean: `0.00666145`
+- nonzero_gate_ratio mean: `0.0229342`
 
 ## Decision
 
-No Exp19a/b/c 500-step gates were launched. No checkpoint, dpo_diag, DAVIS10
-metric, DAVIS50 metric, or visual case exists.
+Exp19 is no longer architecture-blocked for training: the isolated wrapper works and adapter-only optimization runs to 500 steps. It is still **evaluation-blocked** until an Exp19 inference wrapper is implemented. That wrapper must compute/reuse completed flow for each DAVIS video, align flow slices with the pipeline context windows, load `flow_adapter.pt`, and pass flow context into the hooked UNet during denoising.
 
-Current best remains:
-
-```text
-Exp11 outer b0.75 S2
-```
+Do not expand to 1000 steps or DAVIS50 yet, because the positive gate requires DAVIS10 metrics and visual judgment.

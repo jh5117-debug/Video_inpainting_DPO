@@ -66,11 +66,48 @@ C_flow = exp(-||F_f + Warp(F_b, F_f)||_1 / tau_flow) * valid_warp * source_valid
 ## Current Status
 
 ```text
-BLOCKED_AT_ARCHITECTURE_PREFLIGHT
+TRAINING_GATE_COMPLETED_EVAL_BLOCKED
 ```
 
-The first required result is `reports/exp19_context_architecture_audit.md`.
-That audit found that the shared `UNetMotionModel` residual interface is unsafe
-for the requested multi-scale down+mid adapter. Training must not start until an
-Exp19-only copied UNet/pipeline wrapper provides a clean residual interface and
-matching inference path.
+The original architecture block has been recovered with an Exp19-only
+hook-based wrapper:
+
+```text
+exp19_boundary_gated_flow_adapter_dpo/code/unet_motion_flow_adapter_wrapper.py
+```
+
+The wrapper injects directly at Stage2 motion-module outputs and does not use
+the unsafe `additional_residuals` interfaces.
+
+PAI gate result:
+
+- limit100 ProPainter completed-flow cache: completed.
+- zero-init / gradient preflight: passed.
+- injected modules:
+  - `mid_block.motion_modules.0`
+  - `up_blocks.0.motion_modules.0`
+  - `up_blocks.1.motion_modules.0`
+- zero-init equality: passed (`mean_abs_diff = 0.0`).
+- base model frozen: passed (`base_grad_norm = 0.0`).
+- adapter gradient: non-zero.
+- Exp19b Stage2 adapter-only 500 steps: completed.
+- checkpoints: `checkpoint-250`, `checkpoint-500`, `last_weights`.
+
+Current blocker:
+
+```text
+DAVIS10_EVAL_BLOCKED_PENDING_EXP19_INFERENCE_WRAPPER
+```
+
+The existing DAVIS evaluator can load standard DiffuEraser weights but cannot
+load an external flow adapter or pass per-window flow tensors into
+`pipeline_diffueraser.py`. Do not evaluate Exp19 by silently falling back to
+Exp11 weights. The next required implementation is an Exp19 inference wrapper
+that aligns completed-flow slices with DiffuEraser context windows.
+
+Reports:
+
+- `reports/exp19_isolated_wrapper_recovery_audit.md`
+- `reports/exp19_isolated_wrapper_preflight.md`
+- `reports/exp19b_dpo_adapter_diag_summary.md`
+- `reports/exp19_final_report.md`

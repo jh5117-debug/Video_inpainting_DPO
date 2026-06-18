@@ -24,17 +24,21 @@ def tensor_shape_to_residual_shape(tensor: torch.Tensor) -> ResidualShape:
 
 
 class ZeroConvProjector(nn.Module):
-    """1x1 zero-conv projection with a learnable scalar alpha."""
+    """1x1 zero-conv projection.
+
+    There is intentionally no zero-initialized alpha multiplier. With a zero
+    conv alone, the initial residual is exactly zero while the first backward
+    pass still produces non-zero gradients for the projection weights.
+    """
 
     def __init__(self, in_channels: int, out_channels: int):
         super().__init__()
         self.proj = nn.Conv2d(in_channels, out_channels, kernel_size=1)
-        self.alpha = nn.Parameter(torch.zeros(()))
         nn.init.zeros_(self.proj.weight)
         nn.init.zeros_(self.proj.bias)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.alpha * self.proj(x)
+        return self.proj(x)
 
 
 class MultiScaleFlowResidualBuilder(nn.Module):
@@ -80,12 +84,7 @@ class MultiScaleFlowResidualBuilder(nn.Module):
         return down, mid
 
     def alpha_values(self) -> dict[str, float]:
-        out = {}
-        for idx, proj in enumerate(self.down, start=1):
-            out[f"alpha_down_{idx}"] = float(proj.alpha.detach().cpu())
-        if self.mid is not None:
-            out["alpha_mid"] = float(self.mid.alpha.detach().cpu())
-        return out
+        return {}
 
 
 def record_unet_residual_shapes(unet, *args, **kwargs) -> tuple[list[ResidualShape], ResidualShape]:
