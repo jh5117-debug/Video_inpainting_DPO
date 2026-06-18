@@ -168,7 +168,7 @@ Decision:
 
 ## Current Status
 
-Implemented on HAL:
+Implemented and run on PAI:
 
 ```text
 exp18_multiframe_propagation_gated_dpo/
@@ -176,15 +176,69 @@ experiment_registry/exp18_multiframe_propagation_gated_dpo/
 reports/exp18_context_and_code_audit.md
 reports/exp18_propagation_confidence_audit.md
 reports/exp18_x0_latent_loss_implementation_audit.md
+reports/exp18_final_pai_gate_report.md
 ```
 
-Current execution status:
+Execution status:
 
 ```text
-IMPLEMENTATION_READY_ON_HAL
-PAI_RUN_BLOCKED_IN_THIS_SESSION_BY_MISSING_PAI_MOUNT_OR_SSH
+PAI_GATE_COMPLETED_NEGATIVE_ABLATION
 ```
 
-No Exp18 result exists yet. Do not claim Exp18 improvement until real PAI cache,
-training diagnostics, DAVIS metrics, and visual evidence are available.
+PAI run:
 
+```text
+worktree = /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp18_gate
+cache = /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp18_multiframe_propagation_cache_limit100
+eval = /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp18_multiframe_propagation_gated_dpo_davis10
+```
+
+Completed:
+
+- limit=100 multi-frame propagation cache
+- Exp18a Stage1-500
+- Exp18b Stage1-500
+- Exp18c oracle Stage1-500 diagnostic
+- DAVIS10 metric sanity
+- DAVIS10 visual case judgement
+- dpo_diag summaries
+
+## PAI Gate Result
+
+DAVIS10 metric summary:
+
+| Method | PSNR | SSIM | strict mask PSNR | boundary PSNR |
+|---|---:|---:|---:|---:|
+| Exp11 boundary outer b0.75 S2 | 30.2413 | 0.9650 | 18.7114 | 24.8326 |
+| Exp18a prop-only S1-500 | 30.1024 | 0.9650 | 18.5725 | 24.7090 |
+| Exp18b prop+gen S1-500 | 29.6892 | 0.9609 | 18.1593 | 24.7152 |
+| Exp18c oracle S1-500 | 29.7626 | 0.9632 | 18.2326 | 24.7991 |
+| SFT-48000 baseline | 30.0126 | 0.9635 | 18.4827 | 24.4772 |
+
+Result:
+
+```text
+No Exp18 variant beats Exp11 outer b0.75 S2 on DAVIS10 primary metrics.
+```
+
+Visual judgement:
+
+```text
+No clearly positive Exp18-over-Exp11 case was observed.
+Exp18a is the best Exp18 variant but only near-ties Exp11 in some cases.
+Exp18b and Exp18c often soften details or introduce local artifacts.
+```
+
+Diagnostic judgement:
+
+- non-oracle propagation is real but sparse;
+- Exp18a/Exp18b keep high loser-dominant diagnostics;
+- Exp18c oracle has high coverage but still does not beat Exp11.
+
+Decision:
+
+```text
+Do not run Exp18 Stage1 1000, full cache, Stage1 2000, or Stage2 under the current formulation.
+Keep Exp18 as an exploratory / negative ablation.
+Current best remains Exp11 boundary outer b0.75 S2.
+```

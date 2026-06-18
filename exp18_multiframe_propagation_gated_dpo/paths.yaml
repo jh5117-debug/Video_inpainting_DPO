@@ -6,4 +6,10 @@ cache_manifest_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp18_multif
 sft48000_pai: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
 davis50_pai: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
 exp11_best_stage2: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
-
+pai_worktree: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp18_gate
+davis10_eval_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp18_multiframe_propagation_gated_dpo_davis10
+davis10_visual_cases_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp18_multiframe_propagation_gated_dpo_davis10/visual_cases/all_methods
+dpo_diag_exp18a: exp18_multiframe_propagation_gated_dpo/dpo_diag/exp18a_prop_only_stage1_500_dpo_diagnostics.csv
+dpo_diag_exp18b: exp18_multiframe_propagation_gated_dpo/dpo_diag/exp18b_prop_gen_stage1_500_dpo_diagnostics.csv
+dpo_diag_exp18c: exp18_multiframe_propagation_gated_dpo/dpo_diag/exp18c_oracle_stage1_500_dpo_diagnostics.csv
+final_report: reports/exp18_final_pai_gate_report.md

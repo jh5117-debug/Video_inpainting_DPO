@@ -1,9 +1,11 @@
 experiment_name: exp18_multiframe_propagation_gated_dpo
-status: IMPLEMENTATION_READY_PAI_RUN_PENDING
+status: PAI_GATE_COMPLETED_NEGATIVE_ABLATION
 base_method: Exp11 outer b0.75 S2
 task: BR / video inpainting
 variants:
   - exp18a_prop_only
   - exp18b_prop_gen
   - exp18c_oracle
-
+decision: do_not_expand_current_formulation
+best_variant: exp18a_prop_only_s1_500
+beats_exp11: false

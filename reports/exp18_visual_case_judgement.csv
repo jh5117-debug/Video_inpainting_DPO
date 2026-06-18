@@ -1,0 +1,11 @@
+video_name,category,best_exp18_variant,judgement,notes
+boat,worse_than_exp11,Exp18a,"Exp11 remains visibly best","Exp18a is close but does not improve water/wake continuity; Exp18b and Exp18c show more local vertical/block artifacts."
+rhino,tie_but_exp11_preferred,Exp18a,"Exp18a is near Exp11 but not better","Exp11 keeps edge and stone/ground texture slightly more stable; Exp18b/c are softer."
+dog-agility,tie_but_exp11_preferred,Exp18a,"Exp18a is close; no clear positive win","Fast motion and obstacle structure remain best handled by Exp11 or roughly tied; Exp18b/c do not add a visible benefit."
+blackswan,tie_but_exp11_preferred,Exp18a,"All methods are close, Exp18 does not win","Exp18a is comparable, but water/body details do not improve over Exp11; oracle variant is not visibly better."
+lucia,tie_but_exp11_preferred,Exp18a,"Exp18 does not improve grass/person boundary","Exp18a is close but slightly softer; Exp18b/c add no useful detail."
+dance-jump,tie_or_worse,Exp18a,"No stable visual gain","Transparent motion/cloth structure remains difficult; Exp18 does not reduce artifacts versus Exp11."
+soccerball,worse_than_exp11,Exp18a,"No Exp18 improvement on fast ball/foliage","Exp18 variants do not preserve the moving ball/foliage structure better than Exp11."
+kite-surf,tie_but_exp11_preferred,Exp18a,"Very close, no clear win","Water texture is comparable, but Exp18 does not add a decisive boundary or mask improvement."
+bear,tie_but_exp11_preferred,Exp18a,"Near-tie, no clear win","Bear fur/ground texture remains comparable; Exp18a does not beat Exp11."
+breakdance,tie_or_worse,Exp18a,"No clear positive signal","Motion/limb detail does not show a reliable Exp18 advantage over Exp11."

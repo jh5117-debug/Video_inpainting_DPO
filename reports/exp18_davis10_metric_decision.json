@@ -1,0 +1,5 @@
+{
+  "best_variant": "Exp18a_prop_only_s1_500",
+  "metric_positive": false,
+  "reason": "no Exp18 variant beats Exp11 on DAVIS10 primary metrics"
+}

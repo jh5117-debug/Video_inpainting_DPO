@@ -1,3 +1,49 @@
+## 2026-06-18 Exp18 PAI Gate Result
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Exp18 Multi-frame Propagation-Confidence Gated DPO has now completed the
+requested PAI gate:
+
+```text
+limit=100 propagation cache
+Exp18a Stage1-500
+Exp18b Stage1-500
+Exp18c oracle Stage1-500 diagnostic
+DAVIS10 metric + visual sanity
+```
+
+Result:
+
+```text
+PAI_GATE_COMPLETED_NEGATIVE_ABLATION
+```
+
+DAVIS10 summary:
+
+| Method | PSNR | SSIM | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: |
+| Exp11 boundary outer b0.75 S2 | 30.2413 | 0.9650 | 18.7114 | 24.8326 |
+| Exp18a prop-only S1-500 | 30.1024 | 0.9650 | 18.5725 | 24.7090 |
+| Exp18b prop+gen S1-500 | 29.6892 | 0.9609 | 18.1593 | 24.7152 |
+| Exp18c oracle S1-500 | 29.7626 | 0.9632 | 18.2326 | 24.7991 |
+| SFT-48000 baseline | 30.0126 | 0.9635 | 18.4827 | 24.4772 |
+
+Decision:
+
+```text
+Do not expand Exp18 to Stage1 1000, full cache, Stage1 2000, or Stage2.
+Exp18 is an exploratory / negative ablation unless the formulation changes.
+```
+
+Reason: non-oracle propagation confidence is sparse, and even the oracle
+diagnostic does not beat Exp11. Visual review also found no clearly positive
+Exp18-over-Exp11 case.
+
 ## 2026-06-17 Exp18 Multi-frame Propagation-Confidence Gated DPO
 
 Current best remains:
@@ -36,16 +82,14 @@ reports/exp18_propagation_confidence_audit.md
 reports/exp18_x0_latent_loss_implementation_audit.md
 ```
 
-Current execution status:
+Previous execution status before the PAI gate:
 
 ```text
 IMPLEMENTATION_READY_ON_HAL
 PAI_RUN_BLOCKED_IN_THIS_SESSION_BY_MISSING_PAI_MOUNT_OR_SSH
 ```
 
-No Exp18 training, metric, or visual result exists yet. Do not compare Exp18
-against Exp11 until the limit=100 propagation cache, Exp18a/b/c Stage1-500
-gates, DAVIS10 eval, dpo-diag, and visual judgement are complete.
+Superseded by the 2026-06-18 PAI gate result above.
 
 ## 2026-06-17 Exp16 Prior-Confidence Gated DPO
 

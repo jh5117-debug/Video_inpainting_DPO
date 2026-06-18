@@ -15,8 +15,7 @@ outer boundary -> keep Exp11 boundary-aware seam constraint
 Current status:
 
 ```text
-IMPLEMENTATION_READY_ON_HAL
-PAI_RUN_BLOCKED_IN_THIS_SESSION_BY_MISSING_PAI_MOUNT_OR_SSH
+PAI_GATE_COMPLETED_NEGATIVE_ABLATION
 ```
 
 Run order on PAI:
@@ -25,3 +24,19 @@ Run order on PAI:
 bash exp18_multiframe_propagation_gated_dpo/scripts/launch_exp18_overnight_pai.sh
 ```
 
+Result:
+
+```text
+Exp18a is the best Exp18 variant but does not beat Exp11 outer b0.75 S2 on DAVIS10.
+Exp18b and Exp18c are negative.
+Do not expand the current Exp18 formulation.
+```
+
+Main reports:
+
+```text
+reports/exp18_final_pai_gate_report.md
+reports/exp18_davis10_metric_summary.md
+reports/exp18_dpo_diag_summary.md
+reports/exp18_visual_case_judgement.md
+```

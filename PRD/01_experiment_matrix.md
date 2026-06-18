@@ -116,16 +116,38 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 # Experiment Matrix
 
-## 2026-06-17 Exp18 Mainline Candidate
+## 2026-06-18 Exp18 PAI Gate Result
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp18 Multi-frame Propagation-Confidence Gated DPO | implementation prepared; PAI cache/training pending | `exp18_multiframe_propagation_gated_dpo/`, `experiment_registry/exp18_multiframe_propagation_gated_dpo/`, `PRD/39_exp18_multiframe_propagation_gated_dpo.md`, `reports/exp18_context_and_code_audit.md` |
+| Exp18 Multi-frame Propagation-Confidence Gated DPO | Stage1-500 PAI gates complete; negative/exploratory ablation; do not expand | `exp18_multiframe_propagation_gated_dpo/`, `experiment_registry/exp18_multiframe_propagation_gated_dpo/`, `PRD/39_exp18_multiframe_propagation_gated_dpo.md`, `reports/exp18_final_pai_gate_report.md`, `reports/exp18_davis10_metric_summary.md`, `reports/exp18_visual_case_judgement.md` |
 
-Exp18 is a new branch after Exp16/Exp17 negative gates. It is not a result yet.
-The first required run is limit=100 propagation cache plus Exp18a/b/c Stage1-500
-gates and DAVIS10 visual/metric sanity. Current best remains Exp11 boundary
-outer b0.75 S2 until Exp18 has real cache, dpo-diag, metrics, and videos.
+Exp18 completed the required first gate:
+
+```text
+limit=100 propagation cache
+Exp18a Stage1-500
+Exp18b Stage1-500
+Exp18c oracle Stage1-500 diagnostic
+DAVIS10 visual/metric sanity
+```
+
+DAVIS10 result:
+
+| Method | PSNR | SSIM | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: |
+| Exp11 boundary outer b0.75 S2 | 30.2413 | 0.9650 | 18.7114 | 24.8326 |
+| Exp18a prop-only S1-500 | 30.1024 | 0.9650 | 18.5725 | 24.7090 |
+| Exp18b prop+gen S1-500 | 29.6892 | 0.9609 | 18.1593 | 24.7152 |
+| Exp18c oracle S1-500 | 29.7626 | 0.9632 | 18.2326 | 24.7991 |
+| SFT-48000 baseline | 30.0126 | 0.9635 | 18.4827 | 24.4772 |
+
+Decision:
+
+```text
+No Exp18 variant beats Exp11. Do not run Stage1 1000, full cache, Stage1 2000, or Stage2.
+Current best remains Exp11 boundary outer b0.75 S2.
+```
 
 ## 2026-06-17 Exp16 Mainline Candidate
 
