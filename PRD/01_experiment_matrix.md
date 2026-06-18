@@ -1,3 +1,26 @@
+## 2026-06-18 Exp19b Exploratory 2000
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp19b exploratory 2000 | completed DAVIS50; no-op / negative ablation; do not continue | `experiment_registry/exp19b_exploratory_2000`, `reports/exp19b_exploratory_2000_davis50_result.md`, `reports/exp19b_exploratory_2000_dpo_diag_summary.md` |
+
+This run was intentionally launched after the earlier negative gate as an
+exploratory check requested by the user.
+
+DAVIS50 result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Exp11 boundary outer b0.75 S2 | 32.840213 | 0.971818 | 0.015339 | 7.181782 | 21.196763 | 26.441316 |
+| Exp19b exploratory 2000 | 32.840122 | 0.971818 | 0.015340 | 7.181850 | 21.196671 | 26.441224 |
+
+Decision:
+
+```text
+Current best remains Exp11 boundary outer b0.75 S2.
+Do not continue Exp19b under this exact setup.
+```
+
 ## 2026-06-18 Exp19 Flow-Adapter Gate
 
 | User-facing name | Status | Evidence / registry |

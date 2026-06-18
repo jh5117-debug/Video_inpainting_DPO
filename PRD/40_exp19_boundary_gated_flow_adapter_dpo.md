@@ -138,6 +138,43 @@ Reason: Ewarp improves by only `0.000080` absolute relative to Exp11, far below
 the 2% positive gate; PSNR, strict mask PSNR, and boundary PSNR are tiny
 regressions; visual review found no reliable temporal improvement.
 
+## 2026-06-18 Exploratory 2000 Follow-Up
+
+At user request, Exp19b was nevertheless continued as an exploratory
+longer-training check:
+
+```text
+start: Exp19b Stage2-500 flow_adapter.pt
+continuation: +1500 adapter-only steps
+total adapter steps: 2000
+loss: Exp11 DPO loss only, lambda_warp = 0
+```
+
+Training completed on PAI and DAVIS50 evaluation completed. The evaluator row
+still prints `Exp19b_stage2_500`, but the script loaded:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_2000_exploratory_from500_limit100/last_weights/flow_adapter.pt
+```
+
+DAVIS50:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Exp11 outer b0.75 S2 | 32.840213 | 0.971818 | 0.015339 | 7.181782 | 21.196763 | 26.441316 |
+| Exp19b exploratory 2000 | 32.840122 | 0.971818 | 0.015340 | 7.181850 | 21.196671 | 26.441224 |
+
+Decision:
+
+```text
+Do not continue Exp19b under this setup.
+Current best remains Exp11 outer b0.75 S2.
+```
+
+The longer run did not validate the tiny DAVIS10 Ewarp trend. It is visually
+safe but effectively no-op and slightly worse than Exp11 on the DAVIS50 metric
+set.
+
 ## Exp19-R0 / Exp19c Refinement
 
 Follow-up status:

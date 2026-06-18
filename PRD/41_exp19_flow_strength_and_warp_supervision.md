@@ -101,3 +101,34 @@ Reports:
 - `reports/exp19c_motion_bin_summary.md`
 - `reports/exp19c_visual_case_judgement.md`
 - `reports/exp19_refinement_final_report.md`
+
+## 2026-06-18 Exploratory Exp19b 2000 Check
+
+Despite the negative gate above, the user requested one exploratory continuation
+to test whether the tiny DAVIS10 trend grows with longer adapter-only training.
+
+Run:
+
+```text
+Exp19b Stage2-500 -> Exp19b exploratory 2000
+additional steps: 1500
+loss: Exp11 DPO only, lambda_warp = 0
+```
+
+DAVIS50 result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Exp11 outer b0.75 S2 | 32.840213 | 0.971818 | 0.015339 | 7.181782 | 21.196763 | 26.441316 |
+| Exp19b exploratory 2000 | 32.840122 | 0.971818 | 0.015340 | 7.181850 | 21.196671 | 26.441224 |
+
+Decision:
+
+```text
+Do not continue Exp19b. The DAVIS50 exploratory check is no-op/slightly negative.
+```
+
+Reports:
+
+- `reports/exp19b_exploratory_2000_davis50_result.md`
+- `reports/exp19b_exploratory_2000_dpo_diag_summary.md`

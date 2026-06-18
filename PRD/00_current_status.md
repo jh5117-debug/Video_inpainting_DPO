@@ -1,3 +1,45 @@
+## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+At user request, the previously gated-off Exp19b branch was run as an
+exploratory longer-training check:
+
+```text
+Exp19b Stage2 flow adapter, continued from 500 to 2000 total adapter steps
+DAVIS50 eval completed
+```
+
+Important label note: the DAVIS evaluator row still prints
+`Exp19b_stage2_500`, but the eval script loaded the exploratory 2000 adapter:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_2000_exploratory_from500_limit100/last_weights/flow_adapter.pt
+```
+
+DAVIS50 result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| SFT-48000 | 32.665330 | 0.971062 | 0.016222 | 7.214799 | 21.021880 | 26.194571 |
+| Exp11 outer b0.75 S2 | 32.840213 | 0.971818 | 0.015339 | 7.181782 | 21.196763 | 26.441316 |
+| Exp19b exploratory 2000 | 32.840122 | 0.971818 | 0.015340 | 7.181850 | 21.196671 | 26.441224 |
+
+Decision:
+
+```text
+Do not continue Exp19b under this setup.
+```
+
+Reason: the longer exploratory run did not amplify the tiny DAVIS10 temporal
+signal. It is essentially tied with Exp11 and slightly worse on PSNR, SSIM,
+LPIPS, strict-mask PSNR, boundary PSNR, and Ewarp. Representative DAVIS50
+contact sheets also look tied rather than better.
+
 ## 2026-06-18 Exp19 Boundary-Gated Flow-Adapter DPO
 
 Current best remains:
