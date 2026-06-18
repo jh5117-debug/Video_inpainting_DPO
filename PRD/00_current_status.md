@@ -17,7 +17,7 @@ PRD/40_exp19_boundary_gated_flow_adapter_dpo.md
 Status:
 
 ```text
-TRAINING_GATE_COMPLETED_EVAL_BLOCKED
+DAVIS10_EVAL_COMPLETED_NEGATIVE_GATE
 ```
 
 What changed:
@@ -35,18 +35,31 @@ What changed:
   - adapter gradient is non-zero
 - Exp19b boundary-gated Stage2 adapter-only 500 steps completed on PAI.
 - `checkpoint-250`, `checkpoint-500`, and `last_weights` were saved.
+- Exp19 inference wrapper was implemented in the Exp19 folder.
+- `flow_adapter.pt` strict-loaded with no missing/unexpected keys.
+- DAVIS10 completed with real adapter inference and DAVIS flow context.
 
-Current blocker:
+DAVIS10 result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| SFT-48000 | 29.6181 | 0.9620 | 0.02204 | 8.3724 | 18.3203 | 24.2735 |
+| Exp11 outer b0.75 S2 | 29.8295 | 0.9633 | 0.02065 | 8.3307 | 18.5317 | 24.6577 |
+| Exp19b Stage2-500 | 29.8291 | 0.9633 | 0.02065 | 8.3306 | 18.5313 | 24.6574 |
+
+TC was not computed because PAI could not download the OpenCLIP dependency used
+by the TC backend. Ewarp was computed with the local RAFT backend.
+
+Decision:
 
 ```text
-DAVIS10_EVAL_BLOCKED_PENDING_EXP19_INFERENCE_WRAPPER
+Do not expand Exp19 to 1000 steps, DAVIS50, full cache, or full training.
+Current best remains Exp11 outer b0.75 S2.
 ```
 
-The existing DAVIS evaluator can load normal DiffuEraser checkpoints but cannot
-load external flow-adapter weights or pass completed-flow tensors through the
-DiffuEraser context-window denoising loop. Do not expand to 1000 steps or
-DAVIS50 until a safe Exp19 inference wrapper produces DAVIS10 metrics and
-visual evidence.
+Reason: Exp19b is visually safe but indistinguishable from Exp11, Ewarp improves
+by only `0.000080` absolute, and PSNR / strict mask / boundary PSNR have tiny
+regressions.
 
 ## 2026-06-18 Exp18 PAI Gate Result
 

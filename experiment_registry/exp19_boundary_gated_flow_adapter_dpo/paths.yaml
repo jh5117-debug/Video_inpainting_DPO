@@ -1,7 +1,13 @@
 flow_cache: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_propainter_completed_flow_limit100/
+davis10_flow_cache: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_davis10_propainter_completed_flow/
 run_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/
 last_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/last_weights/flow_adapter.pt
 dpo_diag: exp19_boundary_gated_flow_adapter_dpo/dpo_diag/exp19b_stage2_500_dpo_diagnostics.csv
 preflight_report: reports/exp19_isolated_wrapper_preflight.md
+inference_checkpoint_audit: reports/exp19_inference_checkpoint_loading_audit.md
+inference_preflight: reports/exp19_inference_preflight.md
+davis10_eval: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19_boundary_gated_flow_adapter_davis10/
+davis10_metrics: reports/exp19b_davis10_metric_summary.md
+davis10_per_video: reports/exp19b_davis10_per_video_metrics.csv
+visual_judgement: reports/exp19b_visual_case_judgement.md
 final_report: reports/exp19_final_report.md
-eval_status: reports/exp19_eval_wrapper_status.md

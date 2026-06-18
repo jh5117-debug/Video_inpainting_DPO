@@ -4,10 +4,16 @@ sft48000_weights_pai: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_wei
 exp11_stage1_best_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s1_2000_davis_pai/last_weights
 exp11_stage2_best_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
 flow_cache_limit100_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_propainter_completed_flow_limit100
+davis10_flow_cache_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_davis10_propainter_completed_flow
+davis10_eval_output_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19_boundary_gated_flow_adapter_davis10
 davis_eval_pai: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
 propainter_weights_pai: /mnt/nas/hj/data/third_party_video_inpainting/weights/propainter
 reports:
   architecture_audit: reports/exp19_context_architecture_audit.md
   flow_quality: reports/exp19_flow_cache_quality_limit100.md
   preflight: reports/exp19_preflight_report.md
+  inference_checkpoint_audit: reports/exp19_inference_checkpoint_loading_audit.md
+  inference_preflight: reports/exp19_inference_preflight.md
+  davis10_metrics: reports/exp19b_davis10_metric_summary.md
+  davis10_visual_judgement: reports/exp19b_visual_case_judgement.md
   final: reports/exp19_final_report.md

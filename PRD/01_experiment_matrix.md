@@ -2,7 +2,7 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp19b boundary-gated Stage2 flow adapter 500 | training gate completed; eval blocked | `experiment_registry/exp19_boundary_gated_flow_adapter_dpo`, `reports/exp19_final_report.md` |
+| Exp19b boundary-gated Stage2 flow adapter 500 | DAVIS10 eval completed; negative/neutral gate; do not expand | `experiment_registry/exp19_boundary_gated_flow_adapter_dpo`, `reports/exp19_final_report.md`, `reports/exp19b_davis10_metric_summary.md`, `reports/exp19b_visual_case_judgement.md` |
 
 Summary:
 
@@ -11,13 +11,24 @@ Summary:
 - flow cache limit100 completed with ProPainter completed bidirectional flow and forward-backward confidence.
 - zero-init / gradient preflight passed.
 - Exp19b adapter-only 500-step gate completed and saved `checkpoint-250`, `checkpoint-500`, and `last_weights`.
-- DAVIS10 metric/visual gate is blocked pending a safe Exp19 inference wrapper that can pass flow context through DiffuEraser context windows.
+- Exp19 inference wrapper was implemented and strict-loaded `flow_adapter.pt`.
+- DAVIS10 metric/visual gate completed with real flow-adapter inference.
+
+DAVIS10 result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Exp11 boundary outer b0.75 S2 | 29.8295 | 0.9633 | 0.02065 | 8.3307 | 18.5317 | 24.6577 |
+| Exp19b Stage2-500 | 29.8291 | 0.9633 | 0.02065 | 8.3306 | 18.5313 | 24.6574 |
 
 Decision:
 
 ```text
-Do not expand Exp19 to 1000 / DAVIS50 / full-cache until DAVIS10 adapter inference is implemented and positive.
+Do not expand Exp19 to 1000 / DAVIS50 / full-cache.
 ```
+
+Exp19b is visually safe but effectively tied with Exp11 and fails the temporal
+positive gate. Current best remains Exp11 boundary outer b0.75 S2.
 
 ## 2026-06-15 Exp11/Exp12 Boundary-Normalization Batch
 
@@ -141,11 +152,10 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp19 Boundary-Gated Flow-Adapter DPO | blocked at architecture preflight; no training/eval launched | `exp19_boundary_gated_flow_adapter_dpo/`, `experiment_registry/exp19_boundary_gated_flow_adapter_dpo/`, `PRD/40_exp19_boundary_gated_flow_adapter_dpo.md`, `reports/exp19_context_architecture_audit.md`, `reports/exp19_preflight_report.md`, `reports/exp19_final_report.md` |
+| Exp19 Boundary-Gated Flow-Adapter DPO | superseded by completed Exp19b gate above | `exp19_boundary_gated_flow_adapter_dpo/`, `experiment_registry/exp19_boundary_gated_flow_adapter_dpo/`, `PRD/40_exp19_boundary_gated_flow_adapter_dpo.md`, `reports/exp19_final_report.md` |
 
-Current best remains Exp11 boundary outer b0.75 S2. Exp19 should not be treated
-as a negative metric ablation because no real model was trained; it is an
-architecture feasibility blocker.
+This earlier architecture blocker is now superseded. Exp19b trained and
+evaluated, but the completed DAVIS10 gate did not beat Exp11.
 
 ## 2026-06-18 Exp18 PAI Gate Result
 

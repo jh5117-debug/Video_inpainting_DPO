@@ -1,0 +1,11 @@
+video,classification,metric_signal,visual_judgement,notes
+boat,tie,"PSNR -0.000139; Ewarp +0.000623","Exp19b visually indistinguishable from Exp11","No ghosting, no clear water/boat-boundary gain."
+rhino,tie,"PSNR -0.000801; Ewarp -0.000053","Exp19b visually indistinguishable from Exp11","Metric movement is negligible; no visible seam or temporal gain."
+dog-agility,tie,"PSNR +0.000779; Ewarp -0.001510","Tiny metric-positive but no visible gain","Fast-motion dog boundary remains essentially the same as Exp11."
+blackswan,tie,"PSNR +0.000392; Ewarp -0.000008","Exp19b visually indistinguishable from Exp11","Water texture and swan body boundary unchanged."
+lucia,tie,"PSNR +0.000147; Ewarp +0.000173","Exp19b visually indistinguishable from Exp11","Grass/person boundary unchanged; no new artifact."
+dance-jump,worse,"PSNR -0.001572; Ewarp +0.000064","Slight negative / no benefit","No visible improvement around skirt/fountain; small metric regression."
+flamingo,worse,"PSNR -0.000492; Ewarp +0.000008","Slight negative / no benefit","Thin legs/reflection not improved; small boundary regression."
+soccerball,tie,"PSNR +0.000086; Ewarp -0.000048","Exp19b visually indistinguishable from Exp11","No double edge; no clear temporal gain."
+camel,worse,"PSNR -0.002159; Ewarp +0.000281","Slight negative / no benefit","Largest tiny regression in this set; no visual gain."
+car-roundabout,tie,"PSNR -0.000045; Ewarp -0.000328","Exp19b visually indistinguishable from Exp11","Car/body boundary stable but not better than Exp11."

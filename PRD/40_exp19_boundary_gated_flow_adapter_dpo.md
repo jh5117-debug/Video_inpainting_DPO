@@ -66,7 +66,7 @@ C_flow = exp(-||F_f + Warp(F_b, F_f)||_1 / tau_flow) * valid_warp * source_valid
 ## Current Status
 
 ```text
-TRAINING_GATE_COMPLETED_EVAL_BLOCKED
+DAVIS10_EVAL_COMPLETED_NEGATIVE_GATE
 ```
 
 The original architecture block has been recovered with an Exp19-only
@@ -93,21 +93,58 @@ PAI gate result:
 - Exp19b Stage2 adapter-only 500 steps: completed.
 - checkpoints: `checkpoint-250`, `checkpoint-500`, `last_weights`.
 
-Current blocker:
+Exp19 inference wrapper:
 
 ```text
-DAVIS10_EVAL_BLOCKED_PENDING_EXP19_INFERENCE_WRAPPER
+IMPLEMENTED_AND_VALIDATED
 ```
 
-The existing DAVIS evaluator can load standard DiffuEraser weights but cannot
-load an external flow adapter or pass per-window flow tensors into
-`pipeline_diffueraser.py`. Do not evaluate Exp19 by silently falling back to
-Exp11 weights. The next required implementation is an Exp19 inference wrapper
-that aligns completed-flow slices with DiffuEraser context windows.
+The standard DAVIS evaluator was not used to silently fall back to Exp11. An
+Exp19-only inference wrapper now:
+
+- loads Exp11 Stage1/Stage2 base weights;
+- wraps the Stage2 UNet with the same three hook modules used in training;
+- strict-loads `flow_adapter.pt`;
+- constructs DAVIS completed-flow context from the input video and mask;
+- queues per-window flow context through the DiffuEraser denoising loop;
+- clears flow context after each forward.
+
+Validation:
+
+- strict load: passed;
+- missing/unexpected adapter keys: none;
+- adapter-disabled wrapper vs Exp11 MAE: `0.009878`;
+- adapter-enabled vs disabled MAE: `0.009667`;
+- real-flow vs shuffled-flow MAE: `0.009483`.
+
+DAVIS10 completed:
+
+| method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+|---|---:|---:|---:|---:|---:|---:|
+| SFT-48000 | 29.6181 | 0.9620 | 0.02204 | 8.3724 | 18.3203 | 24.2735 |
+| Exp11 outer b0.75 S2 | 29.8295 | 0.9633 | 0.02065 | 8.3307 | 18.5317 | 24.6577 |
+| Exp19b Stage2-500 | 29.8291 | 0.9633 | 0.02065 | 8.3306 | 18.5313 | 24.6574 |
+
+TC was not computed because the TC backend attempted to download OpenCLIP from
+Hugging Face and PAI network access failed. Ewarp was computed with local RAFT.
+
+Decision:
+
+```text
+Do not expand Exp19b to 1000, DAVIS50, full cache, or 2000 steps.
+```
+
+Reason: Ewarp improves by only `0.000080` absolute relative to Exp11, far below
+the 2% positive gate; PSNR, strict mask PSNR, and boundary PSNR are tiny
+regressions; visual review found no reliable temporal improvement.
 
 Reports:
 
 - `reports/exp19_isolated_wrapper_recovery_audit.md`
 - `reports/exp19_isolated_wrapper_preflight.md`
 - `reports/exp19b_dpo_adapter_diag_summary.md`
+- `reports/exp19_inference_checkpoint_loading_audit.md`
+- `reports/exp19_inference_preflight.md`
+- `reports/exp19b_davis10_metric_summary.md`
+- `reports/exp19b_visual_case_judgement.md`
 - `reports/exp19_final_report.md`
