@@ -1,0 +1,3 @@
+experiment_name: exp19r0_flow_adapter_calibration
+status: initialized
+gate: disabled_wrapper_vs_exp11_parity

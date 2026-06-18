@@ -1,0 +1,3 @@
+report: reports/exp19_inference_parity_repair.md
+debug: reports/exp19_inference_parity_debug.json
+per_video: reports/exp19_inference_parity_repair.csv

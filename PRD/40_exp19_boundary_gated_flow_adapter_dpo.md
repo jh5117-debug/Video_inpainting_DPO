@@ -138,6 +138,53 @@ Reason: Ewarp improves by only `0.000080` absolute relative to Exp11, far below
 the 2% positive gate; PSNR, strict mask PSNR, and boundary PSNR are tiny
 regressions; visual review found no reliable temporal improvement.
 
+## Exp19-R0 / Exp19c Refinement
+
+Follow-up status:
+
+```text
+EXP19C_DAVIS10_COMPLETED_NEGATIVE_GATE
+```
+
+R0 fixed the inference-parity issue by matching the original Exp11 evaluator
+protocol and resetting the global VAE latent-sampling RNG before paired
+forwards. The calibrated disabled wrapper reached:
+
+```text
+disabled_vs_Exp11_MAE = 0.0
+```
+
+The best zero-training strength setting was:
+
+```text
+residual_scale = 0.5
+confidence_exponent = 2.0
+```
+
+Real-flow causality passed only weakly: real flow beat zero/shuffled/reversed
+controls, but Ewarp moved by only `0.000124` absolute on the R0 subset.
+
+Exp19c-light added a confidence-gated latent warp consistency loss and ran four
+500-step continuations from the same Exp19b-500 checkpoint:
+
+| Variant | lambda_warp | DAVIS10 Ewarp | PSNR | LPIPS |
+| --- | ---: | ---: | ---: | ---: |
+| lambda000 | 0.000 | 8.330644 | 29.829031 | 0.02065269 |
+| lambda005 | 0.005 | 8.330690 | 29.829262 | 0.02065183 |
+| lambda010 | 0.010 | 8.330801 | 29.829166 | 0.02065105 |
+| lambda020 | 0.020 | 8.330675 | 29.829368 | 0.02065228 |
+
+Positive gate:
+
+```text
+FAIL
+```
+
+The best warp variant does not improve over the lambda000 continuation control
+on Ewarp, and the absolute changes are far below the temporal gate. Visual
+review of DAVIS10 contact sheets found no reliable better case over Exp11.
+Exp19d, DAVIS50, and 1000/2000-step continuations were not launched.
+
 Reports:
 
 - `reports/exp19_isolated_wrapper_recovery_audit.md`

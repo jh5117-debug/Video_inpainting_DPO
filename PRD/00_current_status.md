@@ -61,6 +61,52 @@ Reason: Exp19b is visually safe but indistinguishable from Exp11, Ewarp improves
 by only `0.000080` absolute, and PSNR / strict mask / boundary PSNR have tiny
 regressions.
 
+## 2026-06-18 Exp19-R0 / Exp19c Refinement
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Status:
+
+```text
+EXP19C_DAVIS10_COMPLETED_NEGATIVE_GATE
+```
+
+Completed:
+
+- Exp19-R0 inference parity repair: `disabled_vs_Exp11_MAE = 0.0`.
+- residual scale / confidence exponent sweep: best non-degrading setting is
+  `scale=0.5`, `confidence_exponent=2.0`.
+- real/zero/shuffled/reversed flow causality: real-flow wins only by a tiny
+  Ewarp margin (`-0.000124` on the R0 subset).
+- Exp19c-light latent warp continuation from Exp19b-500:
+  `lambda_warp = 0 / 0.005 / 0.010 / 0.020`, each 500 steps.
+- DAVIS10 metric and visual judgement.
+
+DAVIS10 key result:
+
+| Method | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Exp11 outer b0.75 S2 | 29.829309 | 0.963257 | 0.02065550 | 8.330730 | 18.531525 | 24.657501 |
+| Exp19b Stage2-500 | 29.829470 | 0.963257 | 0.02065455 | 8.330525 | 18.531685 | 24.657372 |
+| Exp19c0 lambda=0 | 29.829031 | 0.963255 | 0.02065269 | 8.330644 | 18.531247 | 24.657456 |
+| Exp19c3 lambda=0.020 | 29.829368 | 0.963257 | 0.02065228 | 8.330675 | 18.531584 | 24.657357 |
+
+Decision:
+
+```text
+Do not start Exp19d.
+Do not run DAVIS50.
+Do not continue Exp19 to 1000 or 2000 steps.
+```
+
+Reason: lambda>0 warp variants do not beat the lambda=0 continuation control
+on Ewarp, do not produce clear visual better cases, and the metric deltas are
+orders of magnitude below the positive gate.
+
 ## 2026-06-18 Exp18 PAI Gate Result
 
 Current best remains:

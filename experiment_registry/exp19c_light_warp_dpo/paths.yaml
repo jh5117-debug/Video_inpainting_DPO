@@ -1,0 +1,9 @@
+reports:
+  final: reports/exp19_refinement_final_report.md
+  metrics: reports/exp19c_davis10_metric_summary.md
+  motion_bins: reports/exp19c_motion_bin_summary.md
+  visual: reports/exp19c_visual_case_judgement.md
+eval:
+  davis10: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19c_light_warp_davis10
+runs:
+  root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19c_light_warp_dpo

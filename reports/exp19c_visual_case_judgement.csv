@@ -1,0 +1,11 @@
+video,motion_bin,judgement,notes
+dog-agility,high,tie,"Fast dog and pole boundaries: Exp19b/lambda000/lambda020 visually overlap Exp11; no clear flicker or boundary improvement."
+car-roundabout,high,tie,"Moving car/camera scene: Exp19 variants are nearly identical to Exp11; no visible stabilization."
+camel,low,tie,"Camel body and fence region: no clear improvement or regression."
+soccerball,low,tie,"Ball/tree/fence region: no clear flow benefit; tiny metric deltas only."
+boat,low,tie,"Water wake and boat boundary remain visually tied with Exp11."
+blackswan,medium,tie,"Water/feather region visually tied; no temporal improvement visible in contact sheet."
+rhino,low,tie,"Body/tree boundary tied with Exp11."
+lucia,low,tie,"Person/grass boundary tied with Exp11."
+flamingo,medium,tie,"Water reflection and leg thin structures tied; no clear benefit."
+summary,all,negative_gate,"No inspected DAVIS10 case is clearly better than Exp11; no obvious new artifacts, but no positive signal."

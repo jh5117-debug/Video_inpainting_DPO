@@ -1,0 +1,6 @@
+experiment_name: exp19r0_flow_adapter_calibration
+task: inference parity and zero-training flow-adapter calibration
+base: Exp19b Stage2-500 flow adapter
+current_gate: disabled_wrapper_vs_exp11_parity
+target_disabled_vs_exp11_mae_bf16: 0.0005
+status: initialized

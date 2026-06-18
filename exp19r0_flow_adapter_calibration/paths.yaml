@@ -1,0 +1,6 @@
+repo_pai: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO
+davis_root_pai: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+exp11_stage2_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s2_2000_davis_pai/last_weights
+exp19b_adapter_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/last_weights/flow_adapter.pt
+davis10_flow_cache_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_davis10_propainter_completed_flow
+output_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19r0_flow_adapter_calibration

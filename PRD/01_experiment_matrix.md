@@ -30,6 +30,20 @@ Do not expand Exp19 to 1000 / DAVIS50 / full-cache.
 Exp19b is visually safe but effectively tied with Exp11 and fails the temporal
 positive gate. Current best remains Exp11 boundary outer b0.75 S2.
 
+## 2026-06-18 Exp19-R0 / Exp19c Flow Refinement
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp19-R0 flow adapter calibration | complete; parity fixed; causality tiny-positive only | `experiment_registry/exp19r0_flow_adapter_calibration`, `reports/exp19_inference_parity_repair.md`, `reports/exp19_residual_scale_confidence_sweep.md`, `reports/exp19r0_flow_causality_audit.md` |
+| Exp19c light latent-warp DPO | complete negative ablation; do not expand | `experiment_registry/exp19c_light_warp_dpo`, `reports/exp19c_davis10_metric_summary.md`, `reports/exp19c_visual_case_judgement.md`, `reports/exp19_refinement_final_report.md` |
+| Exp19d motion-aware flow DPO | gated off; not launched | `experiment_registry/exp19d_motion_aware_flow_dpo` |
+
+Decision:
+
+```text
+Exp19c fails the positive gate. Do not run Exp19d, DAVIS50, full cache, or 1000/2000-step continuation.
+```
+
 ## 2026-06-15 Exp11/Exp12 Boundary-Normalization Batch
 
 | User-facing name | Status | Evidence / registry |
