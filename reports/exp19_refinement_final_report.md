@@ -80,12 +80,12 @@ warp-loss variant.
 
 ## Visual Review
 
-Inspected contact sheets for dog-agility, car-roundabout, camel, soccerball,
-boat, blackswan, rhino, lucia, and flamingo.
+Inspected contact sheets for dog-agility, car-roundabout, dance-jump, camel,
+soccerball, boat, blackswan, rhino, lucia, and flamingo.
 
 ```text
 better: 0
-tie: 9
+tie: 10
 worse: 0
 ```
 

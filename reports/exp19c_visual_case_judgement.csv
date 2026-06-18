@@ -1,6 +1,7 @@
 video,motion_bin,judgement,notes
 dog-agility,high,tie,"Fast dog and pole boundaries: Exp19b/lambda000/lambda020 visually overlap Exp11; no clear flicker or boundary improvement."
 car-roundabout,high,tie,"Moving car/camera scene: Exp19 variants are nearly identical to Exp11; no visible stabilization."
+dance-jump,high,tie,"High-motion dancer and fountain scene: Exp19b/lambda000/lambda020 visually overlap Exp11; no visible temporal stabilization or new ghosting."
 camel,low,tie,"Camel body and fence region: no clear improvement or regression."
 soccerball,low,tie,"Ball/tree/fence region: no clear flow benefit; tiny metric deltas only."
 boat,low,tie,"Water wake and boat boundary remain visually tied with Exp11."

@@ -22,7 +22,7 @@ Judgement:
 
 ```text
 better: 0
-tie: 9 inspected cases
+tie: 10 inspected cases
 worse: 0
 ```
 
@@ -32,6 +32,7 @@ Case notes:
 | --- | --- | --- | --- |
 | dog-agility | high | tie | Dog and pole boundaries are visually unchanged from Exp11. |
 | car-roundabout | high | tie | Moving car/background structure unchanged. |
+| dance-jump | high | tie | Dancer/fountain motion remains visually unchanged; no new ghosting. |
 | camel | low | tie | Body and fence region unchanged. |
 | soccerball | low | tie | Ball/tree/fence region unchanged. |
 | boat | low | tie | Water wake and boat boundary unchanged. |
