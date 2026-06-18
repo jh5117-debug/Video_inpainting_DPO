@@ -1,0 +1,5 @@
+exp19_folder: exp19_boundary_gated_flow_adapter_dpo
+flow_cache_limit100_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_propainter_completed_flow_limit100
+reports_root: reports
+dpo_diag_root: exp19_boundary_gated_flow_adapter_dpo/dpo_diag
+eval_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19_flow_adapter_davis10

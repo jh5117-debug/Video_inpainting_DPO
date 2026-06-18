@@ -116,6 +116,16 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 # Experiment Matrix
 
+## 2026-06-18 Exp19 Flow-Adapter Attempt
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp19 Boundary-Gated Flow-Adapter DPO | blocked at architecture preflight; no training/eval launched | `exp19_boundary_gated_flow_adapter_dpo/`, `experiment_registry/exp19_boundary_gated_flow_adapter_dpo/`, `PRD/40_exp19_boundary_gated_flow_adapter_dpo.md`, `reports/exp19_context_architecture_audit.md`, `reports/exp19_preflight_report.md`, `reports/exp19_final_report.md` |
+
+Current best remains Exp11 boundary outer b0.75 S2. Exp19 should not be treated
+as a negative metric ablation because no real model was trained; it is an
+architecture feasibility blocker.
+
 ## 2026-06-18 Exp18 PAI Gate Result
 
 | User-facing name | Status | Evidence / registry |

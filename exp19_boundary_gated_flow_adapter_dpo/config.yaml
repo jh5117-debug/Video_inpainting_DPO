@@ -1,0 +1,27 @@
+experiment_name: exp19_boundary_gated_flow_adapter_dpo
+task: boundary-gated flow-conditioned preference optimization
+base_method: Exp11 outer b0.75 S2
+train_dataset: YouTube-VOS generated-loser manifest
+eval_dataset: DAVIS10 gate, DAVIS50 only if positive
+loss_type: region-local normalized-gap clipped-loser-gap winner-anchored DPO
+mask_weight: 1.0
+boundary_mode: outer
+boundary_weight: 0.75
+outside_weight: 0.05
+beta_dpo: 10
+lose_gap_weight: 0.25
+lose_gap_clip_tau: 1.0
+winner_abs_reg_weight: 0.05
+winner_gap_reg_weight: 1.0
+flow_source: ProPainter completed bidirectional flow
+flow_confidence: forward-backward consistency, no GT
+adapter_trainable: flow encoder, zero-conv residual adapters, alpha scales
+base_model_frozen: true
+reference_mode: same Exp11 base with flow adapter disabled
+variants:
+  exp19a: global flow adapter, gate=C_flow
+  exp19b: boundary-gated flow adapter, gate=C_flow*(mask+0.75*outer_boundary)
+  exp19c: exp19b plus latent warp loss if z_hat0 is safe
+eval_protocol: raw6 hard-comp, no PCM, no mask dilation, no Gaussian blur, frame-wise metric
+vbench: false
+current_status: blocked_at_architecture_preflight

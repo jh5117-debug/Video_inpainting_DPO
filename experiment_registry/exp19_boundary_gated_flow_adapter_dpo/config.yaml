@@ -1,0 +1,6 @@
+experiment_name: exp19_boundary_gated_flow_adapter_dpo
+baseline: Exp11 outer b0.75 S2
+status: blocked_at_architecture_preflight
+trainable_parameters: flow_adapter_only
+reference: Exp11 base with flow adapter disabled
+metric_protocol: DAVIS raw6 hard-comp frame-wise, no VBench

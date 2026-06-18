@@ -1,3 +1,36 @@
+## 2026-06-18 Exp19 Boundary-Gated Flow-Adapter DPO
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Exp19 was scaffolded as an isolated flow-adapter experiment:
+
+```text
+exp19_boundary_gated_flow_adapter_dpo/
+experiment_registry/exp19_boundary_gated_flow_adapter_dpo/
+PRD/40_exp19_boundary_gated_flow_adapter_dpo.md
+```
+
+Status:
+
+```text
+BLOCKED_AT_ARCHITECTURE_PREFLIGHT
+```
+
+Reason: the shared `UNetMotionModel.forward` residual interface is unsafe for
+the requested multi-scale down+mid flow adapter. Passing both down and mid
+additional residuals can double-add down residuals; passing only down residuals
+uses a different legacy T2I-adapter shape contract. A mid-only adapter would not
+match the Exp19 method definition. No training, DAVIS eval, or visual result was
+produced.
+
+Next safe path, if Exp19 is revisited: copy the UNet/pipeline into Exp19,
+implement a clean Exp19-only residual interface and matching inference wrapper,
+then rerun flow-cache and zero-init preflight before any 500-step gate.
+
 ## 2026-06-18 Exp18 PAI Gate Result
 
 Current best remains:
