@@ -1,0 +1,6 @@
+run_name: exp19b_boundary_flow_adapter_s2_2000_exploratory_from500_limit100
+start_adapter_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_500_limit100/last_weights/flow_adapter.pt
+run_dir_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage2/exp19b_boundary_flow_adapter_s2_2000_exploratory_from500_limit100
+eval_dir_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp19b_exploratory_s2_2000_davis50
+flow_cache_train_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_propainter_completed_flow_limit100
+flow_cache_davis50_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/data/cache/exp19_davis50_propainter_completed_flow
