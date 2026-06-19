@@ -41,7 +41,15 @@ def load_first_row_manifest(path: Path) -> dict:
 
 
 def load_brushnet_masks(row: dict, nframes: int, latent_hw: tuple[int, int]) -> torch.Tensor:
-    mask_dir = Path(row["mask_path"]) / str(row.get("mask_id", "mask_000")) / "mask"
+    mask_root = Path(row["mask_path"])
+    if list(mask_root.glob("*.png")):
+        mask_dir = mask_root
+    elif (mask_root / str(row.get("mask_id", "mask_000")) / "mask").is_dir():
+        mask_dir = mask_root / str(row.get("mask_id", "mask_000")) / "mask"
+    elif (mask_root / "mask").is_dir():
+        mask_dir = mask_root / "mask"
+    else:
+        mask_dir = mask_root
     paths = sorted(mask_dir.glob("*.png"))[:nframes]
     if len(paths) < nframes:
         raise RuntimeError(f"expected {nframes} mask frames under {mask_dir}, found {len(paths)}")
