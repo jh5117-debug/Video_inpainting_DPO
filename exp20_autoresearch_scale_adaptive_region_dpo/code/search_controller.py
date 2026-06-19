@@ -74,7 +74,7 @@ class TrialConfig:
     training_code_hash: str = ""
     evaluator_hash: str = ""
     beta: float = 10.0
-    gap_eps: float = 1e-8
+    gap_eps: float = 1e-6
     lose_gap_weight: float = 0.25
     lose_gap_clip_tau: float = 1.0
     winner_abs_reg_weight: float = 0.05
@@ -146,7 +146,7 @@ class SearchController:
         out = []
         for i, node in enumerate(search_space.get("root_nodes", []), start=1):
             cfg = TrialConfig(
-                trial_id=f"root_{i:03d}",
+                trial_id=str(node.get("trial_id", f"root_{i:03d}")),
                 parent_id="",
                 radius_mode=str(node["radius_mode"]),
                 radius_value=float(node.get("radius_value", 0.0)),

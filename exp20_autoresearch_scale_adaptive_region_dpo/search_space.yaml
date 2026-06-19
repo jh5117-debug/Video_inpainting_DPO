@@ -26,21 +26,9 @@ radius_modes:
   - adaptive_area_perimeter
   - adaptive_sqrt_area
 root_nodes:
-  - {radius_mode: legacy_latent_exact, radius_value: 0, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean, description: legacy exact Exp11 parity/control}
-  - {radius_mode: fixed_image_px, radius_value: 4, boundary_contribution: 0.5, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 4, boundary_contribution: 1.5, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 12, boundary_contribution: 1.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 12, boundary_contribution: 3.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 0.5, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 1.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 4.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 32, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 32, boundary_contribution: 6.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 48, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 48, boundary_contribution: 8.0, aggregation: legacy_global_weighted_mean}
-  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 0.75, aggregation: region_balanced}
-  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 2.0, aggregation: region_balanced}
-  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 4.0, aggregation: region_balanced}
+  - {trial_id: P0, radius_mode: legacy_latent_exact, radius_value: 0, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean, description: first-wave legacy exact Exp11 control}
+  - {trial_id: P1, radius_mode: fixed_image_px, radius_value: 4, boundary_contribution: 0.5, aggregation: legacy_global_weighted_mean, description: first-wave fixed image radius 4 b0.5}
+  - {trial_id: P2, radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean, description: first-wave fixed image radius 8 b0.75}
+  - {trial_id: P3, radius_mode: fixed_image_px, radius_value: 12, boundary_contribution: 1.0, aggregation: legacy_global_weighted_mean, description: first-wave fixed image radius 12 b1.0}
+  - {trial_id: P4, radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean, description: first-wave fixed image radius 16 b2.0}
+  - {trial_id: P5, radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 4.0, aggregation: legacy_global_weighted_mean, description: first-wave fixed image radius 24 b4.0}
