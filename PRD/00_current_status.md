@@ -1710,3 +1710,31 @@ Current verified experiment state:
   are also externally terminated.
 - Exp11 remains implementation-blocked by the flow/prior consistency audit and
   must not be launched merely because GPUs are free.
+## 2026-06-19 Exp20/21/22 Autoresearch Setup
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+New isolated branch/worktrees:
+
+- HAL: `/home/hj/H20_Video_inpainting_DPO_exp20_autoresearch`
+- PAI: `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch`
+- branch: `research/exp20-adaptive-region-autoresearch-20260619`
+
+New isolated tracks:
+
+- Exp20: DiffuEraser-only scale-adaptive region-balanced DPO search.
+- Exp21: multibackbone VideoDPO BR plumbing smoke matrix.
+- Exp22: multimodel BR baseline asset/smoke preparation.
+
+Status:
+
+```text
+PRECHECK_IMPLEMENTED_NOT_TRAINING_READY
+```
+
+No Exp20 training/sweep result has been claimed. Heavy PAI search is gated on
+legacy parity, locked dev split, and recomputed SFT/Exp11 dev baselines.

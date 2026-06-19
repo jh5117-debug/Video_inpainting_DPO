@@ -1,0 +1,7 @@
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp20_autoresearch
+pai_worktree: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch
+pai_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp20_autoresearch_scale_adaptive_region_dpo
+pai_eval_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp20_autoresearch_scale_adaptive_region_dpo
+training_manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl
+sft48000_weights: /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000
+davis50_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240

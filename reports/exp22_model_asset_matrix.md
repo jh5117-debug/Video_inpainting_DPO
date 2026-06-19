@@ -1,0 +1,13 @@
+# Exp22 model asset matrix
+
+| model | official_repo | commit | architecture | native_prediction_target | HAL_repo | PAI_repo | HAL_weight | PAI_weight | weight_sha256 | env | inference_entry | BR_supported | OR_supported | raw_output_supported | training_forward_available | VideoDPO_smoke_status | blocker | next_action |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| DiffuEraser |  | b020ace2ebdee9565a35761946b033bf2b8c3aa8 |  |  |  | /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch |  | /mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000 |  |  | tools/run_davis50_framewise_protocol_eval.py | yes | unknown | yes | yes | READY_ASSET_PENDING_SMOKE |  | run official real-weight inference smoke |
+| FloED |  |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | BLOCKED_NO_REPO | repo not found in scanned roots | resolve blocker |
+| CoCoCo |  |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | BLOCKED_NO_REPO | repo not found in scanned roots | resolve blocker |
+| VideoComposer |  |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | BLOCKED_NO_REPO | repo not found in scanned roots | resolve blocker |
+| VACE |  |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | BLOCKED_NO_REPO | repo not found in scanned roots | resolve blocker |
+| MiniMax-Remover | https://github.com/zibojia/MiniMax-Remover |  |  |  |  |  |  | /mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current |  |  |  | unknown | unknown | unknown | unknown | BLOCKED_NO_REPO | repo not found in scanned roots | resolve blocker |
+| EffectErase |  |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | WAITING_AUTH | VOR/VOR-Eval/VOR-Wild authorization pending | resolve blocker |
+| ProPainter | https://github.com/sczhou/ProPainter |  |  |  |  |  |  |  |  |  |  | unknown | unknown | unknown | unknown | NOT_APPLICABLE_NON_DIFFUSION | non-diffusion baseline; no Diff-DPO plumbing | resolve blocker |
+| VideoPainter | https://huggingface.co/TencentARC/VideoPainter | 2e187eefe3b3393a8562c9555ce1ebb7ec5e54ab |  |  |  | /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter |  | /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch |  |  |  | unknown | unknown | unknown | unknown | READY_ASSET_PENDING_SMOKE |  | run official real-weight inference smoke |

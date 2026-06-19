@@ -1,0 +1,14 @@
+{
+  "adaptive_k": 0.0,
+  "aggregation": "legacy_global_weighted_mean",
+  "boundary_contribution": 0.75,
+  "config_hash": "a567f2baae14f1f9",
+  "description": "root",
+  "parent_id": "",
+  "radius_mode": "fixed_image_px",
+  "radius_value": 8.0,
+  "seed": 20260619,
+  "stage": "stage1",
+  "train_minutes": 30,
+  "trial_id": "root_004"
+}

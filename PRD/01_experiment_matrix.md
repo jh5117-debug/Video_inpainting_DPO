@@ -1,3 +1,15 @@
+## 2026-06-19 Exp20/21/22 Autoresearch Setup
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp20 scale-adaptive region-balanced DPO | precheck implemented; no training result yet | `experiment_registry/exp20_autoresearch_scale_adaptive_region_dpo`, `PRD/42_exp20_autoresearch_scale_adaptive_region_dpo.md` |
+| Exp21 multibackbone VideoDPO BR smoke | compatibility matrix scaffold ready; real smoke pending | `experiment_registry/exp21_multibackbone_videodpo_br_smoke`, `PRD/43_exp21_multibackbone_videodpo_br_smoke.md` |
+| Exp22 multimodel BR benchmark prep | asset scanner scaffold ready; real inference smoke pending | `experiment_registry/exp22_multimodel_br_benchmark_prep`, `PRD/44_exp22_multimodel_br_benchmark_prep.md` |
+
+Current best remains `Exp11 boundary outer b0.75 S2`. Exp20 heavy PAI search is
+not launched until legacy parity, locked dev split, and recomputed SFT/Exp11 dev
+baselines pass.
+
 ## 2026-06-18 Exp19b Exploratory 2000
 
 | User-facing name | Status | Evidence / registry |

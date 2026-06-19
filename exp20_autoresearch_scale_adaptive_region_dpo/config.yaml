@@ -1,0 +1,21 @@
+experiment_name: exp20_autoresearch_scale_adaptive_region_dpo
+task: BR video inpainting
+base_model: DiffuEraser
+source_of_truth: Exp11 boundary outer b0.75 S2
+scope:
+  - DiffuEraser only
+  - no OR training
+  - no cross-model quality DPO sweep
+fixed_loss:
+  beta_dpo: 10
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  mask_weight: 1.0
+  outside_weight: 0.05
+search:
+  primary_metric: DEV_PSNR
+  train_time_per_trial_minutes: 30
+  max_trials: 48
+  max_total_search_wallclock_hours: 24

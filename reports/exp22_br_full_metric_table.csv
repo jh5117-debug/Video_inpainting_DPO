@@ -1,0 +1,1 @@
+model,status,PSNR,SSIM,LPIPS,VFID,TC,Ewarp,strict_mask_PSNR,boundary_4px_PSNR,boundary_8px_PSNR,boundary_16px_PSNR,boundary_32px_PSNR,notes

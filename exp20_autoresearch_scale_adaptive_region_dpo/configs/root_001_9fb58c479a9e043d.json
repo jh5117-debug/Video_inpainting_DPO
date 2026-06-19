@@ -1,0 +1,14 @@
+{
+  "adaptive_k": 0.0,
+  "aggregation": "legacy_global_weighted_mean",
+  "boundary_contribution": 0.75,
+  "config_hash": "9fb58c479a9e043d",
+  "description": "legacy exact Exp11 parity/control",
+  "parent_id": "",
+  "radius_mode": "legacy_latent_exact",
+  "radius_value": 0.0,
+  "seed": 20260619,
+  "stage": "stage1",
+  "train_minutes": 30,
+  "trial_id": "root_001"
+}

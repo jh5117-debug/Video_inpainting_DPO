@@ -1,0 +1,46 @@
+experiment_name: exp20_autoresearch_scale_adaptive_region_dpo
+primary_metric: DEV_PSNR
+max_trials: 48
+max_total_search_wallclock_hours: 24
+train_time_per_trial_minutes: 30
+fixed_invariants:
+  base_model: DiffuEraser SFT-48000
+  boundary_mode: outer
+  mask_contribution: 1.0
+  outside_contribution: 0.05
+  gap_normalization: log_ratio
+  beta_dpo: 10
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  eval_protocol: raw6_hard_comp_no_pcm_no_dilation_no_blur_framewise_metrics
+radius_values_px: [2, 4, 6, 8, 12, 16, 24, 32, 48]
+boundary_contributions: [0.125, 0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 4.0, 6.0, 8.0]
+aggregations:
+  - legacy_global_weighted_mean
+  - region_balanced
+radius_modes:
+  - legacy_latent_exact
+  - fixed_image_px
+  - adaptive_area_perimeter
+  - adaptive_sqrt_area
+root_nodes:
+  - {radius_mode: legacy_latent_exact, radius_value: 0, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean, description: legacy exact Exp11 parity/control}
+  - {radius_mode: fixed_image_px, radius_value: 4, boundary_contribution: 0.5, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 4, boundary_contribution: 1.5, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 0.75, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 12, boundary_contribution: 1.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 12, boundary_contribution: 3.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 0.5, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 1.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 4.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 32, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 32, boundary_contribution: 6.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 48, boundary_contribution: 2.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 48, boundary_contribution: 8.0, aggregation: legacy_global_weighted_mean}
+  - {radius_mode: fixed_image_px, radius_value: 8, boundary_contribution: 0.75, aggregation: region_balanced}
+  - {radius_mode: fixed_image_px, radius_value: 16, boundary_contribution: 2.0, aggregation: region_balanced}
+  - {radius_mode: fixed_image_px, radius_value: 24, boundary_contribution: 4.0, aggregation: region_balanced}
