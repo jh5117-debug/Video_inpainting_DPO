@@ -1,0 +1,2 @@
+branch=research/exp20-adaptive-region-autoresearch-20260619
+head=64febe8122b0f67d9f5d982c7b0eba49e628ced3

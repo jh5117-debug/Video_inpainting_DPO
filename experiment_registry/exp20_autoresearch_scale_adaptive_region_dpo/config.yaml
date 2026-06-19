@@ -1,0 +1,31 @@
+experiment_name: exp20_autoresearch_scale_adaptive_region_dpo
+branch: research/exp20-adaptive-region-autoresearch-20260619
+head: 64febe8122b0f67d9f5d982c7b0eba49e628ced3
+task: BR / video inpainting preference optimization
+stage: stage1_only_first_wave
+base_model: DiffuEraser SFT-48000
+loss_family: Exp11 legacy-compatible DPO
+eval_protocol:
+  raw_steps: 6
+  hard_comp: true
+  pcm: false
+  mask_dilation: false
+  gaussian_blur: false
+  inference_seed: 20260619
+dev_split:
+  manifest: exp20_autoresearch_scale_adaptive_region_dpo/manifests/dev_boundary_search_v1.jsonl
+  videos: 16
+  frames_per_video: 24
+first_wave:
+  status: FIRST_WAVE_COMPLETED
+  trials: [P0, P1, P2, P3, P4, P5]
+  train_minutes: 30
+  best_dev_psnr_trial: P4
+  best_fixed_radius_px: 16
+  best_fixed_boundary_weight: 2.0
+blocked_or_not_run:
+  adaptive_search: not_started
+  region_balanced_search: not_started
+  stage2: not_started
+  davis50_final: not_started
+  youtubevos100_final: not_started

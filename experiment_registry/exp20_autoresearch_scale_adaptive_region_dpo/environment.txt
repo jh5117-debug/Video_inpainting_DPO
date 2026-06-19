@@ -1,0 +1,3 @@
+PAI conda env: /mnt/nas/hj/conda_envs/diffueraser
+HAL worktree: /home/hj/H20_Video_inpainting_DPO_exp20_autoresearch
+PAI worktree: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch

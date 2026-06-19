@@ -1738,3 +1738,26 @@ PRECHECK_IMPLEMENTED_NOT_TRAINING_READY
 
 No Exp20 training/sweep result has been claimed. Heavy PAI search is gated on
 legacy parity, locked dev split, and recomputed SFT/Exp11 dev baselines.
+
+## 2026-06-20 Exp20 First Fixed-Boundary Pilot
+
+Exp20 has passed the safety gates through the first fixed-boundary PAI pilot:
+
+```text
+LEGACY_FULL_PARITY_PASSED
+REAL_10STEP_SMOKE_PASSED
+DEV_BASELINES_LOCKED
+FIRST_WAVE_COMPLETED
+```
+
+The best dev-only fixed config is:
+
+```text
+P4: fixed_image_px radius=16, boundary_weight=2.0
+PSNR=29.390553, SSIM=0.969074, LPIPS=0.018198, Ewarp=11.994790
+```
+
+This exceeds SFT, Exp11-S1, and Exp11-S2 on locked dev PSNR, but does not reach
+`TARGET_DEV_PSNR=29.523336` and has mixed LPIPS/Ewarp. It is a candidate for
+the next dev gate only; no adaptive search, region-balanced search, Stage2,
+DAVIS50, or YouTubeVOS100 final evaluation has been started.

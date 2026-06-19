@@ -56,17 +56,58 @@ exp20_autoresearch_scale_adaptive_region_dpo/search_space.yaml
 ## Current Status
 
 ```text
-PRECHECK_IMPLEMENTED
+FIRST_WAVE_COMPLETED
 ```
 
-HAL and PAI clean worktrees have been created. Heavy PAI search is blocked
-until:
+HAL and PAI worktrees are synchronized on:
 
-1. legacy exact parity passes;
-2. locked dev split is audited;
-3. SFT and Exp11 dev baselines are recomputed by the same evaluator.
+```text
+research/exp20-adaptive-region-autoresearch-20260619
+64febe8122b0f67d9f5d982c7b0eba49e628ced3
+```
+
+Completed gates:
+
+1. known prototype correctness fixes;
+2. isolated real DiffuEraser Stage1 trainer wiring;
+3. Exp11 `legacy_latent_exact` region/loss/prediction-gradient parity;
+4. real-data 10-step smoke and checkpoint strict reload;
+5. locked internal dev split with no training / DAVIS50 / YouTubeVOS100 overlap;
+6. same-evaluator fixed-seed dev baselines;
+7. first fixed-boundary 30-minute PAI pilot P0-P5.
+
+Locked dev baseline:
+
+```text
+SFT_DEV_PSNR       = 29.173336
+EXP11_S1_DEV_PSNR = 29.333541
+EXP11_S2_DEV_PSNR = 29.355372
+TARGET_DEV_PSNR   = 29.523336
+```
+
+First-wave best fixed config:
+
+```text
+P4: fixed_image_px radius=16, boundary_weight=2.0
+PSNR = 29.390553
+SSIM = 0.969074
+LPIPS = 0.018198
+Ewarp = 11.994790
+strict mask PSNR = 17.085242
+boundary PSNR = 22.946999
+```
+
+Interpretation:
+
+- P4 exceeds SFT dev, Exp11-S1 dev, and Exp11-S2 dev by PSNR.
+- P4 does not reach `TARGET_DEV_PSNR`.
+- P4 slightly worsens LPIPS and Ewarp relative to Exp11-S1, so this is a
+  dev pilot candidate, not a final success.
+- No adaptive search, region-balanced search, Stage2, DAVIS50, or
+  YouTubeVOS100 final evaluation has been started.
 
 ## Do Not Claim Yet
 
-No Exp20 score is available yet. This PRD records implementation readiness, not
-a positive result.
+Exp20 has a first fixed-boundary dev result. Do not claim final improvement or
+paper result until the next gate validates whether P4 generalizes beyond the
+internal dev split.
