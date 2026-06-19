@@ -1,0 +1,9 @@
+{
+  "manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl",
+  "map_max_abs_diff": 0.0,
+  "mask_id": "mask_000",
+  "prediction_grad_cosine": 1.0001194477081299,
+  "prediction_grad_relative_l2": 0.0,
+  "sample_id": "youtubevos_000000_003234408d",
+  "status": "LEGACY_FULL_PARITY_PASSED"
+}
