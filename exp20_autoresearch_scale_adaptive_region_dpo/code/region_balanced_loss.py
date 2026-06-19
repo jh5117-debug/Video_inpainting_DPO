@@ -104,12 +104,15 @@ def exp11_dpo_from_losses(
     m_w_ref: torch.Tensor,
     m_l_ref: torch.Tensor,
     hparams: DPOHyperParams = DPOHyperParams(),
+    nframes: int | None = None,
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
-    g_w = torch.log((m_w + EPS) / (m_w_ref + EPS))
-    g_l = torch.log((m_l + EPS) / (m_l_ref + EPS))
+    raw_win_gap = m_w - m_w_ref
+    raw_lose_gap = m_l - m_l_ref
+    g_w = torch.log((m_w.clamp(min=0) + EPS) / (m_w_ref.clamp(min=0) + EPS))
+    g_l = torch.log((m_l.clamp(min=0) + EPS) / (m_l_ref.clamp(min=0) + EPS))
     g_l_clip = torch.clamp(g_l, max=float(hparams.lose_gap_clip_tau))
-    inside_term = -0.5 * float(hparams.beta) * (g_w - float(hparams.lose_gap_weight) * g_l_clip)
-    dpo_loss = (-F.logsigmoid(inside_term)).mean()
+    frame_inside_term = -0.5 * float(hparams.beta) * (g_w - float(hparams.lose_gap_weight) * g_l_clip)
+    dpo_loss = (-F.logsigmoid(frame_inside_term)).mean()
     winner_abs_reg = m_w.mean()
     winner_gap_reg = F.relu(g_w - float(hparams.winner_gap_reg_margin)).mean()
     total = (
@@ -117,6 +120,32 @@ def exp11_dpo_from_losses(
         + float(hparams.winner_abs_reg_weight) * winner_abs_reg
         + float(hparams.winner_gap_reg_weight) * winner_gap_reg
     )
+    if nframes is None:
+        nframes = int(m_w.numel())
+    if nframes <= 0 or m_w.numel() % int(nframes) != 0:
+        raise ValueError(f"nframes={nframes} must divide pair loss count {m_w.numel()}")
+    nframes = int(nframes)
+    pair_m_w = m_w.view(-1, nframes).mean(dim=1)
+    pair_m_l = m_l.view(-1, nframes).mean(dim=1)
+    pair_m_w_ref = m_w_ref.view(-1, nframes).mean(dim=1)
+    pair_m_l_ref = m_l_ref.view(-1, nframes).mean(dim=1)
+    pair_raw_win_gap = raw_win_gap.view(-1, nframes).mean(dim=1)
+    pair_raw_lose_gap = raw_lose_gap.view(-1, nframes).mean(dim=1)
+    pair_norm_win_gap = g_w.view(-1, nframes).mean(dim=1)
+    pair_norm_lose_gap = g_l.view(-1, nframes).mean(dim=1)
+    pair_norm_lose_gap_clipped = g_l_clip.view(-1, nframes).mean(dim=1)
+    inside_term = -0.5 * float(hparams.beta) * (
+        pair_norm_win_gap - float(hparams.lose_gap_weight) * pair_norm_lose_gap_clipped
+    )
+    with torch.no_grad():
+        correct_mask = inside_term > 0
+        winner_improvement = (-pair_norm_win_gap).clamp(min=0)
+        loser_degradation = pair_norm_lose_gap_clipped.clamp(min=0)
+        loser_dominant_mask = loser_degradation > winner_improvement
+        loser_dominant_wins = (correct_mask & loser_dominant_mask).sum().float()
+        n_correct = correct_mask.sum().float()
+        loser_degrade_ratio = loser_dominant_wins / n_correct.clamp(min=1)
+
     diagnostics = {
         "loss": total.detach(),
         "dpo_loss": dpo_loss.detach(),
@@ -129,10 +158,30 @@ def exp11_dpo_from_losses(
         "norm_lose_gap_clipped": g_l_clip.detach().mean(),
         "winner_abs_reg": winner_abs_reg.detach(),
         "winner_gap_reg": winner_gap_reg.detach(),
+        "raw_win_gap": raw_win_gap.detach().mean(),
+        "raw_lose_gap": raw_lose_gap.detach().mean(),
         "implicit_acc": (inside_term.detach() > 0).float().mean(),
-        "loser_dominant_ratio": (m_l.detach() > m_w.detach()).float().mean(),
+        "loser_degrade_ratio": loser_degrade_ratio.detach(),
+        "loser_degrade_count": loser_dominant_wins.detach(),
+        "n_correct": n_correct.detach(),
+        "n_total": torch.tensor(float(inside_term.numel()), device=m_w.device),
+        "winner_improvement_mean": winner_improvement.detach().mean(),
+        "loser_degradation_mean": loser_degradation.detach().mean(),
+        "loser_dominant_ratio": loser_degrade_ratio.detach(),
         "mse_w_over_ref_mse_w": ((m_w + EPS) / (m_w_ref + EPS)).detach().mean(),
         "mse_l_over_ref_mse_l": ((m_l + EPS) / (m_l_ref + EPS)).detach().mean(),
+        "_inside_term": inside_term.detach(),
+        "_winner_improvement": winner_improvement.detach(),
+        "_loser_degradation": loser_degradation.detach(),
+        "_pair_raw_win_gap": pair_raw_win_gap.detach(),
+        "_pair_raw_lose_gap": pair_raw_lose_gap.detach(),
+        "_pair_norm_win_gap": pair_norm_win_gap.detach(),
+        "_pair_norm_lose_gap": pair_norm_lose_gap.detach(),
+        "_pair_norm_lose_gap_clipped": pair_norm_lose_gap_clipped.detach(),
+        "_pair_m_w": pair_m_w.detach(),
+        "_pair_m_l": pair_m_l.detach(),
+        "_pair_m_w_ref": pair_m_w_ref.detach(),
+        "_pair_m_l_ref": pair_m_l_ref.detach(),
     }
     return total, diagnostics
 
@@ -149,6 +198,7 @@ def compute_dpo_loss(
     boundary_weight: float = 0.75,
     outside_weight: float = 0.05,
     region_alphas: Mapping[str, float] | None = None,
+    nframes: int | None = None,
 ) -> Tuple[torch.Tensor, Dict[str, torch.Tensor]]:
     """Compute Exp20 DPO with either legacy global or region-balanced aggregation."""
     if aggregation == "legacy_global_weighted_mean":
@@ -156,7 +206,7 @@ def compute_dpo_loss(
         m_l, stats_l = legacy_global_region_loss(err_l, region_maps, mask_weight, boundary_weight, outside_weight)
         m_w_ref, stats_w_ref = legacy_global_region_loss(err_w_ref, region_maps, mask_weight, boundary_weight, outside_weight)
         m_l_ref, stats_l_ref = legacy_global_region_loss(err_l_ref, region_maps, mask_weight, boundary_weight, outside_weight)
-        loss, diag = exp11_dpo_from_losses(m_w, m_l, m_w_ref, m_l_ref, hparams)
+        loss, diag = exp11_dpo_from_losses(m_w, m_l, m_w_ref, m_l_ref, hparams, nframes=nframes)
     elif aggregation == "region_balanced":
         alphas = region_alphas or {"mask": 1.0, "boundary": boundary_weight, "outside": outside_weight}
         g_w, stats_w = region_balanced_gap(err_w, err_w_ref, region_maps, alphas)

@@ -1,98 +1,38 @@
 # PAI safety audit
 
-## pwd
-/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch
+Recorded for Exp20 gate continuation on 2026-06-19.
 
-## hostname
-dsw-753014-dc85766cb-4v2jj
+## Workspace
 
-## git status --short
-?? reports/exp20_pai_safety_audit.txt
+- hostname: dsw-753014-dc85766cb-4v2jj
+- worktree: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch
+- branch: research/exp20-adaptive-region-autoresearch-20260619
+- HEAD: 0b7891e5d8fa0bf834f2252201f4aeeeb6da364f
+- latest commit: 0b7891e Add Exp20 autoresearch preflight scaffolding
 
-## git branch --show-current
-research/exp20-adaptive-region-autoresearch-20260619
+## Git status
 
-## git rev-parse HEAD
-b020ace2ebdee9565a35761946b033bf2b8c3aa8
+The PAI worktree is aligned to the HAL/Git branch HEAD through a safe git bundle fetch and ff-only merge. It is not in the earlier rsync-only dirty state.
 
-## git log -1 --oneline
-b020ace Add Exp19b exploratory visual recheck
+## GPU state
 
-## df -h
-Filesystem                                                                                                Size  Used Avail Use% Mounted on
-40b4a7ead0769f65bd0322230f875073e9bdb9d4b6ff190678cd1e19b73e14b9-rootfs                                   5.3T   33G  5.0T   1% /
-tmpfs                                                                                                      64M     0   64M   0% /dev
-tmpfs                                                                                                     931G     0  931G   0% /sys/fs/cgroup
-/dev/vda                                                                                                   30G  4.0G   25G  15% /tmp
-virtiofs-default                                                                                          7.0T  389G  6.3T   6% /etc/dsw/config
-overlay                                                                                                    30G  4.0G   25G  15% /etc/dsw
-tmpfs                                                                                                     1.8T  3.2G  1.8T   1% /dev/shm
-rund:TS9haq7t:cpfs-01000vwrt8a6usy68r6wu-000001.cn-shanghai.cpfs.aliyuncs.com:/pku/                        70T   69T  1.5T  98% /mnt/data/pku
-tmpfs                                                                                                     931G  5.3M  931G   1% /etc/hosts
-172.28.48.25:/                                                                                             10P  7.0T   10P   1% /mnt/nas
-rund:yyMeb9C3:cpfs-01000vwrt8a6usy68r6wu-000001.cn-shanghai.cpfs.aliyuncs.com:/csgo-datasets-fullsubset/   70T   69T  1.5T  98% /mnt/data/csgo-datasets-fullsubset
-ossfs2                                                                                                    512T     0  512T   0% /mnt/data/csgo-datasets-oss
-rund:6FBaGknW:cpfs-01000vwrt8a6usy68r6wu-000001.cn-shanghai.cpfs.aliyuncs.com:/csgo-datasets/              70T   69T  1.5T  98% /mnt/data/csgo-datasets
-40b4a7ead0769f65bd0322230f875073e9bdb9d4b6ff190678cd1e19b73e14b9-rootfs                                   5.3T   33G  5.0T   1% /usr/lib/x86_64-linux-gnu/libcuda.so.560.35.05
-tmpfs                                                                                                     931G  196K  931G   1% /proc/driver/nvidia/params
-tmpfs                                                                                                     931G  4.0K  931G   1% /etc/nvidia/nvidia-application-profiles-rc.d
+`nvidia-smi --query-gpu=index,memory.used,memory.total --format=csv,noheader`:
 
-## nvidia-smi
-Fri Jun 19 16:11:50 2026       
-+-----------------------------------------------------------------------------------------+
-| NVIDIA-SMI 580.95.05              Driver Version: 580.95.05      CUDA Version: 13.0     |
-+-----------------------------------------+------------------------+----------------------+
-| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
-| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
-|                                         |                        |               MIG M. |
-|=========================================+========================+======================|
-|   0  NVIDIA L20X                    On  |   00000000:03:00.0 Off |                    0 |
-| N/A   30C    P0             74W /  700W |       0MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   1  NVIDIA L20X                    On  |   00000000:07:00.0 Off |                    0 |
-| N/A   30C    P0             77W /  700W |       0MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   2  NVIDIA L20X                    On  |   00000000:0B:00.0 Off |                    0 |
-| N/A   30C    P0             76W /  700W |       0MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   3  NVIDIA L20X                    On  |   00000000:0F:00.0 Off |                    0 |
-| N/A   28C    P0             76W /  700W |       0MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   4  NVIDIA L20X                    On  |   00000000:14:00.0 Off |                    0 |
-| N/A   28C    P0             76W /  700W |     244MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   5  NVIDIA L20X                    On  |   00000000:18:00.0 Off |                    0 |
-| N/A   29C    P0             75W /  700W |       4MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   6  NVIDIA L20X                    On  |   00000000:1C:00.0 Off |                    0 |
-| N/A   30C    P0             76W /  700W |     292MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
-|   7  NVIDIA L20X                    On  |   00000000:20:00.0 Off |                    0 |
-| N/A   32C    P0            124W /  700W |   58071MiB / 143771MiB |      0%      Default |
-|                                         |                        |             Disabled |
-+-----------------------------------------+------------------------+----------------------+
+- GPU0: 0 MiB / 143771 MiB
+- GPU1: 0 MiB / 143771 MiB
+- GPU2: 0 MiB / 143771 MiB
+- GPU3: 0 MiB / 143771 MiB
+- GPU4: 244 MiB / 143771 MiB
+- GPU5: 4 MiB / 143771 MiB
+- GPU6: 292 MiB / 143771 MiB
+- GPU7: 58071 MiB / 143771 MiB
 
-+-----------------------------------------------------------------------------------------+
-| Processes:                                                                              |
-|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
-|        ID   ID                                                               Usage      |
-|=========================================================================================|
-|  No running processes found                                                             |
-+-----------------------------------------------------------------------------------------+
+GPU7 is treated as unavailable because it still has about 58 GB allocated despite `nvidia-smi` showing no compute process. No attempt was made to free or kill anything.
 
-## python/accelerate/torchrun processes
-root         150       2  6 May03 ?        2-20:21:51 /etc/dsw/runtime/python/bin/python3.9 /etc/dsw/runtime/bin/supervisord -c /etc/dsw/sys_configs/supervisor.conf
-root         653     206  0 May03 ?        03:58:24 /etc/dsw/cache/pre-install/plugins/jupyter-lab/v3.6.5/venv/bin/python /etc/dsw/cache/pre-install/plugins/jupyter-lab/v3.6.5/venv/bin/jupyter-lab --allow-root --ip=127.0.0.1 --port=8088 --JupyterApp.config_file_name=/etc/dsw/cache/pre-install/plugins/jupyter-lab/v3.6.5/.jupyter/jupyter_notebook_config.py --notebook-dir=/mnt/workspace --NotebookApp.use_redirect_file=False
-root         703     653  2 May03 ?        1-02:53:06 /etc/dsw/cache/pre-install/plugins/jupyter-lab/v3.6.5/venv/lib/python3.9/site-packages/dsw_demo_extension/bin/dsw_server-linux -p 3011 --log-path /etc/dsw-logs
-root      809863     653  0 Jun17 ?        00:00:09 [python] <defunct>
-root     1066157     653  0 May12 ?        00:04:02 /usr/local/bin/python3 -m ipykernel_launcher -f /root/.local/share/jupyter/runtime/kernel-d8f51313-f740-40a3-9d37-f88dc23a6f3d.json
-root     1390892 1390878  0 Jun08 ?        00:01:20 /etc/dsw/runtime/python/bin/python /etc/dsw/cache/pre-install/plugins/nohang/v0.1.0/nohang -c /etc/dsw/cache/pre-install/plugins/nohang/v0.1.0/pai-nohang.conf --monitor
-root     3916920     653  0 May09 ?        00:04:58 /usr/local/bin/python3 -m ipykernel_launcher -f /root/.local/share/jupyter/runtime/kernel-dddea060-e15a-4dc5-9897-49171c9d89a1.json
-root     3916923     653  0 May09 ?        00:04:48 /usr/local/bin/python3 -m ipykernel_launcher -f /root/.local/share/jupyter/runtime/kernel-93a565f2-4ab4-4162-9886-a77bc615d4ec.json
+## Process state
+
+No active `accelerate` or `torchrun` training process was detected. Long-running system/Jupyter/nohang Python processes are present and must not be killed.
+
+## Safety note
+
+Future Exp20 PAI runs must use flock GPU locks and only write to the Exp20 output roots specified in the user request.

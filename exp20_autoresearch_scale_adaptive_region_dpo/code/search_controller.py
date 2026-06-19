@@ -69,10 +69,34 @@ class TrialConfig:
     stage: str = "stage1"
     train_minutes: int = 30
     description: str = ""
+    base_checkpoint_identity: str = ""
+    dataset_manifest_hash: str = ""
+    training_code_hash: str = ""
+    evaluator_hash: str = ""
+    beta: float = 10.0
+    gap_eps: float = 1e-8
+    lose_gap_weight: float = 0.25
+    lose_gap_clip_tau: float = 1.0
+    winner_abs_reg_weight: float = 0.05
+    winner_gap_reg_weight: float = 1.0
+    winner_gap_reg_margin: float = 0.0
+    mask_contribution: float = 1.0
+    outside_contribution: float = 0.05
+    checkpoint_path: str = ""
+    log_path: str = ""
+    gpu_ids: str = ""
 
     def stable_payload(self) -> Dict[str, object]:
         payload = asdict(self)
-        payload.pop("trial_id", None)
+        for key in (
+            "trial_id",
+            "parent_id",
+            "description",
+            "checkpoint_path",
+            "log_path",
+            "gpu_ids",
+        ):
+            payload.pop(key, None)
         return payload
 
     def config_hash(self) -> str:
