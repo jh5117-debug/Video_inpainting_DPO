@@ -1,0 +1,10 @@
+{
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_P0_s20260620_2e233781ed5e1d4c.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_P4_s20260620_c6668196e7108e8e.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_BF07_s20260620_b1a2af0e6583af5c.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_P0_s20260621_5f51b788f9bc6ba0.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_P4_s20260621_46ae4bf5601388ea.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs/MSEQ_BF07_s20260621_b0f4cdd5be0a0136.json"
+  ]
+}

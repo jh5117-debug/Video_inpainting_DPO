@@ -1,8 +1,8 @@
 experiment_name: exp20_autoresearch_scale_adaptive_region_dpo
 branch: research/exp20-adaptive-region-autoresearch-20260619
-head: 64febe8122b0f67d9f5d982c7b0eba49e628ced3
+head_at_multiseed_shadow_start: 6c7a9af6184888613e5de2b8eb29adc314703c64
 task: BR / video inpainting preference optimization
-stage: stage1_only_first_wave
+stage: stage1_multiseed_shadow_confirmation_complete
 base_model: DiffuEraser SFT-48000
 loss_family: Exp11 legacy-compatible DPO
 eval_protocol:
@@ -23,9 +23,24 @@ first_wave:
   best_dev_psnr_trial: P4
   best_fixed_radius_px: 16
   best_fixed_boundary_weight: 2.0
+fast_search:
+  status: FAST_SEARCH_BUDGET_REACHED_WITHOUT_TARGET
+  total_trials: 48
+equal_step_confirmation:
+  status: EQUAL_STEP_CONFIRMATION_COMPLETED
+  optimizer_steps: 112
+  candidates: [EQ_P0, EQ_P4, EQ_BF07, EQ_AD04]
+multiseed_shadow_confirmation:
+  status: COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW
+  seeds: [20260619, 20260620, 20260621]
+  main_candidates: [P0, P4, BF07]
+  ad04_status: single_seed_pareto_reference_only
+  final_decision: NO_CANDIDATE_PROMOTED
+  enter_500_step: false
 blocked_or_not_run:
-  adaptive_search: not_started
-  region_balanced_search: not_started
+  stage1_500: not_started_gate_failed
+  stage1_1000: not_started
+  stage1_2000: not_started
   stage2: not_started
   davis50_final: not_started
   youtubevos100_final: not_started

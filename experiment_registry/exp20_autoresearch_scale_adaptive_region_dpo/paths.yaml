@@ -12,3 +12,15 @@ reports:
   all_trials: reports/exp20_search_all_trials_summary.csv
   decision: reports/exp20_fast_search_and_equal_step_decision.md
   equal_step: reports/exp20_equal_step_confirmation.md
+  candidate_identity: reports/exp20_candidate_checkpoint_identity_audit.md
+  shadow_baselines: reports/exp20_shadow_dev_baselines.md
+  multiseed_results: reports/exp20_bf07_p4_multiseed_results.md
+  multiseed_statistics: reports/exp20_bf07_p4_multiseed_statistics.md
+  dpo_diagnostics: reports/exp20_bf07_p4_dpo_diagnostics.md
+  visual_review: reports/exp20_bf07_p4_visual_review.md
+  final_promotion_decision: reports/exp20_multiseed_shadow_promotion_decision.md
+multiseed_confirmation:
+  configs: exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/configs
+  search_results: exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/results_raw.tsv
+  shadow_results: exp20_autoresearch_scale_adaptive_region_dpo/multiseed_equal_step_confirmation/shadow_results_raw.tsv
+  visual_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp20_autoresearch_scale_adaptive_region_dpo/exp20_bf07_p4_visuals

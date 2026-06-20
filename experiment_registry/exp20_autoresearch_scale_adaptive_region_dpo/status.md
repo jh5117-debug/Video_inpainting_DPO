@@ -1,3 +1,12 @@
-COMPLETED_NEGATIVE
+COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW
 
-Exp20 fast search budget and equal-step confirmation completed. No candidate reached TARGET_DEV_PSNR=29.523336. Best search-dev/equal-step PSNR candidate is EQ_BF07 (fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean, 112 steps) with PSNR 29.393079, but it carries worse LPIPS/VFID/TC tradeoffs than P0/P4 and is not promoted to long training. No Stage2, DAVIS50, or YouTubeVOS100 final benchmark was launched.
+Exp20 fast search budget, equal-step confirmation, and strict P0/P4/BF07 three-seed shadow-dev confirmation are complete. No candidate passed the preregistered promotion gate.
+
+Key result:
+- P4 is a stable search-dev signal but fails shadow-dev generalization.
+- BF07 does not replace P4 and is worse on shadow-dev.
+- AD04 remains a single-seed adaptive ablation and was not expanded.
+
+No 500-step, 1000-step, 2000-step, Stage2, DAVIS50, or YouTubeVOS100 final benchmark was launched.
+
+Final recommendation: stop Exp20 boundary parameter search.

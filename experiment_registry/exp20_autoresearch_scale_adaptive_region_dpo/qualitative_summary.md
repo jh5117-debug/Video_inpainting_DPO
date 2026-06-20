@@ -1,5 +1,24 @@
 # Exp20 Qualitative Summary
 
-No new final visual review was promoted in this round. The current evidence is metric-led dev-search evidence only. Because no candidate passed the target and promotion gates, no DAVIS50/YouTubeVOS100 final visual package was generated.
+Final visual review status: `CODEX_REVIEWED`.
 
-Recommended visual follow-up, if desired: compare P0, P4, EQ_BF07, EQ_AD04 on the locked search-dev and shadow-dev before any long training.
+Reviewed all 20 shadow-dev anonymous contact sheets comparing SFT, Exp11-S1, Exp11-S2, EQ_P0, EQ_P4, EQ_BF07, and EQ_AD04.
+
+BF07 vs P4:
+
+| Judgement | Count |
+|---|---:|
+| BF07 visibly better than P4 | 0 |
+| P4 visibly better than BF07 | 4 |
+| Tie / no reliable difference | 16 |
+
+Observation:
+- BF07 does not show stable boundary, texture, or temporal improvement over P4.
+- In tiger/fence, snow/ski, deer/fence, and fast dog/person cases, BF07 is slightly softer than P4.
+- P4 does not show a stable shadow-dev visual advantage over Exp11-S1.
+
+Decision:
+
+`NO_VISUAL_PROMOTION_SIGNAL`
+
+No DAVIS50/YouTubeVOS100 final visual package was generated because no candidate passed the multiseed shadow gate.

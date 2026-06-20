@@ -1765,3 +1765,19 @@ DAVIS50, or YouTubeVOS100 final evaluation has been started.
 ## 2026-06-20 Exp20 update
 
 Exp20 fast search + equal-step completed negative: best equal-step PSNR candidate EQ_BF07 reached PSNR 29.393079 on locked dev, below TARGET_DEV_PSNR 29.523336 and with mixed LPIPS/VFID/TC tradeoffs. No long training, Stage2, DAVIS50, or YouTubeVOS100 final eval was launched.
+
+## 2026-06-21 Exp20 multiseed shadow confirmation
+
+Exp20 completed strict P0/P4/BF07 equal-step three-seed confirmation on locked search-dev and independent shadow-dev.
+
+```text
+COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW
+```
+
+Summary:
+- P4 remains a small search-dev signal but fails shadow-dev generalization.
+- BF07 does not replace P4 and is worse on shadow-dev.
+- AD04 remains a single-seed adaptive reference, not a promoted candidate.
+- Codex visual review found no stable BF07 improvement over P4.
+
+No 500-step gate, 1000/2000-step training, Stage2, DAVIS50, or YouTubeVOS100 final evaluation was launched. No further boundary radius/weight search is recommended.

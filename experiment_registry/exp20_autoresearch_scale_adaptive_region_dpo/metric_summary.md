@@ -30,3 +30,29 @@ Top search/equal-step candidates:
 | 10 | P2 | first_wave | fixed_image_px r=8 k= b=  | 29.366833 | 0.969021 | 0.017936 | 0.227789 | 0.976126 | 12.025352 | 17.061521 | 22.911305 |
 | 11 | BF08 | second_fixed_bestfirst | fixed_image_px r=24.0 k=0.0 b=3.5 legacy_global_weighted_mean | 29.366428 | 0.968772 | 0.018372 | 0.230838 | 0.975907 | 11.963386 | 17.061117 | 22.954126 |
 | 12 | BF03 | second_fixed_bestfirst | fixed_image_px r=24.0 k=0.0 b=5.0 legacy_global_weighted_mean | 29.363525 | 0.968835 | 0.018364 | 0.230150 | 0.975968 | 11.979235 | 17.058214 | 22.908234 |
+
+## 2026-06-21 Multiseed + Shadow Confirmation
+
+Final status: `COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW`.
+
+Shadow-dev baselines:
+
+| Method | PSNR | SSIM | LPIPS | VFID/FVD | TC | Ewarp | mask PSNR | boundary PSNR |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| SFT-48000 | 29.199451 | 0.966516 | 0.019383 | 0.240703 | 0.974590 | 8.955795 | 17.906581 | 25.031478 |
+| Exp11-S1 + SFT-S2 | 29.500778 | 0.968900 | 0.018102 | 0.217299 | 0.975506 | 8.890011 | 18.207907 | 25.376861 |
+| Exp11-S2 | 29.521728 | 0.968988 | 0.018183 | 0.217858 | 0.975675 | 8.878917 | 18.228857 | 25.390760 |
+
+Three-seed PSNR:
+
+| split | P0 | P4 | BF07 |
+|---|---:|---:|---:|
+| search-dev | 29.356682 +/- 0.018347 | 29.377911 +/- 0.012939 | 29.380092 +/- 0.010602 |
+| shadow-dev | 29.429970 +/- 0.055299 | 29.416158 +/- 0.057094 | 29.371829 +/- 0.048729 |
+
+Promotion gate:
+
+- P4 vs shadow Exp11-S1: `-0.084620 dB`; fail.
+- BF07 vs shadow Exp11-S1: `-0.128949 dB`; fail.
+- BF07 vs P4 on shadow: `-0.044330 dB`, bootstrap P(delta>0)=`0.0577`; fail.
+- No candidate entered 500-step.

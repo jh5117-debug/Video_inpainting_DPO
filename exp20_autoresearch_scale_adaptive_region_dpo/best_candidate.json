@@ -24,5 +24,29 @@
   "delta_vs_exp11_s1": 0.059538237070906774,
   "delta_vs_exp11_s2": 0.03770723707090795,
   "target_reached": false,
-  "note": "Best search-dev/equal-step PSNR candidate, not promoted to long training because TARGET_DEV_PSNR was not reached and VFID/LPIPS/TC tradeoff is not clearly positive."
+  "promoted": false,
+  "enter_500_step": false,
+  "final_decision": "NO_CANDIDATE_PROMOTED",
+  "final_status": "COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW",
+  "multiseed_shadow_summary": {
+    "search_dev_psnr_mean": {
+      "P0": 29.356682,
+      "P4": 29.377911,
+      "BF07": 29.380092
+    },
+    "shadow_dev_psnr_mean": {
+      "P0": 29.429970,
+      "P4": 29.416158,
+      "BF07": 29.371829
+    },
+    "bf07_minus_p4_search": 0.002181,
+    "bf07_minus_p4_shadow": -0.044330,
+    "bf07_minus_p4_shadow_bootstrap_p_delta_gt_0": 0.0577,
+    "visual_review": {
+      "bf07_better": 0,
+      "p4_better": 4,
+      "tie": 16
+    }
+  },
+  "note": "EQ_BF07 remains the best single-seed/equal-step search-dev PSNR row, but it failed the preregistered multiseed shadow-dev promotion gate and did not replace P4. No Exp20 candidate is promoted to 500-step or long training."
 }

@@ -80,7 +80,13 @@ def main() -> int:
     parser.add_argument("--python-bin", default="/mnt/nas/hj/conda_envs/diffueraser/bin/python")
     parser.add_argument("--gpu-id", default="0")
     parser.add_argument("--video-length", type=int, default=24)
+    parser.add_argument("--eval-subdir", default="eval_dev")
+    parser.add_argument("--label-suffix", default="")
     parser.add_argument("--compute-lpips", action="store_true")
+    parser.add_argument("--compute-vfid", action="store_true")
+    parser.add_argument("--i3d-model-path", default="")
+    parser.add_argument("--compute-tc", action="store_true")
+    parser.add_argument("--tc-model-path", default="")
     parser.add_argument("--compute-ewarp", action="store_true")
     args = parser.parse_args()
 
@@ -90,7 +96,7 @@ def main() -> int:
     candidate = Path(args.candidate_weights) if args.candidate_weights else trial_dir / "last_weights"
     strict_weight_dir(candidate)
 
-    eval_root = trial_dir / "eval_dev"
+    eval_root = trial_dir / args.eval_subdir
     hybrid_root = trial_dir / "eval_hybrid_s1_sft_s2"
     hybrid_weights = hybrid_root / "last_weights"
     if not hybrid_weights.exists():
@@ -114,7 +120,8 @@ def main() -> int:
     strict_weight_dir(hybrid_weights)
 
     dev_root = Path(args.dev_root)
-    save_path = eval_root / cfg["trial_id"]
+    eval_label = f"{cfg['trial_id']}{args.label_suffix}"
+    save_path = eval_root / eval_label
     cmd = [
         args.python_bin,
         "exp20_autoresearch_scale_adaptive_region_dpo/code/run_exp20_framewise_protocol_eval.py",
@@ -155,11 +162,20 @@ def main() -> int:
     ]
     if args.compute_lpips:
         cmd.append("--compute_lpips")
+    if args.compute_vfid:
+        cmd.append("--compute_vfid")
+        if args.i3d_model_path:
+            cmd.extend(["--i3d_model_path", args.i3d_model_path])
+    if args.compute_tc:
+        cmd.append("--compute_tc")
+        if args.tc_model_path:
+            cmd.extend(["--tc_model_path", args.tc_model_path])
     if args.compute_ewarp:
         cmd.extend(["--compute_ewarp", "--raft_model_path", str(Path(args.propainter) / "raft-things.pth")])
     env = dict(os.environ)
     env["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
-    run(cmd, env=env, log_path=trial_dir / "eval_dev.log")
+    safe_log = args.eval_subdir.replace("/", "_")
+    run(cmd, env=env, log_path=trial_dir / f"{safe_log}.log")
 
     summary = read_summary(save_path / "metrics" / "summary.csv")
     diag_path = trial_dir / "dpo_diagnostics.csv"
@@ -179,7 +195,7 @@ def main() -> int:
             max_grad = max(grad_values) if grad_values else ""
 
     result = {
-        "trial_id": cfg["trial_id"],
+        "trial_id": eval_label,
         "parent_id": cfg.get("parent_id", ""),
         "config_hash": cfg["config_hash"],
         "branch_commit": cfg.get("branch_commit", ""),
@@ -207,7 +223,7 @@ def main() -> int:
         "keep_reason": "pending_controller_gate",
         "description": cfg.get("description", ""),
         "checkpoint_path": str(candidate),
-        "log_path": str(trial_dir / "eval_dev.log"),
+        "log_path": str(trial_dir / f"{safe_log}.log"),
     }
     append_result(Path(args.results_tsv), result)
     (trial_dir / "eval_result.json").write_text(json.dumps(result, indent=2, sort_keys=True) + "\n")

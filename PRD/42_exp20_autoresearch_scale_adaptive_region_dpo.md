@@ -136,3 +136,56 @@ Decision:
 
 Next recommended action:
 - If continuing Exp20, run a narrow BF07-vs-P4 multi-seed + shadow-dev check before any long training, or revisit the objective to reduce loser-dominant behavior rather than broadening boundary radius further.
+
+## 2026-06-21 Multiseed Shadow Confirmation
+
+Status: `COMPLETED_NEGATIVE_AFTER_MULTISEED_SHADOW`.
+
+Completed:
+- Candidate checkpoint identity audit for EQ_P0, EQ_P4, EQ_BF07, EQ_AD04.
+- Shadow-dev baselines for SFT-48000, Exp11-S1+SFT-S2, Exp11-S2.
+- P0/P4/BF07 equal-step 112-step three-seed confirmation on search-dev and shadow-dev.
+- Full metric backfill for PSNR, SSIM, LPIPS, VFID/FVD-style, TC, Ewarp, strict mask PSNR, boundary PSNR.
+- Paired bootstrap/sign-test/leave-one-video-out statistics.
+- Codex visual review of all 20 shadow-dev contact sheets.
+
+Shadow-dev baselines:
+
+```text
+SHADOW_SFT_PSNR       = 29.199451
+SHADOW_EXP11_S1_PSNR  = 29.500778
+SHADOW_EXP11_S2_PSNR  = 29.521728
+```
+
+Three-seed PSNR:
+
+```text
+search-dev:
+  P0   = 29.356682 +/- 0.018347
+  P4   = 29.377911 +/- 0.012939
+  BF07 = 29.380092 +/- 0.010602
+
+shadow-dev:
+  P0   = 29.429970 +/- 0.055299
+  P4   = 29.416158 +/- 0.057094
+  BF07 = 29.371829 +/- 0.048729
+```
+
+Decision:
+- P4 fails Stage1 promotion because shadow-dev mean is 0.084620 dB below Exp11-S1 and bootstrap probability is only 0.0666.
+- BF07 fails Stage1 promotion because shadow-dev mean is 0.128949 dB below Exp11-S1.
+- BF07 fails to replace P4: shadow mean is 0.044330 dB below P4, seed win count is 0/3, per-video win rate is 40%, and bootstrap P(delta>0) is 0.0577.
+- AD04 remains a single-seed adaptive ablation; it was not expanded because it did not cleanly satisfy the conditional promotion requirements.
+- Visual review found 0 BF07-better cases, 4 P4-better cases, and 16 ties.
+
+Final:
+
+```text
+NO_CANDIDATE_PROMOTED
+NO_500_STEP_GATE
+NO_STAGE2
+NO_DAVIS50
+NO_YOUTUBE_VOS100
+```
+
+Exp20 boundary parameter search should stop here. The next useful direction is objective-level work on loser-dominant/saturation behavior, not broader radius or boundary-weight search.

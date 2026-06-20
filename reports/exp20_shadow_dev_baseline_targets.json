@@ -1,0 +1,6 @@
+{
+  "SHADOW_EXP11_S1_PSNR": 29.500777870191722,
+  "SHADOW_EXP11_S2_PSNR": 29.521727642506942,
+  "SHADOW_SFT_PSNR": 29.199451228048737,
+  "eval_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp20_autoresearch_scale_adaptive_region_dpo/20260620_233144_dev_boundary_shadow_v1_baselines"
+}
