@@ -336,8 +336,10 @@ def compute_dpo_loss(
     ref_pred,
     noise,
     loss_weight_map=None,
+    loss_region_maps=None,
     loss_region_mode="full",
     region_stats=None,
+    aggregation="legacy_global_weighted_mean",
     gap_normalization="raw",
     gap_eps=1e-6,
     lose_gap_clip_tau=None,
@@ -414,6 +416,7 @@ def compute_dpo_loss(
             region_stats["boundary_region_mse"] = region_mean_mse(region_selector(boundary_w))
             region_stats["outside_region_mse"] = region_mean_mse(region_selector(outside_w))
 
+    aggregation = str(aggregation or "legacy_global_weighted_mean")
     gap_normalization = str(gap_normalization or "raw").lower()
     if gap_normalization in {"none", "identity"}:
         gap_normalization = "raw"
@@ -426,12 +429,74 @@ def compute_dpo_loss(
     eps = float(gap_eps)
     norm_win_gap_vec = torch.log((model_losses_w.clamp(min=0) + eps) / (ref_losses_w.clamp(min=0) + eps))
     norm_lose_gap_vec = torch.log((model_losses_l.clamp(min=0) + eps) / (ref_losses_l.clamp(min=0) + eps))
-    if gap_normalization == "log_ratio":
+
+    region_balanced_diag = {}
+    if aggregation == "region_balanced":
+        if loss_region_maps is None:
+            raise ValueError("aggregation=region_balanced requires loss_region_maps")
+        err_policy = (model_pred.float() - target.float()).pow(2)
+        with torch.no_grad():
+            err_ref = (ref_pred.float() - target.float()).pow(2)
+        err_w, err_l = err_policy.chunk(2)
+        err_w_ref, err_l_ref = err_ref.chunk(2)
+
+        def region_mean(error, region_weight):
+            weight = region_weight.to(device=error.device, dtype=error.dtype)
+            if weight.shape[-2:] != error.shape[-2:]:
+                weight = F.interpolate(weight, size=error.shape[-2:], mode="area")
+            if weight.ndim != 4:
+                raise ValueError(f"region map must be [N,1,H,W], got {tuple(weight.shape)}")
+            if weight.shape[0] != error.shape[0]:
+                raise ValueError(f"region map batch={weight.shape[0]} does not match error batch={error.shape[0]}")
+            if weight.shape[1] == 1 and error.shape[1] != 1:
+                weight = weight.expand(-1, error.shape[1], -1, -1)
+            numer = (error * weight).sum(dim=[1, 2, 3])
+            denom = weight.sum(dim=[1, 2, 3]).clamp(min=1e-8)
+            return numer / denom
+
+        alpha_values = {
+            "mask": float(region_stats.get("region_mask_weight", 1.0) if region_stats else 1.0),
+            "boundary": float(region_stats.get("region_boundary_weight", 0.75) if region_stats else 0.75),
+            "outside": float(region_stats.get("region_outside_weight", 0.05) if region_stats else 0.05),
+        }
+        valid_alpha = {}
+        for name in ("mask", "boundary", "outside"):
+            region = loss_region_maps[name].to(device=err_w.device, dtype=err_w.dtype)
+            valid = (region.sum(dim=[1, 2, 3]) > 1e-8).to(dtype=err_w.dtype)
+            valid_alpha[name] = valid * alpha_values[name]
+        alpha_total = (valid_alpha["mask"] + valid_alpha["boundary"] + valid_alpha["outside"]).clamp(min=1e-8)
+        for name in valid_alpha:
+            valid_alpha[name] = valid_alpha[name] / alpha_total
+
+        dpo_win_gap_vec = torch.zeros_like(model_losses_w)
+        dpo_lose_gap_vec = torch.zeros_like(model_losses_l)
+        for name in ("mask", "boundary", "outside"):
+            region = loss_region_maps[name]
+            w_policy = region_mean(err_w, region)
+            w_ref = region_mean(err_w_ref, region)
+            l_policy = region_mean(err_l, region)
+            l_ref = region_mean(err_l_ref, region)
+            win_gap_region = torch.log((w_policy.clamp(min=0) + eps) / (w_ref.clamp(min=0) + eps))
+            lose_gap_region = torch.log((l_policy.clamp(min=0) + eps) / (l_ref.clamp(min=0) + eps))
+            dpo_win_gap_vec = dpo_win_gap_vec + valid_alpha[name] * win_gap_region
+            dpo_lose_gap_vec = dpo_lose_gap_vec + valid_alpha[name] * lose_gap_region
+            region_balanced_diag[f"{name}_policy_mse_w"] = w_policy.detach().mean().item()
+            region_balanced_diag[f"{name}_ref_mse_w"] = w_ref.detach().mean().item()
+            region_balanced_diag[f"{name}_policy_mse_l"] = l_policy.detach().mean().item()
+            region_balanced_diag[f"{name}_ref_mse_l"] = l_ref.detach().mean().item()
+            region_balanced_diag[f"{name}_win_gap"] = win_gap_region.detach().mean().item()
+            region_balanced_diag[f"{name}_lose_gap"] = lose_gap_region.detach().mean().item()
+            region_balanced_diag[f"{name}_alpha_effective"] = valid_alpha[name].detach().mean().item()
+        norm_win_gap_vec = dpo_win_gap_vec
+        norm_lose_gap_vec = dpo_lose_gap_vec
+    elif aggregation == "legacy_global_weighted_mean" and gap_normalization == "log_ratio":
         dpo_win_gap_vec = norm_win_gap_vec
         dpo_lose_gap_vec = norm_lose_gap_vec
-    else:
+    elif aggregation == "legacy_global_weighted_mean":
         dpo_win_gap_vec = raw_win_gap_vec
         dpo_lose_gap_vec = raw_lose_gap_vec
+    else:
+        raise ValueError(f"Unsupported aggregation={aggregation!r}")
 
     clip_tau = None
     if lose_gap_clip_tau is not None and str(lose_gap_clip_tau).strip().lower() not in {"", "none", "inf", "infinity"}:
@@ -510,6 +575,7 @@ def compute_dpo_loss(
 
     diagnostics = {
         "loss_region_mode": str(loss_region_mode),
+        "aggregation": aggregation,
         "gap_normalization": gap_normalization,
         "gap_eps": eps,
         "lose_gap_clip_tau": clip_tau if clip_tau is not None else "",
@@ -575,6 +641,7 @@ def compute_dpo_loss(
                 "region_weighted_ref_mse_l": ref_losses_l.mean().detach().item(),
             }
         )
+    diagnostics.update(region_balanced_diag)
     # 保留原始 tensor 供跨卡 gather
     diagnostics["_inside_term"] = inside_term.detach()
     diagnostics["_winner_improvement"] = winner_improvement.detach()
@@ -716,6 +783,44 @@ def build_exp20_loss_weight_map(
     if distance_cache is not None:
         stats.update(distance_cache.stats())
     return weight, stats
+
+
+def build_exp20_loss_weight_map_and_regions(
+    brushnet_masks_image,
+    latent_hw,
+    args,
+    distance_cache=None,
+    cache_identities=None,
+):
+    """Return legacy-compatible weight map plus explicit region maps.
+
+    The legacy path remains byte-for-byte controlled by
+    ``build_region_loss_weight_map``. The explicit region maps are only consumed
+    when ``--aggregation region_balanced`` is selected.
+    """
+    weight, stats = build_exp20_loss_weight_map(
+        brushnet_masks_image,
+        latent_hw,
+        args,
+        distance_cache=distance_cache,
+        cache_identities=cache_identities,
+    )
+    hole_image = 1.0 - brushnet_masks_image.float()
+    maps = build_exp20_region_maps(
+        hole_image,
+        latent_hw,
+        radius_mode=args.radius_mode,
+        radius_value=args.radius_value,
+        adaptive_k=args.adaptive_k,
+        boundary_mode="outer",
+        distance_cache=distance_cache,
+        cache_identities=cache_identities,
+    )
+    region_maps = {
+        name: rearrange(maps[name].to(device=brushnet_masks_image.device, dtype=brushnet_masks_image.dtype), "b f h w -> (b f) 1 h w")
+        for name in ("mask", "boundary", "outside")
+    }
+    return weight, stats, region_maps
 
 
 def compute_dpo_grad_norm(loss, params_to_optimize):
@@ -998,6 +1103,28 @@ DPO_DIAG_CSV_FIELDS = [
     "mask_weight",
     "boundary_weight",
     "outside_weight",
+    "aggregation",
+    "mask_policy_mse_w",
+    "mask_ref_mse_w",
+    "mask_policy_mse_l",
+    "mask_ref_mse_l",
+    "mask_win_gap",
+    "mask_lose_gap",
+    "mask_alpha_effective",
+    "boundary_policy_mse_w",
+    "boundary_ref_mse_w",
+    "boundary_policy_mse_l",
+    "boundary_ref_mse_l",
+    "boundary_win_gap",
+    "boundary_lose_gap",
+    "boundary_alpha_effective",
+    "outside_policy_mse_w",
+    "outside_ref_mse_w",
+    "outside_policy_mse_l",
+    "outside_ref_mse_l",
+    "outside_win_gap",
+    "outside_lose_gap",
+    "outside_alpha_effective",
     "mask_region_mse",
     "boundary_region_mse",
     "outside_region_mse",
@@ -1079,6 +1206,28 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         "mask_weight": diag.get("mask_weight"),
         "boundary_weight": diag.get("boundary_weight"),
         "outside_weight": diag.get("outside_weight"),
+        "aggregation": diag.get("aggregation"),
+        "mask_policy_mse_w": diag.get("mask_policy_mse_w"),
+        "mask_ref_mse_w": diag.get("mask_ref_mse_w"),
+        "mask_policy_mse_l": diag.get("mask_policy_mse_l"),
+        "mask_ref_mse_l": diag.get("mask_ref_mse_l"),
+        "mask_win_gap": diag.get("mask_win_gap"),
+        "mask_lose_gap": diag.get("mask_lose_gap"),
+        "mask_alpha_effective": diag.get("mask_alpha_effective"),
+        "boundary_policy_mse_w": diag.get("boundary_policy_mse_w"),
+        "boundary_ref_mse_w": diag.get("boundary_ref_mse_w"),
+        "boundary_policy_mse_l": diag.get("boundary_policy_mse_l"),
+        "boundary_ref_mse_l": diag.get("boundary_ref_mse_l"),
+        "boundary_win_gap": diag.get("boundary_win_gap"),
+        "boundary_lose_gap": diag.get("boundary_lose_gap"),
+        "boundary_alpha_effective": diag.get("boundary_alpha_effective"),
+        "outside_policy_mse_w": diag.get("outside_policy_mse_w"),
+        "outside_ref_mse_w": diag.get("outside_ref_mse_w"),
+        "outside_policy_mse_l": diag.get("outside_policy_mse_l"),
+        "outside_ref_mse_l": diag.get("outside_ref_mse_l"),
+        "outside_win_gap": diag.get("outside_win_gap"),
+        "outside_lose_gap": diag.get("outside_lose_gap"),
+        "outside_alpha_effective": diag.get("outside_alpha_effective"),
         "mask_region_mse": diag.get("mask_region_mse"),
         "boundary_region_mse": diag.get("boundary_region_mse"),
         "outside_region_mse": diag.get("outside_region_mse"),
@@ -1492,8 +1641,8 @@ def parse_args(input_args=None):
     parser.add_argument("--adaptive_k", type=float, default=1.0,
                         help="Adaptive radius multiplier for image-space adaptive modes.")
     parser.add_argument("--aggregation", type=str, default="legacy_global_weighted_mean",
-                        choices=["legacy_global_weighted_mean"],
-                        help="Exp20 Stage1 gate keeps Exp11 global weighted aggregation until parity is locked.")
+                        choices=["legacy_global_weighted_mean", "region_balanced"],
+                        help="Exp20 loss aggregation: legacy global weighted mean or region-balanced region log-ratio.")
     parser.add_argument("--boundary_contribution", type=float, default=None,
                         help="Alias for --boundary_region_weight used by immutable trial configs.")
     parser.add_argument("--mask_contribution", type=float, default=None,
@@ -2075,11 +2224,12 @@ def main(args):
                 )
                 loss_weight_map = None
                 region_stats = None
+                loss_region_maps = None
                 if args.loss_region_mode == "region":
                     cache_identities = [
                         f"{sid}:{idx}" for sid, idx in zip(batch.get("sample_id", []), batch.get("pair_index", []))
                     ]
-                    loss_weight_map, region_stats = build_exp20_loss_weight_map(
+                    loss_weight_map, region_stats, loss_region_maps = build_exp20_loss_weight_map_and_regions(
                         masks_image_for_region,
                         (pos_latents.shape[-2], pos_latents.shape[-1]),
                         args,
@@ -2199,8 +2349,10 @@ def main(args):
                 loss, diagnostics = compute_dpo_loss(
                     model_pred, ref_pred, noise,
                     loss_weight_map=loss_weight_map,
+                    loss_region_maps=loss_region_maps,
                     loss_region_mode=args.loss_region_mode,
                     region_stats=region_stats,
+                    aggregation=args.aggregation,
                     gap_normalization=args.gap_normalization,
                     gap_eps=args.gap_eps,
                     lose_gap_clip_tau=args.lose_gap_clip_tau,

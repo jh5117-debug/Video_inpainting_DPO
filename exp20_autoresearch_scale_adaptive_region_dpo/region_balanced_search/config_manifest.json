@@ -1,0 +1,17 @@
+{
+  "status": "REGION_BALANCED_CONFIGS_PREPARED",
+  "count": 10,
+  "skipped": [],
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB01_f56d72a7fa42dfd9.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB02_fb3996464525c9ea.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB03_650c095bca7fbe22.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB04_dd9fba8d6dd37f47.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB05_4d69e6bd0e01c259.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB06_2774f6fdd2227347.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB07_bfea3261a43564d3.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB08_8e5827c5e2a564dd.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB09_5890bf972eaa4769.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/region_balanced_search/configs/RB10_d26c032fb2306161.json"
+  ]
+}
