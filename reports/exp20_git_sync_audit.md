@@ -49,3 +49,12 @@ remote HEAD:
 
 No GitHub fetch fallback or git bundle was needed for this continuation. No
 reset, clean, force push, or destructive workspace action was used.
+
+## 2026-06-20 Final sync after Exp20 fast/equal-step
+
+- HAL HEAD: feced99d66a31feb43fda210f0f79d37dad513be
+- PAI HEAD: feced99d66a31feb43fda210f0f79d37dad513be
+- Branch: research/exp20-adaptive-region-autoresearch-20260619
+- Push: completed to origin feature branch.
+- PAI sync method: fetch + safe backup of would-overwrite untracked generated files under .tmp + git stash for tracked runtime copies + ff-only merge.
+- PAI remaining untracked: .tmp backup, first_wave runtime directory, results.tsv.lock; no tracked code differences.
