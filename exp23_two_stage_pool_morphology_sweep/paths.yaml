@@ -1,0 +1,12 @@
+worktrees:
+  HAL: /home/hj/H20_Video_inpainting_DPO_exp23_pool_sweep
+  PAI: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp23_pool_sweep
+data:
+  train_manifest_target: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl
+  davis50_target: /mnt/workspace/hj/nas_hj/data/external/davis_432_240
+outputs:
+  pai_pairs_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs
+  pai_eval_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp23_two_stage_pool_morphology_sweep
+reports:
+  gpu_audit: reports/exp23_gpu4_7_release_audit.md
+

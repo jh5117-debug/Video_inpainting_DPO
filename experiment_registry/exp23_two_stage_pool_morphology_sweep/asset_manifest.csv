@@ -1,0 +1,4 @@
+asset,path,status,sha256
+train_manifest,target:/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl,pending_pai_validation,
+davis50,target:/mnt/workspace/hj/nas_hj/data/external/davis_432_240,pending_pai_validation,
+

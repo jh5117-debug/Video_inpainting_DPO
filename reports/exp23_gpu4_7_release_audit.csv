@@ -1,0 +1,5 @@
+gpu,memory_used_mib,utilization,pid,process_name,cwd,owner_assessment,action
+4,141333,100,1246702,/usr/local/bin/python3.10,/mnt/workspace/zhengqi/multiview-map-v0,OTHER_PROJECT_XIAOQI_MULTIGEN,do_not_kill
+5,141045,100,1246703,/usr/local/bin/python3.10,/mnt/workspace/zhengqi/multiview-map-v0,OTHER_PROJECT_XIAOQI_MULTIGEN,do_not_kill
+6,142321,100,1246704,/usr/local/bin/python3.10,/mnt/workspace/zhengqi/multiview-map-v0,OTHER_PROJECT_XIAOQI_MULTIGEN,do_not_kill
+7,58071,0,1758887,[Not Found],NO_PROC_ENTRY,UNKNOWN_GPU_MEMORY_OWNER,do_not_reset_or_kill

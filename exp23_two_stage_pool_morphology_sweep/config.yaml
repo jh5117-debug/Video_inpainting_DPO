@@ -1,0 +1,17 @@
+experiment_name: exp23_two_stage_pool_morphology_sweep
+branch: research/exp23-two-stage-pool-morphology-sweep
+base_commit: 748559462bdbe0b8f1d5eba0be0824e8dd0ab2fb
+task: BR / DiffuEraser VideoDPO
+training:
+  stage1_steps: 2000
+  stage2_steps: 2000
+  require_fresh_exp11_twin_per_candidate_seed: true
+  davis50_role: DAVIS50_MODEL_SELECTION_BENCHMARK
+regions:
+  mask_convention: "1=hole"
+  parameter_unit: max_pool_steps
+  pool_grid_scales: [1, 2, 4]
+  core_weight: 1.0
+  outside_weight: 0.05
+status: BLOCKED_GPU4_7_NOT_AVAILABLE
+

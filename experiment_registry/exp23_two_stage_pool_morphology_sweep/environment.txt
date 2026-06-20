@@ -1,0 +1,4 @@
+HAL worktree: /home/hj/H20_Video_inpainting_DPO_exp23_pool_sweep
+PAI worktree target: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp23_pool_sweep
+PAI GPU4-7 status: blocked as of 2026-06-21 06:50 CST
+

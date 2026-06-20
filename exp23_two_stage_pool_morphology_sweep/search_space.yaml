@@ -1,0 +1,13 @@
+phase_a_stage1_geometry:
+  pool_grid_scale: 1
+  aggregation: legacy_weighted
+  inner_pool_steps: [0, 1, 2, 3, 4, 6, 8]
+  outer_pool_steps: [0, 1, 2, 3, 4, 6, 8]
+  exclude:
+    - inner_pool_steps: 0
+      outer_pool_steps: 0
+  default_inner_weight_if_present: 0.75
+  default_outer_weight_if_present: 0.75
+  seeds: [20260619, 20260620]
+phase_status: not_started_gpu_blocked
+

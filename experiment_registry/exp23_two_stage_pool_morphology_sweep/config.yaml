@@ -1,0 +1,5 @@
+experiment_name: exp23_two_stage_pool_morphology_sweep
+branch: research/exp23-two-stage-pool-morphology-sweep
+status: BLOCKED_GPU4_7_NOT_AVAILABLE
+base_commit: 748559462bdbe0b8f1d5eba0be0824e8dd0ab2fb
+
