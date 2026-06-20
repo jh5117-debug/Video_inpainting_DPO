@@ -1,0 +1,27 @@
+{
+  "branch_commit": "937de76c7424eb5cbd5829163419db653439d52f",
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F01_e01f93aa6fd1d630.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F02_49618e0880c07715.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F03_bda53f780b22f565.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F04_19af1de668a0a6b8.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F05_aef3946cf33625d9.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F06_33b79ec159a1c548.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F07_3f11efc4954cc22e.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F08_c91c9114f8e50a89.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F09_dc9390775a6b5a84.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F10_fe127d7f24829568.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F11_05ce020e9859c6ff.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F12_996719816a31da5a.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F13_68d7e5527a7c2b50.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F14_a786d7cee22e9d6d.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F15_66ece0c21bc72279.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F16_80c5355c04ebd38c.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F17_e1275cd8189546bb.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed/configs/F18_099cff506eb20301.json"
+  ],
+  "count": 18,
+  "dev_manifest_sha256": "dcdf061072800d5d3a824aeecea28e38d7b3da6e6909692f694965e04412c7e0",
+  "skipped": [],
+  "status": "SECOND_WAVE_FIXED_ROOT_CONFIGS_PREPARED"
+}

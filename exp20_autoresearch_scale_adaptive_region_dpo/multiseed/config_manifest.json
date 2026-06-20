@@ -1,0 +1,14 @@
+{
+  "branch_commit": "937de76c7424eb5cbd5829163419db653439d52f",
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed/configs/MS_P0_s20260620_6bfbe7155b4d338a.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed/configs/MS_P0_s20260621_2caf53dcd12f9e98.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed/configs/MS_P4_s20260620_94d7b572cecc6ddd.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/multiseed/configs/MS_P4_s20260621_43ea97bb3689a17d.json"
+  ],
+  "count": 4,
+  "dev_manifest_sha256": "dcdf061072800d5d3a824aeecea28e38d7b3da6e6909692f694965e04412c7e0",
+  "evaluator_hash": "e717bd60f36ea3dd4535f71aa5c18c24432260d90ee585cd30a21f0cea33b782",
+  "status": "MULTISEED_CONFIGS_PREPARED",
+  "training_code_hash": "c89696dd8a600cf3493c88a78a36125bacbca7ea7025f01a690ed8530d16d854"
+}
