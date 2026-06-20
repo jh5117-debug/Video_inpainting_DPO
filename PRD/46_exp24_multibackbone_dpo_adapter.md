@@ -32,6 +32,26 @@ EffectErase VOR data status: `WAITING_AUTH`.
 
 No formal smoke result has been recorded yet.
 
+## 2026-06-21 Non-GPU Asset Check
+
+While Exp23 owns GPU4-7, Exp24 remained in non-GPU asset/backend preparation.
+
+Commands run:
+
+```bash
+bash exp24_multibackbone_dpo_adapter/scripts/asset_audit_status.sh
+python -m py_compile exp24_multibackbone_dpo_adapter/backends/*.py
+python -m unittest discover -s exp24_multibackbone_dpo_adapter/tests -p 'test_*.py'
+```
+
+Result:
+
+- backend code compiles;
+- backend status unit tests pass;
+- EffectErase VOR remains `WAITING_AUTH`;
+- no GPU inference or DPO smoke was started;
+- GPU4-7 were not used by Exp24.
+
 ## Backend Contract
 
 Implemented initial abstract interface:
