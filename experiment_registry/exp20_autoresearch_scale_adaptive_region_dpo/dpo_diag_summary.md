@@ -1,8 +1,17 @@
 # Exp20 DPO Diagnostics Summary
 
-- P0: train_steps=112, diag_last_step=110, mean_loser_degrade_ratio=1.000, max_grad_norm=12.909
-- P1: train_steps=103, diag_last_step=100, mean_loser_degrade_ratio=1.000, max_grad_norm=15.072
-- P2: train_steps=103, diag_last_step=100, mean_loser_degrade_ratio=1.000, max_grad_norm=13.485
-- P3: train_steps=103, diag_last_step=100, mean_loser_degrade_ratio=1.000, max_grad_norm=12.256
-- P4: train_steps=104, diag_last_step=100, mean_loser_degrade_ratio=0.909, max_grad_norm=10.109
-- P5: train_steps=103, diag_last_step=100, mean_loser_degrade_ratio=0.727, max_grad_norm=9.340
+Completed stages:
+- Legacy full parity: passed earlier.
+- Real 10-step smoke: passed earlier.
+- First wave, second fixed, region-balanced, adaptive, and equal-step trials all produced finite diagnostics except EQ_P4 first attempt, which OOMed once and then succeeded on retry.
+
+Current diagnostic pattern:
+- Loser-dominant ratio remains high for legacy/global candidates, usually near 1.0.
+- Region-balanced RB candidates reduced loser_dominant_ratio to 0.0 in several runs, but this did not translate to higher PSNR.
+- Max grad norms stayed finite in completed trials.
+
+Key candidates:
+- EQ_BF07: max_grad_norm 9.8334, loser_dominant_ratio 1.0.
+- EQ_P4: max_grad_norm 10.0674, loser_dominant_ratio 1.0.
+- EQ_AD04: max_grad_norm 10.5437, loser_dominant_ratio 1.0.
+- EQ_RB08: max_grad_norm 9.5047, loser_dominant_ratio 0.0.

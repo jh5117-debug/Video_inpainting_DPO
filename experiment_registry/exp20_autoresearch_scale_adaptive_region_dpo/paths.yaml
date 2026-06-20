@@ -1,6 +1,14 @@
-experiment_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp20_autoresearch_scale_adaptive_region_dpo
-trials_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp20_autoresearch_scale_adaptive_region_dpo/trials
-dev_manifest: exp20_autoresearch_scale_adaptive_region_dpo/manifests/dev_boundary_search_v1.jsonl
-dev_eval_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp20_autoresearch_scale_adaptive_region_dpo/dev_boundary_search_v1_e385cc27_roots
-results_tsv: exp20_autoresearch_scale_adaptive_region_dpo/results.tsv
-best_candidate: exp20_autoresearch_scale_adaptive_region_dpo/best_candidate.json
+worktrees:
+  HAL: /home/hj/H20_Video_inpainting_DPO_exp20_autoresearch
+  PAI: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch
+outputs:
+  trials_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp20_autoresearch_scale_adaptive_region_dpo/trials
+  eval_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp20_autoresearch_scale_adaptive_region_dpo
+  autoresearch_logs: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp20
+manifests:
+  search_dev: exp20_autoresearch_scale_adaptive_region_dpo/manifests/dev_boundary_search_v1.jsonl
+  shadow_dev: exp20_autoresearch_scale_adaptive_region_dpo/manifests/dev_boundary_shadow_v1.jsonl
+reports:
+  all_trials: reports/exp20_search_all_trials_summary.csv
+  decision: reports/exp20_fast_search_and_equal_step_decision.md
+  equal_step: reports/exp20_equal_step_confirmation.md

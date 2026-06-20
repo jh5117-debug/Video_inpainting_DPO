@@ -111,3 +111,28 @@ Interpretation:
 Exp20 has a first fixed-boundary dev result. Do not claim final improvement or
 paper result until the next gate validates whether P4 generalizes beyond the
 internal dev split.
+
+## 2026-06-20 Fast Search + Equal-Step Outcome
+
+Status: COMPLETED_NEGATIVE for this search budget.
+
+Completed:
+- VFID/FVD-style and TC metric assets restored and used for first-wave, region-balanced, adaptive, and equal-step summaries.
+- Shadow-dev manifest locked, but not used for promotion because no candidate passed the search/equal-step gates.
+- P0/P4 three-seed validation completed earlier: P4 mean PSNR exceeded P0 by about +0.0207 dB and exceeded Exp11-S1, but did not reach TARGET_DEV_PSNR.
+- Second fixed-boundary roots + best-first completed.
+- Region-balanced search completed.
+- Calibrated adaptive search completed.
+- Equal-step confirmation completed for P4, P0, BF07, RB08, AD04 at 112 optimizer steps.
+
+Best equal-step PSNR candidate:
+- EQ_BF07: fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean.
+- PSNR 29.393079, SSIM 0.968993, LPIPS 0.018441, VFID/FVD-style 0.232887, TC 0.975930, Ewarp 11.967787.
+
+Decision:
+- No candidate reached TARGET_DEV_PSNR = 29.523336.
+- EQ_BF07 is a Pareto candidate, not a clean promotion, because the small PSNR gain comes with worse LPIPS/VFID/TC tradeoffs relative to P0/P4.
+- No 500/1000/2000-step long training, Stage2, DAVIS50, or YouTubeVOS100 final evaluation was launched.
+
+Next recommended action:
+- If continuing Exp20, run a narrow BF07-vs-P4 multi-seed + shadow-dev check before any long training, or revisit the objective to reduce loser-dominant behavior rather than broadening boundary radius further.

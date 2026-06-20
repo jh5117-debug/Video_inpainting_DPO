@@ -1761,3 +1761,7 @@ This exceeds SFT, Exp11-S1, and Exp11-S2 on locked dev PSNR, but does not reach
 `TARGET_DEV_PSNR=29.523336` and has mixed LPIPS/Ewarp. It is a candidate for
 the next dev gate only; no adaptive search, region-balanced search, Stage2,
 DAVIS50, or YouTubeVOS100 final evaluation has been started.
+
+## 2026-06-20 Exp20 update
+
+Exp20 fast search + equal-step completed negative: best equal-step PSNR candidate EQ_BF07 reached PSNR 29.393079 on locked dev, below TARGET_DEV_PSNR 29.523336 and with mixed LPIPS/VFID/TC tradeoffs. No long training, Stage2, DAVIS50, or YouTubeVOS100 final eval was launched.

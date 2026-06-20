@@ -50,7 +50,12 @@ def main() -> int:
     log_dir.mkdir(parents=True, exist_ok=True)
     (trial_dir / "trial_config.json").write_text(json.dumps(cfg, indent=2, sort_keys=True) + "\n")
 
-    train_seconds = int(float(cfg.get("train_minutes", 30)) * 60)
+    fixed_train_steps = cfg.get("max_train_steps", cfg.get("train_steps"))
+    if fixed_train_steps is not None:
+        fixed_train_steps = int(fixed_train_steps)
+        train_seconds = 0
+    else:
+        train_seconds = int(float(cfg.get("train_minutes", 30)) * 60)
     checkpointing_steps = 999999
     env = dict(os.environ)
     env["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
@@ -153,7 +158,7 @@ def main() -> int:
         "--lr_warmup_steps",
         "500",
         "--max_train_steps",
-        "999999",
+        str(fixed_train_steps if fixed_train_steps is not None else 999999),
         "--checkpointing_steps",
         str(checkpointing_steps),
         "--checkpoints_total_limit",

@@ -1,0 +1,9 @@
+{
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/equal_step_confirmation/configs/EQ_P4_edbea07bb785e769.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/equal_step_confirmation/configs/EQ_P0_1d8cd54758b73251.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/equal_step_confirmation/configs/EQ_BF07_2bc98e58514fb1da.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/equal_step_confirmation/configs/EQ_RB08_dedc22769ee47bc3.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/equal_step_confirmation/configs/EQ_AD04_77a0ed002ad3955d.json"
+  ]
+}
