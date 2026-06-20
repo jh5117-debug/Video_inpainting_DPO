@@ -1,4 +1,4 @@
-TRAINER_WIRED_PHY_LAUNCH_PENDING
+BLOCKED_GPU7_GHOST_AFTER_REAL_PHY_LAUNCH
 
 Core morphology implementation and initial tests are present.
 
@@ -20,3 +20,10 @@ Full training had not started at the first force-release checkpoint because:
 - A Phy torch.distributed runner now launches the first Phase A pair.
 - Local code/test gates pass.
 - PAI launch is pending. GPU7 remains a likely CUDA blocker due its no-proc NVML allocation.
+
+2026-06-21 PAI launch result:
+
+- Real Phy torch.distributed launch succeeded.
+- Fresh Exp11 twin Stage1 completed optimizer step 1 and wrote diagnostics.
+- Rank3 on GPU7 failed with CUDA OOM because PID `1758887` `[Not Found]` still retains `58060 MiB`.
+- Queue state is `FAILED`; no Exp23 Phy worker remains alive.

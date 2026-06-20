@@ -59,3 +59,29 @@ LINGBOT_PROCESS_NAME=Phy
 ```
 
 The Stage1 and Stage2 trainer entrypoints call the process-title helper before model/CUDA initialization. Runtime `/proc/<pid>/comm`, executable, and `nvidia-smi` process-name verification will be appended after the PAI relaunch attempt.
+
+## 2026-06-21 Runtime Verification
+
+The PAI relaunch created the requested `Phy` interpreter and started the controller:
+
+```text
+sys.executable = /mnt/nas/hj/conda_envs/diffueraser/bin/Phy
+torch = 2.3.1+cu121
+cuda = 12.1
+controller PID = 1285825
+```
+
+Observed process list shortly after launch:
+
+| role | PID | process name / executable | note |
+|---|---:|---|---|
+| controller | 1285825 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy` | `/proc/<pid>/comm` showed `Phy` |
+| torch distributed launcher | 1285828 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy -m torch.distributed.run ...` | launched 4 workers |
+| rank0 | 1285905 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy -u train_exp23_stage1.py ...` | started fresh Exp11 Stage1 |
+| rank1 | 1285906 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy -u train_exp23_stage1.py ...` | started fresh Exp11 Stage1 |
+| rank2 | 1285907 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy -u train_exp23_stage1.py ...` | started fresh Exp11 Stage1 |
+| rank3 | 1285908 | `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy -u train_exp23_stage1.py ...` | failed on GPU7 OOM |
+
+`torch.distributed.run` terminated all ranks after rank3 failed. No Exp23 Phy worker remained alive after the failure.
+
+The process title requirement is therefore satisfied for the actual launched Exp23 processes; the remaining blocker is GPU7's stale NVML allocation.

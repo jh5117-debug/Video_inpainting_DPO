@@ -67,12 +67,25 @@ This is consistent with an orphaned or cross-namespace NVML allocation. Clearing
 
 ## Exp23 Launch Decision
 
-Exp23 training was not launched because two launch gates are not satisfied:
+At the first checkpoint, Exp23 training was not launched because two launch gates were not satisfied:
 
 1. GPU7 is not fully released.
 2. The current Exp23 branch still contains only morphology/aggregation/process-title code and tests. It does not yet contain a real Stage1 trainer, Stage2 trainer, paired queue/controller, or DAVIS50 evaluator. The current `launch_exp23_controller_pai.sh` is still a blocked placeholder.
 
 Launching the current script would not start the requested full two-stage sweep.
+
+## Follow-up: Real Phy Launch Attempt
+
+After adding isolated Exp23 Stage1/Stage2 trainer wiring and the Phy launcher, a real four-GPU launch was attempted on GPU4-7.
+
+Result:
+
+- Phy controller and 4 torch distributed ranks started.
+- Fresh Exp11 twin Stage1 read the real BR manifest and wrote step-1 DPO diagnostics.
+- Rank3 failed on GPU7 with CUDA OOM.
+- The OOM traceback reported `Process 1758887 has 56.70 GiB memory in use`, matching the no-proc NVML ghost allocation from the release audit.
+
+This confirms GPU4-6 are usable and the remaining launch blocker is specifically GPU7's stale allocation, not missing Exp23 trainer plumbing.
 
 ## Raw Runtime Logs
 
@@ -87,4 +100,3 @@ Key files:
 - `kill_detail_20260621_071157.txt`
 - `kill_actions_20260621_071229.log`
 - `gpu7_ghost_probe_20260621_071324.txt`
-

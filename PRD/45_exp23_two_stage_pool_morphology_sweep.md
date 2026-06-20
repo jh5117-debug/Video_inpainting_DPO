@@ -165,3 +165,45 @@ nproc_per_node=4
 ```
 
 GPU7 still has a persistent `[Not Found]` NVML allocation, so the Phy launch is expected to be a real four-GPU test rather than a guaranteed successful run. No three-GPU fallback and no GPU reset will be used.
+
+## 2026-06-21 PAI Phy Launch Result
+
+PAI was fast-forwarded to:
+
+```text
+d9d7077c281af33e7186f890d5175e4d470c1d8b
+```
+
+Launch command:
+
+```bash
+CUDA_VISIBLE_DEVICES=4,5,6,7 bash exp23_two_stage_pool_morphology_sweep/scripts/launch_exp23_phy_sweep_pai.sh
+```
+
+Runtime process identity was valid:
+
+```text
+controller PID = 1285825, comm=Phy, exe=/mnt/nas/hj/conda_envs/diffueraser/bin/Phy
+torchrun PID   = 1285828, exe=/mnt/nas/hj/conda_envs/diffueraser/bin/Phy
+rank PIDs      = 1285905, 1285906, 1285907, 1285908, exe=/mnt/nas/hj/conda_envs/diffueraser/bin/Phy
+```
+
+The training was real enough to complete one optimizer step and write `dpo_diagnostics.csv`:
+
+```text
+global_step=1
+total_loss=0.698884
+dpo_loss=0.693339
+grad_norm=2.886552
+implicit_acc=0.25
+loser_dominant_ratio=0.0
+```
+
+Failure:
+
+```text
+rank3 / local_rank3 OOM on GPU7
+Process 1758887 has 56.70 GiB memory in use
+```
+
+GPU7's stale no-proc allocation is therefore the active blocker. The Phy workers exited cleanly after torch distributed propagated the rank3 failure. No Exp23 worker remains running.

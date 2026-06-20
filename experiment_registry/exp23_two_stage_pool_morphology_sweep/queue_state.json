@@ -1,1 +1,11 @@
-{"status": "BLOCKED_GPU4_7_NOT_AVAILABLE", "queued": 0, "running": 0, "completed": 0, "failed": 0}
+{
+  "current_model": "fresh_exp11_outer_b075",
+  "failed_model": "fresh_exp11_outer_b075",
+  "gpus": "4,5,6,7",
+  "nproc_per_node": 4,
+  "pair_id": "phaseA_scale1_pair001_outer2",
+  "queue_index": 1,
+  "returncode": 1,
+  "started_at": "2026-06-21 07:35:48",
+  "status": "FAILED"
+}
