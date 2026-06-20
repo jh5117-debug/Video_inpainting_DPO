@@ -17,8 +17,8 @@ Key candidates:
 - EQ_RB08: max_grad_norm 9.5047, loser_dominant_ratio 0.0.
 
 Multiseed shadow confirmation:
-- P0 loser_dominant_ratio mean: 1.0.
-- P4 loser_dominant_ratio mean: 1.0.
-- BF07 loser_dominant_ratio mean: 1.0.
+- P0 loser_degrade_ratio mean: 0.944444; last-step ratio stayed 1.0.
+- P4 loser_degrade_ratio mean: 0.911111; last-step ratio stayed 1.0.
+- BF07 loser_degrade_ratio mean: 0.777778; last-step ratio stayed 1.0.
 - No NaN/Inf was observed in completed P0/P4/BF07 equal-step multiseed runs.
-- BF07 did not improve the loser-dominant pattern; the large boundary weight mainly keeps the same saturated loser-dominant behavior while hurting shadow-dev PSNR/LPIPS/VFID/TC.
+- BF07 reduced mean loser_degrade_ratio relative to P4/P0, but this did not translate into shadow-dev promotion: it hurt shadow PSNR/LPIPS/VFID/TC and failed the preregistered visual/statistical gates.
