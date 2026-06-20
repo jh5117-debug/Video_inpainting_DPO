@@ -260,6 +260,7 @@ def main() -> int:
     parser.add_argument("--youtube-root", required=True)
     parser.add_argument("--train-manifest", required=True)
     parser.add_argument("--youtubevos100-manifest", required=True)
+    parser.add_argument("--youtubevos100-key", default="video_id")
     parser.add_argument("--davis-root", required=True)
     parser.add_argument("--output-manifest", required=True)
     parser.add_argument("--overlap-report", required=True)
@@ -280,7 +281,7 @@ def main() -> int:
         raise FileNotFoundError(f"Expected JPEGImages_432_240/test_masks under {youtube_root}")
 
     train_ids = read_train_ids(Path(args.train_manifest))
-    youtubevos100_ids = read_csv_ids(Path(args.youtubevos100_manifest), key="video_id")
+    youtubevos100_ids = read_csv_ids(Path(args.youtubevos100_manifest), key=args.youtubevos100_key)
     extra_excluded_ids: set[str] = set()
     for exclude_path in args.exclude_manifest:
         extra_excluded_ids |= read_jsonl_ids(Path(exclude_path), key="video_id")
