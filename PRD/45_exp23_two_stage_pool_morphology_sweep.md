@@ -1,6 +1,6 @@
 # Exp23: Two-Stage Pool Morphology Sweep
 
-Status: `BLOCKED_GPU4_7_NOT_AVAILABLE`
+Status: `BLOCKED_TRAINER_AND_GPU7_GHOST`
 
 Branch: `research/exp23-two-stage-pool-morphology-sweep`
 
@@ -94,7 +94,7 @@ Not yet launched:
 
 ## GPU Status
 
-GPU4-7 audit result: `BLOCKED_GPU4_7_NOT_AVAILABLE`.
+GPU4-7 initial audit result: `BLOCKED_GPU4_7_NOT_AVAILABLE`.
 
 GPUs 4-6 are occupied by active `/mnt/workspace/xiaoqi/multigen/...` training processes. GPU7 has 58GB NVML memory with no live `/proc` PID. No process was killed.
 
@@ -106,3 +106,33 @@ See:
 ## Next Gate
 
 Do not start Exp23 training until GPU4-7 are safely available or the user/admin confirms ownership and termination permission for the listed processes.
+
+## 2026-06-21 Force-Release Attempt
+
+The user explicitly authorized terminating all user/collaborator jobs on GPU4-7.
+
+Actions completed on PAI:
+
+- saved pre-release state;
+- identified GPU4-6 high-expert multigen launcher/worker set;
+- sent `TERM` to high launcher `1246572` and worker process groups `-1246702`, `-1246703`, `-1246704`;
+- confirmed GPU4-6 memory dropped to idle-level usage;
+- probed GPU7's persistent `[Not Found]` NVML context.
+
+Result:
+
+| GPU | before used MiB | after used MiB | status |
+|---:|---:|---:|---|
+| 4 | 141333 | 244 | released |
+| 5 | 141045 | 4 | released |
+| 6 | 142321 | 292 | released |
+| 7 | 58071 | 58071 | not released: PID `1758887` has no `/proc` entry |
+
+GPU7 remains a ghost allocation. Per the user's safety constraints, no GPU reset or server restart was used.
+
+Training was not launched because the current Exp23 branch still lacks the real isolated Stage1 trainer, Stage2 trainer, paired queue/controller, and DAVIS50 evaluator. The current PAI launch script is a blocked placeholder, so launching it would not run the requested two-stage sweep.
+
+Reports:
+
+- `reports/exp23_gpu4_7_force_release_audit.md`
+- `reports/exp23_gpu4_7_force_release_audit.csv`

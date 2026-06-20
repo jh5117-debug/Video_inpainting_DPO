@@ -1,0 +1,5 @@
+gpu,before_used_mib,after_used_mib,terminated_pid_or_target,pgid,command_summary,cwd,result
+4,141333,244,"1246572 launcher; -1246702 worker group",1246702,"torchrun/python train_memory_dense_adapter_base_v0.py --base-expert high","/mnt/workspace/zhengqi/multiview-map-v0","released_after_TERM"
+5,141045,4,"1246572 launcher; -1246703 worker group",1246703,"torchrun/python train_memory_dense_adapter_base_v0.py --base-expert high","/mnt/workspace/zhengqi/multiview-map-v0","released_after_TERM"
+6,142321,292,"1246572 launcher; -1246704 worker group",1246704,"torchrun/python train_memory_dense_adapter_base_v0.py --base-expert high","/mnt/workspace/zhengqi/multiview-map-v0","released_after_TERM"
+7,58071,58071,"1758887",NA,"[Not Found] NVML compute context",NA,"not_released_no_proc_holder_no_gpu_reset"
