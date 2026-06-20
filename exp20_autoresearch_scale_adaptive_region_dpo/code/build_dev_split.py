@@ -88,6 +88,21 @@ def read_csv_ids(path: Path, key: str = "video_id") -> set[str]:
         return {str(row[key]) for row in reader if row.get(key)}
 
 
+def read_jsonl_ids(path: Path, key: str = "video_id") -> set[str]:
+    if not path.exists():
+        return set()
+    ids: set[str] = set()
+    with path.open("r", encoding="utf-8") as handle:
+        for line in handle:
+            line = line.strip()
+            if not line:
+                continue
+            row = json.loads(line)
+            if row.get(key):
+                ids.add(str(row[key]))
+    return ids
+
+
 def list_names(path: Path, exts: set[str]) -> list[Path]:
     return sorted([p for p in path.iterdir() if p.is_file() and p.suffix.lower() in exts])
 
@@ -250,6 +265,8 @@ def main() -> int:
     parser.add_argument("--overlap-report", required=True)
     parser.add_argument("--overlap-csv", required=True)
     parser.add_argument("--statistics-report", required=True)
+    parser.add_argument("--exclude-manifest", action="append", default=[])
+    parser.add_argument("--split-version", default="dev_boundary_search_v1")
     parser.add_argument("--materialized-root", default="")
     parser.add_argument("--count", type=int, default=16)
     parser.add_argument("--video-length", type=int, default=24)
@@ -264,13 +281,16 @@ def main() -> int:
 
     train_ids = read_train_ids(Path(args.train_manifest))
     youtubevos100_ids = read_csv_ids(Path(args.youtubevos100_manifest), key="video_id")
+    extra_excluded_ids: set[str] = set()
+    for exclude_path in args.exclude_manifest:
+        extra_excluded_ids |= read_jsonl_ids(Path(exclude_path), key="video_id")
     davis_ids = set()
     davis_frame_root = Path(args.davis_root) / "JPEGImages_432_240"
     if davis_frame_root.is_dir():
         davis_ids = {p.name for p in davis_frame_root.iterdir() if p.is_dir()}
 
     all_ids = sorted({p.name for p in frame_root.iterdir() if p.is_dir() and (mask_root / p.name).is_dir()})
-    excluded = train_ids | youtubevos100_ids | davis_ids
+    excluded = train_ids | youtubevos100_ids | davis_ids | extra_excluded_ids
     eligible_ids = [video_id for video_id in all_ids if video_id not in excluded]
     ids_to_score = spread_sample(eligible_ids, args.max_candidates_to_score)
     candidates: list[VideoStats] = []
@@ -313,7 +333,7 @@ def main() -> int:
     with manifest_path.open("w", encoding="utf-8") as handle:
         for idx, item in enumerate(selected):
             row = {
-                "split_version": "dev_boundary_search_v1",
+                "split_version": args.split_version,
                 "index": idx,
                 "video_id": item.video_id,
                 "source_dataset": "youtubevos_432_240",
@@ -333,7 +353,7 @@ def main() -> int:
                 "mask_bucket": item.mask_bucket,
                 "motion_bucket": item.motion_bucket,
                 "selected_reason": f"balanced_{item.mask_bucket}_mask_{item.motion_bucket}_motion_non_train_non_final",
-                "notes": "selected from full YouTubeVOS after excluding Exp11/Exp20 training source ids and YouTubeVOS100 final ids",
+                "notes": "selected from full YouTubeVOS after excluding Exp11/Exp20 training source ids, YouTubeVOS100 final ids, DAVIS ids, and requested exclude manifests",
             }
             rows.append(row)
             handle.write(json.dumps(row, sort_keys=True) + "\n")
@@ -355,6 +375,11 @@ def main() -> int:
             "count": len(davis_ids),
             "selected_overlap_count": len({r["video_id"] for r in rows} & davis_ids),
         },
+        {
+            "set_name": "extra_exclude_manifest_ids",
+            "count": len(extra_excluded_ids),
+            "selected_overlap_count": len({r["video_id"] for r in rows} & extra_excluded_ids),
+        },
     ]
     write_csv(Path(args.overlap_csv), overlap_rows)
 
@@ -368,10 +393,12 @@ def main() -> int:
         f"- train_source_ids: `{len(train_ids)}`",
         f"- youtubevos100_final_ids: `{len(youtubevos100_ids)}`",
         f"- davis_name_space_ids: `{len(davis_ids)}`",
+        f"- extra_exclude_manifest_ids: `{len(extra_excluded_ids)}`",
         f"- eligible_candidates_after_exclusion: `{len(eligible_ids)}`",
         f"- scored_candidates: `{len(candidates)}`",
         f"- max_candidates_to_score: `{args.max_candidates_to_score}`",
         f"- selected_videos: `{len(rows)}`",
+        f"- split_version: `{args.split_version}`",
         f"- manifest: `{manifest_path}`",
         f"- manifest_sha256: `{manifest_sha}`",
     ]
