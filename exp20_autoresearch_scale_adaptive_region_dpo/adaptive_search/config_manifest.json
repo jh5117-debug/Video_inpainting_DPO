@@ -1,0 +1,14 @@
+{
+  "status": "ADAPTIVE_CONFIGS_PREPARED",
+  "budget_note": "6 adaptive trials selected to respect MAX_TOTAL_FAST_TRIALS=48",
+  "count": 6,
+  "skipped": [],
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD01_ec1a39add453d4e6.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD02_c9b90175c014b4dd.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD03_19587bca10027637.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD04_7ec6adc15d491420.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD05_917b961bbf133603.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/adaptive_search/configs/AD06_df1df790bdb64f00.json"
+  ]
+}
