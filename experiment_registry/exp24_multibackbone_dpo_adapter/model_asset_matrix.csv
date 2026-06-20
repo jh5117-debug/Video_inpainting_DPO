@@ -1,0 +1,11 @@
+model,status
+DiffuEraser,pending_revalidation
+VideoPainter,pending_deploy
+CoCoCo,pending_deploy
+VideoComposer,pending_disambiguation
+VACE,pending_deploy
+MiniMax-Remover,pending_deploy
+FloED,pending_official_release_audit
+EffectErase,pending_deploy_vor_waiting_auth
+ProPainter,pending_baseline_smoke
+
