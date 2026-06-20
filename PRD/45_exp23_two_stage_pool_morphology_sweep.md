@@ -1,6 +1,6 @@
 # Exp23: Two-Stage Pool Morphology Sweep
 
-Status: `BLOCKED_TRAINER_AND_GPU7_GHOST`
+Status: `TRAINER_WIRED_PHY_LAUNCH_PENDING`
 
 Branch: `research/exp23-two-stage-pool-morphology-sweep`
 
@@ -136,3 +136,32 @@ Reports:
 
 - `reports/exp23_gpu4_7_force_release_audit.md`
 - `reports/exp23_gpu4_7_force_release_audit.csv`
+
+## 2026-06-21 Trainer Wiring / Phy Relaunch Update
+
+Added isolated Exp23 training plumbing:
+
+- `exp23_two_stage_pool_morphology_sweep/code/train_stage1.py`
+- `exp23_two_stage_pool_morphology_sweep/code/train_exp23_stage1.py`
+- `exp23_two_stage_pool_morphology_sweep/code/train_exp23_stage2.py`
+- `exp23_two_stage_pool_morphology_sweep/code/exp23_trial_runner.py`
+- `exp23_two_stage_pool_morphology_sweep/scripts/launch_exp23_phy_sweep_pai.sh`
+
+Local validation passed:
+
+- `python -m py_compile exp23_two_stage_pool_morphology_sweep/code/*.py`
+- `python -m unittest discover -s exp23_two_stage_pool_morphology_sweep/tests -p 'test_*.py'`
+- `bash -n exp23_two_stage_pool_morphology_sweep/scripts/*.sh`
+- `git diff --check`
+
+First PAI launch target:
+
+```text
+pair_id = phaseA_scale1_pair001_outer2
+fresh Exp11 twin = legacy exact, pool_grid_scale=1, inner=0, outer=1, inner_weight=0, outer_weight=0.75
+candidate = pool_grid_scale=1, inner=0, outer=2, inner_weight=0, outer_weight=0.75
+CUDA_VISIBLE_DEVICES=4,5,6,7
+nproc_per_node=4
+```
+
+GPU7 still has a persistent `[Not Found]` NVML allocation, so the Phy launch is expected to be a real four-GPU test rather than a guaranteed successful run. No three-GPU fallback and no GPU reset will be used.

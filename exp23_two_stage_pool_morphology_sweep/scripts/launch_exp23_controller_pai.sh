@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "Exp23 controller launch is blocked until GPU4-7 are safely available."
-echo "See reports/exp23_gpu4_7_release_audit.md"
-exit 2
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "${SCRIPT_DIR}/launch_exp23_phy_sweep_pai.sh" "$@"

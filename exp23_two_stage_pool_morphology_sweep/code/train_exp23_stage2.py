@@ -1,0 +1,1244 @@
+#!/usr/bin/env python
+# coding=utf-8
+"""
+DPO Stage 2 Training — DiffuEraser DPO Finetune
+
+训练目标: MotionModule (可训练)
+冻结: VAE, text_encoder, UNet2D, BrushNet, ref_model 全部
+损失函数: Diffusion-DPO loss
+
+基于 train_DiffuEraser_stage2.py 改造，核心变化:
+1. 使用 DPODataset 替代 FinetuneDataset
+2. UNet2D + BrushNet 来自 DPO Stage 1，冻结
+3. ref_model 来自 SFT 权重 (含 MotionModule)，冻结
+4. 仅 MotionModule 参数可训练
+5. DPO loss 替代 MSE loss
+6. 验证 PSNR + SSIM + Ewarp + TC
+"""
+
+import argparse
+import contextlib
+import gc
+import warnings
+import logging
+import math
+import os
+import sys
+import shutil
+from pathlib import Path
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+
+import cv2
+import numpy as np
+from PIL import Image
+import imageio
+import torch
+import torch.nn.functional as F
+import torch.utils.checkpoint
+from einops import rearrange, repeat
+from packaging import version
+from tqdm.auto import tqdm
+import ast
+
+from accelerate import Accelerator
+from accelerate.logging import get_logger
+from accelerate.utils import ProjectConfiguration, set_seed
+import transformers
+from transformers import AutoTokenizer, PretrainedConfig
+import diffusers
+from diffusers import (
+    AutoencoderKL,
+    DDPMScheduler,
+    UniPCMultistepScheduler,
+)
+from diffusers.optimization import get_scheduler
+from diffusers.utils import check_min_version, is_wandb_available
+from diffusers.utils.import_utils import is_xformers_available
+from diffusers.utils.torch_utils import is_compiled_module
+
+CODE_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = os.environ.get("PROJECT_ROOT") or str(Path(__file__).resolve().parents[2])
+if CODE_DIR not in sys.path:
+    sys.path.insert(0, CODE_DIR)
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from diffueraser.pipeline_diffueraser import StableDiffusionDiffuEraserPipeline
+from libs.brushnet_CA import BrushNetModel
+from libs.unet_2d_condition import UNet2DConditionModel
+from libs.unet_motion_model import UNetMotionModel, MotionAdapter
+from training.common.dataset_imports import import_dataset_file_helpers
+from training.dpo.dataset.factory import build_dpo_dataset
+from train_stage1 import (
+    build_exp23_loss_weight_map,
+    build_region_loss_weight_map,
+    compute_dpo_loss,
+    compute_dpo_grad_norm,
+    append_dpo_diagnostics_csv,
+    append_dpo_gap_samples_jsonl_gz,
+    append_dpo_gap_trace_csv,
+    dpo_diagnostics_enabled,
+    dpo_diagnostics_interval,
+    gather_dpo_diagnostics,
+    format_dpo_diagnostics,
+    format_dpo_diagnostics_line,
+    parse_bool_arg,
+    print_model_info,
+    resolve_torch_dtype,
+    save_wandb_run_info,
+    set_process_title_from_env,
+    setup_process_console_capture,
+    sync_console_logs_to_wandb,
+)
+
+FileClient, imfrombytes = import_dataset_file_helpers(PROJECT_ROOT)
+
+if is_wandb_available():
+    import wandb
+
+check_min_version("0.27.0.dev0")
+logger = get_logger(__name__)
+
+
+def forward_stage2_pair_member(
+    brushnet,
+    unet,
+    noisy_latents,
+    timesteps_2d,
+    timesteps_motion,
+    encoder_hidden_states_2d,
+    encoder_hidden_states_motion,
+    brushnet_cond,
+    weight_dtype,
+    nframes,
+):
+    down_samples, mid_sample, up_samples = brushnet(
+        noisy_latents,
+        timesteps_2d,
+        encoder_hidden_states=encoder_hidden_states_2d,
+        brushnet_cond=brushnet_cond,
+        return_dict=False,
+    )
+
+    model_pred = unet(
+        noisy_latents,
+        timesteps_motion,
+        encoder_hidden_states=encoder_hidden_states_motion,
+        down_block_add_samples=[s.to(dtype=weight_dtype) for s in down_samples],
+        mid_block_add_sample=mid_sample.to(dtype=weight_dtype),
+        up_block_add_samples=[s.to(dtype=weight_dtype) for s in up_samples],
+        return_dict=True,
+        num_frames=nframes,
+    ).sample
+
+    del down_samples, mid_sample, up_samples
+    return model_pred
+
+
+# ============================================================
+# Validation (Stage 2: PSNR + SSIM + Ewarp + TC)
+# ============================================================
+def log_validation(
+    vae, text_encoder, tokenizer, unet_main, brushnet, args, accelerator, weight_dtype, step
+):
+    logger.info("Running Stage 2 validation...")
+
+    from inference.metrics import compute_psnr, compute_ssim
+
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message=".*scale.*deprecated.*")
+        warnings.filterwarnings("ignore", message=".*was not found in config.*")
+        pipeline = StableDiffusionDiffuEraserPipeline.from_pretrained(
+            args.base_model_name_or_path,
+            vae=accelerator.unwrap_model(vae),
+            text_encoder=accelerator.unwrap_model(text_encoder),
+            tokenizer=tokenizer,
+            unet=accelerator.unwrap_model(unet_main),
+            brushnet=accelerator.unwrap_model(brushnet),
+            revision=args.revision,
+            variant=args.variant,
+            torch_dtype=weight_dtype,
+        )
+    pipeline.scheduler = UniPCMultistepScheduler.from_config(pipeline.scheduler.config)
+    pipeline = pipeline.to(accelerator.device)
+    pipeline.set_progress_bar_config(disable=True)
+
+    if args.enable_xformers_memory_efficient_attention:
+        pipeline.enable_xformers_memory_efficient_attention()
+
+    generator = None if args.seed is None else torch.Generator(device=accelerator.device).manual_seed(args.seed)
+    inference_ctx = torch.autocast("cuda")
+
+    val_data_dir = args.val_data_dir
+    images_root = os.path.join(val_data_dir, "JPEGImages_432_240")
+    masks_root = os.path.join(val_data_dir, "test_masks")
+
+    if not os.path.isdir(images_root):
+        logger.warning(f"Validation image dir not found: {images_root}, skipping.")
+        del pipeline; gc.collect(); torch.cuda.empty_cache()
+        return {}
+
+    video_dirs = sorted([d for d in os.listdir(images_root) if os.path.isdir(os.path.join(images_root, d))])
+    logger.info(f"Found {len(video_dirs)} validation videos")
+
+    all_psnr, all_ssim, all_ewarp, all_tc = [], [], [], []
+    file_client = FileClient('disk')
+
+    # Ewarp metric
+    ewarp_metric = None
+    try:
+        from inference.metrics import MetricsCalculator
+        raft_path = getattr(args, "raft_model_path", os.path.join(PROJECT_ROOT, "weights", "propainter", "raft-things.pth"))
+        i3d_path = getattr(args, "i3d_model_path", os.path.join(PROJECT_ROOT, "weights", "i3d_rgb_imagenet.pt"))
+        if os.path.exists(raft_path):
+            ewarp_metric = MetricsCalculator(
+                device=accelerator.device,
+                raft_model_path=raft_path,
+                i3d_model_path=i3d_path,
+            )
+    except Exception as e:
+        logger.warning(f"Failed to init ewarp metric: {e}")
+
+    # TC metric
+    tc_metric = None
+    try:
+        from inference.metrics import TemporalConsistencyMetric
+        clip_path = getattr(args, "clip_model_path", os.path.join(PROJECT_ROOT, "weights", "open_clip", "ViT-H-14"))
+        tc_metric = TemporalConsistencyMetric(device=accelerator.device, model_path=clip_path)
+    except Exception as e:
+        logger.warning(f"Failed to init TC metric: {e}")
+
+    for video_name in video_dirs:
+        video_image_dir = os.path.join(images_root, video_name)
+        video_mask_dir = os.path.join(masks_root, video_name)
+        if not os.path.isdir(video_mask_dir):
+            continue
+
+        frame_list = sorted(os.listdir(video_image_dir))
+        selected_index = list(range(len(frame_list)))[:args.nframes]
+
+        frames, masks, masked_images = [], [], []
+        for idx in selected_index:
+            frame_path = os.path.join(video_image_dir, frame_list[idx])
+            img_bytes = file_client.get(frame_path, 'input')
+            img = imfrombytes(img_bytes, float32=False)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+            img = Image.fromarray(img)
+            frames.append(img)
+
+            mask_path = os.path.join(video_mask_dir, str(idx).zfill(5) + '.png')
+            if not os.path.exists(mask_path):
+                break
+            mask = Image.open(mask_path).convert('L')
+            mask = np.asarray(mask)
+            m = np.array(mask > 0).astype(np.uint8)
+            if args.val_mask_dilation_iter > 0:
+                m = cv2.dilate(
+                    m,
+                    cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3)),
+                    iterations=args.val_mask_dilation_iter,
+                )
+            mask = Image.fromarray(m * 255)
+            masks.append(mask)
+
+            masked_image = np.array(img) * (1 - (np.array(mask)[:, :, np.newaxis].astype(np.float32) / 255))
+            masked_images.append(Image.fromarray(masked_image.astype(np.uint8)))
+
+        if len(frames) != len(selected_index) or len(masks) != len(selected_index):
+            continue
+
+        try:
+            with inference_ctx:
+                with warnings.catch_warnings():
+                    warnings.filterwarnings("ignore", message=".*scale.*deprecated.*")
+                    images = pipeline(
+                        num_frames=args.nframes, prompt="clean background",
+                        images=masked_images, masks=masks,
+                        num_inference_steps=args.val_num_inference_steps, generator=generator,
+                        guidance_scale=0.0,
+                    ).frames
+        except Exception as e:
+            logger.warning(f"Inference failed for {video_name}: {e}")
+            continue
+
+        pred_np = [np.array(img, dtype=np.uint8) for img in images]
+        gt_np = [
+            np.array(img.resize((pred_np[0].shape[1], pred_np[0].shape[0]), Image.BILINEAR), dtype=np.uint8)
+            for img in frames[:len(pred_np)]
+        ]
+
+        v_psnr = [compute_psnr(gt, pred) for gt, pred in zip(gt_np, pred_np)]
+        v_ssim = [compute_ssim(gt, pred) for gt, pred in zip(gt_np, pred_np)]
+        all_psnr.append(float(np.mean(v_psnr)))
+        all_ssim.append(float(np.mean(v_ssim)))
+
+        if ewarp_metric is not None:
+            try:
+                ewarp = ewarp_metric.calc_ewarp(pred_np, gt_np)
+                all_ewarp.append(float(ewarp))
+            except Exception as e:
+                logger.warning(f"Ewarp failed for {video_name}: {e}")
+
+        if tc_metric is not None:
+            try:
+                tc = tc_metric.compute(pred_np)
+                all_tc.append(float(tc))
+            except Exception as e:
+                logger.warning(f"TC failed for {video_name}: {e}")
+
+    results = {}
+    if all_psnr:
+        results["psnr"] = float(np.mean(all_psnr))
+        results["ssim"] = float(np.mean(all_ssim))
+    if all_ewarp:
+        results["ewarp"] = float(np.mean(all_ewarp))
+    if all_tc:
+        results["tc"] = float(np.mean(all_tc))
+
+    if results and accelerator.is_main_process:
+        log_str = " | ".join([f"{k}: {v:.4f}" for k, v in results.items()])
+        logger.info(f"[Validation @ Step {step}] {log_str} ({len(all_psnr)} videos)")
+
+        if is_wandb_available() and wandb.run is not None:
+            wandb.log({f"val/{k}": v for k, v in results.items()}, step=step)
+
+    del pipeline
+    if ewarp_metric:
+        del ewarp_metric
+    if tc_metric:
+        del tc_metric
+    gc.collect()
+    torch.cuda.empty_cache()
+    return results
+
+
+# ============================================================
+# Best Score Computation
+# ============================================================
+def compute_composite_score(results, history):
+    """综合 PSNR/SSIM/Ewarp/TC，使用简单 min-max 归一化"""
+    psnr = results.get("psnr")
+    ssim = results.get("ssim")
+    ewarp = results.get("ewarp")
+    tc = results.get("tc")
+
+    if psnr is None or ssim is None:
+        return None
+
+    # 简化: 使用固定参考范围
+    psnr_norm = min(psnr / 50.0, 1.0)
+    ssim_norm = ssim
+
+    score = 0.3 * psnr_norm + 0.2 * ssim_norm
+
+    if ewarp is not None:
+        ewarp_norm = min(ewarp / 10.0, 1.0)
+        score += 0.3 * (1.0 - ewarp_norm)
+    else:
+        score += 0.3 * 0.5  # 缺省值
+
+    if tc is not None:
+        score += 0.2 * tc
+    else:
+        score += 0.2 * 0.5
+
+    return score
+
+
+# ============================================================
+# Helpers
+# ============================================================
+def import_model_class_from_model_name_or_path(base_model_name_or_path: str, revision: str):
+    text_encoder_config = PretrainedConfig.from_pretrained(
+        base_model_name_or_path, subfolder="text_encoder", revision=revision,
+    )
+    model_class = text_encoder_config.architectures[0]
+    if model_class == "CLIPTextModel":
+        from transformers import CLIPTextModel
+        return CLIPTextModel
+    elif model_class == "RobertaSeriesModelWithTransformation":
+        from diffusers.pipelines.alt_diffusion.modeling_roberta_series import RobertaSeriesModelWithTransformation
+        return RobertaSeriesModelWithTransformation
+    else:
+        raise ValueError(f"{model_class} is not supported.")
+
+
+def ensure_list(input_variable):
+    if isinstance(input_variable, list):
+        return input_variable
+    elif isinstance(input_variable, str):
+        try:
+            parsed_list = ast.literal_eval(input_variable)
+            if isinstance(parsed_list, list):
+                return parsed_list
+            else:
+                raise ValueError(f"Didn't eval to list: {input_variable}")
+        except (ValueError, SyntaxError) as e:
+            raise ValueError(f"Invalid input: {input_variable}") from e
+    else:
+        raise TypeError(f"Expected list or str, got {type(input_variable)}")
+
+
+# ============================================================
+# Parse Args
+# ============================================================
+def parse_args(input_args=None):
+    parser = argparse.ArgumentParser(description="DiffuEraser DPO Stage 2 Training")
+    parser.add_argument("--base_model_name_or_path", type=str, default=None)
+    parser.add_argument("--pretrained_dpo_stage1", type=str, default=None,
+                        help="DPO Stage 1 best/last 权重路径 (含 unet_main/ brushnet/)")
+    parser.add_argument("--baseline_unet_path", type=str, default=None,
+                        help="包含 MotionModule 的 DiffuEraser baseline 权重路径")
+    parser.add_argument("--vae_path", type=str, default=None)
+    parser.add_argument("--motion_adapter_path", type=str, default=None)
+    parser.add_argument("--revision", type=str, default=None)
+    parser.add_argument("--variant", type=str, default=None)
+    parser.add_argument("--tokenizer_name", type=str, default=None)
+    parser.add_argument("--output_dir", type=str, default="experiments/dpo/stage2/manual")
+    parser.add_argument("--cache_dir", type=str, default=None)
+    parser.add_argument("--seed", type=int, default=None)
+    parser.add_argument("--resolution", type=int, default=512)
+    parser.add_argument("--train_height", type=int, default=None,
+                        help="Training frame height for datasets that support non-square clips.")
+    parser.add_argument("--train_width", type=int, default=None,
+                        help="Training frame width for datasets that support non-square clips.")
+    parser.add_argument("--nframes", type=int, default=16)
+    parser.add_argument("--train_batch_size", type=int, default=1)
+    parser.add_argument("--num_train_epochs", type=int, default=10000)
+    parser.add_argument("--max_train_steps", type=int, default=None)
+    parser.add_argument("--checkpointing_steps", type=int, default=2000)
+    parser.add_argument("--checkpoints_total_limit", type=int, default=3)
+    parser.add_argument("--resume_from_checkpoint", type=str, default=None)
+    parser.add_argument("--gradient_accumulation_steps", type=int, default=1)
+    parser.add_argument("--gradient_checkpointing", action="store_true")
+    parser.add_argument("--learning_rate", type=float, default=1e-6)
+    parser.add_argument("--scale_lr", action="store_true", default=False)
+    parser.add_argument("--lr_scheduler", type=str, default="constant")
+    parser.add_argument("--lr_warmup_steps", type=int, default=500)
+    parser.add_argument("--lr_num_cycles", type=int, default=1)
+    parser.add_argument("--lr_power", type=float, default=1.0)
+    parser.add_argument("--use_8bit_adam", action="store_true")
+    parser.add_argument("--dataloader_num_workers", type=int, default=0)
+    parser.add_argument("--adam_beta1", type=float, default=0.9)
+    parser.add_argument("--adam_beta2", type=float, default=0.999)
+    parser.add_argument("--adam_weight_decay", type=float, default=1e-2)
+    parser.add_argument("--adam_epsilon", type=float, default=1e-08)
+    parser.add_argument("--max_grad_norm", default=1.0, type=float)
+    parser.add_argument("--logging_dir", type=str, default="logs-dpo-stage2")
+    parser.add_argument("--allow_tf32", action="store_true")
+    parser.add_argument("--report_to", type=str, default="wandb")
+    parser.add_argument("--mixed_precision", type=str, default=None, choices=["no", "fp16", "bf16"])
+    parser.add_argument("--vae_dtype", type=str, default="auto", choices=["auto", "fp32"],
+                        help="VAE encode dtype. Use fp32 on H20 if half-precision VAE hits SIGFPE.")
+    parser.add_argument("--policy_dtype", type=str, default="auto", choices=["auto", "fp32"],
+                        help="Policy forward dtype. Use fp32 if bf16 policy forward/backward hits SIGFPE.")
+    parser.add_argument("--ref_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"],
+                        help="Frozen ref forward dtype.")
+    parser.add_argument("--text_dtype", type=str, default="auto", choices=["auto", "fp32", "bf16", "fp16"],
+                        help="Frozen text encoder dtype.")
+    parser.add_argument("--enable_xformers_memory_efficient_attention", action="store_true")
+    parser.add_argument("--set_grads_to_none", action="store_true")
+    parser.add_argument("--proportion_empty_prompts", type=float, default=0)
+
+    # Validation
+    parser.add_argument("--validation_prompt", type=str, default=["clean background"])
+    parser.add_argument("--validation_image", type=str, default=["data/external/davis_432_240/JPEGImages_432_240/bear"])
+    parser.add_argument("--validation_mask", type=str, default=["data/external/davis_432_240/test_masks/bear"])
+    parser.add_argument("--val_data_dir", type=str, default="data/external/davis_432_240")
+    parser.add_argument("--validation_steps", type=int, default=300)
+    parser.add_argument("--val_num_inference_steps", type=int, default=6)
+    parser.add_argument("--val_mask_dilation_iter", type=int, default=0)
+    parser.add_argument("--logging_steps", type=int, default=300,
+                        help="每隔多少步输出详细 DPO 诊断日志")
+    parser.add_argument("--disable_dpo_diagnostics", action="store_true",
+                        help="Disable detailed DPO diagnostic tables and CSV logging.")
+
+    # W&B
+    parser.add_argument("--tracker_project_name", type=str, default="DPO_Diffueraser")
+    parser.add_argument("--wandb_entity", type=str, default=None)
+
+    # ===== DPO 特有参数 =====
+    parser.add_argument("--dpo_data_root", type=str, default="data/external/DPO_Finetune_data")
+    parser.add_argument("--dpo_dataset_type", type=str, default="diffueraser_inpainting",
+                        choices=["diffueraser_inpainting", "videodpo_fullmask", "generated_loser_manifest"],
+                        help="DPO dataset adapter. videodpo_fullmask keeps VideoDPO data/task and feeds DiffuEraser with a full-hole mask.")
+    parser.add_argument("--preference_manifest", type=str, default="")
+    parser.add_argument("--train_mask_mode", type=str, default="full", choices=["full", "partial"])
+    parser.add_argument("--mask_from_manifest", type=parse_bool_arg, default=False)
+    parser.add_argument("--loss_region_mode", type=str, default="full", choices=["full", "region"])
+    parser.add_argument("--gap_normalization", type=str, default="raw", choices=["raw", "log_ratio"])
+    parser.add_argument("--gap_eps", type=float, default=1e-6)
+    parser.add_argument("--lose_gap_clip_tau", type=str, default="")
+    parser.add_argument("--mask_region_weight", type=float, default=1.0)
+    parser.add_argument("--boundary_region_weight", type=float, default=0.5)
+    parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--pool_grid_scale", type=int, default=1, choices=[1, 2, 4])
+    parser.add_argument("--inner_pool_steps", type=int, default=0)
+    parser.add_argument("--outer_pool_steps", type=int, default=1)
+    parser.add_argument("--inner_weight", type=float, default=0.0)
+    parser.add_argument("--outer_weight", type=float, default=None)
+    parser.add_argument("--legacy_exact", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_gap_trace_csv", type=str, default="")
+    parser.add_argument("--dpo_gap_samples_jsonl_gz", type=str, default="")
+    parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_diag_log_every", type=int, default=10)
+    parser.add_argument("--dpo_diag_save_csv", type=parse_bool_arg, default=True)
+    parser.add_argument("--dpo_diag_save_wandb", type=parse_bool_arg, default=True)
+    parser.add_argument("--videodpo_frame_stride", type=int, default=1)
+    parser.add_argument("--videodpo_clip_length", type=float, default=1.0)
+    parser.add_argument("--videodpo_full_mask_value", type=float, default=0.0)
+    parser.add_argument("--ref_model_path", type=str, default=None,
+                        help="Ref model 权重路径 (SFT 后的完整 DiffuEraser 权重)")
+    parser.add_argument("--beta_dpo", type=float, default=500.0,
+                        help="DPO 温度系数 beta (推荐 500~1000，过大导致 sigmoid 饱和)")
+    parser.add_argument("--sft_reg_weight", type=float, default=0.0,
+                        help="Reg-DPO winner-side SFT regularization weight.")
+    parser.add_argument("--lose_gap_weight", type=float, default=1.0,
+                        help="DPO loss loser/negative gap weight; 1.0 preserves original DPO.")
+    parser.add_argument("--winner_abs_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor absolute policy winner MSE regularization weight.")
+    parser.add_argument("--winner_gap_reg_weight", type=float, default=0.0,
+                        help="Winner-anchor ReLU(policy winner MSE - ref winner MSE - margin) regularization weight.")
+    parser.add_argument("--winner_gap_reg_margin", type=float, default=0.0,
+                        help="Margin for winner gap regularization.")
+    parser.add_argument("--winner_gap_reg_mode", type=str, default="relu", choices=["relu"],
+                        help="Winner gap regularization mode.")
+    parser.add_argument("--davis_oversample", type=int, default=10)
+    parser.add_argument("--chunk_aligned", action="store_true")
+    parser.add_argument("--split_pos_neg_forward", action="store_true",
+                        help="分别 forward positive/negative，降低显存峰值，DPO loss 保持不变")
+
+    # Metric model paths
+    parser.add_argument("--raft_model_path", type=str, default=None)
+    parser.add_argument("--i3d_model_path", type=str, default=None)
+    parser.add_argument("--clip_model_path", type=str, default=None)
+
+    if input_args is not None:
+        args = parser.parse_args(input_args)
+    else:
+        args = parser.parse_args()
+
+    args.validation_image = ensure_list(args.validation_image)
+    args.validation_mask = ensure_list(args.validation_mask)
+    args.validation_prompt = ensure_list(args.validation_prompt)
+    if args.resolution % 8 != 0:
+        raise ValueError("`--resolution` must be divisible by 8.")
+    if args.train_height is not None and args.train_height % 8 != 0:
+        raise ValueError("`--train_height` must be divisible by 8.")
+    if args.train_width is not None and args.train_width % 8 != 0:
+        raise ValueError("`--train_width` must be divisible by 8.")
+    if args.outer_weight is None:
+        args.outer_weight = float(args.boundary_region_weight)
+    exp23_is_legacy = (
+        int(args.pool_grid_scale) == 1
+        and int(args.inner_pool_steps) == 0
+        and int(args.outer_pool_steps) == 1
+        and float(args.inner_weight) == 0.0
+        and abs(float(args.outer_weight) - float(args.boundary_region_weight)) < 1e-12
+    )
+    if not exp23_is_legacy:
+        args.legacy_exact = False
+
+    return args
+
+
+# ============================================================
+# Collate
+# ============================================================
+def collate_fn(examples):
+    pixel_values_pos = torch.stack([e["pixel_values_pos"] for e in examples]).float()
+    pixel_values_neg = torch.stack([e["pixel_values_neg"] for e in examples]).float()
+    conditioning_pixel_values = torch.stack([e["conditioning_pixel_values"] for e in examples]).float()
+    masks = torch.stack([e["masks"] for e in examples]).float()
+    input_ids = torch.stack([e["input_ids"] for e in examples])
+
+    return {
+        "pixel_values_pos": pixel_values_pos,
+        "pixel_values_neg": pixel_values_neg,
+        "conditioning_pixel_values": conditioning_pixel_values,
+        "masks": masks,
+        "input_ids": input_ids,
+        "sample_id": [e.get("sample_id") for e in examples],
+        "pair_index": [e.get("pair_index") for e in examples],
+        "mask_area_ratio": [
+            float((1.0 - e["masks"].float()).mean().item()) if "masks" in e else None
+            for e in examples
+        ],
+    }
+
+
+# ============================================================
+# Main
+# ============================================================
+def main(args):
+    set_process_title_from_env()
+    if not args.enable_dpo_diag:
+        args.disable_dpo_diagnostics = True
+
+    report_to = args.report_to
+    if report_to is not None and str(report_to).strip().lower() in {"none", "off", "no", "false", "disabled"}:
+        report_to = None
+        args.report_to = "none"
+
+    logging_dir = Path(args.output_dir, args.logging_dir)
+    accelerator_project_config = ProjectConfiguration(project_dir=args.output_dir, logging_dir=logging_dir)
+    accelerator = Accelerator(
+        gradient_accumulation_steps=args.gradient_accumulation_steps,
+        mixed_precision=args.mixed_precision,
+        log_with=report_to,
+        project_config=accelerator_project_config,
+    )
+    setup_process_console_capture(args.output_dir)
+    accelerator.wait_for_everyone()
+
+    logging.basicConfig(
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+        datefmt="%m/%d/%Y %H:%M:%S",
+        level=logging.INFO,
+    )
+    logger.info(accelerator.state, main_process_only=False)
+    if accelerator.is_local_main_process:
+        transformers.utils.logging.set_verbosity_warning()
+        diffusers.utils.logging.set_verbosity_info()
+    else:
+        transformers.utils.logging.set_verbosity_error()
+        diffusers.utils.logging.set_verbosity_error()
+
+    if args.seed is not None:
+        set_seed(args.seed)
+
+    if accelerator.is_main_process:
+        os.makedirs(args.output_dir, exist_ok=True)
+
+    # ===== Tracker 初始化提前: 确保后续任何报错都能在启用的 tracker 中可见 =====
+    if accelerator.is_main_process and report_to is not None:
+        tracker_config = dict(vars(args))
+        for key in ["validation_prompt", "validation_image", "validation_mask"]:
+            tracker_config.pop(key, None)
+
+        init_kwargs = {}
+        if report_to == "wandb":
+            init_kwargs["wandb"] = {"name": f"dpo-stage2-{args.max_train_steps or 'auto'}steps"}
+            if args.wandb_entity:
+                init_kwargs["wandb"]["entity"] = args.wandb_entity
+
+        try:
+            accelerator.init_trackers(args.tracker_project_name, config=tracker_config, init_kwargs=init_kwargs)
+            logger.info("Tracker initialized successfully (early init).")
+            save_wandb_run_info(args.output_dir, args)
+            sync_console_logs_to_wandb(args.output_dir, policy="live")
+        except Exception as e:
+            logger.error(f"Failed to init tracker: {e}")
+            raise RuntimeError(
+                "Tracker initialization failed before training started. "
+                "Aborting to avoid running without the requested tracker."
+            ) from e
+
+    # Load tokenizer
+    if args.tokenizer_name:
+        tokenizer = AutoTokenizer.from_pretrained(args.tokenizer_name, revision=args.revision, use_fast=False)
+    else:
+        tokenizer = AutoTokenizer.from_pretrained(
+            args.base_model_name_or_path, subfolder="tokenizer", revision=args.revision, use_fast=False,
+        )
+
+    text_encoder_cls = import_model_class_from_model_name_or_path(args.base_model_name_or_path, args.revision)
+    noise_scheduler = DDPMScheduler.from_pretrained(args.base_model_name_or_path, subfolder="scheduler")
+    text_encoder = text_encoder_cls.from_pretrained(
+        args.base_model_name_or_path, subfolder="text_encoder", revision=args.revision, variant=args.variant
+    )
+    vae = AutoencoderKL.from_pretrained(
+        args.vae_path, subfolder="vae", revision=args.revision, variant=args.variant
+    )
+
+    # ===== Policy UNetMotionModel =====
+    # 从 DiffuEraser baseline 加载 MotionModule (含完整 3D UNet)
+    # 然后用 DPO Stage 1 的 2D 权重覆盖
+    logger.info(f"Loading baseline UNetMotionModel from {args.baseline_unet_path}")
+    unet_main = UNetMotionModel.from_pretrained(args.baseline_unet_path, subfolder="unet_main")
+
+    # 覆盖 2D 权重 (来自 DPO Stage 1)
+    logger.info(f"Overriding 2D weights from DPO Stage 1: {args.pretrained_dpo_stage1}")
+    stage1_unet = UNet2DConditionModel.from_pretrained(
+        args.pretrained_dpo_stage1, subfolder="unet_main", variant=args.variant,
+    )
+
+    # 逐模块拷贝 2D 权重
+    unet_main.conv_in.load_state_dict(stage1_unet.conv_in.state_dict())
+    unet_main.time_proj.load_state_dict(stage1_unet.time_proj.state_dict())
+    unet_main.time_embedding.load_state_dict(stage1_unet.time_embedding.state_dict())
+
+    for i, down_block in enumerate(stage1_unet.down_blocks):
+        unet_main.down_blocks[i].resnets.load_state_dict(down_block.resnets.state_dict())
+        if hasattr(unet_main.down_blocks[i], "attentions") and hasattr(down_block, "attentions"):
+            unet_main.down_blocks[i].attentions.load_state_dict(down_block.attentions.state_dict())
+        if unet_main.down_blocks[i].downsamplers and down_block.downsamplers:
+            unet_main.down_blocks[i].downsamplers.load_state_dict(down_block.downsamplers.state_dict())
+
+    for i, up_block in enumerate(stage1_unet.up_blocks):
+        unet_main.up_blocks[i].resnets.load_state_dict(up_block.resnets.state_dict())
+        if hasattr(unet_main.up_blocks[i], "attentions") and hasattr(up_block, "attentions"):
+            unet_main.up_blocks[i].attentions.load_state_dict(up_block.attentions.state_dict())
+        if unet_main.up_blocks[i].upsamplers and up_block.upsamplers:
+            unet_main.up_blocks[i].upsamplers.load_state_dict(up_block.upsamplers.state_dict())
+
+    unet_main.mid_block.resnets.load_state_dict(stage1_unet.mid_block.resnets.state_dict())
+    unet_main.mid_block.attentions.load_state_dict(stage1_unet.mid_block.attentions.state_dict())
+
+    if stage1_unet.conv_norm_out is not None:
+        unet_main.conv_norm_out.load_state_dict(stage1_unet.conv_norm_out.state_dict())
+    if hasattr(stage1_unet, 'conv_act') and stage1_unet.conv_act is not None:
+        unet_main.conv_act.load_state_dict(stage1_unet.conv_act.state_dict())
+    unet_main.conv_out.load_state_dict(stage1_unet.conv_out.state_dict())
+    del stage1_unet
+    logger.info("Successfully loaded baseline MotionModule + DPO Stage 1 2D weights")
+
+    # 显式设置训练态：from_pretrained() 默认 eval mode
+    # 不设 train() 会导致 gradient_checkpointing 失效 + temporal dropout 关闭
+    unet_main.train()
+
+    # Policy BrushNet (来自 DPO Stage 1，冻结)
+    brushnet = BrushNetModel.from_pretrained(args.pretrained_dpo_stage1, subfolder="brushnet")
+
+    # 冻结 2D params + BrushNet，只训练 MotionModule
+    vae.requires_grad_(False)
+    unet_main.freeze_unet2d_params()  # 只冻结 2D，保留 temporal layers 可训练
+    text_encoder.requires_grad_(False)
+    brushnet.requires_grad_(False)
+
+    # ===== Ref model (完整 UNetMotionModel + BrushNet，冻结) =====
+    logger.info(f"Loading ref UNetMotionModel from {args.ref_model_path}")
+    unet_ref = UNetMotionModel.from_pretrained(args.ref_model_path, subfolder="unet_main")
+    unet_ref.requires_grad_(False)
+    unet_ref.eval()
+
+    logger.info(f"Loading ref BrushNet from {args.ref_model_path}")
+    brushnet_ref = BrushNetModel.from_pretrained(args.ref_model_path, subfolder="brushnet")
+    brushnet_ref.requires_grad_(False)
+    brushnet_ref.eval()
+
+    def unwrap_model(model):
+        model = accelerator.unwrap_model(model)
+        model = model._orig_mod if is_compiled_module(model) else model
+        return model
+
+    if args.enable_xformers_memory_efficient_attention:
+        if is_xformers_available():
+            unet_main.enable_xformers_memory_efficient_attention()
+            brushnet.enable_xformers_memory_efficient_attention()
+            unet_ref.enable_xformers_memory_efficient_attention()
+            brushnet_ref.enable_xformers_memory_efficient_attention()
+        else:
+            raise ValueError("xformers is not available.")
+
+    if args.gradient_checkpointing:
+        unet_main.enable_gradient_checkpointing()
+
+    if args.allow_tf32:
+        torch.backends.cuda.matmul.allow_tf32 = True
+
+    if args.scale_lr:
+        args.learning_rate = (
+            args.learning_rate * args.gradient_accumulation_steps * args.train_batch_size * accelerator.num_processes
+        )
+
+    if args.use_8bit_adam:
+        import bitsandbytes as bnb
+        optimizer_class = bnb.optim.AdamW8bit
+    else:
+        optimizer_class = torch.optim.AdamW
+
+    # 只优化 MotionModule 参数
+    motion_params = [p for p in unet_main.parameters() if p.requires_grad]
+    logger.info(f"Trainable params (MotionModule): {sum(p.numel() for p in motion_params)/1e6:.1f}M")
+
+    optimizer = optimizer_class(
+        motion_params,
+        lr=args.learning_rate,
+        betas=(args.adam_beta1, args.adam_beta2),
+        weight_decay=args.adam_weight_decay,
+        eps=args.adam_epsilon,
+    )
+
+    train_dataset = build_dpo_dataset(args, tokenizer)
+    train_dataloader = torch.utils.data.DataLoader(
+        train_dataset, shuffle=True, collate_fn=collate_fn,
+        batch_size=args.train_batch_size, num_workers=args.dataloader_num_workers,
+    )
+    train_dataset_len = len(train_dataset)
+    train_dataloader_len = train_dataset_len // args.train_batch_size
+
+    overrode_max_train_steps = False
+    num_update_steps_per_epoch = math.ceil(train_dataloader_len / args.gradient_accumulation_steps)
+    if args.max_train_steps is None:
+        args.max_train_steps = args.num_train_epochs * num_update_steps_per_epoch
+        overrode_max_train_steps = True
+
+    lr_scheduler = get_scheduler(
+        args.lr_scheduler, optimizer=optimizer,
+        num_warmup_steps=args.lr_warmup_steps * accelerator.num_processes,
+        num_training_steps=args.max_train_steps * accelerator.num_processes,
+        num_cycles=args.lr_num_cycles, power=args.lr_power,
+    )
+
+    unet_main, brushnet, optimizer, train_dataloader, lr_scheduler = accelerator.prepare(
+        unet_main, brushnet, optimizer, train_dataloader, lr_scheduler
+    )
+
+    weight_dtype = torch.float32
+    if accelerator.mixed_precision == "fp16":
+        weight_dtype = torch.float16
+    elif accelerator.mixed_precision == "bf16":
+        weight_dtype = torch.bfloat16
+
+    vae_dtype = resolve_torch_dtype(args.vae_dtype, weight_dtype)
+    policy_dtype = resolve_torch_dtype(args.policy_dtype, weight_dtype)
+    ref_dtype = resolve_torch_dtype(args.ref_dtype, weight_dtype)
+    text_dtype = resolve_torch_dtype(args.text_dtype, weight_dtype)
+
+    vae.to(accelerator.device, dtype=vae_dtype)
+    text_encoder.to(accelerator.device, dtype=text_dtype)
+    unet_ref.to(accelerator.device, dtype=ref_dtype)
+    brushnet_ref.to(accelerator.device, dtype=ref_dtype)
+    unet_main.to(accelerator.device, dtype=policy_dtype)
+    brushnet.to(accelerator.device, dtype=policy_dtype)
+
+    num_update_steps_per_epoch = math.ceil(len(train_dataloader) / args.gradient_accumulation_steps)
+    if overrode_max_train_steps:
+        args.max_train_steps = args.num_train_epochs * num_update_steps_per_epoch
+    args.num_train_epochs = math.ceil(args.max_train_steps / num_update_steps_per_epoch)
+
+    # WandB init 已在前面提前完成
+
+    # Train!
+    total_batch_size = args.train_batch_size * accelerator.num_processes * args.gradient_accumulation_steps
+    logger.info("***** Running DPO Stage 2 Training *****")
+    logger.info(f"  Num examples = {train_dataset_len}")
+    logger.info(f"  Num batches each epoch (per GPU) = {len(train_dataloader)}")
+    logger.info(f"  Num Epochs = {args.num_train_epochs}")
+    logger.info(f"  Batch size per device = {args.train_batch_size}")
+    logger.info(f"  Total train batch size = {total_batch_size}")
+    logger.info(f"  Gradient Accumulation steps = {args.gradient_accumulation_steps}")
+    logger.info(f"  Total optimization steps = {args.max_train_steps}")
+    logger.info(f"  Beta DPO = {args.beta_dpo}")
+    logger.info(f"  SFT Reg Weight = {args.sft_reg_weight}")
+    logger.info(f"  Lose Gap Weight = {args.lose_gap_weight}")
+    logger.info(f"  Winner Abs Reg Weight = {args.winner_abs_reg_weight}")
+    logger.info(f"  Winner Gap Reg Weight = {args.winner_gap_reg_weight}")
+    logger.info(f"  Winner Gap Reg Margin = {args.winner_gap_reg_margin}")
+    logger.info(f"  Winner Gap Reg Mode = {args.winner_gap_reg_mode}")
+    logger.info(f"  VAE dtype = {vae_dtype}")
+    logger.info(f"  Policy forward dtype = {policy_dtype}")
+    logger.info(f"  Ref dtype = {ref_dtype}")
+    logger.info(f"  Text dtype = {text_dtype}")
+    print_model_info({
+        'unet_main (policy-MM)': unet_main, 'brushnet (frozen)': brushnet,
+        'unet_ref (frozen)': unet_ref, 'brushnet_ref (frozen)': brushnet_ref,
+        'vae': vae, 'text_encoder': text_encoder,
+    }, logger)
+
+    warnings.filterwarnings("ignore", message=".*scale.*deprecated.*")
+    warnings.filterwarnings("ignore", message=".*was not found in config.*")
+    global_step = 0
+    first_epoch = 0
+    best_composite_score = -float('inf')
+    initial_grad_norm = None  # DGR 归一化基准
+
+    if args.resume_from_checkpoint:
+        if args.resume_from_checkpoint != "latest":
+            path = os.path.basename(args.resume_from_checkpoint)
+        else:
+            dirs = os.listdir(args.output_dir)
+            dirs = [d for d in dirs if d.startswith("checkpoint")]
+            dirs = sorted(dirs, key=lambda x: int(x.split("-")[1]))
+            path = dirs[-1] if len(dirs) > 0 else None
+
+        if path is None:
+            accelerator.print("No checkpoint found, starting fresh.")
+            args.resume_from_checkpoint = None
+            initial_global_step = 0
+        else:
+            accelerator.print(f"Resuming from checkpoint {path}")
+            accelerator.load_state(os.path.join(args.output_dir, path), map_location="cpu")
+            global_step = int(path.split("-")[1])
+            initial_global_step = global_step
+            first_epoch = global_step // num_update_steps_per_epoch
+    else:
+        initial_global_step = 0
+
+    progress_bar = tqdm(
+        range(0, args.max_train_steps), initial=initial_global_step, desc="Steps",
+        disable=not accelerator.is_local_main_process,
+    )
+
+    for epoch in range(first_epoch, args.num_train_epochs):
+        if hasattr(train_dataset, "set_epoch"):
+            train_dataset.set_epoch(epoch)
+        for step, batch in enumerate(train_dataloader):
+            with accelerator.accumulate(unet_main, brushnet):
+                torch.cuda.empty_cache()
+                gc.collect()
+
+                # === VAE Encode ===
+                pos_latents = vae.encode(
+                    rearrange(batch["pixel_values_pos"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
+                ).latent_dist.sample() * vae.config.scaling_factor
+                pos_latents = pos_latents.to(dtype=policy_dtype)
+
+                neg_latents = vae.encode(
+                    rearrange(batch["pixel_values_neg"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
+                ).latent_dist.sample() * vae.config.scaling_factor
+                neg_latents = neg_latents.to(dtype=policy_dtype)
+
+                n_batch = batch["conditioning_pixel_values"].shape[0]
+                cond_latents = vae.encode(
+                    rearrange(batch["conditioning_pixel_values"], "b f c h w -> (b f) c h w").to(dtype=vae_dtype)
+                ).latent_dist.sample() * vae.config.scaling_factor
+                cond_latents = cond_latents.to(dtype=policy_dtype)
+                cond_latents = rearrange(cond_latents, "(b f) c h w -> b f c h w", b=n_batch)
+
+                masks = torch.nn.functional.interpolate(
+                    batch["masks"].to(dtype=policy_dtype),
+                    size=(1, pos_latents.shape[-2], pos_latents.shape[-1])
+                )
+                loss_weight_map = None
+                region_stats = None
+                if args.loss_region_mode == "region":
+                    if bool(args.legacy_exact):
+                        loss_weight_map, region_stats = build_region_loss_weight_map(
+                            masks,
+                            mask_region_weight=args.mask_region_weight,
+                            boundary_region_weight=args.boundary_region_weight,
+                            outside_region_weight=args.outside_region_weight,
+                        )
+                    else:
+                        loss_weight_map, region_stats = build_exp23_loss_weight_map(
+                            masks,
+                            (pos_latents.shape[-2], pos_latents.shape[-1]),
+                            args,
+                        )
+
+                # VAE encode 完毕，释放原始像素 tensor 节省显存
+                del batch["pixel_values_pos"], batch["pixel_values_neg"], batch["conditioning_pixel_values"]
+
+                brushnet_cond = rearrange(
+                    torch.concat([cond_latents, masks], 2),
+                    "b f c h w -> (b f) c h w"
+                )
+
+                # === Shared noise + timestep ===
+                noise = torch.randn_like(pos_latents)
+                bsz = pos_latents.shape[0] // args.nframes
+                timesteps = torch.randint(
+                    0, noise_scheduler.config.num_train_timesteps, (bsz,), device=pos_latents.device
+                ).long()
+                timesteps_expanded = timesteps.repeat_interleave(args.nframes, dim=0)
+
+                noisy_pos = noise_scheduler.add_noise(
+                    pos_latents, noise, timesteps_expanded
+                )
+                noisy_neg = noise_scheduler.add_noise(
+                    neg_latents, noise, timesteps_expanded
+                )
+
+                encoder_hidden_states = text_encoder(batch["input_ids"], return_dict=False)[0]
+                encoder_hidden_states_expanded = rearrange(
+                    repeat(encoder_hidden_states, "b c d -> b t c d", t=args.nframes),
+                    'b t c d -> (b t) c d'
+                )
+                encoder_hidden_states_policy = encoder_hidden_states_expanded.to(dtype=policy_dtype)
+                encoder_hidden_states_ref = encoder_hidden_states_expanded.to(dtype=ref_dtype)
+                encoder_hidden_states_motion_policy = encoder_hidden_states.to(dtype=policy_dtype)
+                encoder_hidden_states_motion_ref = encoder_hidden_states.to(dtype=ref_dtype)
+                brushnet_cond_ref = brushnet_cond.to(dtype=ref_dtype)
+
+                if args.split_pos_neg_forward:
+                    # 顺序跑 win/lose，保持 DPO 数学等价，同时避免 pos+neg concat 的激活峰值。
+                    with torch.no_grad():
+                        ref_pred_pos = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_pos.to(dtype=ref_dtype), timesteps_expanded, timesteps,
+                            encoder_hidden_states_ref, encoder_hidden_states_motion_ref,
+                            brushnet_cond_ref, ref_dtype, args.nframes,
+                        )
+                        torch.cuda.empty_cache()
+                        gc.collect()
+                        ref_pred_neg = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_neg.to(dtype=ref_dtype), timesteps_expanded, timesteps,
+                            encoder_hidden_states_ref, encoder_hidden_states_motion_ref,
+                            brushnet_cond_ref, ref_dtype, args.nframes,
+                        )
+                        ref_pred = torch.cat([ref_pred_pos, ref_pred_neg], dim=0)
+                    del ref_pred_pos, ref_pred_neg
+                    torch.cuda.empty_cache()
+                    gc.collect()
+
+                    model_pred_pos = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_pos, timesteps_expanded, timesteps,
+                        encoder_hidden_states_policy, encoder_hidden_states_motion_policy,
+                        brushnet_cond, policy_dtype, args.nframes,
+                    )
+                    torch.cuda.empty_cache()
+                    gc.collect()
+                    model_pred_neg = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_neg, timesteps_expanded, timesteps,
+                        encoder_hidden_states_policy, encoder_hidden_states_motion_policy,
+                        brushnet_cond, policy_dtype, args.nframes,
+                    )
+                    model_pred = torch.cat([model_pred_pos, model_pred_neg], dim=0)
+                    del model_pred_pos, model_pred_neg
+                else:
+                    noisy_all = torch.cat([noisy_pos, noisy_neg], dim=0)
+                    brushnet_cond_all = torch.cat([brushnet_cond, brushnet_cond], dim=0)
+                    # BrushNet (2D) 需要 per-frame timesteps: (2*bsz*nframes,)
+                    timesteps_all_2d = timesteps_expanded.repeat(2)
+                    # UNetMotionModel 内部自己 repeat_interleave(num_frames)，只需要 per-batch: (2*bsz,)
+                    timesteps_all_motion = timesteps.repeat(2)
+                    encoder_hidden_states_all = torch.cat(
+                        [encoder_hidden_states_policy, encoder_hidden_states_policy], dim=0
+                    )
+                    encoder_hidden_states_ref_all = torch.cat(
+                        [encoder_hidden_states_ref, encoder_hidden_states_ref], dim=0
+                    )
+                    encoder_hidden_states_motion = encoder_hidden_states_motion_policy.repeat(2, 1, 1)
+                    encoder_hidden_states_motion_ref = encoder_hidden_states_motion_ref.repeat(2, 1, 1)
+
+                    # === Ref forward (no_grad) ===
+                    # 先算 ref，避免 policy 反向图驻留时再叠加 frozen ref 的 forward 峰值显存。
+                    with torch.no_grad():
+                        ref_pred = forward_stage2_pair_member(
+                            brushnet_ref, unet_ref, noisy_all.to(dtype=ref_dtype), timesteps_all_2d, timesteps_all_motion,
+                            encoder_hidden_states_ref_all, encoder_hidden_states_motion_ref,
+                            brushnet_cond_all.to(dtype=ref_dtype), ref_dtype, args.nframes,
+                        )
+
+                    torch.cuda.empty_cache()
+                    gc.collect()
+
+                    # === Policy forward ===
+                    model_pred = forward_stage2_pair_member(
+                        brushnet, unet_main, noisy_all, timesteps_all_2d, timesteps_all_motion,
+                        encoder_hidden_states_all, encoder_hidden_states_motion,
+                        brushnet_cond_all, policy_dtype, args.nframes,
+                    )
+                    del noisy_all, brushnet_cond_all, timesteps_all_2d
+                    del timesteps_all_motion, encoder_hidden_states_all, encoder_hidden_states_ref_all
+                    del encoder_hidden_states_motion, encoder_hidden_states_motion_ref
+
+                # === DPO Loss ===
+                loss, diagnostics = compute_dpo_loss(
+                    model_pred, ref_pred, noise,
+                    loss_weight_map=loss_weight_map,
+                    loss_region_mode=args.loss_region_mode,
+                    region_stats=region_stats,
+                    gap_normalization=args.gap_normalization,
+                    gap_eps=args.gap_eps,
+                    lose_gap_clip_tau=args.lose_gap_clip_tau,
+                    beta_dpo=args.beta_dpo,
+                    sft_reg_weight=args.sft_reg_weight,
+                    lose_gap_weight=args.lose_gap_weight,
+                    winner_abs_reg_weight=args.winner_abs_reg_weight,
+                    winner_gap_reg_weight=args.winner_gap_reg_weight,
+                    winner_gap_reg_margin=args.winner_gap_reg_margin,
+                    winner_gap_reg_mode=args.winner_gap_reg_mode,
+                    nframes=args.nframes,
+                )
+                local_gap_diagnostics = dict(diagnostics)
+                next_global_step = global_step + 1
+                if (
+                    accelerator.is_main_process
+                    and dpo_diagnostics_enabled(args)
+                    and (next_global_step % dpo_diagnostics_interval(args) == 0 or next_global_step == 1)
+                    and args.dpo_gap_samples_jsonl_gz
+                ):
+                    append_dpo_gap_samples_jsonl_gz(
+                        args.output_dir,
+                        next_global_step,
+                        local_gap_diagnostics,
+                        batch,
+                        args.nframes,
+                        explicit_path=args.dpo_gap_samples_jsonl_gz,
+                    )
+                # 跨卡 gather: 全局 implicit_acc / inside_term 统计
+                diagnostics = gather_dpo_diagnostics(diagnostics, accelerator)
+
+                torch.cuda.empty_cache()
+                gc.collect()
+
+                accelerator.backward(loss)
+
+                # DGR: 计算梯度范数（检测梯度消失）
+                grad_norm = None
+                if accelerator.sync_gradients:
+                    grad_norm = compute_dpo_grad_norm(loss, motion_params)
+                    accelerator.clip_grad_norm_(motion_params, args.max_grad_norm)
+
+                optimizer.step()
+                lr_scheduler.step()
+                optimizer.zero_grad(set_to_none=args.set_grads_to_none)
+
+            if accelerator.sync_gradients:
+                progress_bar.update(1)
+                global_step += 1
+
+                if accelerator.is_main_process:
+                    # === 每 300 步: 详细诊断日志 ===
+                    if dpo_diagnostics_enabled(args) and (global_step % dpo_diagnostics_interval(args) == 0 or global_step == 1):
+                        logger.info(format_dpo_diagnostics_line(global_step, diagnostics))
+                        diag_table = format_dpo_diagnostics(
+                            global_step, diagnostics, grad_norm=grad_norm
+                        )
+                        logger.info(diag_table)
+                        if args.dpo_diag_save_csv:
+                            append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
+                        if args.dpo_gap_trace_csv:
+                            append_dpo_gap_trace_csv(
+                                args.output_dir,
+                                global_step,
+                                diagnostics,
+                                explicit_path=args.dpo_gap_trace_csv,
+                            )
+
+                    if global_step % args.checkpointing_steps == 0:
+                        if args.checkpoints_total_limit is not None:
+                            checkpoints = os.listdir(args.output_dir)
+                            checkpoints = [d for d in checkpoints if d.startswith("checkpoint")]
+                            checkpoints = sorted(checkpoints, key=lambda x: int(x.split("-")[1]))
+                            if len(checkpoints) >= args.checkpoints_total_limit:
+                                num_to_remove = len(checkpoints) - args.checkpoints_total_limit + 1
+                                for removing in checkpoints[:num_to_remove]:
+                                    shutil.rmtree(os.path.join(args.output_dir, removing))
+
+                        save_path = os.path.join(args.output_dir, f"checkpoint-{global_step}")
+                        accelerator.save_state(save_path)
+                        logger.info(f"Saved state to {save_path}")
+
+                    # Validation + 权重保存
+                    if args.validation_prompt is not None and not os.environ.get("SKIP_VALIDATION") and \
+                       global_step % args.validation_steps == 0:
+                        results = log_validation(
+                            vae, text_encoder, tokenizer, unet_main, brushnet,
+                            args, accelerator, weight_dtype, global_step,
+                        )
+
+                        if results:
+                            composite = compute_composite_score(results, None)
+                            if composite is not None and composite > best_composite_score:
+                                best_composite_score = composite
+                                try:
+                                    best_dir = os.path.join(args.output_dir, "best_weights")
+                                    os.makedirs(os.path.join(best_dir, "unet_main"), exist_ok=True)
+                                    os.makedirs(os.path.join(best_dir, "brushnet"), exist_ok=True)
+                                    unwrap_model(unet_main).save_pretrained(os.path.join(best_dir, "unet_main"))
+                                    unwrap_model(brushnet).save_pretrained(os.path.join(best_dir, "brushnet"))
+                                    logger.info(f"New best weights saved (composite={composite:.4f})")
+
+                                    if is_wandb_available() and wandb.run is not None:
+                                        artifact = wandb.Artifact(
+                                            "dpo-stage2-best", type="model",
+                                            metadata={"step": global_step, "composite": composite, **results}
+                                        )
+                                        artifact.add_dir(best_dir)
+                                        wandb.log_artifact(artifact)
+                                except Exception as e:
+                                    logger.warning(f"Failed to save best weights: {e}")
+
+            # === WandB + progress bar logging (每步) ===
+            scope_prefix = "global/" if diagnostics.get("_scope") == "global" else "rank0/"
+            logs = {
+                "rank0/dpo_loss": diagnostics["dpo_loss"],
+                "rank0/total_loss": diagnostics["total_loss"],
+                "rank0/sft_loss": diagnostics["sft_loss"],
+                "rank0/sft_reg_weight": diagnostics["sft_reg_weight"],
+                "rank0/lose_gap_weight": diagnostics["lose_gap_weight"],
+                "rank0/winner_abs_reg": diagnostics["winner_abs_reg"],
+                "rank0/winner_abs_reg_weight": diagnostics["winner_abs_reg_weight"],
+                "rank0/winner_gap_reg": diagnostics["winner_gap_reg"],
+                "rank0/winner_gap_reg_weight": diagnostics["winner_gap_reg_weight"],
+                "rank0/winner_gap_reg_margin": diagnostics["winner_gap_reg_margin"],
+                "rank0/relu_win_gap_mean": diagnostics["relu_win_gap_mean"],
+                "rank0/relu_win_gap_max": diagnostics["relu_win_gap_max"],
+                "rank0/win_gap_positive_ratio": diagnostics["win_gap_positive_ratio"],
+                "rank0/mse_w_over_ref_mse_w": diagnostics["mse_w_over_ref_mse_w"],
+                "rank0/mse_l_over_ref_mse_l": diagnostics["mse_l_over_ref_mse_l"],
+                f"{scope_prefix}implicit_acc": diagnostics["implicit_acc"],
+                "rank0/mse_w": diagnostics["mse_w"],
+                "rank0/mse_l": diagnostics["mse_l"],
+                "rank0/win_gap": diagnostics["win_gap"],
+                "rank0/lose_gap": diagnostics["lose_gap"],
+                "rank0/raw_win_gap": diagnostics.get("raw_win_gap", diagnostics["win_gap"]),
+                "rank0/raw_lose_gap": diagnostics.get("raw_lose_gap", diagnostics["lose_gap"]),
+                "rank0/norm_win_gap": diagnostics.get("norm_win_gap", 0.0),
+                "rank0/norm_lose_gap": diagnostics.get("norm_lose_gap", 0.0),
+                "rank0/norm_lose_gap_clipped": diagnostics.get("norm_lose_gap_clipped", 0.0),
+                "rank0/reward_margin": diagnostics["reward_margin"],
+                "rank0/sigma_term": diagnostics["sigma_term"],
+                "rank0/kl_divergence": diagnostics["kl_divergence"],
+                f"{scope_prefix}inside_term_mean": diagnostics.get("inside_term_mean", 0),
+                f"{scope_prefix}inside_term_min": diagnostics.get("inside_term_min", 0),
+                f"{scope_prefix}inside_term_max": diagnostics.get("inside_term_max", 0),
+                f"{scope_prefix}loser_dominant_ratio": diagnostics.get("loser_degrade_ratio", 0),
+                "lr": lr_scheduler.get_last_lr()[0],
+            }
+            if grad_norm is not None:
+                logs["rank0/dgr_grad_norm"] = grad_norm
+                if initial_grad_norm is None:
+                    initial_grad_norm = grad_norm
+                if initial_grad_norm > 0:
+                    ratio = grad_norm / initial_grad_norm
+                    logs["rank0/grad_norm_ratio"] = ratio
+                    diagnostics["grad_norm_ratio"] = ratio
+            progress_bar.set_postfix(**{k: f"{v:.4f}" if isinstance(v, float) else v for k, v in list(logs.items())[:6]})
+            if args.dpo_diag_save_wandb:
+                accelerator.log(logs, step=global_step)
+
+            if global_step >= args.max_train_steps:
+                break
+
+    # 保存 last 权重
+    accelerator.wait_for_everyone()
+    if accelerator.is_main_process:
+        last_dir = os.path.join(args.output_dir, "last_weights")
+        os.makedirs(os.path.join(last_dir, "unet_main"), exist_ok=True)
+        os.makedirs(os.path.join(last_dir, "brushnet"), exist_ok=True)
+        accelerator.unwrap_model(unet_main).save_pretrained(os.path.join(last_dir, "unet_main"))
+        accelerator.unwrap_model(brushnet).save_pretrained(os.path.join(last_dir, "brushnet"))
+        logger.info(f"Last weights saved to {last_dir}")
+
+        if is_wandb_available() and wandb.run is not None:
+            try:
+                artifact = wandb.Artifact("dpo-stage2-last", type="model", metadata={"step": global_step})
+                artifact.add_dir(last_dir)
+                wandb.log_artifact(artifact)
+            except Exception as e:
+                logger.warning(f"Failed to upload last weights: {e}")
+        sync_console_logs_to_wandb(args.output_dir, policy="now")
+
+    accelerator.end_training()
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    try:
+        main(args)
+    except Exception as e:
+        import traceback
+        tb = traceback.format_exc()
+        try:
+            logger.error(f"Training crashed!\n{tb}")
+        except Exception:
+            print(f"Training crashed!\n{tb}", file=sys.stderr)
+        if is_wandb_available() and wandb.run is not None:
+            try:
+                sync_console_logs_to_wandb(args.output_dir, policy="now")
+                wandb.alert(
+                    title="DPO Stage 2 Crashed",
+                    text=f"```\n{tb}\n```",
+                    level=wandb.AlertLevel.ERROR,
+                )
+                wandb.finish(exit_code=1)
+            except Exception:
+                pass
+        raise
