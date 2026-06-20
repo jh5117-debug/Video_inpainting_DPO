@@ -1,0 +1,16 @@
+{
+  "branch_commit": "937de76c7424eb5cbd5829163419db653439d52f",
+  "configs": [
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF01_65c65f38c47585f5.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF02_17a73e7dfb4ed068.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF03_0cdd70610b40f248.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF04_ca54616606d8b044.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF05_87f4a891ef54aa3b.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF06_4d347115c275f20e.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF07_48450b1aef0ae851.json",
+    "exp20_autoresearch_scale_adaptive_region_dpo/second_wave_fixed_bestfirst/configs/BF08_b3957a980be094f6.json"
+  ],
+  "count": 8,
+  "skipped": [],
+  "status": "SECOND_WAVE_FIXED_BESTFIRST_CONFIGS_PREPARED"
+}
