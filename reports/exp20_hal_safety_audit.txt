@@ -34,3 +34,22 @@ No Exp1-Exp19 files, shared training files, inference/metrics.py, checkpoints, d
 - `python -m unittest discover -s exp20_autoresearch_scale_adaptive_region_dpo/tests -p 'test_*.py'`: 16 tests passed
 - `bash -n exp20_autoresearch_scale_adaptive_region_dpo/scripts/*.sh`: passed
 - `git diff --check`: passed before report update
+
+## 2026-06-20 continuation
+
+- hostname: hal-9000
+- worktree: /home/hj/H20_Video_inpainting_DPO_exp20_autoresearch
+- branch: research/exp20-adaptive-region-autoresearch-20260619
+- HEAD: d1a79b83f58efdb9a221ae8a823b740d4ddc8c99
+- remote HEAD: d1a79b83f58efdb9a221ae8a823b740d4ddc8c99
+- git status before new edits: clean
+- disk: root filesystem has about 262G free; `/home/hj` has about 549G free.
+- GPU/process note: HAL has other users' GPU compute processes; no Exp20
+  training is planned on HAL.
+
+Continuation validation after adding the Exp20 metric backfill script:
+
+- `python -m py_compile exp20_autoresearch_scale_adaptive_region_dpo/code/*.py`: passed
+- `python -m unittest discover -s exp20_autoresearch_scale_adaptive_region_dpo/tests -p 'test_*.py'`: 16 tests passed
+- `bash -n exp20_autoresearch_scale_adaptive_region_dpo/scripts/*.sh`: passed
+- `git diff --check`: passed

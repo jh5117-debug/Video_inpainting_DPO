@@ -31,3 +31,21 @@ No `git reset --hard`, `git clean`, force push, or destructive cleanup was used.
 ## GPU Safety Observation
 
 PAI GPU0-6 are low-memory/idle candidates at audit time. GPU7 has about 58 GB allocated without a listed compute process and is excluded by default.
+
+## 2026-06-20 Continuation Audit
+
+Before continuing the second Exp20 search phase, HAL queried the remote branch:
+
+- remote branch: `origin/research/exp20-adaptive-region-autoresearch-20260619`
+- remote HEAD: `d1a79b83f58efdb9a221ae8a823b740d4ddc8c99`
+
+HAL and PAI are both on the required feature branch and already match the
+remote HEAD:
+
+| Site | Worktree | Branch | HEAD | Status |
+| --- | --- | --- | --- | --- |
+| HAL | `/home/hj/H20_Video_inpainting_DPO_exp20_autoresearch` | `research/exp20-adaptive-region-autoresearch-20260619` | `d1a79b83f58efdb9a221ae8a823b740d4ddc8c99` | clean before the new metric-backfill code |
+| PAI | `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch` | `research/exp20-adaptive-region-autoresearch-20260619` | `d1a79b83f58efdb9a221ae8a823b740d4ddc8c99` | only expected runtime untracked files: `exp20_autoresearch_scale_adaptive_region_dpo/first_wave/`, `exp20_autoresearch_scale_adaptive_region_dpo/results.tsv.lock` |
+
+No GitHub fetch fallback or git bundle was needed for this continuation. No
+reset, clean, force push, or destructive workspace action was used.

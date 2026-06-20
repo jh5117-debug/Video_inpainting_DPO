@@ -36,3 +36,21 @@ No active `accelerate` or `torchrun` training process was detected. Long-running
 ## Safety note
 
 Future Exp20 PAI runs must use flock GPU locks and only write to the Exp20 output roots specified in the user request.
+
+## 2026-06-20 continuation
+
+- hostname: dsw-753014-dc85766cb-4v2jj
+- worktree: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp20_autoresearch
+- branch: research/exp20-adaptive-region-autoresearch-20260619
+- HEAD: d1a79b83f58efdb9a221ae8a823b740d4ddc8c99
+- git status before new metric-backfill work:
+  - `?? exp20_autoresearch_scale_adaptive_region_dpo/first_wave/`
+  - `?? exp20_autoresearch_scale_adaptive_region_dpo/results.tsv.lock`
+- disk: `/mnt/nas` has ample free logical quota; CPFS mounts are near full and
+  are not used for Exp20 outputs.
+- GPU state: GPU0-6 show no listed compute process and low memory usage; GPU7
+  still shows about 58071 MiB without a listed compute process and remains
+  excluded.
+
+No existing process was killed, and no existing output/checkpoint/data path was
+deleted or overwritten.
