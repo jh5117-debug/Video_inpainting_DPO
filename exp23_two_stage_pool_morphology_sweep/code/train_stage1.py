@@ -665,6 +665,7 @@ def build_region_loss_weight_map(
     mask_region_weight=1.0,
     boundary_region_weight=0.5,
     outside_region_weight=0.05,
+    boundary_mode=None,
 ):
     """Build latent-resolution region weights from DiffuEraser/BrushNet masks.
 
@@ -676,7 +677,15 @@ def build_region_loss_weight_map(
         raise ValueError(f"expected masks as [B,F,1,H,W], got shape={tuple(brushnet_masks.shape)}")
     if brushnet_masks.shape[2] != 1:
         raise ValueError(f"expected one mask channel, got shape={tuple(brushnet_masks.shape)}")
-    boundary_mode = os.environ.get("BOUNDARY_MODE", "both").strip().lower()
+    if boundary_mode is None:
+        boundary_mode = os.environ.get("BOUNDARY_MODE")
+    if boundary_mode is None or str(boundary_mode).strip() == "":
+        raise ValueError(
+            "Exp23 legacy_exact requires explicit boundary_mode. "
+            "Pass --boundary_mode {inner,outer,both,exp10_default}; "
+            "silent fallback to BOUNDARY_MODE=both is forbidden."
+        )
+    boundary_mode = str(boundary_mode).strip().lower()
     if boundary_mode not in {"inner", "outer", "both", "exp10_default"}:
         raise ValueError(
             "BOUNDARY_MODE must be one of inner, outer, both, exp10_default; "
@@ -742,6 +751,7 @@ def build_exp23_loss_weight_map(
             mask_region_weight=args.mask_region_weight,
             boundary_region_weight=args.boundary_region_weight,
             outside_region_weight=args.outside_region_weight,
+            boundary_mode=args.boundary_mode,
         )
 
     hole_latent = torch.nn.functional.interpolate(
@@ -768,6 +778,7 @@ def build_exp23_loss_weight_map(
     stats.update(
         {
             "boundary_mode": "exp23_pool_morphology",
+            "exp23_spatial_boundary_mode": str(args.boundary_mode),
             "mask_weight": float(args.mask_region_weight),
             "inner_weight": float(args.inner_weight),
             "outer_weight": float(args.outer_weight),
@@ -1240,6 +1251,56 @@ def append_dpo_diagnostics_csv(output_dir, step, diag, grad_norm=None):
         writer.writerow(row)
 
 
+REGION_DIAG_CSV_FIELDS = [
+    "global_step",
+    "boundary_mode",
+    "exp23_spatial_boundary_mode",
+    "legacy_exact",
+    "pool_grid_scale",
+    "inner_pool_steps",
+    "outer_pool_steps",
+    "inner_weight",
+    "outer_weight",
+    "mask_weight",
+    "boundary_weight",
+    "outside_weight",
+    "mask_area_ratio",
+    "boundary_area_ratio",
+    "outside_area_ratio",
+    "region_weight_sum",
+    "aggregation",
+]
+
+
+def append_region_diagnostics_csv(output_dir, step, args, diag):
+    path = os.path.join(output_dir, "region_diagnostics.csv")
+    exists = os.path.exists(path)
+    row = {
+        "global_step": step,
+        "boundary_mode": diag.get("boundary_mode"),
+        "exp23_spatial_boundary_mode": diag.get("exp23_spatial_boundary_mode", getattr(args, "boundary_mode", None)),
+        "legacy_exact": bool(getattr(args, "legacy_exact", False)),
+        "pool_grid_scale": int(getattr(args, "pool_grid_scale", 1)),
+        "inner_pool_steps": int(getattr(args, "inner_pool_steps", 0)),
+        "outer_pool_steps": int(getattr(args, "outer_pool_steps", 1)),
+        "inner_weight": float(getattr(args, "inner_weight", 0.0)),
+        "outer_weight": float(getattr(args, "outer_weight", 0.0)),
+        "mask_weight": diag.get("mask_weight"),
+        "boundary_weight": diag.get("boundary_weight"),
+        "outside_weight": diag.get("outside_weight"),
+        "mask_area_ratio": diag.get("mask_area_ratio"),
+        "boundary_area_ratio": diag.get("boundary_area_ratio"),
+        "outside_area_ratio": diag.get("outside_area_ratio"),
+        "region_weight_sum": diag.get("region_weight_sum"),
+        "aggregation": diag.get("aggregation"),
+    }
+    with open(path, "a", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=REGION_DIAG_CSV_FIELDS)
+        if not exists:
+            writer.writeheader()
+        writer.writerow(row)
+
+
 DPO_GAP_TRACE_FIELDS = [
     "step",
     "raw_win_gap_mean",
@@ -1630,6 +1691,9 @@ def parse_args(input_args=None):
     parser.add_argument("--mask_region_weight", type=float, default=1.0)
     parser.add_argument("--boundary_region_weight", type=float, default=0.5)
     parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--boundary_mode", type=str, default=None,
+                        choices=["inner", "outer", "both", "exp10_default"],
+                        help="Explicit legacy boundary mode. Exp23 refuses implicit defaults.")
     parser.add_argument("--pool_grid_scale", type=int, default=1, choices=[1, 2, 4],
                         help="Exp23 morphology pool grid scale. 1 preserves legacy loss-grid pooling.")
     parser.add_argument("--inner_pool_steps", type=int, default=0,
@@ -1724,6 +1788,8 @@ def parse_args(input_args=None):
         args.outside_region_weight = float(args.outside_contribution)
     if args.outer_weight is None:
         args.outer_weight = float(args.boundary_region_weight)
+    if args.boundary_mode is None:
+        raise ValueError("Exp23 requires explicit --boundary_mode; refusing implicit BOUNDARY_MODE/both.")
     exp23_is_legacy = (
         int(args.pool_grid_scale) == 1
         and int(args.inner_pool_steps) == 0
@@ -1791,6 +1857,20 @@ def write_exp20_run_metadata(args, accelerator):
     out.mkdir(parents=True, exist_ok=True)
     resolved_config = {k: str(v) if isinstance(v, Path) else v for k, v in sorted(vars(args).items())}
     (out / "resolved_config.yaml").write_text(json.dumps(resolved_config, indent=2, sort_keys=True) + "\n")
+    region_config = {
+        "aggregation": str(args.aggregation),
+        "boundary_mode": str(args.boundary_mode),
+        "boundary_region_weight": float(args.boundary_region_weight),
+        "inner_pool_steps": int(args.inner_pool_steps),
+        "inner_weight": float(args.inner_weight),
+        "legacy_exact": bool(args.legacy_exact),
+        "mask_region_weight": float(args.mask_region_weight),
+        "outer_pool_steps": int(args.outer_pool_steps),
+        "outer_weight": float(args.outer_weight),
+        "outside_region_weight": float(args.outside_region_weight),
+        "pool_grid_scale": int(args.pool_grid_scale),
+    }
+    (out / "resolved_region_config.json").write_text(json.dumps(region_config, indent=2, sort_keys=True) + "\n")
     git_info = {
         "branch": _run_git_command(["git", "branch", "--show-current"]),
         "head": _run_git_command(["git", "rev-parse", "HEAD"]),
@@ -2440,6 +2520,7 @@ def main(args):
                         logger.info(diag_table)
                         if args.dpo_diag_save_csv:
                             append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
+                            append_region_diagnostics_csv(args.output_dir, global_step, args, diagnostics)
                         if args.dpo_gap_trace_csv:
                             append_dpo_gap_trace_csv(
                                 args.output_dir,

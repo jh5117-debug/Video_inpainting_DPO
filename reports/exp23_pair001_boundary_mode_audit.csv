@@ -1,0 +1,6 @@
+model,stage,evidence_path,evidence_type,boundary_mode,mask_weight,boundary_weight,outside_weight,legacy_exact,inner_pool_steps,outer_pool_steps,verdict
+fresh_exp11_outer_b075,stage1,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/fresh_exp11_outer_b075/stage1/dpo_diagnostics.csv,runtime_dpo_diag,both,1.0,0.75,0.05,true,0,1,invalid_expected_outer
+fresh_exp11_outer_b075,stage2,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/fresh_exp11_outer_b075/stage2/dpo_diagnostics.csv,runtime_dpo_diag,both,1.0,0.75,0.05,true,0,1,invalid_expected_outer
+candidate_scale1_outer2_b075,stage1,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage1/dpo_diagnostics.csv,runtime_dpo_diag,exp23_pool_morphology,1.0,0.75,0.05,false,0,2,not_control
+candidate_scale1_outer2_b075,stage2,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage2/dpo_diagnostics.csv,runtime_dpo_diag,exp23_pool_morphology,1.0,0.75,0.05,false,0,2,not_control
+

@@ -50,3 +50,12 @@ RUNNING_ON_GPU2_4_5_6
 - Final GPU2/4/5/6 memory after completion: `0 / 244 / 4 / 292 MiB`.
 - No Exp23 `Phy` process remains.
 - DAVIS50 evaluation has not run yet and remains the next required gate.
+
+2026-06-21 boundary audit:
+
+- `phaseA_scale1_pair001_outer2_gpus2456` is invalid for scientific comparison.
+- Fresh Stage1 runtime `boundary_mode`: `both`.
+- Fresh Stage2 runtime `boundary_mode`: `both`.
+- Required corrected rerun:
+  `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
+- Exp23 trainer/runner now requires explicit `--boundary_mode`.

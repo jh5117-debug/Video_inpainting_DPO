@@ -78,6 +78,7 @@ from train_stage1 import (
     compute_dpo_loss,
     compute_dpo_grad_norm,
     append_dpo_diagnostics_csv,
+    append_region_diagnostics_csv,
     append_dpo_gap_samples_jsonl_gz,
     append_dpo_gap_trace_csv,
     dpo_diagnostics_enabled,
@@ -92,6 +93,7 @@ from train_stage1 import (
     set_process_title_from_env,
     setup_process_console_capture,
     sync_console_logs_to_wandb,
+    write_exp20_run_metadata,
 )
 
 FileClient, imfrombytes = import_dataset_file_helpers(PROJECT_ROOT)
@@ -475,6 +477,9 @@ def parse_args(input_args=None):
     parser.add_argument("--mask_region_weight", type=float, default=1.0)
     parser.add_argument("--boundary_region_weight", type=float, default=0.5)
     parser.add_argument("--outside_region_weight", type=float, default=0.05)
+    parser.add_argument("--boundary_mode", type=str, default=None,
+                        choices=["inner", "outer", "both", "exp10_default"],
+                        help="Explicit legacy boundary mode. Exp23 refuses implicit defaults.")
     parser.add_argument("--pool_grid_scale", type=int, default=1, choices=[1, 2, 4])
     parser.add_argument("--inner_pool_steps", type=int, default=0)
     parser.add_argument("--outer_pool_steps", type=int, default=1)
@@ -535,6 +540,8 @@ def parse_args(input_args=None):
         raise ValueError("`--train_width` must be divisible by 8.")
     if args.outer_weight is None:
         args.outer_weight = float(args.boundary_region_weight)
+    if args.boundary_mode is None:
+        raise ValueError("Exp23 requires explicit --boundary_mode; refusing implicit BOUNDARY_MODE/both.")
     if args.aggregation != "legacy_global_weighted_mean":
         raise ValueError("Exp23 Stage2 currently supports only aggregation=legacy_global_weighted_mean.")
     exp23_is_legacy = (
@@ -617,6 +624,9 @@ def main(args):
 
     if accelerator.is_main_process:
         os.makedirs(args.output_dir, exist_ok=True)
+    accelerator.wait_for_everyone()
+    write_exp20_run_metadata(args, accelerator)
+    accelerator.wait_for_everyone()
 
     # ===== Tracker 初始化提前: 确保后续任何报错都能在启用的 tracker 中可见 =====
     if accelerator.is_main_process and report_to is not None:
@@ -918,6 +928,7 @@ def main(args):
                             mask_region_weight=args.mask_region_weight,
                             boundary_region_weight=args.boundary_region_weight,
                             outside_region_weight=args.outside_region_weight,
+                            boundary_mode=args.boundary_mode,
                         )
                     else:
                         loss_weight_map, region_stats = build_exp23_loss_weight_map(
@@ -1098,6 +1109,7 @@ def main(args):
                         logger.info(diag_table)
                         if args.dpo_diag_save_csv:
                             append_dpo_diagnostics_csv(args.output_dir, global_step, diagnostics, grad_norm=grad_norm)
+                            append_region_diagnostics_csv(args.output_dir, global_step, args, diagnostics)
                         if args.dpo_gap_trace_csv:
                             append_dpo_gap_trace_csv(
                                 args.output_dir,

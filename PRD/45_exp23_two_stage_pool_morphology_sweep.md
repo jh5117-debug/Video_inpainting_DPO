@@ -332,3 +332,39 @@ Risk notes:
 Report:
 
 - `reports/exp23_gpu2456_pair_completion_report.md`
+
+## 2026-06-21 Pair001 Boundary Audit
+
+Status:
+
+```text
+PAIR001_CONTROL_INVALID_BOUNDARY_MODE
+```
+
+The completed `phaseA_scale1_pair001_outer2_gpus2456` pair cannot be used for
+scientific outer1-vs-outer2 comparison. Runtime `dpo_diagnostics.csv` evidence
+shows the fresh Exp11 control used:
+
+```text
+fresh Stage1 boundary_mode = both
+fresh Stage2 boundary_mode = both
+```
+
+The root cause was the legacy exact path reading `BOUNDARY_MODE` with a silent
+default of `both`, while the Exp23 runner did not explicitly pass or record
+`boundary_mode=outer`.
+
+Corrective code change:
+
+- Stage1 and Stage2 now require explicit `--boundary_mode`.
+- The runner passes `--boundary_mode outer` for both fresh Exp11 and the outer2
+  candidate.
+- Corrected runs write `resolved_region_config.json` and `region_diagnostics.csv`.
+
+Next action:
+
+```text
+rerun pair_id = phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456
+```
+
+No DAVIS50 comparison should be made on the invalid-control pair.

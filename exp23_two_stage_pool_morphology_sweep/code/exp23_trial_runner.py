@@ -26,6 +26,7 @@ EVAL_ROOT = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp23_tw
 class RegionConfig:
     name: str
     legacy_exact: bool
+    boundary_mode: str
     pool_grid_scale: int
     inner_pool_steps: int
     outer_pool_steps: int
@@ -101,6 +102,7 @@ def base_args(out_dir: Path, run: RunConfig, region: RegionConfig, stage: int, s
         "--mask_region_weight", "1.0",
         "--boundary_region_weight", str(region.boundary_region_weight),
         "--outside_region_weight", "0.05",
+        "--boundary_mode", str(region.boundary_mode),
         "--pool_grid_scale", str(region.pool_grid_scale),
         "--inner_pool_steps", str(region.inner_pool_steps),
         "--outer_pool_steps", str(region.outer_pool_steps),
@@ -246,8 +248,8 @@ def main() -> int:
     EVAL_ROOT.mkdir(parents=True, exist_ok=True)
     run = RunConfig(pair_id=args.pair_id)
     regions = [
-        RegionConfig("fresh_exp11_outer_b075", True, 1, 0, 1, 0.0, 0.75, 0.75),
-        RegionConfig("candidate_scale1_outer2_b075", False, 1, 0, 2, 0.0, 0.75, 0.75),
+        RegionConfig("fresh_exp11_outer_b075", True, "outer", 1, 0, 1, 0.0, 0.75, 0.75),
+        RegionConfig("candidate_scale1_outer2_b075", False, "outer", 1, 0, 2, 0.0, 0.75, 0.75),
     ]
     state = {
         "status": "RUNNING",

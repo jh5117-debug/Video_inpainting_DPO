@@ -1799,3 +1799,14 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+Boundary audit update:
+
+```text
+PAIR001_CONTROL_INVALID_BOUNDARY_MODE
+```
+
+Runtime diagnostics show the fresh Exp11 control used `boundary_mode=both` in
+Stage1 and Stage2, not `outer`. This pair is retained as an invalid-control
+training artifact only. Exp23 now requires explicit `--boundary_mode`, and the
+next action is a corrected outer-control rerun before DAVIS50.
