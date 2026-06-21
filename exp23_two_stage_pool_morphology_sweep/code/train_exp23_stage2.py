@@ -481,6 +481,9 @@ def parse_args(input_args=None):
     parser.add_argument("--inner_weight", type=float, default=0.0)
     parser.add_argument("--outer_weight", type=float, default=None)
     parser.add_argument("--legacy_exact", type=parse_bool_arg, default=True)
+    parser.add_argument("--aggregation", type=str, default="legacy_global_weighted_mean",
+                        choices=["legacy_global_weighted_mean"],
+                        help="Compatibility with Exp23 runner. Stage2 currently supports the legacy global weighted mean loss.")
     parser.add_argument("--dpo_gap_trace_csv", type=str, default="")
     parser.add_argument("--dpo_gap_samples_jsonl_gz", type=str, default="")
     parser.add_argument("--enable_dpo_diag", type=parse_bool_arg, default=True)
@@ -532,6 +535,8 @@ def parse_args(input_args=None):
         raise ValueError("`--train_width` must be divisible by 8.")
     if args.outer_weight is None:
         args.outer_weight = float(args.boundary_region_weight)
+    if args.aggregation != "legacy_global_weighted_mean":
+        raise ValueError("Exp23 Stage2 currently supports only aggregation=legacy_global_weighted_mean.")
     exp23_is_legacy = (
         int(args.pool_grid_scale) == 1
         and int(args.inner_pool_steps) == 0
