@@ -128,6 +128,8 @@ for model in fresh_exp11_outer_b075 candidate_scale1_outer2_b075; do
   require_file "${PAIR_ROOT}/${model}/stage2/resolved_region_config.json" "${model} stage2 region config"
 done
 
+run_eval "sft48000_baseline" "${SFT_STAGE2}"
+
 for step in 1000 1500 2000; do
   fresh_s1="$(export_checkpoint fresh_exp11_outer_b075 stage1 "${step}" "${PAIR_ROOT}/fresh_exp11_outer_b075/stage1/last_weights")"
   cand_s1="$(export_checkpoint candidate_scale1_outer2_b075 stage1 "${step}" "${PAIR_ROOT}/candidate_scale1_outer2_b075/stage1/last_weights")"
