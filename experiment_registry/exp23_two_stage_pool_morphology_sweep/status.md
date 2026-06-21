@@ -59,3 +59,22 @@ RUNNING_ON_GPU2_4_5_6
 - Required corrected rerun:
   `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
 - Exp23 trainer/runner now requires explicit `--boundary_mode`.
+
+2026-06-21 corrected rerun:
+
+- Status: `PAIR001_CORRECTED_OUTER_CONTROL_RERUN_RUNNING`.
+- Pair:
+  `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
+- PAI HEAD: `2e1988c77e43b10cadc7ed8c19b1eda53d8e8a55`.
+- GPUs: `2,4,5,6`.
+- Controller PID: `1428304`.
+- Torchrun PID: `1428307`.
+- Rank PIDs: `1428380`, `1428381`, `1428382`, `1428383`.
+- Process title in `nvidia-smi`: `Phy`.
+- Fresh Stage1 command explicitly includes `--boundary_mode outer`.
+- Fresh Stage1 `resolved_region_config.json` records
+  `legacy_exact=true`, `boundary_mode=outer`, `inner_pool_steps=0`,
+  `outer_pool_steps=1`, and mask/boundary/outside weights `1.0/0.75/0.05`.
+- Fresh Stage1 `region_diagnostics.csv` records `boundary_mode=outer` through
+  at least step 140.
+- No next morphology candidate is running.

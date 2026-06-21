@@ -1810,3 +1810,29 @@ Runtime diagnostics show the fresh Exp11 control used `boundary_mode=both` in
 Stage1 and Stage2, not `outer`. This pair is retained as an invalid-control
 training artifact only. Exp23 now requires explicit `--boundary_mode`, and the
 next action is a corrected outer-control rerun before DAVIS50.
+
+## 2026-06-21 Exp23 corrected outer-control rerun
+
+Exp23 corrected rerun is active on PAI:
+
+```text
+pair_id = phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456
+status = PAIR001_CORRECTED_OUTER_CONTROL_RERUN_RUNNING
+gpus = 2,4,5,6
+controller_pid = 1428304
+rank_pids = 1428380,1428381,1428382,1428383
+PAI_HEAD = 2e1988c77e43b10cadc7ed8c19b1eda53d8e8a55
+```
+
+Runtime evidence through fresh Stage1 step 140 shows:
+
+```text
+legacy_exact = true
+boundary_mode = outer
+inner_pool_steps = 0
+outer_pool_steps = 1
+mask/boundary/outside = 1.0 / 0.75 / 0.05
+```
+
+No next Exp23 morphology candidate has been launched. The only active task is
+to finish this corrected fresh-vs-outer2 pair and then run paired DAVIS50.

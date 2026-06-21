@@ -368,3 +368,61 @@ rerun pair_id = phaseA_scale1_pair001_outer2_corrected_outer_control_seed2026061
 ```
 
 No DAVIS50 comparison should be made on the invalid-control pair.
+
+## 2026-06-21 Corrected Pair Rerun Started
+
+Status:
+
+```text
+PAIR001_CORRECTED_OUTER_CONTROL_RERUN_RUNNING
+```
+
+Corrected pair:
+
+```text
+pair_id = phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456
+gpus = 2,4,5,6
+controller_pid = 1428304
+torchrun_pid = 1428307
+rank_pids = 1428380,1428381,1428382,1428383
+process_name = Phy
+PAI_HEAD = 2e1988c77e43b10cadc7ed8c19b1eda53d8e8a55
+```
+
+GPU2/4/5/6 were released from a targeted
+`/mnt/workspace/xiaoqi/multigen/.../qxq_sample_base_dense_v0.py` process group
+before launch. GPU0/1/3 tasks were not touched, and GPU7 remains excluded due
+to the persistent NVML ghost allocation.
+
+Runtime evidence for the fresh Exp11 control is now explicit:
+
+```json
+{
+  "legacy_exact": true,
+  "boundary_mode": "outer",
+  "pool_grid_scale": 1,
+  "inner_pool_steps": 0,
+  "outer_pool_steps": 1,
+  "mask_region_weight": 1.0,
+  "boundary_region_weight": 0.75,
+  "outside_region_weight": 0.05,
+  "aggregation": "legacy_global_weighted_mean"
+}
+```
+
+The fresh Stage1 `region_diagnostics.csv` and `dpo_diagnostics.csv` both record
+`boundary_mode=outer` through at least step 140, so the corrected rerun is
+currently producing valid runtime evidence. No next morphology candidate should
+be launched until this corrected pair finishes Stage1 2000 + Stage2 2000 for
+both fresh control and outer2 candidate, followed by paired DAVIS50 evaluation.
+
+Evaluation tooling added for the corrected pair:
+
+- `exp23_two_stage_pool_morphology_sweep/code/export_accelerate_checkpoint_to_diffueraser.py`
+- `exp23_two_stage_pool_morphology_sweep/code/summarize_exp23_pair_eval.py`
+- `exp23_two_stage_pool_morphology_sweep/scripts/eval_exp23_pair001_davis50_pai.sh`
+
+These tools export intermediate accelerate checkpoints into evaluator-readable
+DiffuEraser roots, build Stage1+DPO / SFT-S2 hybrids through the canonical
+hybrid builder, and summarize paired DAVIS50 metrics. They do not modify
+`inference/metrics.py`.
