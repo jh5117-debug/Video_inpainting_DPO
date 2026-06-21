@@ -251,3 +251,16 @@ monitor log = exp23_two_stage_pool_morphology_sweep/runtime/monitor_gpus2456.log
 ```
 
 Risk note: loser-dominant diagnostics are high during early fresh Exp11 Stage1, e.g. `loser_dominant_ratio=1.0` at steps 40-170. This is a training diagnostic to watch, not a launch blocker.
+
+500-step monitor result:
+
+```text
+timestamp = 2026-06-21 08:52 CST
+Stage1 step >= 510
+checkpoint-500 = written
+latest logged total_loss ~= 0.573817
+latest logged dpo_loss ~= 0.570924
+latest logged grad_norm ~= 10.205749
+no OOM / no Traceback / no NaN grep hits
+all four active CUDA processes still show process name Phy
+```

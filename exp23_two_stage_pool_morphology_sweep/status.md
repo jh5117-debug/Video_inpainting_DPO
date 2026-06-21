@@ -35,3 +35,6 @@ Full training had not started at the first force-release checkpoint because:
 - 1-minute and 15-minute monitors passed.
 - Fresh Exp11 Stage1 is running; step >= 170 at 15-minute check.
 - Background monitor PID `1291494` is sampling every 5 minutes.
+- 500-step monitor passed at 2026-06-21 08:52 CST.
+- `checkpoint-500` was written for the fresh Exp11 Stage1 twin.
+- Fresh Exp11 Stage1 continued past step 510 with no OOM, Traceback, or NaN grep hits.

@@ -35,3 +35,6 @@ RUNNING_ON_GPU2_4_5_6
 - Current model: `fresh_exp11_outer_b075`.
 - 15-minute monitor passed; Stage1 reached at least step 170 with finite loss and gradients.
 - Background monitor PID: `1291494`; log: `exp23_two_stage_pool_morphology_sweep/runtime/monitor_gpus2456.log`.
+- 500-step monitor passed at 2026-06-21 08:52 CST.
+- `checkpoint-500` exists under the fresh Exp11 Stage1 output directory.
+- Training continued past step 510 with no OOM, Traceback, or NaN grep hits.
