@@ -1,9 +1,10 @@
 {
-  "current_model": "fresh_exp11_outer_b075",
+  "current_model": "candidate_scale1_outer2_b075",
+  "finished_at": "2026-06-21 19:47:50",
   "gpus": "2,4,5,6",
   "nproc_per_node": 4,
   "pair_id": "phaseA_scale1_pair001_outer2_gpus2456",
-  "queue_index": 1,
-  "started_at": "2026-06-21 08:07:50",
-  "status": "RUNNING"
+  "queue_index": 2,
+  "started_at": "2026-06-21 11:43:57",
+  "status": "STAGE1_STAGE2_PAIR_COMPLETED"
 }

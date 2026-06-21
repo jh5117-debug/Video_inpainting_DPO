@@ -264,3 +264,71 @@ latest logged grad_norm ~= 10.205749
 no OOM / no Traceback / no NaN grep hits
 all four active CUDA processes still show process name Phy
 ```
+
+## 2026-06-21 GPU2/4/5/6 Pair Completion
+
+The first Phase A paired training run completed on PAI after switching from
+GPU4/5/6/7 to GPU2/4/5/6.
+
+```text
+pair_id = phaseA_scale1_pair001_outer2_gpus2456
+fresh Exp11 twin = fresh_exp11_outer_b075
+candidate = candidate_scale1_outer2_b075
+GPU mapping = 2,4,5,6
+started_at = 2026-06-21 11:43:57 CST
+finished_at = 2026-06-21 19:47:50 CST
+queue_status = STAGE1_STAGE2_PAIR_COMPLETED
+```
+
+All four training stages completed 2000 optimizer steps and wrote checkpoints
+plus `last_weights`:
+
+| model | stage | last step | final total loss | final dpo loss | final grad norm | max grad norm | last loser-dominant |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| fresh_exp11_outer_b075 | Stage1 | 2000 | 0.399996 | 0.392117 | 222.153356 | 728.881603 | 1.000000 |
+| fresh_exp11_outer_b075 | Stage2 | 2000 | 0.404275 | 0.392957 | 7.555776 | 63.415727 | 1.000000 |
+| candidate_scale1_outer2_b075 | Stage1 | 2000 | 0.432572 | 0.428459 | 74.767941 | 578.498537 | 1.000000 |
+| candidate_scale1_outer2_b075 | Stage2 | 2000 | 0.498125 | 0.489977 | 7.075422 | 30.997587 | 1.000000 |
+
+Output root:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/
+```
+
+Candidate final weights:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage2/last_weights
+```
+
+Fresh Exp11 twin final weights:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/fresh_exp11_outer_b075/stage2/last_weights
+```
+
+Final GPU2/4/5/6 state after training:
+
+```text
+GPU2 = 0 MiB, 0%
+GPU4 = 244 MiB, 0%
+GPU5 = 4 MiB, 0%
+GPU6 = 292 MiB, 0%
+```
+
+No Exp23 `Phy` process remained after completion.
+
+Risk notes:
+
+- Both Stage1 runs had large finite gradient spikes; the largest observed
+  values were `728.88` for the fresh Exp11 twin and `578.50` for the
+  candidate. Stage2 max gradients were lower but still nontrivial.
+- Final loser-dominant ratios remained `1.0` for all four stages.
+- The current runner completed paired Stage1+Stage2 training only. DAVIS50
+  evaluation was not launched by this runner and must remain the next gate
+  before making any method-quality claim.
+
+Report:
+
+- `reports/exp23_gpu2456_pair_completion_report.md`

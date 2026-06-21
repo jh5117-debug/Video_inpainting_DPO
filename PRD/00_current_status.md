@@ -1781,3 +1781,21 @@ Summary:
 - Codex visual review found no stable BF07 improvement over P4.
 
 No 500-step gate, 1000/2000-step training, Stage2, DAVIS50, or YouTubeVOS100 final evaluation was launched. No further boundary radius/weight search is recommended.
+
+## 2026-06-21 Exp23 GPU2/4/5/6 pair completion
+
+Exp23 completed the first Phase A paired training run on PAI after avoiding
+GPU7's persistent ghost allocation:
+
+```text
+pair_id = phaseA_scale1_pair001_outer2_gpus2456
+fresh Exp11 twin = fresh_exp11_outer_b075
+candidate = candidate_scale1_outer2_b075
+status = STAGE1_STAGE2_PAIR_COMPLETED
+gpus = 2,4,5,6
+```
+
+Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
+`last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
+evaluation has not run yet, so this is a training-completion milestone, not a
+quality result.

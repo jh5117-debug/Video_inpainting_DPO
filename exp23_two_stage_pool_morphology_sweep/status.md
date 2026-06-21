@@ -38,3 +38,14 @@ Full training had not started at the first force-release checkpoint because:
 - 500-step monitor passed at 2026-06-21 08:52 CST.
 - `checkpoint-500` was written for the fresh Exp11 Stage1 twin.
 - Fresh Exp11 Stage1 continued past step 510 with no OOM, Traceback, or NaN grep hits.
+
+2026-06-21 pair completion:
+
+- Pair `phaseA_scale1_pair001_outer2_gpus2456` completed on GPU2/4/5/6.
+- Queue status is `STAGE1_STAGE2_PAIR_COMPLETED`.
+- Fresh Exp11 twin and candidate both completed Stage1 2000 + Stage2 2000.
+- Candidate final Stage2 weights:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage2/last_weights`
+- Final GPU2/4/5/6 memory after completion: `0 / 244 / 4 / 292 MiB`.
+- No Exp23 `Phy` process remains.
+- DAVIS50 was not launched by the current runner; next gate is paired DAVIS50 evaluation.

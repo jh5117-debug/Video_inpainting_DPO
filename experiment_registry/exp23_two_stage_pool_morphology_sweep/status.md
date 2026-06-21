@@ -38,3 +38,15 @@ RUNNING_ON_GPU2_4_5_6
 - 500-step monitor passed at 2026-06-21 08:52 CST.
 - `checkpoint-500` exists under the fresh Exp11 Stage1 output directory.
 - Training continued past step 510 with no OOM, Traceback, or NaN grep hits.
+
+2026-06-21 pair completion:
+
+- Pair `phaseA_scale1_pair001_outer2_gpus2456` completed on GPU2/4/5/6.
+- Queue status: `STAGE1_STAGE2_PAIR_COMPLETED`.
+- Fresh Exp11 twin: Stage1 2000 + Stage2 2000 completed.
+- Candidate `candidate_scale1_outer2_b075`: Stage1 2000 + Stage2 2000 completed.
+- Candidate Stage2 final checkpoint and `last_weights` exist under:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage2/`
+- Final GPU2/4/5/6 memory after completion: `0 / 244 / 4 / 292 MiB`.
+- No Exp23 `Phy` process remains.
+- DAVIS50 evaluation has not run yet and remains the next required gate.
