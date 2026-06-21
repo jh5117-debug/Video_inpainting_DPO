@@ -1,4 +1,4 @@
-BLOCKED_GPU7_GHOST_AFTER_REAL_PHY_LAUNCH
+RUNNING_ON_GPU2_4_5_6
 
 2026-06-21:
 
@@ -24,3 +24,14 @@ BLOCKED_GPU7_GHOST_AFTER_REAL_PHY_LAUNCH
 - Rank3 failed with CUDA OOM because GPU7 still has PID `1758887` `[Not Found]` using `58060 MiB`.
 - Queue state: `FAILED`, model `fresh_exp11_outer_b075`, pair `phaseA_scale1_pair001_outer2`.
 - No Exp23 worker remains alive.
+
+2026-06-21 GPU2/4/5/6 retry:
+
+- Pair: `phaseA_scale1_pair001_outer2_gpus2456`.
+- Controller PID: `1289732`.
+- Torchrun PID: `1289735`.
+- Rank PIDs: `1289812`, `1289813`, `1289814`, `1289815`.
+- GPUs: `2,4,5,6`.
+- Current model: `fresh_exp11_outer_b075`.
+- 15-minute monitor passed; Stage1 reached at least step 170 with finite loss and gradients.
+- Background monitor PID: `1291494`; log: `exp23_two_stage_pool_morphology_sweep/runtime/monitor_gpus2456.log`.

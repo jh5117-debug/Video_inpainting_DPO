@@ -1,11 +1,9 @@
 {
   "current_model": "fresh_exp11_outer_b075",
-  "failed_model": "fresh_exp11_outer_b075",
-  "gpus": "4,5,6,7",
+  "gpus": "2,4,5,6",
   "nproc_per_node": 4,
-  "pair_id": "phaseA_scale1_pair001_outer2",
+  "pair_id": "phaseA_scale1_pair001_outer2_gpus2456",
   "queue_index": 1,
-  "returncode": 1,
-  "started_at": "2026-06-21 07:35:48",
-  "status": "FAILED"
+  "started_at": "2026-06-21 08:07:50",
+  "status": "RUNNING"
 }

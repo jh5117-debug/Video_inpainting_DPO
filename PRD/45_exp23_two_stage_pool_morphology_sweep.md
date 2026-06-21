@@ -207,3 +207,47 @@ Process 1758887 has 56.70 GiB memory in use
 ```
 
 GPU7's stale no-proc allocation is therefore the active blocker. The Phy workers exited cleanly after torch distributed propagated the rank3 failure. No Exp23 worker remains running.
+
+## 2026-06-21 GPU2/4/5/6 Retry
+
+Per user instruction, the sweep was restarted without GPU7:
+
+```bash
+CUDA_VISIBLE_DEVICES=2,4,5,6 \
+PAIR_ID=phaseA_scale1_pair001_outer2_gpus2456 \
+LOG_PATH=logs/pipelines/exp23_phy_sweep_controller_gpus2456.log \
+PID_PATH=exp23_two_stage_pool_morphology_sweep/runtime/exp23_phy_sweep_controller_gpus2456.pid \
+bash exp23_two_stage_pool_morphology_sweep/scripts/launch_exp23_phy_sweep_pai.sh
+```
+
+Current state:
+
+```text
+status = RUNNING
+controller PID = 1289732
+torchrun PID = 1289735
+rank PIDs = 1289812, 1289813, 1289814, 1289815
+GPU mapping = 2,4,5,6
+pair_id = phaseA_scale1_pair001_outer2_gpus2456
+current model = fresh_exp11_outer_b075
+```
+
+15-minute monitor result:
+
+```text
+Stage1 step >= 170
+latest logged total_loss ~= 0.628861
+latest logged dpo_loss ~= 0.625165
+latest logged grad_norm ~= 2.845862
+no OOM / no Traceback
+all four active CUDA processes show process name Phy
+```
+
+Runtime monitor:
+
+```text
+monitor PID = 1291494
+monitor log = exp23_two_stage_pool_morphology_sweep/runtime/monitor_gpus2456.log
+```
+
+Risk note: loser-dominant diagnostics are high during early fresh Exp11 Stage1, e.g. `loser_dominant_ratio=1.0` at steps 40-170. This is a training diagnostic to watch, not a launch blocker.

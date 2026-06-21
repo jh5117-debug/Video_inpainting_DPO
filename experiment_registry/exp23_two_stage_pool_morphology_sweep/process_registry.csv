@@ -1,3 +1,4 @@
 time,pair_id,model,stage,queue_index,gpus,notes
 2026-06-21 07:35:48,phaseA_scale1_pair001_outer2,fresh_exp11_outer_b075,start,1,"4,5,6,7","Phy torch.distributed Stage1 launch"
 2026-06-21 07:36:59,phaseA_scale1_pair001_outer2,fresh_exp11_outer_b075,failed,1,"4,5,6,7","rank3 GPU7 OOM due PID 1758887 [Not Found] retaining 58060 MiB"
+2026-06-21 08:07:50,phaseA_scale1_pair001_outer2_gpus2456,fresh_exp11_outer_b075,start,1,"2,4,5,6","retry launch running on GPU2/4/5/6; 15min monitor healthy"

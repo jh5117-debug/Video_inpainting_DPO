@@ -1,4 +1,4 @@
-BLOCKED_GPU7_GHOST_AFTER_REAL_PHY_LAUNCH
+RUNNING_ON_GPU2_4_5_6
 
 Core morphology implementation and initial tests are present.
 
@@ -27,3 +27,11 @@ Full training had not started at the first force-release checkpoint because:
 - Fresh Exp11 twin Stage1 completed optimizer step 1 and wrote diagnostics.
 - Rank3 on GPU7 failed with CUDA OOM because PID `1758887` `[Not Found]` still retains `58060 MiB`.
 - Queue state is `FAILED`; no Exp23 Phy worker remains alive.
+
+2026-06-21 GPU2/4/5/6 retry:
+
+- Restarted as `phaseA_scale1_pair001_outer2_gpus2456`.
+- Controller PID `1289732`; rank PIDs `1289812-1289815`.
+- 1-minute and 15-minute monitors passed.
+- Fresh Exp11 Stage1 is running; step >= 170 at 15-minute check.
+- Background monitor PID `1291494` is sampling every 5 minutes.
