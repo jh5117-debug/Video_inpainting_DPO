@@ -80,7 +80,7 @@ def append_csv(path: Path, row: dict[str, object]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     exists = path.exists()
     with path.open("a", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=list(row.keys()))
+        writer = csv.DictWriter(fh, fieldnames=list(row.keys()), lineterminator="\n")
         if not exists:
             writer.writeheader()
         writer.writerow(row)

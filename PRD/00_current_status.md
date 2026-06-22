@@ -1836,3 +1836,7 @@ mask/boundary/outside = 1.0 / 0.75 / 0.05
 
 No next Exp23 morphology candidate has been launched. The only active task is
 to finish this corrected fresh-vs-outer2 pair and then run paired DAVIS50.
+
+
+### Exp23 Pair001 corrected DAVIS50 (2026-06-22T16:38:45+08:00)
+Corrected explicit-outer pair `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456` completed paired DAVIS50. Status: `PAIR001_PARETO_MIXED`. Candidate outer2 has PSNR delta +0.010255 dB, bootstrap P(delta>0) 0.5629, boundary PSNR delta -0.021842; no next pair launched.

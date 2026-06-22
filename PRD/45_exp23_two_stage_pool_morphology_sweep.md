@@ -426,3 +426,13 @@ These tools export intermediate accelerate checkpoints into evaluator-readable
 DiffuEraser roots, build Stage1+DPO / SFT-S2 hybrids through the canonical
 hybrid builder, and summarize paired DAVIS50 metrics. They do not modify
 `inference/metrics.py`.
+
+
+## Pair001 Corrected DAVIS50 Decision (2026-06-22T16:38:45+08:00)
+
+- Corrected pair: `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
+- Fresh control runtime config is explicit outer for Stage1 and Stage2.
+- Candidate outer2 completed paired DAVIS50.
+- Main PSNR delta candidate-fresh: +0.010255 dB; bootstrap P(delta>0)=0.5629; win_rate=0.5600.
+- Boundary PSNR delta: -0.021842; LPIPS delta: +0.000140; VFID delta: -0.007272; TC delta: +0.000281; Ewarp delta: +0.008660.
+- Final status: `PAIR001_PARETO_MIXED`. No next pair launched.

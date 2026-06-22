@@ -1,80 +1,14 @@
-RUNNING_ON_GPU2_4_5_6
+# Exp23 Status
 
-2026-06-21:
+Updated: 2026-06-22T16:38:45+08:00
 
-- User authorized force release of GPU4-7.
-- GPU4-6 high-expert multigen workers were terminated with targeted TERM.
-- GPU4-6 are now idle-level.
-- GPU7 still has a 58060 MiB `[Not Found]` NVML allocation with no visible `/proc` holder.
-- Exp23 training was not launched at that time because the branch still lacked real Stage1/Stage2 trainer and queue/evaluator plumbing.
+Current pair: `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`
 
-2026-06-21 trainer wiring update:
+Status: `PAIR001_PARETO_MIXED`
 
-- Isolated Stage1 and Stage2 trainers are now present under Exp23.
-- A first paired Phase A runner is now present.
-- The PAI launcher creates/uses `$CONDA_PREFIX/bin/Phy` and starts torch distributed with `--nproc_per_node=4`.
-- Local py_compile, unit tests, shell syntax check, and diff whitespace check passed.
-- Next state depends on the PAI relaunch attempt; GPU7 remains a likely CUDA blocker.
-
-2026-06-21 PAI launch result:
-
-- PAI HEAD: `d9d7077c281af33e7186f890d5175e4d470c1d8b`.
-- Controller PID `1285825`, torchrun PID `1285828`, rank PIDs `1285905-1285908` all used `/mnt/nas/hj/conda_envs/diffueraser/bin/Phy`.
-- Fresh Exp11 twin Stage1 started and wrote step-1 DPO diagnostics.
-- Rank3 failed with CUDA OOM because GPU7 still has PID `1758887` `[Not Found]` using `58060 MiB`.
-- Queue state: `FAILED`, model `fresh_exp11_outer_b075`, pair `phaseA_scale1_pair001_outer2`.
-- No Exp23 worker remains alive.
-
-2026-06-21 GPU2/4/5/6 retry:
-
-- Pair: `phaseA_scale1_pair001_outer2_gpus2456`.
-- Controller PID: `1289732`.
-- Torchrun PID: `1289735`.
-- Rank PIDs: `1289812`, `1289813`, `1289814`, `1289815`.
-- GPUs: `2,4,5,6`.
-- Current model: `fresh_exp11_outer_b075`.
-- 15-minute monitor passed; Stage1 reached at least step 170 with finite loss and gradients.
-- Background monitor PID: `1291494`; log: `exp23_two_stage_pool_morphology_sweep/runtime/monitor_gpus2456.log`.
-- 500-step monitor passed at 2026-06-21 08:52 CST.
-- `checkpoint-500` exists under the fresh Exp11 Stage1 output directory.
-- Training continued past step 510 with no OOM, Traceback, or NaN grep hits.
-
-2026-06-21 pair completion:
-
-- Pair `phaseA_scale1_pair001_outer2_gpus2456` completed on GPU2/4/5/6.
-- Queue status: `STAGE1_STAGE2_PAIR_COMPLETED`.
-- Fresh Exp11 twin: Stage1 2000 + Stage2 2000 completed.
-- Candidate `candidate_scale1_outer2_b075`: Stage1 2000 + Stage2 2000 completed.
-- Candidate Stage2 final checkpoint and `last_weights` exist under:
-  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp23_two_stage_pool_morphology_sweep/pairs/phaseA_scale1_pair001_outer2_gpus2456/candidate_scale1_outer2_b075/stage2/`
-- Final GPU2/4/5/6 memory after completion: `0 / 244 / 4 / 292 MiB`.
-- No Exp23 `Phy` process remains.
-- DAVIS50 evaluation has not run yet and remains the next required gate.
-
-2026-06-21 boundary audit:
-
-- `phaseA_scale1_pair001_outer2_gpus2456` is invalid for scientific comparison.
-- Fresh Stage1 runtime `boundary_mode`: `both`.
-- Fresh Stage2 runtime `boundary_mode`: `both`.
-- Required corrected rerun:
-  `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
-- Exp23 trainer/runner now requires explicit `--boundary_mode`.
-
-2026-06-21 corrected rerun:
-
-- Status: `PAIR001_CORRECTED_OUTER_CONTROL_RERUN_RUNNING`.
-- Pair:
-  `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`.
-- PAI HEAD: `2e1988c77e43b10cadc7ed8c19b1eda53d8e8a55`.
-- GPUs: `2,4,5,6`.
-- Controller PID: `1428304`.
-- Torchrun PID: `1428307`.
-- Rank PIDs: `1428380`, `1428381`, `1428382`, `1428383`.
-- Process title in `nvidia-smi`: `Phy`.
-- Fresh Stage1 command explicitly includes `--boundary_mode outer`.
-- Fresh Stage1 `resolved_region_config.json` records
-  `legacy_exact=true`, `boundary_mode=outer`, `inner_pool_steps=0`,
-  `outer_pool_steps=1`, and mask/boundary/outside weights `1.0/0.75/0.05`.
-- Fresh Stage1 `region_diagnostics.csv` records `boundary_mode=outer` through
-  at least step 140.
-- No next morphology candidate is running.
+- Original pair001 control: invalid boundary-mode provenance.
+- Corrected pair: completed Fresh Exp11 S1/S2 2000 and Candidate outer2 S1/S2 2000.
+- Corrected fresh control: explicit `boundary_mode=outer` validated from runtime config and region diagnostics.
+- Paired DAVIS50 complete for S2 checkpoints 1000/1500/2000 and Stage1+fixed-SFT-S2 diagnostics 1000/1500/2000.
+- Raw outer-ring postprocessed diagnostics complete for main S2-2000 endpoints.
+- Final decision: `PAIR001_PARETO_MIXED`; no next pair launched.

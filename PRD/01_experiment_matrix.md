@@ -600,3 +600,7 @@ weak and damages the pairwise DPO interpretation, so it is not a main method.
 ## Exp20 Status Addendum (2026-06-20)
 
 Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-step candidate is EQ_BF07 (fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean), PSNR 29.393079. It remains below TARGET_DEV_PSNR 29.523336 and has mixed perceptual/temporal tradeoffs, so status is COMPLETED_NEGATIVE for this budget and no long training / Stage2 / DAVIS50 / YouTubeVOS100 final eval was launched.
+
+
+### Exp23 Pair001 corrected DAVIS50 (2026-06-22T16:38:45+08:00)
+Corrected explicit-outer pair `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456` completed paired DAVIS50. Status: `PAIR001_PARETO_MIXED`. Candidate outer2 has PSNR delta +0.010255 dB, bootstrap P(delta>0) 0.5629, boundary PSNR delta -0.021842; no next pair launched.

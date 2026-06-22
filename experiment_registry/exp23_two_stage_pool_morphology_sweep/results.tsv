@@ -1,1 +1,2 @@
 pair_id	seed	status	psnr_delta	ssim_delta	lpips_delta	vfid_delta	tc_delta	ewarp_delta
+phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456	PAIR001_PARETO_MIXED	0.010255203	0.562900	0.560000	-0.021842277	0.000139503	-0.007272417	0.000281012	0.008660374

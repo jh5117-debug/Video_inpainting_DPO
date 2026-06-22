@@ -26,7 +26,7 @@ def write_csv(path: Path, rows: Sequence[Dict[str, object]]) -> None:
             if key not in keys:
                 keys.append(key)
     with path.open("w", newline="", encoding="utf-8") as handle:
-        writer = csv.DictWriter(handle, fieldnames=keys)
+        writer = csv.DictWriter(handle, fieldnames=keys, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
 

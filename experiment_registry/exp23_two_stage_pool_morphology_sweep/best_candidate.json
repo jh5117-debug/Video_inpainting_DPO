@@ -1,1 +1,8 @@
-{"status": "none", "reason": "no completed pair yet"}
+{
+  "pair_id": "phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456",
+  "status": "PAIR001_PARETO_MIXED",
+  "best_candidate": "candidate_scale1_outer2_b075",
+  "main_delta_psnr": 0.010255203197266098,
+  "positive_gate_passed": false,
+  "reason": "Pareto mixed; PSNR/bootstrap/boundary/visual gates fail"
+}

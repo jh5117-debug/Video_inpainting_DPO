@@ -3,3 +3,7 @@ time,pair_id,model,stage,queue_index,gpus,notes
 2026-06-21 07:36:59,phaseA_scale1_pair001_outer2,fresh_exp11_outer_b075,failed,1,"4,5,6,7","rank3 GPU7 OOM due PID 1758887 [Not Found] retaining 58060 MiB"
 2026-06-21 08:07:50,phaseA_scale1_pair001_outer2_gpus2456,fresh_exp11_outer_b075,start,1,"2,4,5,6","retry launch running on GPU2/4/5/6; 15min monitor healthy"
 2026-06-21 19:47:50,phaseA_scale1_pair001_outer2_gpus2456,candidate_scale1_outer2_b075,completed,2,"2,4,5,6","fresh Exp11 and candidate both completed Stage1 2000 + Stage2 2000; no Exp23 Phy process remains"
+2026-06-22 00:12:54,phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456,fresh_exp11_outer_b075,start,1,"2,4,5,6"
+2026-06-22 05:08:41,phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456,fresh_exp11_outer_b075,done,1,"2,4,5,6"
+2026-06-22 05:08:41,phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456,candidate_scale1_outer2_b075,start,2,"2,4,5,6"
+2026-06-22 10:03:53,phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456,candidate_scale1_outer2_b075,done,2,"2,4,5,6"

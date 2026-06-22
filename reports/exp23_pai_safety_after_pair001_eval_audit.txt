@@ -1,0 +1,76 @@
+===hostname===
+dsw-753014-dc85766cb-4v2jj
+===pwd===
+/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp23_pool_sweep
+===branch===
+research/exp23-two-stage-pool-morphology-sweep
+===head===
+34844d75aba585542b311098417f67c7274f6434
+===origin_head===
+34844d75aba585542b311098417f67c7274f6434
+===status===
+?? exp23_two_stage_pool_morphology_sweep/queue_state.json
+?? exp23_two_stage_pool_morphology_sweep/runtime/
+?? reports/exp23_pai_safety_after_pair001_eval_audit.txt
+===log===
+34844d75a Record Exp23 GPU2456 pair completion
+56ee864c0 Fix Exp23 Stage2 aggregation CLI
+c2be70550 Record Exp23 first GPU2456 checkpoint
+389c9b85e Record Exp23 GPU2-4-5-6 retry launch
+f0293d429 Record Exp23 Phy launch blocked by GPU7 ghost
+===diffstat===
+===nvidia===
+Mon Jun 22 00:02:28 2026
++-----------------------------------------------------------------------------------------+
+| NVIDIA-SMI 580.95.05              Driver Version: 580.95.05      CUDA Version: 13.0     |
++-----------------------------------------+------------------------+----------------------+
+| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |
+|                                         |                        |               MIG M. |
+|=========================================+========================+======================|
+|   0  NVIDIA L20X                    On  |   00000000:03:00.0 Off |                    0 |
+| N/A   58C    P0            660W /  700W |  130013MiB / 143771MiB |    100%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   1  NVIDIA L20X                    On  |   00000000:07:00.0 Off |                    0 |
+| N/A   65C    P0            675W /  700W |  130053MiB / 143771MiB |    100%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   2  NVIDIA L20X                    On  |   00000000:0B:00.0 Off |                    0 |
+| N/A   66C    P0            681W /  700W |   65257MiB / 143771MiB |    100%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   3  NVIDIA L20X                    On  |   00000000:0F:00.0 Off |                    0 |
+| N/A   55C    P0            666W /  700W |  129993MiB / 143771MiB |    100%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   4  NVIDIA L20X                    On  |   00000000:14:00.0 Off |                    0 |
+| N/A   59C    P0            684W /  700W |   65497MiB / 143771MiB |    100%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   5  NVIDIA L20X                    On  |   00000000:18:00.0 Off |                    0 |
+| N/A   37C    P0             76W /  700W |       4MiB / 143771MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   6  NVIDIA L20X                    On  |   00000000:1C:00.0 Off |                    0 |
+| N/A   31C    P0             77W /  700W |     292MiB / 143771MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+|   7  NVIDIA L20X                    On  |   00000000:20:00.0 Off |                    0 |
+| N/A   33C    P0            124W /  700W |   58071MiB / 143771MiB |      0%      Default |
+|                                         |                        |             Disabled |
++-----------------------------------------+------------------------+----------------------+
+
++-----------------------------------------------------------------------------------------+
+| Processes:                                                                              |
+|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |
+|        ID   ID                                                               Usage      |
+|=========================================================================================|
+|    0   N/A  N/A         1328667      C   /usr/local/bin/python3.10             13000... |
+|    1   N/A  N/A         1328668      C   /usr/local/bin/python3.10             13004... |
+|    2   N/A  N/A         1422379      C   python3                               65248MiB |
+|    3   N/A  N/A         1328669      C   /usr/local/bin/python3.10             12998... |
+|    4   N/A  N/A         1422380      C   python3                               65248MiB |
++-----------------------------------------------------------------------------------------+
+===procs===
+root     1328664       1  0 Jun21 ?        00:01:18 /usr/local/bin/python3.10 /usr/local/bin/torchrun --nproc_per_node=3 --master_port=29702 /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/tools/train_memory_dense_adapter_base_v0.py train --base-expert high --use-base-model --map-manifest /mnt/workspace/zhengqi/multiview-map-v0/output/memory_dense_adapter_v0/runs/memory_dense_lingbot_fullsubset_large_v0/light_dust2_pilot_release_1200_multipart_memorymask_motionclean_view_v0/manifest.json --cache-manifest /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/output/qxq_otherplayers_filtered_caches_bigdata_v0/pilot1_aligned_cache_K11T2.jsonl --extra-map-manifest /mnt/workspace/zhengqi/multiview-map-v0/output/memory_dense_adapter_v0/runs/memory_dense_lingbot_fullsubset_large_v0/light_dust2_pilot2_release_3031_multipart_metadata_memorymask_motionclean_view_v0/manifest.json --extra-cache-manifest /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/output/qxq_otherplayers_filtered_caches_bigdata_v0/pilot2_aligned_cache_K11T2.jsonl --extra-map-manifest /mnt/workspace/zhengqi/multiview-map-v0/output/memory_dense_adapter_v0/runs/memory_dense_lingbot_fullsubset_large_v0/light_dust2_pilot3_batch1_release_4000_multipart_metadata_memorymask_motionclean_view_v0/manifest.json --extra-cache-manifest /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/output/qxq_otherplayers_filtered_caches_bigdata_v0/pilot3_batch1_aligned_cache_K11T2.jsonl --extra-map-manifest /mnt/workspace/zhengqi/multiview-map-v0/output/memory_dense_adapter_v0/runs/memory_dense_lingbot_fullsubset_large_v0/light_dust2_pilot3_batch2_release_8560_multipart_metadata_memorymask_motionclean_view_v0/manifest.json --extra-cache-manifest /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/output/qxq_otherplayers_filtered_caches_bigdata_v0/pilot3_batch2_aligned_cache_K11T2.jsonl --split-key match --train-split train --no-require-release-report --video-width 832 --video-height 480 --video-frames 81 --latent-frames 21 --dense-condition-encoder frozen_vae --precision bf16 --activation-checkpoint-blocks --region-loss-weight 50.0 --region-loss-min-pixels 4 --chunk0-region-loss-weight 1.0 --positive-batch-fraction 0.5 --negative-contrast-weight 0.0 --sigma-curriculum-prob 0.0 --lora-rank 0 --lr 1e-4 --grad-accum 4 --max-steps 2496 --save-every 150 --log-every 1 --out-dir /mnt/workspace/xiaoqi/multigen/multiview-map-v0-qxq/output/qxq_base_high_bigdata_3ep_6gpu_v1

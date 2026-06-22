@@ -1,0 +1,12 @@
+gate,passed,value
+paired PSNR delta > +0.02 dB,False,0.010255203197266098
+per-video PSNR win rate >= 55%,True,0.56
+PSNR bootstrap probability(delta>0) >= 0.90,False,0.5629
+strict mask or boundary PSNR clearly improves,False,"mask +0.010255, boundary -0.021842"
+LPIPS degradation <= 0.0003,True,0.00013950280786957647
+VFID degradation <= 0.005,True,-0.007272417032572864
+TC drop <= 0.0002,True,0.0002810117472773488
+Ewarp degradation <= 0.03,True,0.008660374391499914
+no obvious new visual artifacts,False,8 candidate penalty flags
+not single-video dominated,False,LOO -0.017312203825388027..0.04422780145343155
+checkpoint identity passed,True,passed for evaluated exports/checkpoints
