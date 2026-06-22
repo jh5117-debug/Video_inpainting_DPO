@@ -89,6 +89,8 @@ export_checkpoint() {
     if [[ -e "${out}" ]]; then
       overwrite_args=(--overwrite)
     fi
+    local export_log="${EXPORT_ROOT}/${model}_${stage}_${step}_export_stdout.log"
+    local export_err="${EXPORT_ROOT}/${model}_${stage}_${step}_export_stderr.log"
     "${PY}" exp23_two_stage_pool_morphology_sweep/code/export_accelerate_checkpoint_to_diffueraser.py \
       --checkpoint_dir "${ckpt}" \
       --template_weights "${template}" \
@@ -97,7 +99,9 @@ export_checkpoint() {
       --stage "${stage}" \
       --step "${step}" \
       --validate_template_keys \
-      "${overwrite_args[@]}"
+      "${overwrite_args[@]}" \
+      > "${export_log}" \
+      2> "${export_err}"
   fi
   printf '%s\n' "${out}"
 }
