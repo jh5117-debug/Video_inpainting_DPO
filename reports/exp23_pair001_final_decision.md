@@ -50,6 +50,10 @@ Decision rationale: candidate S2-2000 has a small PSNR/strict-mask gain (+0.0103
 - fresh better: 16
 - candidate artifact/perceptual penalty flags: 8
 
+## Raw Outer Diagnostic
+
+Postprocessed raw-frame diagnostics show raw outer1/outer2 rings are identical to GT for both fresh and candidate (`inf` PSNR, SSIM 1.0, LPIPS 0.0). Candidate gains only in raw mask core (+0.0652 dB PSNR). The official boundary PSNR drop is therefore not evidence of raw outside-background corruption.
+
 ## Required Stop
 
 Do not launch Phase A next pair until the user explicitly decides how to handle this Pareto-mixed outcome.

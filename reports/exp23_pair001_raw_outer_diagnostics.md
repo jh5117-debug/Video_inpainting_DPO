@@ -2,7 +2,7 @@
 
 pair_id: `phaseA_scale1_pair001_outer2_corrected_outer_control_seed20260619_gpus2456`
 
-Computed from saved raw DiffuEraser frames and DAVIS masks with explicit `mask > 127`, without rerunning model inference. Positive PSNR/SSIM delta means candidate is better; positive LPIPS delta means worse.
+Computed from saved raw DiffuEraser frames and DAVIS masks with explicit `mask > 127`, without rerunning model inference. `inf` PSNR means the region is exactly identical to GT for all videos after averaging rules.
 
 | region | metric | fresh | candidate | delta |
 |---|---:|---:|---:|---:|
@@ -31,4 +31,4 @@ Computed from saved raw DiffuEraser frames and DAVIS masks with explicit `mask >
 | outer2_band | hard_ssim | 1.000000 | 1.000000 | 0.000000 |
 | outer2_band | hard_lpips | 0.000000 | 0.000000 | 0.000000 |
 
-Key observation: raw outer rings are measurable after explicit postprocessing. Candidate improves raw mask core but does not produce a clean outer-ring win; official hard-comp boundary PSNR is lower for candidate at S2-2000.
+Key observation: candidate improves raw mask-core PSNR slightly, while raw outer1/outer2 rings are identical to GT for both methods (`inf` PSNR, SSIM 1.0, LPIPS 0.0). Therefore the official boundary PSNR drop is not caused by raw background damage outside the mask.

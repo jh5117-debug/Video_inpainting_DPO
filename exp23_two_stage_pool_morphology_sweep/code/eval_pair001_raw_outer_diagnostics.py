@@ -66,8 +66,15 @@ def save_frames(frames: Sequence[np.ndarray], out_dir: Path) -> None:
 
 
 def finite_mean(values: Iterable[float]) -> float:
-    vals = [float(v) for v in values if math.isfinite(float(v))]
-    return float(np.mean(vals)) if vals else float("nan")
+    parsed = [float(v) for v in values]
+    vals = [v for v in parsed if math.isfinite(v)]
+    if vals:
+        return float(np.mean(vals))
+    if any(math.isinf(v) and v > 0 for v in parsed):
+        return float("inf")
+    if any(math.isinf(v) and v < 0 for v in parsed):
+        return float("-inf")
+    return float("nan")
 
 
 def ring_masks(mask: np.ndarray) -> Dict[str, np.ndarray]:
