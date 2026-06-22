@@ -71,7 +71,7 @@ archive_incomplete_export_dir() {
     fi
     archive="${out}.incomplete.$(date +%Y%m%d_%H%M%S)"
     mv "${out}" "${archive}"
-    echo "[exp23-eval] archived incomplete export ${out} -> ${archive}"
+    echo "[exp23-eval] archived incomplete export ${out} -> ${archive}" >&2
   fi
 }
 
