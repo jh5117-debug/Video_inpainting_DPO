@@ -69,12 +69,15 @@ build_hybrid() {
   local dpo_stage1_weights="$3"
   local out="${EXPORT_ROOT}/${model}_stage1_${step}_hybrid_sft_s2"
   if [[ ! -f "${out}/hybrid_manifest.json" ]]; then
+    mkdir -p "${out}"
     "${PY}" tools/build_diffueraser_dpoS1_sftS2_hybrid.py \
       --dpo_stage1_weights "${dpo_stage1_weights}" \
       --sft_stage2_weights "${SFT_STAGE2}" \
       --output_dir "${out}" \
       --strict false \
-      --report_path "reports/exp23_${PAIR_ID}_${model}_stage1_${step}_hybrid_key_merge_report.md"
+      --report_path "reports/exp23_${PAIR_ID}_${model}_stage1_${step}_hybrid_key_merge_report.md" \
+      > "${out}/hybrid_builder_stdout.log" \
+      2> "${out}/hybrid_builder_stderr.log"
   fi
   printf '%s\n' "${out}/last_weights"
 }
