@@ -89,7 +89,7 @@ def append_csv(path: Path, fieldnames: list[str], row: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     exists = path.exists()
     with path.open("a", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\n")
         if not exists:
             writer.writeheader()
         writer.writerow({k: row.get(k, "") for k in fieldnames})
@@ -238,4 +238,3 @@ class FileState:
 
 def now_iso() -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%S%z")
-
