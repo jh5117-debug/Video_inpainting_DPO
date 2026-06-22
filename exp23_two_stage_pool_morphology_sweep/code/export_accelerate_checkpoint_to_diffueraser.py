@@ -138,7 +138,10 @@ def main() -> int:
     }
     output.mkdir(parents=True, exist_ok=True)
     (output / "export_manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
-    print(json.dumps(manifest, indent=2))
+    # Keep stdout shell-friendly: callers use command substitution to capture
+    # the exported weights directory. The full identity payload is persisted in
+    # export_manifest.json for audit.
+    print(str(output))
     return 0
 
 
