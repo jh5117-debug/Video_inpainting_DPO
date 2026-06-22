@@ -41,6 +41,40 @@ require_file() {
   fi
 }
 
+is_export_ready() {
+  local out="$1"
+  [[ -f "${out}/export_manifest.json" ]] &&
+    [[ -f "${out}/unet_main/config.json" ]] &&
+    [[ -f "${out}/unet_main/diffusion_pytorch_model.safetensors" ]] &&
+    [[ -f "${out}/brushnet/config.json" ]] &&
+    [[ -f "${out}/brushnet/diffusion_pytorch_model.safetensors" ]]
+}
+
+is_hybrid_ready() {
+  local out="$1"
+  [[ -f "${out}/hybrid_manifest.json" ]] &&
+    [[ -f "${out}/last_weights/unet_main/config.json" ]] &&
+    [[ -f "${out}/last_weights/unet_main/diffusion_pytorch_model.safetensors" ]] &&
+    [[ -f "${out}/last_weights/brushnet/config.json" ]] &&
+    [[ -f "${out}/last_weights/brushnet/diffusion_pytorch_model.safetensors" ]]
+}
+
+archive_incomplete_export_dir() {
+  local out="$1"
+  if [[ -e "${out}" ]]; then
+    local real_out real_root archive
+    real_out="$(realpath -m "${out}")"
+    real_root="$(realpath -m "${EXPORT_ROOT}")"
+    if [[ "${real_out}" != "${real_root}"/* ]]; then
+      echo "[exp23-eval][ERROR] refusing to archive outside export root: ${real_out}" >&2
+      exit 2
+    fi
+    archive="${out}.incomplete.$(date +%Y%m%d_%H%M%S)"
+    mv "${out}" "${archive}"
+    echo "[exp23-eval] archived incomplete export ${out} -> ${archive}"
+  fi
+}
+
 export_checkpoint() {
   local model="$1"
   local stage="$2"
@@ -50,7 +84,11 @@ export_checkpoint() {
   local out="${EXPORT_ROOT}/${model}_${stage}_${step}_weights"
   require_file "${ckpt}/model.safetensors" "${model} ${stage} checkpoint-${step} model"
   require_file "${ckpt}/model_1.safetensors" "${model} ${stage} checkpoint-${step} model_1"
-  if [[ ! -f "${out}/export_manifest.json" ]]; then
+  if ! is_export_ready "${out}"; then
+    local overwrite_args=()
+    if [[ -e "${out}" ]]; then
+      overwrite_args=(--overwrite)
+    fi
     "${PY}" exp23_two_stage_pool_morphology_sweep/code/export_accelerate_checkpoint_to_diffueraser.py \
       --checkpoint_dir "${ckpt}" \
       --template_weights "${template}" \
@@ -58,7 +96,8 @@ export_checkpoint() {
       --model_label "${model}" \
       --stage "${stage}" \
       --step "${step}" \
-      --validate_template_keys
+      --validate_template_keys \
+      "${overwrite_args[@]}"
   fi
   printf '%s\n' "${out}"
 }
@@ -68,7 +107,10 @@ build_hybrid() {
   local step="$2"
   local dpo_stage1_weights="$3"
   local out="${EXPORT_ROOT}/${model}_stage1_${step}_hybrid_sft_s2"
-  if [[ ! -f "${out}/hybrid_manifest.json" ]]; then
+  if ! is_hybrid_ready "${out}"; then
+    if [[ -e "${out}" ]]; then
+      archive_incomplete_export_dir "${out}"
+    fi
     mkdir -p "${out}"
     "${PY}" tools/build_diffueraser_dpoS1_sftS2_hybrid.py \
       --dpo_stage1_weights "${dpo_stage1_weights}" \
