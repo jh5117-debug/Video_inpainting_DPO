@@ -1799,3 +1799,28 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+## 2026-06-22 Exp25 EffectErase VOR HAL-to-PAI transfer
+
+Exp25 is a download-only data asset track for EffectErase VOR / OR preference
+data preparation.
+
+```text
+branch = research/exp25-vor-or-preference-data
+status = INVENTORY_LOCKED_TRANSFER_READY
+HF account = JiaHuang01
+dataset = FudanCVL/EffectErase
+dataset_revision = fa09dc61128ca0418a4a13364d97a08018ea9cc7
+core_scope = README + VOR-Eval + VOR-Train-MASK + VOR-Train
+excluded_this_round = VOR-Wild
+required_files = 37
+required_total_bytes = 363730944386
+hal_staging = /home/hj/exp25_effecterase_staging
+pai_download_root = /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads
+```
+
+PAI cannot reach `huggingface.co`, so Exp25 uses HAL-authenticated Hugging Face
+download, one archive part at a time, followed by HAL-to-PAI rsync, dual SHA256
+verification, atomic PAI finalize, and immediate HAL cleanup for the current
+part. Exp25 does not enter the Exp23 worktree, use GPUs, run inference, generate
+losers, or start DPO training.

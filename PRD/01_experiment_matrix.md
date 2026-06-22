@@ -600,3 +600,16 @@ weak and damages the pairwise DPO interpretation, so it is not a main method.
 ## Exp20 Status Addendum (2026-06-20)
 
 Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-step candidate is EQ_BF07 (fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean), PSNR 29.393079. It remains below TARGET_DEV_PSNR 29.523336 and has mixed perceptual/temporal tradeoffs, so status is COMPLETED_NEGATIVE for this budget and no long training / Stage2 / DAVIS50 / YouTubeVOS100 final eval was launched.
+## Exp25: EffectErase VOR data transfer
+
+| Item | Value |
+| --- | --- |
+| Branch | `research/exp25-vor-or-preference-data` |
+| Status | `INVENTORY_LOCKED_TRANSFER_READY` |
+| Purpose | Download-only HAL-to-PAI EffectErase VOR archive transfer for future OR-DPO preference data work |
+| Dataset | `FudanCVL/EffectErase` |
+| Revision | `fa09dc61128ca0418a4a13364d97a08018ea9cc7` |
+| Scope | README, VOR-Eval, VOR-Train-MASK, VOR-Train |
+| Excluded | VOR-Wild |
+| GPU use | None |
+| Exp23 isolation | Do not enter/modify Exp23; read-only monitor only |

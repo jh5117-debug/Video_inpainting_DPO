@@ -1,0 +1,9 @@
+runtime/
+logs/
+reports/*.log
+*.partial
+*.bad.*
+jobs/
+cache/
+download/
+

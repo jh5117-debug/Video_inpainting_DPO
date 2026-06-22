@@ -1,0 +1,58 @@
+[
+  {
+    "exists": false,
+    "free_bytes": 571536965632,
+    "path": "/home/hj/exp25_effecterase_staging",
+    "reason": "first safe candidate with required free bytes",
+    "selected": true,
+    "writable": true
+  },
+  {
+    "exists": true,
+    "free_bytes": 571536965632,
+    "path": "/home/hj",
+    "reason": "",
+    "selected": false,
+    "writable": true
+  },
+  {
+    "exists": false,
+    "free_bytes": 277321605120,
+    "path": "/tmp/hj_exp25_effecterase",
+    "reason": "",
+    "selected": false,
+    "writable": true
+  },
+  {
+    "exists": false,
+    "free_bytes": 0,
+    "path": "/scratch/hj",
+    "reason": "",
+    "selected": false,
+    "writable": false
+  },
+  {
+    "exists": false,
+    "free_bytes": 0,
+    "path": "/mnt/scratch/hj",
+    "reason": "",
+    "selected": false,
+    "writable": false
+  },
+  {
+    "exists": false,
+    "free_bytes": 0,
+    "path": "/home/nvmeArray/hj",
+    "reason": "not user-owned namespace",
+    "selected": false,
+    "writable": false
+  },
+  {
+    "exists": true,
+    "free_bytes": 0,
+    "path": "/home/nvmeArray",
+    "reason": "not user-owned namespace",
+    "selected": false,
+    "writable": false
+  }
+]

@@ -1,0 +1,23 @@
+Python 3.13.9
+Python 3.13.9
+Name: huggingface_hub
+Version: 1.20.1
+Summary: Client library to download and publish models, datasets and other repos on the huggingface.co hub
+Home-page: https://github.com/huggingface/huggingface_hub
+Author: Hugging Face, Inc.
+Author-email: julien@huggingface.co
+License: Apache-2.0
+Location: /home/hj/.venvs/hf_effecterase/lib/python3.13/site-packages
+Requires: click, filelock, fsspec, hf-xet, httpx, packaging, pyyaml, tqdm, typer, typing-extensions
+Required-by: 
+---
+Name: hf-xet
+Version: 1.5.1
+Summary: Fast transfer of large files with the Hugging Face Hub.
+Home-page: https://github.com/huggingface/xet-core
+Author: 
+Author-email: 
+License-Expression: Apache-2.0
+Location: /home/hj/.venvs/hf_effecterase/lib/python3.13/site-packages
+Requires: 
+Required-by: huggingface_hub
