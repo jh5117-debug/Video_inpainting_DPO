@@ -20,6 +20,7 @@ METRIC_MAP = {
     "TC": "tc",
     "Ewarp": "ewarp",
     "strict_mask_PSNR": "strict_mask_pixel_psnr",
+    "mask_region_SSIM": "mask_region_ssim",
     "boundary_PSNR": "boundary_pixel_psnr",
 }
 
@@ -139,6 +140,51 @@ def compare_pair(
     return rows, payload
 
 
+def summary_value(row: Dict[str, object], metric_key: str) -> Optional[float]:
+    if metric_key == "vfid":
+        return as_float(row.get("vfid"))
+    return as_float(row.get(f"{metric_key}_mean"))
+
+
+def compare_summary_pairs(summaries: Sequence[Dict[str, object]]) -> List[Dict[str, object]]:
+    by_label = {str(row.get("label")): row for row in summaries}
+    metric_keys = {
+        "PSNR": "whole_video_psnr",
+        "SSIM": "whole_video_ssim",
+        "LPIPS": "whole_video_lpips",
+        "TC": "tc",
+        "Ewarp": "ewarp",
+        "VFID": "vfid",
+        "strict_mask_PSNR": "strict_mask_pixel_psnr",
+        "mask_region_SSIM": "mask_region_ssim",
+        "boundary_PSNR": "boundary_pixel_psnr",
+    }
+    rows: List[Dict[str, object]] = []
+    for step in [1000, 1500, 2000]:
+        for candidate, fresh in [
+            (f"candidate_s2_{step}", f"fresh_s2_{step}"),
+            (f"candidate_stage1_{step}_sft_s2", f"fresh_stage1_{step}_sft_s2"),
+        ]:
+            if candidate not in by_label or fresh not in by_label:
+                continue
+            for metric, key in metric_keys.items():
+                cand_val = summary_value(by_label[candidate], key)
+                fresh_val = summary_value(by_label[fresh], key)
+                if cand_val is None or fresh_val is None:
+                    continue
+                rows.append(
+                    {
+                        "candidate": candidate,
+                        "fresh": fresh,
+                        "metric": metric,
+                        "candidate_value": cand_val,
+                        "fresh_value": fresh_val,
+                        "delta": cand_val - fresh_val,
+                    }
+                )
+    return rows
+
+
 def summarize_diag_file(path: Path, model: str, stage: str) -> Dict[str, object]:
     if not path.exists():
         return {"model": model, "stage": stage, "status": "missing", "path": str(path)}
@@ -146,15 +192,28 @@ def summarize_diag_file(path: Path, model: str, stage: str) -> Dict[str, object]
     out: Dict[str, object] = {"model": model, "stage": stage, "status": "ok", "rows": len(rows), "path": str(path)}
     for col, prefix in [
         ("loss", "loss"),
+        ("total_loss", "total_loss"),
         ("dpo_loss", "dpo_loss"),
         ("implicit_acc", "implicit_acc"),
+        ("mse_w", "mse_w"),
+        ("mse_l", "mse_l"),
+        ("ref_mse_w", "ref_mse_w"),
+        ("ref_mse_l", "ref_mse_l"),
+        ("raw_win_gap", "raw_win_gap"),
+        ("raw_lose_gap", "raw_lose_gap"),
         ("loser_dominant_ratio", "loser_dominant_ratio"),
         ("grad_norm", "grad_norm"),
-        ("winner_improvement", "winner_improvement"),
-        ("loser_degradation", "loser_degradation"),
+        ("mse_w_over_ref_mse_w", "mse_w_over_ref_mse_w"),
+        ("mse_l_over_ref_mse_l", "mse_l_over_ref_mse_l"),
         ("norm_win_gap", "norm_win_gap"),
         ("norm_lose_gap", "norm_lose_gap"),
         ("norm_lose_gap_clipped", "norm_lose_gap_clipped"),
+        ("mask_win_gap", "mask_win_gap"),
+        ("mask_lose_gap", "mask_lose_gap"),
+        ("boundary_win_gap", "boundary_win_gap"),
+        ("boundary_lose_gap", "boundary_lose_gap"),
+        ("outside_win_gap", "outside_win_gap"),
+        ("outside_lose_gap", "outside_lose_gap"),
     ]:
         if rows and col not in rows[0]:
             continue
@@ -165,12 +224,29 @@ def summarize_diag_file(path: Path, model: str, stage: str) -> Dict[str, object]
         out[f"{prefix}_p99"] = finite_percentile(vals, 99)
         out[f"{prefix}_final"] = as_float(rows[-1].get(col)) if rows else None
     nan_inf = 0
+    grad_vals = [v for v in (as_float(r.get("grad_norm")) for r in rows) if v is not None]
+    out["grad_gt_10_count"] = int(sum(v > 10 for v in grad_vals))
+    out["grad_gt_50_count"] = int(sum(v > 50 for v in grad_vals))
+    out["grad_gt_100_count"] = int(sum(v > 100 for v in grad_vals))
     for row in rows:
         for value in row.values():
             text = str(value).strip().lower()
             if text in {"nan", "inf", "-inf"}:
                 nan_inf += 1
     out["nan_inf_token_count"] = nan_inf
+    winner_improvements = []
+    loser_degradations = []
+    for row in rows:
+        win_gap = as_float(row.get("norm_win_gap"))
+        lose_gap = as_float(row.get("norm_lose_gap_clipped"))
+        if win_gap is None or lose_gap is None:
+            continue
+        winner_improvements.append(max(0.0, -win_gap))
+        loser_degradations.append(max(0.0, lose_gap))
+    out["winner_improvement_mean"] = float(np.mean(winner_improvements)) if winner_improvements else float("nan")
+    out["loser_degradation_mean"] = float(np.mean(loser_degradations)) if loser_degradations else float("nan")
+    out["winner_improvement_final"] = winner_improvements[-1] if winner_improvements else None
+    out["loser_degradation_final"] = loser_degradations[-1] if loser_degradations else None
     return out
 
 
@@ -192,6 +268,7 @@ def main() -> int:
 
     summaries, per_video = collect_eval_rows(args.eval_root)
     write_csv(Path(f"{args.report_prefix}_davis50_paired_eval.csv"), summaries)
+    write_csv(Path(f"{args.report_prefix}_summary_deltas.csv"), compare_summary_pairs(summaries))
 
     curve_rows: List[Dict[str, object]] = []
     for label_row in summaries:
@@ -262,6 +339,7 @@ def main() -> int:
         "## Output Files",
         "",
         f"- metrics: `{args.report_prefix}_davis50_paired_eval.csv`",
+        f"- summary deltas: `{args.report_prefix}_summary_deltas.csv`",
         f"- checkpoint curve: `{args.report_prefix}_checkpoint_curve.csv`",
         f"- paired statistics: `{args.report_prefix}_paired_statistics.csv`",
         f"- bootstrap: `{args.report_prefix}_bootstrap.json`",

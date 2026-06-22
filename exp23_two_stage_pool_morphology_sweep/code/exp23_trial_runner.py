@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import os
 import socket
@@ -24,7 +25,6 @@ EVAL_ROOT = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp23_tw
 
 @dataclass(frozen=True)
 class RegionConfig:
-    name: str
     legacy_exact: bool
     boundary_mode: str
     pool_grid_scale: int
@@ -36,12 +36,31 @@ class RegionConfig:
 
 
 @dataclass(frozen=True)
+class ModelPlan:
+    name: str
+    stage1_region: RegionConfig
+    stage2_region: RegionConfig
+
+
+@dataclass(frozen=True)
 class RunConfig:
     pair_id: str
     seed: int = 20260619
     stage1_steps: int = 2000
     stage2_steps: int = 2000
     checkpointing_steps: int = 500
+
+
+QUEUE_STATES = {
+    "queued",
+    "training_control_s1",
+    "training_control_s2",
+    "training_candidate_s1",
+    "training_candidate_s2",
+    "evaluating",
+    "completed",
+    "failed",
+}
 
 
 def choose_free_port() -> int:
@@ -65,6 +84,77 @@ def append_csv(path: Path, row: dict[str, object]) -> None:
         if not exists:
             writer.writeheader()
         writer.writerow(row)
+
+
+def append_jsonl(path: Path, row: dict[str, object]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        fh.write(json.dumps(row, sort_keys=True) + "\n")
+
+
+def append_queue_event(pair_id: str, state: str, payload: dict[str, object] | None = None) -> None:
+    if state not in QUEUE_STATES:
+        raise ValueError(f"unknown queue state: {state}")
+    row: dict[str, object] = {
+        "time": time.strftime("%Y-%m-%d %H:%M:%S"),
+        "pair_id": pair_id,
+        "state": state,
+    }
+    if payload:
+        row.update(payload)
+    append_jsonl(REG_ROOT / "queue_events.jsonl", row)
+    append_jsonl(EXP_ROOT / "queue_events.jsonl", row)
+
+
+def stable_config_hash(payload: dict[str, object]) -> str:
+    encoded = json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()[:16]
+
+
+def pair_config_hash(run: RunConfig, plans: list[ModelPlan]) -> str:
+    """Hash only immutable scientific config, not runtime paths or pair_id."""
+    payload = {
+        "seed": run.seed,
+        "stage1_steps": run.stage1_steps,
+        "stage2_steps": run.stage2_steps,
+        "checkpointing_steps": run.checkpointing_steps,
+        "models": [
+            {
+                "name": plan.name,
+                "stage1_region": asdict(plan.stage1_region),
+                "stage2_region": asdict(plan.stage2_region),
+            }
+            for plan in plans
+        ],
+        "dataset_manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl",
+        "sft_init": "/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000",
+        "beta_dpo": 10,
+        "lose_gap_weight": 0.25,
+        "winner_abs_reg_weight": 0.05,
+        "winner_gap_reg_weight": 1.0,
+    }
+    return stable_config_hash(payload)
+
+
+def latest_checkpoint(output_dir: Path) -> Path | None:
+    checkpoints = []
+    for path in output_dir.glob("checkpoint-*"):
+        if not path.is_dir():
+            continue
+        try:
+            step = int(path.name.split("-", 1)[1])
+        except Exception:
+            continue
+        checkpoints.append((step, path))
+    if not checkpoints:
+        return None
+    return sorted(checkpoints)[-1][1]
+
+
+def resume_args(output_dir: Path) -> list[str]:
+    if (output_dir / "last_weights" / "unet_main" / "config.json").exists():
+        return []
+    return ["--resume_from_checkpoint", "latest"] if latest_checkpoint(output_dir) else []
 
 
 def run_logged(cmd: list[str], log_path: Path, env: dict[str, str]) -> int:
@@ -164,6 +254,7 @@ def base_args(out_dir: Path, run: RunConfig, region: RegionConfig, stage: int, s
             "--ref_model_path", "/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000",
             "--max_train_steps", str(run.stage2_steps),
         ]
+    args += resume_args(out_dir)
     return args
 
 
@@ -195,22 +286,30 @@ def make_env(gpus: str) -> dict[str, str]:
     return env
 
 
-def run_model(run: RunConfig, region: RegionConfig, phy_python: str, gpus: str, nproc: int) -> int:
-    model_root = OUTPUT_ROOT / "pairs" / run.pair_id / region.name
-    log_dir = LOG_ROOT / "pairs" / run.pair_id / region.name
+def run_model(run: RunConfig, plan: ModelPlan, phy_python: str, gpus: str, nproc: int, queue_role: str) -> int:
+    model_root = OUTPUT_ROOT / "pairs" / run.pair_id / plan.name
+    log_dir = LOG_ROOT / "pairs" / run.pair_id / plan.name
     stage1_dir = model_root / "stage1"
     stage2_dir = model_root / "stage2"
-    write_json(model_root / "region_config.json", asdict(region))
+    write_json(
+        model_root / "region_config.json",
+        {
+            "model": plan.name,
+            "stage1_region": asdict(plan.stage1_region),
+            "stage2_region": asdict(plan.stage2_region),
+        },
+    )
     env = make_env(gpus)
 
     stage1_last = stage1_dir / "last_weights"
     if not (stage1_last / "unet_main" / "config.json").exists():
+        append_queue_event(run.pair_id, f"training_{queue_role}_s1", {"model": plan.name})
         rc = run_logged(
             torchrun(
                 phy_python,
                 nproc,
                 "exp23_two_stage_pool_morphology_sweep/code/train_exp23_stage1.py",
-                base_args(stage1_dir, run, region, stage=1),
+                base_args(stage1_dir, run, plan.stage1_region, stage=1),
             ),
             log_dir / "stage1.log",
             env,
@@ -220,12 +319,13 @@ def run_model(run: RunConfig, region: RegionConfig, phy_python: str, gpus: str, 
 
     stage2_last = stage2_dir / "last_weights"
     if not (stage2_last / "unet_main" / "config.json").exists():
+        append_queue_event(run.pair_id, f"training_{queue_role}_s2", {"model": plan.name})
         rc = run_logged(
             torchrun(
                 phy_python,
                 nproc,
                 "exp23_two_stage_pool_morphology_sweep/code/train_exp23_stage2.py",
-                base_args(stage2_dir, run, region, stage=2, stage1_weights=stage1_last),
+                base_args(stage2_dir, run, plan.stage2_region, stage=2, stage1_weights=stage1_last),
             ),
             log_dir / "stage2.log",
             env,
@@ -235,55 +335,105 @@ def run_model(run: RunConfig, region: RegionConfig, phy_python: str, gpus: str, 
     return 0
 
 
+def build_auto_eval_command(pair_id: str) -> list[str]:
+    return [
+        "bash",
+        "exp23_two_stage_pool_morphology_sweep/scripts/eval_exp23_pair001_davis50_pai.sh",
+    ]
+
+
+def run_pair_eval(run: RunConfig, env: dict[str, str]) -> int:
+    append_queue_event(run.pair_id, "evaluating", {"script": "eval_exp23_pair001_davis50_pai.sh"})
+    eval_env = dict(env)
+    eval_env["PAIR_ID"] = run.pair_id
+    eval_env.setdefault("EVAL_GPU", "2")
+    eval_env.setdefault("COMPUTE_VFID", "1")
+    eval_env.setdefault("COMPUTE_TC", "1")
+    eval_env.setdefault("COMPUTE_EWARP", "1")
+    return run_logged(
+        build_auto_eval_command(run.pair_id),
+        LOG_ROOT / "pairs" / run.pair_id / "paired_davis50_eval.log",
+        eval_env,
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pair-id", default="phaseA_scale1_pair001_outer2")
     parser.add_argument("--gpus", default="4,5,6,7")
     parser.add_argument("--nproc-per-node", type=int, default=4)
     parser.add_argument("--phy-python", default=os.environ.get("PHY_PYTHON", "/mnt/nas/hj/conda_envs/diffueraser/bin/Phy"))
+    parser.add_argument("--auto-eval", action="store_true", help="Run paired DAVIS50 after both models finish.")
+    parser.add_argument("--no-auto-eval", action="store_false", dest="auto_eval")
+    parser.set_defaults(auto_eval=True)
     args = parser.parse_args()
 
     OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     LOG_ROOT.mkdir(parents=True, exist_ok=True)
     EVAL_ROOT.mkdir(parents=True, exist_ok=True)
     run = RunConfig(pair_id=args.pair_id)
-    regions = [
-        RegionConfig("fresh_exp11_outer_b075", True, "outer", 1, 0, 1, 0.0, 0.75, 0.75),
-        RegionConfig("candidate_scale1_outer2_b075", False, "outer", 1, 0, 2, 0.0, 0.75, 0.75),
+    plans = [
+        ModelPlan(
+            "fresh_exp11_outer_b075",
+            RegionConfig(True, "outer", 1, 0, 1, 0.0, 0.75, 0.75),
+            RegionConfig(True, "outer", 1, 0, 1, 0.0, 0.75, 0.75),
+        ),
+        ModelPlan(
+            "candidate_scale1_outer2_b075",
+            RegionConfig(False, "outer", 1, 0, 2, 0.0, 0.75, 0.75),
+            RegionConfig(False, "outer", 1, 0, 2, 0.0, 0.75, 0.75),
+        ),
     ]
+    config_hash = pair_config_hash(run, plans)
     state = {
-        "status": "RUNNING",
+        "status": "queued",
         "pair_id": run.pair_id,
+        "config_hash": config_hash,
         "gpus": args.gpus,
         "nproc_per_node": args.nproc_per_node,
         "started_at": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
+    append_queue_event(run.pair_id, "queued", {"config_hash": config_hash})
     write_json(REG_ROOT / "queue_state.json", state)
     write_json(EXP_ROOT / "queue_state.json", state)
+    write_json(OUTPUT_ROOT / "pairs" / run.pair_id / "pair_config.json", {"run": asdict(run), "models": [asdict(p) for p in plans], "config_hash": config_hash})
 
-    for index, region in enumerate(regions, start=1):
+    for index, plan in enumerate(plans, start=1):
         row = {
             "time": time.strftime("%Y-%m-%d %H:%M:%S"),
             "pair_id": run.pair_id,
-            "model": region.name,
+            "model": plan.name,
             "stage": "start",
             "queue_index": index,
             "gpus": args.gpus,
+            "config_hash": config_hash,
         }
         append_csv(REG_ROOT / "process_registry.csv", row)
-        state.update({"current_model": region.name, "queue_index": index})
+        state.update({"status": "running", "current_model": plan.name, "queue_index": index})
         write_json(REG_ROOT / "queue_state.json", state)
-        rc = run_model(run, region, args.phy_python, args.gpus, args.nproc_per_node)
+        queue_role = "control" if index == 1 else "candidate"
+        rc = run_model(run, plan, args.phy_python, args.gpus, args.nproc_per_node, queue_role=queue_role)
         row["time"] = time.strftime("%Y-%m-%d %H:%M:%S")
         row["stage"] = "done" if rc == 0 else "failed"
         append_csv(REG_ROOT / "process_registry.csv", row)
         if rc != 0:
-            state.update({"status": "FAILED", "failed_model": region.name, "returncode": rc})
+            append_queue_event(run.pair_id, "failed", {"model": plan.name, "returncode": rc})
+            state.update({"status": "failed", "failed_model": plan.name, "returncode": rc})
             write_json(REG_ROOT / "queue_state.json", state)
             write_json(EXP_ROOT / "queue_state.json", state)
             return rc
 
-    state.update({"status": "STAGE1_STAGE2_PAIR_COMPLETED", "finished_at": time.strftime("%Y-%m-%d %H:%M:%S")})
+    if args.auto_eval:
+        rc = run_pair_eval(run, make_env(args.gpus))
+        if rc != 0:
+            append_queue_event(run.pair_id, "failed", {"stage": "eval", "returncode": rc})
+            state.update({"status": "failed", "failed_stage": "eval", "returncode": rc})
+            write_json(REG_ROOT / "queue_state.json", state)
+            write_json(EXP_ROOT / "queue_state.json", state)
+            return rc
+
+    append_queue_event(run.pair_id, "completed", {"config_hash": config_hash})
+    state.update({"status": "completed", "finished_at": time.strftime("%Y-%m-%d %H:%M:%S")})
     write_json(REG_ROOT / "queue_state.json", state)
     write_json(EXP_ROOT / "queue_state.json", state)
     return 0
