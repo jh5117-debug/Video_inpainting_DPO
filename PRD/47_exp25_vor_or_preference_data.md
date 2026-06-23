@@ -62,3 +62,8 @@ has 1/1 expected part, VOR-Train-MASK has 3/3 expected parts, and VOR-Train has
 actual byte counts match for all three groups. A stream probe opened each
 split gzip/tar stream and inspected the first five members with zero unsafe
 paths found.
+
+VOR-Eval was then fully extracted as the held-out final evaluation split. The
+extracted `BG`, `FG_BG`, and `MASK` directories each contain 43 mp4 files, and
+their basenames match exactly. This establishes the OR triplet semantics:
+`condition=FG_BG/V_obj`, `winner=BG/V_bg`, and `mask=MASK`.

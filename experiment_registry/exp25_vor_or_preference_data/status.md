@@ -50,3 +50,8 @@ Archive audit: `reports/vor_archive_integrity.md` passed on PAI with matching
 part counts and byte counts for VOR-Eval, VOR-Train-MASK, and VOR-Train. Stream
 probe opened all three split gzip/tar streams and found zero unsafe paths in
 the probed members.
+
+VOR-Eval extraction: completed on PAI under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_eval_full`.
+`BG`, `FG_BG`, and `MASK` each contain 43 aligned mp4 files and are reserved for
+held-out final evaluation only.
