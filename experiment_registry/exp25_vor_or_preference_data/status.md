@@ -55,3 +55,19 @@ VOR-Eval extraction: completed on PAI under
 `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_eval_full`.
 `BG`, `FG_BG`, and `MASK` each contain 43 aligned mp4 files and are reserved for
 held-out final evaluation only.
+# Exp25 Registry Status
+
+CORE_DOWNLOAD_COMPLETE
+FULL_MEMBER_INDEX_COMPLETE
+TRIPLET_PAIRING_CONFIRMED
+GROUP_SPLITS_LOCKED
+GATE128_EXTRACTED
+SMOKE_PARTIAL_BLOCKED
+
+## Current Smoke Status
+
+- ProPainter: PASS, 6/6.
+- DiffuEraser: BLOCKED by PCM LoRA adapter API mismatch.
+- EffectErase: BLOCKED, verified wrapper/checkpoint unresolved.
+
+Full Gate128 OR loser generation has not started.

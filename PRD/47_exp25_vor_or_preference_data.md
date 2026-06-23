@@ -67,3 +67,21 @@ VOR-Eval was then fully extracted as the held-out final evaluation split. The
 extracted `BG`, `FG_BG`, and `MASK` directories each contain 43 mp4 files, and
 their basenames match exactly. This establishes the OR triplet semantics:
 `condition=FG_BG/V_obj`, `winner=BG/V_bg`, and `mask=MASK`.
+
+## 2026-06-23 Gate128 OR Smoke
+
+Gate128 extraction is complete and a balanced 6-sample smoke set was materialized
+as exact 24-frame inputs. ProPainter generated valid raw OR losers for all six
+smoke samples with `hard_comp=false`.
+
+DiffuEraser did not pass smoke: all six samples failed before generation because
+the current DiffuEraser OR wrapper attempts to load PCM LoRA weights through a
+diffusers API path that calls `UNetMotionModel.load_lora_adapter`, which is not
+available in the active PAI environment. This is an inference-wrapper
+compatibility blocker, not a VOR data issue.
+
+EffectErase did not run because Exp25 still lacks a verified EffectErase
+inference wrapper/checkpoint path. No fallback model was used.
+
+Full Gate128 loser generation remains blocked until DiffuEraser and EffectErase
+smoke pass under verified, no-fallback wrappers.
