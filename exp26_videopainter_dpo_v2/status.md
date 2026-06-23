@@ -72,3 +72,13 @@ winner/loser losses and region-local normalized-gap DPO.
 - Gate64 remains pending; no VideoPainter self-loser generation or GPU training was started.
 
 Status: `FORMAL_49F_TOOLING_READY_PENDING_PAI_EXTRACTION`.
+
+## 2026-06-23 Probe4
+
+- Selective VOR-BG extraction: `4/4`.
+- Formal 49F materialization: `4/4`.
+- Moving BR mask generation: `4/4`.
+- First-frame GT mask invariant: `first_frame_sum=0` for all four samples.
+- Gate64 not started; this was a source/mask probe only.
+
+Status: `FORMAL_49F_PROBE4_PASSED`.

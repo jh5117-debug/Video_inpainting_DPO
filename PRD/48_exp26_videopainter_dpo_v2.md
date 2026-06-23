@@ -121,3 +121,22 @@ moving BR mask per materialized source and forces `mask[0]=0` when
 `first_frame_gt=true`.
 
 Status: `FORMAL_49F_TOOLING_READY_PENDING_PAI_EXTRACTION`.
+
+## 2026-06-23 VOR-BG 49F Probe4
+
+Using the locked VOR-BG train-source manifest, Exp26 performed a CPU/NAS-only
+probe on four samples:
+
+- selective extraction from VOR-Train archive: `4/4`;
+- formal 49F decode: `4/4`, exactly 49 unique real frames each;
+- original videos: 240 frames, 30 fps, 1280x720;
+- moving BR masks: `4/4`;
+- `first_frame_gt=true`: all first-frame masks sum to zero.
+
+No VideoPainter self-loser generation, Gate64, or GPU training was launched.
+
+Status: `FORMAL_49F_PROBE4_PASSED`.
+
+Report:
+
+`reports/exp26_vp2_49f_probe4_status.md`
