@@ -28,6 +28,11 @@ class TestVORArchiveSafety(unittest.TestCase):
     def test_sample_id_heuristic(self):
         self.assertEqual(sample_id_from_member("VOR-Train/000123/frame_000.png"), "000123/frame_000.png")
 
+    def test_sample_id_skips_vor_role_dirs(self):
+        self.assertEqual(sample_id_from_member("VOR-Train/FG_BG/REAL_ENV900_00001_001_03.mp4"), "REAL_ENV900_00001_001_03")
+        self.assertEqual(sample_id_from_member("VOR-Train/BG/REAL_ENV900_00001_001_03.mp4"), "REAL_ENV900_00001_001_03")
+        self.assertEqual(sample_id_from_member("MASK/REAL_ENV900_00001_001_03.mp4"), "REAL_ENV900_00001_001_03")
+
 
 if __name__ == "__main__":
     unittest.main()

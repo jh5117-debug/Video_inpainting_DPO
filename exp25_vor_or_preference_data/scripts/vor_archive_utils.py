@@ -154,7 +154,18 @@ def sample_id_from_member(name: str) -> str:
 
     name = normalize_member_name(name)
     parts = [p for p in name.split("/") if p]
-    while parts and parts[0] in {"VOR-Train", "VOR-Train-MASK", "VOR-Eval", "train", "eval", "mask", "masks"}:
+    while parts and parts[0] in {
+        "VOR-Train",
+        "VOR-Train-MASK",
+        "VOR-Eval",
+        "train",
+        "eval",
+        "mask",
+        "masks",
+        "FG_BG",
+        "BG",
+        "MASK",
+    }:
         parts = parts[1:]
     if not parts:
         return ""
