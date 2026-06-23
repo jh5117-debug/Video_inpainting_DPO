@@ -32,8 +32,14 @@ several issues before any GPU training:
 - `noised_image_dropout` is applied to first-frame image latents;
 - first-frame GT conditioning now forces winner, loser, condition, and mask to
   be mutually consistent;
-- formal frame count defaults to 49 frames; 13-frame runs require
-  `--plumbing_only_13f` and are labelled plumbing-only;
+- formal frame count defaults to 49 frames and requires the loader to select
+  exactly 49 frames; 16-frame inputs now fail instead of silently trimming to
+  13;
+- 13-frame runs require `--plumbing_only_13f` and are labelled plumbing-only;
+- `--first_frame_gt` / `--no-first_frame_gt` now controls whether first-frame
+  winner/loser/condition/mask consistency is enforced;
+- official optimizer/scheduler defaults can be parsed from the current
+  VideoPainter trainer and written to a locked JSON before parity gates;
 - `itertools.cycle(loader)` is removed in favor of a resumable epoch iterator;
 - loser-dominant diagnostics use the project definition: correct preference
   and loser degradation greater than winner improvement;
