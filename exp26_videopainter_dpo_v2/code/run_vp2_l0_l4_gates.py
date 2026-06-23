@@ -213,9 +213,17 @@ def make_fixed_noise_timestep(trainer: VideoPainterDPOTrainer, batch: VideoPaint
     return noise, timestep
 
 
-def branch_digest(trainer: VideoPainterDPOTrainer, batch: VideoPainterBatch, noise: torch.Tensor, timesteps: torch.Tensor) -> Dict[str, object]:
+def branch_digest(
+    trainer: VideoPainterDPOTrainer,
+    batch: VideoPainterBatch,
+    noise: torch.Tensor,
+    timesteps: torch.Tensor,
+    *,
+    rng_seed: int,
+) -> Dict[str, object]:
     trainer.policy_branch.eval()
     with torch.no_grad():
+        torch.manual_seed(rng_seed)
         winner = batch.winner.to(trainer.device)
         conditioning = batch.conditioning.to(trainer.device)
         mask = batch.mask.to(trainer.device)
@@ -310,7 +318,8 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
     batch = one_batch(formal_manifest, targs)
     noise, timesteps = make_fixed_noise_timestep(trainer, batch, args.seed)
 
-    l0_digest = branch_digest(trainer, batch, noise, timesteps)
+    digest_seed = args.seed + 17
+    l0_digest = branch_digest(trainer, batch, noise, timesteps, rng_seed=digest_seed)
     if not l0_digest["finite"]:
         raise RuntimeError("L0 native forward produced non-finite output")
     report["L0"] = {
@@ -351,13 +360,13 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
 
     trainer.policy_branch.train()
     optimizer = make_vp2_optimizer(trainer.policy_branch.parameters(), targs)
-    before = branch_digest(trainer, batch, noise, timesteps)
+    before = branch_digest(trainer, batch, noise, timesteps, rng_seed=digest_seed)
     optimizer.zero_grad(set_to_none=True)
     loss = native_policy_loss(trainer, batch, noise, timesteps)
     loss.backward()
     torch.nn.utils.clip_grad_norm_(trainer.policy_branch.parameters(), targs.max_grad_norm)
     optimizer.step()
-    after = branch_digest(trainer, batch, noise, timesteps)
+    after = branch_digest(trainer, batch, noise, timesteps, rng_seed=digest_seed)
     delta = digest_delta(before, after)
     if delta <= 0.0:
         raise RuntimeError("L3 one-step update did not change native output digest")
@@ -379,7 +388,7 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
     reload_batch = one_batch(formal_manifest, reload_args)
     reload_noise = noise.to(device=reloaded.device, dtype=reloaded.weight_dtype)
     reload_timesteps = timesteps.to(device=reloaded.device)
-    reload_digest = branch_digest(reloaded, reload_batch, reload_noise, reload_timesteps)
+    reload_digest = branch_digest(reloaded, reload_batch, reload_noise, reload_timesteps, rng_seed=digest_seed)
     reload_output_delta = digest_delta(post_digest, reload_digest)
     if reload_output_delta > 1e-3:
         raise RuntimeError(f"L3 reload output drift too large: {reload_output_delta}")
