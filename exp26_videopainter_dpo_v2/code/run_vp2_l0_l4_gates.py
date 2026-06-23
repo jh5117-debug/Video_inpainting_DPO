@@ -244,6 +244,35 @@ def branch_digest(trainer: VideoPainterDPOTrainer, batch: VideoPainterBatch, noi
     }
 
 
+def native_policy_loss(
+    trainer: VideoPainterDPOTrainer,
+    batch: VideoPainterBatch,
+    noise: torch.Tensor,
+    timesteps: torch.Tensor,
+) -> torch.Tensor:
+    """Single-policy native denoising loss for L3 optimizer/update parity."""
+
+    winner = batch.winner.to(trainer.device)
+    conditioning = batch.conditioning.to(trainer.device)
+    mask = batch.mask.to(trainer.device)
+    with torch.no_grad():
+        prompt_embeds = trainer.prompt_embeds(batch.prompts)
+        conditioning_latents, latent_mask = trainer.prepare_conditioning(conditioning, mask, winner.shape[1])
+        winner_latents = trainer.encode_latents(winner)
+        image_latents = trainer.prepare_image_latents(conditioning, winner_latents.shape[1])
+    pred = trainer.branch_forward(
+        trainer.policy_branch,
+        winner_latents,
+        conditioning_latents,
+        image_latents,
+        latent_mask,
+        prompt_embeds,
+        noise,
+        timesteps,
+    )
+    return (pred.float() - winner_latents.float()).pow(2).mean()
+
+
 def state_max_abs_diff(a: Dict[str, torch.Tensor], b: Dict[str, torch.Tensor]) -> float:
     if set(a) != set(b):
         missing = sorted(set(a) - set(b))
@@ -324,7 +353,7 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
     optimizer = make_vp2_optimizer(trainer.policy_branch.parameters(), targs)
     before = branch_digest(trainer, batch, noise, timesteps)
     optimizer.zero_grad(set_to_none=True)
-    loss, diag3 = trainer.compute_losses(batch, fixed_noise=noise, fixed_timesteps=timesteps)
+    loss = native_policy_loss(trainer, batch, noise, timesteps)
     loss.backward()
     torch.nn.utils.clip_grad_norm_(trainer.policy_branch.parameters(), targs.max_grad_norm)
     optimizer.step()
@@ -357,7 +386,7 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
     report["L3"] = {
         "status": "passed",
         "one_step_loss": float(loss.detach().float().cpu()),
-        "dpo_loss": diag3["dpo_loss"],
+        "loss_type": "formal_49f_native_policy_loss",
         "output_delta_after_update": delta,
         "checkpoint": str(ckpt),
         "state_max_abs_diff_after_reload": max_state_diff,
