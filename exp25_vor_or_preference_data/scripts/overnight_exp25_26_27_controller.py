@@ -295,6 +295,8 @@ def run_cpu_exp25_prepare_gate32(run_root: Path, snapshot_root: Path) -> None:
         return
     if task_status(run_root, "exp25_smoke6_d0") != "completed":
         return
+    if task_status(run_root, "exp27_linear_real_batch_parity") != "completed":
+        return
     exp25 = latest_snapshot(snapshot_root, "exp25")
     try:
         payload = prepare_exp25_gate32(exp25, run_root)
@@ -626,7 +628,6 @@ def main() -> int:
         run_cpu_exp25_prepare(args.run_root, args.snapshot_root)
         run_cpu_effecterase_inventory(args.run_root, args.snapshot_root)
         run_cpu_exp27_parity(args.run_root, args.snapshot_root)
-        run_cpu_exp25_prepare_gate32(args.run_root, args.snapshot_root)
         gpus, apps, _raw = query_gpus()
         idle = idle_gpus(gpus, apps)
         launched = False
@@ -655,6 +656,7 @@ def main() -> int:
                     dependency="exp27_sdpo_real_batch_parity",
                 )
             if not launched:
+                run_cpu_exp25_prepare_gate32(args.run_root, args.snapshot_root)
                 maybe_launch_exp25_gate32(args.run_root, args.snapshot_root, idle)
         write_heartbeat(args.run_root, gpus, apps, idle, started_at)
         write_queue(args.run_root)
