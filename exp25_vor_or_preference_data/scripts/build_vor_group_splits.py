@@ -111,6 +111,30 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
             f.write(json.dumps(row, sort_keys=True) + "\n")
 
 
+def sample_rows_by_source(rows: list[dict], count: int, ratios: dict[str, float], rng: random.Random) -> list[dict]:
+    by_source: dict[str, list[dict]] = defaultdict(list)
+    for row in rows:
+        by_source[row["source_type"]].append(row)
+    for source_rows in by_source.values():
+        rng.shuffle(source_rows)
+    targets = {src: int(round(count * ratios.get(src, 0.0))) for src in by_source}
+    while sum(targets.values()) < count:
+        src = max(by_source, key=lambda s: ratios.get(s, 0.0) - targets.get(s, 0) / max(1, count))
+        targets[src] += 1
+    while sum(targets.values()) > count:
+        src = max(targets, key=targets.get)
+        targets[src] -= 1
+    picked: list[dict] = []
+    for src, target in targets.items():
+        picked.extend(by_source[src][:target])
+    if len(picked) < count:
+        remainder = [r for src_rows in by_source.values() for r in src_rows if r not in picked]
+        rng.shuffle(remainder)
+        picked.extend(remainder[: count - len(picked)])
+    rng.shuffle(picked)
+    return picked[:count]
+
+
 def main() -> int:
     args = parse_args()
     rng = random.Random(args.seed)
@@ -134,9 +158,7 @@ def main() -> int:
     search_groups, search_rows = assign_group_pool(groups_by_source, rows_by_group, used_groups, args.search_dev_count, rng, ratios)
     shadow_groups, shadow_rows = assign_group_pool(groups_by_source, rows_by_group, used_groups, args.shadow_dev_count, rng, ratios)
     train_groups, train_rows = assign_group_pool(groups_by_source, rows_by_group, used_groups, args.train_count, rng, ratios)
-    gate_rows = train_rows[:]
-    rng.shuffle(gate_rows)
-    gate_rows = gate_rows[: args.gate_count]
+    gate_rows = sample_rows_by_source(train_rows, args.gate_count, ratios, rng)
 
     outputs = {
         "train_source_pool": args.output_dir / "vor_train_source_pool_4096.jsonl",
@@ -173,6 +195,9 @@ def main() -> int:
         "scene_group_counts": {k: len(v) for k, v in group_sets.items()},
         "group_overlap_counts": {k: len(v) for k, v in overlap.items()},
         "group_overlaps": overlap,
+        "train_source_counts": dict(Counter(r["source_type"] for r in train_rows)),
+        "search_dev_source_counts": dict(Counter(r["source_type"] for r in search_rows)),
+        "shadow_dev_source_counts": dict(Counter(r["source_type"] for r in shadow_rows)),
         "gate128_source_counts": dict(Counter(r["source_type"] for r in gate_rows)),
     }
     args.report_json.parent.mkdir(parents=True, exist_ok=True)
