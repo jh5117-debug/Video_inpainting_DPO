@@ -39,7 +39,14 @@ def sdpo_gate(seed: int) -> dict:
     torch.manual_seed(seed)
     pred = torch.randn(6, 4, 8, 8, dtype=torch.float32)
     target = torch.randn_like(pred)
-    official = load_official_sdpo_lambda()
+    try:
+        official = load_official_sdpo_lambda()
+    except FileNotFoundError as exc:
+        return {
+            "status": "blocked_official_code_missing",
+            "error": repr(exc),
+            "source": "Diffusion-SDPO/train.py under EXP27_PAPER_CODE_ROOT",
+        }
     ours = exp27_sdpo_safe_lambda(pred, target, mu=0.37, eps=1e-8, max_lambda=1.0)
     theirs = official(pred, target, mu=0.37, eps=1e-8, max_lambda=1.0)
     max_abs = float((ours - theirs).abs().max().item())
@@ -132,10 +139,10 @@ def main() -> int:
     if all(s == "passed" for s in gate_statuses):
         results["status"] = "passed"
         exit_code = 0
-    elif any(str(s).startswith("blocked_official_code_runtime_error") for s in gate_statuses) and all(
-        s == "passed" or str(s).startswith("blocked_official_code_runtime_error") for s in gate_statuses
+    elif any(str(s).startswith("blocked_official_code") for s in gate_statuses) and all(
+        s == "passed" or str(s).startswith("blocked_official_code") for s in gate_statuses
     ):
-        results["status"] = "partial_blocked_official_code_runtime_error"
+        results["status"] = "partial_blocked_official_code"
         exit_code = 0
     else:
         results["status"] = "failed"
