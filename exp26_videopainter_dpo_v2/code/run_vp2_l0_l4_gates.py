@@ -171,7 +171,7 @@ def make_args(base: argparse.Namespace, output_dir: Path, diag_csv: Path, manife
         branch_layer_num=2,
         enable_slicing=True,
         enable_tiling=True,
-        gradient_checkpointing=False,
+        gradient_checkpointing=True,
         mask_add=True,
         wo_text=False,
         add_first=False,
@@ -292,8 +292,9 @@ def run_l0_l3(args: argparse.Namespace, formal_manifest: Path, out_dir: Path) ->
         "frames": 49,
     }
 
-    loss1, diag1 = trainer.compute_losses(batch, fixed_noise=noise, fixed_timesteps=timesteps)
-    loss2, diag2 = trainer.compute_losses(batch, fixed_noise=noise, fixed_timesteps=timesteps)
+    with torch.no_grad():
+        loss1, diag1 = trainer.compute_losses(batch, fixed_noise=noise, fixed_timesteps=timesteps)
+        loss2, diag2 = trainer.compute_losses(batch, fixed_noise=noise, fixed_timesteps=timesteps)
     l1_diff = max(abs(float(loss1.detach().cpu()) - float(loss2.detach().cpu())), abs(diag1["dpo_loss"] - diag2["dpo_loss"]))
     if l1_diff > 1e-5:
         raise RuntimeError(f"L1 same-batch/noise/timestep parity failed: diff={l1_diff}")

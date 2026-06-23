@@ -39,6 +39,7 @@ setsid nohup bash -lc "
   cd '$ROOT'
   export CUDA_VISIBLE_DEVICES='$CUDA_VISIBLE_DEVICES'
   export PYTHONUNBUFFERED=1
+  export PYTORCH_CUDA_ALLOC_CONF='expandable_segments:True'
   python '$RUNNER' \
     --videopainter_root '$VP_ROOT' \
     --pretrained_model_name_or_path '$VP_BASE_MODEL' \

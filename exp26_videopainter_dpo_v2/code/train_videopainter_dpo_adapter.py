@@ -559,6 +559,8 @@ class VideoPainterDPOTrainer:
             self.vae.enable_slicing()
         if args.enable_tiling:
             self.vae.enable_tiling()
+        if args.gradient_checkpointing and hasattr(self.transformer, "enable_gradient_checkpointing"):
+            self.transformer.enable_gradient_checkpointing()
         if args.gradient_checkpointing and hasattr(self.policy_branch, "enable_gradient_checkpointing"):
             self.policy_branch.enable_gradient_checkpointing()
 
