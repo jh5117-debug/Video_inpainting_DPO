@@ -97,3 +97,23 @@ Full Gate128 OR loser generation has not started.
 - Decision: `DIFFUERASER_NO_PCM_TECHNICAL_PASS`.
 - Gate128 readiness: `false`.
 - Reason: insufficient medium-hard loser utility in Smoke6; too many outputs are too close to winner, plus one visible residual-artifact case.
+
+## 2026-06-23 Overnight Autonomous Controller
+
+- Status: `OVERNIGHT_CONTROLLER_RUNNING_WAITING_GPU`.
+- Controller PID on PAI: `1903925`.
+- Runtime root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- PAI runtime code was created from tracked git archives under
+  `/mnt/workspace/hj/nas_hj/runtime_code_snapshots/`.
+- Fixed six-sample Gate128 materialization for canonical d0 Smoke6 completed:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/materialized/gate128_smoke6_canonical_d0_24f/smoke6_materialized.jsonl`.
+- Fresh canonical DiffuEraser Smoke6 d0 is queued and has not run because
+  GPU2/4/5/6 are all occupied by other jobs; GPU7 remains excluded by policy.
+- EffectErase remote inventory completed on HAL at revision
+  `fa09dc61128ca0418a4a13364d97a08018ea9cc7` with `37` required files and
+  `363730944386` total bytes.
+- Independent PAI EffectErase checksum verification is still running from HAL
+  as background PID `3577126`.
+- Gate32/Gate128 OR generation remains blocked until the canonical d0 Smoke6
+  finishes and receives real metric plus visual review.

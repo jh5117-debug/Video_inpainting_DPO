@@ -25,3 +25,22 @@ Latest commit on PAI at status write: $(git rev-parse HEAD)
   `DE_CANONICAL_RAW6_NO_PCM_PROP_PRIOR` with `mask_dilation_iter=0`.
 - Gate32/Gate128 remain blocked until fresh canonical Smoke6 is run and
   visually reviewed.
+
+## 2026-06-23 Overnight Autonomous Controller
+
+- Controller launched on PAI with PID `1903925`.
+- Runtime root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- PAI snapshots were created with git archive, not full worktree rsync.
+- Exp25 controller snapshot: `a4b031bc8326f600756c724af062db68f0d9f7b3`.
+- Fixed six-sample Gate128 Smoke6 materialization completed at:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/materialized/gate128_smoke6_canonical_d0_24f/smoke6_materialized.jsonl`.
+- Fresh canonical DiffuEraser Smoke6 d0 remains queued because GPU2/4/5/6
+  are all occupied by other jobs; GPU7 remains excluded.
+- EffectErase remote inventory completed on HAL:
+  revision `fa09dc61128ca0418a4a13364d97a08018ea9cc7`,
+  required files `37`, total bytes `363730944386`.
+- EffectErase PAI checksum verification is running as HAL background PID
+  `3577126`.
+- Gate32/Gate128 OR generation remains blocked until canonical d0 Smoke6
+  completes and is visually reviewed.
