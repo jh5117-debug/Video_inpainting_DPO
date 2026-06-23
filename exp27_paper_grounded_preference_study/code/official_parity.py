@@ -13,6 +13,7 @@ from __future__ import annotations
 import ast
 import importlib.util
 import json
+import os
 import random
 import sys
 from pathlib import Path
@@ -22,7 +23,7 @@ import numpy as np
 import torch
 
 
-PAPER_CODE_ROOT = Path("/home/hj/video_dpo_paper_code_cache/repos")
+PAPER_CODE_ROOT = Path(os.environ.get("EXP27_PAPER_CODE_ROOT", "/home/hj/video_dpo_paper_code_cache/repos"))
 
 
 def exp27_sdpo_safe_lambda(
@@ -119,8 +120,8 @@ def localdpo_mask_digest(
     """Generate LocalDPO official masks and return deterministic digest metadata."""
     random.seed(seed)
     np.random.seed(seed)
-    module = load_localdpo_random_mask_module()
     try:
+        module = load_localdpo_random_mask_module()
         if connected_components == 1:
             masks = module.create_random_shape_with_random_motion(
                 video_length,
@@ -143,11 +144,17 @@ def localdpo_mask_digest(
                 imageHeight=image_height,
                 imageWidth=image_width,
             )
+    except FileNotFoundError as exc:
+        return {
+            "status": "blocked_official_code_missing",
+            "error": repr(exc),
+            "source": str(PAPER_CODE_ROOT / "Local-DPO" / "innerT2V" / "utils" / "random_mask_gen.py"),
+        }
     except Exception as exc:  # noqa: BLE001 - parity gate records official runtime failures.
         return {
             "status": "blocked_official_code_runtime_error",
             "error": repr(exc),
-            "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+            "source": str(PAPER_CODE_ROOT / "Local-DPO" / "innerT2V" / "utils" / "random_mask_gen.py"),
         }
     arr = np.stack([np.array(m, dtype=np.uint8) for m in masks], axis=0)
     return {

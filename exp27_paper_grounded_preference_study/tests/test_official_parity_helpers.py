@@ -37,6 +37,9 @@ class TestOfficialParityHelpers(unittest.TestCase):
         a = localdpo_mask_digest(seed=123, video_length=4, image_height=64, image_width=96)
         b = localdpo_mask_digest(seed=123, video_length=4, image_height=64, image_width=96)
         self.assertEqual(a, b)
+        if a.get("status") == "blocked_official_code_missing":
+            self.assertIn("random_mask_gen.py", a["source"])
+            return
         if a.get("status") == "blocked_official_code_runtime_error":
             self.assertIn("random_mask_gen.py", a["source"])
             self.assertIn("reshape", a["error"])
@@ -47,6 +50,9 @@ class TestOfficialParityHelpers(unittest.TestCase):
         a = localdpo_mask_digest_compat(seed=123, video_length=4, image_height=64, image_width=96)
         b = localdpo_mask_digest_compat(seed=123, video_length=4, image_height=64, image_width=96)
         self.assertEqual(a, b)
+        if a.get("status") == "blocked_official_code_missing":
+            self.assertIn("random_mask_gen.py", a["source"])
+            return
         self.assertEqual(a["status"], "passed_with_official_code_compatibility_patch")
         self.assertEqual(a["shape"], [4, 64, 96])
         self.assertIn("ARGB", a["patch"])

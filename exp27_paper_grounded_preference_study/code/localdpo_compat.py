@@ -10,6 +10,7 @@ logic.
 from __future__ import annotations
 
 import importlib.util
+import os
 import random
 import sys
 from pathlib import Path
@@ -19,7 +20,7 @@ from PIL import Image
 import cv2
 
 
-PAPER_CODE_ROOT = Path("/home/hj/video_dpo_paper_code_cache/repos")
+PAPER_CODE_ROOT = Path(os.environ.get("EXP27_PAPER_CODE_ROOT", "/home/hj/video_dpo_paper_code_cache/repos"))
 LOCALDPO_RANDOM_MASK = PAPER_CODE_ROOT / "Local-DPO" / "innerT2V" / "utils" / "random_mask_gen.py"
 
 
@@ -95,7 +96,14 @@ def localdpo_mask_digest_compat(
 ) -> dict:
     random.seed(seed)
     np.random.seed(seed)
-    module = patch_get_random_shape(load_official_random_mask_module())
+    try:
+        module = patch_get_random_shape(load_official_random_mask_module())
+    except FileNotFoundError as exc:
+        return {
+            "status": "blocked_official_code_missing",
+            "error": repr(exc),
+            "source": str(LOCALDPO_RANDOM_MASK),
+        }
     if connected_components == 1:
         masks = module.create_random_shape_with_random_motion(
             video_length,
