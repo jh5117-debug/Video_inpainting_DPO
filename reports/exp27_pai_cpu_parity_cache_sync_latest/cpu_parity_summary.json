@@ -1,0 +1,61 @@
+{
+  "linear_dpo": {
+    "ema_max_abs_diff": 0.0,
+    "ema_update": "ema <- decay * ema + (1-decay) * model after optimizer step",
+    "grad_finite": true,
+    "loss": 0.09172474592924118,
+    "status": "passed",
+    "utility": "ratio = clamp(0.2 * beta_dpo * (model_diff - ref_diff) + 0.5, eta, 1-eta)"
+  },
+  "localdpo_latent_fusion": {
+    "adaptation_status": "algorithm_primitive_passed_real_diffueraser_batch_pending",
+    "inside_denoised_max_abs": 0.0,
+    "mask_semantics": "corruption_mask=1 uses denoised latent; corruption_mask=0 reinjects re-noised original latent",
+    "outside_preservation_max_abs": 0.0,
+    "progressive_step_max_abs": 0.0,
+    "status": "passed"
+  },
+  "localdpo_mask": {
+    "digest": {
+      "first_frame_sum": 210375,
+      "last_frame_sum": 296055,
+      "matplotlib_rgb_shim": "installed",
+      "mean": 9.273415242165242,
+      "sha256": "6560a6bb7100bb22622edc3962df7b678eaef6aed46b8d21749573405b662041",
+      "shape": [
+        13,
+        120,
+        216
+      ],
+      "status": "passed",
+      "sum": 3124770
+    },
+    "repeat_digest": {
+      "first_frame_sum": 210375,
+      "last_frame_sum": 296055,
+      "matplotlib_rgb_shim": "already_installed",
+      "mean": 9.273415242165242,
+      "sha256": "6560a6bb7100bb22622edc3962df7b678eaef6aed46b8d21749573405b662041",
+      "shape": [
+        13,
+        120,
+        216
+      ],
+      "status": "passed",
+      "sum": 3124770
+    },
+    "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+    "status": "passed"
+  },
+  "real_diffueraser_batch_parity": {
+    "reason": "No GPU batch was launched in this CPU parity command; SDPO/Linear real DiffuEraser parity remains required before studies.",
+    "status": "pending"
+  },
+  "sdpo": {
+    "max_abs_diff": 0.0,
+    "official": 1.0,
+    "ours": 1.0,
+    "status": "passed"
+  },
+  "status": "passed"
+}

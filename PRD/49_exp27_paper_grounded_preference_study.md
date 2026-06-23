@@ -78,3 +78,45 @@ This is an algorithm-primitive parity step, not a full LocalDPO baseline. The
 remaining required gates are single-video local corruption, six-video pair
 generation, real DiffuEraser-batch SDPO parity, real DiffuEraser-batch
 Linear-DPO parity, and 1/10-step micro training.
+
+## 2026-06-23 PAI Official Cache Sync and CPU Primitive Parity
+
+Pinned official code caches were synced from HAL to PAI:
+
+- Local-DPO `7528e966b17283cfa638577827e456737335f030`
+- Diffusion-SDPO `84fb241c1b89705a247da8b0d6047798ca49830d`
+- Linear-DPO `663179c7adbbbd2d77b97b5841534447eb291ebd`
+
+PAI cache root:
+
+`/mnt/nas/hj/video_dpo_paper_code_cache/`
+
+The official repos remain read-only and are not committed.
+
+Exp27 now installs a narrow runtime compatibility shim for the pinned
+Local-DPO code: modern Matplotlib returns ARGB bytes and the official file
+expects RGB bytes; the official file also references `cv2` without importing
+it. The shim lives only in Exp27 adapter code and does not modify the official
+cache.
+
+PAI CPU primitive parity result:
+
+`PASSED`
+
+- LocalDPO official mask generation passed deterministically.
+- LocalDPO latent fusion / outside reinjection passed.
+- Diffusion-SDPO lambda extraction passed with `max_abs_diff=0.0`.
+- Linear-DPO primitive and EMA update passed with `ema_max_abs_diff=0.0`.
+
+Reports:
+
+- `reports/exp27_official_cache_sync.md`
+- `reports/exp27_official_cache_manifest.csv`
+- `reports/exp27_cpu_primitive_parity_after_cache_sync.md`
+
+Still pending:
+
+- real DiffuEraser batch parity for SDPO;
+- real DiffuEraser batch parity for Linear-DPO Frozen and EMA;
+- faithful LocalDPO data and original objective baseline;
+- all 1/10/50 studies and RC-FPO.

@@ -26,6 +26,37 @@ import torch
 PAPER_CODE_ROOT = Path(os.environ.get("EXP27_PAPER_CODE_ROOT", "/home/hj/video_dpo_paper_code_cache/repos"))
 
 
+def install_localdpo_matplotlib_rgb_shim() -> str:
+    """Patch current matplotlib to match Local-DPO's intended RGB buffer.
+
+    The pinned Local-DPO code calls ``fig.canvas.tostring_argb()`` and then
+    reshapes the returned bytes as ``H x W x 3``.  Modern Matplotlib correctly
+    returns four-channel ARGB bytes for that method, so the official script
+    raises a reshape error before any mask can be generated.  We keep the
+    official file read-only and install a narrow runtime shim that returns RGB
+    bytes from ``buffer_rgba()`` for this call.
+    """
+
+    try:
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+    except Exception as exc:  # pragma: no cover - only used in env diagnostics.
+        return f"shim_unavailable:{exc!r}"
+
+    if getattr(FigureCanvasAgg, "_exp27_localdpo_rgb_shim", False):
+        return "already_installed"
+
+    original = FigureCanvasAgg.tostring_argb
+
+    def _rgb_bytes(self):  # type: ignore[no-untyped-def]
+        rgba = np.asarray(self.buffer_rgba())
+        return rgba[:, :, :3].tobytes()
+
+    FigureCanvasAgg._exp27_original_tostring_argb = original  # type: ignore[attr-defined]
+    FigureCanvasAgg.tostring_argb = _rgb_bytes  # type: ignore[assignment]
+    FigureCanvasAgg._exp27_localdpo_rgb_shim = True  # type: ignore[attr-defined]
+    return "installed"
+
+
 def exp27_sdpo_safe_lambda(
     pred_eps: torch.Tensor,
     target_eps: torch.Tensor,
@@ -106,6 +137,10 @@ def load_localdpo_random_mask_module():
         raise ImportError(path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
+    if not hasattr(module, "cv2"):
+        import cv2  # type: ignore
+
+        module.cv2 = cv2
     return module
 
 
@@ -121,6 +156,7 @@ def localdpo_mask_digest(
     random.seed(seed)
     np.random.seed(seed)
     try:
+        shim_status = install_localdpo_matplotlib_rgb_shim()
         module = load_localdpo_random_mask_module()
         if connected_components == 1:
             masks = module.create_random_shape_with_random_motion(
@@ -165,6 +201,7 @@ def localdpo_mask_digest(
         "first_frame_sum": int(arr[0].sum()),
         "last_frame_sum": int(arr[-1].sum()),
         "sha256": _sha256_bytes(arr.tobytes()),
+        "matplotlib_rgb_shim": shim_status,
     }
 
 
