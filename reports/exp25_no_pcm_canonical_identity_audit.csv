@@ -1,0 +1,12 @@
+item,current_smoke6,canonical_raw6_no_pcm,official_or_default,decision
+pcm_mode,none,none,official_pcm2,canonical stays no-PCM
+prior_mode,propainter,propainter,propainter,aligned on prior
+scheduler,UniPCMultistepScheduler,UniPCMultistepScheduler,TCDScheduler for PCM2,canonical follows project raw6 not official accelerated OR
+num_inference_steps,6,6,2 for PCM2,aligned with project raw6
+guidance_scale,0.0,0.0,0.0,aligned
+mask_dilation_iter,8,0,8,current smoke6 is not canonical raw6
+resolution,512x288,512x288,official script configurable,aligned for VOR gate inputs
+frame_count,24,24,video_length configurable,aligned for VOR gate inputs
+hard_comp,false,false,false for generation / hard comp only metrics,aligned
+identity_records_dilation,no,yes,n/a,code fixed in this commit
+gate32_status,not_allowed,allowed_after_fresh_smoke6,n/a,do not use old smoke6 as canonical pass

@@ -37,6 +37,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--prior-mode", choices=["propainter"], default="propainter")
     p.add_argument("--no-pcm-steps", type=int, default=6)
     p.add_argument("--no-pcm-guidance", type=float, default=0.0)
+    p.add_argument("--mask-dilation-iter", type=int, default=8)
     return p.parse_args()
 
 
@@ -85,6 +86,7 @@ def generator_id(args: argparse.Namespace) -> str:
         "width": args.width,
         "height": args.height,
         "num_frames": args.num_frames,
+        "mask_dilation_iter": getattr(args, "mask_dilation_iter", 8),
         "diffueraser_path": str(args.diffueraser_path),
         "propainter_model_dir": str(args.propainter_model_dir),
     }
@@ -144,7 +146,7 @@ def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir
         "--height",
         str(args.height),
         "--mask_dilation_iter",
-        "8",
+        str(args.mask_dilation_iter),
     ]
 
 
@@ -167,7 +169,7 @@ def propainter_cmd(args: argparse.Namespace, row: dict, out_dir: Path) -> list[s
         "--height",
         str(args.height),
         "--mask_dilation",
-        "8",
+        str(args.mask_dilation_iter),
     ]
 
 

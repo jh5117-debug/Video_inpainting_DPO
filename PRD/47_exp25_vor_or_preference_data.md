@@ -181,3 +181,24 @@ case, several too-close/easy outputs, and one residual-artifact case.
 Report:
 
 `reports/exp25_smoke6_final_decision.md`
+
+## 2026-06-23 No-PCM Canonical Identity Correction
+
+The existing Smoke6 generator
+`diffueraser_or_none_propainter_62d00ca9c76a` is now classified as an
+OR-style no-PCM technical diagnostic, not the project raw6 canonical identity.
+The smoke launcher passed `mask_dilation_iter=8`, while the verified
+DAVIS/BR raw6 protocol uses no PCM, `6` UniPC steps, guidance `0.0`, and
+`mask_dilation_iter=0`.
+
+Exp25 now locks the canonical identity in:
+
+`exp25_vor_or_preference_data/configs/diffueraser_or_canonical_no_pcm.json`
+
+The smoke launcher and wrapper were fixed to record `mask_dilation_iter` in
+the generator identity. Gate32/Gate128 remain blocked until a fresh canonical
+Smoke6 with `mask_dilation_iter=0` passes technical and visual review.
+
+Report:
+
+`reports/exp25_no_pcm_canonical_identity_audit.md`

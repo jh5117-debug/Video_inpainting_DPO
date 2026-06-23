@@ -309,6 +309,10 @@ def main() -> None:
         "propainter_model_dir": str(Path(args.propainter_model_dir).resolve()),
         "raw_no_comp": True,
         "fallback": False,
+        "mask_dilation_iter": args.mask_dilation_iter,
+        "width": args.width,
+        "height": args.height,
+        "num_frames": args.num_frames,
     }
     if args.identity_out:
         identity_path = Path(args.identity_out)

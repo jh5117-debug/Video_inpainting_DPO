@@ -1,0 +1,29 @@
+{
+  "name": "DE_CANONICAL_RAW6_NO_PCM_PROP_PRIOR",
+  "generator_id_prefix": "diffueraser_or_canonical_raw6_no_pcm_propainter",
+  "pcm_mode": "none",
+  "prior_mode": "propainter",
+  "on_policy_status": "strict_on_policy_candidate_pending_smoke",
+  "checkpoint_root": "/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000",
+  "base_model_path": "/mnt/workspace/hj/nas_hj/weights/stable-diffusion-v1-5",
+  "vae_path": "/mnt/workspace/hj/nas_hj/weights/sd-vae-ft-mse",
+  "propainter_model_dir": "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter",
+  "scheduler": "UniPCMultistepScheduler",
+  "num_inference_steps": 6,
+  "guidance_scale": 0.0,
+  "mask_dilation_iter": 0,
+  "prompt": "remove the masked object and restore the background",
+  "frame_count": 24,
+  "resolution": {
+    "width": 512,
+    "height": 288
+  },
+  "raw_no_comp": true,
+  "hard_comp": false,
+  "fallback_allowed": false,
+  "status": "LOCKED_PENDING_CANONICAL_SMOKE6",
+  "notes": [
+    "This config matches the project's DiffuEraser DAVIS/BR raw6 no-PCM inference settings for scheduler, step count, guidance, and no eval dilation.",
+    "The earlier smoke6 generator diffueraser_or_none_propainter_62d00ca9c76a used mask_dilation_iter=8 via the smoke launcher and is therefore an OR-style diagnostic, not this canonical raw6 identity."
+  ]
+}
