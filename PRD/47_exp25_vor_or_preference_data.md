@@ -147,3 +147,37 @@ It only patches the temporary overlay copy of `diffueraser_OR.py`; shared code
 and old Exp15 code are not modified.
 
 Primary stack remains pending fixed smoke and visual review.
+
+## 2026-06-23 DiffuEraser no-PCM Smoke6
+
+PAI runtime snapshot:
+
+`/mnt/workspace/hj/nas_hj/runtime_code_snapshots/exp25_934ec73`
+
+Result:
+
+- `DE_NO_PCM_PROP_PRIOR` generated the fixed Smoke6 set successfully.
+- Generator ID: `diffueraser_or_none_propainter_62d00ca9c76a`.
+- Decode/frame result: `6/6`, 24 frames each.
+- Hard comp: `false`.
+- VOR-Eval: not used.
+
+Important environment fix:
+
+The first probe failed because PyAV was missing. Installing public package
+`av==17.1.0` fixed the torchvision video I/O dependency. This does not change
+the model checkpoint or PCM mode.
+
+Visual decision:
+
+`DIFFUERASER_NO_PCM_TECHNICAL_PASS`
+
+`READY_GATE128 = false`
+
+Reason: the wrapper is technically valid, but loser utility is not yet strong
+enough. The fixed Smoke6 review found only one clearly medium-hard eligible
+case, several too-close/easy outputs, and one residual-artifact case.
+
+Report:
+
+`reports/exp25_smoke6_final_decision.md`

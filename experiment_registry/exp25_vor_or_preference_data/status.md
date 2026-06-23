@@ -87,3 +87,13 @@ Full Gate128 OR loser generation has not started.
 - `none` removes the PCM load only inside a temporary overlay copy, sets an explicit no-PCM scheduler step/guidance identity, and is the strict on-policy primary candidate pending VOR smoke.
 - ProPainter prior remains a separate `prior_mode=propainter` variable and is retained for the main comparison.
 - Gate128 remains blocked until fixed Smoke6 generation, metrics, and visual review pass.
+
+## 2026-06-23 DiffuEraser no-PCM Smoke6
+
+- Generator: `diffueraser_or_none_propainter_62d00ca9c76a`.
+- Technical generation: `6/6` fixed Smoke6 samples, 24 frames each, raw/no-comp.
+- PAI environment fix: installed public `av==17.1.0` for torchvision video I/O.
+- Visual review completed on six contact sheets.
+- Decision: `DIFFUERASER_NO_PCM_TECHNICAL_PASS`.
+- Gate128 readiness: `false`.
+- Reason: insufficient medium-hard loser utility in Smoke6; too many outputs are too close to winner, plus one visible residual-artifact case.
