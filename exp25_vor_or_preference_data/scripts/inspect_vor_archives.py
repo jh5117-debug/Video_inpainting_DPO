@@ -49,6 +49,14 @@ def load_transfer_manifest(path: Path) -> list[dict]:
         return list(csv.DictReader(f))
 
 
+def load_first_existing_csv(paths: list[Path]) -> list[dict]:
+    for path in paths:
+        rows = load_transfer_manifest(path)
+        if rows:
+            return rows
+    return []
+
+
 def probe_group(parts: list[Path], group: str, max_members: int) -> dict:
     out = {"opened": False, "members": 0, "unsafe": [], "first_members": [], "error": ""}
     try:
@@ -72,14 +80,21 @@ def main() -> int:
     args = parse_args()
     required = load_required(args.required_files)
     if not required:
+        manifest_rows = load_first_existing_csv(
+            [
+                args.transfer_manifest,
+                Path("experiment_registry/exp25_vor_or_preference_data/download_manifest.csv"),
+                Path("reports/effecterase_pai_inventory_verification.csv"),
+            ]
+        )
         required = [
             {
                 "filename": row.get("filename", ""),
                 "group": row.get("group") or group_for_name(row.get("filename", "")),
-                "size": int(row.get("size") or 0),
+                "size": int(row.get("size") or row.get("expected_size") or row.get("actual_size") or 0),
             }
-            for row in load_transfer_manifest(args.transfer_manifest)
-            if row.get("status") == "VERIFIED" and group_for_name(row.get("filename", "")) in set(GROUP_PREFIX)
+            for row in manifest_rows
+            if row.get("status") in {"VERIFIED", "OK"} and group_for_name(row.get("filename", "")) in set(GROUP_PREFIX)
         ]
     expected_by_name = {Path(r["filename"]).name: int(r.get("size") or 0) for r in required}
     groups = {}
