@@ -10,7 +10,14 @@ Build a paper-grounded research track that compares LocalDPO, Diffusion-SDPO, an
 - VOR-Eval is final-only and forbidden for selection/threshold/checkpoint choice.
 
 ## Current State
-Initialized on branch `research/exp27-paper-grounded-preference-study`.
+
+Status: `PAPER_REVIEW_COMPLETE`
+
+Status: `EXACT_BASELINE_REPRODUCTION_IN_PROGRESS`
+
+Status: `NO_LONG_TRAINING`
+
+Branch: `research/exp27-paper-grounded-preference-study`.
 
 ## 2026-06-23 Update
 
@@ -28,3 +35,27 @@ Initialized on branch `research/exp27-paper-grounded-preference-study`.
 - Paused Region-SDPO and Linear-DPO as baselines/ablations rather than primary novelty.
 
 No long Exp27 training has been started.
+
+## 2026-06-23 LocalDPO Runtime Diagnosis
+
+The official LocalDPO random mask generator fails in the current dependency
+environment even under the official default image size. Root cause: official
+`random_mask_gen.py` reads a 4-channel `tostring_argb()` matplotlib canvas
+buffer and reshapes it as 3-channel RGB. After that is fixed, the file also
+uses `cv2.resize` without importing `cv2`.
+
+Exp27 now adds an isolated compatibility wrapper that does not edit the
+official clone:
+
+`exp27_paper_grounded_preference_study/code/localdpo_compat.py`
+
+Mask-only compatibility status:
+
+`OFFICIAL_CODE_COMPATIBILITY_PATCH_MASK_ONLY_PASSED`
+
+Faithful LocalDPO baseline remains incomplete until progressive corruption,
+outside latent reinjection/fusion, six-video pair smoke, and 1/10-step training
+smoke pass.
+
+SDPO and Linear-DPO remain toy parity only; real DiffuEraser-batch parity is
+pending.

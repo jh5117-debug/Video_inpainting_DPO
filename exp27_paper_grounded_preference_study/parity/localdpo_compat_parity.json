@@ -1,0 +1,33 @@
+{
+  "default_probe": {
+    "first_frame_sum": 2900115,
+    "last_frame_sum": 3048525,
+    "mean": 28.07792467948718,
+    "patch": "drop ARGB alpha channel before official RGB postprocess; provide cv2 dependency in wrapper",
+    "sha256": "7534f699da624961be58988140767e2e524ed556d639e7103e47a7605035bfa9",
+    "shape": [
+      13,
+      240,
+      432
+    ],
+    "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+    "status": "passed_with_official_code_compatibility_patch",
+    "sum": 37844550
+  },
+  "small_probe": {
+    "first_frame_sum": 86700,
+    "last_frame_sum": 86700,
+    "mean": 14.111328125,
+    "patch": "drop ARGB alpha channel before official RGB postprocess; provide cv2 dependency in wrapper",
+    "sha256": "583f42ea17bfda077e0b8380fa35c5fab1767162de8774653f2b4cb59a77082e",
+    "shape": [
+      4,
+      64,
+      96
+    ],
+    "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+    "status": "passed_with_official_code_compatibility_patch",
+    "sum": 346800
+  },
+  "status": "passed_with_official_code_compatibility_patch"
+}

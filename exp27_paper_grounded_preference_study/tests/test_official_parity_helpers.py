@@ -8,6 +8,9 @@ from exp27_paper_grounded_preference_study.code.official_parity import (
     linear_dpo_clip_ratio,
     localdpo_mask_digest,
 )
+from exp27_paper_grounded_preference_study.code.localdpo_compat import (
+    localdpo_mask_digest_compat,
+)
 
 
 class TestOfficialParityHelpers(unittest.TestCase):
@@ -39,6 +42,14 @@ class TestOfficialParityHelpers(unittest.TestCase):
             self.assertIn("reshape", a["error"])
             return
         self.assertEqual(a["shape"], [4, 64, 96])
+
+    def test_localdpo_compat_mask_deterministic(self):
+        a = localdpo_mask_digest_compat(seed=123, video_length=4, image_height=64, image_width=96)
+        b = localdpo_mask_digest_compat(seed=123, video_length=4, image_height=64, image_width=96)
+        self.assertEqual(a, b)
+        self.assertEqual(a["status"], "passed_with_official_code_compatibility_patch")
+        self.assertEqual(a["shape"], [4, 64, 96])
+        self.assertIn("ARGB", a["patch"])
 
 
 if __name__ == "__main__":
