@@ -20,6 +20,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--shadow-dev-count", type=int, default=256)
     p.add_argument("--gate-count", type=int, default=128)
     p.add_argument("--seed", type=int, default=20260623)
+    p.add_argument("--exclude-sample-ids", type=Path, help="Optional text file of sample ids to exclude from all outputs.")
     p.add_argument("--report-md", type=Path, default=Path("reports/vor_group_split_audit.md"))
     p.add_argument("--report-json", type=Path, default=Path("reports/vor_group_split_audit.json"))
     return p.parse_args()
@@ -48,6 +49,12 @@ def load_rows(path: Path) -> list[dict]:
                 raise ValueError(f"missing scene_group for {row.get('sample_id')}")
             rows.append(row)
     return rows
+
+
+def load_excludes(path: Path | None) -> set[str]:
+    if path is None:
+        return set()
+    return {line.strip() for line in path.read_text().splitlines() if line.strip()}
 
 
 def sha256(path: Path) -> str:
@@ -107,7 +114,8 @@ def write_jsonl(path: Path, rows: list[dict]) -> None:
 def main() -> int:
     args = parse_args()
     rng = random.Random(args.seed)
-    rows = load_rows(args.triplet_jsonl)
+    excludes = load_excludes(args.exclude_sample_ids)
+    rows = [r for r in load_rows(args.triplet_jsonl) if r.get("sample_id") not in excludes]
     rows_by_group: dict[str, list[dict]] = defaultdict(list)
     for row in rows:
         rows_by_group[row["scene_group"]].append(row)
@@ -157,6 +165,7 @@ def main() -> int:
         "input": str(args.triplet_jsonl),
         "input_sha256": sha256(args.triplet_jsonl),
         "total_triplets": len(rows),
+        "excluded_sample_ids": len(excludes),
         "total_scene_groups": len(rows_by_group),
         "source_counts": dict(source_counts),
         "outputs": {k: str(v) for k, v in outputs.items()},
