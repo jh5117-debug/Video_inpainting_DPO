@@ -36,3 +36,12 @@ The PAI completion marker exists at:
 `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE`
 
 The transfer manifest contains 37 VERIFIED rows and zero HAL/PAI SHA256 mismatches. Final independent PAI inventory verification completed with `ok=true`: 37 OK files, 0 partial files, 0 bad files, 363730944386 final bytes, and contiguous VOR-Train archive parts 000-031.
+
+## Current Work
+
+Status: `SELECTIVE_OR_DATA_TOOLING_STARTED`
+
+Added initial Exp25-only scripts for lightweight archive inspection, resumable
+member indexing, safe selective extraction, extracted-subset validation, and
+canonical VOR OR manifest semantics. No VOR archive was decompressed in full,
+no loser generation was started, and no GPU training was launched in this step.

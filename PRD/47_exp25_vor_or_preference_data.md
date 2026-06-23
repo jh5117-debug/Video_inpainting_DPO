@@ -34,3 +34,22 @@ The completion marker exists on PAI:
 `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE`
 
 Final PAI-side inventory verification completed successfully after transfer. The independent verifier checked all 37 required files under the fixed revision directory, reported `ok=true`, found 0 partial files and 0 bad files, and confirmed contiguous archive parts for VOR-Eval, VOR-Train-MASK, and VOR-Train. The append-only transfer manifest also contains 37 VERIFIED rows and zero HAL/PAI SHA256 mismatches from transfer-time checks.
+
+## Next Phase: Selective OR Data Construction
+
+The next phase must not materialize or generate losers for the full 60K VOR
+training set. Exp25 now adds isolated tooling for:
+
+- lightweight split-archive continuity and byte-count inspection;
+- resumable tar member indexing with path-safety checks;
+- selective extraction of VOR-Eval and chosen VOR-Train/VOR-Train-MASK sample
+  IDs;
+- validation of extracted subsets;
+- canonical OR manifest semantics where `condition = V_obj`, `winner = V_bg`,
+  `mask = foreground object mask`, `hard_comp = false`, and losers are raw
+  generator outputs.
+
+The first formal source pool remains capped at 4096 train candidate triplets,
+256 search-dev triplets, and 256 shadow-dev triplets. Preference manifests must
+be nested at 512/1024/2048/3072, with 4096 allowed only if 3072 remains clearly
+better than 2048.
