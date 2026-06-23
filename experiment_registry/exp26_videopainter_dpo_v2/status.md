@@ -63,3 +63,16 @@ exact 49-frame decode audit, and generated moving BR masks.
   protocol.
 - Official 49F VideoPainter Probe4 inference is still pending a free allowed
   GPU; no Gate16/Gate64 generation or training has started.
+
+## 2026-06-23 Probe4 Official 49F Inference
+
+- Status: `PROBE4_OFFICIAL_49F_INFERENCE_PASSED`.
+- GPU: `2`.
+- Rows: `4/4`.
+- Frames: `49` for every row.
+- Output:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp26_probe4_official_inference`.
+- Summary:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp26_probe4_official_inference/probe4_official_inference_summary.json`.
+- Report: `reports/exp26_probe4_official_inference_result.md`.
+- Gate16/Gate64 and DPO training remain unstarted.

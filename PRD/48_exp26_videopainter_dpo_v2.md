@@ -186,3 +186,28 @@ frames, and 13-frame fallback.
 Report:
 
 `reports/exp26_official_49f_sampler_parity.md`
+
+## 2026-06-23 Probe4 Official 49F Inference
+
+The overnight controller used GPU2 to run official VideoPainter inference on
+the locked Probe4 formal 49-frame sources.
+
+Result:
+
+- Status: `PASSED`.
+- Rows: `4/4`.
+- Frames: `49` for every row.
+- Base model: CogVideoX-5b-I2V official checkpoint.
+- Branch checkpoint: official VideoPainter branch checkpoint.
+- Inference steps: `20`.
+- dtype: `bf16`.
+
+Output:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp26_probe4_official_inference`
+
+Report:
+
+`reports/exp26_probe4_official_inference_result.md`
+
+Gate16/Gate64 and DPO training remain unstarted.
