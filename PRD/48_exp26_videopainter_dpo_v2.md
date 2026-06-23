@@ -51,3 +51,22 @@ Status: `VP2_STATIC_FIXES_STARTED`
 
 No VideoPainter v2 GPU training, self-loser generation, DAVIS50 evaluation, or
 long checkpoint gate has been started in this commit.
+## 2026-06-23 49F Source Split Attempt
+
+The formal 49-frame source split builder was run on PAI against:
+
+`/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train`
+
+Result:
+
+- valid 49F candidates: `0`
+- failed candidates: `3471`
+- required candidates: `640`
+- max frame count seen: `36`
+- max mask count seen: `36`
+
+Therefore Gate64 official VideoPainter self-loser generation was not launched.
+This follows the Exp26 formal guard: 13-frame plumbing data is not acceptable
+for formal 49F preference data.
+
+Status: `BLOCKED_INSUFFICIENT_49F_SOURCE`.

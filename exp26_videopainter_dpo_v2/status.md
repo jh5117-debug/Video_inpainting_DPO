@@ -56,3 +56,10 @@ winner/loser losses and region-local normalized-gap DPO.
 - L3 one-step native optimizer + strict save/reload + inference: passed
 - L4 10-step smoke: passed, PLUMBING_ONLY_13F
 - No long training started.
+## 2026-06-23 49F Source Split
+
+- L0-L4 remain passed.
+- Formal 49-frame source split construction was attempted.
+- The available YouTube-VOS directory contains sparse frame sequences; sampled videos had 36 and 20 frames.
+- No formal Gate64 self-loser generation was launched.
+- Status: `BLOCKED_INSUFFICIENT_49F_SOURCE`.

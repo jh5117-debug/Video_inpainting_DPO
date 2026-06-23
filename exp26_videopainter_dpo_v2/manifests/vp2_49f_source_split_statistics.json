@@ -1,0 +1,14 @@
+{
+  "davis_root": "/mnt/workspace/hj/nas_hj/data/external/davis_432_240",
+  "failed_candidates": 3471,
+  "failure_path": "exp26_videopainter_dpo_v2/manifests/vp2_49f_source_failures.csv",
+  "frames": 49,
+  "max_frame_count_seen": 36,
+  "max_mask_count_seen": 36,
+  "reason": "need 640 valid 49f videos, found 0",
+  "required_valid_candidates": 640,
+  "seed": 20260623,
+  "status": "BLOCKED_INSUFFICIENT_49F_SOURCE",
+  "valid_candidates": 0,
+  "youtubevos_root": "/mnt/workspace/hj/nas_hj/data/external/ytbv_2019_full_resolution/train"
+}
