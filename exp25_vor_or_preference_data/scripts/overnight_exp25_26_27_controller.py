@@ -91,7 +91,10 @@ def append_csv(path: Path, row: dict[str, Any], fieldnames: list[str]) -> None:
 
 
 def latest_snapshot(root: Path, prefix: str) -> Path:
-    matches = sorted([p for p in root.glob(f"{prefix}_*") if p.is_dir()])
+    matches = sorted(
+        [p for p in root.glob(f"{prefix}_*") if p.is_dir() and (p / ".snapshot_HEAD").is_file()],
+        key=lambda p: p.stat().st_mtime,
+    )
     if not matches:
         raise FileNotFoundError(f"No snapshot found for prefix {prefix!r} under {root}")
     return matches[-1]
