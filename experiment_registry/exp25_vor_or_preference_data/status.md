@@ -62,7 +62,7 @@ FULL_MEMBER_INDEX_COMPLETE
 TRIPLET_PAIRING_CONFIRMED
 GROUP_SPLITS_LOCKED
 GATE128_EXTRACTED
-SMOKE_PARTIAL_BLOCKED
+THREE_MODEL_SMOKE_PARTIAL_BLOCKED
 
 ## Current Smoke Status
 
@@ -71,3 +71,11 @@ SMOKE_PARTIAL_BLOCKED
 - EffectErase: BLOCKED, verified wrapper/checkpoint unresolved.
 
 Full Gate128 OR loser generation has not started.
+
+## 2026-06-23 Stack Audit
+
+- DiffuEraser core checkpoint is full `brushnet/` + `unet_main`, not a LoRA training adapter.
+- The current blocker is PCM inference acceleration compatibility in the OR path.
+- `DE_OFFICIAL_PCM2` is blocked pending official-pinned environment smoke.
+- `DE_CANONICAL_NO_PCM` is BR-verified but OR/VOR-pending.
+- EffectErase official repo is cloned on HAL, but `EffectErase.ckpt` and `Wan2.1-Fun-1.3B-InP` are missing.

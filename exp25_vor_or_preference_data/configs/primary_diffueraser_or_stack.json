@@ -1,0 +1,34 @@
+{
+  "status": "PRIMARY_STACK_PENDING",
+  "date": "2026-06-23",
+  "allowed_stacks": [
+    {
+      "name": "DE_OFFICIAL_PCM2",
+      "generator_id_prefix": "diffueraser_or_official_pcm2",
+      "checkpoint_root": "/home/hj/Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000",
+      "core_checkpoint_type": "full_brushnet_unet_main",
+      "pcm_mode": "official_pcm2",
+      "pcm_weight": "/home/hj/Video_inpainting_DPO/weights/PCM_Weights/sd15/pcm_sd15_smallcfg_2step_converted.safetensors",
+      "pcm_sha256": "4c5f27a727d12146de4b1d987cee3343bca89b085d12b03c45297af05ce88ef4",
+      "official_diffueraser_commit": "8e6f279ac7531e27ad1849c6f8dab5372a8597e7",
+      "required_smoke_status": "pending"
+    },
+    {
+      "name": "DE_CANONICAL_NO_PCM",
+      "generator_id_prefix": "diffueraser_or_no_pcm",
+      "checkpoint_root": "/home/hj/Video_inpainting_DPO/weights/diffuEraser/converted_weights_step48000",
+      "core_checkpoint_type": "full_brushnet_unet_main",
+      "pcm_mode": "none",
+      "pcm_weight": null,
+      "required_smoke_status": "pending_or_specific"
+    }
+  ],
+  "selected_primary_stack": null,
+  "selection_rule": [
+    "Must match future DiffuEraser OR-DPO policy/eval stack.",
+    "Must strict-load without fallback.",
+    "Must pass the fixed six-sample raw/no-comp VOR smoke.",
+    "Must complete visual review before Gate128 generation."
+  ],
+  "blocked_reason": "DE_OFFICIAL_PCM2 failed in active environment at PCM LoRA load; DE_CANONICAL_NO_PCM has not yet been verified as an OR/VOR generator."
+}

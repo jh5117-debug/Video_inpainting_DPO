@@ -1,0 +1,4 @@
+asset,expected_source,hal_path,pai_path,status,sha256,notes
+official_repo,https://github.com/FudanCVL/EffectErase.git,/home/hj/video_inpainting_third_party/EffectErase,,FOUND_HAL,bcee0a5da5ef387c2ba39390dc4d579503669fb8,Repository commit hash recorded; third-party repo not committed.
+EffectErase.ckpt,FudanCVL/EffectErase,missing,missing,MISSING,,Required for official inference.
+Wan2.1-Fun-1.3B-InP,alibaba-pai/Wan2.1-Fun-1.3B-InP,missing,missing,MISSING,,Required base model for official inference.

@@ -12,7 +12,8 @@
 - HAL staging: `/home/hj/exp25_effecterase_staging`
 - HAL free bytes at selection: 571536965632
 - PAI destination: `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7`
-- status: CORE_DOWNLOAD_COMPLETE
+- status: GATE128_EXTRACTED
+- status_detail: THREE_MODEL_SMOKE_PARTIAL_BLOCKED
 - completed time: 2026-06-23T00:08:45+0200
 - completed files: 37 / 37
 - completed bytes: 363730944386 / 363730944386
@@ -85,3 +86,42 @@ inference wrapper/checkpoint path. No fallback model was used.
 
 Full Gate128 loser generation remains blocked until DiffuEraser and EffectErase
 smoke pass under verified, no-fallback wrappers.
+
+## 2026-06-23 DiffuEraser / EffectErase Inference Stack Audit
+
+Current normalized status:
+
+- `GATE128_EXTRACTED`
+- `THREE_MODEL_SMOKE_PARTIAL_BLOCKED`
+
+DiffuEraser clarification:
+
+- The SFT/DPO core model is not a LoRA checkpoint. It is the full DiffuEraser
+  `brushnet/` and `unet_main/` checkpoint.
+- The current OR smoke failure is in the PCM inference acceleration adapter:
+  `inference/run_OR.py` selects `ckpt = "2-Step"`, and
+  `diffueraser/diffueraser_OR.py` loads
+  `pcm_sd15_smallcfg_2step_converted.safetensors` through diffusers'
+  `load_lora_weights(...)` path.
+- This blocker is therefore
+  `AUDIT_AND_FIX_DIFFUERASER_OR_PCM_INFERENCE_COMPATIBILITY`, not
+  `FIX_DIFFUERASER_LORA_TRAINING`.
+
+Two DiffuEraser OR stack identities are now separated:
+
+- `DE_OFFICIAL_PCM2`: official 2-step PCM stack, blocked pending an
+  official-pinned environment smoke.
+- `DE_CANONICAL_NO_PCM`: policy-matched diagnostic candidate, verified
+  historically for BR/DAVIS no-PCM but not yet promoted for OR/VOR.
+
+EffectErase official repo was cloned and audited at commit
+`bcee0a5da5ef387c2ba39390dc4d579503669fb8` under
+`/home/hj/video_inpainting_third_party/EffectErase`. Official assets
+`EffectErase.ckpt` and `Wan2.1-Fun-1.3B-InP` were not found locally, so EE-L0 is
+still blocked by missing official weights/base model.
+
+Reports:
+
+- `reports/exp25_diffueraser_or_stack_audit.md`
+- `reports/exp25_diffueraser_primary_stack_decision.md`
+- `reports/exp25_effecterase_official_deployment_audit.md`
