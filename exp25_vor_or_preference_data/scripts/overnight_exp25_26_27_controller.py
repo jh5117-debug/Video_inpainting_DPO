@@ -36,6 +36,7 @@ SMOKE6_SAMPLE_IDS = [
     "REAL_ENV159_00010_003_05",
     "BLENDER_FOREST039_00530",
 ]
+GATE32_LIMIT = 32
 
 
 @dataclass
@@ -232,6 +233,52 @@ def prepare_exp25_smoke6(exp25: Path, run_root: Path) -> dict[str, str]:
     return {"manifest": str(materialized_manifest), "materialized_root": str(materialized_root)}
 
 
+def prepare_exp25_gate32(exp25: Path, run_root: Path) -> dict[str, str]:
+    fixed_manifest = run_root / "exp25_gate32_member_manifest.jsonl"
+    materialized_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/materialized/gate32_canonical_d0_24f")
+    materialized_manifest = materialized_root / "gate32_materialized.jsonl"
+    source_manifest = exp25 / "exp25_vor_or_preference_data" / "manifests" / "vor_gate128.jsonl"
+    if not fixed_manifest.exists():
+        rows: list[dict[str, Any]] = []
+        with source_manifest.open("r", encoding="utf-8") as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                rows.append(json.loads(line))
+                if len(rows) >= GATE32_LIMIT:
+                    break
+        if len(rows) < GATE32_LIMIT:
+            raise RuntimeError(f"Gate32 needs {GATE32_LIMIT} rows, found {len(rows)}")
+        with fixed_manifest.open("w", encoding="utf-8") as f:
+            for row in rows:
+                f.write(json.dumps(row, sort_keys=True) + "\n")
+    ok_rows = 0
+    if materialized_manifest.exists():
+        ok_rows = sum(1 for line in materialized_manifest.open("r", encoding="utf-8") if line.strip())
+    if ok_rows < GATE32_LIMIT:
+        cmd = [
+            sys.executable,
+            str(exp25 / "exp25_vor_or_preference_data" / "scripts" / "materialize_vor_or_inputs.py"),
+            "--manifest",
+            str(fixed_manifest),
+            "--extraction-root",
+            "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_gate128_exact_20260623",
+            "--output-root",
+            str(materialized_root),
+            "--output-manifest",
+            str(materialized_manifest),
+            "--limit",
+            str(GATE32_LIMIT),
+            "--frames",
+            "24",
+        ]
+        cp = run_capture(cmd, cwd=exp25, timeout=3600)
+        (run_root / "exp25_materialize_gate32.log").write_text("[cmd] " + " ".join(cmd) + "\n" + cp.stdout, encoding="utf-8")
+        if cp.returncode != 0:
+            raise RuntimeError(f"Exp25 Gate32 materialization failed, rc={cp.returncode}")
+    return {"manifest": str(materialized_manifest), "materialized_root": str(materialized_root)}
+
+
 def run_cpu_exp25_prepare(run_root: Path, snapshot_root: Path) -> None:
     if task_status(run_root, "exp25_prepare_smoke6") == "completed":
         return
@@ -241,6 +288,19 @@ def run_cpu_exp25_prepare(run_root: Path, snapshot_root: Path) -> None:
         mark_task(run_root, "exp25_prepare_smoke6", "completed", **payload)
     except Exception as exc:  # noqa: BLE001
         mark_task(run_root, "exp25_prepare_smoke6", "blocked", error=repr(exc))
+
+
+def run_cpu_exp25_prepare_gate32(run_root: Path, snapshot_root: Path) -> None:
+    if task_status(run_root, "exp25_prepare_gate32") == "completed":
+        return
+    if task_status(run_root, "exp25_smoke6_d0") != "completed":
+        return
+    exp25 = latest_snapshot(snapshot_root, "exp25")
+    try:
+        payload = prepare_exp25_gate32(exp25, run_root)
+        mark_task(run_root, "exp25_prepare_gate32", "completed", **payload)
+    except Exception as exc:  # noqa: BLE001
+        mark_task(run_root, "exp25_prepare_gate32", "blocked", error=repr(exc))
 
 
 def run_cpu_effecterase_inventory(run_root: Path, snapshot_root: Path) -> None:
@@ -382,6 +442,107 @@ def maybe_launch_exp25_smoke6(run_root: Path, snapshot_root: Path, idle: list[in
     launch_gpu_task(run_root, "exp25_smoke6_d0", idle[0], cmd, exp25)
 
 
+def maybe_launch_exp26_probe4(run_root: Path, snapshot_root: Path, idle: list[int]) -> bool:
+    if not idle or task_status(run_root, "exp26_probe4_official_inference") not in {"queued", "failed"}:
+        return False
+    exp26 = latest_snapshot(snapshot_root, "exp26")
+    out_dir = run_root / "exp26_probe4_official_inference"
+    vp_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter")
+    cmd = [
+        sys.executable,
+        str(exp26 / "exp26_videopainter_dpo_v2" / "code" / "run_vp2_probe4_official_inference.py"),
+        "--videopainter-root",
+        str(vp_root),
+        "--base-model",
+        str(vp_root / "ckpt" / "CogVideoX-5b-I2V"),
+        "--branch-checkpoint",
+        str(vp_root / "ckpt" / "VideoPainter" / "checkpoints" / "branch"),
+        "--manifest",
+        "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/49f_probe_7f9ec40/vp2_probe4_49f_masks.jsonl",
+        "--output-dir",
+        str(out_dir),
+        "--limit",
+        "4",
+        "--height",
+        "480",
+        "--width",
+        "720",
+        "--num-frames",
+        "49",
+        "--num-inference-steps",
+        "20",
+        "--dtype",
+        "bf16",
+    ]
+    launch_gpu_task(run_root, "exp26_probe4_official_inference", idle[0], cmd, exp26)
+    return True
+
+
+def maybe_launch_exp27_real_batch(run_root: Path, snapshot_root: Path, idle: list[int], *, mode: str, task_name: str, dependency: str | None) -> bool:
+    if not idle or task_status(run_root, task_name) not in {"queued", "failed"}:
+        return False
+    if dependency and task_status(run_root, dependency) != "completed":
+        return False
+    exp27 = latest_snapshot(snapshot_root, "exp27")
+    out_dir = run_root / task_name
+    cmd = [
+        sys.executable,
+        str(exp27 / "exp27_paper_grounded_preference_study" / "scripts" / "run_exp27_real_batch_parity.py"),
+        "--output-dir",
+        str(out_dir),
+        "--mode",
+        mode,
+        "--dtype",
+        "bf16",
+    ]
+    launch_gpu_task(run_root, task_name, idle[0], cmd, exp27)
+    return True
+
+
+def maybe_launch_exp25_gate32(run_root: Path, snapshot_root: Path, idle: list[int]) -> bool:
+    if not idle or task_status(run_root, "exp25_gate32") not in {"queued", "failed"}:
+        return False
+    if task_status(run_root, "exp25_prepare_gate32") != "completed":
+        return False
+    if task_status(run_root, "exp27_linear_real_batch_parity") != "completed":
+        return False
+    exp25 = latest_snapshot(snapshot_root, "exp25")
+    prep = load_task_state(run_root).get("tasks", {}).get("exp25_prepare_gate32", {})
+    output_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/preference_candidates/gate32_canonical_raw6_d0")
+    cmd = [
+        sys.executable,
+        str(exp25 / "exp25_vor_or_preference_data" / "scripts" / "run_vor_or_model_smoke.py"),
+        "--model",
+        "diffueraser",
+        "--manifest",
+        str(prep["manifest"]),
+        "--project-root",
+        str(exp25),
+        "--output-root",
+        str(output_root),
+        "--limit",
+        str(GATE32_LIMIT),
+        "--num-frames",
+        "24",
+        "--width",
+        "512",
+        "--height",
+        "288",
+        "--pcm-mode",
+        "none",
+        "--prior-mode",
+        "propainter",
+        "--no-pcm-steps",
+        "6",
+        "--no-pcm-guidance",
+        "0.0",
+        "--mask-dilation-iter",
+        "0",
+    ]
+    launch_gpu_task(run_root, "exp25_gate32", idle[0], cmd, exp25)
+    return True
+
+
 def write_heartbeat(run_root: Path, gpus: list[dict[str, Any]], apps: list[dict[str, Any]], idle: list[int], started_at: float) -> None:
     state = load_task_state(run_root)
     payload = {
@@ -418,6 +579,7 @@ def write_queue(run_root: Path) -> None:
         "exp25_effecterase_inventory",
         "exp27_cpu_parity_refresh",
         "exp25_smoke6_d0",
+        "exp25_prepare_gate32",
         "exp26_probe4_official_inference",
         "exp27_sdpo_real_batch_parity",
         "exp27_linear_real_batch_parity",
@@ -464,9 +626,36 @@ def main() -> int:
         run_cpu_exp25_prepare(args.run_root, args.snapshot_root)
         run_cpu_effecterase_inventory(args.run_root, args.snapshot_root)
         run_cpu_exp27_parity(args.run_root, args.snapshot_root)
+        run_cpu_exp25_prepare_gate32(args.run_root, args.snapshot_root)
         gpus, apps, _raw = query_gpus()
         idle = idle_gpus(gpus, apps)
-        maybe_launch_exp25_smoke6(args.run_root, args.snapshot_root, idle)
+        launched = False
+        if not load_task_state(args.run_root).get("running"):
+            if task_status(args.run_root, "exp25_smoke6_d0") in {"queued", "failed"}:
+                maybe_launch_exp25_smoke6(args.run_root, args.snapshot_root, idle)
+                launched = bool(load_task_state(args.run_root).get("running"))
+            if not launched:
+                launched = maybe_launch_exp26_probe4(args.run_root, args.snapshot_root, idle)
+            if not launched:
+                launched = maybe_launch_exp27_real_batch(
+                    args.run_root,
+                    args.snapshot_root,
+                    idle,
+                    mode="sdpo",
+                    task_name="exp27_sdpo_real_batch_parity",
+                    dependency="exp26_probe4_official_inference",
+                )
+            if not launched:
+                launched = maybe_launch_exp27_real_batch(
+                    args.run_root,
+                    args.snapshot_root,
+                    idle,
+                    mode="linear",
+                    task_name="exp27_linear_real_batch_parity",
+                    dependency="exp27_sdpo_real_batch_parity",
+                )
+            if not launched:
+                maybe_launch_exp25_gate32(args.run_root, args.snapshot_root, idle)
         write_heartbeat(args.run_root, gpus, apps, idle, started_at)
         write_queue(args.run_root)
         time.sleep(args.interval_seconds)
