@@ -668,7 +668,13 @@ class VideoPainterDPOTrainer:
         )[0]
         return self.scheduler.get_velocity(model_output, noisy_video_latents, timesteps)
 
-    def compute_losses(self, batch: VideoPainterBatch) -> Tuple[torch.Tensor, Dict[str, float]]:
+    def compute_losses(
+        self,
+        batch: VideoPainterBatch,
+        *,
+        fixed_noise: Optional[torch.Tensor] = None,
+        fixed_timesteps: Optional[torch.Tensor] = None,
+    ) -> Tuple[torch.Tensor, Dict[str, float]]:
         args = self.args
         winner = batch.winner.to(self.device)
         loser = batch.loser.to(self.device)
@@ -681,13 +687,23 @@ class VideoPainterDPOTrainer:
             winner_latents = self.encode_latents(winner)
             loser_latents = self.encode_latents(loser)
             image_latents = self.prepare_image_latents(conditioning, winner_latents.shape[1])
-            noise = torch.randn_like(winner_latents).to(dtype=self.weight_dtype)
-            timesteps = torch.randint(
-                0,
-                self.scheduler.config.num_train_timesteps,
-                (winner_latents.shape[0],),
-                device=self.device,
-            ).long()
+            if fixed_noise is None:
+                noise = torch.randn_like(winner_latents).to(dtype=self.weight_dtype)
+            else:
+                noise = fixed_noise.to(device=self.device, dtype=self.weight_dtype)
+                if noise.shape != winner_latents.shape:
+                    raise ValueError(f"fixed_noise shape {tuple(noise.shape)} != latent shape {tuple(winner_latents.shape)}")
+            if fixed_timesteps is None:
+                timesteps = torch.randint(
+                    0,
+                    self.scheduler.config.num_train_timesteps,
+                    (winner_latents.shape[0],),
+                    device=self.device,
+                ).long()
+            else:
+                timesteps = fixed_timesteps.to(device=self.device).long()
+                if timesteps.shape != (winner_latents.shape[0],):
+                    raise ValueError(f"fixed_timesteps shape {tuple(timesteps.shape)} != batch shape {(winner_latents.shape[0],)}")
             scheduler_weights = 1 / (1 - self.alphas_cumprod[timesteps])
             region_weight_map, region_stats = make_region_weight_map(
                 latent_mask.float(),
