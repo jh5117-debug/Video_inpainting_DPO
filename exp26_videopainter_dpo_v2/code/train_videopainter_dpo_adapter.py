@@ -37,6 +37,11 @@ from PIL import Image
 from torch.utils.data import DataLoader, Dataset
 from tqdm.auto import tqdm
 
+try:
+    from vp2_official_config import parse_official_optimizer_scheduler_config, write_locked_config
+except ImportError:  # pragma: no cover - package import path in tests
+    from .vp2_official_config import parse_official_optimizer_scheduler_config, write_locked_config
+
 
 DIAG_COLUMNS = [
     "step",
@@ -97,6 +102,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--davis_root", default=None)
     parser.add_argument("--output_dir", required=True)
     parser.add_argument("--dpo_diag_csv", required=True)
+    parser.add_argument("--official_train_file", default="")
+    parser.add_argument("--locked_official_config_json", default="")
 
     parser.add_argument("--max_train_steps", type=int, default=2000)
     parser.add_argument("--checkpointing_steps", type=int, default=500)
@@ -108,6 +115,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--adam_beta2", type=float, default=0.999)
     parser.add_argument("--adam_epsilon", type=float, default=1e-8)
     parser.add_argument("--weight_decay", type=float, default=0.0)
+    parser.add_argument("--lr_scheduler", default="constant")
+    parser.add_argument("--lr_warmup_steps", type=int, default=0)
     parser.add_argument("--max_grad_norm", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--mixed_precision", choices=["no", "fp16", "bf16"], default="bf16")
@@ -199,12 +208,12 @@ def resolve_vp2_frame_count(num_frames: int, plumbing_only_13f: bool = False) ->
 
 def normalize_frame_count(files: List[Path], max_frames: int, *, plumbing_only_13f: bool = False) -> List[Path]:
     max_frames = resolve_vp2_frame_count(max_frames, plumbing_only_13f)
+    if len(files) < max_frames:
+        raise ValueError(f"VideoPainter requires at least {max_frames} frames, found {len(files)}")
     if len(files) > max_frames:
         files = files[:max_frames]
-    # CogVideoX video length convention follows upstream VideoPainter: F = 4k+1.
-    remainder = (3 + (len(files) % 4)) % 4
-    if remainder:
-        files = files[:-remainder]
+    if len(files) != max_frames:
+        raise ValueError(f"VideoPainter expected exactly {max_frames} selected frames, got {len(files)}")
     if not files:
         raise ValueError("No frames remain after CogVideoX 4k+1 normalization")
     return files
@@ -234,12 +243,13 @@ def load_mask_frames(mask_dir: str, height: int, width: int, max_frames: int, *,
 class VideoPainterPairDataset(Dataset):
     """Reads D3 frame-directory winner / loser / mask pairs."""
 
-    def __init__(self, manifest: str, height: int, width: int, num_frames: int, limit: int = 0, plumbing_only_13f: bool = False):
+    def __init__(self, manifest: str, height: int, width: int, num_frames: int, limit: int = 0, plumbing_only_13f: bool = False, first_frame_gt: bool = True):
         self.manifest = manifest
         self.height = height
         self.width = width
         self.num_frames = resolve_vp2_frame_count(num_frames, plumbing_only_13f)
         self.plumbing_only_13f = plumbing_only_13f
+        self.first_frame_gt = first_frame_gt
         rows = []
         with open(manifest, "r", encoding="utf-8") as f:
             for line in f:
@@ -270,7 +280,9 @@ class VideoPainterPairDataset(Dataset):
         loser = loser[:f]
         mask = mask[:f]
         conditioning = winner * (1.0 - mask)
-        winner, loser, conditioning, mask = enforce_first_frame_gt_consistency(winner, loser, conditioning, mask)
+        winner, loser, conditioning, mask = maybe_enforce_first_frame_gt(
+            winner, loser, conditioning, mask, enabled=self.first_frame_gt
+        )
 
         return {
             "winner": winner,
@@ -307,6 +319,19 @@ def enforce_first_frame_gt_consistency(
         loser[0] = winner[0]
         mask[0] = torch.zeros_like(mask[0])
     return winner, loser, conditioning, mask
+
+
+def maybe_enforce_first_frame_gt(
+    winner: torch.Tensor,
+    loser: torch.Tensor,
+    conditioning: torch.Tensor,
+    mask: torch.Tensor,
+    *,
+    enabled: bool,
+) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    if not enabled:
+        return winner, loser, conditioning, mask
+    return enforce_first_frame_gt_consistency(winner, loser, conditioning, mask)
 
 
 def apply_noised_image_dropout(images: torch.Tensor, dropout: float, *, training: bool) -> torch.Tensor:
@@ -376,6 +401,31 @@ def make_vp2_optimizer(parameters: Iterable[torch.nn.Parameter], args: argparse.
         eps=cfg.epsilon,
         weight_decay=cfg.weight_decay,
     )
+
+
+def apply_official_config_to_args(args: argparse.Namespace) -> argparse.Namespace:
+    if not args.official_train_file:
+        return args
+    train_file = Path(args.official_train_file)
+    cfg = parse_official_optimizer_scheduler_config(train_file)
+    if args.locked_official_config_json:
+        write_locked_config(train_file, Path(args.locked_official_config_json))
+    mapping = {
+        "learning_rate": "learning_rate",
+        "adam_beta1": "adam_beta1",
+        "adam_beta2": "adam_beta2",
+        "adam_epsilon": "adam_epsilon",
+        "weight_decay": "weight_decay",
+        "lr_scheduler": "lr_scheduler",
+        "lr_warmup_steps": "lr_warmup_steps",
+        "max_grad_norm": "max_grad_norm",
+        "mixed_precision": "mixed_precision",
+    }
+    for src, dst in mapping.items():
+        value = getattr(cfg, src)
+        if value is not None:
+            setattr(args, dst, value)
+    return args
 
 
 def strict_load_state_dict(module: torch.nn.Module, state_dict: dict) -> None:
@@ -778,6 +828,7 @@ def grad_norm(parameters: Iterable[torch.nn.Parameter]) -> float:
 
 
 def run(args: argparse.Namespace) -> None:
+    args = apply_official_config_to_args(args)
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
     with open(Path(args.output_dir) / "run_config.json", "w", encoding="utf-8") as f:
         json.dump(vars(args), f, indent=2)
@@ -789,6 +840,7 @@ def run(args: argparse.Namespace) -> None:
         num_frames=args.num_frames,
         limit=args.limit_train_samples,
         plumbing_only_13f=args.plumbing_only_13f,
+        first_frame_gt=args.first_frame_gt,
     )
     loader = DataLoader(
         dataset,
