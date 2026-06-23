@@ -120,3 +120,29 @@ Still pending:
 - real DiffuEraser batch parity for Linear-DPO Frozen and EMA;
 - faithful LocalDPO data and original objective baseline;
 - all 1/10/50 studies and RC-FPO.
+
+## 2026-06-23 GPU2 Real-Batch Parity
+
+The overnight controller used GPU2 to run Exp27 real-batch objective plumbing
+checks after Exp26 Probe4 inference completed.
+
+Results:
+
+- SDPO real-batch parity: `passed`.
+- SDPO objective: `0.010575979948043823`.
+- SDPO grad norm: `0.008771423250436783`.
+- Linear-DPO Frozen / EMA real-batch parity: `passed`.
+- Linear loss: `-0.04078614339232445`.
+- Linear grad norm: `0.5717411041259766`.
+- EMA max absolute difference: `0.0`.
+
+Outputs:
+
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp27_sdpo_real_batch_parity`
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp27_linear_real_batch_parity`
+
+Report:
+
+`reports/exp27_gpu2_real_batch_parity.md`
+
+No long training was launched.
