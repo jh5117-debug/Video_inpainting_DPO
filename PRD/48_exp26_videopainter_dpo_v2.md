@@ -140,3 +140,49 @@ Status: `FORMAL_49F_PROBE4_PASSED`.
 Report:
 
 `reports/exp26_vp2_49f_probe4_status.md`
+
+## 2026-06-23 Probe4 Mask Visual Audit
+
+I generated and opened visual evidence for all four Probe4 samples:
+
+- clean frames;
+- mask-only frames;
+- overlay;
+- masked condition;
+- area curves;
+- centroid trajectories.
+
+Result:
+
+`PROBE4_MASK_VISUAL_AUDIT_PASSED_WITH_SYNTHETIC_MASK_CAVEAT`
+
+The masks are temporally stable and `first_frame_gt=true` is visible in every
+sample. They are, however, synthetic moving ellipses/circles rather than
+semantic object masks. One sample touches the frame edge for 10 frames and is
+tracked as an edge-touch caution case.
+
+Locked mask config:
+
+`exp26_videopainter_dpo_v2/configs/vp2_moving_mask_locked.json`
+
+Reports:
+
+- `reports/exp26_probe4_mask_visual_audit.md`
+- `reports/exp26_probe4_mask_statistics.csv`
+
+Status:
+
+`PROBE4_MASK_VISUAL_AUDIT_PASSED_PENDING_OFFICIAL_INFERENCE`
+
+Gate16/Gate64 remain blocked until official 49-frame VideoPainter inference
+passes on Probe4.
+
+## 2026-06-23 Formal 49F Sampler Parity
+
+The current formal sampler is locked as first 49 unique decoded frames with
+stride 1 and offset 0. It rejects padding, looping, interpolation, duplicated
+frames, and 13-frame fallback.
+
+Report:
+
+`reports/exp26_official_49f_sampler_parity.md`

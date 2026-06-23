@@ -82,3 +82,13 @@ Status: `FORMAL_49F_TOOLING_READY_PENDING_PAI_EXTRACTION`.
 - Gate64 not started; this was a source/mask probe only.
 
 Status: `FORMAL_49F_PROBE4_PASSED`.
+
+## 2026-06-23 Probe4 Visual Audit
+
+- Probe4 mask visual evidence generated on PAI and reviewed on HAL.
+- 4/4 masks are temporally stable and first-frame-GT safe.
+- 4/4 masks are synthetic ellipse/circle masks, not semantic object masks.
+- 1/4 has edge-touch caution.
+- Gate16/Gate64 remain pending official 49F VideoPainter inference.
+
+Status: `PROBE4_MASK_VISUAL_AUDIT_PASSED_PENDING_OFFICIAL_INFERENCE`.

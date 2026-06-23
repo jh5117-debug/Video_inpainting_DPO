@@ -101,3 +101,4 @@ PRD/pai_audit_pai_node_*.md
 *.pth
 *.bin
 *.onnx
+reports/exp26_probe4_mask_visuals/

@@ -1,0 +1,28 @@
+{
+  "name": "exp26_moving_br_mask_v1",
+  "status": "LOCKED_FOR_PROBE_AND_GATE16_PENDING_OFFICIAL_INFERENCE",
+  "formal_num_frames": 49,
+  "first_frame_gt_default": true,
+  "shape_family": "synthetic_ellipse_or_circle",
+  "seed": 20260623,
+  "area_buckets": {
+    "small": [0.06, 0.11],
+    "medium": [0.12, 0.20],
+    "large": [0.21, 0.32]
+  },
+  "motion": {
+    "dx_fraction_range": [-0.28, 0.28],
+    "dy_fraction_range": [-0.22, 0.22],
+    "wobble_x_fraction": 0.04,
+    "wobble_y_fraction": 0.03,
+    "scale_oscillation": 0.08,
+    "angle_delta_range_degrees": [-35, 35]
+  },
+  "condition_definition": "winner * (1 - generated_moving_br_mask)",
+  "known_limitations": [
+    "Masks are smooth synthetic ellipses/circles rather than semantic object masks.",
+    "At least one Probe4 sample touches the frame boundary for several frames.",
+    "Use as moving BR stress masks, not as proof of natural semantic occluder quality."
+  ],
+  "gate16_requirement": "Proceed only after official 49-frame VideoPainter inference smoke succeeds and visual review confirms no systematic artifacts."
+}
