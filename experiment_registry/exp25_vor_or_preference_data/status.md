@@ -45,3 +45,8 @@ Added initial Exp25-only scripts for lightweight archive inspection, resumable
 member indexing, safe selective extraction, extracted-subset validation, and
 canonical VOR OR manifest semantics. No VOR archive was decompressed in full,
 no loser generation was started, and no GPU training was launched in this step.
+
+Archive audit: `reports/vor_archive_integrity.md` passed on PAI with matching
+part counts and byte counts for VOR-Eval, VOR-Train-MASK, and VOR-Train. Stream
+probe opened all three split gzip/tar streams and found zero unsafe paths in
+the probed members.

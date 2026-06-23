@@ -53,3 +53,12 @@ The first formal source pool remains capped at 4096 train candidate triplets,
 256 search-dev triplets, and 256 shadow-dev triplets. Preference manifests must
 be nested at 512/1024/2048/3072, with 4096 allowed only if 3072 remains clearly
 better than 2048.
+
+## Archive Audit Result
+
+PAI lightweight archive audit passed on the fixed revision directory. VOR-Eval
+has 1/1 expected part, VOR-Train-MASK has 3/3 expected parts, and VOR-Train has
+32/32 expected parts with contiguous numeric part IDs 000-031. Expected and
+actual byte counts match for all three groups. A stream probe opened each
+split gzip/tar stream and inspected the first five members with zero unsafe
+paths found.
