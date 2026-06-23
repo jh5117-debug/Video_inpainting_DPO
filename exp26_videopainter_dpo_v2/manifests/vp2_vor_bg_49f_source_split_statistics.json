@@ -1,0 +1,30 @@
+{
+  "candidate_count_after_exclusions": 51681,
+  "exclude_manifests": [
+    "/home/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_search_dev_256.jsonl",
+    "/home/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_shadow_dev_256.jsonl",
+    "/home/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_gate128.jsonl"
+  ],
+  "frames": 49,
+  "manifest_sha256": {
+    "search": "41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71",
+    "shadow": "0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02",
+    "train": "68a862c18ad46271757d96c6b5483c76aeb2cfdfb5cae21a452e215b735daaa6"
+  },
+  "notes": "VOR-Train BG selected as fallback clean BR source; VOR-Eval excluded by source construction.",
+  "paths": {
+    "search": "exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_search_dev_32.jsonl",
+    "shadow": "exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_shadow_dev_32.jsonl",
+    "train": "exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_train_source_128.jsonl"
+  },
+  "search_count": 32,
+  "search_shadow_group_overlap": 0,
+  "seed": 20260623,
+  "shadow_count": 32,
+  "status": "VOR_BG_SOURCE_SPLIT_LOCKED_PENDING_EXTRACTION_MASKS",
+  "train_count": 128,
+  "train_pool": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "train_search_group_overlap": 0,
+  "train_shadow_group_overlap": 0,
+  "unique_scene_group_count_after_exclusions": 1380
+}

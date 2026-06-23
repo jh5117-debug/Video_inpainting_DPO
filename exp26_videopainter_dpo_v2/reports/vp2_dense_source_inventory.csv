@@ -1,0 +1,4 @@
+source,status,total_videos_or_rows,valid_49f_evidence,overlap_policy,notes
+sparse_youtubevos_root,BLOCKED,3471,0,"not used","Previous strict builder found max 36 frames; not formal 49F."
+vor_train_bg_metadata,SELECTED_SOURCE_ONLY,51681,likely_pending_extraction_probe,"exclude VOR-Eval; exclude Exp25 search/shadow/Gate128 groups; Exp26 train/search/shadow scene-disjoint","Selected fallback clean BR source; one representative per scene_group."
+vor_train_gate128_extracted_bg,SANITY_CHECK_ONLY,12,12,"not used for split selection","Sampled extracted VOR-Train BG videos decoded as 240 frames at 24fps, 1920x1080."
