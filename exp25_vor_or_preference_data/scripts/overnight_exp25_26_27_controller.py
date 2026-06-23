@@ -252,9 +252,14 @@ def run_cpu_effecterase_inventory(run_root: Path, snapshot_root: Path) -> None:
         str(exp25 / "exp25_vor_or_preference_data" / "scripts" / "audit_hf_effecterase_repo.py"),
         "--probe-readme",
     ]
-    cp = run_capture(cmd, cwd=exp25, timeout=1800)
     log = run_root / "exp25_effecterase_inventory.log"
-    log.write_text("[cmd] " + " ".join(cmd) + "\n" + cp.stdout, encoding="utf-8")
+    try:
+        cp = run_capture(cmd, cwd=exp25, timeout=120)
+        log.write_text("[cmd] " + " ".join(cmd) + "\n" + cp.stdout, encoding="utf-8")
+    except subprocess.TimeoutExpired as exc:
+        log.write_text("[cmd] " + " ".join(cmd) + f"\nTIMEOUT after {exc.timeout}s; deferred so controller heartbeat can continue.\n", encoding="utf-8")
+        mark_task(run_root, "exp25_effecterase_inventory", "blocked", log_path=str(log), reason="timeout_deferred")
+        return
     if cp.returncode == 0:
         mark_task(run_root, "exp25_effecterase_inventory", "completed", log_path=str(log))
     else:
@@ -272,9 +277,14 @@ def run_cpu_exp27_parity(run_root: Path, snapshot_root: Path) -> None:
         "--output-dir",
         str(out_dir),
     ]
-    cp = run_capture(cmd, cwd=exp27, timeout=1800)
     log = run_root / "exp27_cpu_parity_refresh.log"
-    log.write_text("[cmd] " + " ".join(cmd) + "\n" + cp.stdout, encoding="utf-8")
+    try:
+        cp = run_capture(cmd, cwd=exp27, timeout=1800)
+        log.write_text("[cmd] " + " ".join(cmd) + "\n" + cp.stdout, encoding="utf-8")
+    except Exception as exc:  # noqa: BLE001
+        log.write_text("[cmd] " + " ".join(cmd) + f"\nERROR {exc!r}\n", encoding="utf-8")
+        mark_task(run_root, "exp27_cpu_parity_refresh", "blocked", log_path=str(log), error=repr(exc))
+        return
     if cp.returncode == 0:
         mark_task(run_root, "exp27_cpu_parity_refresh", "completed", log_path=str(log), output_dir=str(out_dir))
     else:
@@ -447,6 +457,10 @@ def main() -> int:
 
     while not stop and time.time() - started_at < args.max_seconds:
         refresh_running(args.run_root)
+        gpus, apps, _raw = query_gpus()
+        idle = idle_gpus(gpus, apps)
+        write_heartbeat(args.run_root, gpus, apps, idle, started_at)
+        write_queue(args.run_root)
         run_cpu_exp25_prepare(args.run_root, args.snapshot_root)
         run_cpu_effecterase_inventory(args.run_root, args.snapshot_root)
         run_cpu_exp27_parity(args.run_root, args.snapshot_root)
