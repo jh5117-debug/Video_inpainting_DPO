@@ -7,6 +7,14 @@
     "status": "passed",
     "utility": "ratio = clamp(0.2 * beta_dpo * (model_diff - ref_diff) + 0.5, eta, 1-eta)"
   },
+  "localdpo_latent_fusion": {
+    "adaptation_status": "algorithm_primitive_passed_real_diffueraser_batch_pending",
+    "inside_denoised_max_abs": 0.0,
+    "mask_semantics": "corruption_mask=1 uses denoised latent; corruption_mask=0 reinjects re-noised original latent",
+    "outside_preservation_max_abs": 0.0,
+    "progressive_step_max_abs": 0.0,
+    "status": "passed"
+  },
   "localdpo_mask": {
     "digest": {
       "error": "ValueError('cannot reshape array of size 1228800 into shape (480,640,3)')",
@@ -20,6 +28,10 @@
     },
     "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
     "status": "blocked_official_code_runtime_error"
+  },
+  "real_diffueraser_batch_parity": {
+    "reason": "No GPU batch was launched in this CPU parity command; SDPO/Linear real DiffuEraser parity remains required before studies.",
+    "status": "pending"
   },
   "sdpo": {
     "max_abs_diff": 0.0,

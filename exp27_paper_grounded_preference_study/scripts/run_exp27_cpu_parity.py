@@ -22,6 +22,10 @@ from exp27_paper_grounded_preference_study.code.official_parity import (
     localdpo_mask_digest,
     write_json,
 )
+from exp27_paper_grounded_preference_study.code.localdpo_full_adapter import (
+    localdpo_latent_fusion,
+    progressive_outside_reinjection,
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -86,6 +90,31 @@ def localdpo_gate(seed: int) -> dict:
     }
 
 
+def localdpo_fusion_gate(seed: int) -> dict:
+    torch.manual_seed(seed + 2)
+    denoised = torch.randn(2, 3, 4, 8, 8)
+    original = torch.randn_like(denoised)
+    current = torch.randn_like(denoised)
+    mask = torch.zeros(2, 3, 1, 8, 8)
+    mask[..., 2:6, 2:7] = 1.0
+    fused = localdpo_latent_fusion(denoised, original, mask)
+    progressive = progressive_outside_reinjection(current, denoised, original, mask)
+    outside = mask.expand_as(fused) < 0.5
+    inside = mask.expand_as(fused) > 0.5
+    outside_diff = float((fused[outside] - original[outside]).abs().max().item())
+    inside_diff = float((fused[inside] - denoised[inside]).abs().max().item())
+    progressive_diff = float((fused - progressive).abs().max().item())
+    passed = outside_diff <= 1e-7 and inside_diff <= 1e-7 and progressive_diff <= 1e-7
+    return {
+        "status": "passed" if passed else "failed",
+        "outside_preservation_max_abs": outside_diff,
+        "inside_denoised_max_abs": inside_diff,
+        "progressive_step_max_abs": progressive_diff,
+        "mask_semantics": "corruption_mask=1 uses denoised latent; corruption_mask=0 reinjects re-noised original latent",
+        "adaptation_status": "algorithm_primitive_passed_real_diffueraser_batch_pending",
+    }
+
+
 def main() -> int:
     args = parse_args()
     args.output_dir.mkdir(parents=True, exist_ok=True)
@@ -93,8 +122,13 @@ def main() -> int:
         "sdpo": sdpo_gate(args.seed),
         "linear_dpo": linear_gate(args.seed),
         "localdpo_mask": localdpo_gate(args.seed),
+        "localdpo_latent_fusion": localdpo_fusion_gate(args.seed),
+        "real_diffueraser_batch_parity": {
+            "status": "pending",
+            "reason": "No GPU batch was launched in this CPU parity command; SDPO/Linear real DiffuEraser parity remains required before studies.",
+        },
     }
-    gate_statuses = [v["status"] for v in results.values() if isinstance(v, dict) and "status" in v]
+    gate_statuses = [v["status"] for k, v in results.items() if k != "real_diffueraser_batch_parity" and isinstance(v, dict) and "status" in v]
     if all(s == "passed" for s in gate_statuses):
         results["status"] = "passed"
         exit_code = 0
@@ -110,6 +144,7 @@ def main() -> int:
     write_json(args.output_dir / "sdpo_parity.json", results["sdpo"])
     write_json(args.output_dir / "linear_dpo_parity.json", results["linear_dpo"])
     write_json(args.output_dir / "localdpo_parity.json", results["localdpo_mask"])
+    write_json(args.output_dir / "localdpo_full_parity.json", results["localdpo_latent_fusion"])
     print(json.dumps(results, indent=2, sort_keys=True))
     return exit_code
 

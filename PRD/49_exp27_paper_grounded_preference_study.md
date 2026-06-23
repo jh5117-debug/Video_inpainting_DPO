@@ -59,3 +59,22 @@ smoke pass.
 
 SDPO and Linear-DPO remain toy parity only; real DiffuEraser-batch parity is
 pending.
+
+## 2026-06-23 LocalDPO Fusion Primitive
+
+Added:
+
+`exp27_paper_grounded_preference_study/code/localdpo_full_adapter.py`
+
+This isolates LocalDPO's core outside-preservation semantics for the
+DiffuEraser adaptation:
+
+- task mask, corruption mask, and restoration-critical region are distinct;
+- corruption-mask inside uses the denoised/current latent;
+- outside the corruption mask reinjects the re-noised original latent at every
+  progressive denoising step.
+
+This is an algorithm-primitive parity step, not a full LocalDPO baseline. The
+remaining required gates are single-video local corruption, six-video pair
+generation, real DiffuEraser-batch SDPO parity, real DiffuEraser-batch
+Linear-DPO parity, and 1/10-step micro training.

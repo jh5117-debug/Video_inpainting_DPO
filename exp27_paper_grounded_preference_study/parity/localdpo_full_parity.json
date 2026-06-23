@@ -1,0 +1,8 @@
+{
+  "adaptation_status": "algorithm_primitive_passed_real_diffueraser_batch_pending",
+  "inside_denoised_max_abs": 0.0,
+  "mask_semantics": "corruption_mask=1 uses denoised latent; corruption_mask=0 reinjects re-noised original latent",
+  "outside_preservation_max_abs": 0.0,
+  "progressive_step_max_abs": 0.0,
+  "status": "passed"
+}
