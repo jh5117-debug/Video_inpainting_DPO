@@ -1824,3 +1824,25 @@ download, one archive part at a time, followed by HAL-to-PAI rsync, dual SHA256
 verification, atomic PAI finalize, and immediate HAL cleanup for the current
 part. Exp25 does not enter the Exp23 worktree, use GPUs, run inference, generate
 losers, or start DPO training.
+
+## 2026-06-23 Exp25 EffectErase VOR core download complete
+
+Exp25 completed the HAL-to-PAI transfer of the core EffectErase VOR compressed
+archives.
+
+```text
+status = CORE_DOWNLOAD_COMPLETE
+dataset_revision = fa09dc61128ca0418a4a13364d97a08018ea9cc7
+completed_files = 37 / 37
+completed_bytes = 363730944386 / 363730944386
+pai_final_files = 37
+pai_partial_files = 0
+pai_bad_files = 0
+hal_staging_final_size = 1.0K
+completion_marker = /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE
+```
+
+Each file was verified with HAL and PAI SHA256 equality before atomic finalization
+on PAI. The transfer manifest contains 37 VERIFIED rows and zero HAL/PAI SHA256
+mismatches. No GPU work, loser generation, decompression, or DPO training was
+started in this track.

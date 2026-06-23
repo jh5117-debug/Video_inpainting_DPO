@@ -605,7 +605,7 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 | Item | Value |
 | --- | --- |
 | Branch | `research/exp25-vor-or-preference-data` |
-| Status | `INVENTORY_LOCKED_TRANSFER_READY` |
+| Status | `CORE_DOWNLOAD_COMPLETE` |
 | Purpose | Download-only HAL-to-PAI EffectErase VOR archive transfer for future OR-DPO preference data work |
 | Dataset | `FudanCVL/EffectErase` |
 | Revision | `fa09dc61128ca0418a4a13364d97a08018ea9cc7` |
@@ -613,3 +613,7 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 | Excluded | VOR-Wild |
 | GPU use | None |
 | Exp23 isolation | Do not enter/modify Exp23; read-only monitor only |
+| Completed files | 37 / 37 |
+| Completed bytes | 363730944386 / 363730944386 |
+| PAI final / partial / bad | 37 / 0 / 0 |
+| Completion marker | `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE` |

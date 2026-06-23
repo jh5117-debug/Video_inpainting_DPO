@@ -1,0 +1,12 @@
+{
+  "bad_count": 0,
+  "completed_bytes": 363730944386,
+  "dataset_revision": "fa09dc61128ca0418a4a13364d97a08018ea9cc7",
+  "final_bytes": 363730944386,
+  "final_count": 37,
+  "manifest_verified_rows": 37,
+  "ok": true,
+  "pai_download_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7",
+  "partial_count": 0,
+  "sha256_mismatch_rows": 0
+}
