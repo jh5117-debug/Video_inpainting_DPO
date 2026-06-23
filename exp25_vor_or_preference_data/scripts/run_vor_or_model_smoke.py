@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import sys
 import time
+import hashlib
 from pathlib import Path
 
 
@@ -32,6 +33,10 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--diffueraser-path", type=Path, default=Path("/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000"))
     p.add_argument("--propainter-model-dir", type=Path, default=Path("/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter"))
     p.add_argument("--pcm-weights-path", type=Path, default=Path("/mnt/workspace/hj/nas_hj/weights/PCM_Weights/sd15/pcm_sd15_smallcfg_2step_converted.safetensors"))
+    p.add_argument("--pcm-mode", choices=["official_pcm2", "none"], default="official_pcm2")
+    p.add_argument("--prior-mode", choices=["propainter"], default="propainter")
+    p.add_argument("--no-pcm-steps", type=int, default=6)
+    p.add_argument("--no-pcm-guidance", type=float, default=0.0)
     return p.parse_args()
 
 
@@ -70,6 +75,27 @@ def output_count(path: Path) -> int:
     return len(list(path.glob("*.png"))) if path.exists() else 0
 
 
+def generator_id(args: argparse.Namespace) -> str:
+    payload = {
+        "model": args.model,
+        "pcm_mode": args.pcm_mode if args.model == "diffueraser" else None,
+        "prior_mode": args.prior_mode if args.model == "diffueraser" else None,
+        "no_pcm_steps": args.no_pcm_steps if args.model == "diffueraser" and args.pcm_mode == "none" else None,
+        "no_pcm_guidance": args.no_pcm_guidance if args.model == "diffueraser" and args.pcm_mode == "none" else None,
+        "width": args.width,
+        "height": args.height,
+        "num_frames": args.num_frames,
+        "diffueraser_path": str(args.diffueraser_path),
+        "propainter_model_dir": str(args.propainter_model_dir),
+    }
+    digest = hashlib.sha256(json.dumps(payload, sort_keys=True).encode("utf-8")).hexdigest()[:12]
+    if args.model == "diffueraser":
+        return f"diffueraser_or_{args.pcm_mode}_{args.prior_mode}_{digest}"
+    if args.model == "propainter":
+        return f"propainter_official_{digest}"
+    return f"{args.model}_{digest}"
+
+
 def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir: Path) -> list[str]:
     sample = row["sample_id"]
     video_root = work_dir / "batch" / "video_root"
@@ -78,7 +104,7 @@ def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir
     symlink_dir(Path(row["mask_path"]), mask_root / sample)
     return [
         args.python,
-        str(args.project_root / "exp15_or_benchmark_davis50" / "code" / "infer_diffueraser_or_exp15.py"),
+        str(args.project_root / "exp25_vor_or_preference_data" / "scripts" / "infer_diffueraser_or_exp25.py"),
         "--video_root",
         str(video_root),
         "--mask_root",
@@ -99,6 +125,16 @@ def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir
         str(args.propainter_model_dir),
         "--pcm_weights_path",
         str(args.pcm_weights_path),
+        "--pcm_mode",
+        args.pcm_mode,
+        "--prior_mode",
+        args.prior_mode,
+        "--no_pcm_steps",
+        str(args.no_pcm_steps),
+        "--no_pcm_guidance",
+        str(args.no_pcm_guidance),
+        "--identity_out",
+        str(work_dir / "generator_identity.json"),
         "--prompt",
         PROMPT,
         "--num_frames",
@@ -139,6 +175,7 @@ def main() -> int:
     args = parse_args()
     args.output_root.mkdir(parents=True, exist_ok=True)
     rows = read_jsonl(args.manifest)[: args.limit]
+    gen_id = generator_id(args)
     env = os.environ.copy()
     env.setdefault("PYTHONUNBUFFERED", "1")
     results = []
@@ -167,6 +204,9 @@ def main() -> int:
             {
                 "sample_id": sample,
                 "model": args.model,
+                "generator_id": gen_id,
+                "pcm_mode": args.pcm_mode if args.model == "diffueraser" else "",
+                "prior_mode": args.prior_mode if args.model == "diffueraser" else "",
                 "returncode": rc,
                 "elapsed_seconds": elapsed,
                 "frames": frames,
@@ -179,6 +219,7 @@ def main() -> int:
         )
     summary = {
         "model": args.model,
+        "generator_id": gen_id,
         "ok": sum(1 for r in results if r["status"] in {"OK", "resume_skip"}),
         "failed": sum(1 for r in results if r["status"] == "FAILED"),
         "rows": results,

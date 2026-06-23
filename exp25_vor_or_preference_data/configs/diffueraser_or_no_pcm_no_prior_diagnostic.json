@@ -1,0 +1,8 @@
+{
+  "name": "DE_NO_PCM_NO_PRIOR_DIAGNOSTIC",
+  "pcm_mode": "none",
+  "prior_mode": "none",
+  "on_policy_status": "diagnostic_only",
+  "status": "NOT_IMPLEMENTED_FOR_PRIMARY",
+  "reason": "VOR OR official/history stack uses ProPainter prior; no-prior is diagnostic and cannot become primary without separate code and quality evidence."
+}

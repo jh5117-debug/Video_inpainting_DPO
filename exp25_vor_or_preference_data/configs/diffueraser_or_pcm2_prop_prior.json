@@ -1,0 +1,26 @@
+{
+  "name": "DE_OFFICIAL_PCM2_PROP_PRIOR",
+  "generator_id_prefix": "diffueraser_or_official_pcm2_propainter",
+  "pcm_mode": "official_pcm2",
+  "prior_mode": "propainter",
+  "on_policy_status": "accelerated_policy_variant",
+  "checkpoint_root": "/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000",
+  "base_model_path": "/mnt/workspace/hj/nas_hj/weights/stable-diffusion-v1-5",
+  "vae_path": "/mnt/workspace/hj/nas_hj/weights/sd-vae-ft-mse",
+  "propainter_model_dir": "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter",
+  "pcm_weight": "/mnt/workspace/hj/nas_hj/weights/PCM_Weights/sd15/pcm_sd15_smallcfg_2step_converted.safetensors",
+  "pcm_weight_sha256_hal": "4c5f27a727d12146de4b1d987cee3343bca89b085d12b03c45297af05ce88ef4",
+  "scheduler": "TCDScheduler",
+  "num_inference_steps": 2,
+  "guidance_scale": 0.0,
+  "prompt": "remove the masked object and restore the background",
+  "frame_count": 24,
+  "resolution": {
+    "width": 512,
+    "height": 288
+  },
+  "raw_no_comp": true,
+  "hard_comp": false,
+  "fallback_allowed": false,
+  "status": "OFFICIAL_PINNED_ENV_SMOKE_PENDING"
+}

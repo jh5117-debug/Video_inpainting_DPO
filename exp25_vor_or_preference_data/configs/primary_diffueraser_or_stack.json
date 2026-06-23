@@ -30,5 +30,6 @@
     "Must pass the fixed six-sample raw/no-comp VOR smoke.",
     "Must complete visual review before Gate128 generation."
   ],
-  "blocked_reason": "DE_OFFICIAL_PCM2 failed in active environment at PCM LoRA load; DE_CANONICAL_NO_PCM has not yet been verified as an OR/VOR generator."
+  "default_decision_rule": "If DE_NO_PCM_PROP_PRIOR passes technical and visual smoke, lock it as primary strict on-policy self-model loser stack. Keep DE_OFFICIAL_PCM2_PROP_PRIOR as official accelerated baseline unless deployment/eval explicitly requires PCM2.",
+  "blocked_reason": "DE_OFFICIAL_PCM2 failed in active environment at PCM LoRA load; DE_NO_PCM_PROP_PRIOR is configured but fixed VOR OR smoke has not yet completed."
 }

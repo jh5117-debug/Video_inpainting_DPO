@@ -79,3 +79,11 @@ Full Gate128 OR loser generation has not started.
 - `DE_OFFICIAL_PCM2` is blocked pending official-pinned environment smoke.
 - `DE_CANONICAL_NO_PCM` is BR-verified but OR/VOR-pending.
 - EffectErase official repo is cloned on HAL, but `EffectErase.ckpt` and `Wan2.1-Fun-1.3B-InP` are missing.
+
+## 2026-06-23 Stack Audit v2
+
+- Added Exp25-only DiffuEraser OR wrapper with explicit `--pcm_mode official_pcm2|none`.
+- `official_pcm2` preserves the official PCM LoRA acceleration path and remains an accelerated-policy variant.
+- `none` removes the PCM load only inside a temporary overlay copy, sets an explicit no-PCM scheduler step/guidance identity, and is the strict on-policy primary candidate pending VOR smoke.
+- ProPainter prior remains a separate `prior_mode=propainter` variable and is retained for the main comparison.
+- Gate128 remains blocked until fixed Smoke6 generation, metrics, and visual review pass.

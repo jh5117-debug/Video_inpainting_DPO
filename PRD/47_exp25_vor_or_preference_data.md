@@ -125,3 +125,25 @@ Reports:
 - `reports/exp25_diffueraser_or_stack_audit.md`
 - `reports/exp25_diffueraser_primary_stack_decision.md`
 - `reports/exp25_effecterase_official_deployment_audit.md`
+
+## 2026-06-23 DiffuEraser Stack v2
+
+Exp25 now separates PCM and prior mode explicitly.
+
+Main candidates:
+
+- `DE_OFFICIAL_PCM2_PROP_PRIOR`: PCM2 acceleration plus ProPainter prior;
+  official accelerated baseline, not strict on-policy.
+- `DE_NO_PCM_PROP_PRIOR`: no PCM plus ProPainter prior; strict on-policy
+  self-model loser candidate.
+- `DE_NO_PCM_NO_PRIOR_DIAGNOSTIC`: not implemented as primary; changes prior
+  variable and remains diagnostic-only.
+
+New isolated wrapper:
+
+`exp25_vor_or_preference_data/scripts/infer_diffueraser_or_exp25.py`
+
+It only patches the temporary overlay copy of `diffueraser_OR.py`; shared code
+and old Exp15 code are not modified.
+
+Primary stack remains pending fixed smoke and visual review.
