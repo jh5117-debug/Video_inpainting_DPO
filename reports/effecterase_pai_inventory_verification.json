@@ -1,12 +1,72 @@
 {
-  "bad_count": 0,
-  "completed_bytes": 363730944386,
-  "dataset_revision": "fa09dc61128ca0418a4a13364d97a08018ea9cc7",
-  "final_bytes": 363730944386,
-  "final_count": 37,
-  "manifest_verified_rows": 37,
+  "bads": [],
+  "continuity": {
+    "VOR-Eval": {
+      "contiguous": true,
+      "count": 1,
+      "duplicates": 0,
+      "missing": [],
+      "numeric": true,
+      "tokens": [
+        "000"
+      ]
+    },
+    "VOR-Train": {
+      "contiguous": true,
+      "count": 32,
+      "duplicates": 0,
+      "missing": [],
+      "numeric": true,
+      "tokens": [
+        "000",
+        "001",
+        "002",
+        "003",
+        "004",
+        "005",
+        "006",
+        "007",
+        "008",
+        "009",
+        "010",
+        "011",
+        "012",
+        "013",
+        "014",
+        "015",
+        "016",
+        "017",
+        "018",
+        "019",
+        "020",
+        "021",
+        "022",
+        "023",
+        "024",
+        "025",
+        "026",
+        "027",
+        "028",
+        "029",
+        "030",
+        "031"
+      ]
+    },
+    "VOR-Train-MASK": {
+      "contiguous": true,
+      "count": 3,
+      "duplicates": 0,
+      "missing": [],
+      "numeric": true,
+      "tokens": [
+        "000",
+        "001",
+        "002"
+      ]
+    }
+  },
+  "file_count": 37,
   "ok": true,
-  "pai_download_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7",
-  "partial_count": 0,
-  "sha256_mismatch_rows": 0
+  "partials": [],
+  "revision": "fa09dc61128ca0418a4a13364d97a08018ea9cc7"
 }

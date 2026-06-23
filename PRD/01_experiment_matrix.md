@@ -616,4 +616,5 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 | Completed files | 37 / 37 |
 | Completed bytes | 363730944386 / 363730944386 |
 | PAI final / partial / bad | 37 / 0 / 0 |
+| PAI verifier | `ok=true`; 37 OK files; VOR-Train parts 000-031 contiguous |
 | Completion marker | `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE` |

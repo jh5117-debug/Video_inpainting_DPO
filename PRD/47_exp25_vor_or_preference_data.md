@@ -33,4 +33,4 @@ The completion marker exists on PAI:
 
 `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE`
 
-Full post-hoc re-hashing of all 363.7GB on PAI was attempted but was interrupted by remote SIGTERM twice. The accepted integrity source for this stage is the append-only transfer manifest, which contains 37 VERIFIED rows and zero HAL/PAI SHA256 mismatches from transfer-time checks. A final lightweight inventory confirmed 37 final files, 0 partial files, 0 bad files, and the expected total byte count.
+Final PAI-side inventory verification completed successfully after transfer. The independent verifier checked all 37 required files under the fixed revision directory, reported `ok=true`, found 0 partial files and 0 bad files, and confirmed contiguous archive parts for VOR-Eval, VOR-Train-MASK, and VOR-Train. The append-only transfer manifest also contains 37 VERIFIED rows and zero HAL/PAI SHA256 mismatches from transfer-time checks.

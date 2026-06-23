@@ -23,6 +23,6 @@ Integrity source:
 - Transfer-time manifest has 37 VERIFIED rows.
 - Every VERIFIED row records `hal_sha256 == pai_sha256`.
 - Mismatch rows: 0.
-- Full post-hoc re-hashing of all 363.7GB on PAI was attempted but interrupted by remote SIGTERM twice; the final lightweight inventory confirmed expected file count, no partial/bad files, and expected total bytes.
+- Final independent PAI inventory verification completed successfully: 37 OK files, no partial files, no bad files, expected total bytes, and contiguous VOR-Train archive parts 000-031.
 
 No archive decompression, gzip scan, loser generation, GPU inference, or DPO training was started in this stage.

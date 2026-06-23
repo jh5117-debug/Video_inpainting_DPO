@@ -1844,5 +1844,6 @@ completion_marker = /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effectera
 
 Each file was verified with HAL and PAI SHA256 equality before atomic finalization
 on PAI. The transfer manifest contains 37 VERIFIED rows and zero HAL/PAI SHA256
-mismatches. No GPU work, loser generation, decompression, or DPO training was
-started in this track.
+mismatches. The final independent PAI inventory verifier also passed with 37 OK
+files, no partial/bad files, and contiguous VOR-Train parts 000-031. No GPU
+work, loser generation, decompression, or DPO training was started in this track.
