@@ -85,8 +85,10 @@ def linear_gate(seed: int) -> dict:
 def localdpo_gate(seed: int) -> dict:
     d1 = localdpo_mask_digest(seed=seed, video_length=13, image_height=120, image_width=216)
     d2 = localdpo_mask_digest(seed=seed, video_length=13, image_height=120, image_width=216)
-    if d1.get("status") == "blocked_official_code_runtime_error":
+    if str(d1.get("status", "")).startswith("blocked_official_code"):
         status = "blocked_official_code_runtime_error" if d1 == d2 else "failed"
+        if d1.get("status") == "blocked_official_code_missing" and d1 == d2:
+            status = "blocked_official_code_missing"
     else:
         status = "passed" if d1 == d2 and d1.get("shape") == [13, 120, 216] else "failed"
     return {
