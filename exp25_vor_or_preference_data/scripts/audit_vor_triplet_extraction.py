@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import subprocess
 from pathlib import Path
 from typing import Dict, List
@@ -32,6 +33,8 @@ FIELDS = [
     "aligned_size",
     "mask_area_mean",
     "masked_absdiff_mean",
+    "probe_backend",
+    "probe_note",
     "status",
     "reason",
     "contact_sheet",
@@ -50,8 +53,9 @@ def parse_args() -> argparse.Namespace:
 
 
 def ffprobe(path: Path) -> Dict[str, object]:
+    ffprobe_bin = os.environ.get("FFPROBE_BIN", "ffprobe")
     cmd = [
-        "ffprobe",
+        ffprobe_bin,
         "-v",
         "error",
         "-select_streams",
@@ -65,7 +69,12 @@ def ffprobe(path: Path) -> Dict[str, object]:
     ]
     proc = subprocess.run(cmd, check=False, text=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     if proc.returncode != 0:
-        return {"error": proc.stderr.strip() or f"ffprobe_exit_{proc.returncode}"}
+        fallback = cv2_probe(path)
+        if not fallback.get("error"):
+            fallback["backend"] = "opencv_fallback"
+            fallback["note"] = proc.stderr.strip() or f"ffprobe_exit_{proc.returncode}"
+            return fallback
+        return {"error": proc.stderr.strip() or f"ffprobe_exit_{proc.returncode}", "backend": "ffprobe", "note": ""}
     obj = json.loads(proc.stdout or "{}")
     streams = obj.get("streams") or []
     if not streams:
@@ -82,7 +91,22 @@ def ffprobe(path: Path) -> Dict[str, object]:
         "frames": frames_i,
         "duration": s.get("duration") or "",
         "error": "",
+        "backend": "ffprobe",
+        "note": "",
     }
+
+
+def cv2_probe(path: Path) -> Dict[str, object]:
+    cap = cv2.VideoCapture(str(path))
+    if not cap.isOpened():
+        return {"error": "opencv_open_failed", "backend": "opencv", "note": ""}
+    frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT) or 0)
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH) or 0)
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT) or 0)
+    cap.release()
+    if frames <= 0 or width <= 0 or height <= 0:
+        return {"error": "opencv_invalid_metadata", "backend": "opencv", "note": ""}
+    return {"width": width, "height": height, "frames": frames, "duration": "", "error": "", "backend": "opencv", "note": ""}
 
 
 def role_path(root: Path, member_path: str, group: str) -> Path:
@@ -197,6 +221,8 @@ def main() -> int:
                 "aligned_size": aligned_size,
                 "mask_area_mean": mask_area,
                 "masked_absdiff_mean": masked_diff,
+                "probe_backend": ",".join(sorted({str(fg_meta.get("backend", "")), str(bg_meta.get("backend", "")), str(mask_meta.get("backend", ""))})),
+                "probe_note": " | ".join(str(m.get("note", "")) for m in [fg_meta, bg_meta, mask_meta] if m.get("note")),
                 "status": status,
                 "reason": reason,
                 "contact_sheet": str(contact if contact.exists() else ""),
@@ -208,12 +234,14 @@ def main() -> int:
         writer.writeheader()
         writer.writerows(out_rows)
     ok = sum(1 for r in out_rows if r["status"] == "OK")
+    fallback = sum(1 for r in out_rows if "opencv_fallback" in r["probe_backend"])
     args.report_md.parent.mkdir(parents=True, exist_ok=True)
     args.report_md.write_text(
         "# VOR Triplet Audit64 Semantic Report\n\n"
         f"- samples: {len(out_rows)}\n"
         f"- ok: {ok}\n"
         f"- failed: {len(out_rows) - ok}\n"
+        f"- opencv_fallback_samples: {fallback}\n"
         f"- visual_dir: `{args.visual_dir}`\n"
         f"- report_csv: `{args.report_csv}`\n"
         "- checks: ffprobe decode, frame-count alignment, resolution alignment, mask-area, masked FG_BG/BG difference, contact sheets.\n",
