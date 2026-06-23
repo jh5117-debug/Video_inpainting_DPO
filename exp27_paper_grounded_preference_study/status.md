@@ -32,3 +32,16 @@ Status: `LOCALDPO_FUSION_PRIMITIVE_READY_REAL_BATCH_PENDING`.
 - Real DiffuEraser batch parity remains pending.
 
 Status: `PAI_CPU_PRIMITIVE_PARITY_PASSED_REAL_BATCH_PENDING`.
+
+## 2026-06-23 Overnight Autonomous Controller
+
+- Status: `OVERNIGHT_CPU_PARITY_REFRESH_PASSED_REAL_BATCH_PENDING`.
+- PAI controller runtime:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- CPU primitive parity refresh completed on PAI from the immutable runtime
+  snapshot.
+- Refreshed parity outputs are under:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp27_cpu_parity_refresh`.
+- Real DiffuEraser-batch SDPO and Linear-DPO parity are still pending a real
+  GPU implementation/run; no Data Study, Objective Study, LocalDPO four-cell
+  experiment, RC-FPO run, or long training has started.
