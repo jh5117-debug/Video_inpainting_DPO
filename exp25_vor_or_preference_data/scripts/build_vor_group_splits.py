@@ -75,20 +75,27 @@ def assign_group_pool(
 ) -> tuple[set[str], list[dict]]:
     picked_groups: set[str] = set()
     picked_rows: list[dict] = []
-    target_by_source = {k: int(round(count * v)) for k, v in preferred_source_ratio.items()}
-    remaining = count
+    target_by_source = {source: int(round(count * preferred_source_ratio.get(source, 0.0))) for source in groups_by_source}
+    while sum(target_by_source.values()) < count:
+        src = max(target_by_source, key=lambda s: preferred_source_ratio.get(s, 0.0) - target_by_source[s] / max(1, count))
+        target_by_source[src] += 1
+    while sum(target_by_source.values()) > count:
+        src = max(target_by_source, key=target_by_source.get)
+        target_by_source[src] -= 1
     for source, source_target in sorted(target_by_source.items()):
         candidates = [g for g in groups_by_source.get(source, []) if g not in used_groups]
         rng.shuffle(candidates)
+        source_rows: list[dict] = []
         for group in candidates:
-            if len([r for r in picked_rows if r["source_type"] == source]) >= source_target and remaining <= count // 4:
-                break
             picked_groups.add(group)
             used_groups.add(group)
-            picked_rows.extend(rows_by_group[group])
-            remaining = max(0, count - len(picked_rows))
-            if len([r for r in picked_rows if r["source_type"] == source]) >= source_target and len(picked_rows) >= count:
+            source_rows.extend(rows_by_group[group])
+            if len(source_rows) >= source_target:
                 break
+        if len(source_rows) < source_target:
+            raise RuntimeError(f"not enough {source} rows for isolated split target {source_target}; got {len(source_rows)}")
+        rng.shuffle(source_rows)
+        picked_rows.extend(source_rows[:source_target])
     if len(picked_rows) < count:
         candidates = [g for source_groups in groups_by_source.values() for g in source_groups if g not in used_groups]
         rng.shuffle(candidates)
