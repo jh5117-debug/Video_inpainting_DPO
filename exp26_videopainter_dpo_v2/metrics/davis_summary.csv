@@ -1,0 +1,3 @@
+method,model,PSNR,SSIM,strict_mask_pixel_psnr,LPIPS,number_of_videos,number_of_frames,eval_protocol
+VideoPainter adapter,adapter,29.802756917793353,0.9579541300611826,18.1594574149052,nan,50,2366,"DAVIS frame-wise hard-comp, no mask dilation, no Gaussian blur, no VBench"
+VideoPainter baseline,baseline,31.61239218545971,0.9607946258068816,19.96909268257156,nan,50,2366,"DAVIS frame-wise hard-comp, no mask dilation, no Gaussian blur, no VBench"

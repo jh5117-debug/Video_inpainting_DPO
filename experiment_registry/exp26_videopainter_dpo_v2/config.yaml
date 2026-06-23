@@ -1,0 +1,7 @@
+experiment: exp26_videopainter_dpo_v2
+branch: research/exp26-videopainter-dpo-v2
+status: VP2_STATIC_FIXES_STARTED
+formal_frame_count: 49
+plumbing_only_frame_count: 13
+promotion_policy: checkpoint_curve_gate
+forbidden_default: direct_2000_step_training

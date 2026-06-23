@@ -1,0 +1,68 @@
+experiment_name: exp14_adapter_videopainter_gate2000
+status: completed_training_eval_blocked
+current_best_source_method: exp11_outer_b075_s2
+adapter_target: VideoPainter
+adapter_type: direct_diff_dpo_isolated_trainer
+repo_url: https://github.com/TencentARC/VideoPainter
+local_repo_path_hal: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter
+repo_commit_hal: bbab6cd5cd5cb89f0e2444305c32fd74a010ae0a
+license: VideoPainter academic/research license plus CogVideoX license
+training_entry:
+  - train/VideoPainter.sh
+  - train/VideoPainterID.sh
+  - train/train_cogvideox_inpainting_i2v_video.py
+  - train/train_cogvideox_inpainting_i2v_video_resample.py
+base_loss: CogVideoX velocity/latent denoising loss plus mask inpainting loss
+proposed_dpo_loss:
+  gap_normalization: log_ratio
+  beta_dpo: 10.0
+  lose_gap_weight: 0.25
+  lose_gap_clip_tau: 1.0
+  winner_abs_reg_weight: 0.05
+  winner_gap_reg_weight: 1.0
+  boundary_mode: outer
+  mask_weight: 1.0
+  boundary_weight: 0.75
+  outside_weight: 0.05
+data:
+  train: YouTube-VOS / D3 GT-win generated-loser pairs after VideoPainter format conversion
+  eval: DAVIS / YouTubeVOS with fixed raw6 hard-comp metric where compatible
+gate2000:
+  status: completed_training_eval_blocked
+  reason: weights resolved via HAL download and rsync to PAI; PAI preflight passed; gate2000 completed 2000 steps; DAVIS eval blocked pending Exp14 thin eval adapter
+  max_steps: 2000
+  checkpointing_steps: 500
+  eval_metric: inference/metrics.py
+  vbench: false
+trainer:
+  path: exp14_adapter_videopainter/code/train_videopainter_dpo_adapter.py
+  implemented: true
+  preflight_required: true
+  preflight_status: passed_on_pai
+  notes: policy/reference branch Diff-DPO trainer; upstream VideoPainter official training is still not used
+pai_attempt_20260616:
+  sync_strategy: clean_worktree
+  clean_repo: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate
+  source_commit: 2e187ee
+  videopainter_code_synced: true
+  data_ready: true
+  gpu_ready: true
+  missing_weights: []
+  weights_resolved: true
+  weight_sources:
+    - TencentARC/VideoPainter
+    - THUDM/CogVideoX-5b-I2V
+  hal_weight_root: /home/hj/dpo-2-1-exp/third_party_baselines/VideoPainter/ckpt
+  pai_weight_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt
+  hf_download_attempted: true
+  hf_download_error: "httpx.ConnectError: [Errno 101] Network is unreachable"
+  transfer_method: rsync_partial_append_verify
+  preflight_status: passed
+  gate2000_pid: 659269
+  gate2000_gpu: 0
+  checkpoint_500: present
+  checkpoint_1000: present
+  checkpoint_1500: present
+  checkpoint_2000: present
+  last_weights: present
+  davis_eval_status: blocked_pending_exp14_thin_eval_adapter
