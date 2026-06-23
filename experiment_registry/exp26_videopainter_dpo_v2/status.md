@@ -52,3 +52,14 @@ Reason: active YouTube-VOS source is a sparse extraction and does not satisfy fo
 
 Gate64 has not started. Selected sources still require selective extraction,
 exact 49-frame decode audit, and generated moving BR masks.
+## 2026-06-23 Overnight Autonomous Controller
+
+- Status: `OVERNIGHT_WAITING_GPU_OFFICIAL_PROBE_PENDING`.
+- Runtime controller on PAI:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- CPU mask distribution audit completed and recorded:
+  `reports/exp26_br_mask_distribution_audit_fast512.md`.
+- Probe4 masks remain plumbing-valid ellipse masks and are not a final Gate16
+  protocol.
+- Official 49F VideoPainter Probe4 inference is still pending a free allowed
+  GPU; no Gate16/Gate64 generation or training has started.

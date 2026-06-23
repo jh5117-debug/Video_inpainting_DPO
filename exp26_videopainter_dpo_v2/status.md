@@ -92,3 +92,20 @@ Status: `FORMAL_49F_PROBE4_PASSED`.
 - Gate16/Gate64 remain pending official 49F VideoPainter inference.
 
 Status: `PROBE4_MASK_VISUAL_AUDIT_PASSED_PENDING_OFFICIAL_INFERENCE`.
+
+## 2026-06-23 Overnight Autonomous Controller
+
+- Status: `OVERNIGHT_WAITING_GPU_OFFICIAL_PROBE_PENDING`.
+- Runtime controller on PAI is owned by Exp25 and monitors Exp25/Exp26/Exp27:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- PAI runtime code snapshots were created with git archive, not full worktree
+  rsync.
+- Completed CPU audit during overnight setup:
+  `reports/exp26_br_mask_distribution_audit_fast512.md`.
+- Fast512 historical BR mask audit confirms the current Probe4 ellipse masks
+  are plumbing-valid but not distribution matched to historical BR masks.
+- Gate16/Gate64 must use a mixed BR mask protocol calibrated from historical
+  area, edge-touch, and motion buckets.
+- Official 49F VideoPainter Probe4 inference has not run yet because all
+  allowed GPUs are occupied. It must not be inferred from old Exp14 adapter
+  results.
