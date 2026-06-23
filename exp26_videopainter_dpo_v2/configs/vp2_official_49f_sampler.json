@@ -1,0 +1,23 @@
+{
+  "name": "vp2_official_49f_sampler_v1",
+  "status": "LOCKED_PENDING_NATIVE_TRAINER_RECHECK",
+  "formal_num_frames": 49,
+  "plumbing_only_13f_allowed": false,
+  "frame_selection": {
+    "mode": "first_49_unique_source_frames",
+    "stride": 1,
+    "offset": 0,
+    "requires_unique_decoded_frames": true,
+    "forbidden": [
+      "padding repeated frames",
+      "looping",
+      "interpolation",
+      "13-frame fallback"
+    ]
+  },
+  "first_frame_gt_default": true,
+  "notes": [
+    "This file locks the formal extraction contract used by Exp26 materialization scripts.",
+    "If a later official trainer audit proves a different native sampler, this file must be updated and all materialized manifests regenerated."
+  ]
+}

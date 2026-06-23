@@ -63,3 +63,12 @@ winner/loser losses and region-local normalized-gap DPO.
 - The available YouTube-VOS directory contains sparse frame sequences; sampled videos had 36 and 20 frames.
 - No formal Gate64 self-loser generation was launched.
 - Status: `BLOCKED_INSUFFICIENT_49F_SOURCE`.
+
+## 2026-06-23 VOR-BG Formal Tooling
+
+- Added strict 49F source materializer for the locked VOR-BG train/search/shadow manifests.
+- Added deterministic moving BR mask generator with `first_frame_gt` enforced by `mask frame0 = 0`.
+- Added locked sampler config recording first-49 unique-frame extraction until a native trainer audit proves a different sampler.
+- Gate64 remains pending; no VideoPainter self-loser generation or GPU training was started.
+
+Status: `FORMAL_49F_TOOLING_READY_PENDING_PAI_EXTRACTION`.

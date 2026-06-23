@@ -105,3 +105,19 @@ Initial locked source-only split:
 This does not start Gate64. Next gate is selective extraction, exact 49-frame
 probe, moving-mask generation, then official VideoPainter Gate64 self-loser
 generation.
+
+## 2026-06-23 Formal 49F Materialization Tooling
+
+Added strict formal-source tooling:
+
+- `exp26_videopainter_dpo_v2/code/materialize_vp2_49f_sources.py`
+- `exp26_videopainter_dpo_v2/code/generate_vp2_moving_br_masks.py`
+- `exp26_videopainter_dpo_v2/configs/vp2_official_49f_sampler.json`
+
+The materializer rejects any source that cannot decode 49 unique real frames.
+It does not duplicate, loop, interpolate, pad, or fall back to the 13-frame
+plumbing mode. The mask generator creates exactly one deterministic 49-frame
+moving BR mask per materialized source and forces `mask[0]=0` when
+`first_frame_gt=true`.
+
+Status: `FORMAL_49F_TOOLING_READY_PENDING_PAI_EXTRACTION`.
