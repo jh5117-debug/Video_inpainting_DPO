@@ -175,14 +175,22 @@ class MultiPartReader(io.RawIOBase):
         self.index = 0
         self.current = parts[0].open("rb")
         self.offset = 0
+        self.exhausted = False
 
     def readable(self) -> bool:
         return True
 
     def readinto(self, b) -> int:  # noqa: ANN001 - RawIOBase protocol
+        if self.exhausted:
+            return 0
         view = memoryview(b)
         total = 0
         while total < len(view):
+            if self.current.closed:
+                if self.index >= len(self.parts):
+                    self.exhausted = True
+                    break
+                self.current = self.parts[self.index].open("rb")
             n = self.current.readinto(view[total:])
             if n:
                 total += n
@@ -191,13 +199,15 @@ class MultiPartReader(io.RawIOBase):
             self.current.close()
             self.index += 1
             if self.index >= len(self.parts):
+                self.exhausted = True
                 break
             self.current = self.parts[self.index].open("rb")
         return total
 
     def close(self) -> None:
         try:
-            self.current.close()
+            if not self.current.closed:
+                self.current.close()
         finally:
             super().close()
 
