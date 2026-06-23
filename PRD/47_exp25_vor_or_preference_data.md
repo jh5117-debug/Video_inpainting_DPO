@@ -202,3 +202,30 @@ Smoke6 with `mask_dilation_iter=0` passes technical and visual review.
 Report:
 
 `reports/exp25_no_pcm_canonical_identity_audit.md`
+
+## 2026-06-23 Overnight GPU2 Gate32 Completion
+
+The overnight Exp25/26/27 controller was resumed after GPU2 became free. A
+controller scheduling bug was fixed: completed GPU subprocesses that remained
+as zombies are no longer treated as alive.
+
+Commit:
+
+`22f7c54f49c46655700d7cb4193ac18dfa3bf037`
+
+Exp25 Gate32 canonical DiffuEraser generation completed:
+
+- Materialization: `32/32`.
+- DiffuEraser raw OR candidates: `32/32` OK.
+- Frames: `24` each.
+- Generator ID: `diffueraser_or_none_propainter_abd3ad48f60f`.
+- `pcm_mode=none`, `prior_mode=propainter`, `hard_comp=false`.
+- Output:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/preference_candidates/gate32_canonical_raw6_d0`.
+
+This remains Gate32 yield calibration only. No long training was started, and
+VOR-Eval was not used.
+
+Report:
+
+`reports/exp25_overnight_gpu2_gate32_completion.md`

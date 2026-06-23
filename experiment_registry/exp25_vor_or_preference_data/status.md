@@ -128,3 +128,19 @@ Full Gate128 OR loser generation has not started.
 - Most samples were too close to winner; one sample showed clear ghosting and useful hard-negative behavior.
 - Gate32 remains pending as yield calibration only.
 - Report: `reports/exp25_overnight_smoke6_monitor.md`.
+
+## 2026-06-23 Overnight GPU2 Gate32 Completion
+
+- Status: `GATE32_CANONICAL_DIFFUERASER_COMPLETED`.
+- Controller fix commit: `22f7c54f49c46655700d7cb4193ac18dfa3bf037`.
+- PAI controller PID after fix: `2041604`.
+- Runtime root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623`.
+- Gate32 materialization: `32/32`.
+- Gate32 DiffuEraser canonical OR generation: `32/32` OK, `24` frames each.
+- Generator ID: `diffueraser_or_none_propainter_abd3ad48f60f`.
+- Confirmed `pcm_mode=none`, `prior_mode=propainter`, `hard_comp=false`.
+- Output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/preference_candidates/gate32_canonical_raw6_d0`.
+- GPU2 released after completion; GPU7 stale allocation was not used.
+- Report: `reports/exp25_overnight_gpu2_gate32_completion.md`.
