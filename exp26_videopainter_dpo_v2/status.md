@@ -46,3 +46,13 @@ Important:
 This run did not use upstream VideoPainter official training as a replacement
 for DPO. It used the isolated Exp14 trainer that computes policy/reference
 winner/loser losses and region-local normalized-gap DPO.
+
+## 2026-06-23 L0-L4 Gate
+
+- status: L0_L4_PASSED
+- L0 formal 49F native strict-load/inference: passed
+- L1 same-batch/noise/timestep parity: passed
+- L2 policy=reference zero-gap DPO log(2): passed
+- L3 one-step native optimizer + strict save/reload + inference: passed
+- L4 10-step smoke: passed, PLUMBING_ONLY_13F
+- No long training started.

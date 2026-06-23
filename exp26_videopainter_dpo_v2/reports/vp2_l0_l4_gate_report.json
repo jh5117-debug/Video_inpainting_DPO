@@ -1,0 +1,86 @@
+{
+  "L0": {
+    "frames": 49,
+    "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/gate_data/formal_49f/bear/formal_49f_manifest.jsonl",
+    "native_inference_digest": {
+      "checksum16": "04d5ffbe7d8de8ef",
+      "finite": true,
+      "l2": 816.1177368164062,
+      "mean": -0.04324895888566971,
+      "shape": [
+        1,
+        13,
+        16,
+        60,
+        90
+      ],
+      "std": 0.7688000798225403
+    },
+    "status": "passed",
+    "strict_load": "from_pretrained branch checkpoint loaded without fallback"
+  },
+  "L1": {
+    "dpo_loss_1": 0.6931471824645996,
+    "dpo_loss_2": 0.6931471824645996,
+    "max_abs_diff": 3.039836883544922e-06,
+    "status": "passed",
+    "total_loss_1": 0.6948838233947754,
+    "total_loss_2": 0.6948868632316589
+  },
+  "L2": {
+    "abs_gap": 1.904654323148236e-09,
+    "dpo_loss": 0.6931471824645996,
+    "status": "passed",
+    "target_log2": 0.6931471805599453
+  },
+  "L3": {
+    "checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/formal_run/checkpoint-1",
+    "loss_type": "formal_49f_native_policy_loss",
+    "one_step_loss": 0.0038666902109980583,
+    "output_delta_after_update": 25.649038111791015,
+    "reload_native_inference_digest": {
+      "checksum16": "658a2a524ff393d3",
+      "finite": true,
+      "l2": 841.7337646484375,
+      "mean": -0.010238679125905037,
+      "shape": [
+        1,
+        13,
+        16,
+        60,
+        90
+      ],
+      "std": 0.7941226363182068
+    },
+    "reload_output_delta": 0.0,
+    "state_max_abs_diff_after_reload": 0.0,
+    "status": "passed"
+  },
+  "L4": {
+    "checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/plumbing_13f_run/checkpoint-10",
+    "diag_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/plumbing_13f_dpo_diag.csv",
+    "label": "PLUMBING_ONLY_13F",
+    "last_dpo_loss": 0.0015321369282901287,
+    "last_loss": 0.0039273826405406,
+    "last_weights": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/plumbing_13f_run/last_weights",
+    "status": "passed",
+    "steps": 10
+  },
+  "cuda_visible_devices": "2",
+  "formal_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/gate_data/formal_49f/bear/formal_49f_manifest.jsonl",
+  "locked_official_config_json": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/l0_l4_gates_20260623_110548/locked_official_optimizer_scheduler.json",
+  "official_optimizer_scheduler": {
+    "adam_beta1": 0.9,
+    "adam_beta2": 0.95,
+    "adam_epsilon": 1e-08,
+    "learning_rate": 0.0001,
+    "lr_scheduler": "constant",
+    "lr_warmup_steps": 500,
+    "max_grad_norm": 1.0,
+    "mixed_precision": null,
+    "weight_decay": 0.0001
+  },
+  "pid": 1702581,
+  "plumbing_manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/official_videodpo_diffueraser_youtubevos_partialmask_loser_k4/manifests/selected_primary_comp.repaired.pai_paths.jsonl",
+  "status": "passed"
+}
