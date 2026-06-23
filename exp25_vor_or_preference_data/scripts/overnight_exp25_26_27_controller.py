@@ -372,6 +372,17 @@ def launch_gpu_task(run_root: Path, task_name: str, gpu: int, cmd: list[str], cw
 
 
 def process_alive(pid: int) -> bool:
+    stat_path = Path(f"/proc/{pid}/stat")
+    if stat_path.exists():
+        try:
+            stat = stat_path.read_text(encoding="utf-8", errors="replace")
+            # /proc/<pid>/stat format: pid (comm) state ...
+            after_comm = stat.rsplit(")", 1)[1].strip()
+            state = after_comm.split()[0]
+            if state == "Z":
+                return False
+        except Exception:
+            pass
     try:
         os.kill(pid, 0)
         return True
