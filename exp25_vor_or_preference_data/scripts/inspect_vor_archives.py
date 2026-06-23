@@ -10,6 +10,7 @@ members for readability and path safety.
 from __future__ import annotations
 
 import argparse
+import csv
 import json
 from pathlib import Path
 
@@ -41,6 +42,13 @@ def load_required(path: Path) -> list[dict]:
     return json.loads(path.read_text()) if path.exists() else []
 
 
+def load_transfer_manifest(path: Path) -> list[dict]:
+    if not path.exists():
+        return []
+    with path.open() as f:
+        return list(csv.DictReader(f))
+
+
 def probe_group(parts: list[Path], group: str, max_members: int) -> dict:
     out = {"opened": False, "members": 0, "unsafe": [], "first_members": [], "error": ""}
     try:
@@ -63,6 +71,16 @@ def probe_group(parts: list[Path], group: str, max_members: int) -> dict:
 def main() -> int:
     args = parse_args()
     required = load_required(args.required_files)
+    if not required:
+        required = [
+            {
+                "filename": row.get("filename", ""),
+                "group": row.get("group") or group_for_name(row.get("filename", "")),
+                "size": int(row.get("size") or 0),
+            }
+            for row in load_transfer_manifest(args.transfer_manifest)
+            if row.get("status") == "VERIFIED" and group_for_name(row.get("filename", "")) in set(GROUP_PREFIX)
+        ]
     expected_by_name = {Path(r["filename"]).name: int(r.get("size") or 0) for r in required}
     groups = {}
     for group in GROUP_PREFIX:
