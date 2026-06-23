@@ -117,3 +117,14 @@ Full Gate128 OR loser generation has not started.
   as background PID `3577126`.
 - Gate32/Gate128 OR generation remains blocked until the canonical d0 Smoke6
   finishes and receives real metric plus visual review.
+
+## 2026-06-23 Overnight Smoke6 Monitor Update
+
+- Fresh canonical d0 DiffuEraser Smoke6 completed on PAI: `6/6`, `24` frames each.
+- Generator id: `diffueraser_or_none_propainter_abd3ad48f60f`.
+- Confirmed `pcm_mode=none`, `prior_mode=propainter`, `mask_dilation_iter=0`, `hard_comp=false`.
+- Visual review completed on six contact sheets.
+- Decision: `TECHNICAL_PASS_QUALITY_YIELD_WEAK`.
+- Most samples were too close to winner; one sample showed clear ghosting and useful hard-negative behavior.
+- Gate32 remains pending as yield calibration only.
+- Report: `reports/exp25_overnight_smoke6_monitor.md`.

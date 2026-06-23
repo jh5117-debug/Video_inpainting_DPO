@@ -44,3 +44,14 @@ Latest commit on PAI at status write: $(git rev-parse HEAD)
   `3577126`.
 - Gate32/Gate128 OR generation remains blocked until canonical d0 Smoke6
   completes and is visually reviewed.
+
+## 2026-06-23 Overnight Smoke6 Monitor Update
+
+- Fresh canonical d0 DiffuEraser Smoke6 completed on PAI: `6/6`, `24` frames each.
+- Generator id: `diffueraser_or_none_propainter_abd3ad48f60f`.
+- Confirmed `pcm_mode=none`, `prior_mode=propainter`, `mask_dilation_iter=0`, `hard_comp=false`.
+- Visual review completed on six contact sheets.
+- Decision: `TECHNICAL_PASS_QUALITY_YIELD_WEAK`.
+- Only `REAL_ENV159_00010_003_05` showed a clearly useful hard-negative artifact; most samples were too close to winner.
+- Gate32 remains a yield-calibration step, not an automatic OR-DPO readiness promotion.
+- Report: `reports/exp25_overnight_smoke6_monitor.md`.

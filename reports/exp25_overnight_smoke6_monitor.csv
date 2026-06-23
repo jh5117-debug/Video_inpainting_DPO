@@ -1,0 +1,7 @@
+sample_id,judgement,note
+REAL_ENV114_00004_004_02,too_easy,Person removed cleanly; output very close to winner.
+BLENDER_FOREST039_00117,too_easy,Output nearly matches winner; weak preference signal.
+BLENDER_FOREST039_00530,too_easy,Output nearly matches winner; weak preference signal.
+REAL_ENV024_00002_008_01,slight_signal,Person removed; mild smoothing/fence/background differences.
+BLENDER_CON001_00332,too_easy,Dark scene output close to winner; no strong artifact.
+REAL_ENV159_00010_003_05,useful_hard,Clear body/hand/bag ghosting remains; usable hard negative but may be severe.
