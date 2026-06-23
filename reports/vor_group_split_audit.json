@@ -1,0 +1,56 @@
+{
+  "counts": {
+    "gate128": 128,
+    "search_dev": 256,
+    "shadow_dev": 256,
+    "train_source_pool": 4096
+  },
+  "excluded_sample_ids": 1,
+  "gate128_source_counts": {
+    "BLENDER": 48,
+    "REAL": 80
+  },
+  "group_overlap_counts": {
+    "search_shadow": 0,
+    "train_search": 0,
+    "train_shadow": 0
+  },
+  "group_overlaps": {
+    "search_shadow": [],
+    "train_search": [],
+    "train_shadow": []
+  },
+  "input": "exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "input_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "outputs": {
+    "gate128": "exp25_vor_or_preference_data/manifests/vor_gate128.jsonl",
+    "search_dev": "exp25_vor_or_preference_data/manifests/vor_search_dev_256.jsonl",
+    "shadow_dev": "exp25_vor_or_preference_data/manifests/vor_shadow_dev_256.jsonl",
+    "train_source_pool": "exp25_vor_or_preference_data/manifests/vor_train_source_pool_4096.jsonl"
+  },
+  "scene_group_counts": {
+    "gate128": 53,
+    "search_dev": 8,
+    "shadow_dev": 8,
+    "train_source_pool": 98
+  },
+  "search_dev_source_counts": {
+    "BLENDER": 95,
+    "REAL": 161
+  },
+  "seed": 20260623,
+  "shadow_dev_source_counts": {
+    "BLENDER": 95,
+    "REAL": 161
+  },
+  "source_counts": {
+    "BLENDER": 21494,
+    "REAL": 36256
+  },
+  "total_scene_groups": 1449,
+  "total_triplets": 57750,
+  "train_source_counts": {
+    "BLENDER": 1524,
+    "REAL": 2572
+  }
+}
