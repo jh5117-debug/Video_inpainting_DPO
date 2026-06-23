@@ -1,0 +1,6 @@
+candidate,status,role,one_line
+RC-FPO,selected,primary,Task-native failure-structured BR/OR data plus restoration-critical region decomposition.
+ST-Pref,selected,fallback,Stage-aware spatial and temporal preference decomposition.
+Region-SDPO,paused,ablation,Exact SDPO and LoVI heuristic safeguard baselines only.
+Linear-Frozen,paused,ablation,Linear-DPO utility with frozen reference baseline.
+Linear-EMA,paused,ablation,Linear-DPO utility with EMA reference baseline.

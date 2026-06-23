@@ -1,0 +1,4 @@
+prior,threat_level,threatened_claim,safe_boundary
+LocalDPO,high,localized video DPO and real-positive/local-corruption negative pairs,conditional inpainting/object-removal task masks and restoration-critical regions
+Diffusion-SDPO,medium,winner-preserving DPO and safe loser-gradient scaling,heuristic or exact baseline only unless new LoVI-region proof exists
+Linear-DPO,medium,linear utility EMA reference and diffusion/flow DPO generality,baseline/ablation for saturation not primary novelty

@@ -1,0 +1,14 @@
+{
+  "digest": {
+    "error": "ValueError('cannot reshape array of size 1228800 into shape (480,640,3)')",
+    "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+    "status": "blocked_official_code_runtime_error"
+  },
+  "repeat_digest": {
+    "error": "ValueError('cannot reshape array of size 1228800 into shape (480,640,3)')",
+    "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+    "status": "blocked_official_code_runtime_error"
+  },
+  "source": "/home/hj/video_dpo_paper_code_cache/repos/Local-DPO/innerT2V/utils/random_mask_gen.py",
+  "status": "blocked_official_code_runtime_error"
+}

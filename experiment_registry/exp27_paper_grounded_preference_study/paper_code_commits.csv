@@ -1,0 +1,4 @@
+paper,repo_url,local_path,commit,license,status
+LocalDPO,https://github.com/1170300714/Local-DPO,/home/hj/video_dpo_paper_code_cache/repos/Local-DPO,7528e966b17283cfa638577827e456737335f030,no_top_level_license_found,audited
+Diffusion-SDPO,https://github.com/AIDC-AI/Diffusion-SDPO,/home/hj/video_dpo_paper_code_cache/repos/Diffusion-SDPO,84fb241c1b89705a247da8b0d6047798ca49830d,Apache-2.0,audited
+Linear-DPO,https://github.com/Whynot0101/Linear-DPO,/home/hj/video_dpo_paper_code_cache/repos/Linear-DPO,663179c7adbbbd2d77b97b5841534447eb291ebd,no_top_level_license_content_found,audited

@@ -1,0 +1,4 @@
+paper,title,arxiv,official_repo,pdf_path,pdf_sha256,status
+LocalDPO,"Mind the Generative Details: Direct Localized Detail Preference Optimization for Video Diffusion Models",2601.04068,https://github.com/1170300714/Local-DPO,/home/hj/video_dpo_paper_code_cache/pdfs/2601.04068.pdf,76e8d745153cd08dfc284e116117841c28860de80176497bdbb41f2cc41a0040,read_and_audited
+Diffusion-SDPO,"Diffusion-SDPO: Safeguarded Direct Preference Optimization for Diffusion Models",2511.03317,https://github.com/AIDC-AI/Diffusion-SDPO,/home/hj/video_dpo_paper_code_cache/pdfs/2511.03317.pdf,8137455aa1b655a619eed29bf4ae58b198f04b9e8c0ff35c04a6fd6e3fa4d126,read_and_audited
+Linear-DPO,"Linear-DPO: Linear Direct Preference Optimization for Diffusion and Flow-Matching Generative Models",2605.21123,https://github.com/Whynot0101/Linear-DPO,/home/hj/video_dpo_paper_code_cache/pdfs/2605.21123.pdf,de0c58ea20dc693dd6eb901e016af47c20f8b06699803a04d18af964f87576a7,read_and_audited

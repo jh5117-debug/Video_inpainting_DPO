@@ -1,0 +1,8 @@
+{
+  "ema_max_abs_diff": 0.0,
+  "ema_update": "ema <- decay * ema + (1-decay) * model after optimizer step",
+  "grad_finite": true,
+  "loss": 0.09172474592924118,
+  "status": "passed",
+  "utility": "ratio = clamp(0.2 * beta_dpo * (model_diff - ref_diff) + 0.5, eta, 1-eta)"
+}

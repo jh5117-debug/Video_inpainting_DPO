@@ -1,0 +1,15 @@
+candidate,reviewer,novelty,correctness,feasibility,expected_gain,cost,br_or_generality,cross_backbone_generality,paper_clarity,review_risk,decision
+RC-FPO,A,4,4,4,4,3,5,5,5,3,primary
+RC-FPO,B,4,4,4,4,3,5,5,4,3,primary_if_claims_empirical
+RC-FPO,C,4,4,4,4,3,5,5,5,3,primary_feasible
+RC-FPO,D,4,4,4,4,3,5,5,5,3,primary_with_locked_splits
+RC-FPO,E,4,4,4,4,3,5,5,4,3,primary_if_LocalDPO_baseline_beaten
+ST-Pref,A,4,4,3,4,4,4,4,4,3,fallback
+ST-Pref,B,3,4,3,3,4,4,4,4,3,fallback
+ST-Pref,C,3,4,3,4,4,4,4,4,3,fallback
+ST-Pref,D,4,4,3,4,4,4,4,4,3,fallback_after_RC-FPO
+ST-Pref,E,4,4,3,4,4,4,4,4,3,fallback
+Region-SDPO,A,2,3,3,3,4,4,4,3,5,ablation_only
+Region-SDPO,B,2,2,3,3,4,4,4,3,5,ablation_only
+Linear-Utility,A,1,4,4,3,3,4,5,3,5,ablation_only
+Linear-Utility,E,1,4,4,3,3,4,5,3,5,ablation_only

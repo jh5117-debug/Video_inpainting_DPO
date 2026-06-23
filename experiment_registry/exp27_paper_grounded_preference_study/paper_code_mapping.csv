@@ -1,0 +1,4 @@
+paper,paper_section,equation_or_algorithm,paper_claim,official_source_file,function_or_class,default_config,observed_implementation,paper_code_discrepancy,our_reproduction_status
+LocalDPO,Sec4.1-4.3,Eq3-Eq6,real video winner plus localized corruption loser plus RA-DPO,innerT2V/train_cogx.py,training loop,mask_dpo_lambda/dpo_lambda/sft_lambda,loads pos/neg/mask/yita and computes global plus mask DPO,official random-mask generator fails in current env,BLOCKED_OFFICIAL_MASK_RUNTIME_ERROR
+Diffusion-SDPO,Sec4,Algorithm1,safe loser branch gradient scale,train.py,get_adaptive_lose_l_scale,winner_preserving_mu,output-space gradient geometry with clamp,first-order proxy not LoVI theorem,PASSED_TOY_SCALAR_PARITY
+Linear-DPO,Sec4.2-4.3,Eq15-Eq16,clipped linear utility and EMA ref,train/train_sd_dpo.py,loss block and ModelEMA,linear_dpo/use_ema_ref,stop-grad clipped ratio and post-step EMA update,code clamps upper bound to 1-eta,PASSED_TOY_UTILITY_EMA_PARITY
