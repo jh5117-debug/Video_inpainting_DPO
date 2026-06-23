@@ -16,6 +16,7 @@ import math
 import os
 import shutil
 import sys
+import traceback
 from dataclasses import asdict
 from pathlib import Path
 from typing import Dict, Iterable, List, Tuple
@@ -453,13 +454,20 @@ def main() -> None:
     }
     write_json(out_dir / "l0_l4_report.json", report)
 
-    l0_l3 = run_l0_l3(args, formal_manifest, out_dir)
-    report.update(l0_l3)
-    write_json(out_dir / "l0_l4_report.json", report)
+    try:
+        l0_l3 = run_l0_l3(args, formal_manifest, out_dir)
+        report.update(l0_l3)
+        write_json(out_dir / "l0_l4_report.json", report)
 
-    report["L4"] = run_l4(args, out_dir)
-    report["status"] = "passed"
-    write_json(out_dir / "l0_l4_report.json", report)
+        report["L4"] = run_l4(args, out_dir)
+        report["status"] = "passed"
+        write_json(out_dir / "l0_l4_report.json", report)
+    except Exception as exc:  # noqa: BLE001 - gate runner must preserve blocker details.
+        report["status"] = "failed"
+        report["error"] = str(exc)
+        report["traceback"] = traceback.format_exc()
+        write_json(out_dir / "l0_l4_report.json", report)
+        raise
 
     lines = [
         "# Exp26 VideoPainter v2 L0-L4 Gate Report",

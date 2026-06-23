@@ -49,8 +49,8 @@ setsid nohup bash -lc "
     --davis_root '$DAVIS_ROOT' \
     --output_dir '$OUT_DIR' \
     --mixed_precision bf16 \
-    --height 240 \
-    --width 432 \
+    --height 480 \
+    --width 720 \
     --l4_steps 10
 " > "$LOG" 2>&1 < /dev/null &
 
