@@ -625,3 +625,9 @@ OR samples were individually reaudited with frame/crop evidence:
 `medium-hard=11`, `trivial-bad=21`, `too-close=0`, `technical-invalid=0`.
 Interactive video playback remains pending; no Gate128 or OR-DPO training was
 started.
+
+## 2026-06-24 Exp25 Gate32 Dense Review
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp25 Gate32 final dense review | `GATE32_FINAL_DENSE_REVIEW_IMPLEMENTED_PENDING_PAI_RUN` | Added dense temporal review fallback for existing 32 DiffuEraser raw OR candidates; no Gate128 or OR-DPO launched. |

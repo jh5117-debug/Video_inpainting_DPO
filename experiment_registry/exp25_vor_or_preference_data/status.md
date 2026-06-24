@@ -173,3 +173,12 @@ Full Gate128 OR loser generation has not started.
 - Reports:
   - `reports/exp25_gate32_individual_video_reaudit.md`
   - `reports/exp25_diffueraser_or_root_cause_matrix.md`
+
+## 2026-06-24 Gate32 Dense Review Tooling
+
+Status: `GATE32_FINAL_DENSE_REVIEW_IMPLEMENTED_PENDING_PAI_RUN`
+
+- Fresh readback completed.
+- Existing Gate32 outputs will be reviewed with denser temporal evidence.
+- No Gate32 regeneration, no Gate128, no OR-DPO.
+- Root-cause matrix remains pending.

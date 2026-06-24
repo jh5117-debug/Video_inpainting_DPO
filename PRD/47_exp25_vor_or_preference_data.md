@@ -283,3 +283,29 @@ Reports:
 
 - `reports/exp25_gate32_individual_video_reaudit.md`
 - `reports/exp25_diffueraser_or_root_cause_matrix.md`
+
+## 2026-06-24 Gate32 Dense Temporal Review Fallback
+
+Status: `GATE32_FINAL_DENSE_REVIEW_IMPLEMENTED_PENDING_PAI_RUN`
+
+A fresh readback confirmed that the previous individual Gate32 audit was only a
+sampled frame/crop audit and explicitly marked visual review pending. The
+reaudit script now supports a denser temporal review fallback for this headless
+execution channel:
+
+- 16 uniformly sampled frames;
+- start / middle / end;
+- mask-area max frame;
+- mask-error max frame;
+- temporal-difference top-3 frames;
+- object/mask, affected-region, outside crops;
+- animated GIF fallback;
+- blind/informed/final classification fields.
+
+This does not regenerate Gate32, does not expand Gate128, and does not mark
+`DATA_READY`. The DiffuEraser OR root-cause matrix remains required before
+judging loser utility.
+
+Report:
+
+`reports/exp25_gate32_final_dense_review_readback.md`

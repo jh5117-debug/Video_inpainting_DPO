@@ -1864,3 +1864,11 @@ per-sample mp4 generation and frame/crop evidence. Classification remains
 mismatch, not whole-video black collapse. Interactive video playback remains
 pending; no Gate128, OR-DPO, `VIDEO_REVIEW_PASS`, or `DATA_READY` status was
 set.
+
+## 2026-06-24 Exp25 Gate32 Dense Review Tooling
+
+Exp25 Gate32 final-review readback found that the previous individual video
+reaudit remained a sampled-frame fallback. The isolated Exp25 review script now
+has a dense temporal review fallback mode. Gate32 generation is not repeated,
+Gate128 is not expanded, and OR-DPO is not started. Dense review execution is
+pending on PAI from a committed snapshot.
