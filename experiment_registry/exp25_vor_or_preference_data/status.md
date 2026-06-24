@@ -155,3 +155,21 @@ Full Gate128 OR loser generation has not started.
 - Seed2 supplementation: not launched because `too-close=0`.
 - Gate128 expansion: not launched.
 - Report: `reports/exp25_gate32_yield_review_20260624.md`.
+
+## 2026-06-24 Individual Gate32 Reaudit
+
+- Status:
+  - `GATE32_GENERATION_PASSED`
+  - `GATE32_QUALITY_YIELD_POOR`
+  - `INDIVIDUAL_VIDEO_REAUDIT_FRAME_SAMPLE_COMPLETE_PLAYBACK_PENDING`
+  - `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_PENDING`
+  - `NO_GATE128`
+  - `NO_OR_DPO`
+- Existing Gate32 rows audited: `32/32`.
+- Frame/crop evidence generated: `32/32`.
+- Classification: `medium-hard=11`, `trivial-bad=21`, `too-close=0`, `technical-invalid=0`.
+- `black_frame_ratio=0.0` for all rows; the dominant failure is raw task-region mismatch, not whole-video black-frame collapse.
+- Interactive mp4 playback is still pending, so no `VIDEO_REVIEW_PASS` or `DATA_READY` status is set.
+- Reports:
+  - `reports/exp25_gate32_individual_video_reaudit.md`
+  - `reports/exp25_diffueraser_or_root_cause_matrix.md`

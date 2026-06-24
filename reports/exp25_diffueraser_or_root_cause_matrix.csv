@@ -1,0 +1,7 @@
+stack,intended_comparison,status,current_evidence
+DE-A,canonical raw6 no-PCM ProPainter d0 raw/no-comp,existing_gate32_reviewed,"11 medium-hard, 21 trivial-bad, 0 too-close, 0 technical-invalid"
+DE-B,OR-style preprocessing/dilation same checkpoint,pending,not run
+DE-C,official PCM2 OR stack,pending,not run
+DE-D,official high-quality OR stack,pending,not run
+DE-E,official DiffuEraser core checkpoint,pending,not run
+DE-F,current SFT-48000 core checkpoint,pending,not run

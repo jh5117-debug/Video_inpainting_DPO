@@ -618,3 +618,10 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 | PAI final / partial / bad | 37 / 0 / 0 |
 | PAI verifier | `ok=true`; 37 OK files; VOR-Train parts 000-031 contiguous |
 | Completion marker | `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/runtime/CORE_DOWNLOAD_COMPLETE` |
+## 2026-06-24 Exp25 Update
+
+Exp25 is held at `GATE32_QUALITY_YIELD_POOR`. Existing Gate32 DiffuEraser raw
+OR samples were individually reaudited with frame/crop evidence:
+`medium-hard=11`, `trivial-bad=21`, `too-close=0`, `technical-invalid=0`.
+Interactive video playback remains pending; no Gate128 or OR-DPO training was
+started.

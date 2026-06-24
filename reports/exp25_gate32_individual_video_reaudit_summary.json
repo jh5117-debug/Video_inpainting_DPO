@@ -1,0 +1,10 @@
+{
+  "counts": {
+    "medium-hard": 11,
+    "trivial-bad": 21
+  },
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp25_gate32_individual_video_reaudit_v2/gate32_individual_video_reaudit.csv",
+  "note": "Headless sampled-frame/crop audit only; mp4 interactive playback is still pending.",
+  "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp25_gate32_individual_video_reaudit_v2",
+  "status": "completed_frame_audit_visual_review_pending"
+}

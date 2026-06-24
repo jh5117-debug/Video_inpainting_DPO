@@ -247,3 +247,39 @@ launched. The medium-hard yield is not strong enough to justify immediate
 Gate128 expansion. Report:
 
 `reports/exp25_gate32_yield_review_20260624.md`
+
+## 2026-06-24 Individual Gate32 Reaudit
+
+Status:
+
+- `GATE32_GENERATION_PASSED`
+- `GATE32_QUALITY_YIELD_POOR`
+- `INDIVIDUAL_VIDEO_REAUDIT_FRAME_SAMPLE_COMPLETE_PLAYBACK_PENDING`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_PENDING`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+All 32 existing Gate32 DiffuEraser raw OR candidates were reaudited with
+per-sample mp4 generation, sampled frames, object/mask crops, affected-region
+crops, and outside crops. The classification remains:
+
+- `medium-hard`: 11
+- `trivial-bad`: 21
+- `too-close`: 0
+- `technical-invalid`: 0
+
+The individual audit found `black_frame_ratio=0.0` for all rows, so the earlier
+purple/black impression is partly due to contact-sheet error-map visualization
+rather than raw full-video black collapse. The main failure is still real raw
+task-region mismatch. Interactive video playback is not available in the
+current tool channel, so `VIDEO_REVIEW_PASS`, `LOSER_UTILITY_PASS`, and
+`DATA_READY` remain unset.
+
+The DiffuEraser OR root-cause matrix is still pending; no conclusion has been
+made about 6-step sampler, mask dilation, PCM, official core, or SFT domain
+shift.
+
+Reports:
+
+- `reports/exp25_gate32_individual_video_reaudit.md`
+- `reports/exp25_diffueraser_or_root_cause_matrix.md`

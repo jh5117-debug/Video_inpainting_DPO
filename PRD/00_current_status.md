@@ -1854,3 +1854,13 @@ Exp25 Gate32 canonical DiffuEraser raw OR yield review completed: `32/32`
 samples scored and contact sheets checked. Buckets were `medium-hard=11`,
 `too-close=0`, `trivial-bad=21`; no seed2 supplementation or Gate128 expansion
 was launched.
+
+## 2026-06-24 Exp25 Individual Gate32 Reaudit
+
+Exp25 reaudited all `32/32` existing Gate32 DiffuEraser raw OR samples with
+per-sample mp4 generation and frame/crop evidence. Classification remains
+`medium-hard=11`, `trivial-bad=21`, `too-close=0`, `technical-invalid=0`.
+`black_frame_ratio=0.0` for all rows, so the dominant issue is raw task-region
+mismatch, not whole-video black collapse. Interactive video playback remains
+pending; no Gate128, OR-DPO, `VIDEO_REVIEW_PASS`, or `DATA_READY` status was
+set.
