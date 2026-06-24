@@ -178,3 +178,24 @@ Status: `BLOCKED_NAS_PERMISSION`
 - report: `reports/pai_premaintenance_output_persistence.md`
 
 No new Exp26 GPU work was started after this blocker.
+
+## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
+
+Status:
+
+- `PAI_PREMAINTENANCE_PERSISTENCE_PASSED`
+- `GATE64_VISUAL_REVIEW_PENDING`
+- `NO_VIDEOPAINTER_DPO`
+
+Persisted artifacts:
+
+- Exp26 Gate64 official generation:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155`
+  with `14408` files / `8405904095` bytes / inventory OK / SHA256 OK.
+- Exp25 Gate32 dense review:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/gate32_dense_review_20260625`
+  with `99` files / `66982608` bytes / inventory OK / SHA256 OK.
+
+Completion markers are present under:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`

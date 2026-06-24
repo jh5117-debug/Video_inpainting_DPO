@@ -417,3 +417,31 @@ No new Gate64 review, source repair, or VideoPainter DPO task was launched
 after this blocker. Report:
 
 `reports/pai_premaintenance_output_persistence.md`
+
+## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
+
+Status:
+
+- `PAI_PREMAINTENANCE_PERSISTENCE_PASSED`
+- `GATE64_VISUAL_REVIEW_PENDING`
+- `NO_VIDEOPAINTER_DPO`
+
+The NAS permission blocker was resolved from the PAI WebIDE root terminal by
+granting `hj` write access to the required autoresearch/runtime directories.
+HAL SSH as `hj` verified write access.
+
+The existing PAI `/home` artifacts were persisted to NAS:
+
+- Exp26 Gate64 official generation: `14408` files, `8405904095` bytes,
+  inventory OK, SHA256 OK.
+- Cross-track Exp25 Gate32 dense review: `99` files, `66982608` bytes,
+  inventory OK, SHA256 OK.
+
+Markers created:
+
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/EXP26_GATE64_PERSISTED_TO_NAS`
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/EXP25_GATE32_REVIEW_PERSISTED_TO_NAS`
+
+Report:
+
+`reports/pai_premaintenance_output_persistence.md`
