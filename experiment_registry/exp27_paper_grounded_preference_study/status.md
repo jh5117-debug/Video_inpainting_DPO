@@ -83,3 +83,24 @@ The cross-track persistence gate was attempted before new Exp27 GPU work.
 forward, Linear-DPO, LocalDPO 24F, or objective-study task was launched.
 
 Report: `reports/pai_premaintenance_output_persistence.md`
+
+## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
+
+Status:
+
+- `PAI_PREMAINTENANCE_PERSISTENCE_PASSED`
+- `TRUE_MODEL_FORWARD_READBACK_COMPLETE`
+- `SDPO_REAL_RESIDUAL_PROXY_ONLY`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Cross-track persistence now passed:
+
+- Exp25 Gate32 dense review: `99` files / `66982608` bytes / inventory OK /
+  SHA256 OK.
+- Exp26 Gate64 official generation: `14408` files / `8405904095` bytes /
+  inventory OK / SHA256 OK.
+
+Completion markers are present under:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`

@@ -234,3 +234,26 @@ No new Exp27 GPU task was launched after this blocker. Exp27 remains at
 classified as `REAL_VIDEO_RESIDUAL_PROXY_ONLY`.
 
 Report: `reports/pai_premaintenance_output_persistence.md`
+
+## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
+
+Status:
+
+- `PAI_PREMAINTENANCE_PERSISTENCE_PASSED`
+- `TRUE_MODEL_FORWARD_READBACK_COMPLETE`
+- `SDPO_REAL_RESIDUAL_PROXY_ONLY`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+The NAS permission blocker was resolved from the PAI WebIDE root terminal by
+granting `hj` write access to the required autoresearch/runtime directories.
+HAL SSH as `hj` verified write access. The cross-track Exp25 Gate32 dense review
+artifacts and Exp26 Gate64 official generation artifacts were copied to NAS
+with matching file counts, byte totals, inventory diffs, and SHA256 diffs.
+
+No Exp27 GPU task was started during persistence. The next allowed Exp27
+milestone remains true DiffuEraser Stage1 policy/reference forward scan.
+
+Report:
+
+`reports/pai_premaintenance_output_persistence.md`
