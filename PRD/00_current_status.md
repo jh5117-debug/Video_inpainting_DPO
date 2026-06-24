@@ -1897,3 +1897,12 @@ review/source repair, or Exp27 true-model GPU task was launched after the
 blocker.
 
 Report: `reports/pai_premaintenance_output_persistence.md`
+## 2026-06-25 Exp25 PAI Persistence Gate Resolved
+
+Status: `PAI_PREMAINTENANCE_PERSISTENCE_PASSED`
+
+The previous NAS permission blocker for Exp25/Exp26 PAI `/home` artifact
+persistence was resolved. Exp25 Gate32 dense review artifacts and Exp26 Gate64
+official generation artifacts were copied to NAS with matching file counts,
+byte totals, inventory diffs, and SHA256 diffs. Runtime markers were created
+under `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`.

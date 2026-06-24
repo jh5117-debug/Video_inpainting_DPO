@@ -1,6 +1,6 @@
 # PAI Pre-Maintenance Output Persistence
 
-Status: `BLOCKED_NAS_PERMISSION`
+Status: `PERSISTENCE_PASSED`
 
 Date: 2026-06-25
 
@@ -55,3 +55,38 @@ Not created:
 
 The source directories remain intact on PAI `/home/hj`.
 
+## Resolution
+
+Status: `PERSISTENCE_PASSED`
+
+The PAI WebIDE root session granted `hj` write access to the required NAS
+runtime and autoresearch directories. HAL then verified SSH-key login as `hj`
+and write access to:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`
+
+The existing PAI `/home` artifacts were persisted to NAS without starting any
+new experiment or GPU task.
+
+## Verified NAS Copy
+
+| Experiment | Source files | Destination files | Source bytes | Destination bytes | Inventory | SHA256 |
+| --- | ---: | ---: | ---: | ---: | --- | --- |
+| Exp25 | 99 | 99 | 66982608 | 66982608 | OK | OK |
+| Exp26 | 14408 | 14408 | 8405904095 | 8405904095 | OK | OK |
+
+Targets:
+
+- Exp25:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/gate32_dense_review_20260625`
+- Exp26:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155`
+
+Runtime markers now exist:
+
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/EXP25_GATE32_REVIEW_PERSISTED_TO_NAS`
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/EXP26_GATE64_PERSISTED_TO_NAS`
+
+PAI summary and checksum artifacts:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/premaintenance_persistence_20260625/`
