@@ -62,3 +62,15 @@ LocalDPO official raw mask path remains blocked in the current environment, but 
 - Reports:
   - `reports/exp27_sdpo_real_distribution_scan.md`
   - `reports/exp27_localdpo_official_path_fix.md`
+
+## 2026-06-24 True-Model Forward Readback
+
+- Status:
+  - `TRUE_MODEL_FORWARD_READBACK_COMPLETE`
+  - `SDPO_REAL_RESIDUAL_PROXY_ONLY`
+  - `OBJECTIVE_STUDY_PENDING`
+  - `RCFPO_NOT_STARTED`
+- Existing 128-record SDPO distribution scan is still proxy-only: it uses real
+  video residuals but no DiffuEraser policy/reference forward.
+- Next required gate is true Stage1 policy/reference forward parity.
+- Report: `reports/exp27_true_model_forward_readback.md`.

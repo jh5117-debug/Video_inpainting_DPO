@@ -198,3 +198,24 @@ Reports:
 
 - `reports/exp27_sdpo_real_distribution_scan.md`
 - `reports/exp27_localdpo_official_path_fix.md`
+
+## 2026-06-24 True-Model Forward Readback
+
+Status:
+
+- `TRUE_MODEL_FORWARD_READBACK_COMPLETE`
+- `SDPO_REAL_RESIDUAL_PROXY_ONLY`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+The latest readback re-confirmed that the current 128-record SDPO distribution
+scan is a real-video residual proxy, not a full DiffuEraser policy/reference
+forward. It does not load the policy/reference model, does not produce real
+`model_pred`/`ref_pred`, and cannot promote RC-FPO.
+
+Next allowed Exp27 milestone is the true DiffuEraser Stage1 policy/reference
+forward scan.
+
+Report:
+
+`reports/exp27_true_model_forward_readback.md`

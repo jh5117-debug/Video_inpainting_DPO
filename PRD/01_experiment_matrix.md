@@ -606,3 +606,13 @@ Exp27 completed a real-video residual-proxy SDPO distribution scan with
 `lambda_safe < 1` ratio `0.4453125` over 128 records. The LocalDPO official
 mask path was fixed and the official mask digest now passes. RC-FPO,
 LocalDPO four-grid runs, and O0-O5 objective studies remain unstarted.
+
+## 2026-06-24 Exp27 true-model forward readback
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp27 SDPO true DiffuEraser forward | readback complete; implementation/run pending | `reports/exp27_true_model_forward_readback.md`, `experiment_registry/exp27_paper_grounded_preference_study/status.md` |
+
+The existing SDPO distribution scan remains labeled
+`REAL_VIDEO_RESIDUAL_PROXY_ONLY`. No RC-FPO or objective-study training has
+started.

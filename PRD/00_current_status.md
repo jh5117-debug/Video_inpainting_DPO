@@ -1815,3 +1815,10 @@ with min/mean/max `0.2246925 / 0.8942396 / 1.0`. This is not yet a full
 policy-forward scan. The LocalDPO official mask path was fixed and official
 mask digest now passes from the commit-suffixed PAI cache. RC-FPO, LocalDPO
 four-grid runs, and O0-O5 objective studies remain unstarted.
+
+## 2026-06-24 Exp27 true-model forward readback
+
+Exp27 readback re-confirmed that the SDPO distribution scan is
+`REAL_VIDEO_RESIDUAL_PROXY_ONLY`. True DiffuEraser policy/reference forward is
+still pending, so Exp27 remains `OBJECTIVE_STUDY_PENDING` and
+`RCFPO_NOT_STARTED`.
