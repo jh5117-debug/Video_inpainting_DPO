@@ -1,0 +1,50 @@
+{
+  "note": "LocalDPO plumbing/original-loss smoke only; RC-FPO not started.",
+  "official_mask_digest": {
+    "first_frame_sum": 84915,
+    "last_frame_sum": 84915,
+    "matplotlib_rgb_shim": "installed",
+    "mean": 22.11328125,
+    "sha256": "d1e7686f09e942bb4d3c24b38e19e187ef5108f66cacdd77bdce6c4773cc09fd",
+    "shape": [
+      13,
+      48,
+      80
+    ],
+    "status": "passed",
+    "sum": 1103895
+  },
+  "one_step": {
+    "corruption_mask_mean": 0.0625,
+    "grad_norm_max": 0.40266589813752496,
+    "grad_norm_min": 0.40266589813752496,
+    "loss_first": 0.5542100071907043,
+    "loss_last": 0.5542100071907043,
+    "pair_shape": [
+      6,
+      13,
+      4,
+      48,
+      80
+    ],
+    "status": "passed",
+    "steps": 1
+  },
+  "status": "passed",
+  "ten_step": {
+    "corruption_mask_mean": 0.0625,
+    "grad_norm_max": 0.40245698520541767,
+    "grad_norm_min": 0.3997819903387811,
+    "loss_first": 0.5023453235626221,
+    "loss_last": 0.48890385031700134,
+    "pair_shape": [
+      6,
+      13,
+      4,
+      48,
+      80
+    ],
+    "status": "passed",
+    "steps": 10
+  }
+}

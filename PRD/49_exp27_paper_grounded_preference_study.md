@@ -162,3 +162,39 @@ than an official LocalDPO reproduction. RC-FPO was not started.
 Report:
 
 `reports/exp27_nontrivial_parity_and_localdpo_smoke_20260624.md`
+
+## 2026-06-24 Distribution Scan and LocalDPO Official Path Fix
+
+Status:
+
+- `NONTRIVIAL_SDPO_PARITY_PASSED`
+- `LINEAR_MULTISTEP_PARITY_PASSED`
+- `LOCALDPO_SMOKE_PASSED`
+- `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
+- `FAITHFUL_LOCALDPO_OFFICIAL_MASK_DIGEST_PASSED`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+The SDPO scan used 32 real Gate32 preference rows and 4 sampled frames per row
+for 128 real-video residual-proxy records. This is not a full DiffuEraser
+policy-forward scan, but it avoids manually constructed gradient conflicts.
+
+Results:
+
+- `lambda_safe < 1` ratio: `0.4453125`
+- lambda min: `0.2246925`
+- lambda mean: `0.8942396`
+- lambda max: `1.0`
+- unsafe tiny-step winner-change rate: `0.0`
+
+The LocalDPO official mask path was fixed to search commit-suffixed caches on
+PAI. Official mask digest now passes from:
+
+`/mnt/nas/hj/video_dpo_paper_code_cache/Local-DPO_7528e966b17283cfa638577827e456737335f030/innerT2V/utils/random_mask_gen.py`
+
+RC-FPO, LocalDPO four-grid runs, and O0-O5 objective studies remain unstarted.
+
+Reports:
+
+- `reports/exp27_sdpo_real_distribution_scan.md`
+- `reports/exp27_localdpo_official_path_fix.md`

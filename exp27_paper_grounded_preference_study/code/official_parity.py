@@ -23,7 +23,26 @@ import numpy as np
 import torch
 
 
-PAPER_CODE_ROOT = Path(os.environ.get("EXP27_PAPER_CODE_ROOT", "/home/hj/video_dpo_paper_code_cache/repos"))
+def _resolve_paper_code_root() -> Path:
+    env = os.environ.get("EXP27_PAPER_CODE_ROOT")
+    if env:
+        return Path(env)
+    candidates = [
+        Path("/home/hj/video_dpo_paper_code_cache/repos"),
+        Path("/home/hj/video_dpo_paper_code_cache"),
+        Path("/mnt/nas/hj/video_dpo_paper_code_cache"),
+    ]
+    for root in candidates:
+        if (root / "Local-DPO" / "innerT2V" / "utils" / "random_mask_gen.py").exists():
+            return root
+        matches = list(root.glob("Local-DPO_*")) if root.exists() else []
+        for match in matches:
+            if (match / "innerT2V" / "utils" / "random_mask_gen.py").exists():
+                return root
+    return Path("/home/hj/video_dpo_paper_code_cache/repos")
+
+
+PAPER_CODE_ROOT = _resolve_paper_code_root()
 
 
 def install_localdpo_matplotlib_rgb_shim() -> str:
@@ -128,7 +147,14 @@ def ema_update_tensor(ema: torch.Tensor, model: torch.Tensor, decay: float) -> t
 
 
 def load_localdpo_random_mask_module():
-    root = PAPER_CODE_ROOT / "Local-DPO" / "innerT2V" / "utils"
+    localdpo_root = PAPER_CODE_ROOT / "Local-DPO"
+    if not (localdpo_root / "innerT2V" / "utils" / "random_mask_gen.py").exists():
+        matches = sorted(PAPER_CODE_ROOT.glob("Local-DPO_*"))
+        for match in matches:
+            if (match / "innerT2V" / "utils" / "random_mask_gen.py").exists():
+                localdpo_root = match
+                break
+    root = localdpo_root / "innerT2V" / "utils"
     if str(root) not in sys.path:
         sys.path.insert(0, str(root))
     path = root / "random_mask_gen.py"

@@ -1,0 +1,12 @@
+{
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp27_sdpo_real_distribution_scan/sdpo_real_distribution_scan.csv",
+  "distribution_source": "real_video_residual_proxy_not_policy_forward",
+  "lambda_lt_1_ratio": 0.4453125,
+  "lambda_max": 1.0,
+  "lambda_mean": 0.8942396318307146,
+  "lambda_min": 0.22469252347946167,
+  "num_records": 128,
+  "rows_requested": 32,
+  "status": "completed_residual_proxy_scan",
+  "unsafe_rate": 0.0
+}

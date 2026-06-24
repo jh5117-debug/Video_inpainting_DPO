@@ -1806,3 +1806,12 @@ Exp27 completed SDPO nontrivial conflict parity with
 `lambda_safe=0.314453125 < 1`, Linear-DPO Frozen / EMA multi-step parity, and
 LocalDPO six-video original-loss 1/10-step smoke. Official LocalDPO mask digest
 is still blocked by missing official code; RC-FPO was not started.
+
+## 2026-06-24 Exp27 Distribution Scan
+
+Exp27 completed a real-video residual-proxy SDPO distribution scan over 32
+preference rows and 128 records. `lambda_safe < 1` ratio is `0.4453125`
+with min/mean/max `0.2246925 / 0.8942396 / 1.0`. This is not yet a full
+policy-forward scan. The LocalDPO official mask path was fixed and official
+mask digest now passes from the commit-suffixed PAI cache. RC-FPO, LocalDPO
+four-grid runs, and O0-O5 objective studies remain unstarted.

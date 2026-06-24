@@ -43,3 +43,22 @@ LocalDPO official raw mask path remains blocked in the current environment, but 
 - Official LocalDPO mask digest remains blocked by missing official code file.
 - RC-FPO was not started.
 - Report: `reports/exp27_nontrivial_parity_and_localdpo_smoke_20260624.md`.
+
+## 2026-06-24 Distribution Scan and Official LocalDPO Path Fix
+
+- Status:
+  - `NONTRIVIAL_SDPO_PARITY_PASSED`
+  - `LINEAR_MULTISTEP_PARITY_PASSED`
+  - `LOCALDPO_SMOKE_PASSED`
+  - `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
+  - `FAITHFUL_LOCALDPO_OFFICIAL_MASK_DIGEST_PASSED`
+  - `OBJECTIVE_STUDY_PENDING`
+  - `RCFPO_NOT_STARTED`
+- SDPO residual-proxy records: `128`.
+- `lambda_safe < 1` ratio: `0.4453125`.
+- `lambda_safe` min/mean/max: `0.2246925 / 0.8942396 / 1.0`.
+- Official LocalDPO mask digest now passes from the commit-suffixed PAI cache path.
+- Still pending: full policy-forward distribution scan, LocalDPO four-grid objective runs, and O0-O5 objective study.
+- Reports:
+  - `reports/exp27_sdpo_real_distribution_scan.md`
+  - `reports/exp27_localdpo_official_path_fix.md`
