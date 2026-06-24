@@ -203,11 +203,11 @@ class Controller:
 
     def build_gate16_manifest_from_gate32(self) -> Path:
         source = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/materialized/gate32_canonical_d0_24f/gate32_materialized.jsonl")
-        out = self.run_root / "exp26_gate16_source_from_gate32.jsonl"
+        out = self.run_root / "exp26_gate16_source_pool32_from_gate32.jsonl"
         if out.exists():
             return out
         rows = []
-        for row in read_jsonl(source, 16):
+        for row in read_jsonl(source, 32):
             rows.append(
                 {
                     "sample_id": f"vp2_gate16_{row['sample_id']}",
@@ -225,6 +225,15 @@ class Controller:
                 }
             )
         write_jsonl(out, rows)
+        return out
+
+    def select_first_16_materialized_gate16(self, materialized_manifest: Path) -> Path:
+        rows = read_jsonl(materialized_manifest)
+        selected = rows[:16]
+        if len(selected) < 16:
+            raise RuntimeError(f"Gate16 needs 16 formal 49F rows, materialized only {len(selected)}")
+        out = self.run_root / "exp26_gate16_selected16_49f_materialized.jsonl"
+        write_jsonl(out, selected)
         return out
 
     def lane_b_exp26(self, gpu: int) -> None:
@@ -253,9 +262,9 @@ class Controller:
                 self.mark("lane_b_exp26", "failed", reason="probe4_review_failed")
                 return
             source_manifest = self.build_gate16_manifest_from_gate32()
-            mat_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate16_from_gate32_49f")
-            mat_manifest = mat_root / "vp2_gate16_49f_materialized.jsonl"
-            mask_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate16_from_gate32_49f_masks")
+            mat_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate16_full_from_gate32_49f")
+            mat_manifest = mat_root / "vp2_gate16_pool32_49f_materialized.jsonl"
+            mask_root = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate16_full_from_gate32_49f_masks")
             mask_manifest = mask_root / "vp2_gate16_49f_masks.jsonl"
             self.run_logged(
                 "exp26_gate16_materialize",
@@ -273,18 +282,19 @@ class Controller:
                     "--status-csv",
                     str(mat_root / "materialized_status.csv"),
                     "--limit",
-                    "16",
+                    "32",
                 ],
                 self.exp26,
                 gpu=None,
             )
+            selected_mat_manifest = self.select_first_16_materialized_gate16(mat_manifest)
             self.run_logged(
                 "exp26_gate16_masks",
                 [
                     sys.executable,
                     str(self.exp26 / "exp26_videopainter_dpo_v2" / "code" / "generate_vp2_moving_br_masks.py"),
                     "--materialized-manifest",
-                    str(mat_manifest),
+                    str(selected_mat_manifest),
                     "--output-root",
                     str(mask_root / "masks"),
                     "--output-manifest",
