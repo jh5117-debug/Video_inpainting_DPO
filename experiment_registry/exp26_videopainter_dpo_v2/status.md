@@ -133,3 +133,15 @@ exact 49-frame decode audit, and generated moving BR masks.
 - Current blocker for PAI execution: SSH host-key verification changed for
   `47.103.26.60`, presented ED25519 fingerprint
   `SHA256:xDOCAS/+fw0Bs5m9HizeRi1mkYOcIotlm4CxcfWwpqk`.
+
+## 2026-06-24 Gate64 Generation Launcher
+
+Status: `GATE64_GENERATION_IMPLEMENTED_PENDING_PAI_RUN`
+
+- Gate64 generation readback completed.
+- Mixed-mask protocol implementation bug fixed before generation.
+- Added exact VOR-Train/BG selective extractor.
+- Added official Gate64 generation runner and PAI launcher.
+- Validation passed: py_compile, 23 unit tests, bash -n, git diff --check.
+- Gate64 generation pending PAI snapshot run.
+- VideoPainter DPO not started.

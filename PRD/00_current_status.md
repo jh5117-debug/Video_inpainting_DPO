@@ -1866,3 +1866,13 @@ Gate64 has not been generated yet, but its source/mask protocol is now locked:
 Status: `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION`.
 PAI execution is blocked until the changed SSH host key for `47.103.26.60` is
 confirmed.
+
+## 2026-06-24 Exp26 Gate64 Generation Launcher
+
+Exp26 Gate64 readback found a pre-run correctness issue: the locked mixed-mask
+protocol existed, but the generator implementation still produced ellipse-only
+moving masks. This has been fixed in the isolated Exp26 code. The new PAI
+launcher now performs exact VOR-Train/BG selective extraction, formal 49-frame
+materialization, mixed-mask generation, and official VideoPainter Gate64
+self-loser generation. GPU7 remains excluded. Gate64 generation is pending the
+PAI run; DPO training has not started.

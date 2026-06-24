@@ -333,3 +333,35 @@ PAI execution is currently blocked by SSH host-key verification for
 `47.103.26.60` with presented ED25519 fingerprint
 `SHA256:xDOCAS/+fw0Bs5m9HizeRi1mkYOcIotlm4CxcfWwpqk`. No Gate64 generation or
 DPO training was launched in this milestone.
+
+## 2026-06-24 Gate64 Generation Readback and Launcher
+
+Status: `GATE64_GENERATION_IMPLEMENTED_PENDING_PAI_RUN`
+
+A fresh Gate64 generation readback found that the locked protocol
+`vp2_mixed_br_mask_v1` was correct, but the existing moving-mask generator still
+produced ellipse-only masks. Gate64 generation was therefore not launched until
+this was fixed.
+
+Implemented inside the Exp26 isolated directory:
+
+- exact VOR-Train/BG selective extraction for the 64 locked `winner_member_path`
+  entries;
+- formal 49-frame materialization from extracted BG mp4 files;
+- mixed-mask generation that consumes the locked per-row `mask_profile`,
+  `area_bucket`, `motion_bucket`, `deformation_bucket`, and
+  `edge_touch_target` fields;
+- official VideoPainter Gate64 generation runner that writes raw outputs,
+  diagnostic comp outputs, hashes, status CSV/JSON, side-by-side mp4 files, and
+  contact sheets;
+- PAI launcher using GPU0-6 only, excluding GPU7.
+
+Validation passed: py_compile, 23 unit tests, bash syntax, and git diff check.
+
+Reports:
+
+- `reports/exp26_gate64_generation_readback.md`
+- `reports/exp26_gate64_generation_launcher_audit.md`
+
+Gate64 generation is still pending the PAI run from the committed snapshot.
+VideoPainter DPO remains unstarted.

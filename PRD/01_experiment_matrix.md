@@ -626,3 +626,9 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp26 VideoPainter v2 Gate64 | `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION` | Mixed-mask protocol `vp2_mixed_br_mask_v1` locked; 64 scene-disjoint VOR-BG sources; no Gate64 generation or DPO training launched yet. |
+
+## 2026-06-24 Exp26 Gate64 Generation Launcher
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp26 VideoPainter v2 Gate64 generation | `GATE64_GENERATION_IMPLEMENTED_PENDING_PAI_RUN` | Fixed pre-run mixed-mask implementation bug; added selective VOR-BG extraction and official 49F generation launcher. No DPO training launched. |

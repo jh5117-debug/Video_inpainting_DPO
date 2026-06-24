@@ -68,6 +68,54 @@ class VideoPainterFormal49FTest(unittest.TestCase):
         later_sums = {int(m.sum()) for m in masks[1:]}
         self.assertGreater(len(later_sums), 1)
 
+    def test_gate64_profiles_are_not_all_ellipse(self):
+        masks_mod = load_module("code/generate_vp2_moving_br_masks.py", "vp2_mask_test_profiles")
+        profiles = [
+            "irregular_freeform",
+            "object_like_polygon",
+            "soft_blob",
+            "edge_touch_freeform",
+            "ellipse_circle_subset",
+            "thin_structure_freeform",
+        ]
+        compactness = {}
+        for profile in profiles:
+            masks, meta = masks_mod.moving_mask_sequence(
+                sample_id=f"sample_{profile}",
+                num_frames=49,
+                height=96,
+                width=128,
+                seed=456,
+                first_frame_gt=True,
+                mask_profile=profile,
+                area_bucket="medium",
+                motion_bucket="medium",
+                deformation_bucket="moderate",
+                edge_touch_target=profile == "edge_touch_freeform",
+            )
+            self.assertEqual(meta["mask_profile"], profile)
+            self.assertEqual(int(masks[0].sum()), 0)
+            self.assertGreater(meta["area_mean"], 0.05)
+            compactness[profile] = round(float(meta["compactness_mean"]), 3)
+        self.assertGreater(len(set(compactness.values())), 2)
+
+    def test_edge_touch_profile_touches_edge(self):
+        masks_mod = load_module("code/generate_vp2_moving_br_masks.py", "vp2_mask_test_edge")
+        _, meta = masks_mod.moving_mask_sequence(
+            sample_id="sample_edge",
+            num_frames=49,
+            height=96,
+            width=128,
+            seed=789,
+            first_frame_gt=True,
+            mask_profile="edge_touch_freeform",
+            area_bucket="medium",
+            motion_bucket="low",
+            deformation_bucket="slow",
+            edge_touch_target=True,
+        )
+        self.assertGreater(meta["edge_touch_frames"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()
