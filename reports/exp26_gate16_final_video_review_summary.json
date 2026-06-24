@@ -1,0 +1,17 @@
+{
+  "status": "GATE16_PASSED_WITH_REJECTION",
+  "date": "2026-06-24",
+  "samples": 16,
+  "technical_valid": 16,
+  "medium_hard": 10,
+  "hard_plausible": 5,
+  "trivial_bad": 1,
+  "technical_invalid": 0,
+  "systematic_failure": 0,
+  "review_method": "per-sample contact sheet plus dense16 temporal review pack",
+  "interactive_mp4_playback_available": false,
+  "dense_review_frames": [0, 3, 6, 9, 12, 16, 19, 22, 25, 28, 32, 35, 38, 41, 45, 48],
+  "gate64_allowed_next_milestone": true,
+  "dpo_training_allowed": false,
+  "failed_true_model_sample": "vp2_gate16_BLENDER_CON001_00742"
+}

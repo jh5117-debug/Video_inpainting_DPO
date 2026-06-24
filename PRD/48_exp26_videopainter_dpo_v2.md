@@ -218,6 +218,40 @@ The three-lane controller rechecked Probe4 and then advanced to Gate16 after
 formal 49-frame source selection.
 
 - Probe4 official 49F review: `4/4` passed.
+
+## 2026-06-24 Gate16 Final Video Review
+
+Status: `GATE16_PASSED_WITH_REJECTION`
+
+The existing 16 Gate16 outputs were reviewed without replacing the failed
+sample. Since the current Codex UI cannot interactively play mp4 files, I used
+the required fallback: every sample's contact sheet was opened, and a dense
+16-frame temporal review pack was generated and opened for every sample.
+
+Final buckets:
+
+- `medium-hard = 10`
+- `hard-plausible = 5`
+- `trivial-bad = 1`
+- `technical-invalid = 0`
+
+The only failed row is retained:
+
+`vp2_gate16_BLENDER_CON001_00742`
+
+This is a true VideoPainter model failure under a large synthetic moving mask,
+not a frame-count, decode, preprocessing, or wrapper failure. The original
+pre-registered Gate16 criteria now pass with one rejection:
+
+- technical valid `16/16`;
+- systematic failure `0`;
+- trivial-bad `1/16`;
+- medium-hard or hard-plausible `15/16`;
+- final dense visual review complete.
+
+Gate64 is allowed only as a new milestone after a fresh readback. This does not
+mark DPO training as successful and does not start Gate64 or training by
+itself.
 - Gate16 formal source pool: `25/32` materialized as valid 49-frame inputs.
 - Gate16 selected set: `16/16`.
 - Gate16 official inference: `16/16`, all `49` frames.

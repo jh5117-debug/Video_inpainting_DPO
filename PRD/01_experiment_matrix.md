@@ -1,3 +1,17 @@
+## 2026-06-24 Exp26 Gate16 Final Video Review
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp26 VideoPainter v2 Gate16 | `GATE16_PASSED_WITH_REJECTION`; Gate64 allowed as next milestone only | `reports/exp26_gate16_final_video_review.md`, `reports/exp26_gate16_final_video_review.csv`, `experiment_registry/exp26_videopainter_dpo_v2/status.md` |
+
+Notes:
+
+- Existing Gate16 rows only; no replacement of the failed row.
+- Final buckets: `medium-hard=10`, `hard-plausible=5`, `trivial-bad=1`,
+  `technical-invalid=0`.
+- `vp2_gate16_BLENDER_CON001_00742` remains a true model failure.
+- No Gate64 or DPO training was launched by this milestone.
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |

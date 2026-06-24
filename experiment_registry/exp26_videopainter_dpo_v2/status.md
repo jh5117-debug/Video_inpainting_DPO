@@ -103,3 +103,18 @@ exact 49-frame decode audit, and generated moving BR masks.
 - Failed row retained as true model failure: `vp2_gate16_BLENDER_CON001_00742`.
 - Original numeric gate criteria pass, but interactive video playback is still pending, so `GATE16_PASSED_WITH_REJECTION` is not set.
 - Report: `reports/exp26_gate16_reclassification.md`.
+
+## 2026-06-24 Gate16 Final Video Review
+
+- Status: `GATE16_PASSED_WITH_REJECTION`.
+- Existing Gate16 outputs reviewed: `16/16`.
+- Review method: opened every per-sample contact sheet and every generated
+  dense16 temporal review pack.
+- Final buckets: `medium-hard=10`, `hard-plausible=5`,
+  `trivial-bad=1`, `technical-invalid=0`.
+- Failed row retained as true model failure:
+  `vp2_gate16_BLENDER_CON001_00742`.
+- Gate64 may be prepared as the next milestone after a fresh readback.
+- No Gate64, DPO micro-training, or long training has been launched by this
+  milestone.
+- Report: `reports/exp26_gate16_final_video_review.md`.

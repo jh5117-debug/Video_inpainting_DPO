@@ -1,3 +1,39 @@
+## 2026-06-24 Exp26 Gate16 Final Video Review
+
+Exp26 VideoPainter v2 Gate16 has now passed the pre-registered Gate16 quality
+gate with one retained rejection:
+
+```text
+GATE16_PASSED_WITH_REJECTION
+```
+
+Scope:
+
+- Existing Gate16 outputs only.
+- No failed sample replacement.
+- No Gate64 launched in this milestone.
+- No DPO training launched.
+
+Final review method:
+
+- opened all 16 per-sample contact sheets;
+- generated and opened all 16 dense temporal review packs with 16 sampled
+  frames per sample.
+
+Final buckets:
+
+| bucket | count |
+| --- | ---: |
+| medium-hard | 10 |
+| hard-plausible | 5 |
+| trivial-bad | 1 |
+| technical-invalid | 0 |
+
+The failed row `vp2_gate16_BLENDER_CON001_00742` is retained as a true
+VideoPainter model failure. Gate64 may be prepared as the next milestone only
+after a fresh readback. This is not a DPO training result and not a scientific
+positive claim.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:
