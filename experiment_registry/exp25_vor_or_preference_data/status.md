@@ -182,3 +182,25 @@ Status: `GATE32_FINAL_DENSE_REVIEW_IMPLEMENTED_PENDING_PAI_RUN`
 - Existing Gate32 outputs will be reviewed with denser temporal evidence.
 - No Gate32 regeneration, no Gate128, no OR-DPO.
 - Root-cause matrix remains pending.
+
+## 2026-06-24 Gate32 Final Dense Temporal Review
+
+Status:
+
+- `GATE32_FINAL_DENSE_REVIEW_COMPLETE_YIELD_POOR`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_PENDING`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+Results:
+
+- `MEDIUM_HARD_ELIGIBLE=11`
+- `TRIVIAL_BAD=21`
+- `TOO_CLOSE=0`
+- `TECHNICAL_INVALID=0`
+
+Reports:
+
+- `reports/exp25_gate32_final_video_review.md`
+- `reports/exp25_gate32_final_video_review.csv`
+- `reports/exp25_gate32_final_video_review_summary.json`

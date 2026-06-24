@@ -631,3 +631,9 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp25 Gate32 final dense review | `GATE32_FINAL_DENSE_REVIEW_IMPLEMENTED_PENDING_PAI_RUN` | Added dense temporal review fallback for existing 32 DiffuEraser raw OR candidates; no Gate128 or OR-DPO launched. |
+
+## 2026-06-24 Exp25 Gate32 Final Dense Review
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp25 Gate32 final dense review | `GATE32_FINAL_DENSE_REVIEW_COMPLETE_YIELD_POOR` | Final dense fallback classes: 11 medium-hard, 21 trivial-bad, 0 too-close, 0 technical-invalid. Root-cause matrix remains pending; no Gate128 or OR-DPO launched. |

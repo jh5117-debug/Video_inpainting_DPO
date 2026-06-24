@@ -309,3 +309,34 @@ judging loser utility.
 Report:
 
 `reports/exp25_gate32_final_dense_review_readback.md`
+
+## 2026-06-24 Gate32 Final Dense Temporal Review
+
+Status:
+
+- `GATE32_FINAL_DENSE_REVIEW_COMPLETE_YIELD_POOR`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_PENDING`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+The existing 32 canonical DiffuEraser raw OR candidates were reaudited with the
+dense temporal fallback. Results remain:
+
+- `MEDIUM_HARD_ELIGIBLE`: 11
+- `TRIVIAL_BAD`: 21
+- `TOO_CLOSE`: 0
+- `TECHNICAL_INVALID`: 0
+
+The review confirms that the failures are not whole-video black-frame collapse:
+`black_frame_ratio=0.0` for all rows. The dominant issue is task/mask-region
+semantic mismatch and local raw loser quality under the current raw6 stack.
+
+Large visual artifacts were generated under the PAI/HAL review artifact roots
+but are not committed. This is not `DATA_READY`; the DiffuEraser OR root-cause
+matrix remains required before judging loser utility.
+
+Reports:
+
+- `reports/exp25_gate32_final_video_review.md`
+- `reports/exp25_gate32_final_video_review.csv`
+- `reports/exp25_gate32_final_video_review_summary.json`

@@ -1,0 +1,11 @@
+{
+  "counts": {
+    "medium-hard": 11,
+    "trivial-bad": 21
+  },
+  "csv": "/home/hj/exp25_gate32_dense_review_runs/gate32_dense_54507fd_20260625_031604/gate32_individual_video_reaudit.csv",
+  "dense_review": true,
+  "note": "Dense temporal review fallback complete; interactive mp4 playback is unavailable in this execution channel.",
+  "output_dir": "/home/hj/exp25_gate32_dense_review_runs/gate32_dense_54507fd_20260625_031604",
+  "status": "completed_dense_temporal_review_fallback"
+}

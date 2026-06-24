@@ -1872,3 +1872,12 @@ reaudit remained a sampled-frame fallback. The isolated Exp25 review script now
 has a dense temporal review fallback mode. Gate32 generation is not repeated,
 Gate128 is not expanded, and OR-DPO is not started. Dense review execution is
 pending on PAI from a committed snapshot.
+
+## 2026-06-24 Exp25 Gate32 final dense review
+
+Exp25 completed the dense temporal fallback review for all 32 existing
+DiffuEraser Gate32 raw OR losers. Final classes: `MEDIUM_HARD_ELIGIBLE=11`,
+`TRIVIAL_BAD=21`, `TOO_CLOSE=0`, `TECHNICAL_INVALID=0`. All rows have
+`black_frame_ratio=0.0`; failures are dominated by raw task/mask-region
+mismatch, not whole-video black collapse. Gate128 and OR-DPO remain blocked
+pending the DiffuEraser OR root-cause matrix.
