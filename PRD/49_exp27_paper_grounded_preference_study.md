@@ -146,3 +146,19 @@ Report:
 `reports/exp27_gpu2_real_batch_parity.md`
 
 No long training was launched.
+
+## 2026-06-24 Nontrivial Parity and LocalDPO Smoke
+
+The three-lane controller completed the requested nontrivial Exp27 gates:
+
+- SDPO real-batch conflict case with `lambda_safe=0.314453125 < 1`.
+- Linear-DPO Frozen / EMA multi-step parity with zero EMA discrepancy.
+- LocalDPO six-video corruption pair and original loss 1/10-step smoke.
+
+The LocalDPO official mask digest is still blocked by missing official code in
+the local paper cache, so this remains a plumbing/original-loss smoke rather
+than an official LocalDPO reproduction. RC-FPO was not started.
+
+Report:
+
+`reports/exp27_nontrivial_parity_and_localdpo_smoke_20260624.md`

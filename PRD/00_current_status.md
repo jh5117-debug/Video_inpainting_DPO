@@ -1799,3 +1799,10 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+## 2026-06-24 Exp27 Nontrivial Parity
+
+Exp27 completed SDPO nontrivial conflict parity with
+`lambda_safe=0.314453125 < 1`, Linear-DPO Frozen / EMA multi-step parity, and
+LocalDPO six-video original-loss 1/10-step smoke. Official LocalDPO mask digest
+is still blocked by missing official code; RC-FPO was not started.
