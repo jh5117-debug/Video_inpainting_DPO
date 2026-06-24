@@ -163,3 +163,18 @@ Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
 
 Gate64 visual review is pending. This is not yet `DATA_READY`, and no
 VideoPainter DPO training has started.
+
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+- PAI `/home` source: `/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
+- files / bytes: `14408 / 8405904095`
+- intended NAS target:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155`
+- blocker: SSH user `hj` cannot write under the NAS project root.
+- markers not created: `EXP26_GATE64_PERSISTED_TO_NAS`,
+  `EXP25_GATE32_REVIEW_PERSISTED_TO_NAS`
+- report: `reports/pai_premaintenance_output_persistence.md`
+
+No new Exp26 GPU work was started after this blocker.

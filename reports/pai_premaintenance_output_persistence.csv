@@ -1,0 +1,3 @@
+experiment,source,destination,source_files,source_bytes,status,blocker
+Exp26,/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155,14408,8405904095,BLOCKED_NAS_PERMISSION,hj cannot write NAS project root
+Exp25,/home/hj/exp25_gate32_dense_review_runs,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/gate32_dense_review_20260625,99,66982608,BLOCKED_NAS_PERMISSION,hj cannot write NAS project root

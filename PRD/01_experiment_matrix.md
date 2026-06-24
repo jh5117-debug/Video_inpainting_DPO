@@ -632,3 +632,12 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp26 VideoPainter v2 Gate64 generation | `GATE64_GENERATION_IMPLEMENTED_PENDING_PAI_RUN` | Fixed pre-run mixed-mask implementation bug; added selective VOR-BG extraction and official 49F generation launcher. No DPO training launched. |
+## 2026-06-25 Pre-Maintenance Persistence Gate
+
+- Exp25 status: `BLOCKED_NAS_PERMISSION`
+- Exp26 status: `BLOCKED_NAS_PERMISSION`
+- Reason: PAI SSH user `hj` cannot write to
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`; required
+  pre-maintenance persistence markers were not created.
+- Effect: no new Exp25 root-cause matrix, Exp26 Gate64 review/source repair, or
+  Exp27 true-model GPU task was launched after the blocker.

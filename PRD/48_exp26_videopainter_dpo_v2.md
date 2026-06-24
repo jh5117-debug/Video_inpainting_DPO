@@ -395,3 +395,25 @@ Report:
 
 Gate64 visual review is still pending for all 56 generated rows. VideoPainter
 DPO training remains unstarted.
+
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+Before launching the next Exp26 Gate64 review/source-repair milestone, the PAI
+`/home/hj` Gate64 artifacts were audited for durable NAS persistence:
+
+- source: `/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
+- files: `14408`
+- bytes: `8405904095`
+
+The intended NAS target under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/`
+could not be created because SSH user `hj` has no write permission to the NAS
+project root or the existing `logs/autoresearch` directory. `sudo -n` is not
+available and root SSH with the current key failed.
+
+No new Gate64 review, source repair, or VideoPainter DPO task was launched
+after this blocker. Report:
+
+`reports/pai_premaintenance_output_persistence.md`
