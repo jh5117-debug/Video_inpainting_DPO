@@ -180,6 +180,17 @@ def ensure_overlay(project_root: Path, overlay_root: Path, pcm_mode: str) -> Pat
         target = inference_dir / child.name
         if child.name == "run_OR.py":
             shutil.copy2(child, target)
+            text = target.read_text(encoding="utf-8")
+            if "parser.add_argument(\"--seed\"" not in text:
+                anchor = '    parser.add_argument("--video_length", type=int, default=-1, help="Max frames to process per video (-1 for all)")'
+                if anchor not in text:
+                    raise RuntimeError("could not patch overlay run_OR parser with seed argument")
+                text = text.replace(anchor, anchor + '\n    parser.add_argument("--seed", type=int, default=None, help="Exp25 overlay seed for DiffuEraser noise")')
+            if "seed=args.seed," not in text:
+                if "seed=None," not in text:
+                    raise RuntimeError("could not patch overlay run_OR DiffuEraser seed forwarding")
+                text = text.replace("seed=None,", "seed=args.seed,", 1)
+            target.write_text(text, encoding="utf-8")
         else:
             os.symlink(child, target, target_is_directory=child.is_dir())
 
@@ -221,6 +232,7 @@ def main() -> None:
     parser.add_argument("--width", type=int, default=512)
     parser.add_argument("--height", type=int, default=288)
     parser.add_argument("--mask_dilation_iter", type=int, default=8)
+    parser.add_argument("--seed", type=int, default=None)
     args = parser.parse_args()
 
     project_root = Path(args.project_root).resolve()
@@ -280,6 +292,8 @@ def main() -> None:
         "--summary_out",
         "summary.json",
     ]
+    if args.seed is not None:
+        cmd.extend(["--seed", str(args.seed)])
     env = os.environ.copy()
     if args.pcm_mode == "none":
         env["EXP25_NO_PCM_STEPS"] = str(args.no_pcm_steps)
@@ -313,6 +327,7 @@ def main() -> None:
         "width": args.width,
         "height": args.height,
         "num_frames": args.num_frames,
+        "seed": args.seed,
     }
     if args.identity_out:
         identity_path = Path(args.identity_out)

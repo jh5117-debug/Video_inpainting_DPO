@@ -38,6 +38,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--no-pcm-steps", type=int, default=6)
     p.add_argument("--no-pcm-guidance", type=float, default=0.0)
     p.add_argument("--mask-dilation-iter", type=int, default=8)
+    p.add_argument("--seed", type=int, default=None)
     return p.parse_args()
 
 
@@ -87,6 +88,7 @@ def generator_id(args: argparse.Namespace) -> str:
         "height": args.height,
         "num_frames": args.num_frames,
         "mask_dilation_iter": getattr(args, "mask_dilation_iter", 8),
+        "seed": getattr(args, "seed", None),
         "diffueraser_path": str(args.diffueraser_path),
         "propainter_model_dir": str(args.propainter_model_dir),
     }
@@ -104,7 +106,7 @@ def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir
     mask_root = work_dir / "batch" / "mask_root"
     symlink_dir(Path(row["condition_video_path"]), video_root / sample)
     symlink_dir(Path(row["mask_path"]), mask_root / sample)
-    return [
+    cmd = [
         args.python,
         str(args.project_root / "exp25_vor_or_preference_data" / "scripts" / "infer_diffueraser_or_exp25.py"),
         "--video_root",
@@ -148,6 +150,9 @@ def diffueraser_cmd(args: argparse.Namespace, row: dict, out_dir: Path, work_dir
         "--mask_dilation_iter",
         str(args.mask_dilation_iter),
     ]
+    if args.seed is not None:
+        cmd.extend(["--seed", str(args.seed)])
+    return cmd
 
 
 def propainter_cmd(args: argparse.Namespace, row: dict, out_dir: Path) -> list[str]:
