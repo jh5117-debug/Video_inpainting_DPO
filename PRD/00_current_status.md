@@ -1876,3 +1876,22 @@ launcher now performs exact VOR-Train/BG selective extraction, formal 49-frame
 materialization, mixed-mask generation, and official VideoPainter Gate64
 self-loser generation. GPU7 remains excluded. Gate64 generation is pending the
 PAI run; DPO training has not started.
+## 2026-06-25 Exp26 Gate64 Generation Monitor
+
+Exp26 official VideoPainter Gate64 generation completed on PAI from snapshot
+`43597cf66c106ceddcdb384ec7207993662d3f1e`.
+
+Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
+
+- extraction: `64/64 OK`
+- formal 49F materialization: `56/64 OK`, `8/64 FAILED`
+- failure type: duplicate decoded frame images rejected by strict formal 49F
+  source guard
+- mixed masks: `56/56 OK`
+- official generation: `56/56 OK`, all `49` frames
+- PAI run root:
+  `/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
+- report: `reports/exp26_gate64_generation_status_20260625.md`
+
+Gate64 visual review remains pending; VideoPainter DPO training has not
+started.

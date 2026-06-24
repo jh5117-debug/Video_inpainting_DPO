@@ -145,3 +145,21 @@ Status: `GATE64_GENERATION_IMPLEMENTED_PENDING_PAI_RUN`
 - Validation passed: py_compile, 23 unit tests, bash -n, git diff --check.
 - Gate64 generation pending PAI snapshot run.
 - VideoPainter DPO not started.
+
+## 2026-06-25 Gate64 Official Generation
+
+Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
+
+- PAI run root:
+  `/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
+- Code snapshot commit: `43597cf66c106ceddcdb384ec7207993662d3f1e`
+- Extraction: `64/64 OK`
+- Formal 49F materialization: `56/64 OK`, `8/64 duplicate-frame source failures`
+- Mask generation: `56/56 OK`
+- Official VideoPainter generation: `56/56 OK`
+- Output frames/videos/contact sheets: `56`
+- GPU after completion: all cards 0 MiB
+- Report: `reports/exp26_gate64_generation_status_20260625.md`
+
+Gate64 visual review is pending. This is not yet `DATA_READY`, and no
+VideoPainter DPO training has started.

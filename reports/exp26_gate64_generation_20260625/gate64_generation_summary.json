@@ -1,0 +1,12 @@
+{
+  "base_model": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/CogVideoX-5b-I2V",
+  "branch_checkpoint": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch",
+  "guidance_scale": 6.0,
+  "manifest": "/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155/gate64_mask_ready.jsonl",
+  "num_frames": 49,
+  "num_inference_steps": 20,
+  "num_rows": 56,
+  "ok": 56,
+  "status": "passed",
+  "status_csv": "/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155/official_generation/gate64_generation_status.csv"
+}

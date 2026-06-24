@@ -365,3 +365,33 @@ Reports:
 
 Gate64 generation is still pending the PAI run from the committed snapshot.
 VideoPainter DPO remains unstarted.
+
+## 2026-06-25 Gate64 Official Generation
+
+Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
+
+The PAI official VideoPainter Gate64 generation run completed from committed
+snapshot `43597cf66c106ceddcdb384ec7207993662d3f1e`.
+
+Pipeline result:
+
+- VOR BG selective extraction: `64/64 OK`
+- formal 49F materialization: `56/64 OK`, `8/64 FAILED`
+- mixed moving masks: `56/56 OK`
+- official VideoPainter generation: `56/56 OK`
+
+The 8 rejected rows failed the strict formal 49-frame source guard because
+decoded frame images were duplicated. These rows are source-validity failures,
+not VideoPainter inference failures. The generated set therefore contains 56
+formal-valid rows, not a complete 64-row Gate64.
+
+PAI output:
+
+`/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
+
+Report:
+
+`reports/exp26_gate64_generation_status_20260625.md`
+
+Gate64 visual review is still pending for all 56 generated rows. VideoPainter
+DPO training remains unstarted.
