@@ -211,3 +211,22 @@ Report:
 `reports/exp26_probe4_official_inference_result.md`
 
 Gate16/Gate64 and DPO training remain unstarted.
+
+## 2026-06-24 Probe4 and Gate16 Review
+
+The three-lane controller rechecked Probe4 and then advanced to Gate16 after
+formal 49-frame source selection.
+
+- Probe4 official 49F review: `4/4` passed.
+- Gate16 formal source pool: `25/32` materialized as valid 49-frame inputs.
+- Gate16 selected set: `16/16`.
+- Gate16 official inference: `16/16`, all `49` frames.
+- Gate16 review: `15/16` passed, `1/16` failed.
+
+The failed sample was `vp2_gate16_BLENDER_CON001_00742`; it generated 49 frames
+but had mask PSNR `1.3500` and a visibly mismatched pale patch in the masked
+region. Gate64 and DPO training were not launched.
+
+Report:
+
+`reports/exp26_probe4_gate16_review_20260624.md`

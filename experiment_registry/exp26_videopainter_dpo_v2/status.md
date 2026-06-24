@@ -76,3 +76,16 @@ exact 49-frame decode audit, and generated moving BR masks.
   `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260623/exp26_probe4_official_inference/probe4_official_inference_summary.json`.
 - Report: `reports/exp26_probe4_official_inference_result.md`.
 - Gate16/Gate64 and DPO training remain unstarted.
+
+## 2026-06-24 Probe4 and Gate16 Review
+
+- Status: `PROBE4_PASSED_GATE16_REVIEW_FAILED`.
+- Controller run:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260624_three_lane_retry2`.
+- Probe4: `4/4` official 49F inference outputs passed review.
+- Gate16 source materialization: `25/32` valid formal 49F candidates; selected `16/16`.
+- Gate16 official inference: `16/16`, all `49` frames.
+- Gate16 review: `15/16` passed, `1/16` failed.
+- Failed sample: `vp2_gate16_BLENDER_CON001_00742`, mask PSNR `1.3500`.
+- Gate64: not launched.
+- Report: `reports/exp26_probe4_gate16_review_20260624.md`.

@@ -1799,3 +1799,10 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+## 2026-06-24 Exp26 Gate16 Review
+
+Exp26 Probe4 official 49F review passed `4/4`. Gate16 completed official
+49-frame inference for `16/16` selected samples, but review passed only `15/16`
+because `vp2_gate16_BLENDER_CON001_00742` failed quantitative and visual
+quality. Gate64 and DPO training were not launched.
