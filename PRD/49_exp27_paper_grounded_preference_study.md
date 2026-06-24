@@ -219,3 +219,18 @@ forward scan.
 Report:
 
 `reports/exp27_true_model_forward_readback.md`
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+Before launching true DiffuEraser policy/reference forward parity, the required
+cross-track PAI `/home` artifact persistence gate was attempted. It is blocked
+because SSH user `hj` cannot write to
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`; `sudo -n` and root
+SSH are unavailable through the current session.
+
+No new Exp27 GPU task was launched after this blocker. Exp27 remains at
+`TRUE_MODEL_FORWARD_READBACK_COMPLETE`, with SDPO distribution results still
+classified as `REAL_VIDEO_RESIDUAL_PROXY_ONLY`.
+
+Report: `reports/pai_premaintenance_output_persistence.md`

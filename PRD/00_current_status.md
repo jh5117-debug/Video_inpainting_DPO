@@ -1822,3 +1822,13 @@ Exp27 readback re-confirmed that the SDPO distribution scan is
 `REAL_VIDEO_RESIDUAL_PROXY_ONLY`. True DiffuEraser policy/reference forward is
 still pending, so Exp27 remains `OBJECTIVE_STUDY_PENDING` and
 `RCFPO_NOT_STARTED`.
+## 2026-06-25 PAI Pre-Maintenance Persistence Blocker
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+Before launching new Exp25/Exp26/Exp27 work, the required PAI `/home` artifact
+persistence gate was attempted and blocked because SSH user `hj` cannot write
+under `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`. No new Exp27
+true-model GPU task was launched after this blocker.
+
+Report: `reports/pai_premaintenance_output_persistence.md`

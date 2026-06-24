@@ -74,3 +74,12 @@ LocalDPO official raw mask path remains blocked in the current environment, but 
   video residuals but no DiffuEraser policy/reference forward.
 - Next required gate is true Stage1 policy/reference forward parity.
 - Report: `reports/exp27_true_model_forward_readback.md`.
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+The cross-track persistence gate was attempted before new Exp27 GPU work.
+`hj` cannot write to the requested NAS project root, so no new true-model SDPO
+forward, Linear-DPO, LocalDPO 24F, or objective-study task was launched.
+
+Report: `reports/pai_premaintenance_output_persistence.md`

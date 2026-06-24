@@ -616,3 +616,10 @@ LocalDPO four-grid runs, and O0-O5 objective studies remain unstarted.
 The existing SDPO distribution scan remains labeled
 `REAL_VIDEO_RESIDUAL_PROXY_ONLY`. No RC-FPO or objective-study training has
 started.
+## 2026-06-25 Pre-Maintenance Persistence Gate
+
+- Exp27 status: `BLOCKED_NAS_PERMISSION`
+- Reason: cross-track persistence of PAI `/home` outputs is blocked because
+  SSH user `hj` cannot write to the NAS project root.
+- Effect: true-model SDPO forward parity, true Linear-DPO, LocalDPO 24F, and
+  objective-study GPU tasks remain pending.
