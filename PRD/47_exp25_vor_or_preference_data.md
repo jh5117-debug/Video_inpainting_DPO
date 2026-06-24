@@ -229,3 +229,21 @@ VOR-Eval was not used.
 Report:
 
 `reports/exp25_overnight_gpu2_gate32_completion.md`
+
+## 2026-06-24 Gate32 Yield Review
+
+The three-lane controller completed the Exp25 Gate32 yield review without
+starting Gate128 or any training. All 32 canonical DiffuEraser raw OR
+candidates were scored and visually checked through contact-sheet indices.
+
+Bucket counts:
+
+- `medium-hard`: 11
+- `too-close`: 0
+- `trivial-bad`: 21
+
+Because no `too-close` samples were found, seed2 supplementation was not
+launched. The medium-hard yield is not strong enough to justify immediate
+Gate128 expansion. Report:
+
+`reports/exp25_gate32_yield_review_20260624.md`

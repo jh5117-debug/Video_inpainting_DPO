@@ -1847,3 +1847,10 @@ on PAI. The transfer manifest contains 37 VERIFIED rows and zero HAL/PAI SHA256
 mismatches. The final independent PAI inventory verifier also passed with 37 OK
 files, no partial/bad files, and contiguous VOR-Train parts 000-031. No GPU
 work, loser generation, decompression, or DPO training was started in this track.
+
+## 2026-06-24 Exp25 Gate32 Yield Review
+
+Exp25 Gate32 canonical DiffuEraser raw OR yield review completed: `32/32`
+samples scored and contact sheets checked. Buckets were `medium-hard=11`,
+`too-close=0`, `trivial-bad=21`; no seed2 supplementation or Gate128 expansion
+was launched.

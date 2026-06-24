@@ -144,3 +144,14 @@ Full Gate128 OR loser generation has not started.
   `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/preference_candidates/gate32_canonical_raw6_d0`.
 - GPU2 released after completion; GPU7 stale allocation was not used.
 - Report: `reports/exp25_overnight_gpu2_gate32_completion.md`.
+
+## 2026-06-24 Three-Lane Gate32 Yield Review
+
+- Status: `GATE32_YIELD_REVIEW_COMPLETED`.
+- Controller run:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/overnight_exp25_26_27_20260624_three_lane_retry2`.
+- Gate32 candidates reviewed: `32/32`.
+- Yield buckets: `medium-hard=11`, `too-close=0`, `trivial-bad=21`.
+- Seed2 supplementation: not launched because `too-close=0`.
+- Gate128 expansion: not launched.
+- Report: `reports/exp25_gate32_yield_review_20260624.md`.
