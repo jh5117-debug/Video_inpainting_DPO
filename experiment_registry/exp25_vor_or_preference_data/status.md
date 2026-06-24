@@ -204,3 +204,17 @@ Reports:
 - `reports/exp25_gate32_final_video_review.md`
 - `reports/exp25_gate32_final_video_review.csv`
 - `reports/exp25_gate32_final_video_review_summary.json`
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+- PAI `/home` source: `/home/hj/exp25_gate32_dense_review_runs`
+- files / bytes: `99 / 66982608`
+- intended NAS target:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/gate32_dense_review_20260625`
+- blocker: SSH user `hj` cannot write under the NAS project root.
+- markers not created: `EXP25_GATE32_REVIEW_PERSISTED_TO_NAS`,
+  `EXP26_GATE64_PERSISTED_TO_NAS`
+- report: `reports/pai_premaintenance_output_persistence.md`
+
+No new Exp25 root-cause matrix was started after this blocker.

@@ -340,3 +340,24 @@ Reports:
 - `reports/exp25_gate32_final_video_review.md`
 - `reports/exp25_gate32_final_video_review.csv`
 - `reports/exp25_gate32_final_video_review_summary.json`
+## 2026-06-25 PAI Pre-Maintenance Persistence
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+Before launching the Exp25 DiffuEraser OR root-cause matrix, the PAI `/home/hj`
+Gate32 dense review artifacts were audited for durable NAS persistence:
+
+- source: `/home/hj/exp25_gate32_dense_review_runs`
+- files: `99`
+- bytes: `66982608`
+
+The intended NAS target under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/`
+could not be created because SSH user `hj` has no write permission to the NAS
+project root or the existing `logs/autoresearch` directory. `sudo -n` is not
+available and root SSH with the current key failed.
+
+No new Exp25 root-cause matrix or OR candidate generation was launched after
+this blocker. Report:
+
+`reports/pai_premaintenance_output_persistence.md`

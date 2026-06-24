@@ -1881,3 +1881,19 @@ DiffuEraser Gate32 raw OR losers. Final classes: `MEDIUM_HARD_ELIGIBLE=11`,
 `black_frame_ratio=0.0`; failures are dominated by raw task/mask-region
 mismatch, not whole-video black collapse. Gate128 and OR-DPO remain blocked
 pending the DiffuEraser OR root-cause matrix.
+## 2026-06-25 PAI Pre-Maintenance Persistence Blocker
+
+Status: `BLOCKED_NAS_PERMISSION`
+
+Before launching new Exp25/Exp26/Exp27 work, PAI `/home` artifacts were audited
+for durable NAS persistence. Exp25 dense review has `99` files (`66982608`
+bytes) and Exp26 Gate64 has `14408` files (`8405904095` bytes).
+
+The SSH user `hj` cannot write under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`, and root SSH/sudo are
+not available through the current key/session. The required persistence markers
+were therefore not created, and no new Exp25 root-cause matrix, Exp26 Gate64
+review/source repair, or Exp27 true-model GPU task was launched after the
+blocker.
+
+Report: `reports/pai_premaintenance_output_persistence.md`

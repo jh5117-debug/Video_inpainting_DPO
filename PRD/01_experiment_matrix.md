@@ -637,3 +637,12 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp25 Gate32 final dense review | `GATE32_FINAL_DENSE_REVIEW_COMPLETE_YIELD_POOR` | Final dense fallback classes: 11 medium-hard, 21 trivial-bad, 0 too-close, 0 technical-invalid. Root-cause matrix remains pending; no Gate128 or OR-DPO launched. |
+## 2026-06-25 Pre-Maintenance Persistence Gate
+
+- Exp25 status: `BLOCKED_NAS_PERMISSION`
+- Exp26 status: `BLOCKED_NAS_PERMISSION`
+- Reason: PAI SSH user `hj` cannot write to
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch`; required
+  pre-maintenance persistence markers were not created.
+- Effect: no new Exp25 root-cause matrix, Exp26 Gate64 review/source repair, or
+  Exp27 true-model GPU task was launched after the blocker.
