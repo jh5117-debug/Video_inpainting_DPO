@@ -1806,3 +1806,11 @@ Exp26 Probe4 official 49F review passed `4/4`. Gate16 completed official
 49-frame inference for `16/16` selected samples, but review passed only `15/16`
 because `vp2_gate16_BLENDER_CON001_00742` failed quantitative and visual
 quality. Gate64 and DPO training were not launched.
+
+## 2026-06-24 Exp26 Gate16 Reclassification
+
+Exp26 reclassified the existing Gate16 outputs without replacing the failed
+row. The numeric gate passes with `technical_valid=16/16`,
+`trivial_bad=1/16`, and `medium-hard=15/16`, but interactive mp4 playback is
+still pending. `GATE16_PASSED_WITH_REJECTION` is not set; Gate64 and DPO
+training remain unstarted.

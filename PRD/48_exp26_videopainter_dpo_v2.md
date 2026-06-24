@@ -230,3 +230,33 @@ region. Gate64 and DPO training were not launched.
 Report:
 
 `reports/exp26_probe4_gate16_review_20260624.md`
+
+## 2026-06-24 Gate16 Reclassification
+
+Status:
+
+- `PROBE4_PASSED`
+- `GATE16_15_OF_16`
+- `GATE16_METRIC_GATE_PASS_VISUAL_REVIEW_PENDING`
+- `NO_GATE64`
+- `NO_DPO_TRAINING`
+
+The existing Gate16 outputs were reclassified without replacing
+`vp2_gate16_BLENDER_CON001_00742`.
+
+Results:
+
+- technical valid: `16/16`
+- systematic failure: `0`
+- trivial bad: `1/16`
+- medium-hard: `15/16`
+
+The failed row is technically valid and is classified as a true model failure,
+not a wrapper crash: 49 frames, no black frames, but mask PSNR `1.349967` and
+extreme mask-region mismatch. The numeric pre-registered gate would pass with
+one rejected failure. However, the current review is headless frame/crop audit
+only, so `GATE16_PASSED_WITH_REJECTION` is not set and Gate64 remains blocked.
+
+Report:
+
+`reports/exp26_gate16_reclassification.md`

@@ -1,0 +1,13 @@
+{
+  "audit_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp26_gate16_reclassification_v2",
+  "counts": {
+    "medium-hard": 15,
+    "trivial-bad": 1
+  },
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp26_gate16_reclassification_v2/gate16_reclassification.csv",
+  "gate64_allowed": false,
+  "gate64_blocker": "interactive_video_review_pending",
+  "status": "metric_gate_pass_visual_review_pending",
+  "systematic_failure": 0,
+  "technical_valid": 16
+}

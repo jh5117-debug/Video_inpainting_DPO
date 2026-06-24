@@ -89,3 +89,17 @@ exact 49-frame decode audit, and generated moving BR masks.
 - Failed sample: `vp2_gate16_BLENDER_CON001_00742`, mask PSNR `1.3500`.
 - Gate64: not launched.
 - Report: `reports/exp26_probe4_gate16_review_20260624.md`.
+
+## 2026-06-24 Gate16 Reclassification
+
+- Status:
+  - `PROBE4_PASSED`
+  - `GATE16_15_OF_16`
+  - `GATE16_METRIC_GATE_PASS_VISUAL_REVIEW_PENDING`
+  - `NO_GATE64`
+  - `NO_DPO_TRAINING`
+- Existing Gate16 rows reclassified: `16/16`.
+- Classification: `medium-hard=15`, `trivial-bad=1`, `technical-invalid=0`.
+- Failed row retained as true model failure: `vp2_gate16_BLENDER_CON001_00742`.
+- Original numeric gate criteria pass, but interactive video playback is still pending, so `GATE16_PASSED_WITH_REJECTION` is not set.
+- Report: `reports/exp26_gate16_reclassification.md`.
