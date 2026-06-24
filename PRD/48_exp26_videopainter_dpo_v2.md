@@ -294,3 +294,42 @@ only, so `GATE16_PASSED_WITH_REJECTION` is not set and Gate64 remains blocked.
 Report:
 
 `reports/exp26_gate16_reclassification.md`
+
+## 2026-06-24 Gate64 Mixed-Mask Protocol Locked
+
+Status: `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION`
+
+After a fresh readback, Gate64 was prepared without rerunning Gate16 or
+replacing the retained failed Gate16 sample.
+
+Locked artifacts:
+
+- config: `exp26_videopainter_dpo_v2/configs/vp2_mixed_br_mask_v1.json`
+- source manifest: `exp26_videopainter_dpo_v2/manifests/vp2_gate64_source_manifest.jsonl`
+- manifest SHA256: `b904be82d58ab7cd897c6759b7351e262f61397d9f90d84df05ae42300dbffb6`
+- rows: 64
+- unique scene groups: 64
+- overlap with Exp26 search-dev: 0
+- overlap with Exp26 shadow-dev: 0
+
+Mask distribution is no longer ellipse-only:
+
+- irregular free-form: 16
+- object-like polygon: 16
+- soft blob: 8
+- edge-touch free-form: 8
+- ellipse/circle subset: 8
+- thin-structure free-form: 8
+
+Source mix: REAL 56, BLENDER 8. Area buckets are balanced as small 16,
+medium 32, large 16; motion buckets are low 16, medium 32, high 16.
+
+Historical BR masks from YouTube-VOS K4 / Exp10-Exp11 style are much closer to
+large partial masks than the Probe4/Gate16 ellipse-only protocol, so Gate64 is
+locked as `vp2_mixed_br_mask_v1`. Once Gate64 generation starts, this
+configuration must not be adjusted.
+
+PAI execution is currently blocked by SSH host-key verification for
+`47.103.26.60` with presented ED25519 fingerprint
+`SHA256:xDOCAS/+fw0Bs5m9HizeRi1mkYOcIotlm4CxcfWwpqk`. No Gate64 generation or
+DPO training was launched in this milestone.

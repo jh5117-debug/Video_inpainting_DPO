@@ -1,0 +1,105 @@
+{
+  "area_buckets": {
+    "large": [
+      0.28,
+      0.36
+    ],
+    "medium": [
+      0.18,
+      0.27
+    ],
+    "small": [
+      0.08,
+      0.14
+    ]
+  },
+  "deformation_buckets": {
+    "moderate": {
+      "rotation_degrees": [
+        12,
+        35
+      ],
+      "scale_oscillation": [
+        0.06,
+        0.12
+      ]
+    },
+    "slow": {
+      "rotation_degrees": [
+        0,
+        12
+      ],
+      "scale_oscillation": [
+        0.02,
+        0.06
+      ]
+    }
+  },
+  "first_frame_gt": true,
+  "formal_num_frames": 49,
+  "hard_constraints": [
+    "exactly 49 real frames per source",
+    "one mask per source",
+    "one seed per source",
+    "scene-group disjoint sources",
+    "first frame GT: frame0 mask area must be zero",
+    "no VOR-Eval, no Exp26 search-dev/shadow-dev, no Exp25 search/shadow rows",
+    "formal Gate64 generation must use this config without changing mask distribution"
+  ],
+  "historical_mask_audit": "reports/exp26_br_mask_distribution_audit_fast512.csv",
+  "mask_families": {
+    "edge_touch_freeform": {
+      "count": 8,
+      "description": "free-form regions intentionally touching one frame edge"
+    },
+    "ellipse_circle_subset": {
+      "count": 8,
+      "description": "small controlled subset retained for continuity with Gate16"
+    },
+    "irregular_freeform": {
+      "count": 16,
+      "description": "multi-lobe free-form brush-like regions"
+    },
+    "object_like_polygon": {
+      "count": 16,
+      "description": "compact non-elliptic object-like polygon masks"
+    },
+    "soft_blob": {
+      "count": 8,
+      "description": "smooth but non-circular blob masks"
+    },
+    "thin_structure_freeform": {
+      "count": 8,
+      "description": "elongated or thin free-form regions"
+    }
+  },
+  "motion_buckets": {
+    "high": {
+      "centroid_motion_fraction": [
+        0.18,
+        0.28
+      ]
+    },
+    "low": {
+      "centroid_motion_fraction": [
+        0.02,
+        0.06
+      ]
+    },
+    "medium": {
+      "centroid_motion_fraction": [
+        0.08,
+        0.16
+      ]
+    }
+  },
+  "name": "vp2_mixed_br_mask_v1",
+  "seed": 20260624,
+  "source_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_train_source_128.jsonl",
+  "source_of_truth": {
+    "decision": "Gate64 must be mixed-mask and cannot be ellipse/circle-only.",
+    "gate16": "VideoPainter official 49F Gate16 used ellipse/circle masks and passed with one retained rejection",
+    "historical_br": "YouTube-VOS D2 partial-mask K4 / Exp10-Exp11 style masks, sampled through selected_primary_comp.repaired.pai_paths.jsonl"
+  },
+  "status": "LOCKED_GATE64_PROTOCOL_PENDING_GENERATION"
+}

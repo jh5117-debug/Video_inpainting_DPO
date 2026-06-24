@@ -118,3 +118,18 @@ exact 49-frame decode audit, and generated moving BR masks.
 - No Gate64, DPO micro-training, or long training has been launched by this
   milestone.
 - Report: `reports/exp26_gate16_final_video_review.md`.
+
+## 2026-06-24 Gate64 Mixed-Mask Protocol
+
+- Status: `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION`.
+- Config: `exp26_videopainter_dpo_v2/configs/vp2_mixed_br_mask_v1.json`.
+- Manifest: `exp26_videopainter_dpo_v2/manifests/vp2_gate64_source_manifest.jsonl`.
+- Manifest SHA256: `b904be82d58ab7cd897c6759b7351e262f61397d9f90d84df05ae42300dbffb6`.
+- Rows / scene groups: `64 / 64`.
+- Distribution: irregular free-form 16, object-like polygon 16, soft blob 8,
+  edge-touch free-form 8, ellipse/circle subset 8, thin-structure free-form 8.
+- Gate64 generation: not launched.
+- VideoPainter DPO: not launched.
+- Current blocker for PAI execution: SSH host-key verification changed for
+  `47.103.26.60`, presented ED25519 fingerprint
+  `SHA256:xDOCAS/+fw0Bs5m9HizeRi1mkYOcIotlm4CxcfWwpqk`.

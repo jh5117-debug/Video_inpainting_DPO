@@ -620,3 +620,9 @@ Exp26 Probe4 remains passed. Existing Gate16 outputs were reclassified without
 replacement: `medium-hard=15`, `trivial-bad=1`, `technical-invalid=0`.
 Numeric gate criteria pass, but interactive video playback remains pending, so
 Gate64 and DPO training were not started.
+
+## 2026-06-24 Exp26 Gate64 Protocol
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp26 VideoPainter v2 Gate64 | `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION` | Mixed-mask protocol `vp2_mixed_br_mask_v1` locked; 64 scene-disjoint VOR-BG sources; no Gate64 generation or DPO training launched yet. |

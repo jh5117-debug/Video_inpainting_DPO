@@ -1,0 +1,42 @@
+{
+  "area_bucket": {
+    "large": 16,
+    "medium": 32,
+    "small": 16
+  },
+  "banned_next_actions": [
+    "no_gate16_rerun",
+    "no_failed_row_replacement",
+    "no_dpo_training_before_gate64_review"
+  ],
+  "config": "exp26_videopainter_dpo_v2/configs/vp2_mixed_br_mask_v1.json",
+  "deformation_bucket": {
+    "moderate": 32,
+    "slow": 32
+  },
+  "gate64_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_gate64_source_manifest.jsonl",
+  "gate64_manifest_sha256": "b904be82d58ab7cd897c6759b7351e262f61397d9f90d84df05ae42300dbffb6",
+  "mask_profile": {
+    "edge_touch_freeform": 8,
+    "ellipse_circle_subset": 8,
+    "irregular_freeform": 16,
+    "object_like_polygon": 16,
+    "soft_blob": 8,
+    "thin_structure_freeform": 8
+  },
+  "motion_bucket": {
+    "high": 16,
+    "low": 16,
+    "medium": 32
+  },
+  "pai_status": "blocked_host_key_changed_ed25519_SHA256_xDOCAS_fw0Bs5m9HizeRi1mkYOcIotlm4CxcfWwpqk",
+  "rows": 64,
+  "source_kind": {
+    "BLENDER": 8,
+    "REAL": 56
+  },
+  "status": "GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION",
+  "train_source_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_train_source_128.jsonl",
+  "train_source_manifest_sha256": "68a862c18ad46271757d96c6b5483c76aeb2cfdfb5cae21a452e215b735daaa6",
+  "unique_scene_groups": 64
+}

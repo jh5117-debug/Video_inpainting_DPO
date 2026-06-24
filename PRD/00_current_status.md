@@ -1850,3 +1850,19 @@ row. The numeric gate passes with `technical_valid=16/16`,
 `trivial_bad=1/16`, and `medium-hard=15/16`, but interactive mp4 playback is
 still pending. `GATE16_PASSED_WITH_REJECTION` is not set; Gate64 and DPO
 training remain unstarted.
+
+## 2026-06-24 Exp26 Gate64 Protocol Locked
+
+Exp26 Gate16 remains `GATE16_PASSED_WITH_REJECTION`; the failed sample
+`vp2_gate16_BLENDER_CON001_00742` was not replaced.
+
+Gate64 has not been generated yet, but its source/mask protocol is now locked:
+
+- config: `exp26_videopainter_dpo_v2/configs/vp2_mixed_br_mask_v1.json`
+- manifest: `exp26_videopainter_dpo_v2/manifests/vp2_gate64_source_manifest.jsonl`
+- manifest SHA256: `b904be82d58ab7cd897c6759b7351e262f61397d9f90d84df05ae42300dbffb6`
+- rows: 64, scene-group overlap with Exp26 search/shadow: 0
+
+Status: `GATE64_PROTOCOL_LOCKED_PENDING_PAI_GENERATION`.
+PAI execution is blocked until the changed SSH host key for `47.103.26.60` is
+confirmed.
