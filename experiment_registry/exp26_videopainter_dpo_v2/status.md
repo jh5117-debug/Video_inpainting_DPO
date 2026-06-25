@@ -465,3 +465,28 @@ outside damage, or gate-blocking flicker/ghosting was found. Remaining visible
 failures are local mask/affected-region artifacts. This result is a
 search-dev micro-training gate, not a final benchmark or scientific-positive
 claim.
+
+## 2026-06-25 Shadow-Dev Confirmatory Validation
+
+Status:
+
+- `SHADOWDEV_CONFIRMATORY_PROTOCOL_AUDITED`
+- `SHADOWDEV_INTEGRITY_PASS_PENDING_MATERIALIZATION`
+- `CHECKPOINT_IDENTITY_PENDING_PAI_PATHS`
+- `NO_RETRAINING`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+Primary comparison is fixed Step50 versus fixed Step0 on the locked independent
+shadow-dev split. Step10 and Step30 are trajectory diagnostics only and cannot
+replace Step50 after seeing shadow-dev results.
+
+The left CLI Exp25/Exp27/Exp28 controller remains protected and read-only from
+this right-side Exp26 session. GPU1-4 are reserved for that controller; Exp26
+shadow-dev may only use dynamically eligible GPU0/5/6/7.
+
+Reports:
+
+- `reports/exp26_vp_shadowdev_readback.md`
+- `reports/exp26_vp_shadowdev_integrity_audit.md`
+- `reports/exp26_vp_shadowdev_checkpoint_identity.md`

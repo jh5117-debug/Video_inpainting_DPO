@@ -2062,3 +2062,23 @@ mask/affected-region artifacts. This is `TRAINING_PASS` and
 `VIDEOPAINTER_ADAPTER_POSITIVE` for the search-dev micro gate only, not
 `SCIENTIFIC_POSITIVE`; RC-FPO and 100-step-or-longer training remain not
 started.
+
+## 2026-06-25 Exp26 Shadow-Dev Confirmatory Validation Started
+
+Status:
+
+- `SHADOWDEV_CONFIRMATORY_PROTOCOL_AUDITED`
+- `SHADOWDEV_INTEGRITY_PASS_PENDING_MATERIALIZATION`
+- `NO_RETRAINING`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+Exp26 is now running the pre-registered independent shadow-dev confirmation for
+the fixed VideoPainter Step50 checkpoint against the fixed Step0 official
+baseline. Shadow-dev remains held out from training, primary32 selection,
+search-dev gating, checkpoint selection, threshold tuning, and inference seed
+selection.
+
+Left CLI Exp25/Exp27/Exp28 worktrees, runtime locks, outputs, and GPU1-4 are
+read-only/reserved for the left controller. The right-side Exp26 job may only
+use dynamically eligible GPU0/5/6/7 and must not signal left-side processes.

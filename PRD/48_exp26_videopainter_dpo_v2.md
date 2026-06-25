@@ -891,3 +891,41 @@ Reports:
 - `reports/exp26_vp_50step_paired_stats.csv`
 - `reports/exp26_vp_50step_reload_preflight.csv`
 - `reports/exp26_vp_50step_visual_review.csv`
+
+## 2026-06-25 Shadow-Dev Confirmatory Validation Readback
+
+Status:
+
+- `SHADOWDEV_CONFIRMATORY_PROTOCOL_AUDITED`
+- `SHADOWDEV_INTEGRITY_PASS_PENDING_MATERIALIZATION`
+- `CHECKPOINT_IDENTITY_PENDING_PAI_PATHS`
+- `LEFT_CLI_PROTECTION_REQUIRED`
+- `NO_RETRAINING`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+The independent 32-row shadow-dev confirmation has been started as a strictly
+held-out validation of the fixed `vp_primary32_50step_20260625_171032`
+trajectory. Shadow-dev is not allowed to select Step10/30/50, change the
+inference seed, alter masks/prompts, or trigger retraining.
+
+The pre-run readback confirms the locked manifest identities:
+
+- primary32 SHA256:
+  `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`
+- search-dev SHA256:
+  `41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71`
+- shadow-dev SHA256:
+  `0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02`
+
+The left CLI Exp25/Exp27/Exp28 controller is explicitly protected. This
+right-side Exp26 validation may only use dynamically eligible GPU0/5/6/7, and
+GPU1-4 remain reserved for the left CLI even if momentarily idle.
+
+Reports:
+
+- `reports/exp26_vp_shadowdev_readback.md`
+- `reports/exp26_vp_shadowdev_integrity_audit.md`
+- `reports/exp26_vp_shadowdev_integrity_audit.csv`
+- `reports/exp26_vp_shadowdev_integrity.json`
+- `reports/exp26_vp_shadowdev_checkpoint_identity.md`

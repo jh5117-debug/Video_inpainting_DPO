@@ -1,0 +1,10 @@
+{
+  "duplicate_sample_ids": 0,
+  "rows": 32,
+  "scene_groups": 32,
+  "search_overlap": 0,
+  "shadow_sha256": "0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02",
+  "source_paths_exist_before_extraction": "member-path-only",
+  "status": "SHADOW_DEV_INTEGRITY_PASS_PENDING_MATERIALIZATION",
+  "train_overlap": 0
+}

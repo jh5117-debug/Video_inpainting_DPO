@@ -1,0 +1,73 @@
+{
+  "rows": [
+    {
+      "bytes": 0,
+      "delta_vs_step0_tree": false,
+      "exists": false,
+      "fallback": false,
+      "file_count": 0,
+      "missing_keys": "",
+      "model_file": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch/diffusion_pytorch_model.safetensors",
+      "model_sha256": "",
+      "path": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch",
+      "step": "step0",
+      "strict_load_result": "PENDING_RUNTIME_PREFLIGHT",
+      "trainer_global_step": "",
+      "trainer_state": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch/trainer_state.json",
+      "tree_sha256": "",
+      "unexpected_keys": ""
+    },
+    {
+      "bytes": 0,
+      "delta_vs_step0_tree": true,
+      "exists": false,
+      "fallback": false,
+      "file_count": 0,
+      "missing_keys": "",
+      "model_file": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-10/diffusion_pytorch_model.safetensors",
+      "model_sha256": "",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-10",
+      "step": "step10",
+      "strict_load_result": "PENDING_RUNTIME_PREFLIGHT",
+      "trainer_global_step": "",
+      "trainer_state": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-10/trainer_state.json",
+      "tree_sha256": "",
+      "unexpected_keys": ""
+    },
+    {
+      "bytes": 0,
+      "delta_vs_step0_tree": true,
+      "exists": false,
+      "fallback": false,
+      "file_count": 0,
+      "missing_keys": "",
+      "model_file": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-30/diffusion_pytorch_model.safetensors",
+      "model_sha256": "",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-30",
+      "step": "step30",
+      "strict_load_result": "PENDING_RUNTIME_PREFLIGHT",
+      "trainer_global_step": "",
+      "trainer_state": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-30/trainer_state.json",
+      "tree_sha256": "",
+      "unexpected_keys": ""
+    },
+    {
+      "bytes": 0,
+      "delta_vs_step0_tree": true,
+      "exists": false,
+      "fallback": false,
+      "file_count": 0,
+      "missing_keys": "",
+      "model_file": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50/diffusion_pytorch_model.safetensors",
+      "model_sha256": "",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50",
+      "step": "step50",
+      "strict_load_result": "PENDING_RUNTIME_PREFLIGHT",
+      "trainer_global_step": "",
+      "trainer_state": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50/trainer_state.json",
+      "tree_sha256": "",
+      "unexpected_keys": ""
+    }
+  ],
+  "status": "CHECKPOINT_IDENTITY_PENDING_PAI_PATHS"
+}
