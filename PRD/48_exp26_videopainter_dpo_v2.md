@@ -657,3 +657,38 @@ Reports:
 - `reports/exp26_gate64_primary32_final.csv`
 - `reports/exp26_gate64_primary32_path_frame_validation.csv`
 - `reports/exp26_gate64_manifest_identity.json`
+
+## 2026-06-25 VideoPainter Primary-32 L0/L1
+
+Status:
+
+- `VP_L0_L1_PASSED`
+- `TECHNICAL_PASS`
+- `NO_10STEP_YET`
+- `NO_50STEP_YET`
+
+Using the final primary-32 manifest, Exp26 ran a real one-batch VideoPainter
+policy/reference DPO gate on PAI GPU0. Policy and reference both loaded the
+official VideoPainter branch checkpoint at start.
+
+Key results:
+
+- frames: `49`
+- official optimizer: AdamW, lr `1e-4`, betas `(0.9, 0.95)`, eps `1e-8`,
+  weight decay `1e-4`, scheduler `constant`, warmup `500`
+- L0 DPO loss: `0.6931471824645996`
+- L0 policy grad norm: `14.379858399808493`
+- L0 reference gradients: `false`
+- L1 policy delta norm: `1.6732795822542237`
+- L1 reference delta norm: `0.0`
+- strict reload max abs diff: `0.0`
+
+This confirms real primary-32 training plumbing, gradient flow, frozen
+reference behavior, one-step update, and strict checkpoint reload. It is not a
+video-quality-positive result; no 10-step or 50-step result is claimed here.
+
+Reports:
+
+- `reports/exp26_vp_l0_l1.md`
+- `reports/exp26_vp_l0_l1.json`
+- `reports/exp26_vp_l0_l1_diagnostics.csv`

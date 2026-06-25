@@ -665,3 +665,5 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp26 VideoPainter v2 Gate64 primary data | `GATE64_DATA_READY` | All 64 Gate64 outputs received final temporal evidence review. Final pool: 37 medium-hard, 18 hard-plausible, 1 too-close, 8 trivial-bad, 0 technical-invalid. The final balanced primary-32 comp-loser manifest is `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl` with SHA256 `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`; search/shadow scene overlap is 0; all primary videos decode as 49 frames. |
+
+| Exp26 VideoPainter primary-32 L0/L1 | `TECHNICAL_PASS` | Real 49F final-primary32 DPO batch and one optimizer step passed on PAI GPU0: DPO loss finite, policy grad norm 14.3799, reference grad false, policy delta 1.6733, reference delta 0, strict reload max diff 0. No 10-step/50-step quality claim yet. |

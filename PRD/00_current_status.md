@@ -2000,3 +2000,18 @@ Reports:
 - `reports/exp26_gate64_final_temporal_review.md`
 - `reports/exp26_gate64_primary32_final.md`
 - `reports/exp26_gate64_primary32_path_frame_validation.csv`
+
+## 2026-06-25 Exp26 VideoPainter Primary-32 L0/L1
+
+Status: `VP_L0_L1_PASSED`
+
+Exp26 ran a real final-primary32 VideoPainter DPO one-batch and one-step gate
+on PAI GPU0. The gate confirmed finite DPO loss, non-zero policy gradient,
+frozen reference gradient behavior, non-zero policy parameter update, zero
+reference parameter update, and strict checkpoint reload with max abs diff
+`0.0`.
+
+This is a technical pass only. Step0 search-dev baseline, 10-step, and 50-step
+quality gates are not marked positive by this entry.
+
+Report: `reports/exp26_vp_l0_l1.md`.

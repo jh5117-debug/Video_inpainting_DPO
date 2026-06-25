@@ -13,3 +13,5 @@ primary_manifest_sha256: 82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2
 primary_loser_semantics: comp_loser_matches_BR_selected_primary_comp
 video_review_status: VIDEO_REVIEW_PASS
 data_status: GATE64_DATA_READY
+l0_l1_status: VP_L0_L1_PASSED
+next_allowed_gate: VP_10STEP_AFTER_STEP0_BASELINE

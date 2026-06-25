@@ -353,3 +353,28 @@ Reports:
 - `reports/exp26_gate64_final_temporal_review.md`
 - `reports/exp26_gate64_primary32_final.md`
 - `reports/exp26_gate64_primary32_path_frame_validation.csv`
+
+## 2026-06-25 Primary-32 L0/L1
+
+Status:
+
+- `VP_L0_L1_PASSED`
+- `TECHNICAL_PASS`
+- `NO_10STEP_YET`
+
+Results:
+
+- L0 DPO loss: `0.6931471824645996`
+- L0 policy grad norm: `14.379858399808493`
+- L0 reference gradients: `false`
+- L1 policy delta norm: `1.6732795822542237`
+- L1 reference delta norm: `0.0`
+- strict reload max abs diff: `0.0`
+- checkpoint:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_l0_l1_primary32_retry3_20260625_125902/one_step_run/checkpoint-1`
+
+Reports:
+
+- `reports/exp26_vp_l0_l1.md`
+- `reports/exp26_vp_l0_l1.json`
+- `reports/exp26_vp_l0_l1_diagnostics.csv`
