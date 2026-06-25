@@ -1,0 +1,11 @@
+key,value
+status,LOCALDPO_24F_CLI4_READY_NOT_LAUNCHED
+branch,research/exp27-localdpo-objective-cli4-20260625
+next_milestone,LOCALDPO_DIFFUSERASER_24F_ADAPTATION
+p8,PENDING
+p32,PENDING
+objective_1_10_step,PENDING_P32_GATE
+rcfpo,NOT_STARTED
+fifty_step,NOT_STARTED
+o0_o5,NOT_STARTED
+controlled_preview_gate_valid,false

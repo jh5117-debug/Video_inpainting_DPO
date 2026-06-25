@@ -650,3 +650,10 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp27 Linear-DPO Frozen/EMA true-model 1/10-step | `LINEAR_TRUE_MODEL_1_10_STEP_PASSED` | One fixed real BR preference batch; 10 optimizer steps per variant. Frozen reference delta stayed `0.0`; EMA reference delta was `1.819002953296671e-08`. Technical pass only; no 50-step/O0-O5/RC-FPO started. |
+
+## 2026-06-25 CLI4 Exp27 LocalDPO 24F Lane
+
+| Experiment | Status | GPU | Data / mask | Objective | Launch rule |
+| --- | --- | --- | --- | --- | --- |
+| Exp27 LocalDPO DiffuEraser 24F P8/P32 | `LOCALDPO_24F_CLI4_READY_NOT_LAUNCHED` | GPU2 only, staggered after GPU1 | Real clean winner, official LocalDPO moving mask, SFT DiffuEraser self-model loser, outside reinjection/composite | gate data only | Run P8 first, then P32; P32 must have `technical_valid >= 30/32`, `medium-hard + hard >= 24/32`, no global collapse, outside preservation, and `32/32` video review. |
+| Exp27 LocalDPO original objective 1/10-step | `PENDING_P32_GATE` | GPU2 only | P32 manifest only | `RA-DPO + global DPO + SFT` | Run only after P32 passes. No 50-step, no four-grid 50-step, no O0-O5, no RC-FPO. |

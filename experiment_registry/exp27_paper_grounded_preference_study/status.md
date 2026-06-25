@@ -211,3 +211,32 @@ Reports:
 - `reports/exp27_linear_true_model_10step.md`
 - `reports/exp27_linear_frozen_10step.csv`
 - `reports/exp27_linear_ema_10step.csv`
+
+## 2026-06-25 CLI4 LocalDPO 24F Adaptation Prep
+
+Status:
+
+- `LOCALDPO_24F_CLI4_READY_NOT_LAUNCHED`
+- `P8_PENDING`
+- `P32_PENDING`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_1_10_STEP_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Prepared isolated runner:
+
+`exp27_paper_grounded_preference_study/scripts/run_exp27_localdpo_24f_adaptation.py`
+
+Gate rules:
+
+- P8 must pass before P32.
+- P32 requires real DiffuEraser self-model losers, outside reinjection,
+  `technical_valid >= 30/32`, `medium-hard + hard >= 24/32`, zero global
+  collapse, outside preservation, and `32/32` video review.
+- Objective is limited to original LocalDPO-style `RA-DPO + global DPO + SFT`
+  1-step and 10-step after P32 only.
+
+Explicitly not started: 50-step, four-grid 50-step, O0-O5, RC-FPO.
+
+Report:
+
+- `reports/exp27_localdpo_24f_cli4_prelaunch.md`

@@ -397,3 +397,36 @@ Reports:
 - `reports/exp27_linear_true_model_10step.md`
 - `reports/exp27_linear_frozen_10step.csv`
 - `reports/exp27_linear_ema_10step.csv`
+
+## 2026-06-25 CLI4 LocalDPO DiffuEraser 24F Adaptation Prep
+
+Status:
+
+- `LOCALDPO_24F_CLI4_READY_NOT_LAUNCHED`
+- `P8_PENDING`
+- `P32_PENDING`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_1_10_STEP_PENDING`
+- `RCFPO_NOT_STARTED`
+
+CLI4 added an isolated LocalDPO DiffuEraser 24F runner:
+
+`exp27_paper_grounded_preference_study/scripts/run_exp27_localdpo_24f_adaptation.py`
+
+The runner preserves the required sequence:
+
+- official LocalDPO 3D moving corruption masks;
+- real clean winner frames;
+- SFT DiffuEraser self-model loser generation;
+- outside reinjection/composite after loser generation;
+- P8 gate before P32;
+- P32 gate before objective;
+- original LocalDPO-style `RA-DPO + global DPO + SFT` 1-step and 10-step
+  micro objective only.
+
+Controlled corruption previews may be used only for tests and are explicitly
+non-gate-valid. This preparation does not start 50-step, four-grid 50-step,
+O0-O5 objective study, or RC-FPO.
+
+Reports:
+
+- `reports/exp27_localdpo_24f_cli4_prelaunch.md`

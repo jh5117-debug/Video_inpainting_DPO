@@ -1893,3 +1893,22 @@ expected reference behavior: Frozen reference delta `0.0`, EMA reference delta
 
 This remains a technical model-forward/training-plumbing pass only. LocalDPO
 24F, O0-O5 objective studies, and RC-FPO remain not started.
+
+## 2026-06-25 CLI4 Exp27 LocalDPO 24F Preparation
+
+Status: `LOCALDPO_24F_CLI4_READY_NOT_LAUNCHED`
+
+CLI4 prepared the next isolated Exp27 milestone on branch
+`research/exp27-localdpo-objective-cli4-20260625`. The new runner keeps the
+requested LocalDPO DiffuEraser 24F sequence:
+
+- P8 pair generation with official LocalDPO moving masks.
+- P32 pair generation and gate.
+- Only after P32 passes: original LocalDPO-style `RA-DPO + global DPO + SFT`
+  1-step and 10-step micro objective.
+
+The runner requires real DiffuEraser self-model losers for gate pass; controlled
+preview losers are explicitly non-gate-valid. It does not start 50-step,
+four-grid 50-step, O0-O5, or RC-FPO.
+
+Report: `reports/exp27_localdpo_24f_cli4_prelaunch.md`
