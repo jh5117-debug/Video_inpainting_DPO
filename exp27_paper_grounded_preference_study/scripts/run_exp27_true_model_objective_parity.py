@@ -86,6 +86,7 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--states", default="S0,S1", help="Comma-separated subset of S0,S1.")
     p.add_argument("--max-tiny-step-cases", type=int, default=0)
     p.add_argument("--tiny-step-lr", type=float, default=1e-7)
+    p.add_argument("--tiny-step-min-per-class", type=int, default=4)
     return p.parse_args()
 
 
@@ -229,6 +230,10 @@ def sdpo_loss_with_lambda(pred: torch.Tensor, noise: torch.Tensor, lam: torch.Te
     return (win - lam.float() * lose).mean()
 
 
+def margin_from_losses(win: torch.Tensor, lose: torch.Tensor, ref_win: torch.Tensor, ref_lose: torch.Tensor) -> torch.Tensor:
+    return (lose - win) - (ref_lose - ref_win)
+
+
 def grad_from_loss(pred: torch.Tensor, noise: torch.Tensor, official_lambda, mu: float, mode: str) -> tuple[torch.Tensor, float, torch.Tensor]:
     clone = pred.detach().clone().requires_grad_(True)
     target = noise.repeat(2, 1, 1, 1).detach()
@@ -258,6 +263,33 @@ def representative_param_grads(model_pred: torch.Tensor, loss: torch.Tensor, pol
     return out
 
 
+def policy_param_delta_step(policy: tuple, lr: float) -> tuple[float, float, int]:
+    """Apply a tiny SGD-like step and report aggregate delta norms.
+
+    This is intentionally not a training optimizer.  It exists only to check
+    whether the real SDPO output gradient produces the predicted direction on
+    an actual DiffuEraser policy parameterization for selected cases.
+    """
+
+    delta_sq = 0.0
+    grad_sq = 0.0
+    updated = 0
+    with torch.no_grad():
+        for module in policy:
+            for param in module.parameters():
+                if param.grad is None:
+                    continue
+                grad = param.grad.detach()
+                step = (-float(lr) * grad).to(dtype=param.dtype)
+                if not torch.isfinite(step).all():
+                    raise FloatingPointError("non-finite tiny-step update")
+                param.add_(step)
+                delta_sq += float(step.float().pow(2).sum().cpu())
+                grad_sq += float(grad.float().pow(2).sum().cpu())
+                updated += 1
+    return math.sqrt(delta_sq), math.sqrt(grad_sq), updated
+
+
 def load_state(state: str, paths: Paths, device: torch.device, dtype: torch.dtype):
     policy_path = paths.sft_weights if state == "S0" else paths.exp11_stage1
     ref_path = paths.sft_weights
@@ -278,6 +310,119 @@ def clear_models(*models) -> None:
     gc.collect()
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
+
+
+def select_tiny_cases(rows: list[dict], max_cases: int, min_per_class: int) -> list[dict]:
+    if max_cases <= 0:
+        return []
+    s1_rows = [r for r in rows if r.get("state") == "S1" and r.get("finite")]
+    lt1 = sorted((r for r in s1_rows if r.get("lambda_lt_1")), key=lambda r: float(r["lambda_adapter"]))
+    eq1 = sorted((r for r in s1_rows if not r.get("lambda_lt_1")), key=lambda r: (int(r["row_index"]), int(r["timestep"])))
+    per_class = min(min_per_class, max_cases // 2)
+    selected = lt1[:per_class] + eq1[:per_class]
+    if len(selected) < max_cases:
+        seen = {(r["row_index"], r["timestep"]) for r in selected}
+        for row in s1_rows:
+            key = (row["row_index"], row["timestep"])
+            if key not in seen:
+                selected.append(row)
+                seen.add(key)
+            if len(selected) >= max_cases:
+                break
+    return selected[:max_cases]
+
+
+def run_tiny_step_cases(
+    args: argparse.Namespace,
+    selected: list[dict],
+    dataset,
+    vae,
+    noise_scheduler,
+    text_encoder,
+    paths: Paths,
+    official_lambda,
+    device,
+    dtype,
+) -> tuple[list[dict], dict]:
+    rows: list[dict] = []
+    if not selected:
+        return rows, {"status": "not_requested", "records": 0}
+    for case_idx, case in enumerate(selected):
+        policy, ref, identity = load_state("S1", paths, device, dtype)
+        row_idx = int(case["row_index"])
+        timestep = int(case["timestep"])
+        seed = int(args.seed + row_idx * 1009 + [50, 250, 500, 750, timestep].index(timestep) * 9176 + 31) if timestep in [50, 250, 500, 750] else int(args.seed + row_idx * 1009 + timestep * 17 + 31)
+        sample = dataset[row_idx]
+        batch = collate_fn([sample])
+        tensors = encode_batch(batch, vae, noise_scheduler, text_encoder, args.nframes, timestep, dtype, seed, device)
+        model_pred, ref_pred = forward_pair(policy, ref, tensors, dtype)
+        noise = tensors["noise"]
+        target = noise.repeat(2, 1, 1, 1)
+        lam = official_lambda(model_pred, target, mu=args.mu, eps=1e-8, max_lambda=1.0)
+        win_pre, lose_pre = mse_losses(model_pred, noise)
+        ref_win_pre, ref_lose_pre = mse_losses(ref_pred, noise)
+        margin_pre = margin_from_losses(win_pre, lose_pre, ref_win_pre, ref_lose_pre)
+        loss = sdpo_loss_with_lambda(model_pred, noise, lam)
+        loss.backward()
+        ref_grad_norm = 0.0
+        for module in ref:
+            for param in module.parameters():
+                if param.grad is not None:
+                    ref_grad_norm += float(param.grad.detach().float().pow(2).sum().cpu())
+        param_delta_norm, param_grad_norm, updated_params = policy_param_delta_step(policy, args.tiny_step_lr)
+        for module in policy + ref:
+            module.zero_grad(set_to_none=True)
+        with torch.no_grad():
+            post_pred, post_ref_pred = forward_pair(policy, ref, tensors, dtype)
+            win_post, lose_post = mse_losses(post_pred, noise)
+            ref_win_post, ref_lose_post = mse_losses(post_ref_pred, noise)
+            margin_post = margin_from_losses(win_post, lose_post, ref_win_post, ref_lose_post)
+        rows.append(
+            {
+                "case_index": case_idx,
+                "sample_id": sample.get("sample_id"),
+                "row_index": row_idx,
+                "timestep": timestep,
+                "lambda_adapter_scan": float(case["lambda_adapter"]),
+                "lambda_official_tiny": float(lam.float().mean().detach().cpu()),
+                "lambda_lt_1": bool(case["lambda_lt_1"]),
+                "tiny_step_lr": float(args.tiny_step_lr),
+                "loss_pre": float(loss.detach().cpu()),
+                "winner_loss_pre": float(win_pre.mean().detach().cpu()),
+                "winner_loss_post": float(win_post.mean().detach().cpu()),
+                "winner_loss_change": float((win_post - win_pre).mean().detach().cpu()),
+                "loser_loss_pre": float(lose_pre.mean().detach().cpu()),
+                "loser_loss_post": float(lose_post.mean().detach().cpu()),
+                "loser_loss_change": float((lose_post - lose_pre).mean().detach().cpu()),
+                "margin_pre": float(margin_pre.mean().detach().cpu()),
+                "margin_post": float(margin_post.mean().detach().cpu()),
+                "margin_change": float((margin_post - margin_pre).mean().detach().cpu()),
+                "param_delta_norm": param_delta_norm,
+                "param_grad_norm": param_grad_norm,
+                "updated_param_tensors": updated_params,
+                "reference_grad_norm": math.sqrt(ref_grad_norm),
+                "reference_delta_norm": 0.0,
+                "policy_path": identity["policy_path"],
+                "ref_path": identity["ref_path"],
+                "finite": bool(torch.isfinite(post_pred).all().item() and torch.isfinite(post_ref_pred).all().item()),
+            }
+        )
+        del tensors, model_pred, ref_pred, post_pred, post_ref_pred, noise, target, lam, loss
+        clear_models(policy, ref)
+    lt1_count = sum(1 for r in rows if r["lambda_lt_1"])
+    eq1_count = sum(1 for r in rows if not r["lambda_lt_1"])
+    finite = all(r["finite"] for r in rows)
+    summary = {
+        "status": "passed" if finite and lt1_count >= min(args.tiny_step_min_per_class, args.max_tiny_step_cases // 2) and eq1_count >= min(args.tiny_step_min_per_class, args.max_tiny_step_cases // 2) else "partial_or_failed",
+        "records": len(rows),
+        "lambda_lt_1_cases": lt1_count,
+        "lambda_eq_1_cases": eq1_count,
+        "winner_loss_change_mean": float(sum(r["winner_loss_change"] for r in rows) / len(rows)) if rows else None,
+        "margin_change_mean": float(sum(r["margin_change"] for r in rows) / len(rows)) if rows else None,
+        "max_reference_grad_norm": max((r["reference_grad_norm"] for r in rows), default=None),
+        "max_param_delta_norm": max((r["param_delta_norm"] for r in rows), default=None),
+    }
+    return rows, summary
 
 
 def run_state(args: argparse.Namespace, state: str, dataset, vae, noise_scheduler, text_encoder, paths: Paths, official_lambda, device, dtype, timesteps: list[int]) -> tuple[list[dict], list[dict], dict]:
@@ -426,6 +571,23 @@ def main() -> int:
         state_summaries.append(state_summary)
 
     write_csv(args.output_dir / "sdpo_true_model_distribution_scan.csv", all_rows)
+    tiny_rows: list[dict] = []
+    tiny_summary = {"status": "not_requested", "records": 0}
+    if args.max_tiny_step_cases > 0 and "S1" in [s.strip() for s in args.states.split(",") if s.strip()]:
+        selected_tiny = select_tiny_cases(all_rows, args.max_tiny_step_cases, args.tiny_step_min_per_class)
+        tiny_rows, tiny_summary = run_tiny_step_cases(
+            args,
+            selected_tiny,
+            dataset,
+            vae,
+            noise_scheduler,
+            text_encoder,
+            paths,
+            official_lambda,
+            device,
+            dtype,
+        )
+    write_csv(args.output_dir / "sdpo_true_model_tiny_step_cases.csv", tiny_rows)
     linear_rows, linear_summary = linear_true_model_probe(all_rows)
     write_csv(args.output_dir / "linear_true_model_probe.csv", linear_rows)
 
@@ -436,8 +598,11 @@ def main() -> int:
     s1 = [r for r in ok if r["state"] == "S1"]
     lt1 = [r for r in s1 if r["lambda_lt_1"]]
     eq1 = [r for r in s1 if not r["lambda_lt_1"]]
+    base_status = ok and max(lambda_diffs, default=1.0) <= 1e-6 and max(loss_diffs, default=1.0) <= 1e-6 and min(grad_cos, default=0.0) >= 0.999999
+    tiny_required = args.max_tiny_step_cases > 0
+    tiny_ok = (not tiny_required) or tiny_summary.get("status") == "passed"
     summary = {
-        "status": "TRUE_MODEL_PARITY" if ok and max(lambda_diffs, default=1.0) <= 1e-6 and max(loss_diffs, default=1.0) <= 1e-6 and min(grad_cos, default=0.0) >= 0.999999 else "FAILED",
+        "status": "TRUE_MODEL_PARITY" if base_status and tiny_ok else "FAILED",
         "records": len(ok),
         "states": state_summaries,
         "lambda_max_abs_diff": max(lambda_diffs, default=None),
@@ -447,8 +612,9 @@ def main() -> int:
         "s1_lambda_lt_1_count": len(lt1),
         "s1_lambda_lt_1_ratio": float(len(lt1) / len(s1)) if s1 else 0.0,
         "s1_lambda_eq_1_count": len(eq1),
+        "tiny_step": tiny_summary,
         "linear_probe": linear_summary,
-        "note": "This gate uses real DiffuEraser Stage1 policy/reference forwards. Tiny parameter-step cases are deferred unless max_tiny_step_cases > 0.",
+        "note": "This gate uses real DiffuEraser Stage1 policy/reference forwards. Tiny parameter-step cases are included only when max_tiny_step_cases > 0.",
     }
     (args.output_dir / "sdpo_true_model_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
@@ -461,12 +627,14 @@ def main() -> int:
         f"- loss max abs diff: `{summary['loss_max_abs_diff']}`",
         f"- output-gradient cosine min: `{summary['output_gradient_cosine_min']}`",
         f"- S1 lambda<1 ratio: `{summary['s1_lambda_lt_1_ratio']}`",
+        f"- tiny-step status: `{tiny_summary['status']}`",
         f"- linear probe status: `{linear_summary['status']}`",
         "",
         "This report is a true-model forward gate. It does not start RC-FPO or any long training.",
     ]
     (args.report_dir / "exp27_sdpo_true_model_forward_parity.md").write_text("\n".join(md) + "\n", encoding="utf-8")
     write_csv(args.report_dir / "exp27_sdpo_true_model_distribution_scan.csv", all_rows)
+    write_csv(args.report_dir / "exp27_sdpo_true_model_tiny_step_cases.csv", tiny_rows)
     (args.report_dir / "exp27_sdpo_true_model_summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     (args.report_dir / "exp27_linear_true_model_parity.md").write_text(
         "# Exp27 Linear-DPO True Model Probe\n\n"
