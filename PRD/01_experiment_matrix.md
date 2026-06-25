@@ -659,3 +659,9 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp26 VideoPainter v2 | `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED` | Exp26 NAS experiment/autoresearch output roots are now writable to `hj`; next allowed milestone is strict Gate64 temporal review, not regeneration or long training. |
+
+## 2026-06-25 Exp26 Gate64 Final Temporal Review
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp26 VideoPainter v2 Gate64 primary data | `GATE64_DATA_READY` | All 64 Gate64 outputs received final temporal evidence review. Final pool: 37 medium-hard, 18 hard-plausible, 1 too-close, 8 trivial-bad, 0 technical-invalid. The final balanced primary-32 comp-loser manifest is `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl` with SHA256 `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`; search/shadow scene overlap is 0; all primary videos decode as 49 frames. |

@@ -1977,3 +1977,26 @@ Reports:
 - `reports/exp26_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Exp26 Gate64 Final Temporal Review
+
+Status: `GATE64_DATA_READY`
+
+Exp26 completed strict temporal evidence review for all `64/64` Gate64
+VideoPainter outputs without regenerating samples or changing the source
+manifest. Final buckets are `37` medium-hard, `18` hard-plausible, `1`
+too-close, `8` trivial-bad, and `0` technical-invalid. The final balanced
+primary-32 comp-loser manifest is locked at
+`exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl`
+with SHA256
+`82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`.
+
+Primary-32 has `0` scene overlap with search-dev and shadow-dev. All primary
+winner, comp-loser, raw-loser, and side-by-side mp4 outputs decode as `49`
+frames. VideoPainter DPO is still not started in this status entry.
+
+Reports:
+
+- `reports/exp26_gate64_final_temporal_review.md`
+- `reports/exp26_gate64_primary32_final.md`
+- `reports/exp26_gate64_primary32_path_frame_validation.csv`

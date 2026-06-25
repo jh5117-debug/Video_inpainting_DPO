@@ -1,0 +1,69 @@
+{
+  "candidate_pool55_sha256": "4bec06d78249b809ddf90a80eca900f8467ba3a2798c8ae9d03552d0f25ee5b8",
+  "counts": {
+    "classification": {
+      "hard-plausible": 18,
+      "medium-hard": 37,
+      "too-close": 1,
+      "trivial-bad": 8
+    },
+    "formal_valid": 64,
+    "gate64_source_scene_overlap": 32,
+    "primary32_area": {
+      "large": 8,
+      "medium": 16,
+      "small": 8
+    },
+    "primary32_classification": {
+      "hard-plausible": 16,
+      "medium-hard": 16
+    },
+    "primary32_loser_type": {
+      "comp": 32
+    },
+    "primary32_mask_profile": {
+      "edge_touch_freeform": 3,
+      "ellipse_circle_subset": 3,
+      "irregular_freeform": 8,
+      "object_like_polygon": 8,
+      "soft_blob": 5,
+      "thin_structure_freeform": 5
+    },
+    "primary32_motion": {
+      "high": 8,
+      "low": 8,
+      "medium": 16
+    },
+    "primary_rows": 32,
+    "rejected_rows": 9,
+    "reserve_rows": 23,
+    "search_dev_scene_overlap": 0,
+    "selection": {
+      "ELIGIBLE_AFTER_VISUAL_REVIEW": 55,
+      "REJECT_TOO_CLOSE": 1,
+      "REJECT_TRIVIAL_OR_TECHNICAL": 8
+    },
+    "shadow_dev_scene_overlap": 0,
+    "temporal_review_rows": 64
+  },
+  "created_utc": "2026-06-25T04:41:35.145704+00:00",
+  "draft_primary32_sha256": "21c0c617698bbf69859f3850979d777c3af3e1908926bca43b69ede447df3cc8",
+  "gate64_status": "GATE64_DATA_READY",
+  "primary32_final": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl",
+  "primary32_final_sha256": "82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716",
+  "primary32_path_frame_validation_csv": "reports/exp26_gate64_primary32_path_frame_validation.csv",
+  "primary32_path_frame_validation_result": "PASS_32_OF_32_WINNER_COMP_RAW_49F_AND_MP4_CV2_49F",
+  "primary32_path_frame_validation_sha256": "4559ded855492007b5e74cad7f4134afe48544c8b9ff6a77922f7c6470fc5c3f",
+  "raw_loser_policy": "raw retained for diagnostics/ablation only",
+  "rejected_final": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_rejected_final.jsonl",
+  "rejected_final_sha256": "aadea5949bd63170986e8cdd3c255a1ca50c033f593059074a3f5da242c68a8d",
+  "reserve_final": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_reserve_final.jsonl",
+  "reserve_final_sha256": "84d3ede678357c2fc3e61d84d49922b4668665ba9fa29222fa1fac4c82ac3e38",
+  "search_dev_manifest": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_search_dev_32.jsonl",
+  "search_dev_sha256": "41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71",
+  "shadow_dev_manifest": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_shadow_dev_32.jsonl",
+  "shadow_dev_sha256": "0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02",
+  "temporal_review_csv_report_sha256": "ef6f38f85b6d17f976d6eecd71c8aa84c6f70b998126ab1e2efe4283130dfea4",
+  "temporal_review_csv_source": "/tmp/exp26_gate64_final_temporal_review.csv",
+  "training_loser_source": "final_loser_video_path, explicitly comp_loser path; train_videopainter_dpo_adapter.py falls back final_loser -> comp_loser -> raw_loser."
+}

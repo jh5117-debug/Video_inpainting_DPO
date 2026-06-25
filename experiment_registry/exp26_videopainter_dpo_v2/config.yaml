@@ -1,6 +1,6 @@
 experiment: exp26_videopainter_dpo_v2
 branch: research/exp26-videopainter-dpo-v2
-status: GATE64_PRIMARY32_DRAFT_MP4_PLAYBACK_PENDING_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION
+status: GATE64_DATA_READY
 formal_frame_count: 49
 plumbing_only_frame_count: 13
 promotion_policy: checkpoint_curve_gate
@@ -8,5 +8,8 @@ forbidden_default: direct_2000_step_training
 gate64_formal_valid: 64
 gate64_visual_reviewed: 64
 gate64_eligible: 55
-primary_manifest: exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl
+primary_manifest: exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl
+primary_manifest_sha256: 82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716
 primary_loser_semantics: comp_loser_matches_BR_selected_primary_comp
+video_review_status: VIDEO_REVIEW_PASS
+data_status: GATE64_DATA_READY

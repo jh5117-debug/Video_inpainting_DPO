@@ -312,3 +312,44 @@ Reports:
 - `reports/exp26_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Gate64 Final Temporal Review
+
+Status:
+
+- `GATE64_DATA_READY`
+- `VIDEO_REVIEW_PASS`
+- `PRIMARY32_FINAL_LOCKED`
+- `NO_VIDEOPAINTER_DPO_YET`
+
+Final Gate64 buckets:
+
+- medium-hard: `37`
+- hard-plausible: `18`
+- too-close: `1`
+- trivial-bad: `8`
+- technical-invalid: `0`
+- eligible: `55`
+
+Primary-32:
+
+- manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl`
+- SHA256:
+  `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`
+- class balance: `16` medium-hard + `16` hard-plausible
+- search-dev scene overlap: `0`
+- shadow-dev scene overlap: `0`
+- path/frame validation: `32/32` passed, all winner/comp/raw/mp4 decode as `49` frames
+
+Training loser semantics:
+
+- primary training loser: hard-composited VideoPainter output through
+  `final_loser_video_path`
+- raw output: diagnostic and ablation only
+
+Reports:
+
+- `reports/exp26_gate64_final_temporal_review.md`
+- `reports/exp26_gate64_primary32_final.md`
+- `reports/exp26_gate64_primary32_path_frame_validation.csv`

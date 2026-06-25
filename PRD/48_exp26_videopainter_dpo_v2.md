@@ -605,3 +605,55 @@ Reports:
 - `reports/exp26_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Gate64 Final Temporal Review and Primary-32 Lock
+
+Status:
+
+- `GATE64_DATA_READY`
+- `VIDEO_REVIEW_PASS`
+- `PRIMARY32_FINAL_LOCKED`
+- `NO_VIDEOPAINTER_DPO_YET`
+
+Final temporal review was completed without regenerating Gate64 or replacing
+source rows. All `64/64` side-by-side videos were represented by 16-frame
+temporal strips plus the existing dense evidence/crop sheets. No new
+frame-order failure, global collapse, or systematic first-frame error was
+found.
+
+Final buckets:
+
+- medium-hard: `37`
+- hard-plausible: `18`
+- too-close: `1`
+- trivial-bad: `8`
+- technical-invalid: `0`
+- eligible: `55`
+
+The final primary manifest is locked:
+
+- `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl`
+- SHA256: `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`
+
+Balance:
+
+- classification: `16` medium-hard + `16` hard-plausible
+- area: `8` small + `16` medium + `8` large
+- motion: `8` low + `16` medium + `8` high
+- scene overlap with search-dev: `0`
+- scene overlap with shadow-dev: `0`
+
+Loser semantics remain explicit: the training loser is the hard-composited
+VideoPainter output via `final_loser_video_path`; raw output remains diagnostic
+only. Path/frame validation passed for all primary rows: winner, comp loser,
+raw loser, and side-by-side mp4 each decode as `49` frames.
+
+Reports:
+
+- `reports/exp26_gate64_final_temporal_review_readback.md`
+- `reports/exp26_gate64_final_temporal_review.md`
+- `reports/exp26_gate64_final_temporal_review.csv`
+- `reports/exp26_gate64_primary32_final.md`
+- `reports/exp26_gate64_primary32_final.csv`
+- `reports/exp26_gate64_primary32_path_frame_validation.csv`
+- `reports/exp26_gate64_manifest_identity.json`

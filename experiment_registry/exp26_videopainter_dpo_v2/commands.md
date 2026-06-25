@@ -17,11 +17,17 @@ python exp26_videopainter_dpo_v2/code/audit_gate64_duplicate_sources_deep.py
 Primary manifest:
 
 ```text
-exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl
+exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_final.jsonl
 ```
 
-Do not launch DPO micro-training until `hj` can write:
+Gate64 final temporal review evidence:
 
 ```text
-/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_final_temporal_review_20260625
+```
+
+Next allowed milestone:
+
+```text
+VP-L0/L1 one-batch and one-step DPO adapter validation on the final primary-32 manifest.
 ```
