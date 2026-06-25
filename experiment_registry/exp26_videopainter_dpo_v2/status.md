@@ -378,3 +378,33 @@ Reports:
 - `reports/exp26_vp_l0_l1.md`
 - `reports/exp26_vp_l0_l1.json`
 - `reports/exp26_vp_l0_l1_diagnostics.csv`
+
+## 2026-06-25 Search-Dev Step0 Baseline
+
+Status:
+
+- `VP_STEP0_BASELINE_LOCKED`
+- `TEMPORAL_REVIEW_PASS`
+- `10STEP_READY`
+- `NO_10STEP_RESULT_YET`
+
+Search-dev rows: `32`.
+
+Temporal evidence reviewed: `32 / 32`; reviewer pass: `32 / 32`.
+
+Comp step0 metrics:
+
+- PSNR: `24.301897366442233`
+- SSIM: `0.871557953992803`
+- LPIPS: `0.07080062118242197`
+- Ewarp: `8.04273951919754`
+- strict mask PSNR: `16.012427341260924`
+- boundary PSNR: `16.01195236353609`
+
+Raw output remains diagnostic only; comp output is the primary loser protocol.
+
+Reports:
+
+- `reports/exp26_vp_step0_baseline.md`
+- `reports/exp26_vp_step0_baseline.csv`
+- `reports/exp26_vp_step0_visual_review.csv`

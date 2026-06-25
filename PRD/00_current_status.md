@@ -2015,3 +2015,17 @@ This is a technical pass only. Step0 search-dev baseline, 10-step, and 50-step
 quality gates are not marked positive by this entry.
 
 Report: `reports/exp26_vp_l0_l1.md`.
+
+## 2026-06-25 Exp26 Search-Dev Step0 Baseline
+
+Status: `VP_STEP0_BASELINE_LOCKED`
+
+The locked 32-row VideoPainter search-dev step0 baseline was generated and
+evaluated with full 49-frame outputs. Dense temporal evidence review was
+completed for all `32/32` rows with no new technical blocker. Comp step0
+metrics are PSNR `24.301897366442233`, SSIM `0.871557953992803`, LPIPS
+`0.07080062118242197`, Ewarp `8.04273951919754`, strict mask PSNR
+`16.012427341260924`, and boundary PSNR `16.01195236353609`.
+
+This authorizes the pre-registered 10-step VideoPainter DPO micro gate; no
+10-step or 50-step result is claimed by this entry.

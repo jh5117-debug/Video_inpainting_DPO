@@ -692,3 +692,43 @@ Reports:
 - `reports/exp26_vp_l0_l1.md`
 - `reports/exp26_vp_l0_l1.json`
 - `reports/exp26_vp_l0_l1_diagnostics.csv`
+
+## 2026-06-25 Search-Dev Step0 Baseline
+
+Status:
+
+- `VP_STEP0_BASELINE_LOCKED`
+- `TEMPORAL_REVIEW_PASS`
+- `10STEP_READY`
+- `NO_10STEP_RESULT_YET`
+- `NO_50STEP_YET`
+
+Exp26 generated the locked 32-row search-dev official VideoPainter step0
+baseline using the same 49-frame formal protocol, masks, prompts, frame map,
+and inference seed. No source rows or Gate64 samples were regenerated.
+
+Step0 temporal evidence review:
+
+- reviewed rows: `32 / 32`
+- reviewer pass: `32 / 32`
+- final review status: `TEMPORAL_REVIEW_PASS_DENSE_EVIDENCE`
+- reviewed evidence: dense temporal sheets plus crop sheets generated from the
+  already materialized raw/comp/side-by-side mp4 outputs
+- new technical blocker found: `0`
+
+Step0 aggregate metrics:
+
+| variant | PSNR | SSIM | LPIPS | Ewarp | mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| raw | 22.829909342886836 | 0.8492259011345125 | 0.09040529020302882 | 7.401047145404978 | 15.996989577661143 | 15.445102895985176 |
+| comp | 24.301897366442233 | 0.871557953992803 | 0.07080062118242197 | 8.04273951919754 | 16.012427341260924 | 16.01195236353609 |
+
+This baseline is a quality reference only. It authorizes the pre-registered
+10-step micro-training gate because Gate64 data readiness and L0/L1 technical
+gates are already complete; it is not a scientific-positive claim.
+
+Reports:
+
+- `reports/exp26_vp_step0_baseline.md`
+- `reports/exp26_vp_step0_baseline.csv`
+- `reports/exp26_vp_step0_visual_review.csv`

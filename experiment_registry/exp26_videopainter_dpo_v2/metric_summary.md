@@ -35,3 +35,14 @@ Primary manifest SHA256:
 | L1 policy delta norm | 1.6732795822542237 |
 | L1 reference delta norm | 0.0 |
 | strict reload max abs diff | 0.0 |
+
+## Search-Dev Step0 Baseline
+
+Status: `VP_STEP0_BASELINE_LOCKED`
+
+Temporal evidence review: `32 / 32` reviewer pass.
+
+| Variant | PSNR | SSIM | LPIPS | Ewarp | Mask PSNR | Boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| raw | 22.829909342886836 | 0.8492259011345125 | 0.09040529020302882 | 7.401047145404978 | 15.996989577661143 | 15.445102895985176 |
+| comp | 24.301897366442233 | 0.871557953992803 | 0.07080062118242197 | 8.04273951919754 | 16.012427341260924 | 16.01195236353609 |
