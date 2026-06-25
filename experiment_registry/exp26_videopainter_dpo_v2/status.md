@@ -219,3 +219,34 @@ Reports:
 - `reports/exp26_gate64_duplicate_source_audit.md`
 - `reports/exp26_gate64_duplicate_source_audit.csv`
 - `reports/exp26_gate64_duplicate_source_audit.json`
+
+## 2026-06-25 Gate64 Human Visual Review
+
+Status:
+
+- `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+- `NO_VIDEOPAINTER_DPO`
+
+Reviewed generated outputs: `56/56`.
+
+Classification:
+
+- `medium-hard=31`
+- `hard-plausible=16`
+- `too-close=1`
+- `trivial-bad=8`
+
+Decision:
+
+- eligible after review: `47`
+- rejected too-close: `1`
+- rejected trivial/technical: `8`
+
+VideoPainter DPO remains unstarted. Next allowed step is balanced manifest
+construction from the 47 eligible rows, not training.
+
+Reports:
+
+- `reports/exp26_gate64_human_visual_review.md`
+- `reports/exp26_gate64_human_visual_review.csv`
+- `reports/exp26_gate64_human_visual_review_summary.json`

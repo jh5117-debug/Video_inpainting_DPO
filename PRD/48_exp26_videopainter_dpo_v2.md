@@ -482,3 +482,40 @@ Reports:
 - `reports/exp26_gate64_duplicate_source_audit.md`
 - `reports/exp26_gate64_duplicate_source_audit.csv`
 - `reports/exp26_gate64_duplicate_source_audit.json`
+
+## 2026-06-25 Gate64 Human Visual Review
+
+Status:
+
+- `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+- `NO_VIDEOPAINTER_DPO`
+
+All 56 generated official VideoPainter Gate64 outputs were reviewed using
+dense per-sample evidence sheets and 14 local montage pages. This review does
+not replace the 8 rejected formal-source rows; the valid generated set remains
+56 rows.
+
+Final visual buckets:
+
+- `medium-hard`: 31
+- `hard-plausible`: 16
+- `too-close`: 1
+- `trivial-bad`: 8
+
+Decision:
+
+- `ELIGIBLE_AFTER_VISUAL_REVIEW`: 47
+- `REJECT_TOO_CLOSE`: 1
+- `REJECT_TRIVIAL_OR_TECHNICAL`: 8
+
+The pool has enough technically valid medium/hard candidates to continue
+manifest curation, but it is not directly `DATA_READY`: the too-close and
+trivial-bad rows must be excluded, and a source/defect-balanced manifest must
+be constructed before any 1/10/50-step VideoPainter DPO micro-training. No
+DPO training was launched.
+
+Reports:
+
+- `reports/exp26_gate64_human_visual_review.md`
+- `reports/exp26_gate64_human_visual_review.csv`
+- `reports/exp26_gate64_human_visual_review_summary.json`

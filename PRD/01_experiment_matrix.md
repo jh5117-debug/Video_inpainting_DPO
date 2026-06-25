@@ -641,3 +641,9 @@ Gate64 and DPO training were not started.
   pre-maintenance persistence markers were not created.
 - Effect: no new Exp25 root-cause matrix, Exp26 Gate64 review/source repair, or
   Exp27 true-model GPU task was launched after the blocker.
+
+## 2026-06-25 Exp26 Gate64 Visual Review
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp26 VideoPainter v2 Gate64 review | `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY` | Reviewed 56 generated outputs: 31 medium-hard, 16 hard-plausible, 1 too-close, 8 trivial-bad. 47 eligible rows require balanced manifest construction before any DPO micro-training. |

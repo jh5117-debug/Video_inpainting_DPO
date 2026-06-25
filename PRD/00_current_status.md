@@ -1932,3 +1932,14 @@ decode. The valid generated Gate64 set remains `56/64`; visual review is still
 pending and VideoPainter DPO remains unstarted.
 
 Report: `reports/exp26_gate64_duplicate_source_audit.md`.
+
+## 2026-06-25 Exp26 Gate64 Human Visual Review
+
+Status: `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+
+Exp26 reviewed all `56/56` generated official VideoPainter Gate64 outputs.
+Final buckets: `31` medium-hard, `16` hard-plausible, `1` too-close, and `8`
+trivial-bad. `47` rows are eligible after visual review, but the pool is not
+directly `DATA_READY`; it still needs source/defect balancing and exclusion of
+rejected rows before any VideoPainter DPO micro-training. No DPO training was
+launched.

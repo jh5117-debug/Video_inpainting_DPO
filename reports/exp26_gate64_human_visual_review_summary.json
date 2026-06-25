@@ -1,0 +1,20 @@
+{
+  "classification_counts": {
+    "hard-plausible": 16,
+    "medium-hard": 31,
+    "too-close": 1,
+    "trivial-bad": 8
+  },
+  "decision_counts": {
+    "ELIGIBLE_AFTER_VISUAL_REVIEW": 47,
+    "REJECT_TOO_CLOSE": 1,
+    "REJECT_TRIVIAL_OR_TECHNICAL": 8
+  },
+  "eligible_count": 47,
+  "gate64_dpo_allowed": false,
+  "method": "opened 14 montage pages locally; each page contains 4 per-sample evidence sheets generated from start/mid/end/mask-max/max-error frames; dense CSV reviewed",
+  "num_samples": 56,
+  "reason_no_dpo": "candidate pool needs source/defect balancing and formal manifest construction; 8 trivial-bad and 1 too-close must be excluded first",
+  "rejected_count": 9,
+  "status": "GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY"
+}
