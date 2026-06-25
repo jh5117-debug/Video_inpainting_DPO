@@ -91,40 +91,61 @@ def main() -> int:
     source_counts: Counter[str] = Counter()
     target_source_counts = {"REAL": args.per_source_type, "BLENDER": args.per_source_type}
 
+    def is_available(row: dict) -> bool:
+        sid = str(row.get("sample_id", ""))
+        group = str(row.get("scene_group", ""))
+        if not sid or not group:
+            return False
+        return sid not in excluded_ids and group not in excluded_groups and group not in used_groups
+
+    def add_row(row: dict) -> None:
+        group = str(row.get("scene_group", ""))
+        out = dict(row)
+        out.update(
+            {
+                "gate": "EXP25_DIFFUSERASER_DEB_GATE16",
+                "condition_source_role": "V_obj",
+                "winner_source_role": "V_bg",
+                "mask_source_role": "foreground_object_mask",
+                "loser_stack_id": "DE-B_sft_raw6_d8_propainter",
+                "hard_comp": False,
+                "pcm_mode": "none",
+                "prior_mode": "propainter",
+                "no_pcm_steps": 6,
+                "guidance": 0.0,
+                "mask_dilation_iter": 8,
+            }
+        )
+        selected.append(out)
+        used_groups.add(group)
+        source_counts[str(row.get("source_type", ""))] += 1
+
     for desired in ("REAL", "BLENDER"):
         for row in train_rows:
-            if source_counts[desired] >= target_source_counts[desired]:
+            if source_counts[desired] >= target_source_counts[desired] or len(selected) >= args.limit:
                 break
-            if row.get("source_type") != desired:
+            if row.get("source_type") != desired or not is_available(row):
                 continue
-            sid = str(row.get("sample_id", ""))
-            group = str(row.get("scene_group", ""))
-            if not sid or not group:
-                continue
-            if sid in excluded_ids or group in excluded_groups or group in used_groups:
-                continue
-            out = dict(row)
-            out.update(
-                {
-                    "gate": "EXP25_DIFFUSERASER_DEB_GATE16",
-                    "condition_source_role": "V_obj",
-                    "winner_source_role": "V_bg",
-                    "mask_source_role": "foreground_object_mask",
-                    "loser_stack_id": "DE-B_sft_raw6_d8_propainter",
-                    "hard_comp": False,
-                    "pcm_mode": "none",
-                    "prior_mode": "propainter",
-                    "no_pcm_steps": 6,
-                    "guidance": 0.0,
-                    "mask_dilation_iter": 8,
-                }
-            )
-            selected.append(out)
-            used_groups.add(group)
-            source_counts[desired] += 1
+            add_row(row)
+
+    for row in train_rows:
+        if len(selected) >= args.limit:
+            break
+        if not is_available(row):
+            continue
+        add_row(row)
 
     if len(selected) != args.limit:
         raise SystemExit(f"selected {len(selected)} rows, expected {args.limit}; counts={dict(source_counts)}")
+
+    balance_status = "ideal_8_8" if all(source_counts[k] == target_source_counts[k] for k in target_source_counts) else "best_available_after_exclusions"
+    balance_notes = (
+        "REAL/BLENDER target is 8/8. Current source pool has fewer eligible rows for at least one source type after "
+        "root-cause/search-dev/shadow-dev/Gate32 scene-group exclusions, so the selector filled to 16 with the best "
+        "available disjoint sources and records the realized counts."
+        if balance_status != "ideal_8_8"
+        else "REAL/BLENDER balanced 8/8; mask size and motion/effect labels unavailable in current manifest, so scene-group/source balance is enforced here and dense review records quality buckets."
+    )
 
     write_jsonl(args.output_manifest, selected)
     digest = sha256_file(args.output_manifest)
@@ -141,7 +162,8 @@ def main() -> int:
         "search_dev_overlap_groups": sorted({row["scene_group"] for row in selected} & {str(r.get("scene_group", "")) for r in search_rows}),
         "shadow_dev_overlap_groups": sorted({row["scene_group"] for row in selected} & {str(r.get("scene_group", "")) for r in shadow_rows}),
         "gate32_overlap_groups": sorted({row["scene_group"] for row in selected} & {str(r.get("scene_group", "")) for r in gate32_rows}),
-        "balance_notes": "REAL/BLENDER balanced 8/8; mask size and motion/effect labels unavailable in current manifest, so scene-group/source balance is enforced here and dense review records quality buckets.",
+        "balance_status": balance_status,
+        "balance_notes": balance_notes,
     }
     args.audit_json.parent.mkdir(parents=True, exist_ok=True)
     args.audit_json.write_text(json.dumps(audit, indent=2, sort_keys=True) + "\n", encoding="utf-8")
