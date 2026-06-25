@@ -161,7 +161,7 @@ Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
 - GPU after completion: all cards 0 MiB
 - Report: `reports/exp26_gate64_generation_status_20260625.md`
 
-Gate64 visual review is pending. This is not yet `DATA_READY`, and no
+Gate64 evidence review is pending. This is not yet `DATA_READY`, and no
 VideoPainter DPO training has started.
 
 ## 2026-06-25 PAI Pre-Maintenance Persistence
@@ -224,7 +224,7 @@ Reports:
 
 Status:
 
-- `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+- `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING_POOL_NOT_DATA_READY`
 - `NO_VIDEOPAINTER_DPO`
 
 Reviewed generated outputs: `56/56`.
@@ -238,7 +238,7 @@ Classification:
 
 Decision:
 
-- eligible after review: `47`
+- eligible after evidence review: `47`
 - rejected too-close: `1`
 - rejected trivial/technical: `8`
 
@@ -257,8 +257,8 @@ Status:
 
 - `GATE64_SOURCE_REPAIR_COMPLETE`
 - `GATE64_FORMAL_VALID_64_OF_64`
-- `GATE64_VISUAL_REVIEW_COMPLETE`
-- `GATE64_PRIMARY32_LOCKED`
+- `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING`
+- `GATE64_PRIMARY32_DRAFT_LOCKED_MP4_PLAYBACK_PENDING`
 - `NO_VIDEOPAINTER_DPO`
 
 Deep duplicate-source audit reclassified the 8 formal-source failures as
@@ -276,10 +276,10 @@ Repair generation and review:
 Combined Gate64:
 
 - formal-valid: `64/64`
-- reviewed outputs: `64/64`
-- eligible after review: `55`
+- evidence-reviewed outputs: `64/64`; strict mp4 playback pending
+- eligible after evidence review: `55`
 - rejected: `9`
-- primary-32 manifest locked:
+- primary-32 draft manifest locked:
   `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
 
 DPO remains unstarted because the Exp26 NAS experiment output directory is not

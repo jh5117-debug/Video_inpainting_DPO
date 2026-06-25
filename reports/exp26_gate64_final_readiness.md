@@ -1,9 +1,10 @@
-# Exp26 Gate64 Source Repair and Final Readiness
+# Exp26 Gate64 Source Repair and Primary-32 Draft
 ## Status
 - Duplicate-source deep audit: all 8 rejected rows are static-pixel duplicates with 49 unique decoded indices/timestamps, not true short sources.
 - Repair materialization: 8/8 OK, 49 frames each.
 - Repair official VideoPainter generation: 8/8 OK, 49 output frames each.
-- Dense evidence/crop visual review: 8/8 reviewed locally; no technical invalid, no global collapse.
+- Dense evidence/crop review: 8/8 repaired rows reviewed locally; no technical invalid, no global collapse.
+- Strict mp4 playback review: pending. This report does not claim `VIDEO_REVIEW_PASS` or `DATA_READY`.
 - Combined Gate64 formal-valid sources: 64/64.
 - Combined eligible pool: 55 rows.
 - DPO training: NOT STARTED.
@@ -19,10 +20,10 @@
 - REJECT_TOO_CLOSE: 1
 - REJECT_TRIVIAL_OR_TECHNICAL: 8
 
-## Primary-32 Manifest
+## Primary-32 Draft Manifest
 - Candidate pool: `/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_candidate_pool55_visual_reviewed_comp.jsonl`
 - Candidate pool SHA256: `4bec06d78249b809ddf90a80eca900f8467ba3a2798c8ae9d03552d0f25ee5b8`
-- Primary-32: `/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
+- Primary-32 draft: `/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
 - Primary-32 SHA256: `21c0c617698bbf69859f3850979d777c3af3e1908926bca43b69ede447df3cc8`
 - Main loser semantics: `final_loser_video_path = comp_loser_video_path`, matching current BR `selected_primary_comp` training source; raw loser is retained for diagnostics/ablation.
 

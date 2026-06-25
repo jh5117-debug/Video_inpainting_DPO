@@ -646,10 +646,10 @@ Gate64 and DPO training were not started.
 
 | Experiment | Status | Notes |
 | --- | --- | --- |
-| Exp26 VideoPainter v2 Gate64 review | `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY` | Reviewed 56 generated outputs: 31 medium-hard, 16 hard-plausible, 1 too-close, 8 trivial-bad. 47 eligible rows require balanced manifest construction before any DPO micro-training. |
+| Exp26 VideoPainter v2 Gate64 review | `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING_POOL_NOT_DATA_READY` | Evidence-reviewed 56 generated outputs: 31 medium-hard, 16 hard-plausible, 1 too-close, 8 trivial-bad. 47 eligible rows require balanced manifest construction before any DPO micro-training. |
 
 ## 2026-06-25 Exp26 Gate64 Static-Frame Repair
 
 | Experiment | Status | Notes |
 | --- | --- | --- |
-| Exp26 VideoPainter v2 Gate64 source repair | `GATE64_PRIMARY32_LOCKED_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION` | The 8 rows previously marked formal failures were re-audited with timestamp/frame-index evidence and classified as static-pixel duplicates, not 49F read failures. All 8 were regenerated and reviewed: 6 medium-hard, 2 hard-plausible. Final Gate64: 64/64 formal-valid, 55 eligible, 9 rejected. A balanced 32-row comp-loser primary manifest is locked at `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`. DPO micro-training remains blocked until `hj` can write `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2`. |
+| Exp26 VideoPainter v2 Gate64 source repair | `GATE64_PRIMARY32_DRAFT_MP4_PLAYBACK_PENDING_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION` | The 8 rows previously marked formal failures were re-audited with timestamp/frame-index evidence and classified as static-pixel duplicates, not 49F read failures. All 8 were regenerated and evidence-reviewed: 6 medium-hard, 2 hard-plausible. Final Gate64: 64/64 formal-valid, 55 eligible, 9 rejected. A balanced 32-row comp-loser primary draft manifest is locked at `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`, but strict mp4 playback remains pending before `DATA_READY`. DPO micro-training remains blocked until `hj` can write `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2`. |

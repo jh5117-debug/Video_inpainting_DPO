@@ -1893,7 +1893,7 @@ Status: `GATE64_GENERATION_PARTIAL_SOURCE_PASS_56_OF_64`
   `/home/hj/exp26_gate64_runs/gate64_official_43597cf_20260625_031155`
 - report: `reports/exp26_gate64_generation_status_20260625.md`
 
-Gate64 visual review remains pending; VideoPainter DPO training has not
+Gate64 evidence review remains pending; VideoPainter DPO training has not
 started.
 
 ## 2026-06-25 PAI Pre-Maintenance Persistence Blocker
@@ -1935,26 +1935,26 @@ Report: `reports/exp26_gate64_duplicate_source_audit.md`.
 
 ## 2026-06-25 Exp26 Gate64 Human Visual Review
 
-Status: `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+Status: `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING_POOL_NOT_DATA_READY`
 
 Exp26 reviewed all `56/56` generated official VideoPainter Gate64 outputs.
 Final buckets: `31` medium-hard, `16` hard-plausible, `1` too-close, and `8`
-trivial-bad. `47` rows are eligible after visual review, but the pool is not
+trivial-bad. `47` rows are eligible after evidence review, but the pool is not
 directly `DATA_READY`; it still needs source/defect balancing and exclusion of
 rejected rows before any VideoPainter DPO micro-training. No DPO training was
 launched.
 
 ## 2026-06-25 Exp26 Gate64 Source Repair
 
-Status: `GATE64_PRIMARY32_LOCKED_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION`
+Status: `GATE64_PRIMARY32_DRAFT_MP4_PLAYBACK_PENDING_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION`
 
 Deep audit corrected the 8 duplicate-frame failures: they are static-pixel
 repeats with valid 49-frame index/timestamp evidence, not short formal
 sources. Repaired materialization, mask generation, and official VideoPainter
 generation completed `8/8`.
 
-Combined Gate64 is now `64/64` formal-valid, `64/64` reviewed, and `55`
-eligible after visual review. A balanced primary-32 comp-loser manifest is
+Combined Gate64 is now `64/64` formal-valid, `64/64` evidence-reviewed, strict mp4 playback pending, and `55`
+eligible after evidence review. A balanced primary-32 comp-loser manifest is
 locked at
 `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`.
 

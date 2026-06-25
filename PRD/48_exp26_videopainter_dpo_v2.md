@@ -247,7 +247,7 @@ pre-registered Gate16 criteria now pass with one rejection:
 - systematic failure `0`;
 - trivial-bad `1/16`;
 - medium-hard or hard-plausible `15/16`;
-- final dense visual review complete.
+- final dense evidence review complete; strict mp4 playback pending.
 
 Gate64 is allowed only as a new milestone after a fresh readback. This does not
 mark DPO training as successful and does not start Gate64 or training by
@@ -393,7 +393,7 @@ Report:
 
 `reports/exp26_gate64_generation_status_20260625.md`
 
-Gate64 visual review is still pending for all 56 generated rows. VideoPainter
+Gate64 evidence review is still pending for all 56 generated rows. VideoPainter
 DPO training remains unstarted.
 
 ## 2026-06-25 PAI Pre-Maintenance Persistence
@@ -487,7 +487,7 @@ Reports:
 
 Status:
 
-- `GATE64_VIDEO_REVIEW_COMPLETE_POOL_NOT_DATA_READY`
+- `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING_POOL_NOT_DATA_READY`
 - `NO_VIDEOPAINTER_DPO`
 
 All 56 generated official VideoPainter Gate64 outputs were reviewed using
@@ -526,8 +526,8 @@ Status:
 
 - `GATE64_SOURCE_REPAIR_COMPLETE`
 - `GATE64_FORMAL_VALID_64_OF_64`
-- `GATE64_VISUAL_REVIEW_COMPLETE`
-- `GATE64_PRIMARY32_LOCKED`
+- `GATE64_EVIDENCE_REVIEW_COMPLETE_MP4_PLAYBACK_PENDING`
+- `GATE64_PRIMARY32_DRAFT_LOCKED_MP4_PLAYBACK_PENDING`
 - `NO_VIDEOPAINTER_DPO`
 
 The 8 Gate64 rows previously rejected by the pixel-hash duplicate guard were
@@ -543,19 +543,19 @@ Repair results:
 - repaired mask generation: `8/8`
 - repaired official VideoPainter generation: `8/8`
 - repaired outputs: `49` frames each
-- repaired dense visual review: `6` medium-hard, `2` hard-plausible
+- repaired dense evidence review: `6` medium-hard, `2` hard-plausible
 
 Combined Gate64 results:
 
 - formal-valid sources: `64/64`
-- reviewed outputs: `64/64`
+- evidence-reviewed outputs: `64/64`; strict mp4 playback pending
 - medium-hard: `37`
 - hard-plausible: `18`
 - too-close: `1`
 - trivial-bad: `8`
-- eligible after visual review: `55`
+- eligible after evidence review: `55`
 
-The primary training manifest is locked as a balanced 32-row subset:
+The primary draft manifest is locked as a balanced 32-row subset:
 
 - `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
 - candidate pool:
