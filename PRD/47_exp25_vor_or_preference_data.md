@@ -362,6 +362,35 @@ this blocker. Report:
 
 `reports/pai_premaintenance_output_persistence.md`
 
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `BLOCKER_RESOLVED`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_READY_TO_RESUME`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+The user executed the minimal PAI root permission repair successfully. HAL SSH
+as `hj` rechecked the actual PAI state and confirmed:
+
+- DiffuEraser converted weights are readable/executable.
+- `brushnet/config.json` is readable.
+- `unet_main/config.json` is readable.
+- Exp25 experiment output is writable.
+- Exp25 autoresearch output is writable.
+
+No ACL installation, apt operation, or broad NAS permission change was repeated
+by Codex. The next allowed Exp25 milestone is the post-permission DiffuEraser
+asset smoke followed by the fixed 12-sample root-cause matrix.
+
+Reports:
+
+- `reports/exp25_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`
+
 ## 2026-06-25 Root-Cause Matrix Permission Blocker
 
 Status:

@@ -652,3 +652,9 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp25 DiffuEraser OR root-cause matrix | `BLOCKED_WEIGHT_PERMISSION_BEFORE_STACK_COMPARISON` | Fixed 12-sample root-cause manifest built; DE-B/DE-C inference blocked because `hj` cannot read DiffuEraser checkpoint config files. No Gate128 or OR-DPO launched. |
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp25 VOR OR preference data | `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED` | DiffuEraser converted weights and Exp25 NAS output roots are now accessible to `hj`; resume fixed 12-sample DiffuEraser OR root-cause matrix only. No Gate128 or OR-DPO. |

@@ -265,3 +265,25 @@ This is a PAI asset permission blocker, not a model-quality conclusion.
 Report:
 
 `reports/exp25_diffueraser_or_root_cause_matrix_20260625_status.md`
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `BLOCKER_RESOLVED`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_READY_TO_RESUME`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+Confirmed on PAI host `dsw-753014-85f54df947-bkp7h` as user `hj`:
+
+- DiffuEraser converted weights: readable/executable.
+- Exp25 NAS experiment output: writable.
+- Exp25 NAS autoresearch output: writable.
+
+Reports:
+
+- `reports/exp25_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`

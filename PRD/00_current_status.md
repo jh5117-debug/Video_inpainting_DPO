@@ -1917,3 +1917,20 @@ read the DiffuEraser checkpoint directory under
 `/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`.
 This is an asset-permission blocker, not a DiffuEraser OR-quality result. No
 Gate128 expansion or OR-DPO training was launched.
+
+## 2026-06-25 Exp25 PAI Post-Maintenance Permission Recovery
+
+Status: `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+
+The user executed the minimal PAI root permission repair successfully. HAL SSH
+as `hj` verified DiffuEraser converted weights are readable and Exp25 NAS
+experiment/autoresearch output roots are writable. The previous
+`DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_BLOCKED_BY_WEIGHT_PERMISSION` blocker is
+resolved. Exp25 may resume with post-permission asset smoke and the fixed
+12-sample root-cause matrix. Gate128 and OR-DPO remain not started.
+
+Reports:
+
+- `reports/exp25_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`
