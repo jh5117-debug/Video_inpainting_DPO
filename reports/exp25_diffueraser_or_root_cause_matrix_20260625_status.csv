@@ -1,0 +1,7 @@
+item,status,path_or_value,notes
+root_cause_manifest,created,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl,12 samples
+manifest_sha256,created,d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49,
+DE_B_no_pcm_prop_prior_d8,blocked,/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000,PermissionError before inference
+DE_C_official_pcm2_prop_prior_d8,not_started,,blocked by same checkpoint permission
+Gate128,not_started,,forbidden before root-cause/yield pass
+OR_DPO,not_started,,forbidden before data readiness

@@ -240,3 +240,28 @@ Persisted artifacts:
 Completion markers are present under:
 
 `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`
+
+## 2026-06-25 DiffuEraser OR Root-Cause Matrix Attempt
+
+Status:
+
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_BLOCKED_BY_WEIGHT_PERMISSION`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+Root-cause manifest:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl`
+
+SHA256: `d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`
+
+DE-B / DE-C stack comparison could not start model inference because `hj` lacks
+read permission on the DiffuEraser checkpoint directory:
+
+`/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`
+
+This is a PAI asset permission blocker, not a model-quality conclusion.
+
+Report:
+
+`reports/exp25_diffueraser_or_root_cause_matrix_20260625_status.md`

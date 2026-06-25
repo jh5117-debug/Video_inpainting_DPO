@@ -362,6 +362,40 @@ this blocker. Report:
 
 `reports/pai_premaintenance_output_persistence.md`
 
+## 2026-06-25 Root-Cause Matrix Permission Blocker
+
+Status:
+
+- `GATE32_FINAL_DENSE_REVIEW_COMPLETE_YIELD_POOR`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_BLOCKED_BY_WEIGHT_PERMISSION`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+A fixed 12-sample root-cause matrix manifest was built from Gate32 dense-review
+evidence, covering medium-hard/trivial-bad rows across REAL and BLENDER sources.
+
+Manifest:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl`
+
+SHA256:
+
+`d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`
+
+The first runnable stack comparison failed before model inference because PAI
+user `hj` cannot read the DiffuEraser checkpoint directory:
+
+`/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`
+
+The failing file access is `brushnet/config.json` / `unet_main/config.json`
+with `PermissionError: [Errno 13] Permission denied`. This is an infrastructure
+permission blocker, not a DiffuEraser OR-quality result. No Gate128 expansion,
+multi-model OR pool construction, or OR-DPO training was launched.
+
+Report:
+
+`reports/exp25_diffueraser_or_root_cause_matrix_20260625_status.md`
+
 ## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
 
 Status:

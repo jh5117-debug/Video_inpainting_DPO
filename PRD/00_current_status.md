@@ -1906,3 +1906,14 @@ persistence was resolved. Exp25 Gate32 dense review artifacts and Exp26 Gate64
 official generation artifacts were copied to NAS with matching file counts,
 byte totals, inventory diffs, and SHA256 diffs. Runtime markers were created
 under `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`.
+
+## 2026-06-25 Exp25 Root-Cause Matrix Blocker
+
+Status: `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_BLOCKED_BY_WEIGHT_PERMISSION`
+
+Exp25 built a fixed 12-sample DiffuEraser OR root-cause matrix manifest, but
+the first stack comparison failed before inference because PAI user `hj` cannot
+read the DiffuEraser checkpoint directory under
+`/mnt/workspace/hj/nas_hj/weights/diffuEraser/converted_weights_step48000`.
+This is an asset-permission blocker, not a DiffuEraser OR-quality result. No
+Gate128 expansion or OR-DPO training was launched.

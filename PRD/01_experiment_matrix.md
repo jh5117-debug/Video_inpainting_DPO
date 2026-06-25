@@ -646,3 +646,9 @@ started.
   pre-maintenance persistence markers were not created.
 - Effect: no new Exp25 root-cause matrix, Exp26 Gate64 review/source repair, or
   Exp27 true-model GPU task was launched after the blocker.
+
+## 2026-06-25 Exp25 Root-Cause Matrix Attempt
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp25 DiffuEraser OR root-cause matrix | `BLOCKED_WEIGHT_PERMISSION_BEFORE_STACK_COMPARISON` | Fixed 12-sample root-cause manifest built; DE-B/DE-C inference blocked because `hj` cannot read DiffuEraser checkpoint config files. No Gate128 or OR-DPO launched. |
