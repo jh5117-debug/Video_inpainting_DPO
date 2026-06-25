@@ -1,5 +1,13 @@
 # Exp25 Commands
 
+## CLI4 Gate16 DE-B
+
+```bash
+python -m py_compile exp25_vor_or_preference_data/scripts/select_gate16_deb_sources.py exp25_vor_or_preference_data/scripts/launch_exp25_gate16_deb.py
+python -m unittest exp25_vor_or_preference_data.tests.test_gate16_deb_selection
+python exp25_vor_or_preference_data/scripts/launch_exp25_gate16_deb.py --project-root /home/hj/runtime_code_snapshots/cli4_exp25_<commit> --compute-lpips --compute-ewarp
+```
+
 ```bash
 HF_HOME=/home/hj/.cache/huggingface_effecterase_auth /home/hj/.venvs/hf_effecterase/bin/hf auth whoami
 /home/hj/.venvs/hf_effecterase/bin/python exp25_vor_or_preference_data/scripts/audit_hf_effecterase_repo.py --probe-readme

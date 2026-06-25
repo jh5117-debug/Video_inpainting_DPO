@@ -1,3 +1,34 @@
+## 2026-06-25 CLI4 DE-B Gate16 Preparation
+
+Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+
+The root-cause matrix selected DE-B as the fixed next stack:
+
+```text
+DE-B_sft_raw6_d8_propainter
+pcm_mode = none
+prior_mode = propainter
+no_pcm_steps = 6
+guidance = 0.0
+mask_dilation_iter = 8
+hard_comp = false
+```
+
+CLI4 added:
+
+- `select_gate16_deb_sources.py`
+- `launch_exp25_gate16_deb.py`
+- `test_gate16_deb_selection.py`
+
+The selector locks 16 new train-source rows, excludes root-cause/search-dev/shadow-dev/Gate32 scene groups, and records a manifest SHA256 before generation. The launcher writes all outputs under:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/cli4/
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp25_vor_or_preference_data/cli4/
+```
+
+This is preparation only. No Gate16 pass/fail result is claimed, Gate128 remains not started, and OR-DPO remains not started.
+
 # Exp25 VOR OR Preference Data
 
 - repo: FudanCVL/EffectErase

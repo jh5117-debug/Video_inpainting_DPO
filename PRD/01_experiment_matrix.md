@@ -1,3 +1,11 @@
+## 2026-06-25 Exp25 CLI4 DE-B Gate16
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp25 fixed DE-B Gate16 confirmation | code ready; not launched; no pass/fail result yet | `exp25_vor_or_preference_data/scripts/select_gate16_deb_sources.py`, `exp25_vor_or_preference_data/scripts/launch_exp25_gate16_deb.py`, `reports/exp25_gate16_deb_cli4_prelaunch.md` |
+
+No Gate128 and no OR-DPO are launched by this preparation step.
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |

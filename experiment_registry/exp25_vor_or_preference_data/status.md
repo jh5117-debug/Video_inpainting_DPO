@@ -1,3 +1,13 @@
+## 2026-06-25 CLI4 Update
+
+Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+
+- Fixed stack: `DE-B_sft_raw6_d8_propainter`.
+- Added isolated CLI4 selector and launcher for Gate16.
+- Output roots are under `logs/autoresearch/exp25_vor_or_preference_data/cli4/` and `experiments/dpo/exp25_vor_or_preference_data/cli4/`.
+- No Gate16 generation result yet.
+- Gate128 and OR-DPO remain not started.
+
 # Exp25 VOR OR Preference Data
 
 - repo: FudanCVL/EffectErase

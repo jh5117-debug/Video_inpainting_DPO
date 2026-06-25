@@ -1,0 +1,9 @@
+check,status
+selector_py_compile,passed
+launcher_py_compile,passed
+selection_unit_test,passed
+bash_n,passed
+git_diff_check,passed
+gate16_generated,no
+gate16_passed,no
+or_dpo_started,no

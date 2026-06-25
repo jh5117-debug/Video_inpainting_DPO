@@ -1,3 +1,18 @@
+## 2026-06-25 Exp25 CLI4 DE-B Gate16 Preparation
+
+Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+
+The next allowed Exp25 step remains a fixed DE-B Gate16 confirmation. CLI4 added isolated tooling only:
+
+- selects 16 new VOR train sources from `vor_train_source_pool_4096.jsonl`;
+- excludes root-cause, search-dev, shadow-dev, and existing Gate32 scene groups;
+- enforces REAL/BLENDER 8/8 source balance and scene-group disjointness;
+- locks stack `DE-B_sft_raw6_d8_propainter`;
+- preserves `condition=V_obj`, `winner=V_bg`, foreground mask, `hard_comp=false`;
+- launches selective extraction, 24F materialization, DE-B raw generation, metric evaluation, and dense evidence review under `cli4` output roots.
+
+No Gate16 generation result exists yet from this branch. No Gate128 and no OR-DPO were started.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:
