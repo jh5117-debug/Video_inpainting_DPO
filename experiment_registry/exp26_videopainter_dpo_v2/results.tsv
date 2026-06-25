@@ -1,0 +1,2 @@
+run_id	status	split	comparison	frame_range	variant	strict_mask_psnr_delta	boundary_psnr_delta	lpips_delta	ewarp_delta	whole_psnr_delta	tc_delta	vfid_delta	visual_better	visual_tie	visual_worse_or_artifact	seed_robustness	report
+vp_primary32_50step_20260625_171032	VIDEOPAINTER_SHADOWDEV_CONFIRMED	shadow-dev	Step50-Step0	no_first_frame	comp	5.186942	12.175098	-0.040142	-8.378847	5.160739	0.004378	-0.031428	25	3	4	SEED_ROBUSTNESS_PASS	reports/exp26_vp_shadowdev_final_decision.md

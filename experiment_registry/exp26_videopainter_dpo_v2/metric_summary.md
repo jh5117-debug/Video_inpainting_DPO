@@ -98,3 +98,39 @@ Paired statistics:
 - PSNR probability(delta > 0) `1.000000`
 - LPIPS probability improved `1.000000`
 - Ewarp probability improved `1.000000`
+
+## Shadow-Dev Confirmatory Validation
+
+Status: `VIDEOPAINTER_SHADOWDEV_CONFIRMED`
+
+Primary endpoint: frame1-48 comp, fixed Step50 - fixed Step0.
+
+| Metric | Mean delta | Win rate | Bootstrap 95% CI | Probability improved |
+| --- | ---: | ---: | ---: | ---: |
+| strict mask PSNR | `+5.186942` | `0.781250` | `[+2.781118, +7.818869]` | `1.000000` |
+| boundary PSNR | `+12.175098` | `1.000000` | `[+10.184673, +14.212251]` | `1.000000` |
+| LPIPS | `-0.040142` | `0.937500` | `[-0.052638, -0.028834]` | `1.000000` |
+| Ewarp | `-8.378847` | `0.968750` | `[-13.581173, -4.369433]` | `1.000000` |
+
+No-first-frame comp trajectory:
+
+| step | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Step0 | `23.703743` | `0.875636` | `0.066593` | `9.430909` | `16.165117` | `15.740496` |
+| Step10 | `24.184792` | `0.896096` | `0.064336` | `6.602979` | `16.615746` | `20.743876` |
+| Step30 | `28.617596` | `0.951033` | `0.032386` | `1.356535` | `21.093739` | `25.298020` |
+| Step50 | `28.864482` | `0.956006` | `0.026451` | `1.052062` | `21.352059` | `27.915594` |
+
+TC/VFID-style no-first-frame comp:
+
+- Step0: TC `0.986760`, VFID `0.531078`
+- Step50: TC `0.991139`, VFID `0.499650`
+
+Seed robustness over fixed 16-row subset:
+
+- status: `SEED_ROBUSTNESS_PASS`
+- primary direction pass: `3 / 3`
+- mean strict mask PSNR delta: `+8.005364`
+- mean boundary PSNR delta: `+13.627635`
+- mean LPIPS delta: `-0.056193`
+- mean Ewarp delta: `-9.325711`

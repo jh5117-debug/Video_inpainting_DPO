@@ -62,3 +62,37 @@ Outputs:
 /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step50_vp_primary32_50step_20260625_171032
 /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/reports_vp_primary32_50step_20260625_171032
 ```
+## 2026-06-26 Shadow-Dev Confirmatory Validation
+
+Main controller was run on PAI from the right-side Exp26 runtime snapshot:
+
+```bash
+RUN_ROOT=/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625 \
+PYTHON_BIN=/usr/local/bin/python \
+bash exp26_videopainter_dpo_v2/scripts/run_vp2_shadowdev_confirmatory_pai.sh
+```
+
+Primary-only TC/VFID diagnostics:
+
+```bash
+CUDA_VISIBLE_DEVICES=5 python exp26_videopainter_dpo_v2/code/shadowdev_confirmatory_analysis.py \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625 \
+  --device cuda \
+  --tc-vfid-ranges no_first_frame \
+  --tc-vfid-steps step0,step50 \
+  --tc-vfid-variants raw,comp \
+  tc-vfid
+```
+
+Seed robustness reused the fixed 16-row manifest and changed only the
+VideoPainter inference seed for Step0/Step50:
+
+```bash
+python exp26_videopainter_dpo_v2/code/run_vp2_gate64_official_generation.py \
+  --manifest seed_robustness_16_manifest.jsonl \
+  --limit 16 \
+  --num-frames 49 \
+  --num-inference-steps 20 \
+  --guidance-scale 6.0 \
+  --seed 20260620
+```

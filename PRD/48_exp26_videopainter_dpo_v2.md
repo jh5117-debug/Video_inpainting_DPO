@@ -929,3 +929,91 @@ Reports:
 - `reports/exp26_vp_shadowdev_integrity_audit.csv`
 - `reports/exp26_vp_shadowdev_integrity.json`
 - `reports/exp26_vp_shadowdev_checkpoint_identity.md`
+
+## 2026-06-26 Shadow-Dev Confirmatory Validation
+
+Status:
+
+- `VIDEOPAINTER_SHADOWDEV_CONFIRMED`
+- `CROSS_BACKBONE_ADAPTER_EVIDENCE_CONFIRMED`
+- `NO_RETRAINING`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+The fixed Step50 checkpoint from
+`vp_primary32_50step_20260625_171032` was evaluated on the pre-registered
+independent 32-row shadow-dev split against the fixed official Step0 baseline.
+Shadow-dev was not used for training, primary32 selection, checkpoint
+selection, threshold design, or inference-seed selection.
+
+Held-out identities:
+
+- primary32 SHA256:
+  `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`
+- search-dev SHA256:
+  `41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71`
+- shadow-dev SHA256:
+  `0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02`
+- train/search/shadow overlap: `0 / 0 / 0`
+
+Primary frame1-48 comp Step50-Step0 deltas:
+
+- strict mask PSNR: `+5.186942`, win rate `0.781250`,
+  bootstrap probability improved `1.000000`
+- boundary PSNR: `+12.175098`, win rate `1.000000`,
+  bootstrap probability improved `1.000000`
+- LPIPS: `-0.040142`, win rate `0.937500`
+- Ewarp: `-8.378847`, win rate `0.968750`
+- whole comp PSNR: `+5.160739`
+
+Primary no-first-frame TC/VFID-style diagnostics:
+
+- Step0 comp: TC `0.986760`, VFID `0.531078`
+- Step50 comp: TC `0.991139`, VFID `0.499650`
+
+Visual and leakage results:
+
+- leakage audit: `NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED`
+- video/crop review: `32 / 32`
+- Step50 clearly better: `12`
+- Step50 slightly better: `13`
+- tie: `3`
+- Step0 better or Step50 new artifact: `4`
+- Step50 new artifact count: `3`
+
+Seed robustness:
+
+- robustness subset SHA256:
+  `4b3b18bc275eabcdc591ddf18173e34f544811fb2d7a206b014136befb243db2`
+- seeds: `20260619`, `20260620`, `20260621`
+- rows per seed: `16`
+- primary direction pass: `3 / 3`
+- mean strict mask PSNR delta: `+8.005364`
+- mean boundary PSNR delta: `+13.627635`
+- mean LPIPS delta: `-0.056193`
+- mean Ewarp delta: `-9.325711`
+
+Dynamics audit:
+
+- max grad norm: `471.683581`
+- p95 grad norm: `136.259904`
+- grad > 10 / 50 / 100: `41 / 7 / 4`
+- implicit accuracy mean / last: `0.28 / 0.0`
+- loser-dominant mean / last: `0.12 / 0.0`
+- recommendation: `NO_100STEP_BY_PROTOCOL`
+
+Conclusion: the held-out shadow-dev result confirms the fixed Step50
+VideoPainter adapter over fixed Step0 on this VOR-BG distribution. This is
+cross-backbone evidence together with DiffuEraser, but it is not a universal
+adapter, final SOTA, or top-conference novelty claim. External cross-dataset
+benchmarking remains required.
+
+Reports:
+
+- `reports/exp26_vp_shadowdev_final_decision.md`
+- `reports/exp26_vp_shadowdev_metrics_and_statistics.md`
+- `reports/exp26_vp_shadowdev_statistics.json`
+- `reports/exp26_vp_shadowdev_tc_vfid.md`
+- `reports/exp26_vp_shadowdev_seed_robustness.md`
+- `reports/exp26_vp_shadowdev_visual_review.md`
+- `reports/exp26_vp_50step_dynamics_audit.md`

@@ -30,3 +30,26 @@ Reviewer conclusion:
 The 50-step result is visually acceptable for the pre-registered micro gate,
 but it is not a final held-out benchmark result and should not be labelled
 `SCIENTIFIC_POSITIVE`.
+
+## 2026-06-26 Shadow-Dev Visual Review
+
+Review covered all `32/32` independent shadow-dev rows with anonymous pages
+followed by informed pages.
+
+Final classification:
+
+- Step50 clearly better: `12`
+- Step50 slightly better: `13`
+- tie: `3`
+- Step0 better or Step50 new artifact: `4`
+- Step50 new artifact count: `3`
+
+Positive pattern: Step50 often removes Step0 translucent oval/ring residuals
+and produces cleaner local object removal. Negative pattern: water, grass, and
+foliage cases can still develop green/purple local patches or color smears.
+
+No systematic frame-order failure, first-frame failure, unexpected winner
+leakage, comp mask overwrite, or global collapse was observed. Visual evidence
+supports `VIDEOPAINTER_SHADOWDEV_CONFIRMED` for the current VOR-BG
+distribution, while leaving external cross-dataset validation as the next
+scientific requirement.

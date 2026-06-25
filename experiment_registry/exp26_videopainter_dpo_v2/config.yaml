@@ -1,6 +1,6 @@
 experiment: exp26_videopainter_dpo_v2
 branch: research/exp26-videopainter-dpo-v2
-status: VIDEOPAINTER_ADAPTER_POSITIVE
+status: VIDEOPAINTER_SHADOWDEV_CONFIRMED
 formal_frame_count: 49
 plumbing_only_frame_count: 13
 promotion_policy: checkpoint_curve_gate
@@ -18,6 +18,14 @@ vp_10step_status: VIDEOPAINTER_10STEP_GATE_PASSED
 vp_50step_status: VIDEOPAINTER_ADAPTER_POSITIVE
 vp_50step_scope: SEARCH_DEV_MICRO_GATE_ONLY
 scientific_positive: false
+shadowdev_status: VIDEOPAINTER_SHADOWDEV_CONFIRMED
+shadowdev_manifest: exp26_videopainter_dpo_v2/manifests/vp2_vor_bg_shadow_dev_32.jsonl
+shadowdev_manifest_sha256: 0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02
+shadowdev_confirmatory_manifest: exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_32.jsonl
+shadowdev_confirmatory_masks: exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_masks.jsonl
+shadowdev_seed_robustness_sha256: 4b3b18bc275eabcdc591ddf18173e34f544811fb2d7a206b014136befb243db2
+cross_backbone_adapter_evidence: true
+universal_adapter_claim: false
 rcfpo_started: false
 long_training_authorized: false
-next_allowed_gate: HELD_OUT_CONFIRMATION_REQUIRED_BEFORE_ANY_LONGER_TRAINING
+next_allowed_gate: EXTERNAL_CROSS_DATASET_BENCHMARK_REQUIRED

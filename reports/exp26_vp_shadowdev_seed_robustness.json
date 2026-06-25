@@ -1,0 +1,22 @@
+{
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/seed_robustness_16_manifest.jsonl",
+  "manifest_sha256": "4b3b18bc275eabcdc591ddf18173e34f544811fb2d7a206b014136befb243db2",
+  "mean_boundary_psnr_delta": 13.627635452301902,
+  "mean_ewarp_delta": -9.325710630137449,
+  "mean_lpips_delta": -0.056193231388937816,
+  "mean_strict_mask_psnr_delta": 8.005363550846605,
+  "no_seed_collapse": true,
+  "pass_2_of_3": true,
+  "primary_direction_pass_count": 3,
+  "rows_per_seed": [
+    16,
+    16,
+    16
+  ],
+  "seeds": [
+    20260619,
+    20260620,
+    20260621
+  ],
+  "status": "SEED_ROBUSTNESS_PASS"
+}

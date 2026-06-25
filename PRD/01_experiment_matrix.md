@@ -671,3 +671,8 @@ Gate64 and DPO training were not started.
 | Exp26 VideoPainter primary-32 10-step | `TRAINING_PASS` | 10-step DPO micro gate passed on search-dev with dense temporal evidence review. Step10 comp vs step0: PSNR +0.977252, SSIM +0.032641, LPIPS -0.004499, Ewarp -1.301457, mask PSNR +0.975192, boundary PSNR +5.082206; no global collapse or systematic new visual artifact found in 32/32 dense evidence/crop sheets. Conditional 50-step gate is allowed; RC-FPO and long training remain not started. |
 
 | Exp26 VideoPainter primary-32 50-step | `VIDEOPAINTER_ADAPTER_POSITIVE` / `TRAINING_PASS` | 50-step DPO micro gate passed on locked search-dev: step50 comp vs step0 PSNR +4.816168, SSIM +0.087883, LPIPS -0.044059, Ewarp -7.055122, strict mask PSNR +4.942246, boundary PSNR +12.111889; PSNR bootstrap probability(delta>0)=1.0. Manual temporal/crop review covered 32/32 rows with no gate-blocking systematic artifact. This remains search-dev micro evidence only, not `SCIENTIFIC_POSITIVE`; RC-FPO and 100-step+ training are still not started. |
+## 2026-06-26 Exp26 Shadow-Dev Confirmation
+
+| Experiment | Status | Evidence | Next Restriction |
+| --- | --- | --- | --- |
+| Exp26 VideoPainter DPO v2 | `VIDEOPAINTER_SHADOWDEV_CONFIRMED` | Fixed Step50 vs fixed Step0 on independent 32-row shadow-dev: strict mask PSNR `+5.186942`, boundary PSNR `+12.175098`, LPIPS `-0.040142`, Ewarp `-8.378847`, TC `+0.004378`, VFID/FVD-style `-0.031428`; 32/32 visual review; seed robustness pass `3/3`. | No 100-step+, no RC-FPO, no universal/final SOTA claim before external cross-dataset benchmark. |

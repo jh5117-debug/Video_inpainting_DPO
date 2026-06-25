@@ -26,6 +26,7 @@ from typing import Any, Iterable
 
 import cv2
 import numpy as np
+from PIL import Image
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -520,13 +521,15 @@ def build_pair_manifests(args: argparse.Namespace, frame_range: str) -> dict[str
     run_root = args.run_root
     mask_manifest = run_root / "gate64_mask_ready.jsonl"
     rows = read_jsonl(mask_manifest)
-    if len(rows) != 32:
-        raise ValueError(f"Expected 32 rows in {mask_manifest}, got {len(rows)}")
+    if not rows:
+        raise ValueError(f"Expected non-empty rows in {mask_manifest}, got 0")
     pair_root = run_root / "metric_pair_manifests" / frame_range
     derived_root = run_root / "derived_no_first_frame" if frame_range == "no_first_frame" else None
     outputs: dict[str, Path] = {}
-    for step in ("step0", "step10", "step30", "step50"):
-        for variant in ("raw", "comp"):
+    steps = [x.strip() for x in args.metric_steps.split(",") if x.strip()]
+    variants = [x.strip() for x in args.metric_variants.split(",") if x.strip()]
+    for step in steps:
+        for variant in variants:
             pair_rows: list[dict[str, Any]] = []
             for row in rows:
                 sid = row["sample_id"]
@@ -581,7 +584,10 @@ def run_metric_eval(args: argparse.Namespace, pair_manifest: Path, output_dir: P
 
 
 def cmd_metrics(args: argparse.Namespace) -> int:
-    for frame_range, max_frames in (("all49", 49), ("no_first_frame", 48)):
+    frame_ranges = [x.strip() for x in args.metric_ranges.split(",") if x.strip()]
+    max_frames_by_range = {"all49": 49, "no_first_frame": 48}
+    for frame_range in frame_ranges:
+        max_frames = max_frames_by_range[frame_range]
         pairs = build_pair_manifests(args, frame_range)
         for key, pair_manifest in pairs.items():
             output_dir = args.run_root / "metrics" / frame_range / key
@@ -641,18 +647,23 @@ def first_existing(row: dict[str, str], *keys: str) -> float:
 
 
 def cmd_stats(args: argparse.Namespace) -> int:
+    frame_ranges = [x.strip() for x in args.metric_ranges.split(",") if x.strip()]
+    steps = [x.strip() for x in args.metric_steps.split(",") if x.strip()]
+    variants = [x.strip() for x in args.metric_variants.split(",") if x.strip()]
     aggregate_rows: list[dict[str, Any]] = []
-    for frame_range in ("all49", "no_first_frame"):
-        for step in ("step0", "step10", "step30", "step50"):
-            for variant in ("raw", "comp"):
+    for frame_range in frame_ranges:
+        for step in steps:
+            for variant in variants:
                 row = summary_metrics(args.run_root, frame_range, step, variant)
                 aggregate_rows.append({"frame_range": frame_range, "step": step, "variant": variant, **row})
     write_csv(PROJECT_ROOT / "reports/exp26_vp_shadowdev_aggregate_metrics.csv", aggregate_rows)
     paired_rows: list[dict[str, Any]] = []
-    for frame_range in ("all49", "no_first_frame"):
-        for variant in ("raw", "comp"):
+    for frame_range in frame_ranges:
+        for variant in variants:
             base_rows = per_sample_metrics(args.run_root, frame_range, "step0", variant)
-            for step in ("step10", "step30", "step50"):
+            for step in steps:
+                if step == "step0":
+                    continue
                 cand_rows = per_sample_metrics(args.run_root, frame_range, step, variant)
                 for metric in PRIMARY_METRICS:
                     stat = paired_stats(base_rows, cand_rows, metric)
@@ -896,6 +907,27 @@ def _load_frames_for_tc_vfid(path: Path, frame_range: str) -> list[np.ndarray]:
     return [read_rgb(fp) for fp in files]
 
 
+def _compute_tc_batched(tc_model: Any, frames_u8_rgb: list[np.ndarray], batch_size: int = 16) -> float:
+    import torch
+    import torch.nn.functional as F
+
+    if len(frames_u8_rgb) < 2:
+        return 1.0
+    feats = []
+    for idx in range(0, len(frames_u8_rgb), batch_size):
+        batch = torch.stack(
+            [tc_model.preprocess(Image.fromarray(frame)) for frame in frames_u8_rgb[idx : idx + batch_size]],
+            dim=0,
+        ).to(tc_model.device)
+        with torch.no_grad():
+            feat = tc_model.model.encode_image(batch)
+            feat = feat / feat.norm(dim=-1, keepdim=True)
+        feats.append(feat.detach().cpu())
+    features = torch.cat(feats, dim=0)
+    sims = F.cosine_similarity(features[:-1], features[1:], dim=-1)
+    return float(sims.mean().item())
+
+
 def cmd_tc_vfid(args: argparse.Namespace) -> int:
     from inference import metrics as metric_backend
 
@@ -912,6 +944,7 @@ def cmd_tc_vfid(args: argparse.Namespace) -> int:
     clip_dir = _candidate_path(
         [
             Path(os.environ["OPENCLIP_MODEL_DIR"]) if os.environ.get("OPENCLIP_MODEL_DIR") else Path(""),
+            PROJECT_ROOT / "weights/open_clip_vit_h14",
             Path("/home/hj/.tmp/open_clip_vit_h14"),
             Path("/mnt/nas/hj/.tmp/open_clip_vit_h14"),
             Path("/mnt/workspace/hj/.tmp/open_clip_vit_h14"),
@@ -924,9 +957,13 @@ def cmd_tc_vfid(args: argparse.Namespace) -> int:
     rows = read_jsonl(args.run_root / "gate64_mask_ready.jsonl")
     per_rows: list[dict[str, Any]] = []
     summary_rows: list[dict[str, Any]] = []
-    for frame_range in ("all49", "no_first_frame"):
-        for step in ("step0", "step10", "step30", "step50"):
-            for variant in ("raw", "comp"):
+    ranges = tuple(x.strip() for x in args.tc_vfid_ranges.split(",") if x.strip())
+    steps = tuple(x.strip() for x in args.tc_vfid_steps.split(",") if x.strip())
+    variants = tuple(x.strip() for x in args.tc_vfid_variants.split(",") if x.strip())
+    for frame_range in ranges:
+        for step in steps:
+            for variant in variants:
+                print(f"[tc-vfid] {frame_range} {step} {variant}", flush=True)
                 gt_acts: list[np.ndarray] = []
                 pred_acts: list[np.ndarray] = []
                 tc_vals: list[float] = []
@@ -946,8 +983,10 @@ def cmd_tc_vfid(args: argparse.Namespace) -> int:
                             }
                         )
                         continue
-                    tc = float(tc_model.compute(pred_frames))
-                    gt_act, pred_act = metric_backend.calculate_i3d_activations(gt_frames, pred_frames, i3d_model, device)
+                    tc = _compute_tc_batched(tc_model, pred_frames)
+                    gt_pil = [Image.fromarray(frame) for frame in gt_frames]
+                    pred_pil = [Image.fromarray(frame) for frame in pred_frames]
+                    gt_act, pred_act = metric_backend.calculate_i3d_activations(gt_pil, pred_pil, i3d_model, device)
                     gt_acts.append(gt_act)
                     pred_acts.append(pred_act)
                     tc_vals.append(tc)
@@ -996,6 +1035,121 @@ def cmd_tc_vfid(args: argparse.Namespace) -> int:
     return 0
 
 
+def _resize_width(img: np.ndarray, width: int) -> np.ndarray:
+    h, w = img.shape[:2]
+    if w == width:
+        return img
+    scale = width / max(1, w)
+    return cv2.resize(img, (width, max(1, int(round(h * scale)))), interpolation=cv2.INTER_AREA)
+
+
+def _label_band(width: int, text: str, *, height: int = 48) -> np.ndarray:
+    band = np.full((height, width, 3), 24, dtype=np.uint8)
+    cv2.putText(band, text, (18, 32), cv2.FONT_HERSHEY_SIMPLEX, 0.78, (240, 240, 240), 2, cv2.LINE_AA)
+    return band
+
+
+def _read_sheet(path: Path, width: int) -> np.ndarray:
+    img = cv2.imread(str(path), cv2.IMREAD_COLOR)
+    if img is None:
+        return np.full((260, width, 3), 32, dtype=np.uint8)
+    return _resize_width(img, width)
+
+
+def _stack_with_label(items: list[tuple[str, np.ndarray]], width: int) -> np.ndarray:
+    blocks: list[np.ndarray] = []
+    for label, img in items:
+        blocks.append(_label_band(width, label))
+        blocks.append(img)
+    return np.vstack(blocks)
+
+
+def cmd_visual_review_pack(args: argparse.Namespace) -> int:
+    rows = read_jsonl(args.run_root / "gate64_mask_ready.jsonl")
+    out_root = args.run_root / "visual_review_step0_vs_step50"
+    anon_dir = out_root / "anonymous_pages"
+    informed_dir = out_root / "informed_pages"
+    sample_dir = out_root / "per_sample"
+    for d in (anon_dir, informed_dir, sample_dir):
+        d.mkdir(parents=True, exist_ok=True)
+    rng = random.Random(20260626)
+    width = 1280
+    page_rows: list[dict[str, Any]] = []
+    tiles: list[tuple[str, np.ndarray, np.ndarray]] = []
+    for row in rows:
+        sid = row["sample_id"]
+        step0_ev = args.run_root / "step0/step0_review/evidence_sheets" / f"{sid}.jpg"
+        step50_ev = args.run_root / "step50/step50_review/evidence_sheets" / f"{sid}.jpg"
+        step0_cr = args.run_root / "step0/step0_review/crop_sheets" / f"{sid}.jpg"
+        step50_cr = args.run_root / "step50/step50_review/crop_sheets" / f"{sid}.jpg"
+        order = ["step0", "step50"]
+        rng.shuffle(order)
+        labels = {order[0]: "Method A", order[1]: "Method B"}
+        sheets = {
+            "step0": np.vstack([_read_sheet(step0_ev, width), _read_sheet(step0_cr, width)]),
+            "step50": np.vstack([_read_sheet(step50_ev, width), _read_sheet(step50_cr, width)]),
+        }
+        anon = _stack_with_label(
+            [
+                (f"{sid} | {labels['step0'] if order[0] == 'step0' else labels['step50']} | anonymous", sheets[order[0]]),
+                (f"{sid} | {labels['step0'] if order[1] == 'step0' else labels['step50']} | anonymous", sheets[order[1]]),
+            ],
+            width,
+        )
+        informed = _stack_with_label(
+            [
+                (f"{sid} | Step0 official baseline", sheets["step0"]),
+                (f"{sid} | Step50 trained checkpoint", sheets["step50"]),
+            ],
+            width,
+        )
+        anon_path = sample_dir / f"{sid}_anonymous.jpg"
+        informed_path = sample_dir / f"{sid}_informed.jpg"
+        cv2.imwrite(str(anon_path), anon, [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+        cv2.imwrite(str(informed_path), informed, [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+        tiles.append((sid, _resize_width(anon, 920), _resize_width(informed, 920)))
+        page_rows.append(
+            {
+                "sample_id": sid,
+                "method_a": order[0],
+                "method_b": order[1],
+                "anonymous_sheet": str(anon_path),
+                "informed_sheet": str(informed_path),
+                "reviewer_pass": False,
+                "final_class": "VISUAL_REVIEW_PENDING",
+            }
+        )
+    for page_idx in range(0, len(tiles), 4):
+        anon_blocks = []
+        informed_blocks = []
+        for sid, anon, informed in tiles[page_idx : page_idx + 4]:
+            anon_blocks.append(_label_band(anon.shape[1], f"Anonymous review page {page_idx // 4 + 1} | {sid}", height=42))
+            anon_blocks.append(anon)
+            informed_blocks.append(_label_band(informed.shape[1], f"Informed review page {page_idx // 4 + 1} | {sid}", height=42))
+            informed_blocks.append(informed)
+        cv2.imwrite(str(anon_dir / f"page_{page_idx // 4:02d}.jpg"), np.vstack(anon_blocks), [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+        cv2.imwrite(str(informed_dir / f"page_{page_idx // 4:02d}.jpg"), np.vstack(informed_blocks), [int(cv2.IMWRITE_JPEG_QUALITY), 88])
+    write_csv(PROJECT_ROOT / "reports/exp26_vp_shadowdev_visual_review_template.csv", page_rows)
+    (PROJECT_ROOT / "reports/exp26_vp_shadowdev_visual_review_pack.md").write_text(
+        "\n".join(
+            [
+                "# Exp26 Shadow-Dev Step0 vs Step50 Visual Review Pack",
+                "",
+                f"- samples: {len(rows)}",
+                f"- anonymous_pages: `{anon_dir}`",
+                f"- informed_pages: `{informed_dir}`",
+                f"- per_sample: `{sample_dir}`",
+                "",
+                "This pack is evidence only; final reviewer classifications are recorded after opening the pages.",
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    print(out_root)
+    return 0
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
@@ -1004,8 +1158,25 @@ def main() -> int:
     p.add_argument("--seed", type=int, default=20260619)
     p.add_argument("--device", default="cuda")
     p.add_argument("--skip-existing", action=argparse.BooleanOptionalAction, default=True)
+    p.add_argument("--tc-vfid-ranges", default="all49,no_first_frame")
+    p.add_argument("--tc-vfid-steps", default="step0,step10,step30,step50")
+    p.add_argument("--tc-vfid-variants", default="raw,comp")
+    p.add_argument("--metric-ranges", default="all49,no_first_frame")
+    p.add_argument("--metric-steps", default="step0,step10,step30,step50")
+    p.add_argument("--metric-variants", default="raw,comp")
     sub = p.add_subparsers(dest="command", required=True)
-    for name in ["readback", "integrity", "preregister", "checkpoint-identity", "metrics", "stats", "leakage", "dynamics", "tc-vfid"]:
+    for name in [
+        "readback",
+        "integrity",
+        "preregister",
+        "checkpoint-identity",
+        "metrics",
+        "stats",
+        "leakage",
+        "dynamics",
+        "tc-vfid",
+        "visual-review-pack",
+    ]:
         sub.add_parser(name)
     args = p.parse_args()
     args.run_root = args.run_root.resolve()

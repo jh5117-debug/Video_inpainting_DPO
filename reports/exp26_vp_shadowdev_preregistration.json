@@ -1,0 +1,10 @@
+{
+  "confirm_manifest": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp26_shadowdev_6c3160a/exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_32.jsonl",
+  "confirm_manifest_sha256": "e9cea091031f711b2dffdfade1af84d7057f5d1a663fbb61e5e591ed62493181",
+  "mask_manifest": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp26_shadowdev_6c3160a/exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_masks.jsonl",
+  "mask_manifest_sha256": "e9cea091031f711b2dffdfade1af84d7057f5d1a663fbb61e5e591ed62493181",
+  "rows": 32,
+  "runtime_mask_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/gate64_mask_ready.jsonl",
+  "seed": 20260619,
+  "status": "PREREGISTERED"
+}

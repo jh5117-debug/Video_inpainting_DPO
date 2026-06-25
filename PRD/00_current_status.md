@@ -2082,3 +2082,34 @@ selection.
 Left CLI Exp25/Exp27/Exp28 worktrees, runtime locks, outputs, and GPU1-4 are
 read-only/reserved for the left controller. The right-side Exp26 job may only
 use dynamically eligible GPU0/5/6/7 and must not signal left-side processes.
+
+## 2026-06-26 Exp26 Shadow-Dev Confirmation
+
+Status:
+
+- `VIDEOPAINTER_SHADOWDEV_CONFIRMED`
+- `CROSS_BACKBONE_ADAPTER_EVIDENCE_CONFIRMED`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+The fixed VideoPainter Step50 checkpoint was validated on the locked 32-row
+shadow-dev split against the fixed Step0 official baseline. Shadow-dev was not
+used for training, primary32 selection, checkpoint selection, threshold design,
+or inference-seed selection.
+
+Primary frame1-48 comp Step50-Step0 deltas: strict mask PSNR `+5.186942`,
+boundary PSNR `+12.175098`, LPIPS `-0.040142`, Ewarp `-8.378847`, and whole
+comp PSNR `+5.160739`. TC improved from `0.986760` to `0.991139`, and
+VFID/FVD-style improved from `0.531078` to `0.499650` on the primary
+no-first-frame comp comparison.
+
+Visual review covered `32/32` rows: Step50 clearly/slightly better `25`,
+tie `3`, Step0 better or Step50 new artifact `4`. Leakage audit found
+`NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED`. Seed robustness passed on a fixed
+16-row subset across seeds `20260619/20260620/20260621` with primary direction
+pass `3/3`.
+
+This confirms cross-backbone adapter evidence for DiffuEraser + VideoPainter
+on the current VOR-BG distribution. It does not authorize universal-adapter,
+final SOTA, RC-FPO, or 100-step+ claims without external cross-dataset
+benchmarking.

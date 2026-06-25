@@ -36,3 +36,12 @@ shadowdev_confirmatory_step0: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autorese
 shadowdev_confirmatory_step10: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/step10
 shadowdev_confirmatory_step30: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/step30
 shadowdev_confirmatory_step50: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/step50
+shadowdev_confirmatory_manifest: exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_32.jsonl
+shadowdev_confirmatory_masks: exp26_videopainter_dpo_v2/manifests/vp2_shadowdev_confirmatory_masks.jsonl
+shadowdev_seed_robustness_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/shadowdev_confirmatory_20260625/seed_robustness
+shadowdev_reports:
+  final_decision: reports/exp26_vp_shadowdev_final_decision.md
+  metrics_statistics: reports/exp26_vp_shadowdev_metrics_and_statistics.md
+  tc_vfid: reports/exp26_vp_shadowdev_tc_vfid.md
+  seed_robustness: reports/exp26_vp_shadowdev_seed_robustness.md
+  visual_review: reports/exp26_vp_shadowdev_visual_review.md

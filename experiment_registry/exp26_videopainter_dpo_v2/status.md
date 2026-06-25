@@ -490,3 +490,34 @@ Reports:
 - `reports/exp26_vp_shadowdev_readback.md`
 - `reports/exp26_vp_shadowdev_integrity_audit.md`
 - `reports/exp26_vp_shadowdev_checkpoint_identity.md`
+
+## 2026-06-26 Shadow-Dev Confirmatory Validation
+
+Status:
+
+- `VIDEOPAINTER_SHADOWDEV_CONFIRMED`
+- `CROSS_BACKBONE_ADAPTER_EVIDENCE_CONFIRMED`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+Fixed Step50 from `vp_primary32_50step_20260625_171032` was compared against
+fixed Step0 on the locked 32-row shadow-dev split. Step10/Step30 remain
+trajectory diagnostics only.
+
+Primary frame1-48 comp deltas:
+
+- strict mask PSNR `+5.186942`, win rate `0.781250`,
+  probability improved `1.000000`
+- boundary PSNR `+12.175098`, win rate `1.000000`,
+  probability improved `1.000000`
+- LPIPS `-0.040142`, win rate `0.937500`
+- Ewarp `-8.378847`, win rate `0.968750`
+- whole comp PSNR `+5.160739`
+
+No unexpected winner leakage was detected. Visual review covered `32/32`
+shadow rows: Step50 better `25`, tie `3`, Step0 better/new Step50 artifact
+`4`. Seed robustness passed on a fixed 16-row subset across seeds
+`20260619`, `20260620`, and `20260621`.
+
+This confirms held-out VideoPainter evidence for the current VOR-BG
+distribution, but it is not a universal-adapter or final SOTA claim.

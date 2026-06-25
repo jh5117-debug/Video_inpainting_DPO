@@ -1,9 +1,8 @@
 # Exp26 VideoPainter Shadow-Dev Confirmatory Readback
 
 - branch: `research/exp26-videopainter-dpo-v2`
-- HEAD: `b08d72275c1027353e9a3f18fb1a7f8e7166df87`
-- status: `?? exp26_videopainter_dpo_v2/code/shadowdev_confirmatory_analysis.py
-?? exp26_videopainter_dpo_v2/scripts/run_vp2_shadowdev_confirmatory_pai.sh`
+- HEAD: `6c3160a5e4d542388d2594ec38787ab2fc8cb833`
+- status: `runtime_snapshot_no_git`
 - training_manifest_sha256: `82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716`
 - search_dev_sha256: `41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71`
 - shadow_dev_sha256: `0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02`
@@ -41,7 +40,7 @@
 
 ## Step Identity Targets
 
-- Step0: `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/checkpoints/branch`
+- Step0: `/mnt/nas/hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/VideoPainter/VideoPainter/checkpoints/branch`
 - Step10: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-10`
 - Step30: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-30`
 - Step50: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50`
