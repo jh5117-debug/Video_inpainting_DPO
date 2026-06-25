@@ -1,0 +1,12 @@
+{
+  "classification_counts": {
+    "hard-plausible": 2,
+    "medium-hard": 6
+  },
+  "crop_sheets": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_source_repair_static_dup_20260625/review/crop_sheets",
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_source_repair_static_dup_20260625/review/gate64_visual_review.csv",
+  "evidence_sheets": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_source_repair_static_dup_20260625/review/evidence_sheets",
+  "note": "reviewer_pass remains false until manual visual inspection is recorded.",
+  "num_samples": 8,
+  "status": "dense_evidence_generated_human_review_required"
+}

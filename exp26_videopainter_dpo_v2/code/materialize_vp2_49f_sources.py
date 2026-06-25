@@ -84,7 +84,18 @@ def official_indices(frame_count: int, num_frames: int, stride: int, offset: int
     return indices
 
 
-def decode_indices(video_path: Path, indices: list[int], output_dir: Path) -> tuple[list[str], list[str]]:
+def duplicate_groups(values: list[str]) -> list[list[int]]:
+    groups: dict[str, list[int]] = {}
+    for idx, value in enumerate(values):
+        groups.setdefault(value, []).append(idx)
+    return [items for items in groups.values() if len(items) > 1]
+
+
+def summarize_groups(groups: list[list[int]], limit: int = 8) -> str:
+    return ";".join(",".join(str(i) for i in group[:12]) for group in groups[:limit])
+
+
+def decode_indices(video_path: Path, indices: list[int], output_dir: Path) -> tuple[list[str], list[str], dict]:
     if output_dir.exists():
         shutil.rmtree(output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -104,9 +115,14 @@ def decode_indices(video_path: Path, indices: list[int], output_dir: Path) -> tu
         hashes.append(sha256_file(path))
         paths.append(str(path))
     cap.release()
-    if len(set(hashes)) != len(hashes):
-        raise RuntimeError(f"decoded duplicate frame images for {video_path}")
-    return paths, hashes
+    dup_groups = duplicate_groups(hashes)
+    diagnostics = {
+        "frame_hash_unique_count": len(set(hashes)),
+        "frame_hash_duplicate_group_count": len(dup_groups),
+        "frame_hash_duplicate_groups": summarize_groups(dup_groups),
+        "pixel_duplicate_policy": "allowed_static_pixels_unique_indices",
+    }
+    return paths, hashes, diagnostics
 
 
 def write_jsonl(path: Path, rows: list[dict]) -> None:
@@ -142,7 +158,7 @@ def main() -> int:
             info = video_info(video_path)
             indices = official_indices(info["frame_count"], args.num_frames, args.stride, args.offset)
             frame_dir = args.output_root / sample_id / "frames"
-            frame_paths, frame_hashes = decode_indices(video_path, indices, frame_dir)
+            frame_paths, frame_hashes, frame_hash_diagnostics = decode_indices(video_path, indices, frame_dir)
             out_row = dict(row)
             out_row.update(
                 {
@@ -154,6 +170,7 @@ def main() -> int:
                     "frame_indices": indices,
                     "frame_paths": frame_paths,
                     "frame_hashes": frame_hashes,
+                    **frame_hash_diagnostics,
                     "original_frame_count": info["frame_count"],
                     "original_fps": info["fps"],
                     "width": info["width"],
@@ -171,6 +188,7 @@ def main() -> int:
                 "width": info["width"],
                 "height": info["height"],
                 "frame_count": len(indices),
+                **frame_hash_diagnostics,
                 "error": "",
             }
         except Exception as exc:  # noqa: BLE001 - resumable status table records per-row failures.

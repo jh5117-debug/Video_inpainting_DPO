@@ -1,0 +1,49 @@
+{
+  "total_gate64_sources": 64,
+  "formal_valid_sources_after_repair": 64,
+  "reviewed_outputs": 64,
+  "classification_counts": {
+    "medium-hard": 37,
+    "hard-plausible": 18,
+    "trivial-bad": 8,
+    "too-close": 1
+  },
+  "eligible_count": 55,
+  "rejected_count": 9,
+  "selection_decision_counts": {
+    "ELIGIBLE_AFTER_VISUAL_REVIEW": 55,
+    "REJECT_TRIVIAL_OR_TECHNICAL": 8,
+    "REJECT_TOO_CLOSE": 1
+  },
+  "candidate_pool_jsonl": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_candidate_pool55_visual_reviewed_comp.jsonl",
+  "candidate_pool_sha256": "4bec06d78249b809ddf90a80eca900f8467ba3a2798c8ae9d03552d0f25ee5b8",
+  "primary32_jsonl": "/home/hj/H20_Video_inpainting_DPO_exp26_videopainter/exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl",
+  "primary32_sha256": "21c0c617698bbf69859f3850979d777c3af3e1908926bca43b69ede447df3cc8",
+  "primary32_counts": {
+    "classification": {
+      "hard-plausible": 16,
+      "medium-hard": 16
+    },
+    "area_bucket": {
+      "small": 8,
+      "large": 8,
+      "medium": 16
+    },
+    "motion_bucket": {
+      "low": 8,
+      "high": 8,
+      "medium": 16
+    },
+    "mask_profile": {
+      "irregular_freeform": 8,
+      "object_like_polygon": 8,
+      "soft_blob": 5,
+      "ellipse_circle_subset": 3,
+      "thin_structure_freeform": 5,
+      "edge_touch_freeform": 3
+    }
+  },
+  "loser_semantics": "final_loser_path uses comp_loser_video_path to match current BR selected_primary_comp source of truth; raw_loser_video_path retained for diagnostics/ablation",
+  "dpo_training_status": "NOT_STARTED",
+  "dpo_blocker": "PAI hj cannot write /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2 until root ACL fix is applied"
+}

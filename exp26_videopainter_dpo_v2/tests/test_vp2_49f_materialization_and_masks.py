@@ -47,9 +47,33 @@ class VideoPainterFormal49FTest(unittest.TestCase):
                 cv2.putText(frame, str(idx), (2, 16), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
                 writer.write(frame)
             writer.release()
-            paths, hashes = mat.decode_indices(video, list(range(49)), tmp_path / "frames")
+            paths, hashes, diagnostics = mat.decode_indices(video, list(range(49)), tmp_path / "frames")
             self.assertEqual(len(paths), 49)
             self.assertEqual(len(set(hashes)), 49)
+            self.assertEqual(diagnostics["frame_hash_duplicate_group_count"], 0)
+
+    def test_decode_indices_allows_static_pixel_duplicates(self):
+        mat = load_module("code/materialize_vp2_49f_sources.py", "vp2_mat_test_static")
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_path = Path(tmp)
+            video = tmp_path / "static_prefix.mp4"
+            writer = cv2.VideoWriter(str(video), cv2.VideoWriter_fourcc(*"mp4v"), 24, (32, 24))
+            for idx in range(60):
+                frame = np.zeros((24, 32, 3), dtype=np.uint8)
+                value = max(0, idx - 1)
+                frame[:, :, 0] = (value * 3) % 255
+                frame[:, :, 1] = (value * 7) % 255
+                frame[:, :, 2] = (value * 13) % 255
+                if idx > 1:
+                    cv2.putText(frame, str(idx), (2, 16), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (255, 255, 255), 1)
+                writer.write(frame)
+            writer.release()
+            paths, hashes, diagnostics = mat.decode_indices(video, list(range(49)), tmp_path / "frames")
+            self.assertEqual(len(paths), 49)
+            self.assertEqual(len(hashes), 49)
+            self.assertLess(len(set(hashes)), 49)
+            self.assertGreaterEqual(diagnostics["frame_hash_duplicate_group_count"], 1)
+            self.assertEqual(diagnostics["pixel_duplicate_policy"], "allowed_static_pixels_unique_indices")
 
     def test_moving_mask_first_frame_gt_and_not_constant(self):
         masks_mod = load_module("code/generate_vp2_moving_br_masks.py", "vp2_mask_test")

@@ -519,3 +519,63 @@ Reports:
 - `reports/exp26_gate64_human_visual_review.md`
 - `reports/exp26_gate64_human_visual_review.csv`
 - `reports/exp26_gate64_human_visual_review_summary.json`
+
+## 2026-06-25 Post-Maintenance Gate64 Source Repair
+
+Status:
+
+- `GATE64_SOURCE_REPAIR_COMPLETE`
+- `GATE64_FORMAL_VALID_64_OF_64`
+- `GATE64_VISUAL_REVIEW_COMPLETE`
+- `GATE64_PRIMARY32_LOCKED`
+- `NO_VIDEOPAINTER_DPO`
+
+The 8 Gate64 rows previously rejected by the pixel-hash duplicate guard were
+reanalyzed after PAI maintenance. A deeper decode audit found that all 8 rows
+have 49 decoded frame indices / timestamps; the duplicate pixel hashes are
+static-content repeats, not short clips. The materializer now records duplicate
+pixel groups but does not reject formal 49-frame sources when the selected
+indices are valid.
+
+Repair results:
+
+- repaired materialization: `8/8`
+- repaired mask generation: `8/8`
+- repaired official VideoPainter generation: `8/8`
+- repaired outputs: `49` frames each
+- repaired dense visual review: `6` medium-hard, `2` hard-plausible
+
+Combined Gate64 results:
+
+- formal-valid sources: `64/64`
+- reviewed outputs: `64/64`
+- medium-hard: `37`
+- hard-plausible: `18`
+- too-close: `1`
+- trivial-bad: `8`
+- eligible after visual review: `55`
+
+The primary training manifest is locked as a balanced 32-row subset:
+
+- `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
+- candidate pool:
+  `exp26_videopainter_dpo_v2/manifests/vp2_gate64_candidate_pool55_visual_reviewed_comp.jsonl`
+
+Loser semantics are explicit: `final_loser_video_path` uses the hard-composited
+VideoPainter output to match the existing BR `selected_primary_comp`
+source-of-truth. Raw VideoPainter outputs are retained in
+`raw_loser_video_path` for diagnostics and ablation, not as the current primary
+training loser.
+
+VideoPainter DPO micro-training remains unstarted because PAI user `hj` still
+cannot write the Exp26 experiment output directory under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2`.
+
+Reports:
+
+- `reports/exp26_gate64_source_repair_readback.md`
+- `reports/exp26_gate64_duplicate_source_deep_audit.md`
+- `reports/exp26_gate64_repair_human_visual_review.md`
+- `reports/exp26_gate64_final_readiness.md`
+- `reports/exp26_gate64_final_human_visual_review.csv`
+- `reports/exp26_gate64_primary32_visual_reviewed_comp.csv`

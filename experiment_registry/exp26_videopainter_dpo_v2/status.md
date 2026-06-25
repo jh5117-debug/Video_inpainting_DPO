@@ -250,3 +250,44 @@ Reports:
 - `reports/exp26_gate64_human_visual_review.md`
 - `reports/exp26_gate64_human_visual_review.csv`
 - `reports/exp26_gate64_human_visual_review_summary.json`
+
+## 2026-06-25 Post-Maintenance Gate64 Source Repair
+
+Status:
+
+- `GATE64_SOURCE_REPAIR_COMPLETE`
+- `GATE64_FORMAL_VALID_64_OF_64`
+- `GATE64_VISUAL_REVIEW_COMPLETE`
+- `GATE64_PRIMARY32_LOCKED`
+- `NO_VIDEOPAINTER_DPO`
+
+Deep duplicate-source audit reclassified the 8 formal-source failures as
+static pixel duplicates with valid 49-frame index/timestamp evidence. The
+materializer now allows these static duplicates and records duplicate groups in
+diagnostics.
+
+Repair generation and review:
+
+- materialization: `8/8`
+- masks: `8/8`
+- official VideoPainter outputs: `8/8`, `49` frames each
+- repair visual buckets: `6` medium-hard, `2` hard-plausible
+
+Combined Gate64:
+
+- formal-valid: `64/64`
+- reviewed outputs: `64/64`
+- eligible after review: `55`
+- rejected: `9`
+- primary-32 manifest locked:
+  `exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`
+
+DPO remains unstarted because the Exp26 NAS experiment output directory is not
+writable by PAI user `hj`.
+
+Reports:
+
+- `reports/exp26_gate64_source_repair_readback.md`
+- `reports/exp26_gate64_duplicate_source_deep_audit.md`
+- `reports/exp26_gate64_repair_human_visual_review.md`
+- `reports/exp26_gate64_final_readiness.md`

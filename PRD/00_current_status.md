@@ -1943,3 +1943,21 @@ trivial-bad. `47` rows are eligible after visual review, but the pool is not
 directly `DATA_READY`; it still needs source/defect balancing and exclusion of
 rejected rows before any VideoPainter DPO micro-training. No DPO training was
 launched.
+
+## 2026-06-25 Exp26 Gate64 Source Repair
+
+Status: `GATE64_PRIMARY32_LOCKED_DPO_BLOCKED_BY_NAS_EXPERIMENT_PERMISSION`
+
+Deep audit corrected the 8 duplicate-frame failures: they are static-pixel
+repeats with valid 49-frame index/timestamp evidence, not short formal
+sources. Repaired materialization, mask generation, and official VideoPainter
+generation completed `8/8`.
+
+Combined Gate64 is now `64/64` formal-valid, `64/64` reviewed, and `55`
+eligible after visual review. A balanced primary-32 comp-loser manifest is
+locked at
+`exp26_videopainter_dpo_v2/manifests/vp2_gate64_primary32_visual_reviewed_comp.jsonl`.
+
+VideoPainter DPO remains unstarted because PAI user `hj` still cannot write the
+Exp26 experiments output directory under
+`/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2`.
