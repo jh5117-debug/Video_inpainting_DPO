@@ -458,6 +458,52 @@ Report:
 
 `reports/exp25_diffueraser_or_root_cause_matrix_20260625_status.md`
 
+## 2026-06-25 DiffuEraser OR Root-Cause Matrix v2
+
+Status:
+
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_COMPLETED`
+- `DIFFUSERASER_NATIVE_OR_STACK_USABLE`
+- `LOSER_UTILITY_PASS_FOR_12_SAMPLE_MATRIX_ONLY`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+After the PAI permission recovery, Exp25 reran the fixed 12-sample root-cause
+matrix without changing the sample manifest:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl`
+
+Manifest SHA256:
+
+`d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`
+
+Results:
+
+- DE-A SFT canonical raw6, dilation 0, ProPainter prior: `12/12` valid,
+  `8` medium-hard, `4` hard-plausible, `0` trivial-bad.
+- DE-B SFT raw6, OR-style dilation 8, ProPainter prior: `12/12` valid,
+  `9` medium-hard, `3` hard-plausible, `0` trivial-bad.
+- DE-C PCM2 failed before quality evaluation because the active
+  `UNetMotionModel` path does not expose `load_lora_adapter`; this is a
+  technical stack incompatibility, not a loser-quality result.
+- Official DiffuEraser core and no-prior stacks remain blocked because no
+  strict-load-identifiable official core/no-prior configuration was available
+  in the current audited assets.
+
+The matrix answers the immediate root-cause question: the earlier Gate32
+trivial-bad yield does not prove DiffuEraser OR self-loser failure. Under the
+verified SFT raw6 stack, especially the dilation-8 variant, the fixed audit
+sample produces usable medium-hard / hard-plausible losers without global
+collapse. The next allowed Exp25 step is an independent Gate16 confirmation
+using the locked DE-B stack. Gate128 expansion and OR-DPO training remain
+forbidden until that Gate16 is reviewed.
+
+Reports:
+
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.md`
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.csv`
+- `reports/exp25_diffueraser_or_root_cause_visual_review.csv`
+
 ## 2026-06-25 PAI Pre-Maintenance Persistence Resolved
 
 Status:

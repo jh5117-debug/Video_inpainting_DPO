@@ -1,0 +1,8 @@
+stack_id,rows,ok_rows,medium_hard,hard_plausible,trivial_bad,too_close,technical_invalid,blocked,mean_mask_psnr,mean_outside_psnr,mean_temporal_absdiff
+DE-A_sft_canonical_raw6_d0_propainter,12,12,8,4,0,0,0,0,20.6543639088063,29.116529041049233,1.1386028431983404
+DE-B_sft_raw6_d8_propainter,12,12,9,3,0,0,0,0,21.977291971857934,28.808166679156546,1.100622282206637
+DE-C_sft_official_pcm2_d8_propainter,1,0,0,0,0,0,1,0,nan,nan,nan
+DE-D_official_core_official_pcm2_d8_propainter,1,0,0,0,0,0,0,1,nan,nan,nan
+DE-E_official_core_canonical_raw6_d0_propainter,1,0,0,0,0,0,0,1,nan,nan,nan
+DE-F_sft_native_high_quality_no_prior,1,0,0,0,0,0,0,1,nan,nan,nan
+DE-G_official_pcm2_alias,1,0,0,0,0,0,0,1,nan,nan,nan

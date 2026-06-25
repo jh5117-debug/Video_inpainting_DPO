@@ -1953,3 +1953,30 @@ Reports:
 - `reports/exp25_postpermission_asset_smoke.md`
 - `reports/exp25_postpermission_asset_smoke.json`
 - `reports/exp25_postpermission_diffueraser_smoke_summary.json`
+
+## 2026-06-25 Exp25 DiffuEraser OR Root-Cause Matrix v2
+
+Status: `DIFFUSERASER_NATIVE_OR_STACK_USABLE`
+
+Exp25 completed the fixed 12-sample DiffuEraser OR root-cause matrix after PAI
+permissions were restored. The fixed manifest SHA256 remained
+`d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`.
+
+The verified SFT raw6 stacks produced usable losers:
+
+- DE-A d0 + ProPainter: `12/12` valid, `8` medium-hard, `4` hard-plausible,
+  `0` trivial-bad.
+- DE-B d8 + ProPainter: `12/12` valid, `9` medium-hard, `3` hard-plausible,
+  `0` trivial-bad.
+
+PCM2 and official-core/no-prior variants remain technical-asset blocked, not
+quality failures. The earlier Gate32 trivial-bad yield should therefore be
+treated as protocol/configuration-sensitive rather than as proof that
+DiffuEraser OR cannot provide medium-hard losers. Gate128 and OR-DPO remain not
+started; the next allowed Exp25 step is a locked DE-B Gate16 confirmation.
+
+Reports:
+
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.md`
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.csv`
+- `reports/exp25_diffueraser_or_root_cause_visual_review.csv`

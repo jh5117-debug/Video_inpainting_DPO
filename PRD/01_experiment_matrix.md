@@ -658,3 +658,4 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp25 VOR OR preference data | `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED` | DiffuEraser converted weights and Exp25 NAS output roots are now accessible to `hj`; resume fixed 12-sample DiffuEraser OR root-cause matrix only. No Gate128 or OR-DPO. |
+| Exp25 VOR OR preference data | `DIFFUSERASER_NATIVE_OR_STACK_USABLE` | Fixed 12-sample matrix completed: DE-A SFT raw6 d0 gives 8 medium-hard + 4 hard-plausible, DE-B SFT raw6 d8 gives 9 medium-hard + 3 hard-plausible, both 12/12 valid and 0 trivial-bad. PCM2/official-core variants remain technical blocked. Next allowed step is DE-B Gate16; no Gate128 or OR-DPO. |

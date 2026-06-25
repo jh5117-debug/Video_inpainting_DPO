@@ -305,3 +305,42 @@ Reports:
 - `reports/exp25_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Root-Cause Matrix v2 Completed
+
+Status:
+
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_COMPLETED`
+- `DIFFUSERASER_NATIVE_OR_STACK_USABLE`
+- `LOSER_UTILITY_PASS_FOR_12_SAMPLE_MATRIX_ONLY`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+Fixed sample manifest:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl`
+
+SHA256:
+
+`d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`
+
+Matrix summary:
+
+| stack | valid | medium-hard | hard-plausible | trivial-bad | notes |
+| --- | ---: | ---: | ---: | ---: | --- |
+| DE-A SFT canonical raw6 d0 + ProPainter | 12/12 | 8 | 4 | 0 | usable, no global collapse |
+| DE-B SFT raw6 d8 + ProPainter | 12/12 | 9 | 3 | 0 | best current stack; lock for independent Gate16 |
+| DE-C PCM2 | 0/12 | 0 | 0 | 0 | blocked by `UNetMotionModel.load_lora_adapter` incompatibility |
+| official-core/no-prior stacks | 0/12 | 0 | 0 | 0 | blocked by missing strict audited config/assets |
+
+Decision: DiffuEraser native/SFT OR self-loser generation is usable on the
+fixed 12-sample audit when run through the verified raw6 + ProPainter stack,
+and dilation 8 is the best audited variant. This does not authorize Gate128 or
+OR-DPO. The next allowed Exp25 action is a DE-B Gate16 confirmation with full
+video review.
+
+Reports:
+
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.md`
+- `reports/exp25_diffueraser_or_root_cause_matrix_v2.csv`
+- `reports/exp25_diffueraser_or_root_cause_visual_review.csv`
