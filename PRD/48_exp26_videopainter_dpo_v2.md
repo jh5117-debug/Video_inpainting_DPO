@@ -445,3 +445,40 @@ Markers created:
 Report:
 
 `reports/pai_premaintenance_output_persistence.md`
+
+## 2026-06-25 Gate64 Duplicate Source Audit
+
+Status:
+
+- `DUPLICATE_SOURCE_AUDIT_COMPLETE`
+- `GATE64_SOURCE_VALID_ROWS_56_OF_64`
+- `GATE64_VISUAL_REVIEW_PENDING`
+- `NO_VIDEOPAINTER_DPO`
+
+After NAS persistence was restored, the 8 formal-49F materialization failures
+were audited without regenerating or replacing any Gate64 row.
+
+Result:
+
+- failed rows audited: `8/8`
+- classification: `SOURCE_PIXEL_DUPLICATE_IN_SELECTED_49F` for all 8 rows
+- OpenCV random-seek duplication: `0/8`
+- sequential decode count: `240` frames for every audited row
+- selected first-49 unique pixel hashes: `44-48 / 49`
+
+The failures are therefore real source/static duplicate-frame rejections under
+the strict formal source guard, not VideoPainter inference failures and not a
+materializer seek bug. The currently generated Gate64 pool remains 56 valid
+VideoPainter outputs and still requires per-video visual review before any
+training manifest can be built.
+
+PAI `ffprobe` currently fails with missing `libblas.so.3`; the audit therefore
+uses OpenCV sequential and seek decode evidence for the classification, with
+metadata columns left blank. This does not affect the duplicate-frame source
+classification.
+
+Reports:
+
+- `reports/exp26_gate64_duplicate_source_audit.md`
+- `reports/exp26_gate64_duplicate_source_audit.csv`
+- `reports/exp26_gate64_duplicate_source_audit.json`

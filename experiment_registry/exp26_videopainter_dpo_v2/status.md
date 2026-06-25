@@ -199,3 +199,23 @@ Persisted artifacts:
 Completion markers are present under:
 
 `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`
+
+## 2026-06-25 Gate64 Duplicate Source Audit
+
+Status:
+
+- `DUPLICATE_SOURCE_AUDIT_COMPLETE`
+- `GATE64_SOURCE_VALID_ROWS_56_OF_64`
+- `GATE64_VISUAL_REVIEW_PENDING`
+- `NO_VIDEOPAINTER_DPO`
+
+The 8 Gate64 materialization failures were audited after persistence. All 8
+are real pixel-duplicate source clips in the selected first 49 frames under
+sequential OpenCV decode. They are not random-seek artifacts and not
+VideoPainter inference failures.
+
+Reports:
+
+- `reports/exp26_gate64_duplicate_source_audit.md`
+- `reports/exp26_gate64_duplicate_source_audit.csv`
+- `reports/exp26_gate64_duplicate_source_audit.json`

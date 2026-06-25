@@ -1920,3 +1920,15 @@ persistence was resolved. Exp26 Gate64 official generation artifacts and Exp25
 Gate32 dense review artifacts were copied to NAS with matching file counts,
 byte totals, inventory diffs, and SHA256 diffs. Runtime markers were created
 under `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`.
+
+## 2026-06-25 Exp26 Gate64 Duplicate Source Audit
+
+Status: `DUPLICATE_SOURCE_AUDIT_COMPLETE`.
+
+The 8 Gate64 formal-49F materialization failures were audited without replacing
+samples or launching training. All 8 are real source pixel-duplicate cases in
+the selected first 49 frames, reproduced by sequential decode as well as seek
+decode. The valid generated Gate64 set remains `56/64`; visual review is still
+pending and VideoPainter DPO remains unstarted.
+
+Report: `reports/exp26_gate64_duplicate_source_audit.md`.
