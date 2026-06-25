@@ -2044,3 +2044,21 @@ Dense temporal evidence/crop review covered `32/32` rows and found no global
 collapse, frame-order mismatch, or systematic new artifact. Local mask
 texture/color artifacts remain, so this is a conditional micro-training gate,
 not `SCIENTIFIC_POSITIVE`. It authorizes only the pre-registered 50-step gate.
+
+## 2026-06-25 Exp26 VideoPainter Primary-32 50-Step
+
+Status: `VIDEOPAINTER_ADAPTER_POSITIVE`
+
+The conditional 50-step VideoPainter DPO micro gate completed on locked
+search-dev. Step50 comp vs step0: PSNR `+4.816168`, SSIM `+0.087883`, LPIPS
+`-0.044059`, Ewarp `-7.055122`, strict mask PSNR `+4.942246`, and boundary
+PSNR `+12.111889`. PSNR per-video win rate is `0.718750`; bootstrap
+probability(delta > 0) is `1.000000`.
+
+Manual dense temporal/crop review covered `32/32` rows and found no global
+collapse, frame-order mismatch, first-frame failure, systematic outside damage,
+or gate-blocking flicker/ghosting. Remaining failures are local
+mask/affected-region artifacts. This is `TRAINING_PASS` and
+`VIDEOPAINTER_ADAPTER_POSITIVE` for the search-dev micro gate only, not
+`SCIENTIFIC_POSITIVE`; RC-FPO and 100-step-or-longer training remain not
+started.

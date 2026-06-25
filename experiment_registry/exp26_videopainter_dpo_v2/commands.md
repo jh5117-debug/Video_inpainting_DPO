@@ -46,3 +46,19 @@ Outputs:
 /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step10_vp_primary32_10step_retry1_20260625_151020
 /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/reports_step1_step10_20260625_151020
 ```
+
+Primary-32 50-step gate:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/run_vp_primary32_50step_gate_20260625.sh
+```
+
+Outputs:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step10_vp_primary32_50step_20260625_171032
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step30_vp_primary32_50step_20260625_171032
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step50_vp_primary32_50step_20260625_171032
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/reports_vp_primary32_50step_20260625_171032
+```

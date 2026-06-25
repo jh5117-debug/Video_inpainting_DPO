@@ -68,3 +68,33 @@ Step10 minus step0:
 
 Dense evidence visual review covered `32/32` rows and did not block the
 conditional 50-step gate.
+
+## Primary-32 50-Step Gate
+
+Status: `VIDEOPAINTER_ADAPTER_POSITIVE`
+
+Scope: locked search-dev micro-training gate only; not `SCIENTIFIC_POSITIVE`.
+
+| step | PSNR | SSIM | LPIPS | Ewarp | Mask PSNR | Boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| step0 comp | 24.301897366442233 | 0.871557953992803 | 0.07080062118242197 | 8.04273951919754 | 16.012427341260924 | 16.01195236353609 |
+| step10 comp | 25.435825499433605 | 0.9031576620291053 | 0.06795676456571602 | 6.790276521977981 | 17.14805054427446 | 21.176618178372053 |
+| step30 comp | 29.03247933591733 | 0.9560208106174282 | 0.031781330745597726 | 1.9569201151495481 | 20.85899678409783 | 25.27817230953844 |
+| step50 comp | 29.11806557328507 | 0.959440551089185 | 0.026741246365195457 | 0.9876170219917195 | 20.95467319099135 | 28.123841505101794 |
+
+Step50 minus step0:
+
+- PSNR `+4.8161682068428355`
+- SSIM `+0.08788259709638202`
+- LPIPS `-0.04405937481722652`
+- Ewarp `-7.0551224972058195`
+- mask PSNR `+4.942245849730426`
+- boundary PSNR `+12.111889141565705`
+
+Paired statistics:
+
+- PSNR win rate `0.718750`
+- PSNR bootstrap 95% CI `[+2.648960, +7.234666]`
+- PSNR probability(delta > 0) `1.000000`
+- LPIPS probability improved `1.000000`
+- Ewarp probability improved `1.000000`

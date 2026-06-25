@@ -802,3 +802,92 @@ Reports:
 - `reports/exp26_vp_10step_diagnostics.csv`
 - `reports/exp26_vp_10step_visual_review.md`
 - `reports/exp26_vp_10step_visual_review.csv`
+
+## 2026-06-25 VideoPainter Primary-32 50-Step Gate
+
+Status:
+
+- `VIDEOPAINTER_ADAPTER_POSITIVE`
+- `TRAINING_PASS`
+- `SEARCH_DEV_MICRO_GATE_ONLY`
+- `NOT_SCIENTIFIC_POSITIVE`
+- `NO_RCFPO`
+- `NO_100STEP_OR_LONGER`
+
+Exp26 completed the pre-registered conditional `50` optimizer-step
+VideoPainter DPO gate after the `10`-step gate passed. The run used the locked
+primary-32 comp-loser manifest, formal `49` frames, the official VideoPainter
+initialization, frozen reference behavior, strict checkpoint reload/preflight,
+and the same locked search-dev evaluator.
+
+Checkpoint strict reload/preflight passed for `checkpoint-10`,
+`checkpoint-20`, `checkpoint-30`, `checkpoint-40`, and `checkpoint-50`.
+
+Training diagnostics:
+
+- rows: `50`
+- final total loss: `0.9509385228157043`
+- final DPO loss: `0.8550137281417847`
+- final implicit accuracy: `0.0`
+- final grad norm: `30.821309345579444`
+- max grad norm: `471.68358081969296`
+- p95 grad norm: `136.25990432375542`
+- NaN/Inf count: `0`
+- final loser-dominant ratio: `0.0`
+
+Search-dev comp metrics:
+
+| step | PSNR | SSIM | LPIPS | Ewarp | strict mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| step0 | 24.301897 | 0.871558 | 0.070801 | 8.042740 | 16.012427 | 16.011952 |
+| step10 | 25.435825 | 0.903158 | 0.067957 | 6.790277 | 17.148051 | 21.176618 |
+| step30 | 29.032479 | 0.956021 | 0.031781 | 1.956920 | 20.858997 | 25.278172 |
+| step50 | 29.118066 | 0.959441 | 0.026741 | 0.987617 | 20.954673 | 28.123842 |
+
+Step50 minus step0:
+
+- PSNR: `+4.816168`
+- SSIM: `+0.087883`
+- LPIPS: `-0.044059`
+- Ewarp: `-7.055122`
+- strict mask PSNR: `+4.942246`
+- boundary PSNR: `+12.111889`
+
+Paired statistics:
+
+- PSNR per-video win rate: `0.718750`
+- PSNR bootstrap 95% CI: `[+2.648960, +7.234666]`
+- PSNR probability(delta > 0): `1.000000`
+- PSNR leave-one-out range: `[+4.121639, +5.126012]`
+- LPIPS probability improved: `1.000000`
+- Ewarp probability improved: `1.000000`
+- boundary PSNR probability improved: `1.000000`
+
+Manual visual review:
+
+- reviewed rows: `32 / 32`
+- method: opened dense temporal evidence pages and crop pages covering all
+  `32` step50 search-dev rows
+- no global black/purple collapse
+- no visible frame-order mismatch or first-frame failure
+- no systematic outside damage in the comp protocol
+- no gate-blocking flicker/ghosting pattern
+- remaining failures are local mask/affected-region artifacts, including
+  green/purple residual patches, blur, texture discontinuity, and boundary
+  tinting in water/foliage/grass cases
+
+This is a micro-training result on the locked search-dev split. It is a
+`VIDEOPAINTER_ADAPTER_POSITIVE` training gate, not a final scientific-positive
+claim. It does not authorize RC-FPO, 100-step or longer training, Stage2-style
+promotion, or final benchmark claims without a new pre-registered held-out
+confirmation.
+
+Reports:
+
+- `reports/exp26_vp_50step_final.md`
+- `reports/exp26_vp_50step_metrics.csv`
+- `reports/exp26_vp_50step_statistics.json`
+- `reports/exp26_vp_50step_diagnostics.csv`
+- `reports/exp26_vp_50step_paired_stats.csv`
+- `reports/exp26_vp_50step_reload_preflight.csv`
+- `reports/exp26_vp_50step_visual_review.csv`

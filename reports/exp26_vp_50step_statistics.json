@@ -1,0 +1,441 @@
+{
+  "compact_comp_metrics": {
+    "step0": {
+      "boundary_pixel_psnr": 16.01195236353609,
+      "ewarp_mask_region": 8.04273951919754,
+      "strict_mask_pixel_psnr": 16.012427341260924,
+      "whole_video_lpips": 0.07080062118242197,
+      "whole_video_psnr": 24.301897366442233,
+      "whole_video_ssim": 0.871557953992803
+    },
+    "step10": {
+      "boundary_pixel_psnr": 21.176618178372053,
+      "ewarp_mask_region": 6.790276521977981,
+      "strict_mask_pixel_psnr": 17.14805054427446,
+      "whole_video_lpips": 0.06795676456571602,
+      "whole_video_psnr": 25.435825499433605,
+      "whole_video_ssim": 0.9031576620291053
+    },
+    "step30": {
+      "boundary_pixel_psnr": 25.27817230953844,
+      "ewarp_mask_region": 1.9569201151495481,
+      "strict_mask_pixel_psnr": 20.85899678409783,
+      "whole_video_lpips": 0.031781330745597726,
+      "whole_video_psnr": 29.03247933591733,
+      "whole_video_ssim": 0.9560208106174282
+    },
+    "step50": {
+      "boundary_pixel_psnr": 28.123841505101794,
+      "ewarp_mask_region": 0.9876170219917195,
+      "strict_mask_pixel_psnr": 20.95467319099135,
+      "whole_video_lpips": 0.026741246365195457,
+      "whole_video_psnr": 29.11806557328507,
+      "whole_video_ssim": 0.959440551089185
+    }
+  },
+  "deltas_vs_step0": {
+    "step10": {
+      "boundary_pixel_psnr": 5.164665814835963,
+      "ewarp_mask_region": -1.252462997219558,
+      "strict_mask_pixel_psnr": 1.1356232030135374,
+      "whole_video_lpips": -0.002843856616705956,
+      "whole_video_psnr": 1.1339281329913717,
+      "whole_video_ssim": 0.0315997080363023
+    },
+    "step30": {
+      "boundary_pixel_psnr": 9.266219946002352,
+      "ewarp_mask_region": -6.085819404047991,
+      "strict_mask_pixel_psnr": 4.8465694428369055,
+      "whole_video_lpips": -0.03901929043682425,
+      "whole_video_psnr": 4.730581969475097,
+      "whole_video_ssim": 0.08446285662462516
+    },
+    "step50": {
+      "boundary_pixel_psnr": 12.111889141565705,
+      "ewarp_mask_region": -7.0551224972058195,
+      "strict_mask_pixel_psnr": 4.942245849730426,
+      "whole_video_lpips": -0.04405937481722652,
+      "whole_video_psnr": 4.8161682068428355,
+      "whole_video_ssim": 0.08788259709638202
+    }
+  },
+  "diagnostics": {
+    "dpo_loss_last": 0.8550137281417847,
+    "dpo_loss_max": 3.1350271701812744,
+    "dpo_loss_mean": 0.8703254174765607,
+    "dpo_loss_p95": 1.6415682017803188,
+    "grad_gt_100_count": 4,
+    "grad_gt_10_count": 41,
+    "grad_gt_50_count": 7,
+    "grad_norm_last": 30.821309345579444,
+    "grad_norm_max": 471.68358081969296,
+    "grad_norm_mean": 42.74864419140528,
+    "grad_norm_p95": 136.25990432375542,
+    "implicit_acc_last": 0.0,
+    "implicit_acc_max": 1.0,
+    "implicit_acc_mean": 0.28,
+    "implicit_acc_p95": 1.0,
+    "loser_degradation_mean_last": 0.13608309626579285,
+    "loser_degradation_mean_max": 1.0,
+    "loser_degradation_mean_mean": 0.33541349731385706,
+    "loser_degradation_mean_p95": 1.0,
+    "loser_dominant_ratio_last": 0.0,
+    "loser_dominant_ratio_max": 1.0,
+    "loser_dominant_ratio_mean": 0.12,
+    "loser_dominant_ratio_p95": 1.0,
+    "loss_last": 0.9509385228157043,
+    "loss_max": 3.956773042678833,
+    "loss_mean": 1.0235690009710379,
+    "loss_p95": 2.0768107175827026,
+    "m_l_last": 0.04603901877999306,
+    "m_l_max": 0.4664570093154907,
+    "m_l_mean": 0.10328197196125984,
+    "m_l_p95": 0.2364461861550807,
+    "m_l_ref_last": 0.04018135368824005,
+    "m_l_ref_max": 0.42130231857299805,
+    "m_l_ref_mean": 0.07857644403353334,
+    "m_l_ref_p95": 0.2040680669248104,
+    "m_w_last": 0.03349701687693596,
+    "m_w_max": 0.393113374710083,
+    "m_w_mean": 0.06568110849708318,
+    "m_w_p95": 0.20956684574484816,
+    "m_w_ref_last": 0.030484044924378395,
+    "m_w_ref_max": 0.35950908064842224,
+    "m_w_ref_mean": 0.06620567884296179,
+    "m_w_ref_p95": 0.18446334302425382,
+    "nan_inf_count": 0,
+    "norm_lose_gap_last": 0.13608309626579285,
+    "norm_lose_gap_max": 1.490891695022583,
+    "norm_lose_gap_mean": 0.3598687156289816,
+    "norm_lose_gap_p95": 1.144904464483261,
+    "norm_win_gap_last": 0.09424997866153717,
+    "norm_win_gap_max": 0.8184680938720703,
+    "norm_win_gap_mean": -0.04615741923567839,
+    "norm_win_gap_p95": 0.37612628787755964,
+    "rows": 50,
+    "winner_improvement_mean_last": 0.0,
+    "winner_improvement_mean_max": 1.6575884819030762,
+    "winner_improvement_mean_mean": 0.19611695230123588,
+    "winner_improvement_mean_p95": 1.3843542277812955
+  },
+  "paired_vs_step0": {
+    "step10": {
+      "boundary_pixel_psnr": {
+        "bootstrap_ci_high": 7.055457295435928,
+        "bootstrap_ci_low": 3.4422866843710844,
+        "leave_one_out_max": 5.46691766944778,
+        "leave_one_out_min": 4.699954826627956,
+        "mean_delta": 5.164665814835957,
+        "median_delta": 4.646528177332394,
+        "metric": "boundary_pixel_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.90625
+      },
+      "ewarp_mask_region": {
+        "bootstrap_ci_high": 1.6988822254605884,
+        "bootstrap_ci_low": -4.313005091202153,
+        "leave_one_out_max": -0.4829998056608331,
+        "leave_one_out_min": -1.826733882182296,
+        "mean_delta": -1.2524629972195573,
+        "median_delta": 0.30215014082083735,
+        "metric": "ewarp_mask_region",
+        "n": 32,
+        "prob_improved": 0.7842,
+        "win_rate": 0.5
+      },
+      "strict_mask_pixel_psnr": {
+        "bootstrap_ci_high": 3.056466409652988,
+        "bootstrap_ci_low": -0.6698887231826995,
+        "leave_one_out_max": 1.4114455479719574,
+        "leave_one_out_min": 0.6919410482062827,
+        "mean_delta": 1.1356232030135365,
+        "median_delta": 0.8453832829803387,
+        "metric": "strict_mask_pixel_psnr",
+        "n": 32,
+        "prob_improved": 0.8808,
+        "win_rate": 0.53125
+      },
+      "whole_video_lpips": {
+        "bootstrap_ci_high": 0.01030752443028696,
+        "bootstrap_ci_low": -0.017054305228298386,
+        "leave_one_out_max": 0.0005581985087360178,
+        "leave_one_out_min": -0.005034717481639762,
+        "mean_delta": -0.0028438566167059602,
+        "median_delta": -0.001261891493079613,
+        "metric": "whole_video_lpips",
+        "n": 32,
+        "prob_improved": 0.6518,
+        "win_rate": 0.53125
+      },
+      "whole_video_psnr": {
+        "bootstrap_ci_high": 3.0083180397823526,
+        "bootstrap_ci_low": -0.626003345568648,
+        "leave_one_out_max": 1.4007461644223058,
+        "leave_one_out_min": 0.7002448158716166,
+        "mean_delta": 1.1339281329913733,
+        "median_delta": 0.8583109448382018,
+        "metric": "whole_video_psnr",
+        "n": 32,
+        "prob_improved": 0.8873,
+        "win_rate": 0.5625
+      },
+      "whole_video_ssim": {
+        "bootstrap_ci_high": 0.05841455236330804,
+        "bootstrap_ci_low": 0.006407193078948458,
+        "leave_one_out_max": 0.03680901495962039,
+        "leave_one_out_min": 0.025953152037142144,
+        "mean_delta": 0.03159970803630218,
+        "median_delta": 0.018569091541637717,
+        "metric": "whole_video_ssim",
+        "n": 32,
+        "prob_improved": 0.9921,
+        "win_rate": 0.625
+      }
+    },
+    "step30": {
+      "boundary_pixel_psnr": {
+        "bootstrap_ci_high": 11.651372243570115,
+        "bootstrap_ci_low": 7.207952223230865,
+        "leave_one_out_max": 9.633877287364271,
+        "leave_one_out_min": 8.581734300890686,
+        "mean_delta": 9.266219946002348,
+        "median_delta": 7.816549391646964,
+        "metric": "boundary_pixel_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.96875
+      },
+      "ewarp_mask_region": {
+        "bootstrap_ci_high": -3.2915056347345195,
+        "bootstrap_ci_low": -8.933747104570408,
+        "leave_one_out_max": -5.451087877632642,
+        "leave_one_out_min": -6.801533684933343,
+        "mean_delta": -6.085819404047991,
+        "median_delta": -3.539289721629757,
+        "metric": "ewarp_mask_region",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.90625
+      },
+      "strict_mask_pixel_psnr": {
+        "bootstrap_ci_high": 7.570170524005494,
+        "bootstrap_ci_low": 2.4610711606570987,
+        "leave_one_out_max": 5.125889520568885,
+        "leave_one_out_min": 4.061181911301679,
+        "mean_delta": 4.846569442836903,
+        "median_delta": 4.5338266452362035,
+        "metric": "strict_mask_pixel_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.65625
+      },
+      "whole_video_lpips": {
+        "bootstrap_ci_high": -0.02249978100165264,
+        "bootstrap_ci_low": -0.058565037644379744,
+        "leave_one_out_max": -0.03307634865689761,
+        "leave_one_out_min": -0.04137557656629902,
+        "mean_delta": -0.039019290436824255,
+        "median_delta": -0.028490272768754134,
+        "metric": "whole_video_lpips",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.90625
+      },
+      "whole_video_psnr": {
+        "bootstrap_ci_high": 7.390619414753485,
+        "bootstrap_ci_low": 2.404412848227641,
+        "leave_one_out_max": 5.002531350969758,
+        "leave_one_out_min": 3.963984292523389,
+        "mean_delta": 4.730581969475102,
+        "median_delta": 4.376117981568452,
+        "metric": "whole_video_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.65625
+      },
+      "whole_video_ssim": {
+        "bootstrap_ci_high": 0.12274388088930568,
+        "bootstrap_ci_low": 0.05213215986343281,
+        "leave_one_out_max": 0.08904670343639783,
+        "leave_one_out_min": 0.07315718405917786,
+        "mean_delta": 0.08446285662462519,
+        "median_delta": 0.06228053247316767,
+        "metric": "whole_video_ssim",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.875
+      }
+    },
+    "step50": {
+      "boundary_pixel_psnr": {
+        "bootstrap_ci_high": 14.006566507359231,
+        "bootstrap_ci_low": 10.35486545727644,
+        "leave_one_out_max": 12.439150915543848,
+        "leave_one_out_min": 11.711156336659219,
+        "mean_delta": 12.111889141565705,
+        "median_delta": 11.172518274273978,
+        "metric": "boundary_pixel_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 1.0
+      },
+      "ewarp_mask_region": {
+        "bootstrap_ci_high": -4.767494419138485,
+        "bootstrap_ci_low": -9.604506778531382,
+        "leave_one_out_max": -6.46633676445258,
+        "leave_one_out_min": -7.27883628089895,
+        "mean_delta": -7.0551224972058195,
+        "median_delta": -3.7933674220198554,
+        "metric": "ewarp_mask_region",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 1.0
+      },
+      "strict_mask_pixel_psnr": {
+        "bootstrap_ci_high": 7.424436326703247,
+        "bootstrap_ci_low": 2.7169467761606354,
+        "leave_one_out_max": 5.262499852989182,
+        "leave_one_out_min": 4.229602442482627,
+        "mean_delta": 4.9422458497304245,
+        "median_delta": 5.2635002691896,
+        "metric": "strict_mask_pixel_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.71875
+      },
+      "whole_video_lpips": {
+        "bootstrap_ci_high": -0.029993883468430765,
+        "bootstrap_ci_low": -0.06052648268711464,
+        "leave_one_out_max": -0.039347692741322694,
+        "leave_one_out_min": -0.04585042050650309,
+        "mean_delta": -0.04405937481722652,
+        "median_delta": -0.032198564035399835,
+        "metric": "whole_video_lpips",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.96875
+      },
+      "whole_video_psnr": {
+        "bootstrap_ci_high": 7.234665801635539,
+        "bootstrap_ci_low": 2.6489602239722183,
+        "leave_one_out_max": 5.126012373583843,
+        "leave_one_out_min": 4.121639265040804,
+        "mean_delta": 4.816168206842837,
+        "median_delta": 5.111761725545794,
+        "metric": "whole_video_psnr",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.71875
+      },
+      "whole_video_ssim": {
+        "bootstrap_ci_high": 0.12248517159290577,
+        "bootstrap_ci_low": 0.057976926228872704,
+        "leave_one_out_max": 0.09109316228121006,
+        "leave_one_out_min": 0.07763203542273864,
+        "mean_delta": 0.08788259709638203,
+        "median_delta": 0.06403112011210804,
+        "metric": "whole_video_ssim",
+        "n": 32,
+        "prob_improved": 1.0,
+        "win_rate": 0.9375
+      }
+    }
+  },
+  "reasons": [
+    "primary PSNR or local metric gate passed"
+  ],
+  "reload_preflight": [
+    {
+      "exists": true,
+      "max_reload_diff": "",
+      "missing_keys": 0,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/reload_preflight_step10/preflight_report.json",
+      "status": "passed",
+      "step": 10,
+      "unexpected_keys": 0
+    },
+    {
+      "exists": true,
+      "max_reload_diff": "",
+      "missing_keys": 0,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/reload_preflight_step20/preflight_report.json",
+      "status": "passed",
+      "step": 20,
+      "unexpected_keys": 0
+    },
+    {
+      "exists": true,
+      "max_reload_diff": "",
+      "missing_keys": 0,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/reload_preflight_step30/preflight_report.json",
+      "status": "passed",
+      "step": 30,
+      "unexpected_keys": 0
+    },
+    {
+      "exists": true,
+      "max_reload_diff": "",
+      "missing_keys": 0,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/reload_preflight_step40/preflight_report.json",
+      "status": "passed",
+      "step": 40,
+      "unexpected_keys": 0
+    },
+    {
+      "exists": true,
+      "max_reload_diff": "",
+      "missing_keys": 0,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/reload_preflight_step50/preflight_report.json",
+      "status": "passed",
+      "step": 50,
+      "unexpected_keys": 0
+    }
+  ],
+  "review_summary": [
+    {
+      "classification_counts": {
+        "hard-plausible": 7,
+        "medium-hard": 25
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step0_official_20260625_131957/step0_review/gate64_visual_review.csv",
+      "reviewer_pass_count": 32,
+      "rows": 32,
+      "step": "step0"
+    },
+    {
+      "classification_counts": {
+        "hard-plausible": 1,
+        "medium-hard": 31
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step10_vp_primary32_50step_20260625_171032/step10_review/gate64_visual_review.csv",
+      "reviewer_pass_count": 0,
+      "rows": 32,
+      "step": "step10"
+    },
+    {
+      "classification_counts": {
+        "medium-hard": 32
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step30_vp_primary32_50step_20260625_171032/step30_review/gate64_visual_review.csv",
+      "reviewer_pass_count": 0,
+      "rows": 32,
+      "step": "step30"
+    },
+    {
+      "classification_counts": {
+        "medium-hard": 32
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step50_vp_primary32_50step_20260625_171032/step50_review/gate64_visual_review.csv",
+      "reviewer_pass_count": 0,
+      "rows": 32,
+      "step": "step50"
+    }
+  ],
+  "status": "VIDEOPAINTER_ADAPTER_POSITIVE_METRIC_GATE_PENDING_MANUAL_VISUAL_CONFIRMATION",
+  "step0_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step0_official_20260625_131957",
+  "step10_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step10_vp_primary32_50step_20260625_171032",
+  "step30_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step30_vp_primary32_50step_20260625_171032",
+  "step50_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step50_vp_primary32_50step_20260625_171032",
+  "train_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032"
+}

@@ -1,6 +1,6 @@
 experiment: exp26_videopainter_dpo_v2
 branch: research/exp26-videopainter-dpo-v2
-status: GATE64_DATA_READY
+status: VIDEOPAINTER_ADAPTER_POSITIVE
 formal_frame_count: 49
 plumbing_only_frame_count: 13
 promotion_policy: checkpoint_curve_gate
@@ -14,4 +14,10 @@ primary_loser_semantics: comp_loser_matches_BR_selected_primary_comp
 video_review_status: VIDEO_REVIEW_PASS
 data_status: GATE64_DATA_READY
 l0_l1_status: VP_L0_L1_PASSED
-next_allowed_gate: VP_10STEP_AFTER_STEP0_BASELINE
+vp_10step_status: VIDEOPAINTER_10STEP_GATE_PASSED
+vp_50step_status: VIDEOPAINTER_ADAPTER_POSITIVE
+vp_50step_scope: SEARCH_DEV_MICRO_GATE_ONLY
+scientific_positive: false
+rcfpo_started: false
+long_training_authorized: false
+next_allowed_gate: HELD_OUT_CONFIRMATION_REQUIRED_BEFORE_ANY_LONGER_TRAINING

@@ -432,3 +432,36 @@ Step10 comp vs step0 comp:
 
 No global collapse, frame-order mismatch, or systematic new artifact was found
 in dense evidence. This authorizes only the conditional 50-step gate.
+
+## 2026-06-25 Primary-32 50-Step Gate
+
+Status:
+
+- `VIDEOPAINTER_ADAPTER_POSITIVE`
+- `TRAINING_PASS`
+- `SEARCH_DEV_MICRO_GATE_ONLY`
+- `NOT_SCIENTIFIC_POSITIVE`
+- `NO_RCFPO`
+- `NO_100STEP_OR_LONGER`
+
+Final primary-32 50-step DPO completed on PAI. Checkpoint-10/20/30/40/50
+strict reload/preflight passed. Dense temporal evidence and crop pages were
+reviewed for all `32/32` search-dev rows.
+
+Step50 comp vs step0 comp:
+
+- PSNR `+4.816168`
+- SSIM `+0.087883`
+- LPIPS `-0.044059`
+- Ewarp `-7.055122`
+- strict mask PSNR `+4.942246`
+- boundary PSNR `+12.111889`
+
+Paired PSNR win rate was `0.718750`; bootstrap 95% CI was
+`[+2.648960, +7.234666]` with probability(delta > 0) `1.000000`.
+
+No global collapse, frame-order mismatch, first-frame failure, systematic
+outside damage, or gate-blocking flicker/ghosting was found. Remaining visible
+failures are local mask/affected-region artifacts. This result is a
+search-dev micro-training gate, not a final benchmark or scientific-positive
+claim.
