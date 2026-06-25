@@ -35,6 +35,8 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--project-root", type=Path, required=True)
     p.add_argument("--report-dir", type=Path, required=True)
     p.add_argument("--num-frames", type=int, default=24)
+    p.add_argument("--width", type=int, default=512)
+    p.add_argument("--height", type=int, default=288)
     p.add_argument("--device", default="cuda")
     p.add_argument("--compute-lpips", action="store_true")
     p.add_argument("--compute-ewarp", action="store_true")
@@ -251,6 +253,10 @@ def run_metric_adapter(args: argparse.Namespace, metric_manifest: Path, out_dir:
         "mask_path",
         "--max_frames",
         str(args.num_frames),
+        "--width",
+        str(args.width),
+        "--height",
+        str(args.height),
         "--device",
         args.device,
     ]
