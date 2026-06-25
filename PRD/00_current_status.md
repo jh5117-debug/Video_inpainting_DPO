@@ -1,3 +1,43 @@
+## 2026-06-25 Exp28 Fine Inner Boundary Sweep
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Exp28 was created as an isolated CLI4 branch and worktree:
+
+```text
+branch = research/exp28-fine-inner-boundary-sweep-20260625
+worktree = /home/hj/H20_Video_inpainting_DPO_exp28_inner_boundary
+```
+
+Status:
+
+```text
+CODE_TEST_READY_NOT_LAUNCHED
+```
+
+Scope:
+
+- keep the outer boundary exactly as Exp11 legacy outer one latent/loss-grid pool-step;
+- add only an image-space inner boundary at r=2/4/8 px;
+- area-pool the inner ring to the loss grid;
+- keep Stage1 and Stage2 on the same explicit geometry;
+- use fresh paired controls only, not historical Exp11 numbers;
+- preserve old four-card effective global batch by using world_size=2 and gradient accumulation 2.
+
+Local validation passed:
+
+```text
+python -m unittest discover -s exp28_fine_inner_boundary_sweep/tests -p 'test_*.py'
+python -m py_compile exp28_fine_inner_boundary_sweep/code/inner_boundary_geometry.py exp28_fine_inner_boundary_sweep/code/exp28_trial_runner.py exp28_fine_inner_boundary_sweep/code/train_exp28_stage1.py exp28_fine_inner_boundary_sweep/code/train_exp28_stage2.py exp28_fine_inner_boundary_sweep/code/summarize_exp28_pair_eval.py
+bash -n exp28_fine_inner_boundary_sweep/scripts/eval_exp28_pair_davis50_pai.sh
+```
+
+No `INNER_RADIUS_POSITIVE` or `SCIENTIFIC_POSITIVE` claim exists. Those require fresh paired DAVIS50 and video review.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

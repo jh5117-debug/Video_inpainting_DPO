@@ -195,6 +195,14 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 | --- | --- | --- | --- | --- | --- | --- |
 | Exp8 D3 comp region-loss DAVIS S1/S2 2000 | prepared for PAI manual launch | D3 selected-primary-comp repaired PAI manifest | partial-mask video inpainting | `L = -logσ{-0.5*10*(win_gap - 0.25*lose_gap)} + 0.05*m_w + ReLU(win_gap)`, with `m_w/m_l` as region-weighted MSE and weights mask=1.0, boundary=0.5, outside=0.05 | DAVIS four-column visualization and `tools/run_inpainting_metric_eval.py`; no VBench | Run only after PAI precheck passes; H20 remains untouched while data generation runs |
 
+## 2026-06-25 Exp28 Fine Inner Boundary Sweep
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp28 fine inner boundary sweep | code/test ready; PAI training not launched; no scientific claim yet | `exp28_fine_inner_boundary_sweep/`, `experiment_registry/exp28_fine_inner_boundary_sweep/`, `PRD/50_exp28_fine_inner_boundary_sweep.md`, `reports/exp28_inner_boundary_code_parity_audit.md` |
+
+Exp28 keeps the Exp11 legacy outer one pool-step exactly fixed and tests only image-space inner radii 2/4/8 px with fresh paired controls. DAVIS50 is model-selection evidence for this sweep, not an untouched final test.
+
 # Experiment Matrix
 
 ## 2026-06-18 Exp19 Flow-Adapter Attempt

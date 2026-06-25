@@ -1,0 +1,7 @@
+HAL_worktree: /home/hj/H20_Video_inpainting_DPO_exp28_inner_boundary
+PAI_runtime_snapshot: /home/hj/runtime_code_snapshots/cli4_exp28_<commit>
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp28_fine_inner_boundary_sweep
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp28_fine_inner_boundary_sweep
+eval_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp28_fine_inner_boundary_sweep
+train_manifest: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/data/generated_losers/exp09_10_11_youtubevos_gtwin_d3comp_pai/manifests/selected_primary_comp.gtwin.pai_paths.jsonl
+davis50_root: /mnt/workspace/hj/nas_hj/data/external/davis_432_240

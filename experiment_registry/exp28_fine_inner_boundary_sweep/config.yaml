@@ -1,0 +1,10 @@
+experiment_name: exp28_fine_inner_boundary_sweep
+branch: research/exp28-fine-inner-boundary-sweep-20260625
+status: CODE_TEST_READY_NOT_LAUNCHED
+base_branch: origin/research/exp23-two-stage-pool-morphology-sweep
+outer_geometry: legacy_outer_one_pool_step
+inner_geometry: image_space_pixel_erosion_area_pool
+main_radii_px: [2, 4, 8]
+world_size_per_pair: 2
+reference_effective_global_batch: 4
+new_gradient_accumulation_steps: 2

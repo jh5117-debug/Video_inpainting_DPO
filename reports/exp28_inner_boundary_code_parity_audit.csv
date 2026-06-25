@@ -1,0 +1,9 @@
+check,status
+radius_zero_exact_control,passed
+outer_ring_legacy_exact_unchanged,passed
+partition_sum_one,passed
+pixel_radius_geometry,passed
+inner_outer_no_illegal_overlap,passed
+stage1_stage2_same_explicit_geometry,passed
+effective_batch_parity,passed
+scientific_positive_claimed,no
