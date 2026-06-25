@@ -151,3 +151,31 @@ Reports:
 - `reports/exp27_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 True DiffuEraser Policy/Reference SDPO Gate
+
+Status:
+
+- `TRUE_MODEL_PARITY`
+- `SDPO_TRUE_MODEL_32X4_SCAN_COMPLETE`
+- `SDPO_TINY_STEP_ACTUAL_CHECK_PASSED`
+- `LINEAR_TRUE_MODEL_PROBE_PASS`
+- `LINEAR_TRUE_MODEL_1_10_STEP_PENDING`
+- `LOCALDPO_24F_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Records: `256` true model forwards over S0/S1, with `128` S1 records.
+S1 `lambda_safe < 1` count: `32` (`0.25`). Lambda max abs diff and SDPO loss
+max abs diff against the extracted official SDPO helper are both `0.0`.
+Output-gradient cosine min is `0.9999998807907104`. Eight actual tiny-step cases
+passed (`4` lambda<1 and `4` lambda=1), with max reference grad norm `0.0` and
+max policy parameter delta norm `0.0009144449931267993`.
+
+Reports:
+
+- `reports/exp27_sdpo_true_model_forward_parity.md`
+- `reports/exp27_sdpo_true_model_distribution_scan.csv`
+- `reports/exp27_sdpo_true_model_summary.json`
+- `reports/exp27_sdpo_true_model_tiny_step_cases.csv`
+- `reports/exp27_linear_true_model_parity.md`
+- `reports/exp27_linear_true_model_parity.csv`

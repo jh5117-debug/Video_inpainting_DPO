@@ -635,3 +635,12 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp27 paper-grounded preference study | `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED` | DiffuEraser converted weights and Exp27 NAS output roots are now accessible to `hj`; next allowed milestone is true model SDPO parity. RC-FPO remains not started. |
+
+## 2026-06-25 Exp27 True-Model Objective Gate Update
+
+- Exp27 SDPO true-model parity: `TRUE_MODEL_PARITY` on real DiffuEraser Stage1 policy/reference forwards.
+- Coverage: S0 identity plus S1 Exp11 outer b0.75 representative policy, 32 BR rows x 4 timesteps.
+- S1 lambda<1 ratio: `0.25`.
+- Tiny actual parameter-step check: passed on 8 cases (`4` lambda<1, `4` lambda=1), reference grad norm max `0.0`.
+- Linear-DPO status: true-model-record probe passed; full Linear Frozen/EMA 1/10-step training remains pending.
+- RC-FPO: not started.

@@ -1,0 +1,41 @@
+{
+  "lambda_max_abs_diff": 0.0,
+  "linear_probe": {
+    "ema_max_drift": 1.1920928955078125e-07,
+    "records": 32,
+    "status": "passed",
+    "utility_max": 0.009999999776482582,
+    "utility_min": 0.009999999776482582
+  },
+  "loss_max_abs_diff": 0.0,
+  "note": "This gate uses real DiffuEraser Stage1 policy/reference forwards. Tiny parameter-step cases are included only when max_tiny_step_cases > 0.",
+  "output_gradient_cosine_min": 0.9999998807907104,
+  "records": 256,
+  "s1_lambda_eq_1_count": 96,
+  "s1_lambda_lt_1_count": 32,
+  "s1_lambda_lt_1_ratio": 0.25,
+  "s1_records": 128,
+  "states": [
+    {
+      "policy_path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000",
+      "ref_path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000",
+      "state": "S0"
+    },
+    {
+      "policy_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/stage1/20260613_042729_exp11_boundary_exp11_boundary_outer_b075_o005_s1s2_2000_s1_2000_davis_pai/last_weights",
+      "ref_path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000",
+      "state": "S1"
+    }
+  ],
+  "status": "TRUE_MODEL_PARITY",
+  "tiny_step": {
+    "lambda_eq_1_cases": 4,
+    "lambda_lt_1_cases": 4,
+    "margin_change_mean": 0.0003423636662773788,
+    "max_param_delta_norm": 0.0009144449931267993,
+    "max_reference_grad_norm": 0.0,
+    "records": 8,
+    "status": "passed",
+    "winner_loss_change_mean": 8.094278382486664e-05
+  }
+}

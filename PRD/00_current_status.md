@@ -1868,3 +1868,15 @@ Reports:
 - `reports/exp27_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Exp27 True-Model SDPO Gate
+
+Status: `TRUE_MODEL_PARITY`
+
+Exp27 completed the real DiffuEraser Stage1 policy/reference SDPO gate on PAI:
+32 real BR preference rows x 4 timesteps, with S0 identity and S1 Exp11 outer
+b0.75 representative policy states. S1 `lambda_safe < 1` ratio is `0.25`;
+SDPO lambda/loss parity are exact to reported tolerance; output-gradient cosine
+minimum is `0.9999998807907104`. Eight actual tiny-step cases passed with
+reference grad norm `0.0`. Linear-DPO is only a true-model-record probe so far;
+full Linear Frozen/EMA 1/10-step remains pending. RC-FPO remains not started.

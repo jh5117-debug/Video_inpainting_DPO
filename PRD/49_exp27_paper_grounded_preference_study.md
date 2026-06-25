@@ -313,3 +313,47 @@ Reports:
 - `reports/exp27_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 True DiffuEraser Policy/Reference SDPO Gate
+
+Status:
+
+- `TRUE_MODEL_PARITY`
+- `SDPO_TRUE_MODEL_32X4_SCAN_COMPLETE`
+- `SDPO_TINY_STEP_ACTUAL_CHECK_PASSED`
+- `LINEAR_TRUE_MODEL_PROBE_PASS`
+- `LINEAR_TRUE_MODEL_1_10_STEP_PENDING`
+- `LOCALDPO_24F_PENDING`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Exp27 completed the real DiffuEraser Stage1 policy/reference forward gate using
+SFT-48000 as the S0 policy/reference identity state and Exp11 outer b0.75
+Stage1 as the S1 representative trained policy with frozen SFT-48000 reference.
+The scan covered 32 real BR preference rows and four fixed timesteps per row.
+
+Results:
+
+- Total true-model records: `256`.
+- S1 records: `128`.
+- S1 `lambda_safe < 1`: `32 / 128 = 0.25`.
+- SDPO lambda max abs diff vs extracted official helper: `0.0`.
+- SDPO loss max abs diff: `0.0`.
+- Output-gradient cosine min: `0.9999998807907104`.
+- Actual tiny-step cases: `8` (`4` lambda<1 and `4` lambda=1).
+- Tiny-step reference grad norm max: `0.0`.
+- Tiny-step max policy parameter delta norm: `0.0009144449931267993`.
+- Tiny-step mean margin change: `0.0003423636662773788`.
+
+The Linear-DPO check in this milestone is a true-model-record probe over the
+same real forward records, not the requested full Linear Frozen/EMA 1/10-step
+training gate. That remains pending and must not be reported as training pass.
+
+Reports:
+
+- `reports/exp27_sdpo_true_model_forward_parity.md`
+- `reports/exp27_sdpo_true_model_distribution_scan.csv`
+- `reports/exp27_sdpo_true_model_summary.json`
+- `reports/exp27_sdpo_true_model_tiny_step_cases.csv`
+- `reports/exp27_linear_true_model_parity.md`
+- `reports/exp27_linear_true_model_parity.csv`
