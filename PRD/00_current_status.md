@@ -1842,3 +1842,13 @@ official generation artifacts were copied to NAS with matching file counts,
 byte totals, inventory diffs, and SHA256 diffs. Exp27 remains at
 `SDPO_REAL_RESIDUAL_PROXY_ONLY`; the next allowed milestone is true
 DiffuEraser Stage1 policy/reference forward scan.
+
+## 2026-06-25 Exp27 SDPO Distribution Scan
+
+Status: `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
+
+Exp27 completed a 128-record real residual-proxy SDPO distribution scan over
+32 real preference rows. `lambda_safe < 1` ratio is `0.4453125`; min/mean/max
+are `0.2246925 / 0.8942396 / 1.0`, with unsafe tiny-step winner-change rate
+`0.0`. This is still not a full DiffuEraser policy/reference forward scan, so
+RC-FPO and O0-O5 objective studies remain unstarted.

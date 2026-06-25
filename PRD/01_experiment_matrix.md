@@ -623,3 +623,9 @@ started.
   SSH user `hj` cannot write to the NAS project root.
 - Effect: true-model SDPO forward parity, true Linear-DPO, LocalDPO 24F, and
   objective-study GPU tasks remain pending.
+
+## 2026-06-25 Exp27 SDPO Distribution Scan
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp27 SDPO real residual-proxy distribution scan | `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE` | 128 records from 32 rows; `lambda_safe < 1` ratio 0.4453125. Proxy-only, no policy/reference forward, no RC-FPO or objective-study training. |

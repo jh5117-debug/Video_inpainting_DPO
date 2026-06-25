@@ -104,3 +104,28 @@ Cross-track persistence now passed:
 Completion markers are present under:
 
 `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/`
+
+## 2026-06-25 SDPO Real Residual-Proxy Distribution Scan
+
+Status:
+
+- `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Records: `128` from `32` real preference rows.
+
+`lambda_safe < 1` ratio: `0.4453125`.
+
+lambda min/mean/max: `0.2246925 / 0.8942396 / 1.0`.
+
+Unsafe tiny-step winner-change rate: `0.0`.
+
+This remains residual-proxy only and cannot promote RC-FPO or objective-study
+training.
+
+Reports:
+
+- `reports/exp27_sdpo_real_distribution_scan.md`
+- `reports/exp27_sdpo_real_distribution_scan.csv`
+- `reports/exp27_sdpo_real_distribution_scan_summary.json`

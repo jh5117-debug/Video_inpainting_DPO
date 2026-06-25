@@ -4,7 +4,7 @@ Status: `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
 
 Run root:
 
-`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp27_sdpo_real_distribution_scan`
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp27_paper_grounded_preference_study/sdpo_real_distribution_scan_20260625`
 
 Important caveat:
 
@@ -44,4 +44,4 @@ Outputs:
 
 - CSV: `reports/exp27_sdpo_real_distribution_scan.csv`
 - Summary JSON: `reports/exp27_sdpo_real_distribution_scan_summary.json`
-- PAI output: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_26_27_followup_20260624/exp27_sdpo_real_distribution_scan`
+- PAI output: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp27_paper_grounded_preference_study/sdpo_real_distribution_scan_20260625`

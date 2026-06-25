@@ -257,3 +257,32 @@ milestone remains true DiffuEraser Stage1 policy/reference forward scan.
 Report:
 
 `reports/pai_premaintenance_output_persistence.md`
+
+## 2026-06-25 SDPO Real Residual-Proxy Distribution Scan
+
+Status:
+
+- `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Exp27 scanned 32 real preference rows with four sampled timesteps/frames per
+row, producing 128 residual-proxy records. This uses real VOR preference data
+and real DiffuEraser Gate32 raw OR candidates, but it does not load
+DiffuEraser policy/reference models and is not a full policy-forward gradient
+distribution scan.
+
+Results:
+
+- `lambda_safe < 1` ratio: `0.4453125`
+- lambda min/mean/max: `0.2246925 / 0.8942396 / 1.0`
+- unsafe tiny-step winner-change rate: `0.0`
+
+This supports continuing the true policy-forward scan, but it does not allow
+RC-FPO, LocalDPO four-grid runs, or O0-O5 objective training to start.
+
+Reports:
+
+- `reports/exp27_sdpo_real_distribution_scan.md`
+- `reports/exp27_sdpo_real_distribution_scan.csv`
+- `reports/exp27_sdpo_real_distribution_scan_summary.json`
