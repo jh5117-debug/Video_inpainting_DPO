@@ -2,9 +2,11 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp25 fixed DE-B Gate16 confirmation | code ready; not launched; no pass/fail result yet | `exp25_vor_or_preference_data/scripts/select_gate16_deb_sources.py`, `exp25_vor_or_preference_data/scripts/launch_exp25_gate16_deb.py`, `reports/exp25_gate16_deb_cli4_prelaunch.md` |
+| Exp25 fixed DE-B Gate16 confirmation | `EXP25_DIFFUSERASER_GATE16_PASSED`; no Gate128 or OR-DPO started | `reports/exp25_gate16_deb_cli4_result.md`, `experiment_registry/exp25_vor_or_preference_data/status.md` |
 
-No Gate128 and no OR-DPO are launched by this preparation step.
+Gate16 used fixed stack `DE-B_sft_raw6_d8_propainter` and produced 16/16 valid
+raw DiffuEraser losers under CLI4 output roots. This pass authorizes only the
+next candidate-pool and Gate64 planning step; it does not authorize OR-DPO.
 
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 

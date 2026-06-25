@@ -1,6 +1,6 @@
-## 2026-06-25 CLI4 DE-B Gate16 Preparation
+## 2026-06-25 CLI4 DE-B Gate16 Result
 
-Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+Status: `EXP25_DIFFUSERASER_GATE16_PASSED`
 
 The root-cause matrix selected DE-B as the fixed next stack:
 
@@ -13,6 +13,52 @@ guidance = 0.0
 mask_dilation_iter = 8
 hard_comp = false
 ```
+
+CLI4 completed the fixed Gate16 confirmation on isolated branch
+`research/exp25-vor-gate16-cli4-20260625`.
+
+Inputs and isolation:
+
+- 16 train-source rows were locked from `vor_train_source_pool_4096.jsonl`.
+- The manifest excludes the root-cause 12, VOR-Eval, search-dev, shadow-dev,
+  and existing Gate32 scene groups.
+- The selector used the best available balance from the current pool: 12 REAL
+  and 4 BLENDER sources; only four BLENDER rows remained after all disjointness
+  filters.
+- `condition=V_obj`, `winner=V_bg`, foreground mask, and `hard_comp=false` were
+  preserved for all rows.
+
+Gate16 result:
+
+| item | value |
+| --- | ---: |
+| generation OK | 16 / 16 |
+| technical valid | 16 / 16 |
+| medium-hard eligible | 7 / 16 |
+| hard but plausible | 7 / 16 |
+| too close | 0 / 16 |
+| trivial bad | 2 / 16 |
+| technical invalid | 0 / 16 |
+| final decision | `DIFFUSERASER_NATIVE_OR_STACK_USABLE` |
+
+Gate decision:
+
+```text
+EXP25_DIFFUSERASER_GATE16_PASSED
+```
+
+This passes the requested gate: technical valid >= 15/16,
+medium-hard + hard-plausible >= 10/16, trivial-bad <= 2/16, and no system
+outside collapse. The next allowed work is candidate-pool construction plus a
+Gate64 plan. This CLI branch did not start Gate128 and did not start OR-DPO.
+
+Artifacts:
+
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/cli4/gate16_deb_20260625_184632`
+- experiment root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp25_vor_or_preference_data/cli4/gate16_deb_20260625_184632`
+- result report: `reports/exp25_gate16_deb_cli4_result.md`
 
 CLI4 added:
 
@@ -27,7 +73,7 @@ The selector locks 16 new train-source rows, excludes root-cause/search-dev/shad
 /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp25_vor_or_preference_data/cli4/
 ```
 
-This is preparation only. No Gate16 pass/fail result is claimed, Gate128 remains not started, and OR-DPO remains not started.
+Gate128 remains not started, and OR-DPO remains not started.
 
 # Exp25 VOR OR Preference Data
 

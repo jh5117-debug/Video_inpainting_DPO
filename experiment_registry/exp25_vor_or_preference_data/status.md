@@ -1,12 +1,22 @@
-## 2026-06-25 CLI4 Update
+## 2026-06-25 CLI4 Gate16 Result
 
-Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+Status: `EXP25_DIFFUSERASER_GATE16_PASSED`
 
 - Fixed stack: `DE-B_sft_raw6_d8_propainter`.
-- Added isolated CLI4 selector and launcher for Gate16.
-- Output roots are under `logs/autoresearch/exp25_vor_or_preference_data/cli4/` and `experiments/dpo/exp25_vor_or_preference_data/cli4/`.
-- No Gate16 generation result yet.
-- Gate128 and OR-DPO remain not started.
+- Completed isolated CLI4 Gate16 generation and dense review.
+- Output roots are under `logs/autoresearch/exp25_vor_or_preference_data/cli4/`
+  and `experiments/dpo/exp25_vor_or_preference_data/cli4/`.
+- Result: generation 16/16, technical valid 16/16, medium-hard 7/16,
+  hard-plausible 7/16, trivial-bad 2/16, too-close 0/16, technical-invalid
+  0/16.
+- Gate decision: `EXP25_DIFFUSERASER_GATE16_PASSED`.
+- Gate128 and OR-DPO remain not started; the next allowed action is a Gate64
+  candidate-pool and planning step.
+
+Evidence:
+
+- `reports/exp25_gate16_deb_cli4_result.md`
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/cli4/gate16_deb_20260625_184632/review_v2/review_summary.json`
 
 # Exp25 VOR OR Preference Data
 

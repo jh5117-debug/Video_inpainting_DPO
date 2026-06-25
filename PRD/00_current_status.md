@@ -1,17 +1,46 @@
-## 2026-06-25 Exp25 CLI4 DE-B Gate16 Preparation
+## 2026-06-25 Exp25 CLI4 DE-B Gate16 Result
 
-Status: `GATE16_DEB_CLI4_READY_NOT_LAUNCHED`
+Status: `EXP25_DIFFUSERASER_GATE16_PASSED`
 
-The next allowed Exp25 step remains a fixed DE-B Gate16 confirmation. CLI4 added isolated tooling only:
+CLI4 completed the fixed DE-B Gate16 confirmation on isolated branch
+`research/exp25-vor-gate16-cli4-20260625`. This did not reuse root-cause,
+VOR-Eval, search-dev, shadow-dev, or previous Gate32 scene groups. Gate128 and
+OR-DPO remain not started.
 
-- selects 16 new VOR train sources from `vor_train_source_pool_4096.jsonl`;
-- excludes root-cause, search-dev, shadow-dev, and existing Gate32 scene groups;
-- enforces REAL/BLENDER 8/8 source balance and scene-group disjointness;
-- locks stack `DE-B_sft_raw6_d8_propainter`;
-- preserves `condition=V_obj`, `winner=V_bg`, foreground mask, `hard_comp=false`;
-- launches selective extraction, 24F materialization, DE-B raw generation, metric evaluation, and dense evidence review under `cli4` output roots.
+Locked stack:
 
-No Gate16 generation result exists yet from this branch. No Gate128 and no OR-DPO were started.
+```text
+DE-B_sft_raw6_d8_propainter
+pcm_mode = none
+prior_mode = propainter
+no_pcm_steps = 6
+guidance = 0.0
+mask_dilation_iter = 8
+hard_comp = false
+condition = V_obj
+winner = V_bg
+mask = object foreground mask
+loser = DiffuEraser raw output
+```
+
+Gate16 result:
+
+| item | value |
+| --- | ---: |
+| generation OK | 16 / 16 |
+| technical valid | 16 / 16 |
+| medium-hard eligible | 7 / 16 |
+| hard but plausible | 7 / 16 |
+| too close | 0 / 16 |
+| trivial bad | 2 / 16 |
+| technical invalid | 0 / 16 |
+
+Decision: Gate16 passes because technical valid is at least 15/16,
+medium-hard plus hard-plausible is 14/16, trivial-bad is at most 2/16, and no
+system outside collapse was reported. Build the next candidate-pool and Gate64
+plan only; OR-DPO remains `NOT_STARTED`.
+
+Evidence: `reports/exp25_gate16_deb_cli4_result.md`.
 
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
