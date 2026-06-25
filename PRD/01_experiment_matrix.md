@@ -629,3 +629,9 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp27 SDPO real residual-proxy distribution scan | `SDPO_REAL_RESIDUAL_PROXY_SCAN_COMPLETE` | 128 records from 32 rows; `lambda_safe < 1` ratio 0.4453125. Proxy-only, no policy/reference forward, no RC-FPO or objective-study training. |
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp27 paper-grounded preference study | `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED` | DiffuEraser converted weights and Exp27 NAS output roots are now accessible to `hj`; next allowed milestone is true model SDPO parity. RC-FPO remains not started. |

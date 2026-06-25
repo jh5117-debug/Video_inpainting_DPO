@@ -129,3 +129,25 @@ Reports:
 - `reports/exp27_sdpo_real_distribution_scan.md`
 - `reports/exp27_sdpo_real_distribution_scan.csv`
 - `reports/exp27_sdpo_real_distribution_scan_summary.json`
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `BLOCKER_RESOLVED`
+- `TRUE_MODEL_SDPO_READY_TO_RUN`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Confirmed on PAI host `dsw-753014-85f54df947-bkp7h` as user `hj`:
+
+- DiffuEraser converted weights: readable/executable.
+- Exp27 NAS experiment output: writable.
+- Exp27 NAS autoresearch output: writable.
+
+Reports:
+
+- `reports/exp27_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`

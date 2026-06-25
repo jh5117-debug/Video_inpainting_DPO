@@ -1852,3 +1852,19 @@ Exp27 completed a 128-record real residual-proxy SDPO distribution scan over
 are `0.2246925 / 0.8942396 / 1.0`, with unsafe tiny-step winner-change rate
 `0.0`. This is still not a full DiffuEraser policy/reference forward scan, so
 RC-FPO and O0-O5 objective studies remain unstarted.
+
+## 2026-06-25 Exp27 PAI Post-Maintenance Permission Recovery
+
+Status: `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+
+The user executed the minimal PAI root permission repair successfully. HAL SSH
+as `hj` verified DiffuEraser converted weights are readable and Exp27 NAS
+experiment/autoresearch output roots are writable. The previous infrastructure
+blocker is resolved. Exp27 may resume with true DiffuEraser policy/reference
+SDPO forward parity. RC-FPO remains not started.
+
+Reports:
+
+- `reports/exp27_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`
