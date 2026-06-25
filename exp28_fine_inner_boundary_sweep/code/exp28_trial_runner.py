@@ -386,6 +386,7 @@ def run_pair_eval(run: RunConfig, plans: list[ModelPlan], env: dict[str, str]) -
     append_queue_event(run.pair_id, "evaluating", {"script": "eval_exp28_pair_davis50_pai.sh"})
     eval_env = dict(env)
     eval_env["PAIR_ID"] = run.pair_id
+    eval_env["ROOT"] = str(PROJECT_ROOT)
     eval_env.setdefault("EVAL_GPU", env.get("CUDA_VISIBLE_DEVICES", "1").split(",")[0])
     eval_env.setdefault("COMPUTE_VFID", "1")
     eval_env.setdefault("COMPUTE_TC", "1")
