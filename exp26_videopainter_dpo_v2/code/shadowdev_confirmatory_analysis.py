@@ -880,6 +880,122 @@ def cmd_dynamics(args: argparse.Namespace) -> int:
     return 0
 
 
+def _candidate_path(candidates: list[Path]) -> Path | None:
+    for path in candidates:
+        if str(path) and str(path) != "." and path.exists():
+            return path
+    return None
+
+
+def _load_frames_for_tc_vfid(path: Path, frame_range: str) -> list[np.ndarray]:
+    files = frame_files(path)
+    if frame_range == "no_first_frame":
+        files = files[1:49]
+    else:
+        files = files[:49]
+    return [read_rgb(fp) for fp in files]
+
+
+def cmd_tc_vfid(args: argparse.Namespace) -> int:
+    from inference import metrics as metric_backend
+
+    device = args.device
+    i3d_path = _candidate_path(
+        [
+            Path(os.environ["I3D_MODEL_PATH"]) if os.environ.get("I3D_MODEL_PATH") else Path(""),
+            PROJECT_ROOT / "weights/i3d_rgb_imagenet.pt",
+            Path("/home/hj/Video_inpainting_DPO/weights/i3d_rgb_imagenet.pt"),
+            Path("/mnt/nas/hj/H20_Video_inpainting_DPO/weights/i3d_rgb_imagenet.pt"),
+            Path("/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO/weights/i3d_rgb_imagenet.pt"),
+        ]
+    )
+    clip_dir = _candidate_path(
+        [
+            Path(os.environ["OPENCLIP_MODEL_DIR"]) if os.environ.get("OPENCLIP_MODEL_DIR") else Path(""),
+            Path("/home/hj/.tmp/open_clip_vit_h14"),
+            Path("/mnt/nas/hj/.tmp/open_clip_vit_h14"),
+            Path("/mnt/workspace/hj/.tmp/open_clip_vit_h14"),
+        ]
+    )
+    if i3d_path is None:
+        raise FileNotFoundError("No i3d_rgb_imagenet.pt found for existing VFID backend")
+    tc_model = metric_backend.TemporalConsistencyMetric(device=device, model_path=str(clip_dir) if clip_dir else None)
+    i3d_model = metric_backend.init_i3d_model(str(i3d_path), device=device)
+    rows = read_jsonl(args.run_root / "gate64_mask_ready.jsonl")
+    per_rows: list[dict[str, Any]] = []
+    summary_rows: list[dict[str, Any]] = []
+    for frame_range in ("all49", "no_first_frame"):
+        for step in ("step0", "step10", "step30", "step50"):
+            for variant in ("raw", "comp"):
+                gt_acts: list[np.ndarray] = []
+                pred_acts: list[np.ndarray] = []
+                tc_vals: list[float] = []
+                for row in rows:
+                    sid = row["sample_id"]
+                    gt_frames = _load_frames_for_tc_vfid(Path(row["frame_dir"]), frame_range)
+                    pred_frames = _load_frames_for_tc_vfid(args.run_root / step / "official_generation" / f"{variant}_frames" / sid, frame_range)
+                    if len(gt_frames) != len(pred_frames) or not gt_frames:
+                        per_rows.append(
+                            {
+                                "frame_range": frame_range,
+                                "step": step,
+                                "variant": variant,
+                                "sample_id": sid,
+                                "status": "SKIPPED_FRAME_COUNT",
+                                "tc": "",
+                            }
+                        )
+                        continue
+                    tc = float(tc_model.compute(pred_frames))
+                    gt_act, pred_act = metric_backend.calculate_i3d_activations(gt_frames, pred_frames, i3d_model, device)
+                    gt_acts.append(gt_act)
+                    pred_acts.append(pred_act)
+                    tc_vals.append(tc)
+                    per_rows.append(
+                        {
+                            "frame_range": frame_range,
+                            "step": step,
+                            "variant": variant,
+                            "sample_id": sid,
+                            "status": "ok",
+                            "tc": tc,
+                        }
+                    )
+                vfid = metric_backend.calculate_vfid(np.vstack(gt_acts), np.vstack(pred_acts)) if gt_acts and pred_acts else float("nan")
+                summary_rows.append(
+                    {
+                        "frame_range": frame_range,
+                        "step": step,
+                        "variant": variant,
+                        "rows": len(tc_vals),
+                        "tc_mean": float(np.mean(tc_vals)) if tc_vals else float("nan"),
+                        "tc_median": float(np.median(tc_vals)) if tc_vals else float("nan"),
+                        "vfid": float(vfid),
+                        "i3d_model_path": str(i3d_path),
+                        "openclip_model_dir": str(clip_dir) if clip_dir else "auto_or_cache",
+                    }
+                )
+    write_csv(PROJECT_ROOT / "reports/exp26_vp_shadowdev_tc_vfid_per_video.csv", per_rows)
+    write_csv(PROJECT_ROOT / "reports/exp26_vp_shadowdev_tc_vfid_summary.csv", summary_rows)
+    (PROJECT_ROOT / "reports/exp26_vp_shadowdev_tc_vfid.md").write_text(
+        "\n".join(
+            [
+                "# Exp26 Shadow-Dev TC/VFID",
+                "",
+                "TC and VFID are computed through the existing `inference.metrics.py` backend.",
+                f"- I3D: `{i3d_path}`",
+                f"- OpenCLIP: `{clip_dir if clip_dir else 'auto_or_cache'}`",
+                "",
+                markdown_table(summary_rows, ["frame_range", "step", "variant", "rows", "tc_mean", "tc_median", "vfid"]),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    print(PROJECT_ROOT / "reports/exp26_vp_shadowdev_tc_vfid_summary.csv")
+    return 0
+
+
 def main() -> int:
     p = argparse.ArgumentParser()
     p.add_argument("--run-root", type=Path, default=DEFAULT_RUN_ROOT)
@@ -889,7 +1005,7 @@ def main() -> int:
     p.add_argument("--device", default="cuda")
     p.add_argument("--skip-existing", action=argparse.BooleanOptionalAction, default=True)
     sub = p.add_subparsers(dest="command", required=True)
-    for name in ["readback", "integrity", "preregister", "checkpoint-identity", "metrics", "stats", "leakage", "dynamics"]:
+    for name in ["readback", "integrity", "preregister", "checkpoint-identity", "metrics", "stats", "leakage", "dynamics", "tc-vfid"]:
         sub.add_parser(name)
     args = p.parse_args()
     args.run_root = args.run_root.resolve()
