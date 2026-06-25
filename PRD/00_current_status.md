@@ -1880,3 +1880,16 @@ SDPO lambda/loss parity are exact to reported tolerance; output-gradient cosine
 minimum is `0.9999998807907104`. Eight actual tiny-step cases passed with
 reference grad norm `0.0`. Linear-DPO is only a true-model-record probe so far;
 full Linear Frozen/EMA 1/10-step remains pending. RC-FPO remains not started.
+
+## 2026-06-25 Exp27 True Linear-DPO 1/10-Step Gate
+
+Status: `LINEAR_TRUE_MODEL_1_10_STEP_PASSED`
+
+Exp27 completed true DiffuEraser Stage1 Linear-DPO Frozen and EMA micro gates
+on one fixed real BR preference batch for 10 optimizer steps per variant. Both
+variants were finite, had non-zero policy parameter updates, and preserved the
+expected reference behavior: Frozen reference delta `0.0`, EMA reference delta
+`1.819002953296671e-08`.
+
+This remains a technical model-forward/training-plumbing pass only. LocalDPO
+24F, O0-O5 objective studies, and RC-FPO remain not started.

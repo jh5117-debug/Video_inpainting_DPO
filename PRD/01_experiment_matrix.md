@@ -644,3 +644,9 @@ started.
 - Tiny actual parameter-step check: passed on 8 cases (`4` lambda<1, `4` lambda=1), reference grad norm max `0.0`.
 - Linear-DPO status: true-model-record probe passed; full Linear Frozen/EMA 1/10-step training remains pending.
 - RC-FPO: not started.
+
+## 2026-06-25 Exp27 Linear-DPO True-Model Micro Gate
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp27 Linear-DPO Frozen/EMA true-model 1/10-step | `LINEAR_TRUE_MODEL_1_10_STEP_PASSED` | One fixed real BR preference batch; 10 optimizer steps per variant. Frozen reference delta stayed `0.0`; EMA reference delta was `1.819002953296671e-08`. Technical pass only; no 50-step/O0-O5/RC-FPO started. |

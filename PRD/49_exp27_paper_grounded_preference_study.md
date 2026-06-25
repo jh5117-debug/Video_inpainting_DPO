@@ -357,3 +357,43 @@ Reports:
 - `reports/exp27_sdpo_true_model_tiny_step_cases.csv`
 - `reports/exp27_linear_true_model_parity.md`
 - `reports/exp27_linear_true_model_parity.csv`
+
+## 2026-06-25 True Linear-DPO 1/10-Step Gate
+
+Status:
+
+- `LINEAR_TRUE_MODEL_1_10_STEP_PASSED`
+- `LINEAR_FROZEN_TRUE_MODEL_10STEP_PASSED`
+- `LINEAR_EMA_TRUE_MODEL_10STEP_PASSED`
+- `TECHNICAL_PASS`
+- `LOCALDPO_24F_PENDING`
+- `OBJECTIVE_STUDY_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Exp27 ran a true DiffuEraser Stage1 Linear-DPO micro gate on one fixed real BR
+preference batch. This used the same real model-loading path as the SDPO true
+model gate, SFT-48000 policy/reference initialization, shared real data,
+shared timestep `500`, and no synthetic gradient conflict.
+
+Results:
+
+- variants: `linear_frozen`, `linear_ema`
+- steps per variant: `10`
+- Linear-Frozen max grad norm: `0.48048678696353975`
+- Linear-Frozen step10 policy delta norm: `0.0012969709135074255`
+- Linear-Frozen step10 reference delta norm: `0.0`
+- Linear-EMA max grad norm: `0.49775458360972635`
+- Linear-EMA step10 policy delta norm: `0.0013002275364513564`
+- Linear-EMA step10 reference delta norm: `1.819002953296671e-08`
+- NaN/Inf: `0`
+
+This is a technical true-model micro-training pass. It does not start RC-FPO,
+does not start 50-step/O0-O5 objective studies, and does not claim video
+quality improvement.
+
+Reports:
+
+- `reports/exp27_linear_true_model_10step_readback.md`
+- `reports/exp27_linear_true_model_10step.md`
+- `reports/exp27_linear_frozen_10step.csv`
+- `reports/exp27_linear_ema_10step.csv`

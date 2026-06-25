@@ -179,3 +179,35 @@ Reports:
 - `reports/exp27_sdpo_true_model_tiny_step_cases.csv`
 - `reports/exp27_linear_true_model_parity.md`
 - `reports/exp27_linear_true_model_parity.csv`
+
+## 2026-06-25 True Linear-DPO 1/10-Step Gate
+
+Status:
+
+- `LINEAR_TRUE_MODEL_1_10_STEP_PASSED`
+- `TECHNICAL_PASS`
+- `LOCALDPO_24F_PENDING`
+- `RCFPO_NOT_STARTED`
+
+Linear-Frozen:
+
+- records: `10`
+- max grad norm: `0.48048678696353975`
+- step10 loss: `-0.1105356365442276`
+- step10 policy delta norm: `0.0012969709135074255`
+- step10 reference delta norm: `0.0`
+
+Linear-EMA:
+
+- records: `10`
+- max grad norm: `0.49775458360972635`
+- step10 loss: `-0.11877599358558655`
+- step10 policy delta norm: `0.0013002275364513564`
+- step10 reference delta norm: `1.819002953296671e-08`
+
+Reports:
+
+- `reports/exp27_linear_true_model_10step_readback.md`
+- `reports/exp27_linear_true_model_10step.md`
+- `reports/exp27_linear_frozen_10step.csv`
+- `reports/exp27_linear_ema_10step.csv`
