@@ -94,6 +94,22 @@ Evidence files:
 - `review_v2/dense_contact_sheets/DE-B_sft_raw6_d8_propainter/*.jpg`
 - `review_v2/mask_crops/DE-B_sft_raw6_d8_propainter/*.jpg`
 - `review_v2/animated_gif/DE-B_sft_raw6_d8_propainter/*.gif`
+- `review_v2/affected_crops/DE-B_sft_raw6_d8_propainter/*.jpg`
+- `review_v2/outside_crops/DE-B_sft_raw6_d8_propainter/*.jpg`
+- `review_v2/temporal_difference_top3/DE-B_sft_raw6_d8_propainter/*.jpg`
+
+CLI4 manual visual review:
+
+- Opened all 16 dense temporal contact sheets locally after copying them from
+  the PAI run root.
+- Generated supplemental affected/outside/top3 crop sheets from the existing
+  winner/raw/mask PNG frames after aligning winner/mask to the raw prediction
+  resolution.
+- The manual review agrees with the automatic classes: 7 medium-hard, 7
+  hard-plausible, and 2 trivial-bad.
+- No sheet showed system-wide outside collapse, black-frame failure, or
+  global temporal breakage. The observed failures are local residuals,
+  local blur, or overly obvious retained objects.
 
 Next action:
 
