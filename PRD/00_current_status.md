@@ -1,3 +1,22 @@
+## 2026-06-25 Exp27 CLI4 LocalDPO 24F Retry Fix
+
+Current Exp27 status for the isolated CLI4 branch:
+
+```text
+TRUE_MODEL_PARITY
+LINEAR_TRUE_MODEL_1_10_STEP_PASSED
+LOCALDPO_24F_CLI4_RETRY1_PREPARED
+P8_PENDING
+P32_PENDING
+RCFPO_NOT_STARTED
+```
+
+The first CLI4 LocalDPO 24F P8 launch failed on the missing local
+`stable-diffusion-v1-5/safety_checker/config.json` component. The isolated
+branch now aligns `diffueraser/diffueraser_OR.py` with the existing non-OR
+DiffuEraser path by disabling the safety checker explicitly. No O0-O5,
+50-step, or RC-FPO work has started.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

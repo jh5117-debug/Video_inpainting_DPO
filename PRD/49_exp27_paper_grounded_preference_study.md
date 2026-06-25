@@ -430,3 +430,28 @@ O0-O5 objective study, or RC-FPO.
 Reports:
 
 - `reports/exp27_localdpo_24f_cli4_prelaunch.md`
+
+## 2026-06-25 CLI4 LocalDPO 24F Safety-Checker Retry Fix
+
+Status:
+
+- `LOCALDPO_24F_CLI4_RETRY1_PREPARED`
+- `P8_PENDING`
+- `P32_PENDING`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_1_10_STEP_PENDING`
+- `RCFPO_NOT_STARTED`
+
+The first CLI4 LocalDPO 24F launch stopped during P8 DiffuEraser loser
+generation because the OR path attempted to load
+`stable-diffusion-v1-5/safety_checker/config.json`, which is absent from the
+local PAI weight mirror. The non-OR DiffuEraser path already disables the
+safety checker for local research inference; CLI4 applied the same isolated
+arguments to `diffueraser/diffueraser_OR.py`.
+
+This is a runtime compatibility fix only. It does not change the LocalDPO
+objective, does not start O0-O5, does not start 50-step training, and does not
+start RC-FPO.
+
+Report:
+
+- `reports/exp27_localdpo_24f_cli4_safety_checker_retry_fix.md`

@@ -1,4 +1,5 @@
 import unittest
+from pathlib import Path
 
 import numpy as np
 from PIL import Image
@@ -78,6 +79,12 @@ class TestLocalDpo24FAdaptation(unittest.TestCase):
         self.assertTrue(metrics["outside_preservation_passed"])
         self.assertTrue(metrics["technical_valid"])
         self.assertIn(metrics["classification"], {"MEDIUM_HARD_ELIGIBLE", "HARD_BUT_PLAUSIBLE"})
+
+    def test_diffueraser_or_disables_missing_safety_checker(self):
+        source = Path("diffueraser/diffueraser_OR.py").read_text(encoding="utf-8")
+        self.assertIn("safety_checker=None", source)
+        self.assertIn("feature_extractor=None", source)
+        self.assertIn("requires_safety_checker=False", source)
 
 
 if __name__ == "__main__":

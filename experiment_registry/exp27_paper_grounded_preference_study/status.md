@@ -240,3 +240,26 @@ Explicitly not started: 50-step, four-grid 50-step, O0-O5, RC-FPO.
 Report:
 
 - `reports/exp27_localdpo_24f_cli4_prelaunch.md`
+
+## 2026-06-25 CLI4 LocalDPO 24F Safety-Checker Retry Fix
+
+Status:
+
+- `LOCALDPO_24F_CLI4_RETRY1_PREPARED`
+- `P8_PENDING`
+- `P32_PENDING`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_1_10_STEP_PENDING`
+- `RCFPO_NOT_STARTED`
+
+The first CLI4 LocalDPO 24F run was stopped after DiffuEraser OR loser
+generation failed on the missing local `safety_checker/config.json`. The
+isolated CLI4 branch now matches the existing non-OR DiffuEraser behavior by
+passing `safety_checker=None`, `feature_extractor=None`, and
+`requires_safety_checker=False` in `diffueraser/diffueraser_OR.py`.
+
+This is a compatibility retry fix only. It does not alter completed SDPO or
+Linear-DPO statuses and does not start RC-FPO.
+
+Report:
+
+- `reports/exp27_localdpo_24f_cli4_safety_checker_retry_fix.md`

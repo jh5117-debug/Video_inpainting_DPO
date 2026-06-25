@@ -286,7 +286,10 @@ class DiffuEraser:
             text_encoder=self.text_encoder,
             tokenizer=self.tokenizer,
             unet=self.unet_main,
-            brushnet=self.brushnet
+            brushnet=self.brushnet,
+            safety_checker=None,
+            feature_extractor=None,
+            requires_safety_checker=False,
         ).to(self.device, torch.float16)
         self.pipeline.scheduler = UniPCMultistepScheduler.from_config(self.pipeline.scheduler.config)
         self.pipeline.set_progress_bar_config(disable=True)
