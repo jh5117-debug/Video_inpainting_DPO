@@ -31,3 +31,18 @@ Next allowed milestone:
 ```text
 VP-L0/L1 one-batch and one-step DPO adapter validation on the final primary-32 manifest.
 ```
+
+Primary-32 10-step gate:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/run_step1_step10_eval_20260625.sh
+```
+
+Outputs:
+
+```text
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_10step_retry1_20260625_145257
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step1_vp_primary32_10step_retry1_20260625_151020
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/searchdev_step10_vp_primary32_10step_retry1_20260625_151020
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/reports_step1_step10_20260625_151020
+```

@@ -408,3 +408,27 @@ Reports:
 - `reports/exp26_vp_step0_baseline.md`
 - `reports/exp26_vp_step0_baseline.csv`
 - `reports/exp26_vp_step0_visual_review.csv`
+
+## 2026-06-25 Primary-32 10-Step Gate
+
+Status:
+
+- `VIDEOPAINTER_10STEP_GATE_PASSED`
+- `TRAINING_PASS`
+- `DENSE_EVIDENCE_REVIEW_PASS_FOR_50STEP_GATE`
+
+Final primary-32 10-step DPO completed on PAI. Checkpoint-1 and checkpoint-10
+strict reload/preflight passed. Dense temporal evidence and crop sheets were
+reviewed for all `32/32` search-dev rows.
+
+Step10 comp vs step0 comp:
+
+- PSNR `+0.977252`
+- SSIM `+0.032641`
+- LPIPS `-0.004499`
+- Ewarp `-1.301457`
+- strict mask PSNR `+0.975192`
+- boundary PSNR `+5.082206`
+
+No global collapse, frame-order mismatch, or systematic new artifact was found
+in dense evidence. This authorizes only the conditional 50-step gate.

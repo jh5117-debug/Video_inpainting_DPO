@@ -2029,3 +2029,18 @@ metrics are PSNR `24.301897366442233`, SSIM `0.871557953992803`, LPIPS
 
 This authorizes the pre-registered 10-step VideoPainter DPO micro gate; no
 10-step or 50-step result is claimed by this entry.
+
+## 2026-06-25 Exp26 VideoPainter Primary-32 10-Step
+
+Status: `VIDEOPAINTER_10STEP_GATE_PASSED`
+
+The final primary-32 10-step VideoPainter DPO adapter completed. Strict
+reload/preflight passed for `checkpoint-1` and `checkpoint-10`. Search-dev
+comp metrics improved over step0: PSNR `+0.977252`, SSIM `+0.032641`, LPIPS
+`-0.004499`, Ewarp `-1.301457`, strict mask PSNR `+0.975192`, and boundary
+PSNR `+5.082206`.
+
+Dense temporal evidence/crop review covered `32/32` rows and found no global
+collapse, frame-order mismatch, or systematic new artifact. Local mask
+texture/color artifacts remain, so this is a conditional micro-training gate,
+not `SCIENTIFIC_POSITIVE`. It authorizes only the pre-registered 50-step gate.

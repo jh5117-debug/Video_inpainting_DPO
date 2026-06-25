@@ -732,3 +732,73 @@ Reports:
 - `reports/exp26_vp_step0_baseline.md`
 - `reports/exp26_vp_step0_baseline.csv`
 - `reports/exp26_vp_step0_visual_review.csv`
+
+## 2026-06-25 VideoPainter Primary-32 10-Step Gate
+
+Status:
+
+- `VIDEOPAINTER_10STEP_GATE_PASSED`
+- `TRAINING_PASS`
+- `DENSE_EVIDENCE_REVIEW_PASS_FOR_50STEP_GATE`
+- `NO_50STEP_RESULT_YET`
+
+Exp26 trained the final primary-32 VideoPainter DPO adapter for `10`
+optimizer steps from the official branch initialization using formal `49`
+frames, the locked comp-loser primary manifest, frozen reference, official
+optimizer settings, shared noise/timestep DPO plumbing, and the locked
+search-dev evaluator.
+
+Checkpoint strict reload/preflight passed for `checkpoint-1` and
+`checkpoint-10`.
+
+Training diagnostics:
+
+- rows: `10`
+- final loss: `2.091540575027466`
+- final DPO loss: `1.7013121843338013`
+- final implicit accuracy: `0.0`
+- max grad norm: `170.04361478093455`
+- NaN/Inf count: `0`
+- final loser-dominant ratio: `0.0`
+
+Search-dev comp metrics:
+
+| step | PSNR | SSIM | LPIPS | Ewarp | mask PSNR | boundary PSNR |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| step0 | 24.301897 | 0.871558 | 0.070801 | 8.042740 | 16.012427 | 16.011952 |
+| step1 | 27.186413 | 0.921252 | 0.078710 | 1.728870 | 18.946673 | 22.795688 |
+| step10 | 25.279150 | 0.904199 | 0.066301 | 6.741283 | 16.987619 | 21.094159 |
+
+Step10 minus step0:
+
+- PSNR: `+0.977252`
+- SSIM: `+0.032641`
+- LPIPS: `-0.004499`
+- Ewarp: `-1.301457`
+- strict mask PSNR: `+0.975192`
+- boundary PSNR: `+5.082206`
+
+Visual review:
+
+- reviewed rows: `32 / 32`
+- method: dense temporal evidence sheets plus mask crop sheets generated from
+  the `49`-frame step10 outputs
+- no global black/purple collapse
+- no visible frame-order mismatch or first-frame failure
+- no systematic outside damage in hard-comp diagnostic outputs
+- local mask texture/color artifacts remain in several rows, but no systematic
+  new artifact was found that blocks the pre-registered conditional 50-step
+  gate
+
+This is still a micro-training/search-dev result. It is not marked as
+`SCIENTIFIC_POSITIVE`, and no 100-step or longer run is authorized by this
+entry. The next allowed action is the pre-registered conditional `50`-step
+gate only.
+
+Reports:
+
+- `reports/exp26_vp_10step.md`
+- `reports/exp26_vp_10step_metrics.csv`
+- `reports/exp26_vp_10step_diagnostics.csv`
+- `reports/exp26_vp_10step_visual_review.md`
+- `reports/exp26_vp_10step_visual_review.csv`
