@@ -17,6 +17,9 @@ STEP0_CKPT="${STEP0_CKPT:-$VP_ROOT/ckpt/VideoPainter/checkpoints/branch}"
 SHADOW_SOURCE_MANIFEST="${SHADOW_SOURCE_MANIFEST:-$MANIFEST_DIR/vp2_vor_bg_shadow_dev_32.jsonl}"
 SEED="${SEED:-20260619}"
 PYTHON_BIN="${PYTHON_BIN:-python}"
+export EXP26_GIT_BRANCH="${EXP26_GIT_BRANCH:-research/exp26-videopainter-dpo-v2}"
+export EXP26_GIT_COMMIT="${EXP26_GIT_COMMIT:-f4f3a3864f691252604fa250ddc87bc5e9c7f2e0}"
+export EXP26_RUNTIME_SNAPSHOT="${EXP26_RUNTIME_SNAPSHOT:-1}"
 
 mkdir -p "$RUN_ROOT" "$RUNTIME_ROOT" "$PROJECT_ROOT/reports"
 

@@ -147,6 +147,12 @@ def git_value(args: list[str]) -> str:
     try:
         return subprocess.check_output(["git", *args], cwd=PROJECT_ROOT, text=True).strip()
     except Exception as exc:  # noqa: BLE001 - audit should be best-effort.
+        if args == ["branch", "--show-current"] and os.environ.get("EXP26_GIT_BRANCH"):
+            return os.environ["EXP26_GIT_BRANCH"]
+        if args == ["rev-parse", "HEAD"] and os.environ.get("EXP26_GIT_COMMIT"):
+            return os.environ["EXP26_GIT_COMMIT"]
+        if args == ["status", "--short"] and os.environ.get("EXP26_RUNTIME_SNAPSHOT"):
+            return "runtime_snapshot_no_git"
         return f"ERROR:{exc!r}"
 
 
