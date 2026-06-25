@@ -263,3 +263,28 @@ Linear-DPO statuses and does not start RC-FPO.
 Report:
 
 - `reports/exp27_localdpo_24f_cli4_safety_checker_retry_fix.md`
+
+## 2026-06-25 CLI4 LocalDPO 24F P8/P32 Result
+
+Status:
+
+- `LOCALDPO_24F_P8_PASSED`
+- `LOCALDPO_24F_P32_PASSED`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_FAILED_FINAL`
+- `TECHNICAL_PASS_PAIR_GENERATION_ONLY`
+- `RCFPO_NOT_STARTED`
+
+P8 and P32 used real DiffuEraser self-model losers, official LocalDPO moving
+masks, outside clean reinjection, and review assets. P32 passed with
+`32/32` technical-valid rows, `31/32` medium-hard-or-hard-plausible rows, zero
+global collapse, and outside preservation passed.
+
+The original LocalDPO 1-step/10-step objective did not complete because the
+runner failed after P32 with
+`AttributeError: 'Namespace' object has no attribute 'manifest'`. This is the
+second Exp27 CLI4 lane failure, so the lane is `FAILED_FINAL` and was not
+retried again.
+
+Report:
+
+- `reports/exp27_localdpo_24f_cli4_p8_p32_failed_objective.md`

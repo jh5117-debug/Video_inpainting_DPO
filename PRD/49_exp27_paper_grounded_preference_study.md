@@ -455,3 +455,57 @@ start RC-FPO.
 Report:
 
 - `reports/exp27_localdpo_24f_cli4_safety_checker_retry_fix.md`
+
+## 2026-06-25 CLI4 LocalDPO 24F P8/P32 Result and Failed Objective
+
+Status:
+
+- `LOCALDPO_24F_P8_PASSED`
+- `LOCALDPO_24F_P32_PASSED`
+- `LOCALDPO_ORIGINAL_OBJECTIVE_FAILED_FINAL`
+- `TECHNICAL_PASS_PAIR_GENERATION_ONLY`
+- `RCFPO_NOT_STARTED`
+
+CLI4 completed the real DiffuEraser LocalDPO 24F pair gates on the isolated
+branch and output namespace:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp27_paper_grounded_preference_study/cli4/localdpo24f_cli4_retry1_20260625_190006`
+
+P8 gate:
+
+- status: `P8_PASSED`
+- technical valid: `8/8`
+- medium-hard: `2`
+- hard-plausible: `6`
+- trivial bad: `0`
+- technical invalid: `0`
+- global collapse: `0`
+- outside preservation: passed
+- video review: `8/8`
+
+P32 gate:
+
+- status: `P32_PASSED`
+- technical valid: `32/32`
+- medium-hard: `14`
+- hard-plausible: `17`
+- trivial bad: `1`
+- technical invalid: `0`
+- global collapse: `0`
+- outside preservation: passed
+- video review: `32/32`
+
+The required original LocalDPO objective did not complete. After P32 passed,
+the runner failed in objective setup:
+
+`AttributeError: 'Namespace' object has no attribute 'manifest'`
+
+This is the second Exp27 CLI4 lane failure after the safety-checker retry, so
+CLI4 stops this lane as `FAILED_FINAL` rather than applying another runtime
+fix and retry. The result is a technical pass for pair generation only, not a
+completed LocalDPO objective baseline. No 50-step, O0-O5, four-grid, or RC-FPO
+work was started.
+
+Report:
+
+- `reports/exp27_localdpo_24f_cli4_p8_p32_failed_objective.md`

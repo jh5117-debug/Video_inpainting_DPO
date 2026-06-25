@@ -1,3 +1,25 @@
+## 2026-06-25 Exp27 CLI4 LocalDPO 24F P8/P32 Result
+
+Current Exp27 status for the isolated CLI4 branch:
+
+```text
+LOCALDPO_24F_P8_PASSED
+LOCALDPO_24F_P32_PASSED
+LOCALDPO_ORIGINAL_OBJECTIVE_FAILED_FINAL
+RCFPO_NOT_STARTED
+```
+
+CLI4 completed real DiffuEraser self-model LocalDPO 24F P8 and P32 pair
+generation. P8 passed with `8/8` technical-valid rows. P32 passed with
+`32/32` technical-valid rows, `31/32` medium-hard-or-hard-plausible rows,
+zero global collapse, outside preservation passed, and `32/32` review assets.
+
+The required original LocalDPO 1-step/10-step objective did not complete. The
+retry failed in objective setup because `objective_args.manifest` was missing
+inside the isolated runner. This was the second failure of the Exp27 lane after
+the safety-checker retry, so CLI4 marks the lane `FAILED_FINAL` and does not
+retry again. No 50-step, O0-O5, or RC-FPO work was started.
+
 ## 2026-06-25 Exp27 CLI4 LocalDPO 24F Retry Fix
 
 Current Exp27 status for the isolated CLI4 branch:
