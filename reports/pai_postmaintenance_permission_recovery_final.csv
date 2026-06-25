@@ -1,0 +1,17 @@
+track,path,exists,realpath,read,execute,write,write_test,status
+common,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000,yes,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000,1,1,0,NA,OK
+common,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/brushnet/config.json,yes,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/brushnet/config.json,1,1,0,NA,OK
+common,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/unet_main/config.json,yes,/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/unet_main/config.json,1,1,0,NA,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp25_vor_or_preference_data,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp25_vor_or_preference_data,1,1,1,OK,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2,1,1,1,OK,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp27_paper_grounded_preference_study,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp27_paper_grounded_preference_study,1,1,1,OK,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data,1,1,1,OK,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2,1,1,1,OK,OK
+write,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp27_paper_grounded_preference_study,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp27_paper_grounded_preference_study,1,1,1,OK,OK
+asset,/mnt/nas/hj/weights/stable-diffusion-v1-5,yes,/mnt/nas/hj/weights/stable-diffusion-v1-5,1,1,0,NA,OK
+asset,/mnt/nas/hj/weights/sd-vae-ft-mse,yes,/mnt/nas/hj/weights/sd-vae-ft-mse,1,1,0,NA,OK
+asset,/mnt/nas/hj/weights/diffuEraser,yes,/mnt/nas/hj/weights/diffuEraser,1,1,0,NA,OK
+asset,/mnt/nas/hj/weights/ProPainter,no,,0,0,0,NA,MISSING
+asset,/mnt/nas/hj/weights/VideoPainter,no,,0,0,0,NA,MISSING
+asset,/mnt/nas/hj/weights/PCM,no,,0,0,0,NA,MISSING
+asset,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155,yes,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/gate64_official_43597cf_20260625_031155,1,1,1,NA,OK

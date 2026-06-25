@@ -579,3 +579,29 @@ Reports:
 - `reports/exp26_gate64_final_readiness.md`
 - `reports/exp26_gate64_final_human_visual_review.csv`
 - `reports/exp26_gate64_primary32_visual_reviewed_comp.csv`
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `BLOCKER_RESOLVED`
+- `GATE64_FINAL_TEMPORAL_REVIEW_READY_TO_RUN`
+- `NO_VIDEOPAINTER_DPO_YET`
+
+The user executed the minimal PAI root permission repair successfully. HAL SSH
+as `hj` rechecked the actual PAI state and confirmed:
+
+- Exp26 experiment output is writable.
+- Exp26 autoresearch output is writable.
+- Gate64 official output root is readable/writable.
+
+No ACL installation, apt operation, or broad NAS permission change was repeated
+by Codex. The next allowed Exp26 milestone is strict temporal mp4/evidence
+review for all 64 Gate64 rows, then final primary-32 lock.
+
+Reports:
+
+- `reports/exp26_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`

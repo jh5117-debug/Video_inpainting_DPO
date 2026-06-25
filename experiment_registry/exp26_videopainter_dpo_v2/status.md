@@ -291,3 +291,24 @@ Reports:
 - `reports/exp26_gate64_duplicate_source_deep_audit.md`
 - `reports/exp26_gate64_repair_human_visual_review.md`
 - `reports/exp26_gate64_final_readiness.md`
+
+## 2026-06-25 PAI Post-Maintenance Permission Recovery
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `BLOCKER_RESOLVED`
+- `GATE64_FINAL_TEMPORAL_REVIEW_READY_TO_RUN`
+- `NO_VIDEOPAINTER_DPO_YET`
+
+Confirmed on PAI host `dsw-753014-85f54df947-bkp7h` as user `hj`:
+
+- Exp26 NAS experiment output: writable.
+- Exp26 NAS autoresearch output: writable.
+- Gate64 output root: readable/writable.
+
+Reports:
+
+- `reports/exp26_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`

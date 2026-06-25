@@ -1961,3 +1961,19 @@ locked at
 VideoPainter DPO remains unstarted because PAI user `hj` still cannot write the
 Exp26 experiments output directory under
 `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2`.
+
+## 2026-06-25 Exp26 PAI Post-Maintenance Permission Recovery
+
+Status: `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+
+The user executed the minimal PAI root permission repair successfully. HAL SSH
+as `hj` verified Exp26 NAS experiment/autoresearch output roots are writable.
+The previous DPO output blocker is resolved. Exp26 may resume with strict
+Gate64 temporal mp4/evidence review, final primary-32 lock, and then L0/L1
+only if the review gate passes.
+
+Reports:
+
+- `reports/exp26_permission_recovery_readback.md`
+- `reports/pai_postmaintenance_permission_recovery_final.md`
+- `reports/pai_postmaintenance_permission_recovery_final.csv`
