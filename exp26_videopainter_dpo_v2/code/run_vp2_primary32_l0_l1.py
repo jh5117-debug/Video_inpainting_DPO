@@ -63,7 +63,7 @@ def write_json(path: Path, obj: object) -> None:
 def state_digest(state: Dict[str, torch.Tensor]) -> str:
     h = hashlib.sha256()
     for key in sorted(state):
-        t = state[key].detach().cpu().contiguous()
+        t = state[key].detach().float().cpu().contiguous()
         h.update(key.encode("utf-8"))
         h.update(str(tuple(t.shape)).encode("utf-8"))
         h.update(t.numpy().tobytes())
