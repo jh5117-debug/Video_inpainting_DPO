@@ -20,7 +20,7 @@ EXP_ROOT = PROJECT_ROOT / "exp28_fine_inner_boundary_sweep"
 REG_ROOT = PROJECT_ROOT / "experiment_registry" / "exp28_fine_inner_boundary_sweep"
 OUTPUT_ROOT = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp28_fine_inner_boundary_sweep")
 LOG_ROOT = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp28_fine_inner_boundary_sweep")
-EVAL_ROOT = Path("/mnt/nas/hj/H20_Video_inpainting_DPO/logs/target_eval/exp28_fine_inner_boundary_sweep")
+EVAL_ROOT = LOG_ROOT / "paired_davis50_eval"
 
 REFERENCE_PER_DEVICE_BATCH = 1
 REFERENCE_GRAD_ACCUM = 1
@@ -387,6 +387,7 @@ def run_pair_eval(run: RunConfig, plans: list[ModelPlan], env: dict[str, str]) -
     eval_env = dict(env)
     eval_env["PAIR_ID"] = run.pair_id
     eval_env["ROOT"] = str(PROJECT_ROOT)
+    eval_env["EVAL_ROOT"] = str(EVAL_ROOT / run.pair_id)
     eval_env.setdefault("EVAL_GPU", env.get("CUDA_VISIBLE_DEVICES", "1").split(",")[0])
     eval_env.setdefault("COMPUTE_VFID", "1")
     eval_env.setdefault("COMPUTE_TC", "1")
