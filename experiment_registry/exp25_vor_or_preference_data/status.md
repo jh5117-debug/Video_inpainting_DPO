@@ -55,6 +55,24 @@ VOR-Eval extraction: completed on PAI under
 `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_eval_full`.
 `BG`, `FG_BG`, and `MASK` each contain 43 aligned mp4 files and are reserved for
 held-out final evaluation only.
+
+## 2026-06-25 Post-Permission DiffuEraser Asset Smoke
+
+Status: `POSTPERMISSION_ASSET_SMOKE_PASSED`
+
+- Fixed root-cause manifest rows: `12`
+- Manifest SHA256: `d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`
+- One-row real inference sample: `REAL_ENV114_00004_004_02`
+- Generator: `diffueraser_or_none_propainter_2f2ae30313f3`
+- Output frames: `24`
+- Return code: `0`
+- Fallback: `false`
+- PCM mode: `none`
+- Prior mode: `propainter`
+- Hard comp: `false`
+
+Decision: the permission/asset blocker is resolved. Proceed to the fixed
+12-sample root-cause matrix. Do not expand Gate128 or start OR-DPO yet.
 # Exp25 Registry Status
 
 CORE_DOWNLOAD_COMPLETE

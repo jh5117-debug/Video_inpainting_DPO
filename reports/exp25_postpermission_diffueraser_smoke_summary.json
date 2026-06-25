@@ -1,0 +1,23 @@
+{
+  "model": "diffueraser",
+  "generator_id": "diffueraser_or_none_propainter_2f2ae30313f3",
+  "ok": 1,
+  "failed": 0,
+  "rows": [
+    {
+      "sample_id": "REAL_ENV114_00004_004_02",
+      "model": "diffueraser",
+      "generator_id": "diffueraser_or_none_propainter_2f2ae30313f3",
+      "pcm_mode": "none",
+      "prior_mode": "propainter",
+      "returncode": 0,
+      "elapsed_seconds": 238.5768964290619,
+      "frames": 24,
+      "status": "OK",
+      "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/postpermission_asset_smoke_20260625_130502/diffueraser/raw_frames/REAL_ENV114_00004_004_02",
+      "log_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/postpermission_asset_smoke_20260625_130502/diffueraser/logs/REAL_ENV114_00004_004_02.log",
+      "hard_comp": false,
+      "comp_mode": "none"
+    }
+  ]
+}

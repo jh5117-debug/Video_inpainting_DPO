@@ -40,3 +40,26 @@ python exp25_vor_or_preference_data/scripts/safe_extract_vor_subset.py \
   --sample-ids exp25_vor_or_preference_data/manifests/sample_ids_gate128.txt \
   --output-root /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/exp25_gate128
 ```
+
+## 2026-06-25 Post-Permission Asset Smoke
+
+Executed on PAI as `hj` from runtime clone:
+
+```bash
+CUDA_VISIBLE_DEVICES=1 python /home/hj/runtime_code/H20_Video_inpainting_DPO_exp25_vor_run/exp25_vor_or_preference_data/scripts/run_vor_or_model_smoke.py \
+  --model diffueraser \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl \
+  --project-root /home/hj/runtime_code/H20_Video_inpainting_DPO_exp25_vor_run \
+  --output-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/postpermission_asset_smoke_20260625_130502 \
+  --limit 1 \
+  --num-frames 24 \
+  --width 512 \
+  --height 288 \
+  --diffueraser-path /mnt/nas/hj/weights/diffuEraser/converted_weights_step48000 \
+  --pcm-mode none \
+  --prior-mode propainter \
+  --no-pcm-steps 6 \
+  --no-pcm-guidance 0.0 \
+  --mask-dilation-iter 0 \
+  --seed 20260625
+```

@@ -391,6 +391,39 @@ Reports:
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
 
+## 2026-06-25 Post-Permission DiffuEraser Asset Smoke
+
+Status:
+
+- `PAI_POSTMAINTENANCE_PERMISSIONS_RECOVERED`
+- `POSTPERMISSION_ASSET_SMOKE_PASSED`
+- `DIFFUSERASER_OR_PROTOCOL_ROOT_CAUSE_READY_TO_RUN`
+- `NO_GATE128`
+- `NO_OR_DPO`
+
+After the user's PAI root permission fix, Codex reran the Exp25 asset smoke as
+`hj` on PAI. The fixed 12-row root-cause manifest was readable with SHA256
+`d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49`.
+
+The no-forward inventory confirmed readable/traversable access to the
+DiffuEraser converted checkpoint, `brushnet/config.json`,
+`unet_main/config.json`, SD1.5, VAE, and ProPainter assets. A real one-row
+DiffuEraser canonical raw6 inference then completed with `24/24` frames,
+`returncode=0`, `fallback=false`, `pcm_mode=none`, `prior_mode=propainter`,
+`mask_dilation_iter=0`, and no hard comp.
+
+This is a technical asset/wrapper pass only. It does not establish
+`LOSER_UTILITY_PASS`, `DATA_READY`, or any scientific positivity. The next
+allowed Exp25 milestone is the fixed 12-sample DiffuEraser OR root-cause
+matrix. Gate128 expansion and OR-DPO remain not started.
+
+Reports:
+
+- `reports/exp25_postpermission_asset_smoke_readback.md`
+- `reports/exp25_postpermission_asset_smoke.md`
+- `reports/exp25_postpermission_asset_smoke.json`
+- `reports/exp25_postpermission_diffueraser_smoke_summary.json`
+
 ## 2026-06-25 Root-Cause Matrix Permission Blocker
 
 Status:

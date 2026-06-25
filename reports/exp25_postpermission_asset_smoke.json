@@ -1,0 +1,46 @@
+{
+  "status": "NO_FORWARD_ASSET_READ_OK",
+  "root": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp25_vor_run",
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl",
+  "manifest_sha256": "d1a7ef848ce1f5777ae80f1655c581fa5328d108fab497693d8afddf750afa49",
+  "rows": 12,
+  "first_sample": "REAL_ENV114_00004_004_02",
+  "inventory": [
+    {
+      "path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    },
+    {
+      "path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/brushnet/config.json",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    },
+    {
+      "path": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000/unet_main/config.json",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    },
+    {
+      "path": "/mnt/workspace/hj/nas_hj/weights/stable-diffusion-v1-5",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    },
+    {
+      "path": "/mnt/workspace/hj/nas_hj/weights/sd-vae-ft-mse",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    },
+    {
+      "path": "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter",
+      "exists": true,
+      "readable": true,
+      "executable": true
+    }
+  ]
+}

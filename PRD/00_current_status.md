@@ -1934,3 +1934,22 @@ Reports:
 - `reports/exp25_permission_recovery_readback.md`
 - `reports/pai_postmaintenance_permission_recovery_final.md`
 - `reports/pai_postmaintenance_permission_recovery_final.csv`
+
+## 2026-06-25 Exp25 Post-Permission Asset Smoke Passed
+
+Status: `POSTPERMISSION_ASSET_SMOKE_PASSED`
+
+Exp25 reran the DiffuEraser post-permission asset smoke on PAI as `hj`. The
+fixed 12-row root-cause manifest was readable, the DiffuEraser converted
+checkpoint and required SD/VAE/ProPainter assets were readable/traversable, and
+one canonical raw6 DiffuEraser OR inference completed with `24/24` frames and
+`fallback=false`.
+
+This clears the technical asset blocker for the fixed 12-sample root-cause
+matrix only. Gate128 expansion and OR-DPO remain not started.
+
+Reports:
+
+- `reports/exp25_postpermission_asset_smoke.md`
+- `reports/exp25_postpermission_asset_smoke.json`
+- `reports/exp25_postpermission_diffueraser_smoke_summary.json`

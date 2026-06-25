@@ -4,3 +4,5 @@ hf_env: /home/hj/.venvs/hf_effecterase
 hf_auth_home: /home/hj/.cache/huggingface_effecterase_auth
 pai_host: root@47.103.26.60
 pai_download_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7
+postpermission_asset_smoke_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/postpermission_asset_smoke_20260625_130502
+root_cause_sample12_manifest: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp25_vor_or_preference_data/root_cause_matrix_20260625/root_cause_sample12_manifest.jsonl
