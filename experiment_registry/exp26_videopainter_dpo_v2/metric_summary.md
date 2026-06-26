@@ -226,3 +226,6 @@ Visual counts:
 | tie | `5` |
 | Step0 better | `24` |
 | Step50 new artifact rows | `29` |
+## 2026-06-26 Third-Model Compatibility Audit
+
+Static audit only; no model metrics were generated. Status: `EXP26_THIRD_MODEL_COMPATIBILITY_AUDIT_COMPLETE`.

@@ -105,3 +105,19 @@ Reports:
 - `reports/exp26_videopainter_result_pack.md`
 - `reports/exp26_videopainter_result_pack.csv`
 - `reports/exp26_videopainter_result_pack_assets/`
+
+## 2026-06-26 Third-Model Compatibility Audit
+
+Status: `EXP26_THIRD_MODEL_COMPATIBILITY_AUDIT_COMPLETE`
+
+No audited third model is currently ready for true DPO adapter training.
+CoCoCo is the recommended next true-adapter audit target after weights and
+native target parity; MiniMax-Remover and ProPainter are recommended first as
+baseline/loser-generator smokes. EffectErase remains diagnostic/baseline only
+for VOR because of VOR-training confound.
+
+Reports:
+
+- `reports/exp26_third_model_compatibility_audit.md`
+- `reports/exp26_third_model_compatibility_audit.csv`
+- `reports/exp26_third_model_next_adapter_recommendation.md`

@@ -97,3 +97,7 @@ result_evidence_pack:
   report: reports/exp26_videopainter_result_pack.md
   csv: reports/exp26_videopainter_result_pack.csv
   assets: reports/exp26_videopainter_result_pack_assets
+third_model_compatibility_audit:
+  report: reports/exp26_third_model_compatibility_audit.md
+  csv: reports/exp26_third_model_compatibility_audit.csv
+  recommendation: reports/exp26_third_model_next_adapter_recommendation.md

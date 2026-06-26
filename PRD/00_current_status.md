@@ -2243,3 +2243,22 @@ independent VOR-BG shadow-dev, and DAVIS-derived external validation. It
 supports the statement that VideoPainter is the second successful adapter
 backbone on the VOR-BG distribution, while the external split remains not
 confirmed and blocks any universal-adapter or final-SOTA claim.
+
+## 2026-06-26 Exp26 Third-Model Compatibility Audit
+
+- Status: `EXP26_THIRD_MODEL_COMPATIBILITY_AUDIT_COMPLETE`
+- Reports:
+  - `reports/exp26_third_model_compatibility_audit.md`
+  - `reports/exp26_third_model_compatibility_audit.csv`
+  - `reports/exp26_third_model_next_adapter_recommendation.md`
+- Audited models: ProPainter, MiniMax-Remover, EffectErase, ROSE, FloED, VACE,
+  CoCoCo.
+- Result: no third model is currently `TRUE_DPO_ADAPTER_READY`.
+- Best future true-adapter candidate: CoCoCo, only after verified weights,
+  dependency setup, and one-batch native policy/reference parity.
+- Best near-term baseline/loser-generator candidates: MiniMax-Remover and
+  ProPainter, after isolated inference smoke.
+- EffectErase remains a strong OR diagnostic/baseline but is VOR-trained and
+  cannot be used as primary on-policy VOR loser evidence.
+
+No third-backbone DPO training, RC-FPO, or VideoPainter retraining was launched.
