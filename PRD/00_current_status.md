@@ -2343,3 +2343,15 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   only two rows. Therefore the same recipe must not be extended.
 - Next allowed MiniMax action is a medium-hard train16/heldout16 data-quality
   gate, followed by a bounded recipe gate if data yield is sufficient.
+
+## 2026-06-26 Exp29 MiniMax Preference Data Quality Gate
+
+- Status: `MINIMAX_DATA_YIELD_INSUFFICIENT`
+- Generated and reviewed 96 MiniMax OR candidates from 32 sources x 3 fixed
+  seeds. Counts: 23 medium-hard, 4 hard-plausible, 3 too-close, 60 trivial-bad,
+  and 6 technical-invalid.
+- Eligible candidates cover only 9 unique scene groups. A scene-disjoint
+  train16/heldout16 split cannot be built without leakage.
+- Locked manifests: train rows 9, heldout rows 0, rejected rows 87.
+- No MiniMax recipe search, 30-step micro, long training, or RC-FPO was
+  launched from this insufficient data gate.

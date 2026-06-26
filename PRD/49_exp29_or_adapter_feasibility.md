@@ -199,3 +199,35 @@ Reports:
 - `reports/exp29_minimax_10step_failure_analysis.md`
 - `reports/exp29_minimax_10step_failure_analysis.csv`
 - `reports/exp29_minimax_next_micro_plan.md`
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+- Status: `MINIMAX_DATA_YIELD_INSUFFICIENT`
+- Candidate generation used 32 VOR-train/search/shadow non-VOR-Eval sources,
+  17 frames per source, and three pre-registered seeds per source.
+- Total candidates: 96.
+- Classification:
+  - `MEDIUM_HARD_ELIGIBLE`: 23
+  - `HARD_BUT_PLAUSIBLE`: 4
+  - `TOO_CLOSE`: 3
+  - `TRIVIAL_BAD`: 60
+  - `TECHNICAL_INVALID`: 6
+- Although 27 candidates were eligible, they came from only 9 unique scene
+  groups. A scene-disjoint train16/heldout16 split is therefore impossible.
+- Locked manifests:
+  - train rows: 9, SHA256
+    `8d9986537f04ef36a9907f093663593b5e9d87e131ed130935796d7df29cd33d`
+  - heldout rows: 0, SHA256
+    `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+  - rejected rows: 87, SHA256
+    `38f190abc1005cbbae5a475dc3023149132aee5fa69eeaad2066d8f987ee932f`
+- Decision: do not run optimizer recipe search or 30-step MiniMax micro gate
+  from this data. MiniMax remains `ADAPTER_POSSIBLE_NEEDS_MORE_WORK`, not a
+  third-backbone quality positive.
+
+Reports:
+
+- `reports/exp29_minimax_preference_data_quality.md`
+- `reports/exp29_minimax_preference_data_quality.csv`
+- `reports/exp29_minimax_preference_video_review.csv`
+- `reports/exp29_minimax_preference_data_quality_summary.json`

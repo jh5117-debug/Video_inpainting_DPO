@@ -73,3 +73,25 @@ Reports:
   - `reports/exp29_minimax_10step_failure_analysis.md`
   - `reports/exp29_minimax_10step_failure_analysis.csv`
   - `reports/exp29_minimax_next_micro_plan.md`
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+- Status: `MINIMAX_DATA_YIELD_INSUFFICIENT`.
+- Candidate protocol: 32 sources, 17 frames each, 3 fixed seeds each, raw
+  MiniMax output only.
+- Reviewed candidates: 96.
+- Counts:
+  - `MEDIUM_HARD_ELIGIBLE`: 23
+  - `HARD_BUT_PLAUSIBLE`: 4
+  - `TOO_CLOSE`: 3
+  - `TRIVIAL_BAD`: 60
+  - `TECHNICAL_INVALID`: 6
+- Eligible candidates: 27, but only 9 unique scene groups.
+- The required scene-disjoint train16/heldout16 split cannot be formed.
+- Decision: recipe search and 30-step MiniMax micro are not allowed from this
+  data gate.
+- Reports:
+  - `reports/exp29_minimax_preference_data_quality.md`
+  - `reports/exp29_minimax_preference_data_quality.csv`
+  - `reports/exp29_minimax_preference_video_review.csv`
+  - `reports/exp29_minimax_preference_data_quality_summary.json`

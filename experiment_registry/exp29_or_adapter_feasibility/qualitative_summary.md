@@ -37,3 +37,24 @@ The heldout tie is now attributed to three interacting issues:
 
 Next MiniMax quality work must start with per-video reviewed medium-hard
 preferences, not with a longer version of the same 10-step recipe.
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+Codex opened all 24 temporal review pages copied under
+`reports/exp29_minimax_micro_review_pages/`. The evidence shows a few plausible
+human/indoor OR losers, but most sources are either target-preserving,
+trivial-bad, too close, or technically invalid. Since usable candidates are
+clustered in only 9 source groups, the MiniMax micro data gate is not ready for
+training.
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+All 24 low-resolution review pages were opened and checked. MiniMax can produce
+some finite local OR defects, but the useful cases cluster in a small number of
+scenes. Many rejected cases retain the object/effect, are too close to the
+winner, have empty/invalid masks, show temporal instability, or damage outside
+regions.
+
+Final qualitative decision: `MINIMAX_DATA_YIELD_INSUFFICIENT`. No visual
+quality-positive adapter claim is supported, and no recipe or 30-step gate
+should run from this candidate set.

@@ -39,3 +39,32 @@ found.
 
 Metric conclusion: the 10-step run had finite gradients and strict reloads, but
 the stable update was too small to produce a meaningful heldout output change.
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+- Candidates: `96/96`.
+- Classification counts: 23 `MEDIUM_HARD_ELIGIBLE`, 4
+  `HARD_BUT_PLAUSIBLE`, 3 `TOO_CLOSE`, 60 `TRIVIAL_BAD`, 6
+  `TECHNICAL_INVALID`.
+- Eligible candidates: 27.
+- Eligible unique source groups: 9.
+- Split result: train rows 9, heldout rows 0; no scene-disjoint train16 and
+  heldout16 split can be formed.
+
+## 2026-06-26 MiniMax Preference Data Quality Gate
+
+- source rows: 32
+- seeds per source: 3
+- generated candidates: 96
+- `MEDIUM_HARD_ELIGIBLE`: 23
+- `HARD_BUT_PLAUSIBLE`: 4
+- `TOO_CLOSE`: 3
+- `TRIVIAL_BAD`: 60
+- `TECHNICAL_INVALID`: 6
+- eligible candidates: 27
+- eligible unique scene groups: 9
+- train manifest rows: 9
+- heldout manifest rows: 0
+
+Metric conclusion: the candidate yield is not sufficient for a fair
+scene-disjoint train16/heldout16 MiniMax micro gate.

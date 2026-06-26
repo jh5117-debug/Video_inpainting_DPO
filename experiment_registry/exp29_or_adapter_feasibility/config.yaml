@@ -11,4 +11,14 @@ forbidden:
   - rcfpo
   - left_cli_modification
   - universal_adapter_claim
-
+minimax_micro_data_gate:
+  source_count: 32
+  frames_per_source: 17
+  seeds:
+    - 20260626
+    - 20260627
+    - 20260628
+  required_train_rows: 16
+  required_heldout_rows: 16
+  split_rule: scene_group_disjoint
+  result: MINIMAX_DATA_YIELD_INSUFFICIENT
