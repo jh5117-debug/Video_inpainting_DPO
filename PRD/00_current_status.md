@@ -2295,3 +2295,15 @@ third-model DPO run was launched by this scaffold milestone.
 
 No Exp29 GPU inference, optimizer step, long training, RC-FPO, or left CLI
 operation was launched by this audit milestone.
+
+## 2026-06-26 Exp29 MiniMax Smoke And Trainable Forward
+
+- MiniMax inference smoke completed on 4 fixed DAVIS-style samples.
+- Status: `MINIMAX_INFERENCE_SMOKE_PASSED_WITH_VISUAL_QUALITY_RISKS`.
+- Visual review: 1 medium-hard candidate (`davis_bear`) and 3 trivial-bad
+  outputs (`davis_bus`, `davis_mallard-water`, `davis_elephant`).
+- MiniMax native flow trainable forward passed with finite gradients and clean
+  state_dict key identity.
+- EffectErase inference smoke remains blocked by missing official weights.
+- No optimizer step, 10-step gate, long training, RC-FPO, or left CLI operation
+  was launched by this milestone.

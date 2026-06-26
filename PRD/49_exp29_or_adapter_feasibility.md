@@ -102,3 +102,32 @@ EffectErase can only become `EFFECTERASE_TRUE_ADAPTER_FEASIBILITY_CONFIRMED`
 after the same technical evidence plus a non-confounded data design. If its
 available evidence is VOR-trained only, it must be labeled technical or
 baseline/diagnostic rather than scientific positive.
+
+## 2026-06-26 Inference Smoke And Trainable Forward
+
+MiniMax:
+
+- `MINIMAX_INFERENCE_SMOKE_PASSED_WITH_VISUAL_QUALITY_RISKS`
+- 4/4 fixed smoke samples ran with official local weights and produced 9
+  frames each.
+- Visual review:
+  - `davis_bear`: medium-hard candidate; mostly successful local removal.
+  - `davis_bus`: trivial-bad; large bus remains.
+  - `davis_mallard-water`: trivial-bad; duck remains with blue/black artifact.
+  - `davis_elephant`: trivial-bad; elephant remains with haze/smoothing.
+- `MINIMAX_TRAINABLE_FORWARD_PASSED`
+- Flow target implemented as `epsilon - z0`; native transformer backward
+  produced finite gradients.
+
+EffectErase:
+
+- `EFFECTERASE_INFERENCE_SMOKE_BLOCKED_NO_WEIGHTS`
+- Official repo is available, but `EffectErase.ckpt` and required Wan assets
+  were not found. No fallback checkpoint was used.
+
+Reports:
+
+- `reports/exp29_minimax_inference_smoke.md`
+- `reports/exp29_minimax_inference_visual_review.csv`
+- `reports/exp29_minimax_trainable_forward_audit.md`
+- `reports/exp29_effecterase_inference_smoke.md`

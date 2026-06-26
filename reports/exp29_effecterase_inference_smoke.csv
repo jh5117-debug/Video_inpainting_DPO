@@ -1,0 +1,3 @@
+model,status,repo_ready,weights_ready,inference_smoke,visual_review,blocked_reason,next_action
+EffectErase,EFFECTERASE_INFERENCE_SMOKE_BLOCKED_NO_WEIGHTS,true,false,not_run,not_run,"Official EffectErase.ckpt and Wan2.1-Fun-1.3B-InP assets not found in audited paths","Provide official weights or record gated/manual download instructions; do not fallback"
+

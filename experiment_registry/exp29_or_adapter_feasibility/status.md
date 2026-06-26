@@ -24,3 +24,11 @@ Reports:
 - `reports/exp29_effecterase_repo_weight_audit.md`
 - `reports/exp29_effecterase_repo_weight_audit.csv`
 - `reports/exp29_effecterase_asset_matrix.json`
+
+## 2026-06-26 Inference Smoke And Trainable Forward
+
+- MiniMax inference: `MINIMAX_INFERENCE_SMOKE_PASSED_WITH_VISUAL_QUALITY_RISKS`.
+- MiniMax visual quality: mixed; one medium-hard candidate and three
+  trivial-bad outputs.
+- MiniMax trainable forward: `MINIMAX_TRAINABLE_FORWARD_PASSED`.
+- EffectErase inference: `EFFECTERASE_INFERENCE_SMOKE_BLOCKED_NO_WEIGHTS`.

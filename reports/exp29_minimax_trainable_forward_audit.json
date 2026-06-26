@@ -1,0 +1,23 @@
+{
+  "status": "MINIMAX_TRAINABLE_FORWARD_PASSED",
+  "sample_id": "davis_bear",
+  "original_frames": 9,
+  "model_frames": 9,
+  "z0_shape": [1, 16, 3, 64, 64],
+  "hidden_shape": [1, 48, 3, 64, 64],
+  "target_type": "flow_velocity_eps_minus_z0",
+  "t": 0.3701171875,
+  "timestep": 370.0,
+  "no_grad_loss": 0.01714255101978779,
+  "grad_loss": 0.01714255101978779,
+  "grad_norm": 0.7473063172052292,
+  "grad_param_tensors": 461,
+  "grad_max_abs": 0.02227783203125,
+  "trainable_parameter_count": 1127055424,
+  "frozen_vae_parameter_count": 126892531,
+  "missing_keys": [],
+  "unexpected_keys": [],
+  "peak_vram_mib": 12561.50341796875,
+  "seed": 20260626
+}
+
