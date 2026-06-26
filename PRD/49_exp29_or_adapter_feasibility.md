@@ -379,3 +379,27 @@ Reports:
 
 - `reports/exp29_effecterase_command_dryrun.md`
 - `reports/exp29_effecterase_command_dryrun.json`
+
+## 2026-06-26 MiniMax Expanded Source-Pool Plan
+
+- Status: `MINIMAX_EXPANDED_GENERATION_BLOCKED`
+- Planned first-pass requirement: 96 or 128 non-VOR-Eval sources, excluding the
+  previous 32 sources.
+- Available source audit:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_triplet_audit64_semantic.csv`
+- Audit rows: 64.
+- Valid aligned rows: 63.
+- Previous source32 rows excluded: 32.
+- Remaining valid rows: 31.
+- Remaining inventory manifest:
+  `exp29_or_adapter_feasibility/manifests/minimax_expanded_source_pool_v2.jsonl`
+- Manifest SHA256:
+  `bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929`
+- The manifest rows are marked `eligible_for_generation=false` because the
+  preregistered source-count requirement cannot be met.
+- No MiniMax inference, recipe search, 30-step micro, or training was launched.
+
+Reports:
+
+- `reports/exp29_minimax_expanded_source_pool_plan.md`
+- `reports/exp29_minimax_expanded_source_pool_plan.json`

@@ -1,0 +1,27 @@
+{
+  "audit_csv": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_triplet_audit64_semantic.csv",
+  "audit_rows": 64,
+  "decision": "Do not launch MiniMax expanded candidate generation from this audit64 pool. Need a larger group-disjoint source audit before first-pass generation.",
+  "generation_allowed": false,
+  "manifest_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_source_pool_v2_plan_20260626/minimax_expanded_source_pool_v2.jsonl",
+  "manifest_sha256": "bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929",
+  "mask_bucket_counts": {
+    "large": 14,
+    "medium": 12,
+    "small": 5
+  },
+  "previous_source32_rows": 32,
+  "remaining_valid_rows": 31,
+  "required_sources": "96_or_128",
+  "seeds": {
+    "seed_a": 20260626,
+    "seed_b_conditional": 20260627,
+    "seed_c": "disabled"
+  },
+  "source_type_counts": {
+    "BLENDER": 8,
+    "REAL": 23
+  },
+  "status": "MINIMAX_EXPANDED_SOURCE_POOL_PLAN_BLOCKED_INSUFFICIENT_AUDIT_ROWS",
+  "valid_audit_rows": 63
+}

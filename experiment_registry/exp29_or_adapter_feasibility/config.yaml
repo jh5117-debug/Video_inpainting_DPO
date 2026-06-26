@@ -81,3 +81,14 @@ effecterase_command_dryrun:
   supports_seed: true
   inference_launched: false
   inference_blocked_by_inputs: true
+minimax_expanded_source_pool_plan:
+  result: MINIMAX_EXPANDED_GENERATION_BLOCKED
+  required_sources: 96_or_128
+  audit_rows: 64
+  valid_audit_rows: 63
+  previous_source32_rows: 32
+  remaining_valid_rows: 31
+  manifest: exp29_or_adapter_feasibility/manifests/minimax_expanded_source_pool_v2.jsonl
+  manifest_sha256: bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929
+  generation_allowed: false
+  recipe_or_30step_allowed: false

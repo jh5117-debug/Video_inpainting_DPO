@@ -183,3 +183,19 @@ Reports:
 - Reports:
   - `reports/exp29_effecterase_command_dryrun.md`
   - `reports/exp29_effecterase_command_dryrun.json`
+
+## 2026-06-26 MiniMax Expanded Source-Pool Plan
+
+- Status: `MINIMAX_EXPANDED_GENERATION_BLOCKED`.
+- Required expanded pool: 96 or 128 sources.
+- Current audit CSV has 64 rows, 63 valid aligned rows, and only 31 remaining
+  valid rows after excluding the previous source32 gate.
+- Remaining inventory manifest:
+  `exp29_or_adapter_feasibility/manifests/minimax_expanded_source_pool_v2.jsonl`.
+- Manifest SHA256:
+  `bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929`.
+- No MiniMax generation, recipe search, 30-step micro, or training was
+  launched.
+- Reports:
+  - `reports/exp29_minimax_expanded_source_pool_plan.md`
+  - `reports/exp29_minimax_expanded_source_pool_plan.json`

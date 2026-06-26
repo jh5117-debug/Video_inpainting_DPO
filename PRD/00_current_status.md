@@ -2413,3 +2413,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Core recovered asset SHA256 values were rechecked.
 - No full inference was run because the preregistered six-row smoke input set
   remains blocked by one empty-mask row.
+
+## 2026-06-26 Exp29 MiniMax Expanded Source-Pool Plan
+
+- Status: `MINIMAX_EXPANDED_GENERATION_BLOCKED`
+- The current Exp25 semantic audit has only 64 rows; 63 are valid aligned rows.
+- After excluding the previous 32-source MiniMax gate, only 31 valid rows remain.
+- This is below the preregistered 96/128-source expanded first-pass requirement.
+- Wrote the remaining inventory manifest, but all rows are marked
+  `eligible_for_generation=false`.
+- No MiniMax inference, recipe search, 30-step micro, or training was launched.

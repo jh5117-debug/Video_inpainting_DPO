@@ -122,3 +122,15 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Asset SHA256 rechecked for LoRA, VAE, DiT, image encoder, and text encoder.
 - Command readiness: `EFFECTERASE_COMMAND_READY`, but blocked from inference by
   `EFFECTERASE_SMOKE_INPUTS_BLOCKED`.
+
+## 2026-06-26 MiniMax Expanded Source-Pool Plan
+
+- Required sources: 96 or 128.
+- Audit rows available: 64.
+- Valid aligned rows: 63.
+- Previous source32 rows excluded: 32.
+- Remaining valid rows: 31.
+- Remaining source type counts: REAL 23, BLENDER 8.
+- Remaining mask bucket counts: small 5, medium 12, large 14.
+- Generation status: blocked before inference because source-pool size is
+  insufficient.

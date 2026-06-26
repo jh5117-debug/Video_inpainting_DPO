@@ -97,3 +97,10 @@ silently replaced, preserving preregistration integrity.
 No EffectErase output video was generated. The command path and environment are
 now ready, but the official smoke remains blocked by the locked empty-mask row.
 No OR baseline quality judgment is supported yet.
+
+## 2026-06-26 MiniMax Expanded Source-Pool Plan
+
+No new MiniMax video evidence was generated. The expanded data-yield first pass
+is blocked before inference because the current audited source inventory is too
+small after excluding the previous 32 rows. MiniMax remains plumbing-positive
+but data-yield-limited.
