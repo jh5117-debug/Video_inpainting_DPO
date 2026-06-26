@@ -56,3 +56,20 @@ Reports:
 - No left CLI signal was sent; no left runtime/worktree/output file was
   modified.
 - Report: `reports/exp29_continuation_readback.md`.
+
+## 2026-06-26 MiniMax 10-Step Failure Analysis
+
+- Status: `MINIMAX_10STEP_FAILURE_ANALYZED`.
+- Root cause: the previous stable recovery recipe was intentionally too
+  conservative (`SGD(lr=1e-7)`), producing only
+  `1.1061271569642785e-10` step10 parameter-probe delta.
+- Backward path was not missing: mean preclip grad norm was `0.7237282794`, max
+  `1.2341757971`, with 461 gradient tensors.
+- Quality signal was weak: 3/4 previous smoke training losers were
+  trivial-bad, and the heldout set had only 2 rows.
+- Decision: do not run longer from the same recipe; require a medium-hard
+  train16/heldout16 data-quality gate before further MiniMax optimizer tests.
+- Reports:
+  - `reports/exp29_minimax_10step_failure_analysis.md`
+  - `reports/exp29_minimax_10step_failure_analysis.csv`
+  - `reports/exp29_minimax_next_micro_plan.md`

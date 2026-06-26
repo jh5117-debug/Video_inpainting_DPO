@@ -1,0 +1,13 @@
+factor,status,evidence,decision
+optimizer_too_conservative,yes,"SGD(lr=1e-7); step10 parameter delta probe 1.1061271569642785e-10","do not extend same recipe"
+sgd_too_weak,yes,"finite mean grad norm 0.7237282794 but no visible heldout change","try bounded AdamW/Linear-DPO recipes only after data gate"
+learning_rate_too_small,yes,"nonzero but negligible policy delta; DPO loss stayed near log(2)","increase movement carefully with clip/stability checks"
+trainable_params_not_updating,no,"policy delta nonzero; reference delta 0.0","plumbing works but update magnitude too small"
+output_insensitive,likely_secondary,"Step10 heldout visually tied with Step0","requires stronger recipe and better loser signal"
+loser_quality_problem,yes,"3/4 smoke training losers were trivial-bad","build medium-hard train16/heldout16 before training"
+heldout_too_small,yes,"only davis_hockey and davis_koala","next heldout must use 16 rows"
+flow_target_wrong,no,"zero-gap and finite flow velocity target epsilon-z0 passed","keep target but audit recipe"
+objective_too_weak,yes_for_recipe,"preference margins within roughly +/-5e-6","test bounded DPO/Linear-DPO variants"
+seed_or_bad_noise_mismatch,plausible,"previous gate did not exploit MiniMax bad-noise/minimax-style candidate difficulty","pre-register seed/difficulty generation"
+wrong_modules_frozen,no_evidence,"461 grad tensors; full transformer trainable; VAE/reference intentionally frozen","no freeze fix indicated"
+final_decision,analyzed,"MiniMax 10-step remains pareto_mixed","run data-quality gate before any further micro training"

@@ -25,3 +25,15 @@ EffectErase visual review is blocked because official weights are missing.
 
 No heldout visual improvement was found. This is a technical adapter-plumbing
 pass, not a third-backbone scientific positive.
+
+## 2026-06-26 MiniMax 10-Step Failure Analysis
+
+The heldout tie is now attributed to three interacting issues:
+
+- the stable recovery optimizer was too conservative to move outputs;
+- the previous train set was dominated by trivial-bad OR losers;
+- the heldout set had only two rows and cannot support a quality-positive
+  claim.
+
+Next MiniMax quality work must start with per-video reviewed medium-hard
+preferences, not with a longer version of the same 10-step recipe.

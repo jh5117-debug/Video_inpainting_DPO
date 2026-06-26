@@ -180,3 +180,22 @@ Reports:
 Report:
 
 - `reports/exp29_continuation_readback.md`
+
+## 2026-06-26 MiniMax 10-Step Failure Analysis
+
+- Status: `MINIMAX_10STEP_FAILURE_ANALYZED`
+- The previous MiniMax 10-step gate used `SGD(lr=1e-7)` after fp16 AdamW
+  produced NaNs. This stabilized plumbing but produced a step10 parameter delta
+  probe of only `1.1061271569642785e-10`.
+- Gradients were finite, so the primary issue was not a missing backward path.
+  The effective update was too small, the training losers were mostly
+  trivial-bad, and the heldout set had only two rows.
+- Decision: do not extend the same recipe. MiniMax must first pass a
+  medium-hard train16/heldout16 data-quality gate, then a bounded optimizer /
+  precision recipe gate, before any 30-step micro can run.
+
+Reports:
+
+- `reports/exp29_minimax_10step_failure_analysis.md`
+- `reports/exp29_minimax_10step_failure_analysis.csv`
+- `reports/exp29_minimax_next_micro_plan.md`

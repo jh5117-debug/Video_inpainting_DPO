@@ -2331,3 +2331,15 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   and no left file was modified.
 - Next eligible Exp29 milestones: MiniMax 10-step failure analysis, MiniMax
   medium-hard micro data gate, and EffectErase weight recovery.
+
+## 2026-06-26 Exp29 MiniMax 10-Step Failure Analysis
+
+- Status: `MINIMAX_10STEP_FAILURE_ANALYZED`
+- The prior 10-step micro did not fail due to missing gradients: mean preclip
+  grad norm was `0.7237282794` and max was `1.2341757971`.
+- The stable recovery recipe was too conservative: `SGD(lr=1e-7)` produced a
+  step10 parameter-probe delta of only `1.1061271569642785e-10`.
+- The previous train set was dominated by trivial-bad losers and heldout had
+  only two rows. Therefore the same recipe must not be extended.
+- Next allowed MiniMax action is a medium-hard train16/heldout16 data-quality
+  gate, followed by a bounded recipe gate if data yield is sufficient.
