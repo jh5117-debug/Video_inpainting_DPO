@@ -1,0 +1,35 @@
+{
+  "audit_csv": "reports/exp29_minimax_full_vor_source_audit.csv",
+  "effect_label_status": "unknown_pending_metadata",
+  "effecterase_excluded_rows": 12,
+  "effecterase_excluded_sample_ids": 7,
+  "effecterase_excluded_scene_groups": 7,
+  "full_index_path": "/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "full_index_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "generation_launched": false,
+  "mask_bucket_status": "unknown_pending_materialization",
+  "min_groups": 128,
+  "motion_label_status": "unknown_pending_metadata",
+  "previous_source32_rows": 32,
+  "previous_source32_sample_ids": 32,
+  "previous_source32_scene_groups": 32,
+  "raw_rows": 57751,
+  "raw_sample_ids": 57751,
+  "raw_scene_groups": 1449,
+  "selected_groups": 192,
+  "selected_manifest": "exp29_or_adapter_feasibility/manifests/minimax_full_vor_source_candidates_v2.jsonl",
+  "selected_manifest_sha256": "16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10",
+  "selected_source_counts": {
+    "BLENDER": 96,
+    "REAL": 96
+  },
+  "status": "MINIMAX_FULL_VOR_SOURCE_AUDIT_READY",
+  "target_groups": 192,
+  "training_manifest_created": false,
+  "valid_candidate_groups": 1417,
+  "valid_group_source_counts": {
+    "BLENDER": 141,
+    "REAL": 1276
+  },
+  "vor_eval_used": false
+}

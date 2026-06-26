@@ -179,3 +179,18 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   noise latent time dimension 21 while the locked 17-frame inputs produced time
   dimension 5.
 - Metrics are unavailable because no output video was produced.
+
+## 2026-06-26 MiniMax Full-VOR Source Audit
+
+- Full metadata rows read: 57,751.
+- Raw scene groups: 1,449.
+- Valid candidate scene groups after excluding previous Exp29 MiniMax source32
+  and EffectErase smoke rows: 1,417.
+- Locked source candidates: 192.
+- Selected source type counts: REAL 96, BLENDER 96.
+- Manifest SHA256:
+  `16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10`.
+- Mask bucket/effect/motion quantitative labels are unavailable in the full
+  metadata index and remain pending materialization.
+- No model output, image/video metric, candidate classification, recipe, or
+  training metric was produced by this audit.

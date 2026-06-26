@@ -512,3 +512,33 @@ Reports:
 - `reports/exp29_effecterase_inference_visual_review_v2.csv`
 - `reports/exp29_effecterase_inference_metrics_v2.csv`
 - `reports/exp29_effecterase_inference_summary_v2.json`
+
+## 2026-06-26 MiniMax Full-VOR Source Audit
+
+- Status: `MINIMAX_FULL_VOR_SOURCE_AUDIT_READY`
+- Full VOR Train metadata index:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`
+- Full metadata SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`
+- Raw rows read: 57,751.
+- Raw scene groups: 1,449.
+- Previous MiniMax source32 excluded: 32 rows / 32 scene groups.
+- EffectErase smoke rows excluded: 12 rows / 7 scene groups.
+- Valid candidate groups after exclusions: 1,417.
+- Locked candidate manifest:
+  `exp29_or_adapter_feasibility/manifests/minimax_full_vor_source_candidates_v2.jsonl`
+- Candidate manifest SHA256:
+  `16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10`
+- Selected groups: 192, with REAL/BLENDER = 96/96.
+- Mask bucket, effect type, and motion bucket are explicitly recorded as
+  `unknown_pending_materialization` / `unknown_pending_metadata` because the
+  full metadata index does not contain those labels.
+- This milestone fixes the previous 31-row source-pool blocker only. It does
+  not claim MiniMax micro-data quality, does not create train16/heldout16, and
+  does not run generation, recipe search, 30-step, or training.
+
+Reports:
+
+- `reports/exp29_minimax_full_vor_source_audit.md`
+- `reports/exp29_minimax_full_vor_source_audit.csv`
+- `reports/exp29_minimax_full_vor_source_audit.json`

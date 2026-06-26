@@ -159,3 +159,24 @@ effecterase_inference_smoke_v2:
   output_videos: 0
   baseline_ready: false
   adapter_ready: false
+minimax_full_vor_source_audit:
+  result: MINIMAX_FULL_VOR_SOURCE_AUDIT_READY
+  full_index: /mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl
+  full_index_sha256: 33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4
+  raw_rows: 57751
+  raw_scene_groups: 1449
+  previous_source32_scene_groups_excluded: 32
+  effecterase_scene_groups_excluded: 7
+  valid_candidate_groups_after_exclusion: 1417
+  selected_groups: 192
+  selected_source_counts:
+    REAL: 96
+    BLENDER: 96
+  selected_manifest: exp29_or_adapter_feasibility/manifests/minimax_full_vor_source_candidates_v2.jsonl
+  selected_manifest_sha256: 16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10
+  mask_bucket_status: unknown_pending_materialization
+  effect_label_status: unknown_pending_metadata
+  motion_label_status: unknown_pending_metadata
+  generation_launched: false
+  training_manifest_created: false
+  recipe_or_30step_allowed: false

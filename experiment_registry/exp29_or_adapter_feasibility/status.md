@@ -255,3 +255,24 @@ Reports:
   time dimension `5`.
 - No output video was produced; no metrics or visual quality pass are available.
 - EffectErase remains not OR baseline-ready and not adapter-ready.
+
+## 2026-06-26 MiniMax Full-VOR Source Audit
+
+- Status: `MINIMAX_FULL_VOR_SOURCE_AUDIT_READY`.
+- Full index:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`.
+- Full index SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`.
+- Raw rows: 57,751.
+- Raw scene groups: 1,449.
+- Exclusions: previous MiniMax source32 = 32 scene groups; EffectErase smoke
+  rows = 7 scene groups.
+- Valid candidate groups after exclusions: 1,417.
+- Locked candidate manifest:
+  `exp29_or_adapter_feasibility/manifests/minimax_full_vor_source_candidates_v2.jsonl`.
+- Manifest SHA256:
+  `16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10`.
+- Selected groups: 192, REAL/BLENDER = 96/96.
+- Mask/effect/motion labels are pending materialization or metadata and were
+  not guessed.
+- No MiniMax generation, recipe search, 30-step micro, or training launched.

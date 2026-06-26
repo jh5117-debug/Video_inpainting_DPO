@@ -2474,3 +2474,21 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   inputs are 17-frame diagnostic videos.
 - No output video was produced. EffectErase remains not baseline-ready and not
   adapter-ready.
+
+## 2026-06-26 Exp29 MiniMax Full-VOR Source Audit
+
+- Status: `MINIMAX_FULL_VOR_SOURCE_AUDIT_READY`
+- Read the existing Exp25 full VOR Train metadata index read-only; no Exp25
+  file was modified and no VOR archive was rescanned.
+- Full metadata SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`.
+- After excluding the previous MiniMax source32 and EffectErase smoke rows,
+  1,417 scene groups remain eligible for a source-pool first pass.
+- Locked 192 scene-disjoint candidate groups at SHA256
+  `16e128282da110eeefd6cb56a517c8b6de82e42a5241c9b845e01315d9800f10`,
+  balanced REAL/BLENDER = 96/96.
+- Mask size, effect type, and motion labels are not present in the full
+  metadata index, so they are marked pending materialization/metadata rather
+  than guessed.
+- No MiniMax generation, recipe search, 30-step micro, training, or quality
+  promotion was launched.
