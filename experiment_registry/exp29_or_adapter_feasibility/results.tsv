@@ -8,3 +8,4 @@ ArchitectureAudit	n/a	n/a	n/a	n/a	n/a	n/a	n/a	model-specific-backend-adapter	EXP
 EffectErase	true	true	preregistered_not_run	not_run	not_run	not_run	not_run	OR_STRONG_BASELINE	EFFECTERASE_SMOKE_PREREGISTERED
 ContinuationV3	n/a	n/a	readback_complete	n/a	n/a	n/a	n/a	right-side-exp29-only	EXP29_CONTINUATION_V3_READBACK_COMPLETED
 EffectErase	true	true	inputs_blocked_empty_mask	not_run	not_run	not_run	not_run	OR_STRONG_BASELINE	EFFECTERASE_SMOKE_INPUTS_BLOCKED
+EffectErase	true	true	command_ready_no_inference	not_run	not_run	not_run	not_run	OR_STRONG_BASELINE	EFFECTERASE_COMMAND_READY

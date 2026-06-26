@@ -111,3 +111,14 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - All decoded ready videos have 17 frames at 832x480.
 - Blocked row: `REAL_ENV249_00103_004_04`.
 - Blocker metric: mask area min/mean/max all `0.0`.
+
+## 2026-06-26 EffectErase Command Dry-Run
+
+- Full inference: not run.
+- Script import: passed in dedicated venv.
+- Transformers: `4.51.3`.
+- Diffusers: `0.31.0`.
+- Decord: `0.6.0`.
+- Asset SHA256 rechecked for LoRA, VAE, DiT, image encoder, and text encoder.
+- Command readiness: `EFFECTERASE_COMMAND_READY`, but blocked from inference by
+  `EFFECTERASE_SMOKE_INPUTS_BLOCKED`.

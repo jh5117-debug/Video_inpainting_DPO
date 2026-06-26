@@ -70,3 +70,14 @@ effecterase_smoke_input_materialization:
     - REAL_ENV249_00103_004_04
   blocker: empty_mask
   inference_launched: false
+effecterase_command_dryrun:
+  result: EFFECTERASE_COMMAND_READY
+  transformers_version: 4.51.3
+  diffusers_version: 0.31.0
+  decord_version: 0.6.0
+  supports_num_frames_override: true
+  supports_cfg: true
+  supports_num_inference_steps: true
+  supports_seed: true
+  inference_launched: false
+  inference_blocked_by_inputs: true

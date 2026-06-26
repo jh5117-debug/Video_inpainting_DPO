@@ -2403,3 +2403,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - `REAL_ENV249_00103_004_04` is blocked because the locked mask is empty.
 - No replacement row, seed change, frame-index change, mask edit, or
   EffectErase inference launch occurred.
+
+## 2026-06-26 Exp29 EffectErase Command Dry-Run
+
+- Status: `EFFECTERASE_COMMAND_READY`
+- Dedicated Exp29 venv now imports official EffectErase inference with
+  `transformers==4.51.3`, `diffusers==0.31.0`, and `decord==0.6.0`.
+- Official script supports the locked 17-frame override argument.
+- Core recovered asset SHA256 values were rechecked.
+- No full inference was run because the preregistered six-row smoke input set
+  remains blocked by one empty-mask row.

@@ -91,3 +91,9 @@ positive result.
 No EffectErase output video was generated. The preregistered smoke is blocked
 before inference because one locked row has an empty task mask. The row was not
 silently replaced, preserving preregistration integrity.
+
+## 2026-06-26 EffectErase Command Dry-Run
+
+No EffectErase output video was generated. The command path and environment are
+now ready, but the official smoke remains blocked by the locked empty-mask row.
+No OR baseline quality judgment is supported yet.

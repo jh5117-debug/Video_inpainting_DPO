@@ -357,3 +357,25 @@ Reports:
 - `reports/exp29_effecterase_smoke_input_materialization.md`
 - `reports/exp29_effecterase_smoke_input_materialization.csv`
 - `reports/exp29_effecterase_smoke_input_materialization.json`
+
+## 2026-06-26 EffectErase Command Dry-Run
+
+- Status: `EFFECTERASE_COMMAND_READY`
+- Official runtime repo copy:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/third_party/EffectErase`
+- Dedicated venv:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/venvs/effecterase_smoke/bin/python`
+- Environment fix: `transformers==4.51.3`, `diffusers==0.31.0`, and
+  `decord==0.6.0` allow official `examples/remove_wan/infer_remove_wan.py` to
+  import successfully.
+- Official script supports `--num_frames`, `--cfg`, `--num_inference_steps`,
+  and `--seed`; 17-frame override is accepted by command construction.
+- Core recovered asset SHA256 values were rechecked for LoRA, VAE, DiT, image
+  encoder, and text encoder.
+- No full inference was run because Milestone A is still
+  `EFFECTERASE_SMOKE_INPUTS_BLOCKED` for the locked six-row manifest.
+
+Reports:
+
+- `reports/exp29_effecterase_command_dryrun.md`
+- `reports/exp29_effecterase_command_dryrun.json`

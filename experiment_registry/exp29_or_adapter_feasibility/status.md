@@ -168,3 +168,18 @@ Reports:
   - `reports/exp29_effecterase_smoke_input_materialization.md`
   - `reports/exp29_effecterase_smoke_input_materialization.csv`
   - `reports/exp29_effecterase_smoke_input_materialization.json`
+
+## 2026-06-26 EffectErase Command Dry-Run
+
+- Status: `EFFECTERASE_COMMAND_READY`.
+- Official script import now succeeds in a dedicated Exp29 venv using
+  `transformers==4.51.3`, `diffusers==0.31.0`, and `decord==0.6.0`.
+- The official script accepts `--num_frames`, `--cfg`,
+  `--num_inference_steps`, and `--seed`.
+- A locked-command line was constructed for a ready row
+  `REAL_ENV231_00010_003_03`.
+- No full inference was run because the preregistered six-row input set remains
+  blocked by one empty-mask row.
+- Reports:
+  - `reports/exp29_effecterase_command_dryrun.md`
+  - `reports/exp29_effecterase_command_dryrun.json`

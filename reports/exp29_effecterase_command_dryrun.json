@@ -1,0 +1,60 @@
+{
+  "status": "EFFECTERASE_COMMAND_READY",
+  "inference_allowed_by_inputs": false,
+  "input_status": "EFFECTERASE_SMOKE_INPUTS_BLOCKED",
+  "input_ready_rows": 5,
+  "input_rows": 6,
+  "blocked_reason": "one preregistered row has empty mask",
+  "repo_runtime_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/third_party/EffectErase",
+  "repo_commit_expected": "bcee0a5da5ef387c2ba39390dc4d579503669fb8",
+  "license": "CC BY-NC 4.0",
+  "venv_python": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/venvs/effecterase_smoke/bin/python",
+  "transformers_version": "4.51.3",
+  "diffusers_version": "0.31.0",
+  "official_script": "examples/remove_wan/infer_remove_wan.py",
+  "supports_num_frames_override": true,
+  "supports_cfg": true,
+  "supports_steps": true,
+  "supports_seed": true,
+  "dryrun_sample_id": "REAL_ENV231_00010_003_03",
+  "constructed_command": "cd /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/third_party/EffectErase && CUDA_VISIBLE_DEVICES=<RIGHT_GPU> /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/venvs/effecterase_smoke/bin/python examples/remove_wan/infer_remove_wan.py --fg_bg_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_20260626/inputs/REAL_ENV231_00010_003_03/fg_bg.mp4 --mask_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_20260626/inputs/REAL_ENV231_00010_003_03/mask.mp4 --output_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_20260626/outputs/REAL_ENV231_00010_003_03/raw_output.mp4 --text_encoder_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_t5_umt5-xxl-enc-bf16.pth --vae_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/Wan2.1_VAE.pth --dit_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/diffusion_pytorch_model.safetensors --image_encoder_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth --pretrained_lora_path /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/FudanCVL/EffectErase/EffectErase.ckpt --num_frames 17 --height 480 --width 832 --seed 2025 --cfg 1.0 --num_inference_steps 50",
+  "asset_records": [
+    {
+      "name": "lora",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/FudanCVL/EffectErase/EffectErase.ckpt",
+      "bytes": 1438679011,
+      "sha256": "4e9ace4607a348a0d820328f827f7f4f751a0e44d4cf60665c03e9740dfa024d",
+      "exists": true
+    },
+    {
+      "name": "vae",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/Wan2.1_VAE.pth",
+      "bytes": 507609880,
+      "sha256": "38071ab59bd94681c686fa51d75a1968f64e470262043be31f7a094e442fd981",
+      "exists": true
+    },
+    {
+      "name": "dit",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/diffusion_pytorch_model.safetensors",
+      "bytes": 3128957992,
+      "sha256": "8495d2b1673ffb18abb548a64ff3b0e4bd367734f653096f7a8a3ad46954d511",
+      "exists": true
+    },
+    {
+      "name": "image_encoder",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth",
+      "bytes": 4772359047,
+      "sha256": "628c9998b613391f193eb67ff68da9667d75f492911e4eb3decf23460a158c38",
+      "exists": true
+    },
+    {
+      "name": "text_encoder",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_t5_umt5-xxl-enc-bf16.pth",
+      "bytes": 11361920418,
+      "sha256": "7cace0da2b446bbbbc57d031ab6cf163a3d59b366da94e5afe36745b746fd81d",
+      "exists": true
+    }
+  ],
+  "full_inference_run": false,
+  "why_no_inference": "Milestone A input materialization is blocked for the locked 6-row smoke; command is ready but C cannot run as preregistered 6/6 smoke."
+}
