@@ -81,3 +81,16 @@ a deterministic mixed moving BR mask sequence. Video review remains pending and
 must cover Step0 and Step50 raw/comp outputs after inference, including
 frame1-48 local artifacts, raw outside preservation, water/grass/foliage
 failure modes, and any new Step50 artifacts.
+
+## 2026-06-26 External Validation Visual Review
+
+External visual review covered `32/32` preregistered DAVIS-derived rows using
+anonymous A/B pages followed by informed Step0/Step50 pages and local crop
+sheets. Final classification: Step50 slightly better in `3`, tie in `5`, Step0
+better in `24`, and Step50 new local artifact in `29` rows.
+
+The dominant Step50 failure pattern is a dark/green blob or color smear in the
+masked/affected region, especially for water, grass, foliage, fast motion,
+animals, people, and vehicles. This agrees with the external strict-mask PSNR
+and LPIPS failures. No new evidence of frame-order failure, first-frame error,
+or unexpected winner leakage was found.

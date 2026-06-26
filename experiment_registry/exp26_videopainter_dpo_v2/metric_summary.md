@@ -209,3 +209,20 @@ Gate failure reasons:
 
 Step10 and Step30 remain trajectory diagnostics only and cannot replace Step50
 based on this external split.
+
+## 2026-06-26 External Validation Visual Review
+
+The visual review does not change the metric status `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`.
+It provides qualitative support for the metric gate failure: Step50 lost the
+primary strict-mask PSNR endpoint and introduced visible local artifacts in most
+external rows.
+
+Visual counts:
+
+| Item | Count |
+| --- | ---: |
+| reviewed rows | `32` |
+| Step50 better | `3` |
+| tie | `5` |
+| Step0 better | `24` |
+| Step50 new artifact rows | `29` |

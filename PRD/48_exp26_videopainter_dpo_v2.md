@@ -1223,3 +1223,29 @@ Reports:
 - `reports/exp26_external_validation_tc_vfid.md`
 - `reports/exp26_external_validation_tc_vfid_per_video.csv`
 - `reports/exp26_external_validation_tc_vfid_summary.csv`
+
+## 2026-06-26 Exp26 External Validation Visual Review
+
+- Status: `EXP26_EXTERNAL_VIDEO_REVIEW_COMPLETE`
+- External validation final metric status remains: `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+- Reviewed rows: `32 / 32`
+- Step50 clearly better: `0`
+- Step50 slightly better: `3`
+- Tie: `5`
+- Step0 slightly better: `7`
+- Step0 clearly better: `17`
+- Step50 new artifact rows: `29`
+- Main failure modes: dark/green local blobs, water/grass/foliage color mismatch,
+  texture break in high-motion cases, thin-structure boundary tinting, and local
+  temporal smearing.
+- Reports:
+  - `reports/exp26_external_validation_visual_review.md`
+  - `reports/exp26_external_validation_visual_review.csv`
+  - `reports/exp26_external_validation_visual_review_assets/`
+
+The external visual review confirms the metric failure rather than rescuing the
+result. Step50 remains confirmed on search-dev and VOR-BG shadow-dev, but this
+DAVIS-derived external clean-source split exposes poor cross-distribution
+local-region generalization. Step10/30 cannot be selected from this split, and
+no 100-step run, retraining, seed/mask change, or universal-adapter claim is
+authorized.

@@ -87,3 +87,9 @@ external_validation_reports:
   tc_vfid: reports/exp26_external_validation_tc_vfid.md
   tc_vfid_per_video: reports/exp26_external_validation_tc_vfid_per_video.csv
   tc_vfid_summary: reports/exp26_external_validation_tc_vfid_summary.csv
+
+external_validation_visual_review:
+  report: reports/exp26_external_validation_visual_review.md
+  csv: reports/exp26_external_validation_visual_review.csv
+  git_friendly_assets: reports/exp26_external_validation_visual_review_assets
+  full_pai_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation

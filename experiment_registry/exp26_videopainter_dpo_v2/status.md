@@ -616,3 +616,20 @@ reselection, or source-row replacement was performed.
 Primary external metrics failed the preregistered gate. External video review
 remains pending to characterize failure modes, but this split cannot be used
 for Step30 reselection, seed/mask changes, or additional VideoPainter training.
+
+## 2026-06-26 External Validation Visual Review
+
+- status: `EXP26_EXTERNAL_VIDEO_REVIEW_COMPLETE`
+- external confirmation status: `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+- reviewed rows: `32 / 32`
+- Step50 better: `3`
+- tie: `5`
+- Step0 better: `24`
+- Step50 new artifact rows: `29`
+- report: `reports/exp26_external_validation_visual_review.md`
+- csv: `reports/exp26_external_validation_visual_review.csv`
+- git-friendly evidence assets: `reports/exp26_external_validation_visual_review_assets/`
+
+The review found that external failures are visible local-region artifacts, not
+frame-order errors, first-frame-GT errors, or unexpected GT leakage. No
+checkpoint reselection, 100-step continuation, or retraining is authorized.
