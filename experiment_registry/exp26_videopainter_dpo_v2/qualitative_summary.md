@@ -72,3 +72,12 @@ The external source pool is DAVIS-derived clean `gt_frames`, not visualization
 water, foliage/grass, urban scenes, and high-motion cases. No external videos
 have been generated or reviewed yet; visual review remains pending until the
 pre-registered Step0/Step50 outputs exist.
+
+## 2026-06-26 External Validation Preregistration
+
+The external validation visual protocol is locked but no external model videos
+exist yet. Each row now has an exact 49-frame materialized source directory and
+a deterministic mixed moving BR mask sequence. Video review remains pending and
+must cover Step0 and Step50 raw/comp outputs after inference, including
+frame1-48 local artifacts, raw outside preservation, water/grass/foliage
+failure modes, and any new Step50 artifacts.

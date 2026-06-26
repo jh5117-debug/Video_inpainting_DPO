@@ -2141,3 +2141,19 @@ benchmarking.
   `/mnt/workspace/hj/nas_hj/data/external/DPO_Finetune_data`.
 - Note: no external inference has been run yet; preregistration of masks,
   seeds, prompts, and Step0/Step50 protocol is the next gate.
+
+## 2026-06-26 Exp26 External Validation Preregistration
+
+- Status: `EXP26_EXTERNAL_VALIDATION_PREREGISTERED`
+- Rows: `32`
+- Source manifest SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- Preregistered manifest SHA256:
+  `69ecd96d4b25da702229df2d45bf1343ad5e7ef5385cbd32d24ce61644e4bc2c`
+- Mask manifest SHA256:
+  `f646792469f53a8122fe341be5988344ba7b32d33b3a53593d558e227aed138b`
+- Protocol: fixed Step0 vs fixed Step50, 49 frames, first-frame GT,
+  inference seed `20260619`, mask seed `20260623`, `720x480`, 20 steps,
+  guidance `6.0`, bf16.
+- Note: no external model output or metric has been generated yet; Step10/30
+  remain trajectory-only diagnostics.

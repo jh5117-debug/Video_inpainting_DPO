@@ -160,3 +160,20 @@ Status: `EXP26_EXTERNAL_49F_INVENTORY_COMPLETE`
 No model metrics were computed in this milestone. The source inventory found
 `54` valid clean 49F DAVIS-derived sequences and locked `32` rows for the next
 pre-registered external Step0-vs-Step50 validation.
+
+## 2026-06-26 External Validation Preregistration
+
+Status: `EXP26_EXTERNAL_VALIDATION_PREREGISTERED`
+
+No external Step0/Step50 model metrics were computed in this milestone. The
+external validation protocol is now fixed at `32` DAVIS-derived exact-49F rows,
+first-frame GT, mask seed `20260623`, inference seed `20260619`, `720x480`, 20
+inference steps, guidance `6.0`, and bf16.
+
+Locked manifest SHA256 values:
+
+- preregistered rows: `69ecd96d4b25da702229df2d45bf1343ad5e7ef5385cbd32d24ce61644e4bc2c`
+- masks: `f646792469f53a8122fe341be5988344ba7b32d33b3a53593d558e227aed138b`
+
+The next metric milestone is fixed external Step50-vs-Step0 inference and
+frame1-48 paired statistics. Step10/30 remain trajectory-only diagnostics.

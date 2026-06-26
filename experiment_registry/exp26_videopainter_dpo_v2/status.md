@@ -554,3 +554,24 @@ distribution, but it is not a universal-adapter or final SOTA claim.
   as clean sources.
 - no masks, prompts, seeds, inference outputs, or checkpoint choices were
   generated from these rows yet.
+
+## 2026-06-26 External Validation Preregistration
+
+- status: `EXP26_EXTERNAL_VALIDATION_PREREGISTERED`
+- rows: `32`
+- source manifest SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- preregistered manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl`
+- preregistered manifest SHA256:
+  `69ecd96d4b25da702229df2d45bf1343ad5e7ef5385cbd32d24ce61644e4bc2c`
+- mask manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl`
+- mask manifest SHA256:
+  `f646792469f53a8122fe341be5988344ba7b32d33b3a53593d558e227aed138b`
+- output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered`
+- protocol: fixed Step0-vs-Step50, frame1-48 primary metrics, first-frame GT,
+  seed `20260619`, mask seed `20260623`, `720x480`, 20 inference steps,
+  guidance `6.0`, bf16.
+- no external inference, metric, or visual review has been run yet.

@@ -133,3 +133,28 @@ reports/exp26_external_49f_inventory.json
 exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl
 exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl
 ```
+
+External validation preregistration was executed on PAI before any external
+model output generation:
+
+```bash
+python /tmp/exp26_external_prereg_code/postconfirmation_external_preregister.py \
+  --source-manifest /tmp/exp26_external_prereg_code/vp2_external_49f_validation_16_or_32.jsonl \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered \
+  --output-manifest /tmp/exp26_external_prereg_out/manifests/vp2_external_validation_preregistered.jsonl \
+  --mask-manifest /tmp/exp26_external_prereg_out/manifests/vp2_external_validation_masks.jsonl \
+  --status-csv /tmp/exp26_external_prereg_out/reports/exp26_external_validation_preregistration_status.csv \
+  --report-md /tmp/exp26_external_prereg_out/reports/exp26_external_validation_preregistration.md \
+  --report-json /tmp/exp26_external_prereg_out/reports/exp26_external_validation_preregistration.json
+```
+
+Artifacts:
+
+```text
+reports/exp26_external_validation_preregistration.md
+reports/exp26_external_validation_preregistration.json
+reports/exp26_external_validation_preregistration_status.csv
+exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl
+exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered
+```

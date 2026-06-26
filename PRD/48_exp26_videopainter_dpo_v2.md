@@ -1087,3 +1087,47 @@ Reports/manifests:
 - `reports/exp26_external_49f_inventory.json`
 - `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl`
 - `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl`
+
+## 2026-06-26 External Validation Preregistration
+
+Status:
+
+- `EXP26_EXTERNAL_VALIDATION_PREREGISTERED`
+- `NO_EXTERNAL_INFERENCE_YET`
+- `NO_RESULT_BASED_SELECTION`
+
+The external DAVIS-derived 32-row validation protocol is now locked before any
+Step0/Step50 external outputs exist. Each selected source was materialized into
+an exact 49-frame directory under the Exp26 post-confirmation output root, and a
+deterministic mixed BR mask sequence was generated with first-frame GT enabled.
+
+Locked identities:
+
+- source manifest SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- preregistered manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl`
+- preregistered manifest SHA256:
+  `69ecd96d4b25da702229df2d45bf1343ad5e7ef5385cbd32d24ce61644e4bc2c`
+- mask manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl`
+- mask manifest SHA256:
+  `f646792469f53a8122fe341be5988344ba7b32d33b3a53593d558e227aed138b`
+- rows: `32`
+- mask seed: `20260623`
+- inference seed: `20260619`
+- formal frames: `49`
+- inference protocol: `720x480`, `20` steps, guidance `6.0`, dtype `bf16`
+
+Primary comparison remains fixed `Step50 - Step0`. Step10 and Step30 are
+trajectory-only diagnostics and cannot replace Step50 based on external
+validation results. No training, checkpoint reselection, seed reselection, or
+mask reselection is authorized from this external split.
+
+Reports/manifests:
+
+- `reports/exp26_external_validation_preregistration.md`
+- `reports/exp26_external_validation_preregistration.json`
+- `reports/exp26_external_validation_preregistration_status.csv`
+- `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl`
+- `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl`

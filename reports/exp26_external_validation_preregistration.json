@@ -1,0 +1,27 @@
+{
+  "dtype": "bf16",
+  "first_frame_gt": true,
+  "guidance_scale": 6.0,
+  "inference_height": 480,
+  "inference_seed": 20260619,
+  "inference_width": 720,
+  "mask_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl",
+  "mask_manifest_sha256": "f646792469f53a8122fe341be5988344ba7b32d33b3a53593d558e227aed138b",
+  "mask_seed": 20260623,
+  "no_model_outputs_generated": true,
+  "num_frames": 49,
+  "num_inference_steps": 20,
+  "preregistered_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl",
+  "preregistered_sha256": "69ecd96d4b25da702229df2d45bf1343ad5e7ef5385cbd32d24ce61644e4bc2c",
+  "primary_comparison": "Step50 - Step0",
+  "rows": 32,
+  "run_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered",
+  "secondary_checkpoints": [
+    "Step10",
+    "Step30"
+  ],
+  "source_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl",
+  "source_sha256": "be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a",
+  "status": "EXP26_EXTERNAL_VALIDATION_PREREGISTERED",
+  "status_csv": "reports/exp26_external_validation_preregistration_status.csv"
+}
