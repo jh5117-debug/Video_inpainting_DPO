@@ -1,3 +1,40 @@
+## 2026-06-26 Exp28 CLI4 Wave Status
+
+Current best remains:
+
+```text
+Exp11 boundary outer b0.75 S2
+```
+
+Exp28 CLI4 has partial fresh-paired evidence, but no positive promotion:
+
+```text
+EXP28_PAIRA_EVAL_FAILED_FINAL
+EXP28_PAIRB_INNER4_REDUCED_METRIC_MIXED
+EXP28_PAIRC_INNER8_RUNNING
+NO_INNER_RADIUS_POSITIVE
+NO_SCIENTIFIC_POSITIVE
+```
+
+Pair B (`inner4_candidate` vs `fresh_control_B`) completed Stage1/Stage2
+training and reduced DAVIS50 eval. VFID and TC were skipped because optional
+metric model assets were unavailable; Ewarp was computed. The main Stage2-2000
+comparison is metric-encouraging but not sufficient for promotion:
+
+| Comparison | PSNR delta | Win rate | P(delta>0) | LPIPS delta | Ewarp delta | Status |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `candidate_s2_2000 - fresh_s2_2000` | +0.103389 | 0.62 | 0.9091 | +0.000181 | -0.033830 | metric-positive pending gates |
+| `candidate_stage1_2000_sft_s2 - fresh_stage1_2000_sft_s2` | -0.044981 | 0.56 | 0.3144 | +0.000462 | -0.002663 | negative/mixed |
+
+Visual review assets were generated for all 50 Pair B main-comparison videos,
+but human review is only sampled. The sampled review found no systemic outside
+collapse, but `surf` has temporal-risk evidence and `cows` shows localized
+perceptual-risk evidence. Pair B is therefore `VISUAL_ASSETS_GENERATED_PARTIAL_HUMAN_REVIEW_MIXED`.
+
+Pair C (`inner8_candidate`) is still running. `fresh_control_C` Stage1 completed
+checkpoint-2000 and Stage2 is running. No conclusion is allowed until Pair C
+and reduced DAVIS50 evaluation complete.
+
 ## 2026-06-25 Exp28 Fine Inner Boundary Sweep
 
 Current best remains:

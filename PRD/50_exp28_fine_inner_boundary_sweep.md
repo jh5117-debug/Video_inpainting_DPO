@@ -1,12 +1,66 @@
 # PRD 50: Exp28 Fine Inner Boundary Sweep
 
-Status: `CODE_TEST_READY_NOT_LAUNCHED`
+Status: `CLI4_WAVE_RUNNING_PAIRB_REDUCED_METRIC_MIXED_NO_POSITIVE`
 
 Branch: `research/exp28-fine-inner-boundary-sweep-20260625`
 
 HAL worktree: `/home/hj/H20_Video_inpainting_DPO_exp28_inner_boundary`
 
 PAI runtime snapshot target: `/home/hj/runtime_code_snapshots/cli4_exp28_<commit>`
+
+## 2026-06-26 CLI4 Wave Evidence
+
+Pair A (`inner2_candidate`) completed training but reduced DAVIS50 eval reached
+`FAILED_FINAL` after the allowed one fix/resume cycle. Failure reason was missing
+optional VFID/TC model assets before guards were added. Pair A is not evaluated
+and cannot support a radius decision.
+
+Pair B (`inner4_candidate`) completed training and reduced DAVIS50 evaluation.
+The runtime eval script used optional-metric guards:
+
+- VFID skipped: missing I3D asset.
+- TC skipped: missing OpenCLIP path.
+- Ewarp computed with local RAFT.
+
+Main Stage2-2000 result:
+
+| Metric | Delta (`candidate_s2_2000 - fresh_s2_2000`) |
+| --- | ---: |
+| PSNR | +0.103389 |
+| SSIM | +0.000833 |
+| strict mask PSNR | +0.103389 |
+| mask-region SSIM | +0.007323 |
+| boundary PSNR | +0.000503 |
+| LPIPS | +0.000181 |
+| Ewarp | -0.033830 |
+| per-video PSNR win rate | 0.62 |
+| bootstrap P(delta>0) | 0.9091 |
+
+Counter-evidence:
+
+- Stage1-hybrid 2000 is negative/mixed: PSNR -0.044981 and LPIPS +0.000462.
+- VFID/TC are unavailable, so the full promotion gate is incomplete.
+- Visual assets are generated for 50/50 videos, but human review is sampled only.
+- Sampled visual review found no systemic outside collapse, but `surf` shows temporal-risk evidence and `cows` localized perceptual-risk evidence.
+
+Status:
+
+```text
+INNER4_REDUCED_METRIC_MIXED
+VISUAL_ASSETS_GENERATED_PARTIAL_HUMAN_REVIEW_MIXED
+NO_INNER_RADIUS_POSITIVE
+NO_SCIENTIFIC_POSITIVE
+```
+
+Pair C (`inner8_candidate`) is running. `fresh_control_C` Stage1 completed
+checkpoint-2000 on 2026-06-26 15:14 CST and Stage2 is running.
+
+Evidence files:
+
+- `reports/exp28_pairB_inner4_cli4_final_decision.md`
+- `reports/exp28_pairB_inner4_cli4_paired_statistics.csv`
+- `reports/exp28_pairB_inner4_cli4_summary_deltas.csv`
+- `reports/exp28_pairB_inner4_cli4_visual_review_human_audit.md`
 
 ## Question
 

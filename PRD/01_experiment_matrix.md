@@ -1,3 +1,19 @@
+## 2026-06-26 Exp28 Fine Inner Boundary CLI4
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp28 Pair A inner2 | training complete; eval failed-final after one resume due missing optional metric assets | `experiment_registry/exp28_fine_inner_boundary_sweep`, runtime logs |
+| Exp28 Pair B inner4 | training/eval complete; reduced-metric mixed; no positive claim | `reports/exp28_pairB_inner4_cli4_final_decision.md`, `reports/exp28_pairB_inner4_cli4_paired_statistics.csv`, `reports/exp28_pairB_inner4_cli4_visual_review_human_audit.md` |
+| Exp28 Pair C inner8 | running; fresh control Stage1 complete, Stage2 running | `experiment_registry/exp28_fine_inner_boundary_sweep` |
+
+Decision so far:
+
+```text
+NO_INNER_RADIUS_POSITIVE
+NO_SCIENTIFIC_POSITIVE
+Current best remains Exp11 boundary outer b0.75 S2.
+```
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |
