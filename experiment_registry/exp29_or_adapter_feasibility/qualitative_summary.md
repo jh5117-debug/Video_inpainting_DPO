@@ -128,3 +128,11 @@ No EffectErase model output has been generated yet. The v2 input videos now
 decode correctly and preserve non-empty masks, so the next allowed step is the
 official EffectErase inference smoke. Baseline readiness and visual quality
 remain pending actual model outputs.
+
+## 2026-06-26 EffectErase Official Inference Smoke V2
+
+No EffectErase output video was produced. The official model assets loaded
+after the PYTHONPATH fix, but the 17-frame diagnostic protocol is incompatible
+with the official pipeline call as currently wired because `num_frames` is not
+forwarded into `WanRemovePipeline`. EffectErase remains blocked before OR
+baseline visual judgment.

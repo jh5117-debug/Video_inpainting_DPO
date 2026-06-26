@@ -168,3 +168,14 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Resolution: 832x480 for all rows.
 - Mask non-empty frames: 17/17 for all rows.
 - Inference metrics: not run yet.
+
+## 2026-06-26 EffectErase Official Inference Smoke V2
+
+- Attempted rows: 1.
+- Successful rows: 0.
+- Output videos: 0.
+- First failure: missing `diffsynth` import; fixed by `PYTHONPATH`.
+- Final failure: official pipeline defaulted to 81 frames internally, producing
+  noise latent time dimension 21 while the locked 17-frame inputs produced time
+  dimension 5.
+- Metrics are unavailable because no output video was produced.

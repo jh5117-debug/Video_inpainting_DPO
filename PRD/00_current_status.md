@@ -2462,3 +2462,15 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Every mask video has non-empty mask content in 17/17 frames.
 - VOR-Eval use remains false and all rows remain ineligible for training.
 - No inference or adapter gate has run yet.
+
+## 2026-06-26 Exp29 EffectErase Official Smoke V2
+
+- Status: `EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE`
+- Official inference was attempted on GPU0 for `REAL_ENV231_00010_003_03`.
+- A first import failure was fixed by adding the EffectErase repo root to
+  `PYTHONPATH`.
+- The retry loaded all major model assets and LoRA, then failed because the
+  official pipeline still created 81-frame noise latents while the locked smoke
+  inputs are 17-frame diagnostic videos.
+- No output video was produced. EffectErase remains not baseline-ready and not
+  adapter-ready.

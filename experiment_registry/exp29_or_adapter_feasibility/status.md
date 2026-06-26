@@ -241,3 +241,17 @@ Reports:
 - Each mask video is non-empty in all 17 decoded frames.
 - VOR-Eval use remains false and training eligibility remains false.
 - No EffectErase inference has run yet.
+
+## 2026-06-26 EffectErase Official Inference Smoke V2
+
+- Status: `EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE`.
+- Attempted row: `REAL_ENV231_00010_003_03`.
+- GPU/PID/PGID: GPU0 / `594851` / `594851`.
+- Attempt 1 failed because `diffsynth` was not on `PYTHONPATH`.
+- Automatic fix attempted once by adding the official EffectErase repo root to
+  `PYTHONPATH` in the Exp29 runner.
+- Attempt 2 loaded official model assets and LoRA, then failed with latent time
+  mismatch: 81-frame default noise time dimension `21` vs 17-frame input latent
+  time dimension `5`.
+- No output video was produced; no metrics or visual quality pass are available.
+- EffectErase remains not OR baseline-ready and not adapter-ready.

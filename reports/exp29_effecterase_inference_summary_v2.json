@@ -1,0 +1,20 @@
+{
+  "status": "EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE",
+  "manifest": "exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered_v2.jsonl",
+  "manifest_sha256": "b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36",
+  "rows": 6,
+  "samples_attempted": 1,
+  "success_count": 0,
+  "technical_failure_count": 1,
+  "gpu": "GPU0",
+  "pid": 594851,
+  "pgid": 594851,
+  "first_attempt_error": "ModuleNotFoundError: No module named 'diffsynth'",
+  "automatic_fix_attempted": "Added EffectErase repo root to PYTHONPATH in Exp29 runner",
+  "second_attempt_error": "WanRemovePipeline default num_frames=81 creates noise latent time 21 while 17-frame inputs encode to time 5",
+  "decision": "Do not patch official script or change the preregistered 17-frame protocol in this milestone",
+  "baseline_ready": false,
+  "adapter_ready": false,
+  "scientific_positive": false,
+  "universal_adapter": false
+}

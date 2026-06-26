@@ -145,3 +145,17 @@ effecterase_smoke_v2_input_materialization:
   vor_eval_used: false
   eligible_for_training: false
   inference_launched: false
+effecterase_inference_smoke_v2:
+  result: EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE
+  manifest_sha256: b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36
+  attempted_rows: 1
+  successful_rows: 0
+  gpu: GPU0
+  pid: 594851
+  pgid: 594851
+  automatic_fix_attempted: add_effecterase_repo_to_pythonpath
+  first_error: ModuleNotFoundError_diffsynth
+  final_error: pipeline_default_81f_noise_latent_time_21_vs_input_17f_latent_time_5
+  output_videos: 0
+  baseline_ready: false
+  adapter_ready: false

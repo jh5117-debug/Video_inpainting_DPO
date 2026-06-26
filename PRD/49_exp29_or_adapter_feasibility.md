@@ -483,3 +483,32 @@ Reports:
 - `reports/exp29_effecterase_smoke_v2_input_materialization.md`
 - `reports/exp29_effecterase_smoke_v2_input_materialization.csv`
 - `reports/exp29_effecterase_smoke_v2_input_materialization.json`
+
+## 2026-06-26 EffectErase Official Inference Smoke V2
+
+- Status: `EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE`
+- Attempted sample: `REAL_ENV231_00010_003_03`
+- GPU: PAI GPU0
+- Runner PID/PGID: `594851` / `594851`
+- Attempt 1 failed with `ModuleNotFoundError: No module named 'diffsynth'`.
+- Automatic fix attempted once: add the EffectErase official repo root to
+  `PYTHONPATH` in the Exp29 runner.
+- Attempt 2 loaded the DiT, text encoder, VAE, image encoder, and LoRA, then
+  failed at inference with latent time mismatch: pipeline noise time dimension
+  `21` versus input condition/mask latent time dimension `5`.
+- Code audit shows official `infer_remove_wan.py` reads inputs with
+  `args.num_frames`, but does not pass `num_frames=args.num_frames` into
+  `WanRemovePipeline.__call__`, whose default is 81 frames.
+- Per preregistration, this milestone did not patch the official script, did
+  not expand inputs to 81 frames, did not change the manifest, and did not
+  claim baseline readiness.
+- No output video, metrics, visual quality pass, adapter feasibility, or
+  scientific-positive claim is supported.
+
+Reports:
+
+- `reports/exp29_effecterase_inference_smoke_v2.md`
+- `reports/exp29_effecterase_inference_smoke_v2.csv`
+- `reports/exp29_effecterase_inference_visual_review_v2.csv`
+- `reports/exp29_effecterase_inference_metrics_v2.csv`
+- `reports/exp29_effecterase_inference_summary_v2.json`
