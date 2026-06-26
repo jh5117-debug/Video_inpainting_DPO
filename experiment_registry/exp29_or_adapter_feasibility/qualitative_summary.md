@@ -147,3 +147,16 @@ This is not a medium-hard quality pass. Mask non-emptiness, 17-frame decoding,
 defect taxonomy, and visual usefulness must be checked during the next
 first-pass generation review before any train16/heldout16 split, recipe gate,
 30-step micro, or third-backbone-positive language is allowed.
+
+## 2026-06-26 MiniMax Expanded Data-Yield Review V2
+
+Codex opened all per-sample evidence pages generated for the expanded MiniMax
+data-yield gate: 24 seed-A pages and 8 conditional seed-B near-miss pages. The
+visual pattern matches the CSV classification: a limited number of useful
+medium-hard local defects, but many trivial-bad outputs, several too-close
+outputs, and technical-invalid rows. Seed B rescued only one extra
+medium-hard sample and did not change the scientific decision.
+
+Final qualitative decision: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`. The
+current expanded source pool cannot support a scene-disjoint train16+heldout16
+MiniMax micro gate, so MiniMax remains plumbing-positive but data-yield-limited.

@@ -2492,3 +2492,19 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   than guessed.
 - No MiniMax generation, recipe search, 30-step micro, training, or quality
   promotion was launched.
+
+## 2026-06-26 Exp29 MiniMax Expanded Candidate Review V2
+
+- Status: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`
+- Seed A generated and reviewed 96 candidates from the full-VOR source audit.
+- Conditional seed B generated and reviewed 32 preregistered near-miss
+  candidates.
+- Combined classification counts across 128 attempts:
+  `MEDIUM_HARD_ELIGIBLE` 24, `HARD_BUT_PLAUSIBLE` 2, `TOO_CLOSE` 14,
+  `TRIVIAL_BAD` 77, `TECHNICAL_INVALID` 11.
+- Best-candidate merge produced only 26 eligible unique scene groups, below the
+  32 scene-disjoint groups required for train16+heldout16.
+- Codex opened all 32 per-sample evidence pages: seed A 24/24 and seed B 8/8.
+- MiniMax remains plumbing-positive but data-yield-limited; no recipe,
+  30-step, training, or third-backbone-positive claim is allowed from this
+  candidate set.

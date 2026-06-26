@@ -180,3 +180,27 @@ minimax_full_vor_source_audit:
   generation_launched: false
   training_manifest_created: false
   recipe_or_30step_allowed: false
+minimax_expanded_data_yield_v2:
+  result: MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT
+  source96_manifest_sha256: 267d03a2991894a47e26a14b698f6fd28423a726e6968890448cd460e5de1928
+  materialized_source96_sha256: a8998902daa8e771afd111e798df017e4b64f5f21f5a43bf5fa6ef82aa4ce428
+  seed_a: 20260626
+  seed_b: 20260627
+  seed_c: disabled
+  seed_a_candidates: 96
+  seed_b_nearmiss_candidates: 32
+  classification_counts_all_attempts:
+    MEDIUM_HARD_ELIGIBLE: 24
+    HARD_BUT_PLAUSIBLE: 2
+    TOO_CLOSE: 14
+    TRIVIAL_BAD: 77
+    TECHNICAL_INVALID: 11
+  unique_scene_groups_attempted: 96
+  eligible_unique_scene_groups: 26
+  train_rows: 16
+  heldout_rows: 0
+  train_sha256: 84d3b3ce06216a05ea005fb29a91fdd40a1e73b7b1cd2ab7a49bb3e311683c95
+  heldout_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  review_pages_opened: 32
+  recipe_or_30step_allowed: false
+  training_allowed: false

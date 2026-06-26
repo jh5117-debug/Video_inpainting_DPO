@@ -276,3 +276,23 @@ Reports:
 - Mask/effect/motion labels are pending materialization or metadata and were
   not guessed.
 - No MiniMax generation, recipe search, 30-step micro, or training launched.
+
+## 2026-06-26 MiniMax Expanded Data-Yield Review V2
+
+- Status: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`.
+- Source96 first-pass generation completed for seed A.
+- Conditional seed B ran only for 32 preregistered near-miss candidates.
+- Combined classification counts across 128 attempts:
+  - `MEDIUM_HARD_ELIGIBLE`: 24
+  - `HARD_BUT_PLAUSIBLE`: 2
+  - `TOO_CLOSE`: 14
+  - `TRIVIAL_BAD`: 77
+  - `TECHNICAL_INVALID`: 11
+- Best-candidate merge yielded 26 eligible unique scene groups, below the
+  required 32 scene-disjoint groups for train16+heldout16.
+- Train trace manifest SHA256:
+  `84d3b3ce06216a05ea005fb29a91fdd40a1e73b7b1cd2ab7a49bb3e311683c95`.
+- Heldout manifest is empty, SHA256:
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+- Codex opened all 32 review pages: seed A 24/24 and seed B 8/8.
+- No recipe, 30-step, training, or third-backbone-positive claim is allowed.

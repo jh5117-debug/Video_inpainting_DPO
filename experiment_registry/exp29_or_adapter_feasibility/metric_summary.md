@@ -194,3 +194,20 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   metadata index and remain pending materialization.
 - No model output, image/video metric, candidate classification, recipe, or
   training metric was produced by this audit.
+
+## 2026-06-26 MiniMax Expanded Data-Yield Review V2
+
+- Seed A candidates: 96.
+- Conditional seed B near-miss candidates: 32.
+- Classification counts across all attempts:
+  - `MEDIUM_HARD_ELIGIBLE`: 24
+  - `HARD_BUT_PLAUSIBLE`: 2
+  - `TOO_CLOSE`: 14
+  - `TRIVIAL_BAD`: 77
+  - `TECHNICAL_INVALID`: 11
+- Eligible unique scene groups after best-candidate merge: 26.
+- Required for train16+heldout16: 32 scene-disjoint eligible groups.
+- Train trace rows: 16.
+- Heldout rows: 0.
+- Result: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`.
+- No optimizer recipe, 30-step micro, or training metrics were produced.

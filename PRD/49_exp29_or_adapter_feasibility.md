@@ -542,3 +542,40 @@ Reports:
 - `reports/exp29_minimax_full_vor_source_audit.md`
 - `reports/exp29_minimax_full_vor_source_audit.csv`
 - `reports/exp29_minimax_full_vor_source_audit.json`
+
+## 2026-06-26 MiniMax Expanded Source-Pool Candidate Review V2
+
+- Status: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`
+- Source96 first-pass manifest SHA256:
+  `267d03a2991894a47e26a14b698f6fd28423a726e6968890448cd460e5de1928`
+- Final materialized source96 SHA256:
+  `a8998902daa8e771afd111e798df017e4b64f5f21f5a43bf5fa6ef82aa4ce428`
+- Seed A generation completed: 96/96 candidates.
+- Seed A classification: `MEDIUM_HARD_ELIGIBLE` 23,
+  `HARD_BUT_PLAUSIBLE` 2, `TOO_CLOSE` 7, `TRIVIAL_BAD` 53,
+  `TECHNICAL_INVALID` 11.
+- Conditional seed B near-miss manifest SHA256:
+  `1d45c60cdd54a28fe98373bd88d53b4cb277c649c292ad9a3e00c4aa718a6aad`
+- Seed B generation completed: 32/32 near-miss candidates.
+- Seed B classification: `MEDIUM_HARD_ELIGIBLE` 1, `TOO_CLOSE` 7,
+  `TRIVIAL_BAD` 24.
+- Combined attempts: 128.
+- Best-candidate merge unique scene groups attempted: 96.
+- Eligible unique scene groups after seed A/B merge: 26, below the 32
+  scene-disjoint train16+heldout16 requirement.
+- Train trace manifest SHA256:
+  `84d3b3ce06216a05ea005fb29a91fdd40a1e73b7b1cd2ab7a49bb3e311683c95`
+- Heldout manifest is empty, SHA256:
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- Codex opened and reviewed all per-sample evidence pages: seed A 24/24 and
+  seed B 8/8.
+- No MiniMax recipe search, 30-step micro, adapter training, long training, or
+  RC-FPO was launched.
+
+Reports:
+
+- `reports/exp29_minimax_expanded_data_quality_v2.md`
+- `reports/exp29_minimax_expanded_data_quality_v2.csv`
+- `reports/exp29_minimax_expanded_video_review_v2.csv`
+- `reports/exp29_minimax_expanded_data_quality_summary_v2.json`
+- `reports/exp29_minimax_expanded_review_pages_v2/`

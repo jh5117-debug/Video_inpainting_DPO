@@ -1,0 +1,43 @@
+{
+  "classification_counts_all_attempts": {
+    "HARD_BUT_PLAUSIBLE": 2,
+    "MEDIUM_HARD_ELIGIBLE": 24,
+    "TECHNICAL_INVALID": 11,
+    "TOO_CLOSE": 14,
+    "TRIVIAL_BAD": 77
+  },
+  "classification_counts_by_seed": {
+    "seed_a": {
+      "HARD_BUT_PLAUSIBLE": 2,
+      "MEDIUM_HARD_ELIGIBLE": 23,
+      "TECHNICAL_INVALID": 11,
+      "TOO_CLOSE": 7,
+      "TRIVIAL_BAD": 53
+    },
+    "seed_b": {
+      "MEDIUM_HARD_ELIGIBLE": 1,
+      "TOO_CLOSE": 7,
+      "TRIVIAL_BAD": 24
+    }
+  },
+  "eligible_unique_scene_groups": 26,
+  "heldout_count": 0,
+  "heldout_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_data_quality_v2_20260626/minimax_expanded_heldout16_v2.jsonl",
+  "heldout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "notes": [
+    "No MiniMax recipe, 30-step, or training was run.",
+    "Seed_b was only run for 32 pre-registered near-miss rows after seed_a yielded 25 eligible candidates."
+  ],
+  "rejected_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_data_quality_v2_20260626/minimax_expanded_rejected_v2.jsonl",
+  "rejected_sha256": "5f0ec84376249f9269804b29022342ccc8db7008dfb59f10c1c25d0387bda454",
+  "seed_a_count": 96,
+  "seed_a_review_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_data_quality_v2_20260626/review_seed_a_v2",
+  "seed_b_count": 32,
+  "seed_b_review_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_data_quality_v2_20260626/review_seed_b_v2",
+  "selected_count": 16,
+  "status": "MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT",
+  "train_count": 16,
+  "train_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_expanded_data_quality_v2_20260626/minimax_expanded_train16_v2.jsonl",
+  "train_sha256": "84d3b3ce06216a05ea005fb29a91fdd40a1e73b7b1cd2ab7a49bb3e311683c95",
+  "unique_scene_groups_attempted": 96
+}
