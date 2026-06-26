@@ -1,0 +1,4 @@
+sample_id,frames,step0_psnr_mean,step10_psnr_mean,delta_psnr,classification,reason,contact_sheet
+davis_hockey,9,25.090064172645004,25.08926353959272,-0.0008006330522825067,tie_no_quality_gain,"Step0 and Step10 are visually almost identical; target remains; no new artifact",reports/exp29_minimax_10step_assets/davis_hockey_step0_step10.jpg
+davis_koala,9,24.09485197082685,24.097265694681468,0.002413723854619576,tie_no_quality_gain,"Step0 and Step10 are visually almost identical; fur remains smoothed/residual; no clear improvement",reports/exp29_minimax_10step_assets/davis_koala_step0_step10.jpg
+

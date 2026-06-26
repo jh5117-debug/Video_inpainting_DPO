@@ -32,3 +32,13 @@ Reports:
   trivial-bad outputs.
 - MiniMax trainable forward: `MINIMAX_TRAINABLE_FORWARD_PASSED`.
 - EffectErase inference: `EFFECTERASE_INFERENCE_SMOKE_BLOCKED_NO_WEIGHTS`.
+
+## 2026-06-26 MiniMax Adapter Gates
+
+- Zero-gap: `MINIMAX_ZERO_GAP_PASSED`.
+- One-step strict reload: `MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED`.
+- 10-step: `MINIMAX_10STEP_PARETO_MIXED`.
+- Heldout visual result: Step10 is nearly unchanged from Step0 on two heldout
+  rows; no visible quality gain.
+- MiniMax final: `MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK`.
+- EffectErase final for this run: `EFFECTERASE_BLOCKED`.

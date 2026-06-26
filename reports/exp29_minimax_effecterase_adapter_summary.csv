@@ -1,0 +1,4 @@
+model,repo_ready,weights_ready,inference_smoke,visual_quality,trainable_forward,target_type,policy_reference_clone,zero_gap,one_step,ten_step,heldout_positive,role,blocked_reason,final_status
+MiniMax-Remover,true,true,passed,mixed,passed,flow_velocity_eps_minus_z0,passed,passed,passed,pareto_mixed,false,ADAPTER_POSSIBLE_NEEDS_MORE_WORK,"10-step heldout quality nearly unchanged; smoke OR quality mixed",MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK
+EffectErase,true,false,blocked,not_reviewed,blocked,unknown,not_run,not_run,not_run,not_run,false,OR_STRONG_BASELINE,"Official EffectErase.ckpt and Wan2.1-Fun-1.3B-InP assets missing",EFFECTERASE_BLOCKED
+

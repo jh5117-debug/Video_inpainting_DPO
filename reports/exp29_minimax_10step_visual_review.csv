@@ -1,0 +1,4 @@
+sample_id,reviewed_frames,step10_better,step0_better,tie,new_artifact,classification,reason
+davis_hockey,0-8,false,false,true,false,TIE,"Step0 and Step10 are nearly identical; object not removed; no visible new artifact"
+davis_koala,0-8,false,false,true,false,TIE,"Step0 and Step10 are nearly identical; local texture remains smoothed/residual; no visible new artifact"
+

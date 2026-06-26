@@ -1,0 +1,18 @@
+[
+  {
+    "sample_id": "davis_hockey",
+    "frames": 9,
+    "step0_psnr_mean": 25.090064172645004,
+    "step10_psnr_mean": 25.08926353959272,
+    "delta_psnr": -0.0008006330522825067,
+    "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_evidence/davis_hockey/contact_sheet_gt_mask_step0_step10.jpg"
+  },
+  {
+    "sample_id": "davis_koala",
+    "frames": 9,
+    "step0_psnr_mean": 24.09485197082685,
+    "step10_psnr_mean": 24.097265694681468,
+    "delta_psnr": 0.002413723854619576,
+    "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_evidence/davis_koala/contact_sheet_gt_mask_step0_step10.jpg"
+  }
+]

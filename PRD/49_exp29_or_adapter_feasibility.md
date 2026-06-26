@@ -131,3 +131,33 @@ Reports:
 - `reports/exp29_minimax_inference_visual_review.csv`
 - `reports/exp29_minimax_trainable_forward_audit.md`
 - `reports/exp29_effecterase_inference_smoke.md`
+
+## 2026-06-26 Adapter Gate Decision
+
+MiniMax:
+
+- `MINIMAX_ZERO_GAP_PASSED`
+- `MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED`
+- `MINIMAX_10STEP_PARETO_MIXED`
+- Final status: `MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK`
+
+The first fp16 AdamW micro attempt produced NaNs after step 1. A conservative
+SGD micro-update was used as an engineering fix to verify finite update
+mechanics. It completed 10 steps without NaNs and strict-loaded step1/step10,
+but heldout Step10 videos were visually almost unchanged from Step0. Therefore
+MiniMax is a credible next-adapter candidate, but not a confirmed third
+backbone yet.
+
+EffectErase:
+
+- Final status: `EFFECTERASE_BLOCKED`
+
+No EffectErase smoke or adapter gate was run because official weights were not
+available.
+
+Reports:
+
+- `reports/exp29_minimax_zero_gap_gate.md`
+- `reports/exp29_minimax_one_step_gate.md`
+- `reports/exp29_minimax_10step_micro.md`
+- `reports/exp29_minimax_effecterase_adapter_summary.md`

@@ -1,0 +1,207 @@
+{
+  "zero_gap_status": "MINIMAX_ZERO_GAP_PASSED",
+  "zero_gap": {
+    "winner_policy_loss": 0.01714255101978779,
+    "loser_policy_loss": 0.014038406312465668,
+    "winner_reference_loss": 0.01714255101978779,
+    "loser_reference_loss": 0.014038406312465668,
+    "win_gap": 0.0,
+    "lose_gap": 0.0,
+    "preference_margin": 0.0,
+    "dpo_loss": 0.6931471824645996
+  },
+  "one_step_status": "MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED",
+  "ten_step_status": "MINIMAX_10STEP_MICRO_COMPLETED_NEEDS_VISUAL_REVIEW",
+  "step_records": [
+    {
+      "winner_policy_loss": 0.026930417865514755,
+      "loser_policy_loss": 0.04125620052218437,
+      "winner_reference_loss": 0.026930417865514755,
+      "loser_reference_loss": 0.04125620052218437,
+      "win_gap": 0.0,
+      "lose_gap": 0.0,
+      "preference_margin": 0.0,
+      "dpo_loss": 0.6931471824645996,
+      "step": 1,
+      "sample_id": "davis_bear",
+      "grad_norm_preclip": 0.889729149006405,
+      "grad_max_abs": 0.052978515625,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.020633667707443237,
+      "loser_policy_loss": 0.04128493368625641,
+      "winner_reference_loss": 0.020633667707443237,
+      "loser_reference_loss": 0.04128493368625641,
+      "win_gap": 0.0,
+      "lose_gap": 0.0,
+      "preference_margin": 0.0,
+      "dpo_loss": 0.6931471824645996,
+      "step": 2,
+      "sample_id": "davis_bus",
+      "grad_norm_preclip": 0.7541816012108166,
+      "grad_max_abs": 0.06610107421875,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.03170778974890709,
+      "loser_policy_loss": 0.05002571642398834,
+      "winner_reference_loss": 0.0317094586789608,
+      "loser_reference_loss": 0.05002342909574509,
+      "win_gap": 1.6689300537109375e-06,
+      "lose_gap": -2.2873282432556152e-06,
+      "preference_margin": 3.956258296966553e-06,
+      "dpo_loss": 0.693145215511322,
+      "step": 3,
+      "sample_id": "davis_mallard-water",
+      "grad_norm_preclip": 0.6925741657761351,
+      "grad_max_abs": 0.05096435546875,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.024105753749608994,
+      "loser_policy_loss": 0.0316220223903656,
+      "winner_reference_loss": 0.02410619519650936,
+      "loser_reference_loss": 0.0316237211227417,
+      "win_gap": 4.414469003677368e-07,
+      "lose_gap": 1.6987323760986328e-06,
+      "preference_margin": -1.257285475730896e-06,
+      "dpo_loss": 0.6931477785110474,
+      "step": 4,
+      "sample_id": "davis_elephant",
+      "grad_norm_preclip": 0.5543887938200419,
+      "grad_max_abs": 0.045440673828125,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.013127734884619713,
+      "loser_policy_loss": 0.017148422077298164,
+      "winner_reference_loss": 0.013126561418175697,
+      "loser_reference_loss": 0.01714768260717392,
+      "win_gap": -1.173466444015503e-06,
+      "lose_gap": -7.394701242446899e-07,
+      "preference_margin": -4.33996319770813e-07,
+      "dpo_loss": 0.6931473612785339,
+      "step": 5,
+      "sample_id": "davis_bear",
+      "grad_norm_preclip": 0.3975490290745484,
+      "grad_max_abs": 0.029273755848407745,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.014123324304819107,
+      "loser_policy_loss": 0.020845336839556694,
+      "winner_reference_loss": 0.014124667271971703,
+      "loser_reference_loss": 0.020845336839556694,
+      "win_gap": 1.34296715259552e-06,
+      "lose_gap": 0.0,
+      "preference_margin": 1.34296715259552e-06,
+      "dpo_loss": 0.6931464672088623,
+      "step": 6,
+      "sample_id": "davis_bus",
+      "grad_norm_preclip": 0.4407571390570022,
+      "grad_max_abs": 0.05267333984375,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.06193900853395462,
+      "loser_policy_loss": 0.12504439055919647,
+      "winner_reference_loss": 0.06193515658378601,
+      "loser_reference_loss": 0.1250455528497696,
+      "win_gap": -3.851950168609619e-06,
+      "lose_gap": 1.1622905731201172e-06,
+      "preference_margin": -5.014240741729736e-06,
+      "dpo_loss": 0.6931496858596802,
+      "step": 7,
+      "sample_id": "davis_mallard-water",
+      "grad_norm_preclip": 1.2341757971189908,
+      "grad_max_abs": 0.082275390625,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.04188250005245209,
+      "loser_policy_loss": 0.06125149875879288,
+      "winner_reference_loss": 0.04188137501478195,
+      "loser_reference_loss": 0.06124868988990784,
+      "win_gap": -1.125037670135498e-06,
+      "lose_gap": -2.808868885040283e-06,
+      "preference_margin": 1.6838312149047852e-06,
+      "dpo_loss": 0.693146288394928,
+      "step": 8,
+      "sample_id": "davis_elephant",
+      "grad_norm_preclip": 0.8461048943704705,
+      "grad_max_abs": 0.056793212890625,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.021894266828894615,
+      "loser_policy_loss": 0.031223934143781662,
+      "winner_reference_loss": 0.021893423050642014,
+      "loser_reference_loss": 0.031223056837916374,
+      "win_gap": -8.437782526016235e-07,
+      "lose_gap": -8.773058652877808e-07,
+      "preference_margin": 3.3527612686157227e-08,
+      "dpo_loss": 0.6931471824645996,
+      "step": 9,
+      "sample_id": "davis_bear",
+      "grad_norm_preclip": 0.7667861814596636,
+      "grad_max_abs": 0.05487060546875,
+      "grad_tensors": 461
+    },
+    {
+      "winner_policy_loss": 0.01823064312338829,
+      "loser_policy_loss": 0.03241700679063797,
+      "winner_reference_loss": 0.018229598179459572,
+      "loser_reference_loss": 0.032420188188552856,
+      "win_gap": -1.044943928718567e-06,
+      "lose_gap": 3.1813979148864746e-06,
+      "preference_margin": -4.2263418436050415e-06,
+      "dpo_loss": 0.6931493282318115,
+      "step": 10,
+      "sample_id": "davis_bus",
+      "grad_norm_preclip": 0.6610360433649711,
+      "grad_max_abs": 0.05682373046875,
+      "grad_tensors": 461
+    }
+  ],
+  "strict_reload_step1": {
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "strict_reload_step10": {
+    "missing_keys": [],
+    "unexpected_keys": []
+  },
+  "one_step_delta_probe_mean32": 2.0694979922992497e-11,
+  "ten_step_delta_probe_mean32": 1.1061271569642785e-10,
+  "reference_delta_probe": 0.0,
+  "optimizer": "SGD(lr=1e-7)",
+  "nan_detected": false,
+  "checkpoints": {
+    "step1": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/checkpoints/checkpoint-1",
+    "step10": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/checkpoints/checkpoint-10"
+  },
+  "heldout_outputs": [
+    {
+      "sample_id": "davis_hockey",
+      "step0_frames": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_outputs/step0/davis_hockey/frames",
+      "step10_frames": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_outputs/step10/davis_hockey/frames"
+    },
+    {
+      "sample_id": "davis_koala",
+      "step0_frames": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_outputs/step0/davis_koala/frames",
+      "step10_frames": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/minimax_adapter_gates_20260626/heldout_outputs/step10/davis_koala/frames"
+    }
+  ],
+  "train_samples": [
+    "davis_bear",
+    "davis_bus",
+    "davis_mallard-water",
+    "davis_elephant"
+  ],
+  "heldout_samples": [
+    "davis_hockey",
+    "davis_koala"
+  ],
+  "peak_vram_mib": 44614.2236328125
+}

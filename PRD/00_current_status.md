@@ -2307,3 +2307,15 @@ operation was launched by this audit milestone.
 - EffectErase inference smoke remains blocked by missing official weights.
 - No optimizer step, 10-step gate, long training, RC-FPO, or left CLI operation
   was launched by this milestone.
+
+## 2026-06-26 Exp29 MiniMax Adapter Gate Decision
+
+- MiniMax zero-gap: `MINIMAX_ZERO_GAP_PASSED`.
+- MiniMax one-step strict reload: `MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED`.
+- MiniMax 10-step: `MINIMAX_10STEP_PARETO_MIXED`.
+- MiniMax final: `MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK`.
+- EffectErase final: `EFFECTERASE_BLOCKED`.
+
+MiniMax now has real third-backbone adapter plumbing evidence, but not heldout
+quality evidence. It does not justify `THIRD_BACKBONE_ADAPTER_FEASIBILITY_CONFIRMED`
+or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.

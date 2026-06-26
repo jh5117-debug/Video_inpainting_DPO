@@ -16,3 +16,12 @@ Wan base assets are installed.
 
 MiniMax inference is technically runnable but not yet a robust OR baseline.
 EffectErase visual review is blocked because official weights are missing.
+
+## 2026-06-26 MiniMax 10-Step Heldout Review
+
+- `davis_hockey`: Step10 and Step0 are visually tied; target remains.
+- `davis_koala`: Step10 and Step0 are visually tied; fur texture remains
+  smoothed/residual.
+
+No heldout visual improvement was found. This is a technical adapter-plumbing
+pass, not a third-backbone scientific positive.
