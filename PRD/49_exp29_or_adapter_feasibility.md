@@ -336,3 +336,24 @@ Reports:
 Report:
 
 - `reports/exp29_continuation_v3_readback.md`
+
+## 2026-06-26 EffectErase Smoke Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_INPUTS_BLOCKED`
+- Locked smoke manifest remained unchanged:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Materialized input mp4s for the preregistered rows under:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_20260626/inputs/`
+- Ready rows: 5/6.
+- Blocked row: `REAL_ENV249_00103_004_04`; its locked mask is empty across the
+  materialized 17 frames.
+- No row was replaced, no seed/mask/frame index was changed, and no EffectErase
+  inference was launched.
+- Because the preregistered six-row smoke is not input-valid, Milestone C
+  cannot run as a 6/6 official smoke without a new preregistration.
+
+Reports:
+
+- `reports/exp29_effecterase_smoke_input_materialization.md`
+- `reports/exp29_effecterase_smoke_input_materialization.csv`
+- `reports/exp29_effecterase_smoke_input_materialization.json`

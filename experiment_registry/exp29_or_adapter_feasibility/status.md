@@ -153,3 +153,18 @@ Reports:
   allowed before expanded source-pool evidence.
 - Left CLI was read-only audited; no signal and no file mutation.
 - Report: `reports/exp29_continuation_v3_readback.md`.
+
+## 2026-06-26 EffectErase Smoke Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_INPUTS_BLOCKED`.
+- Manifest SHA256:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Ready rows: 5/6.
+- Blocker: `REAL_ENV249_00103_004_04` has an empty mask in the locked
+  materialization.
+- No replacement row, mask edit, seed change, or frame-index change was made.
+- EffectErase inference was not launched.
+- Reports:
+  - `reports/exp29_effecterase_smoke_input_materialization.md`
+  - `reports/exp29_effecterase_smoke_input_materialization.csv`
+  - `reports/exp29_effecterase_smoke_input_materialization.json`

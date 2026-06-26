@@ -85,3 +85,9 @@ videos are opened per sample.
 No new visual evidence was generated. EffectErase visual review remains
 pending. MiniMax remains blocked by data-yield, not by a visual-quality
 positive result.
+
+## 2026-06-26 EffectErase Smoke Input Materialization
+
+No EffectErase output video was generated. The preregistered smoke is blocked
+before inference because one locked row has an empty task mask. The row was not
+silently replaced, preserving preregistration integrity.

@@ -2393,3 +2393,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   allowed in this state.
 - Left CLI was checked read-only. GPU1-GPU4 remain reserved by left runtime
   locks. No signal was sent and no left file was modified.
+
+## 2026-06-26 Exp29 EffectErase Smoke Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_INPUTS_BLOCKED`
+- The locked six-row manifest stayed unchanged at SHA256
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Five rows materialized as 17-frame 832x480 input mp4s.
+- `REAL_ENV249_00103_004_04` is blocked because the locked mask is empty.
+- No replacement row, seed change, frame-index change, mask edit, or
+  EffectErase inference launch occurred.

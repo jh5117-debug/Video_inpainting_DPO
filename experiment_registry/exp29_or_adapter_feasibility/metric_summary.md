@@ -102,3 +102,12 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
 - GPU readback found no active compute processes, but GPU1-GPU4 remain
   reserved by left CLI runtime locks.
+
+## 2026-06-26 EffectErase Smoke Input Materialization
+
+- Rows checked: 6.
+- Ready input rows: 5.
+- Blocked input rows: 1.
+- All decoded ready videos have 17 frames at 832x480.
+- Blocked row: `REAL_ENV249_00103_004_04`.
+- Blocker metric: mask area min/mean/max all `0.0`.

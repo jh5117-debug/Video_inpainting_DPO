@@ -61,3 +61,12 @@ continuation_v3:
     - GPU7
   effecterase_inference_run: false
   minimax_recipe_or_30step_allowed: false
+effecterase_smoke_input_materialization:
+  result: EFFECTERASE_SMOKE_INPUTS_BLOCKED
+  manifest_sha256: 54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137
+  rows: 6
+  ready_rows: 5
+  blocked_rows:
+    - REAL_ENV249_00103_004_04
+  blocker: empty_mask
+  inference_launched: false
