@@ -2157,3 +2157,19 @@ benchmarking.
   guidance `6.0`, bf16.
 - Note: no external model output or metric has been generated yet; Step10/30
   remain trajectory-only diagnostics.
+
+## 2026-06-26 Exp26 External Validation Generation
+
+- Status: `EXP26_EXTERNAL_GENERATION_COMPLETE`
+- Leakage: `NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED`
+- Scope: fixed Step0, Step10, Step30, and Step50 trajectory checkpoints on the
+  preregistered 32-row external 49F validation split.
+- Generation result: all four checkpoints completed `32 / 32` rows with raw
+  frames, comp frames, mp4s, side-by-side videos, contact sheets, dense
+  temporal evidence, frame-count/hash status, and resolved configs.
+- Output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/`
+- Leakage audit covered `128` checkpoint/sample rows and flagged `0` rows.
+- Note: this milestone did not retrain VideoPainter, did not change masks,
+  seeds, prompts, or source rows, and did not use Step10/30 for checkpoint
+  reselection. External metrics and visual review remain separate gates.

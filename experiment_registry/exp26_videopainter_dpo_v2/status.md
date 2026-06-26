@@ -575,3 +575,22 @@ distribution, but it is not a universal-adapter or final SOTA claim.
   seed `20260619`, mask seed `20260623`, `720x480`, 20 inference steps,
   guidance `6.0`, bf16.
 - no external inference, metric, or visual review has been run yet.
+
+## 2026-06-26 External Validation Generation
+
+- status: `EXP26_EXTERNAL_GENERATION_COMPLETE`
+- leakage: `NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED`
+- generated checkpoints: `Step0`, `Step10`, `Step30`, `Step50`
+- rows per checkpoint: `32 / 32`
+- leakage rows audited: `128`
+- leakage flagged rows: `0`
+- output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/`
+- reports:
+  - `reports/exp26_external_validation_generation_status.md`
+  - `reports/exp26_external_validation_generation_status.csv`
+  - `reports/exp26_external_validation_leakage_audit.md`
+  - `reports/exp26_external_validation_leakage_audit.csv`
+
+No external checkpoint reselection, retraining, mask reselection, seed
+reselection, or source-row replacement was performed.

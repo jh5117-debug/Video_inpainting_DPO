@@ -55,7 +55,19 @@ external_validation_inference_width: 720
 external_validation_num_inference_steps: 20
 external_validation_guidance_scale: 6.0
 external_validation_dtype: bf16
-external_validation_external_inference_started: false
+external_validation_external_inference_started: true
+external_validation_generation_status: EXP26_EXTERNAL_GENERATION_COMPLETE
+external_validation_leakage_status: NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED
+external_validation_generated_checkpoints:
+  - Step0
+  - Step10
+  - Step30
+  - Step50
+external_validation_rows_per_checkpoint: 32
+external_validation_leakage_rows: 128
+external_validation_leakage_flagged: 0
+external_validation_metrics_status: PENDING
+external_validation_visual_review_status: PENDING
 postconfirmation_allowed_scope:
   - external_49f_inventory
   - fixed_step0_vs_step50_external_validation

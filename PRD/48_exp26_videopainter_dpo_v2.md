@@ -1131,3 +1131,42 @@ Reports/manifests:
 - `reports/exp26_external_validation_preregistration_status.csv`
 - `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl`
 - `exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl`
+
+## 2026-06-26 External Validation Generation
+
+Status:
+
+- `EXP26_EXTERNAL_GENERATION_COMPLETE`
+- `NO_UNEXPECTED_WINNER_LEAKAGE_DETECTED`
+- `NO_EXTERNAL_VISUAL_REVIEW_YET`
+- `NO_CHECKPOINT_RESELECTION`
+
+The fixed preregistered external validation split was generated for the four
+fixed trajectory checkpoints only:
+
+- Step0: official initialization
+- Step10: trajectory diagnostic
+- Step30: trajectory diagnostic
+- Step50: primary fixed candidate
+
+All four checkpoint outputs completed `32 / 32` rows with raw frames, comp
+frames, mp4s, side-by-side videos, contact sheets, dense temporal evidence,
+resolved configs, and frame-count/hash status under:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/`
+
+Leakage audit covered `128` checkpoint/sample rows. It found `0` unexpected
+winner-copy cases. Comp mask-outside winner copy is expected by protocol;
+raw frames and comp mask regions were checked separately, and frame0 remains
+the official first-frame-GT frame.
+
+The generation milestone did not retrain VideoPainter, did not use Step10/30
+for checkpoint selection, did not modify masks/seeds/prompts, and did not touch
+the left CLI worktrees or processes.
+
+Reports:
+
+- `reports/exp26_external_validation_generation_status.md`
+- `reports/exp26_external_validation_generation_status.csv`
+- `reports/exp26_external_validation_leakage_audit.md`
+- `reports/exp26_external_validation_leakage_audit.csv`

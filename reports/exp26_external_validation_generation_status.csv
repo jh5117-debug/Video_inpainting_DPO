@@ -1,0 +1,5 @@
+step,generation_status,ok,num_rows,sample_dirs,review_status,review_samples,output_root
+step0,passed,32,32,32,dense_evidence_generated_human_review_required,32,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/step0
+step10,passed,32,32,32,dense_evidence_generated_human_review_required,32,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/step10
+step30,passed,32,32,32,dense_evidence_generated_human_review_required,32,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/step30
+step50,passed,32,32,32,dense_evidence_generated_human_review_required,32,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/step50

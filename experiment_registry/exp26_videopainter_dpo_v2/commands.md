@@ -158,3 +158,36 @@ exp26_videopainter_dpo_v2/manifests/vp2_external_validation_preregistered.jsonl
 exp26_videopainter_dpo_v2/manifests/vp2_external_validation_masks.jsonl
 /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered
 ```
+
+External validation generation used task-level checkpoint parallelism only.
+Each checkpoint used a single GPU and the same preregistered manifest:
+
+```bash
+bash exp26_videopainter_dpo_v2/scripts/run_vp2_external_validation_checkpoint_pai.sh \
+  step0 0
+
+bash exp26_videopainter_dpo_v2/scripts/run_vp2_external_validation_checkpoint_pai.sh \
+  step50 5
+
+bash exp26_videopainter_dpo_v2/scripts/run_vp2_external_validation_checkpoint_pai.sh \
+  step30 6
+
+bash exp26_videopainter_dpo_v2/scripts/run_vp2_external_validation_checkpoint_pai.sh \
+  step10 7
+```
+
+Generation/leakage audit:
+
+```bash
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py status \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered/manifests/vp2_external_validation_preregistered.jsonl \
+  --report-dir /tmp/exp26_external_analysis_out/reports \
+  --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter
+
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py leakage \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered/manifests/vp2_external_validation_preregistered.jsonl \
+  --report-dir /tmp/exp26_external_analysis_out/reports \
+  --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter
+```
