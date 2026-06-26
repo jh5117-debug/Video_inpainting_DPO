@@ -57,6 +57,36 @@ heartbeats, branches, worktrees, or processes associated with:
 These are hints only. Exp29 must still perform repo, license, weight, code, and
 trainable-forward audits before running any smoke.
 
+## 2026-06-26 Repo And Weight Audit
+
+MiniMax:
+
+- `MINIMAX_REPO_READY`
+- `MINIMAX_WEIGHTS_READY`
+- Local repo: `/home/hj/dpo-2-1-exp/third_party_baselines/MiniMax-Remover/repo`
+- PAI/NAS weights:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current`
+- Flow target from paper/code audit: velocity / `epsilon - z0`.
+- No inference smoke, trainable-forward gate, zero-gap, one-step, or 10-step
+  gate has run yet.
+
+EffectErase:
+
+- `EFFECTERASE_REPO_READY`
+- `EFFECTERASE_BLOCKED_NO_WEIGHTS`
+- Local repo: `/home/hj/video_inpainting_third_party/EffectErase`
+- Official inference requires `EffectErase.ckpt` and `Wan2.1-Fun-1.3B-InP`
+  assets, which were not found in the audited paths.
+- Generic Wan training utilities are present, but removal-specific adapter
+  feasibility is blocked until official weights are available.
+- VOR use remains diagnostic/baseline only because of the VOR-training
+  confound recorded in Exp26.
+
+Reports:
+
+- `reports/exp29_minimax_repo_weight_audit.md`
+- `reports/exp29_effecterase_repo_weight_audit.md`
+
 ## Promotion Gates
 
 MiniMax can only become `MINIMAX_TRUE_ADAPTER_FEASIBILITY_CONFIRMED` after:
@@ -72,4 +102,3 @@ EffectErase can only become `EFFECTERASE_TRUE_ADAPTER_FEASIBILITY_CONFIRMED`
 after the same technical evidence plus a non-confounded data design. If its
 available evidence is VOR-trained only, it must be labeled technical or
 baseline/diagnostic rather than scientific positive.
-

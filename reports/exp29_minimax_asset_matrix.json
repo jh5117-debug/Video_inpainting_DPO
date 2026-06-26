@@ -1,0 +1,47 @@
+{
+  "model": "MiniMax-Remover",
+  "repo": {
+    "ready": true,
+    "path": "/home/hj/dpo-2-1-exp/third_party_baselines/MiniMax-Remover/repo",
+    "remote": "https://github.com/zibojia/MiniMax-Remover",
+    "commit": "28e12b450d8a72a7547b86940a4985e6ad90d75b",
+    "license_file_present": false
+  },
+  "weights": {
+    "ready": true,
+    "root": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current",
+    "symlink_target": "/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/minimax",
+    "files": {
+      "vae/config.json": {
+        "bytes": 724,
+        "sha256": "f0c1cc1d7decb5badc384f54691746a27a9aeff49f7ebca974e583389342d527"
+      },
+      "vae/diffusion_pytorch_model.safetensors": {
+        "bytes": 507591892,
+        "sha256": "d6e524b3fffede1787a74e81b30976dce5400c4439ba64222168e607ed19e793"
+      },
+      "transformer/config.json": {
+        "bytes": 422,
+        "sha256": "7d218c1d52a04e9e4f0e89ca72c9743daa408177e3bdccde90de1334801f8f77"
+      },
+      "transformer/diffusion_pytorch_model.safetensors": {
+        "bytes": 2254157576,
+        "sha256": "a379d98432970f614befb260357153edcd01a99748cf7f6dabe1a230c159b213"
+      },
+      "scheduler/scheduler_config.json": {
+        "bytes": 751,
+        "sha256": "3fed2abbd9bbc301a74db01947198057ec5049808910dccab320925bf27bea6e"
+      }
+    }
+  },
+  "adapter_feasibility": {
+    "target_type": "flow_velocity",
+    "paper_velocity": "epsilon - z0",
+    "official_training_script_found": false,
+    "trainable_forward_audit": "pending",
+    "zero_gap": "not_started",
+    "one_step": "not_started",
+    "ten_step": "not_started"
+  }
+}
+

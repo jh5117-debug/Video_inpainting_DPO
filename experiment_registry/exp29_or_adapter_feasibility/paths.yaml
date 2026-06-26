@@ -4,4 +4,6 @@ output_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or
 experiment_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp29_or_adapter_feasibility
 third_party_minimax_known: /home/hj/dpo-2-1-exp/third_party_baselines/MiniMax-Remover/repo
 third_party_effecterase_known: /home/hj/video_inpainting_third_party/EffectErase
-
+minimax_weights_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current
+effecterase_repo_hal: /home/hj/video_inpainting_third_party/EffectErase
+effecterase_expected_lora: /home/hj/video_inpainting_third_party/EffectErase/EffectErase.ckpt

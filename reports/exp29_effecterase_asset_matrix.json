@@ -1,0 +1,32 @@
+{
+  "model": "EffectErase",
+  "repo": {
+    "ready": true,
+    "path": "/home/hj/video_inpainting_third_party/EffectErase",
+    "remote": "https://github.com/FudanCVL/EffectErase.git",
+    "commit": "bcee0a5da5ef387c2ba39390dc4d579503669fb8",
+    "license": "CC BY-NC 4.0"
+  },
+  "weights": {
+    "ready": false,
+    "missing": [
+      "EffectErase.ckpt",
+      "Wan-AI/Wan2.1-Fun-1.3B-InP/models_t5_umt5-xxl-enc-bf16.pth",
+      "Wan-AI/Wan2.1-Fun-1.3B-InP/Wan2.1_VAE.pth",
+      "Wan-AI/Wan2.1-Fun-1.3B-InP/diffusion_pytorch_model.safetensors",
+      "Wan-AI/Wan2.1-Fun-1.3B-InP/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth"
+    ],
+    "fallback_used": false
+  },
+  "adapter_feasibility": {
+    "target_type": "flow_noise_minus_sample",
+    "official_training_utilities_found": true,
+    "removal_specific_dpo_gate": "not_started",
+    "trainable_forward_audit": "blocked_without_weights",
+    "zero_gap": "not_started",
+    "one_step": "not_started",
+    "ten_step": "not_started",
+    "data_risk": "VOR-trained; VOR use is diagnostic/baseline only unless non-confounded validation is locked"
+  }
+}
+

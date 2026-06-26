@@ -1,0 +1,18 @@
+field,value
+status_repo,MINIMAX_REPO_READY
+status_weights,MINIMAX_WEIGHTS_READY
+status_inference,MINIMAX_INFERENCE_SMOKE_PENDING
+repo_path,/home/hj/dpo-2-1-exp/third_party_baselines/MiniMax-Remover/repo
+repo_remote,https://github.com/zibojia/MiniMax-Remover
+repo_commit,28e12b450d8a72a7547b86940a4985e6ad90d75b
+license_file,missing
+weight_root,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current
+weight_symlink_target,/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/minimax
+vae_safetensors_sha256,d6e524b3fffede1787a74e81b30976dce5400c4439ba64222168e607ed19e793
+transformer_safetensors_sha256,a379d98432970f614befb260357153edcd01a99748cf7f6dabe1a230c159b213
+scheduler_config_sha256,3fed2abbd9bbc301a74db01947198057ec5049808910dccab320925bf27bea6e
+paper_path,/home/hj/Video Inpainting/Minimax-Remover.pdf
+paper_target_velocity,epsilon_minus_z0
+trainable_forward_status,pending
+dpo_status,not_started
+

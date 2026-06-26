@@ -1,0 +1,17 @@
+field,value
+status_repo,EFFECTERASE_REPO_READY
+status_weights,EFFECTERASE_BLOCKED_NO_WEIGHTS
+status_inference,EFFECTERASE_INFERENCE_SMOKE_BLOCKED
+repo_path,/home/hj/video_inpainting_third_party/EffectErase
+repo_remote,https://github.com/FudanCVL/EffectErase.git
+repo_commit,bcee0a5da5ef387c2ba39390dc4d579503669fb8
+license,CC_BY_NC_4_0
+expected_lora,EffectErase.ckpt
+expected_base,Wan2.1-Fun-1.3B-InP
+official_inference_entry,examples/remove_wan/infer_remove_wan.py
+official_training_entry,examples/wanvideo/model_training/train.py
+target_type,flow_noise_minus_sample
+data_risk,VOR_trained_confounded_for_primary_VOR_on_policy_evidence
+trainable_forward_status,not_validated_without_weights
+dpo_status,not_started
+

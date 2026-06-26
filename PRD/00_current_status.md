@@ -2278,3 +2278,20 @@ DAVIS-derived VideoPainter validation remains not confirmed. The track audits
 MiniMax-Remover and EffectErase as OR baselines, loser generators, and possible
 future true adapters. No long training, RC-FPO, VideoPainter continuation, or
 third-model DPO run was launched by this scaffold milestone.
+
+## 2026-06-26 Exp29 Repo And Weight Audit
+
+- MiniMax status: `MINIMAX_REPO_READY`, `MINIMAX_WEIGHTS_READY`,
+  `MINIMAX_INFERENCE_SMOKE_PENDING`.
+- MiniMax PAI/NAS weights:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current`.
+- EffectErase status: `EFFECTERASE_REPO_READY`,
+  `EFFECTERASE_BLOCKED_NO_WEIGHTS`.
+- EffectErase official LoRA/base assets were not found, so no smoke or adapter
+  gate is allowed for EffectErase yet.
+- Reports:
+  - `reports/exp29_minimax_repo_weight_audit.md`
+  - `reports/exp29_effecterase_repo_weight_audit.md`
+
+No Exp29 GPU inference, optimizer step, long training, RC-FPO, or left CLI
+operation was launched by this audit milestone.
