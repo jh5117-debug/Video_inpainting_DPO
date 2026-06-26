@@ -2262,3 +2262,19 @@ confirmed and blocks any universal-adapter or final-SOTA claim.
   cannot be used as primary on-policy VOR loser evidence.
 
 No third-backbone DPO training, RC-FPO, or VideoPainter retraining was launched.
+
+## 2026-06-26 Exp29 MiniMax + EffectErase Adapter Feasibility
+
+- Status: `EXP29_READBACK_AND_SCAFFOLD_CREATED`
+- Branch: `research/exp29-minimax-effecterase-adapter-feasibility-20260626`
+- Base: `origin/research/exp26-videopainter-dpo-v2`
+- PRD: `PRD/49_exp29_or_adapter_feasibility.md`
+- Registry: `experiment_registry/exp29_or_adapter_feasibility/`
+- Report: `reports/exp29_or_adapter_readback.md`
+
+Exp29 begins from the Exp26 conclusion that DiffuEraser plus VideoPainter
+support `CROSS_BACKBONE_ADAPTER_EVIDENCE_CONFIRMED`, while external
+DAVIS-derived VideoPainter validation remains not confirmed. The track audits
+MiniMax-Remover and EffectErase as OR baselines, loser generators, and possible
+future true adapters. No long training, RC-FPO, VideoPainter continuation, or
+third-model DPO run was launched by this scaffold milestone.

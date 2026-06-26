@@ -1,0 +1,14 @@
+branch: research/exp29-minimax-effecterase-adapter-feasibility-20260626
+base_branch: origin/research/exp26-videopainter-dpo-v2
+scope:
+  - MiniMax-Remover repo and weight audit
+  - EffectErase repo and weight audit
+  - inference smoke only if verified weights exist
+  - trainable-forward feasibility only after inference smoke
+forbidden:
+  - long_training
+  - videopainter_100step
+  - rcfpo
+  - left_cli_modification
+  - universal_adapter_claim
+

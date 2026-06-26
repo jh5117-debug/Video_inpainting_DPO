@@ -1,0 +1,38 @@
+"""Small status helpers for Exp29 reports."""
+
+MINIMAX_FINAL_STATES = {
+    "MINIMAX_TRUE_ADAPTER_FEASIBILITY_CONFIRMED",
+    "MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK",
+    "MINIMAX_BASELINE_ONLY_FOR_NOW",
+    "MINIMAX_BLOCKED",
+}
+
+EFFECTERASE_FINAL_STATES = {
+    "EFFECTERASE_TRUE_ADAPTER_FEASIBILITY_CONFIRMED",
+    "EFFECTERASE_TECHNICAL_ADAPTER_ONLY_DATA_RISK",
+    "EFFECTERASE_OR_BASELINE_READY",
+    "EFFECTERASE_BASELINE_ONLY_FOR_NOW",
+    "EFFECTERASE_BLOCKED",
+}
+
+SUMMARY_ROLES = {
+    "TRUE_DPO_ADAPTER_READY",
+    "ADAPTER_POSSIBLE_NEEDS_MORE_WORK",
+    "OR_STRONG_BASELINE",
+    "LOSER_GENERATOR",
+    "INFERENCE_BASELINE_ONLY",
+    "BLOCKED",
+}
+
+
+def is_known_minimax_state(state: str) -> bool:
+    return state in MINIMAX_FINAL_STATES
+
+
+def is_known_effecterase_state(state: str) -> bool:
+    return state in EFFECTERASE_FINAL_STATES
+
+
+def is_known_summary_role(role: str) -> bool:
+    return role in SUMMARY_ROLES
+
