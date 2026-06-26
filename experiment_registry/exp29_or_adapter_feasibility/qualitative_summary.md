@@ -72,3 +72,10 @@ regions.
 Final qualitative decision: `MINIMAX_DATA_YIELD_INSUFFICIENT`. No visual
 quality-positive adapter claim is supported, and no recipe or 30-step gate
 should run from this candidate set.
+
+## 2026-06-26 EffectErase Smoke Pre-Registration
+
+EffectErase smoke inputs are locked before output review. The locked rows are
+VOR diagnostics only and cannot be used to claim scientific adapter success.
+Visual review remains pending until the smoke is actually run and the generated
+videos are opened per sample.

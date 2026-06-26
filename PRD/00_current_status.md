@@ -2363,3 +2363,19 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   NAS cache and verified with 19/19 SHA manifest entries OK.
 - No inference smoke or adapter gate has run yet; EffectErase remains OR
   baseline/diagnostic pending smoke.
+
+## 2026-06-26 Exp29 EffectErase Smoke Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_PREREGISTERED`
+- Locked 6 diagnostic rows at
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered.jsonl`
+  with SHA256
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Rows are balanced REAL/BLENDER = 3/3 and small/medium/large masks = 2/2/2.
+- The locked source materialization has 17 frames, while official EffectErase
+  defaults to 81 frames; this is diagnostic compatibility smoke only.
+- VOR-Eval and non-VOR OR rows are not used. All rows are
+  `diagnostic_only_vor_confounded` and `eligible_for_training=false`.
+- No inference has run yet, and no baseline-ready, adapter-ready, scientific
+  positive, or universal-adapter claim is supported by this preregistration
+  alone.

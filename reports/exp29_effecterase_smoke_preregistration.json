@@ -1,0 +1,52 @@
+{
+  "status": "EFFECTERASE_SMOKE_PREREGISTERED",
+  "date": "2026-06-26",
+  "manifest": "exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered.jsonl",
+  "rows": 6,
+  "row_balance": {
+    "source_type": {
+      "REAL": 3,
+      "BLENDER": 3
+    },
+    "mask_bucket": {
+      "small": 2,
+      "medium": 2,
+      "large": 2
+    }
+  },
+  "source_role": "vor_diagnostic_only",
+  "eligible_for_training": false,
+  "vor_eval_used": false,
+  "non_vor_or_used": false,
+  "scientific_role": "diagnostic_only_vor_confounded",
+  "official_default_num_frames": 81,
+  "locked_num_frames": 17,
+  "num_frames_override_reason": "available audited Exp29 materialization has exactly 17 frames; smoke is diagnostic only, not official benchmark or training evidence",
+  "protocol": {
+    "task": "remove",
+    "resolution": "832x480",
+    "seed": 2025,
+    "cfg": 1.0,
+    "num_inference_steps": 50,
+    "frame_interval": 1,
+    "primary_output": "raw",
+    "diagnostic_comp": true
+  },
+  "assets": {
+    "repo": "/home/hj/video_inpainting_third_party/EffectErase",
+    "repo_commit": "bcee0a5da5ef387c2ba39390dc4d579503669fb8",
+    "license": "CC BY-NC 4.0",
+    "lora": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/FudanCVL/EffectErase/EffectErase.ckpt",
+    "wan_base": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP"
+  },
+  "allowed_status_after_smoke": [
+    "EFFECTERASE_OR_BASELINE_READY",
+    "EFFECTERASE_INFERENCE_SMOKE_FAILED",
+    "EFFECTERASE_BASELINE_BLOCKED"
+  ],
+  "forbidden_claims": [
+    "EFFECTERASE_TRUE_ADAPTER_FEASIBILITY_CONFIRMED",
+    "SCIENTIFIC_POSITIVE",
+    "UNIVERSAL_ADAPTER"
+  ]
+}

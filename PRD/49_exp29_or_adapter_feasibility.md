@@ -290,3 +290,29 @@ Reports:
 
 - `reports/exp29_architecture_family_audit.md`
 - `reports/exp29_architecture_family_audit.csv`
+
+## 2026-06-26 EffectErase Smoke Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_PREREGISTERED`
+- Locked manifest:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered.jsonl`
+- Manifest SHA256:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`
+- Rows: 6 diagnostic rows, balanced as REAL/BLENDER = 3/3 and
+  small/medium/large masks = 2/2/2.
+- All rows use verified 17-frame Exp29 materialized condition/winner/mask frame
+  directories. The official EffectErase default is 81 frames, so this is
+  explicitly a diagnostic compatibility smoke, not an official full benchmark.
+- VOR-Eval is not used. No non-VOR OR triplet was available at preregistration
+  time.
+- Every row is tagged `diagnostic_only_vor_confounded` and
+  `eligible_for_training=false`.
+- Fixed protocol: removal task, raw output primary, diagnostic comp optional,
+  832x480, seed 2025, CFG 1.0, 50 steps, frame interval 1.
+- This milestone does not run inference and cannot support a true adapter or
+  scientific-positive claim.
+
+Reports:
+
+- `reports/exp29_effecterase_smoke_preregistration.md`
+- `reports/exp29_effecterase_smoke_preregistration.json`

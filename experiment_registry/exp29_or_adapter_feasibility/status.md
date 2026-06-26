@@ -126,3 +126,19 @@ Reports:
   only; no target mismatch in current Exp29 code path.
 - EffectErase: Wan / DiT / flow-style removal pipeline, baseline/diagnostic
   until smoke and training-forward gates are proven.
+
+## 2026-06-26 EffectErase Smoke Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_PREREGISTERED`.
+- Locked 6 diagnostic VOR rows:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered.jsonl`.
+- Manifest SHA256:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Balanced source/mask coverage: REAL/BLENDER = 3/3 and small/medium/large
+  masks = 2/2/2.
+- The protocol fixes 17 frames, 832x480, seed 2025, CFG 1.0, 50 steps, raw
+  output primary, diagnostic comp optional.
+- The official EffectErase default is 81 frames. This 17-frame run is therefore
+  diagnostic compatibility smoke only.
+- VOR-Eval and non-VOR OR rows are not used. All rows are tagged
+  `diagnostic_only_vor_confounded` and `eligible_for_training=false`.
