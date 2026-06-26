@@ -211,3 +211,13 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Heldout rows: 0.
 - Result: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`.
 - No optimizer recipe, 30-step micro, or training metrics were produced.
+
+## 2026-06-27 Continuation V5 Readback
+
+- No new inference, video metric, optimizer metric, or training metric was
+  produced by this readback.
+- PAI GPU checks: 2.
+- GPUs with active compute process during checks: 0.
+- Left CLI reserved GPUs from heartbeat files: GPU1-GPU4.
+- EffectErase pending quantitative gate: official 81-frame smoke.
+- MiniMax pending quantitative gate: top-up data-yield candidate review.

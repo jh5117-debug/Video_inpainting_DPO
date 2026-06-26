@@ -296,3 +296,20 @@ Reports:
   `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
 - Codex opened all 32 review pages: seed A 24/24 and seed B 8/8.
 - No recipe, 30-step, training, or third-backbone-positive claim is allowed.
+
+## 2026-06-27 Continuation V5 Readback
+
+- Status: `EXP29_CONTINUATION_V5_READBACK_COMPLETED`.
+- Branch: `research/exp29-minimax-effecterase-adapter-feasibility-20260626`.
+- HEAD at readback: `c06958c762996dfe327e4a3024ad58550eb20d46`.
+- Worktree was clean before readback edits.
+- Required PRD, registry, reports, and relevant code paths were read.
+- Left-side CLI was checked read-only; GPU1-GPU4 remain reserved by runtime
+  heartbeat files even though all GPUs currently report 0 MiB usage.
+- No left-side signal or file modification occurred.
+- EffectErase remains blocked before baseline readiness by the 17F/81F official
+  frame-count incompatibility.
+- MiniMax remains blocked before recipe/training by insufficient eligible
+  scene groups: 26 available vs 32 required.
+- Next allowed milestones are EffectErase official-81F source audit and MiniMax
+  top-up source audit.

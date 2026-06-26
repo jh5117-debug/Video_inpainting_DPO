@@ -2508,3 +2508,17 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - MiniMax remains plumbing-positive but data-yield-limited; no recipe,
   30-step, training, or third-backbone-positive claim is allowed from this
   candidate set.
+
+## 2026-06-27 Exp29 Continuation V5 Readback
+
+- Status: `EXP29_CONTINUATION_V5_READBACK_COMPLETED`
+- Confirmed Exp29 HEAD
+  `c06958c762996dfe327e4a3024ad58550eb20d46`.
+- Confirmed EffectErase 17F/81F frame-count blocker and MiniMax 26
+  eligible-scene-group blocker.
+- Left CLI was checked read-only; heartbeat reservations keep GPU1-GPU4
+  reserved for left-side lanes.
+- No EffectErase inference, MiniMax generation, recipe, 30-step, training,
+  RC-FPO, or left-side action launched by readback.
+- Next allowed actions are EffectErase official-81F source audit and MiniMax
+  top-up source audit.

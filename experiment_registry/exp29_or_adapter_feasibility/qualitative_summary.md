@@ -160,3 +160,11 @@ medium-hard sample and did not change the scientific decision.
 Final qualitative decision: `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`. The
 current expanded source pool cannot support a scene-disjoint train16+heldout16
 MiniMax micro gate, so MiniMax remains plumbing-positive but data-yield-limited.
+
+## 2026-06-27 Continuation V5 Readback
+
+No new visual evidence was generated. The readback confirms that EffectErase
+must move from the blocked 17-frame diagnostic smoke to a preregistered official
+81-frame smoke before any OR baseline visual claim. MiniMax remains short of the
+scene-disjoint train16+heldout16 requirement and may only proceed through
+top-up data-yield review before any 10-step recipe gate.

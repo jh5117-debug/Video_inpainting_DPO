@@ -579,3 +579,31 @@ Reports:
 - `reports/exp29_minimax_expanded_video_review_v2.csv`
 - `reports/exp29_minimax_expanded_data_quality_summary_v2.json`
 - `reports/exp29_minimax_expanded_review_pages_v2/`
+
+## 2026-06-27 Continuation V5 Readback
+
+- Status: `EXP29_CONTINUATION_V5_READBACK_COMPLETED`
+- Branch: `research/exp29-minimax-effecterase-adapter-feasibility-20260626`
+- HEAD at readback: `c06958c762996dfe327e4a3024ad58550eb20d46`
+- Worktree status before edits: clean.
+- Read PRD, registry, prior EffectErase v2 reports, MiniMax full-VOR source
+  audit, MiniMax expanded data-yield v2, architecture-family audit, and
+  EffectErase weight recovery reports.
+- Left CLI was checked read-only. Runtime heartbeats still reserve GPU1-GPU4
+  for Exp25/Exp27/Exp28 lanes, even though PAI currently reports all GPUs at
+  0 MiB and 0% utilization.
+- No signal was sent to left CLI and no left-side file was modified.
+- EffectErase state remains
+  `EFFECTERASE_SMOKE_BLOCKED_FRAME_COUNT_INCOMPATIBLE`; the 17-frame v2 smoke
+  is not an official result and must not be promoted.
+- V5 EffectErase plan is official 81-frame diagnostic smoke only:
+  source audit, preregistration, materialization, command validation, then
+  inference/metrics/visual review if gates pass.
+- MiniMax state remains `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`, with 26
+  eligible unique scene groups after 128 candidate attempts.
+- V5 MiniMax plan is top-up data-yield only until a scene-disjoint
+  train16+heldout16 split exists. MiniMax 30-step remains forbidden.
+
+Report:
+
+- `reports/exp29_continuation_v5_readback.md`

@@ -204,3 +204,23 @@ minimax_expanded_data_yield_v2:
   review_pages_opened: 32
   recipe_or_30step_allowed: false
   training_allowed: false
+continuation_v5_readback:
+  result: EXP29_CONTINUATION_V5_READBACK_COMPLETED
+  branch: research/exp29-minimax-effecterase-adapter-feasibility-20260626
+  head: c06958c762996dfe327e4a3024ad58550eb20d46
+  worktree_clean_before_edits: true
+  effecterase_current_blocker: official_81f_noise_latent_time_21_vs_17f_input_latent_time_5
+  effecterase_next_allowed: official_81f_source_audit
+  minimax_current_blocker: 26_eligible_scene_groups_below_32_required
+  minimax_next_allowed: topup_source_audit
+  left_cli_read_only: true
+  left_reserved_gpus:
+    - GPU1
+    - GPU2
+    - GPU3
+    - GPU4
+  gpu_checks:
+    count: 2
+    all_gpus_idle: true
+  launched_inference: false
+  launched_training: false
