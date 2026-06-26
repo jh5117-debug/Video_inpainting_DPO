@@ -93,3 +93,7 @@ external_validation_visual_review:
   csv: reports/exp26_external_validation_visual_review.csv
   git_friendly_assets: reports/exp26_external_validation_visual_review_assets
   full_pai_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation
+result_evidence_pack:
+  report: reports/exp26_videopainter_result_pack.md
+  csv: reports/exp26_videopainter_result_pack.csv
+  assets: reports/exp26_videopainter_result_pack_assets

@@ -633,3 +633,14 @@ for Step30 reselection, seed/mask changes, or additional VideoPainter training.
 The review found that external failures are visible local-region artifacts, not
 frame-order errors, first-frame-GT errors, or unexpected GT leakage. No
 checkpoint reselection, 100-step continuation, or retraining is authorized.
+## 2026-06-26 Result Evidence Pack
+
+Status: `EXP26_RESULT_PACK_COMPLETE`
+
+The result pack indexes `30` cases across search-dev, shadow-dev, and external validation. It should be used for group-meeting/paper discussion with the caveat that external DAVIS-derived validation remains not confirmed.
+
+Reports:
+
+- `reports/exp26_videopainter_result_pack.md`
+- `reports/exp26_videopainter_result_pack.csv`
+- `reports/exp26_videopainter_result_pack_assets/`

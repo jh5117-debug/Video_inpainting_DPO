@@ -2222,3 +2222,24 @@ DAVIS-derived external clean-source split exposes poor cross-distribution
 local-region generalization. Step10/30 cannot be selected from this split, and
 no 100-step run, retraining, seed/mask change, or universal-adapter claim is
 authorized.
+
+## 2026-06-26 Exp26 Result Evidence Pack
+
+- Status: `EXP26_RESULT_PACK_COMPLETE`
+- Pack index: `reports/exp26_videopainter_result_pack.md`
+- CSV: `reports/exp26_videopainter_result_pack.csv`
+- Git-friendly assets: `reports/exp26_videopainter_result_pack_assets/`
+- Cases indexed: `30`
+  - search-dev micro-gate examples: `6`
+  - shadow-dev clearly better: `6`
+  - shadow-dev slightly better: `4`
+  - shadow-dev ties: `3`
+  - shadow-dev artifact/failure examples: `2`
+  - external limited positives: `3`
+  - external failures/artifacts: `6`
+
+The pack is for discussion evidence only. It explicitly separates search-dev,
+independent VOR-BG shadow-dev, and DAVIS-derived external validation. It
+supports the statement that VideoPainter is the second successful adapter
+backbone on the VOR-BG distribution, while the external split remains not
+confirmed and blocks any universal-adapter or final-SOTA claim.

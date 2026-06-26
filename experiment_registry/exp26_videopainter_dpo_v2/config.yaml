@@ -89,3 +89,6 @@ postconfirmation_forbidden_scope:
   - step100_or_longer
   - checkpoint_reselection
   - rcfpo
+result_pack_status: EXP26_RESULT_PACK_COMPLETE
+result_pack_cases: 30
+result_pack_universal_adapter_claim_allowed: false

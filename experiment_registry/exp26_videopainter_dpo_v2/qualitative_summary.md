@@ -94,3 +94,14 @@ masked/affected region, especially for water, grass, foliage, fast motion,
 animals, people, and vehicles. This agrees with the external strict-mask PSNR
 and LPIPS failures. No new evidence of frame-order failure, first-frame error,
 or unexpected winner leakage was found.
+## 2026-06-26 Result Evidence Pack
+
+Status: `EXP26_RESULT_PACK_COMPLETE`
+
+The result pack indexes `30` cases across search-dev, shadow-dev, and external validation. It should be used for group-meeting/paper discussion with the caveat that external DAVIS-derived validation remains not confirmed.
+
+Reports:
+
+- `reports/exp26_videopainter_result_pack.md`
+- `reports/exp26_videopainter_result_pack.csv`
+- `reports/exp26_videopainter_result_pack_assets/`
