@@ -92,3 +92,23 @@ minimax_expanded_source_pool_plan:
   manifest_sha256: bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929
   generation_allowed: false
   recipe_or_30step_allowed: false
+continuation_v4:
+  result: EXP29_CONTINUATION_V4_READBACK_COMPLETED
+  start_head: 5e20149363b16f4728016260ff3e6d79dace299d
+  effecterase_next_allowed: smoke_v2_non_empty_mask_preregistration
+  minimax_next_allowed: full_vor_source_audit
+  left_reserved_gpus:
+    - GPU1
+    - GPU2
+    - GPU3
+    - GPU4
+  right_gpu_candidates:
+    - GPU0
+    - GPU5
+    - GPU6
+    - GPU7
+  max_right_gpu_tasks: 2
+  effecterase_inference_run: false
+  minimax_generation_run: false
+  minimax_recipe_or_30step_allowed: false
+  long_training_allowed: false

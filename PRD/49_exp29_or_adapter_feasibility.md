@@ -403,3 +403,27 @@ Reports:
 
 - `reports/exp29_minimax_expanded_source_pool_plan.md`
 - `reports/exp29_minimax_expanded_source_pool_plan.json`
+
+## 2026-06-26 Exp29 Continuation V4 Readback
+
+- Status: `EXP29_CONTINUATION_V4_READBACK_COMPLETED`
+- HEAD: `5e20149363b16f4728016260ff3e6d79dace299d`
+- Re-read Exp29 PRD, registry, EffectErase smoke materialization/dry-run,
+  EffectErase preregistration/weight recovery, MiniMax source-plan and
+  data-quality reports, plus current Exp29 helper code.
+- EffectErase remains command-ready but blocked by the old locked manifest's
+  empty-mask row `REAL_ENV249_00103_004_04`; v2 may replace that row only after
+  explicit non-empty-mask input audit and preview review.
+- MiniMax remains expanded-generation blocked because the prior 64-row Exp25
+  semantic audit left only 31 unused valid rows. This round must use a larger
+  full-VOR source audit before any new generation.
+- Left CLI was checked read-only on PAI. Runtime locks still reserve
+  GPU1/GPU2/GPU3/GPU4. No signal was sent and no left-side file was modified.
+- Right Exp29 may consider only GPU0/GPU5/GPU6/GPU7 after repeated availability
+  checks, with at most two concurrent GPU tasks.
+- No EffectErase inference, MiniMax generation, recipe, 30-step, adapter
+  training, long training, or RC-FPO was launched by this readback.
+
+Report:
+
+- `reports/exp29_continuation_v4_readback.md`

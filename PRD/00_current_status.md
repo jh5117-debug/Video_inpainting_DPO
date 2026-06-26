@@ -2423,3 +2423,18 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Wrote the remaining inventory manifest, but all rows are marked
   `eligible_for_generation=false`.
 - No MiniMax inference, recipe search, 30-step micro, or training was launched.
+
+## 2026-06-26 Exp29 Continuation V4 Readback
+
+- Status: `EXP29_CONTINUATION_V4_READBACK_COMPLETED`
+- Branch: `research/exp29-minimax-effecterase-adapter-feasibility-20260626`
+- HEAD: `5e20149363b16f4728016260ff3e6d79dace299d`
+- EffectErase remains command-ready but old smoke input-validity blocked by one
+  empty-mask row. Next action is a non-overwriting v2 manifest with a valid
+  replacement row.
+- MiniMax remains generation-blocked pending a full-VOR source audit with at
+  least 128 valid candidate groups.
+- Left CLI runtime was checked read-only; GPU1-GPU4 remain reserved by left
+  locks. No left signal was sent and no left file was modified.
+- No GPU inference, MiniMax generation, recipe, 30-step, EffectErase training,
+  long training, or RC-FPO was launched by this readback.

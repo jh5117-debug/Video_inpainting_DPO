@@ -199,3 +199,18 @@ Reports:
 - Reports:
   - `reports/exp29_minimax_expanded_source_pool_plan.md`
   - `reports/exp29_minimax_expanded_source_pool_plan.json`
+
+## 2026-06-26 Continuation V4 Readback
+
+- Status: `EXP29_CONTINUATION_V4_READBACK_COMPLETED`.
+- Branch/HEAD confirmed:
+  `research/exp29-minimax-effecterase-adapter-feasibility-20260626` at
+  `5e20149363b16f4728016260ff3e6d79dace299d`.
+- EffectErase remains `EFFECTERASE_COMMAND_READY` but the old six-row smoke is
+  input-invalid because `REAL_ENV249_00103_004_04` has an empty mask across all
+  17 frames.
+- MiniMax remains `MINIMAX_EXPANDED_GENERATION_BLOCKED` until a larger
+  full-VOR source audit finds at least 128 valid candidate groups.
+- Left CLI was checked read-only. GPU1/GPU2/GPU3/GPU4 remain reserved by CLI
+  runtime locks. No signal was sent and no left-side file was modified.
+- Report: `reports/exp29_continuation_v4_readback.md`.

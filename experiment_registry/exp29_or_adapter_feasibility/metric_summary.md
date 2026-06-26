@@ -134,3 +134,15 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Remaining mask bucket counts: small 5, medium 12, large 14.
 - Generation status: blocked before inference because source-pool size is
   insufficient.
+
+## 2026-06-26 Continuation V4 Readback
+
+- No new quantitative metrics; no model inference ran.
+- EffectErase old smoke manifest SHA256:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- EffectErase old smoke inputs remain 5/6 ready, with
+  `REAL_ENV249_00103_004_04` blocked by empty mask.
+- MiniMax prior expanded source manifest SHA256:
+  `bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929`.
+- Right-side GPU work remains pending; no EffectErase inference or MiniMax
+  generation was launched by readback.

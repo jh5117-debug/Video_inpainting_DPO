@@ -104,3 +104,11 @@ No new MiniMax video evidence was generated. The expanded data-yield first pass
 is blocked before inference because the current audited source inventory is too
 small after excluding the previous 32 rows. MiniMax remains plumbing-positive
 but data-yield-limited.
+
+## 2026-06-26 Continuation V4 Readback
+
+No new video evidence was generated. EffectErase remains pending smoke v2
+preregistration with a non-empty replacement mask row. MiniMax remains pending
+a full-VOR source audit before any expanded candidate generation. The accepted
+language remains cross-backbone evidence from DiffuEraser plus VideoPainter;
+universal-adapter and final-SOTA language remains forbidden.
