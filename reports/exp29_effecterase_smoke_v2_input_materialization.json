@@ -1,0 +1,9 @@
+{
+  "blocked_rows": [],
+  "eligible_for_training": false,
+  "manifest": "exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered_v2.jsonl",
+  "ready_rows": 6,
+  "rows": 6,
+  "status": "EFFECTERASE_SMOKE_V2_INPUTS_READY",
+  "vor_eval_used": false
+}

@@ -121,3 +121,10 @@ and a non-empty small mask following the target. The retained rows show
 non-empty masks and visible condition/winner differences. This supports
 input-valid preregistration only; EffectErase output quality remains unknown
 until official inference outputs are generated and reviewed.
+
+## 2026-06-26 EffectErase Smoke V2 Input Materialization
+
+No EffectErase model output has been generated yet. The v2 input videos now
+decode correctly and preserve non-empty masks, so the next allowed step is the
+official EffectErase inference smoke. Baseline readiness and visual quality
+remain pending actual model outputs.

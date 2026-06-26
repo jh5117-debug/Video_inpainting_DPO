@@ -461,3 +461,25 @@ Reports:
 - `reports/exp29_effecterase_smoke_v2_preview_review.csv`
 - `reports/exp29_effecterase_smoke_v2_preregistration.md`
 - `reports/exp29_effecterase_smoke_v2_preregistration.json`
+
+## 2026-06-26 EffectErase Smoke V2 Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_V2_INPUTS_READY`
+- Manifest:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered_v2.jsonl`
+- Rows: 6
+- Ready rows: 6
+- Blocked rows: 0
+- Resolution: 832x480
+- Condition/winner/mask frame counts: 17/17/17 for every row.
+- Mask non-empty frames: 17/17 for every row.
+- VOR-Eval use: false. Training eligibility: false.
+- Output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_v2_20260626`
+- No EffectErase inference was launched by this materialization milestone.
+
+Reports:
+
+- `reports/exp29_effecterase_smoke_v2_input_materialization.md`
+- `reports/exp29_effecterase_smoke_v2_input_materialization.csv`
+- `reports/exp29_effecterase_smoke_v2_input_materialization.json`

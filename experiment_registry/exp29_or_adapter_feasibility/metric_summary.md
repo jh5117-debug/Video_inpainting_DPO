@@ -158,3 +158,13 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Mask bucket counts: small 2, medium 2, large 2.
 - Preview-reviewed rows: 6/6.
 - Inference metrics: not run yet.
+
+## 2026-06-26 EffectErase Smoke V2 Input Materialization
+
+- Materialized rows: 6.
+- Ready rows: 6.
+- Blocked rows: 0.
+- Condition/winner/mask frame counts: 17/17/17 for all rows.
+- Resolution: 832x480 for all rows.
+- Mask non-empty frames: 17/17 for all rows.
+- Inference metrics: not run yet.

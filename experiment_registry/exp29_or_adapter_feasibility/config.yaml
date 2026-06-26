@@ -134,3 +134,14 @@ effecterase_smoke_v2_preregistration:
   vor_eval_used: false
   eligible_for_training: false
   inference_launched: false
+effecterase_smoke_v2_input_materialization:
+  result: EFFECTERASE_SMOKE_V2_INPUTS_READY
+  rows: 6
+  ready_rows: 6
+  blocked_rows: 0
+  frames_per_stream: 17
+  resolution: 832x480
+  mask_non_empty_frames_per_row: 17
+  vor_eval_used: false
+  eligible_for_training: false
+  inference_launched: false

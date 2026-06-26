@@ -2453,3 +2453,12 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   2/2/2. VOR-Eval use is false and training eligibility is false.
 - Preview evidence review passed for 6/6 rows. No inference has run yet, so
   EffectErase is not baseline-ready or adapter-ready.
+
+## 2026-06-26 Exp29 EffectErase Smoke V2 Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_V2_INPUTS_READY`
+- Materialized all 6 v2 rows under the Exp29 v2 output root.
+- Every condition/winner/mask stream decodes as 17 frames at 832x480.
+- Every mask video has non-empty mask content in 17/17 frames.
+- VOR-Eval use remains false and all rows remain ineligible for training.
+- No inference or adapter gate has run yet.

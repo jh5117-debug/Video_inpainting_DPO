@@ -12,3 +12,4 @@ EffectErase	true	true	command_ready_no_inference	not_run	not_run	not_run	not_run
 MiniMax-Remover	true	true	not_run_plan_blocked	passed	passed	passed	data_yield_blocked	ADAPTER_POSSIBLE_NEEDS_MORE_WORK	MINIMAX_EXPANDED_GENERATION_BLOCKED
 ContinuationV4	n/a	n/a	readback_complete	n/a	n/a	n/a	n/a	right-side-exp29-only	EXP29_CONTINUATION_V4_READBACK_COMPLETED
 EffectErase	true	true	smoke_v2_preregistered_not_run	not_run	not_run	not_run	not_run	OR_STRONG_BASELINE	EFFECTERASE_SMOKE_V2_PREREGISTERED
+EffectErase	true	true	smoke_v2_inputs_ready_not_run	not_run	not_run	not_run	not_run	OR_STRONG_BASELINE	EFFECTERASE_SMOKE_V2_INPUTS_READY

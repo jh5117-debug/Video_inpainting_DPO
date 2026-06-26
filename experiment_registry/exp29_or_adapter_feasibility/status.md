@@ -230,3 +230,14 @@ Reports:
 - Preview review passed for 6/6 rows; VOR-Eval use is false and training
   eligibility is false.
 - No EffectErase inference has run yet.
+
+## 2026-06-26 EffectErase Smoke V2 Input Materialization
+
+- Status: `EFFECTERASE_SMOKE_V2_INPUTS_READY`.
+- Rows: 6.
+- Ready rows: 6.
+- Blocked rows: 0.
+- Each condition/winner/mask stream decodes as 17 frames at 832x480.
+- Each mask video is non-empty in all 17 decoded frames.
+- VOR-Eval use remains false and training eligibility remains false.
+- No EffectErase inference has run yet.
