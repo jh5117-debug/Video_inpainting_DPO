@@ -1,0 +1,20 @@
+{
+  "candidate_count": 2024,
+  "inventory_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl",
+  "inventory_sha256": "03157fa156bcf9ee2d636812947fcff96f11e77d078c85df3d9d6cebee3ea9e1",
+  "left_cli_touched": false,
+  "searched_roots": [
+    "/mnt/workspace/hj/nas_hj/data/external/DPO_Finetune_data",
+    "/mnt/nas/hj",
+    "/mnt/workspace/hj/nas_hj",
+    "/mnt/workspace/hj",
+    "/home/hj"
+  ],
+  "selected_count": 32,
+  "selected_manifest": "exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl",
+  "selected_sha256": "be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a",
+  "selection_rule": "deterministic DAVIS diversity list; no model outputs inspected",
+  "status": "EXP26_EXTERNAL_49F_INVENTORY_COMPLETE",
+  "valid_49f_count": 54,
+  "valid_davis_49f_count": 54
+}

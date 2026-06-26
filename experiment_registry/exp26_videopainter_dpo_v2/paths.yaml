@@ -52,3 +52,10 @@ postconfirmation_reports:
   sanity_audit: reports/exp26_postconfirmation_sanity_audit.md
   sanity_audit_csv: reports/exp26_postconfirmation_sanity_audit.csv
   sanity_audit_json: reports/exp26_postconfirmation_sanity_audit.json
+external_49f_inventory_reports:
+  readback: reports/exp26_external_49f_inventory_readback.md
+  md: reports/exp26_external_49f_inventory.md
+  csv: reports/exp26_external_49f_inventory.csv
+  json: reports/exp26_external_49f_inventory.json
+external_49f_candidate_inventory: exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl
+external_49f_selected_manifest: exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl

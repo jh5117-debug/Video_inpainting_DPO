@@ -152,3 +152,11 @@ identity inconsistency. Primary no-first-frame comp deltas remain:
 | VFID/FVD-style | `-0.031428` |
 
 No external-validation metric has been run yet.
+
+## 2026-06-26 External 49F Inventory
+
+Status: `EXP26_EXTERNAL_49F_INVENTORY_COMPLETE`
+
+No model metrics were computed in this milestone. The source inventory found
+`54` valid clean 49F DAVIS-derived sequences and locked `32` rows for the next
+pre-registered external Step0-vs-Step50 validation.

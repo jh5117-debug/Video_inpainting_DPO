@@ -1046,3 +1046,44 @@ Reports:
 - `reports/exp26_postconfirmation_sanity_audit.md`
 - `reports/exp26_postconfirmation_sanity_audit.csv`
 - `reports/exp26_postconfirmation_sanity_audit.json`
+
+## 2026-06-26 External 49F Clean-Source Inventory
+
+Status:
+
+- `EXP26_EXTERNAL_49F_INVENTORY_COMPLETE`
+- `NO_EXTERNAL_INFERENCE_YET`
+- `NO_RESULT_BASED_SELECTION`
+
+External source inventory scanned local candidate roots and found the only
+strictly valid clean 49-frame source family in this pass to be the
+DAVIS-derived frame directories under:
+
+`/mnt/workspace/hj/nas_hj/data/external/DPO_Finetune_data/*/gt_frames`
+
+The adjacent `comparison.mp4` files were rejected as clean sources because they
+are visualization movies, not raw input. The audit found:
+
+- candidate directories: `2024`
+- valid 49F clean sources: `54`
+- valid DAVIS 49F sources: `54`
+- selected external validation rows: `32`
+- selected manifest SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- candidate inventory SHA256:
+  `03157fa156bcf9ee2d636812947fcff96f11e77d078c85df3d9d6cebee3ea9e1`
+
+The selected DAVIS rows are external to VOR-BG train/search/shadow and have
+zero overlap by manifest source family and IDs. They are suitable for internal
+held-out validation; paper usage must cite and comply with DAVIS terms.
+No masks, seeds, prompts, or VideoPainter outputs were generated in this
+milestone.
+
+Reports/manifests:
+
+- `reports/exp26_external_49f_inventory_readback.md`
+- `reports/exp26_external_49f_inventory.md`
+- `reports/exp26_external_49f_inventory.csv`
+- `reports/exp26_external_49f_inventory.json`
+- `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl`
+- `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl`

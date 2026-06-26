@@ -2126,3 +2126,18 @@ benchmarking.
   consistent.
 - Restriction: no 100-step, no RC-FPO, no universal/final-SOTA claim; next
   required scientific check is external clean-source 49F validation.
+
+## 2026-06-26 Exp26 External 49F Inventory
+
+- Status: `EXP26_EXTERNAL_49F_INVENTORY_COMPLETE`
+- Candidate directories scanned: `2024`
+- Valid clean 49F sources: `54`
+- Selected rows: `32`
+- Selected manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl`
+- Selected SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- Source: local DAVIS-derived `gt_frames` directories under
+  `/mnt/workspace/hj/nas_hj/data/external/DPO_Finetune_data`.
+- Note: no external inference has been run yet; preregistration of masks,
+  seeds, prompts, and Step0/Step50 protocol is the next gate.

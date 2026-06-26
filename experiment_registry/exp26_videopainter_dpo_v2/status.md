@@ -539,3 +539,18 @@ distribution, but it is not a universal-adapter or final SOTA claim.
   - `reports/exp26_postconfirmation_sanity_audit.md`
   - `reports/exp26_postconfirmation_sanity_audit.csv`
   - `reports/exp26_postconfirmation_sanity_audit.json`
+
+## 2026-06-26 External 49F Inventory
+
+- status: `EXP26_EXTERNAL_49F_INVENTORY_COMPLETE`
+- candidate directories: `2024`
+- valid clean 49F sources: `54`
+- selected rows: `32`
+- selected manifest:
+  `exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl`
+- selected SHA256:
+  `be118a7ce7d462bda6c339053d0c112994c8da7fab6cf00a4ee5dae87b628e5a`
+- source family: DAVIS-derived `gt_frames`; `comparison.mp4` files are rejected
+  as clean sources.
+- no masks, prompts, seeds, inference outputs, or checkpoint choices were
+  generated from these rows yet.

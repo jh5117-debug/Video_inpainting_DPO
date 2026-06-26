@@ -115,3 +115,21 @@ reports/exp26_postconfirmation_sanity_audit.md
 reports/exp26_postconfirmation_sanity_audit.csv
 reports/exp26_postconfirmation_sanity_audit.json
 ```
+
+External 49F source inventory:
+
+```bash
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_inventory.py \
+  --project-root "$PWD" \
+  --target-rows 32
+```
+
+Artifacts:
+
+```text
+reports/exp26_external_49f_inventory.md
+reports/exp26_external_49f_inventory.csv
+reports/exp26_external_49f_inventory.json
+exp26_videopainter_dpo_v2/manifests/vp2_external_49f_candidate_inventory.jsonl
+exp26_videopainter_dpo_v2/manifests/vp2_external_49f_validation_16_or_32.jsonl
+```

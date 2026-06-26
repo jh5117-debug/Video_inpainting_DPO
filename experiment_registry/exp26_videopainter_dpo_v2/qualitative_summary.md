@@ -64,3 +64,11 @@ water, grass, and foliage cases still account for the main visible artifacts.
 
 No new VideoPainter training was run, and no Step10/30/50 reselection was made.
 External clean-source validation is the next required qualitative check.
+
+## 2026-06-26 External 49F Inventory
+
+The external source pool is DAVIS-derived clean `gt_frames`, not visualization
+`comparison.mp4` files. The selected 32 rows cover animals, people, vehicles,
+water, foliage/grass, urban scenes, and high-motion cases. No external videos
+have been generated or reviewed yet; visual review remains pending until the
+pre-registered Step0/Step50 outputs exist.
