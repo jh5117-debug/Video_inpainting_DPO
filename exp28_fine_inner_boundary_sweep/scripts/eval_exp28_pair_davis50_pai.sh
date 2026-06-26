@@ -12,7 +12,7 @@ PY="${PY:-/mnt/nas/hj/conda_envs/diffueraser/bin/python}"
 OUTPUT_ROOT="${OUTPUT_ROOT:-/mnt/nas/hj/H20_Video_inpainting_DPO}"
 PAIR_ROOT="${PAIR_ROOT:-${OUTPUT_ROOT}/experiments/dpo/exp28_fine_inner_boundary_sweep/pairs/${PAIR_ID}}"
 EXPORT_ROOT="${EXPORT_ROOT:-${OUTPUT_ROOT}/experiments/dpo/exp28_fine_inner_boundary_sweep/eval_exports/${PAIR_ID}}"
-EVAL_ROOT="${EVAL_ROOT:-${OUTPUT_ROOT}/logs/target_eval/exp28_fine_inner_boundary_sweep/${PAIR_ID}}"
+EVAL_ROOT="${EVAL_ROOT:-${OUTPUT_ROOT}/logs/autoresearch/exp28_fine_inner_boundary_sweep/paired_davis50_eval/${PAIR_ID}}"
 
 DAVIS_ROOT="${DAVIS_ROOT:-/mnt/workspace/hj/nas_hj/data/external/davis_432_240}"
 VIDEO_ROOT="${VIDEO_ROOT:-${DAVIS_ROOT}/JPEGImages_432_240}"
@@ -162,13 +162,28 @@ run_eval() {
     --device "${DEVICE}"
   )
   if [[ "${COMPUTE_VFID:-0}" == "1" ]]; then
-    args+=(--compute_vfid --i3d_model_path "${I3D_MODEL_PATH:-${ROOT}/weights/i3d_rgb_imagenet.pt}")
+    i3d_path="${I3D_MODEL_PATH:-${ROOT}/weights/i3d_rgb_imagenet.pt}"
+    if [[ -f "${i3d_path}" ]]; then
+      args+=(--compute_vfid --i3d_model_path "${i3d_path}")
+    else
+      echo "[exp28-eval][WARN] COMPUTE_VFID=1 but missing I3D model: ${i3d_path}; skipping VFID" >&2
+    fi
   fi
   if [[ "${COMPUTE_TC:-0}" == "1" ]]; then
-    args+=(--compute_tc --tc_model_path "${TC_MODEL_PATH:-${WEIGHTS_DIR}/open_clip_vit_h14}")
+    tc_path="${TC_MODEL_PATH:-${WEIGHTS_DIR}/open_clip_vit_h14}"
+    if [[ -e "${tc_path}" ]]; then
+      args+=(--compute_tc --tc_model_path "${tc_path}")
+    else
+      echo "[exp28-eval][WARN] COMPUTE_TC=1 but missing TC model path: ${tc_path}; skipping TC" >&2
+    fi
   fi
   if [[ "${COMPUTE_EWARP:-0}" == "1" ]]; then
-    args+=(--compute_ewarp --raft_model_path "${RAFT_MODEL_PATH:-${PROP}/raft-things.pth}")
+    raft_path="${RAFT_MODEL_PATH:-${PROP}/raft-things.pth}"
+    if [[ -f "${raft_path}" ]]; then
+      args+=(--compute_ewarp --raft_model_path "${raft_path}")
+    else
+      echo "[exp28-eval][WARN] COMPUTE_EWARP=1 but missing RAFT model: ${raft_path}; skipping Ewarp" >&2
+    fi
   fi
   CUDA_VISIBLE_DEVICES="${EVAL_GPU}" "${PY}" tools/run_davis50_framewise_protocol_eval.py "${args[@]}"
 }
