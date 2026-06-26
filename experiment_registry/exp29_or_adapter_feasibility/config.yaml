@@ -224,3 +224,27 @@ continuation_v5_readback:
     all_gpus_idle: true
   launched_inference: false
   launched_training: false
+effecterase_official81_source_audit:
+  result: EFFECTERASE_OFFICIAL81_PREREGISTERED
+  candidate_triplets_audited: 24
+  accepted_candidate_count: 24
+  selected_count: 8
+  rejected_count: 16
+  num_frames: 81
+  manifest_sha256: 706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3
+  rejected_sha256: 7700a99c5585d4b8759527bd48029b6ad90a8ca8c3c304a877b0bc1fbcce0f6e
+  source_type_counts:
+    REAL: 5
+    BLENDER: 3
+  mask_bucket_counts:
+    small: 3
+    medium: 3
+    large: 2
+  codex_preview_review:
+    opened: 8
+    passed: 8
+    failed: 0
+  vor_eval_used: false
+  eligible_for_training: false
+  launched_inference: false
+  launched_adapter_gate: false

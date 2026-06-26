@@ -1,0 +1,29 @@
+{
+  "accepted_candidate_count": 24,
+  "candidate_count": 24,
+  "eligible_for_training": false,
+  "extraction_csvs": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/.tmp/pre_exp25_ff_20260623_121851/reports/vor_gate128_exact_extraction.csv",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/.tmp/pre_exp25_ff_20260623_121851/reports/vor_triplet_audit64_exact_extraction.csv"
+  ],
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_official81_source_audit_20260627/manifests/effecterase_smoke_official81_preregistered.jsonl",
+  "manifest_sha256": "706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3",
+  "mask_bucket_counts": {
+    "large": 2,
+    "medium": 3,
+    "small": 3
+  },
+  "max_candidates": 24,
+  "metadata_index": "/mnt/nas/hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "metadata_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "rejected_count": 16,
+  "rejected_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_official81_source_audit_20260627/manifests/effecterase_smoke_official81_rejected.jsonl",
+  "rejected_sha256": "7700a99c5585d4b8759527bd48029b6ad90a8ca8c3c304a877b0bc1fbcce0f6e",
+  "selected_count": 8,
+  "source_type_counts": {
+    "BLENDER": 3,
+    "REAL": 5
+  },
+  "status": "EFFECTERASE_OFFICIAL81_PREREGISTERED",
+  "vor_eval_used": false
+}

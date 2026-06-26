@@ -221,3 +221,16 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Left CLI reserved GPUs from heartbeat files: GPU1-GPU4.
 - EffectErase pending quantitative gate: official 81-frame smoke.
 - MiniMax pending quantitative gate: top-up data-yield candidate review.
+
+## 2026-06-27 EffectErase Official 81F Source Audit
+
+- Candidate triplets audited: 24.
+- Accepted by 81F/frame/mask rules: 24.
+- Locked rows: 8.
+- Rejected/reserve rows recorded: 16.
+- Source type counts: REAL 5, BLENDER 3.
+- Mask bucket counts: small 3, medium 3, large 2.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- No EffectErase model output, image/video metric, adapter metric, or training
+  metric was produced by this source audit.

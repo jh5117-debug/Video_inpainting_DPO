@@ -607,3 +607,34 @@ Reports:
 Report:
 
 - `reports/exp29_continuation_v5_readback.md`
+
+## 2026-06-27 EffectErase Official 81F Source Audit
+
+- Status: `EFFECTERASE_OFFICIAL81_PREREGISTERED`
+- Switched away from the blocked 17-frame diagnostic smoke. The official
+  EffectErase smoke is now preregistered for 81 real frames without patching the
+  official pipeline to fit 17-frame inputs.
+- Used existing Exp25 full-VOR metadata and exact selective-extraction caches
+  read-only; no VOR archive rescan, VOR-Eval use, or row replacement after
+  viewing outputs occurred.
+- Candidate triplets audited: 24.
+- Accepted by 81F/frame/mask rules: 24.
+- Locked rows: 8.
+- Source type balance: REAL 5, BLENDER 3.
+- Mask bucket balance: small 3, medium 3, large 2.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- Codex opened all 8 source preview sheets and marked 8/8 as valid source
+  sanity passes. No empty mask, loop, padding, or visible condition/winner frame
+  mismatch was found.
+- This is source preregistration only. No EffectErase inference, baseline-ready
+  claim, trainable-forward claim, or adapter claim is made yet.
+
+Reports:
+
+- `reports/exp29_effecterase_official81_source_audit.md`
+- `reports/exp29_effecterase_official81_source_audit.csv`
+- `reports/exp29_effecterase_official81_preregistration.md`
+- `reports/exp29_effecterase_official81_preregistration.json`
+- `reports/exp29_effecterase_official81_preview_review.csv`
+- `reports/exp29_effecterase_official81_previews/`

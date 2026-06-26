@@ -168,3 +168,16 @@ must move from the blocked 17-frame diagnostic smoke to a preregistered official
 81-frame smoke before any OR baseline visual claim. MiniMax remains short of the
 scene-disjoint train16+heldout16 requirement and may only proceed through
 top-up data-yield review before any 10-step recipe gate.
+
+## 2026-06-27 EffectErase Official 81F Source Audit
+
+Codex opened all 8 source preview sheets generated for the locked official-81F
+EffectErase smoke rows. The previews show continuous sampled 81-frame motion,
+non-empty masks, and aligned condition/winner pairs across REAL and BLENDER
+rows with small/medium/large masks. No empty-mask, padding, loop, or visible
+frame-order/source mismatch was found.
+
+Final qualitative source decision: `EFFECTERASE_OFFICIAL81_PREREGISTERED`.
+This is only source sanity for diagnostic OR smoke. No EffectErase output video
+has been generated yet, so EffectErase is still not baseline-ready or
+adapter-ready.

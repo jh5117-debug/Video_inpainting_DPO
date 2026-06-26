@@ -2522,3 +2522,16 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   RC-FPO, or left-side action launched by readback.
 - Next allowed actions are EffectErase official-81F source audit and MiniMax
   top-up source audit.
+
+## 2026-06-27 Exp29 EffectErase Official 81F Source Audit
+
+- Status: `EFFECTERASE_OFFICIAL81_PREREGISTERED`
+- Locked 8 diagnostic-only official-81F EffectErase smoke rows from existing
+  Exp25 full-VOR metadata/exact extraction caches.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- Source type counts: REAL 5, BLENDER 3.
+- Mask bucket counts: small 3, medium 3, large 2.
+- Codex opened all 8 preview sheets; source sanity passed 8/8.
+- No inference, baseline-ready claim, trainable-forward claim, or adapter claim
+  yet.

@@ -313,3 +313,21 @@ Reports:
   scene groups: 26 available vs 32 required.
 - Next allowed milestones are EffectErase official-81F source audit and MiniMax
   top-up source audit.
+
+## 2026-06-27 EffectErase Official 81F Source Audit
+
+- Status: `EFFECTERASE_OFFICIAL81_PREREGISTERED`.
+- Candidate triplets audited from existing Exp25 exact extraction caches: 24.
+- Accepted by 81F/frame/mask rules: 24.
+- Locked manifest rows: 8.
+- Rejected/reserve rows recorded: 16.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- Rejected manifest SHA256:
+  `7700a99c5585d4b8759527bd48029b6ad90a8ca8c3c304a877b0bc1fbcce0f6e`.
+- Source type counts: REAL 5, BLENDER 3.
+- Mask bucket counts: small 3, medium 3, large 2.
+- Codex opened all 8 preview sheets and marked 8/8 source sanity pass.
+- The rows remain diagnostic-only VOR-confounded smoke inputs. No EffectErase
+  inference, OR baseline-ready claim, trainable-forward claim, adapter claim, or
+  training was launched.
