@@ -214,3 +214,19 @@ Reports:
 - Left CLI was checked read-only. GPU1/GPU2/GPU3/GPU4 remain reserved by CLI
   runtime locks. No signal was sent and no left-side file was modified.
 - Report: `reports/exp29_continuation_v4_readback.md`.
+
+## 2026-06-26 EffectErase Smoke V2 Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_V2_PREREGISTERED`.
+- Old manifest preserved at SHA256
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- Rejected row: `REAL_ENV249_00103_004_04`, because the smoke materialized mask
+  is empty across all 17 frames.
+- Replacement row: `REAL_ENV248_00118_005_03`.
+- New v2 manifest SHA256:
+  `b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36`.
+- Rejected manifest SHA256:
+  `4d092e0a0e3c126d7ede674bcc76f166638bf6b00bd12c10e435b1da6bc260f8`.
+- Preview review passed for 6/6 rows; VOR-Eval use is false and training
+  eligibility is false.
+- No EffectErase inference has run yet.

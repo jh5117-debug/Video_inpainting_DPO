@@ -427,3 +427,37 @@ Reports:
 Report:
 
 - `reports/exp29_continuation_v4_readback.md`
+
+## 2026-06-26 EffectErase Smoke V2 Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_V2_PREREGISTERED`
+- Old manifest preserved:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered.jsonl`
+- Old manifest SHA256:
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`
+- Rejected old row: `REAL_ENV249_00103_004_04`, because its smoke
+  materialized mask is empty across all 17 frames.
+- Replacement row: `REAL_ENV248_00118_005_03`
+- New v2 manifest:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_preregistered_v2.jsonl`
+- New v2 manifest SHA256:
+  `b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36`
+- Rejected manifest:
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_rejected_v2.jsonl`
+- Rejected manifest SHA256:
+  `4d092e0a0e3c126d7ede674bcc76f166638bf6b00bd12c10e435b1da6bc260f8`
+- Balance preserved: REAL/BLENDER = 3/3 and small/medium/large masks = 2/2/2.
+- VOR-Eval use: false. Training eligibility: false for all rows.
+- Preview review: 6/6 rows inspected via single-sample temporal sheets and
+  classified `PREVIEW_INPUT_VALID`.
+- No EffectErase inference, baseline-ready claim, adapter feasibility claim, or
+  scientific-positive claim is made by this preregistration.
+
+Reports:
+
+- `reports/exp29_effecterase_smoke_v2_input_audit.md`
+- `reports/exp29_effecterase_smoke_v2_input_audit.csv`
+- `reports/exp29_effecterase_smoke_v2_rejected_rows.csv`
+- `reports/exp29_effecterase_smoke_v2_preview_review.csv`
+- `reports/exp29_effecterase_smoke_v2_preregistration.md`
+- `reports/exp29_effecterase_smoke_v2_preregistration.json`

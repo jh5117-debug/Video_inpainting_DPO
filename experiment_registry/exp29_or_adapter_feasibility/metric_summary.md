@@ -146,3 +146,15 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   `bb31cfa5abd320dc88a5471036a3b2bb54b91257d3f65380dc43ecdf29c60929`.
 - Right-side GPU work remains pending; no EffectErase inference or MiniMax
   generation was launched by readback.
+
+## 2026-06-26 EffectErase Smoke V2 Pre-Registration
+
+- Accepted rows: 6.
+- Rejected old rows: 1.
+- Replacement row: `REAL_ENV248_00118_005_03`.
+- New manifest SHA256:
+  `b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36`.
+- REAL/BLENDER counts: 3/3.
+- Mask bucket counts: small 2, medium 2, large 2.
+- Preview-reviewed rows: 6/6.
+- Inference metrics: not run yet.

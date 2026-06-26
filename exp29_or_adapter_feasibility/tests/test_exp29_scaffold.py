@@ -11,6 +11,7 @@ class Exp29ScaffoldTest(unittest.TestCase):
     def test_final_state_enums(self):
         self.assertTrue(is_known_minimax_state("MINIMAX_BLOCKED"))
         self.assertTrue(is_known_effecterase_state("EFFECTERASE_BLOCKED"))
+        self.assertTrue(is_known_effecterase_state("EFFECTERASE_SMOKE_V2_PREREGISTERED"))
         self.assertFalse(is_known_minimax_state("UNIVERSAL_ADAPTER"))
 
     def test_summary_roles(self):
@@ -20,4 +21,3 @@ class Exp29ScaffoldTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

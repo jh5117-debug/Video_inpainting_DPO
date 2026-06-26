@@ -1,0 +1,2 @@
+sample_id,scene_group,source_type,mask_bucket,reject_reason
+REAL_ENV249_00103_004_04,REAL_ENV249_00103,REAL,small,locked materialized mask empty across all 17 frames

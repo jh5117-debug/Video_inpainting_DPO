@@ -1,0 +1,7 @@
+sample_id,source_type,mask_bucket,preview_path,reviewed_frames,classification,reviewer_pass,reason
+REAL_ENV231_00010_003_03,REAL,medium,reports/exp29_effecterase_smoke_v2_previews/REAL_ENV231_00010_003_03.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"toy car present in condition, absent in winner, non-empty moving mask follows target"
+REAL_ENV166_00002_001_02,REAL,large,reports/exp29_effecterase_smoke_v2_previews/REAL_ENV166_00002_001_02.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"person target present in condition, clean hallway winner, large non-empty body mask"
+BLENDER_FOREST026_00020,BLENDER,small,reports/exp29_effecterase_smoke_v2_previews/BLENDER_FOREST026_00020.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"small lower-frame target mask is visible and non-empty across sampled frames"
+BLENDER_BEDROOM009_00083,BLENDER,medium,reports/exp29_effecterase_smoke_v2_previews/BLENDER_BEDROOM009_00083.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"edge-side target/mask is visible, not empty and not full-frame"
+BLENDER_FOREST010_00004,BLENDER,large,reports/exp29_effecterase_smoke_v2_previews/BLENDER_FOREST010_00004.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"large building target differs from clean winner and mask is non-empty without full-frame coverage"
+REAL_ENV248_00118_005_03,REAL,small,reports/exp29_effecterase_smoke_v2_previews/REAL_ENV248_00118_005_03.jpg,"0,3,6,9,12,16",PREVIEW_INPUT_VALID,pass,"replacement row has toy car in condition, clean winner, and non-empty small mask following target"

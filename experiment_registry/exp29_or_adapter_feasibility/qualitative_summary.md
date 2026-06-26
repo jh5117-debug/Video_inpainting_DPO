@@ -112,3 +112,12 @@ preregistration with a non-empty replacement mask row. MiniMax remains pending
 a full-VOR source audit before any expanded candidate generation. The accepted
 language remains cross-backbone evidence from DiffuEraser plus VideoPainter;
 universal-adapter and final-SOTA language remains forbidden.
+
+## 2026-06-26 EffectErase Smoke V2 Pre-Registration
+
+Codex inspected 6/6 generated preview sheets. The replacement row
+`REAL_ENV248_00118_005_03` shows a toy car in the condition, a clean winner,
+and a non-empty small mask following the target. The retained rows show
+non-empty masks and visible condition/winner differences. This supports
+input-valid preregistration only; EffectErase output quality remains unknown
+until official inference outputs are generated and reviewed.

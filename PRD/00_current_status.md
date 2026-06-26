@@ -2438,3 +2438,18 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   locks. No left signal was sent and no left file was modified.
 - No GPU inference, MiniMax generation, recipe, 30-step, EffectErase training,
   long training, or RC-FPO was launched by this readback.
+
+## 2026-06-26 Exp29 EffectErase Smoke V2 Pre-Registration
+
+- Status: `EFFECTERASE_SMOKE_V2_PREREGISTERED`
+- The old v1 smoke manifest remains preserved at SHA256
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- The empty-mask row `REAL_ENV249_00103_004_04` is rejected into
+  `exp29_or_adapter_feasibility/manifests/effecterase_smoke_rejected_v2.jsonl`.
+- Replacement row: `REAL_ENV248_00118_005_03`.
+- New v2 manifest SHA256:
+  `b16a0007a22f190bb7894a673092063efb5dd2eda26dbd53737cdc987d9d4f36`.
+- Balance remains REAL/BLENDER = 3/3 and mask buckets small/medium/large =
+  2/2/2. VOR-Eval use is false and training eligibility is false.
+- Preview evidence review passed for 6/6 rows. No inference has run yet, so
+  EffectErase is not baseline-ready or adapter-ready.
