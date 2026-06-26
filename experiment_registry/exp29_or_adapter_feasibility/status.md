@@ -42,3 +42,17 @@ Reports:
   rows; no visible quality gain.
 - MiniMax final: `MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK`.
 - EffectErase final for this run: `EFFECTERASE_BLOCKED`.
+
+## 2026-06-26 Continuation Readback
+
+- Status: `EXP29_CONTINUATION_READBACK_COMPLETED`.
+- Branch/HEAD confirmed:
+  `research/exp29-minimax-effecterase-adapter-feasibility-20260626` at
+  `4b8d68af3ebd0f6981e697baee952b5f0e1ca76f`.
+- Previous PRD, registry, reports, MiniMax gate JSON, EffectErase asset matrix,
+  and relevant code pointers were reread before any GPU task.
+- Left CLI state was checked read-only. GPU1/GPU2/GPU3/GPU4 remain reserved by
+  CLI runtime locks; Exp28 DAVIS50 evaluation was observed on GPU3.
+- No left CLI signal was sent; no left runtime/worktree/output file was
+  modified.
+- Report: `reports/exp29_continuation_readback.md`.

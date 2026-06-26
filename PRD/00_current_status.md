@@ -2319,3 +2319,15 @@ operation was launched by this audit milestone.
 MiniMax now has real third-backbone adapter plumbing evidence, but not heldout
 quality evidence. It does not justify `THIRD_BACKBONE_ADAPTER_FEASIBILITY_CONFIRMED`
 or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
+
+## 2026-06-26 Exp29 Continuation Readback
+
+- Status: `EXP29_CONTINUATION_READBACK_COMPLETED`
+- HEAD: `4b8d68af3ebd0f6981e697baee952b5f0e1ca76f`
+- Re-read Exp29 PRD/registry/reports and MiniMax/EffectErase gate evidence
+  before launching any continuation GPU task.
+- Left CLI was audited read-only. Runtime locks reserve GPU1/GPU2/GPU3/GPU4,
+  and Exp28 DAVIS50 evaluation was observed on GPU3. No left signal was sent
+  and no left file was modified.
+- Next eligible Exp29 milestones: MiniMax 10-step failure analysis, MiniMax
+  medium-hard micro data gate, and EffectErase weight recovery.

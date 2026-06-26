@@ -161,3 +161,22 @@ Reports:
 - `reports/exp29_minimax_one_step_gate.md`
 - `reports/exp29_minimax_10step_micro.md`
 - `reports/exp29_minimax_effecterase_adapter_summary.md`
+
+## 2026-06-26 Continuation Readback
+
+- Status: `EXP29_CONTINUATION_READBACK_COMPLETED`
+- Branch: `research/exp29-minimax-effecterase-adapter-feasibility-20260626`
+- HEAD: `4b8d68af3ebd0f6981e697baee952b5f0e1ca76f`
+- Left CLI protection was re-audited read-only. The observed left runtime keeps
+  GPU1/GPU2/GPU3/GPU4 reserved, with Exp28 DAVIS50 evaluation active on GPU3.
+  No signal was sent and no left-side file was modified.
+- Right-side eligible GPU candidates after two checks: GPU0/GPU5/GPU6/GPU7,
+  max two concurrent tasks.
+- MiniMax remains `MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK` pending a
+  medium-hard data-quality gate and a better small optimizer/precision recipe.
+- EffectErase remains `EFFECTERASE_BLOCKED` until official weights and Wan base
+  assets are recovered or confirmed unavailable.
+
+Report:
+
+- `reports/exp29_continuation_readback.md`
