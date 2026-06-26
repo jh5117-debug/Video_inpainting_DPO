@@ -106,3 +106,13 @@ Reports:
   has run yet.
 - EffectErase remains VOR baseline/diagnostic only until a non-confounded smoke
   and evaluation design are completed.
+
+## 2026-06-26 Continuation V2 Readback
+
+- Status: `EXP29_CONTINUATION_V2_READBACK_COMPLETED`.
+- Confirmed branch HEAD `6c97d4b74f331ce4db089224f7dcf9ec6eb283ce`.
+- MiniMax remains `MINIMAX_DATA_YIELD_INSUFFICIENT`.
+- EffectErase remains `EFFECTERASE_WEIGHTS_READY`.
+- Left CLI was read-only audited; no signal and no file mutation.
+- Right-side GPU tasks remain blocked until architecture-family audit and
+  EffectErase smoke pre-registration are committed.

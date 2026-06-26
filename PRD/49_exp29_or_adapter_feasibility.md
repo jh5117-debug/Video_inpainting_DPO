@@ -253,3 +253,21 @@ Reports:
 - `reports/exp29_effecterase_weight_recovery.md`
 - `reports/exp29_effecterase_weight_recovery.csv`
 - `reports/exp29_effecterase_weight_recovery.json`
+
+## 2026-06-26 Continuation V2 Readback
+
+- Status: `EXP29_CONTINUATION_V2_READBACK_COMPLETED`
+- Branch/HEAD confirmed:
+  `research/exp29-minimax-effecterase-adapter-feasibility-20260626` at
+  `6c97d4b74f331ce4db089224f7dcf9ec6eb283ce`.
+- Re-read Exp29 PRD, registry, previous MiniMax reports, EffectErase weight
+  recovery reports, and current code pointers before any GPU task.
+- Left CLI was inspected read-only. Runtime locks reserve GPU1/GPU2/GPU3/GPU4
+  even though PAI GPUs currently report 0 MiB and no compute process.
+- No left-side signal was sent and no left-side file was modified.
+- Next allowed milestones are architecture-family audit, EffectErase smoke
+  pre-registration/smoke, and MiniMax expanded source-pool planning.
+
+Report:
+
+- `reports/exp29_continuation_v2_readback.md`

@@ -26,3 +26,4 @@ minimax_micro_review_pages: reports/exp29_minimax_micro_review_pages
 effecterase_weight_recovery_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626
 effecterase_ckpt: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/FudanCVL/EffectErase/EffectErase.ckpt
 effecterase_wan_base: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP
+continuation_v2_readback_report: reports/exp29_continuation_v2_readback.md
