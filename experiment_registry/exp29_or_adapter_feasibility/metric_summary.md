@@ -94,3 +94,11 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
 - Balance: REAL/BLENDER = 3/3; small/medium/large masks = 2/2/2.
 - Fixed protocol: 17 frames, 832x480, seed 2025, CFG 1.0, 50 steps.
+
+## 2026-06-26 Continuation V3 Readback
+
+- No new quantitative metrics; no model inference ran.
+- EffectErase smoke manifest remains locked at SHA256
+  `54fd62a97fa69f2f17590488136d426cee77de0ed02548c46a83d8818be2b137`.
+- GPU readback found no active compute processes, but GPU1-GPU4 remain
+  reserved by left CLI runtime locks.

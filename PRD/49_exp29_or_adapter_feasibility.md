@@ -316,3 +316,23 @@ Reports:
 
 - `reports/exp29_effecterase_smoke_preregistration.md`
 - `reports/exp29_effecterase_smoke_preregistration.json`
+
+## 2026-06-26 Continuation V3 Readback
+
+- Status: `EXP29_CONTINUATION_V3_READBACK_COMPLETED`
+- Branch/HEAD confirmed:
+  `research/exp29-minimax-effecterase-adapter-feasibility-20260626` at
+  `972deab321a518638102a1ace6ed87a13456a261`.
+- Re-read Exp29 PRD, registry, latest EffectErase recovery/preregistration
+  reports, MiniMax data-yield reports, and relevant code pointers before any
+  new GPU inference.
+- EffectErase remains `EFFECTERASE_WEIGHTS_READY` and
+  `EFFECTERASE_SMOKE_PREREGISTERED`; no EffectErase inference output has run.
+- MiniMax remains `MINIMAX_DATA_YIELD_INSUFFICIENT`; recipe search and 30-step
+  micro remain forbidden.
+- Left CLI was audited read-only. Runtime locks reserve GPU1/GPU2/GPU3/GPU4;
+  no left signal was sent and no left file was modified.
+
+Report:
+
+- `reports/exp29_continuation_v3_readback.md`

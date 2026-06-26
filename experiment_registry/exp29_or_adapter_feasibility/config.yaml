@@ -46,3 +46,18 @@ effecterase_smoke_preregistration:
   cfg: 1.0
   num_inference_steps: 50
   primary_output: raw
+continuation_v3:
+  result: EXP29_CONTINUATION_V3_READBACK_COMPLETED
+  start_head: 972deab321a518638102a1ace6ed87a13456a261
+  left_reserved_gpus:
+    - GPU1
+    - GPU2
+    - GPU3
+    - GPU4
+  right_gpu_candidates:
+    - GPU0
+    - GPU5
+    - GPU6
+    - GPU7
+  effecterase_inference_run: false
+  minimax_recipe_or_30step_allowed: false

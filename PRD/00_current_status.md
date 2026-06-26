@@ -2379,3 +2379,17 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - No inference has run yet, and no baseline-ready, adapter-ready, scientific
   positive, or universal-adapter claim is supported by this preregistration
   alone.
+
+## 2026-06-26 Exp29 Continuation V3 Readback
+
+- Status: `EXP29_CONTINUATION_V3_READBACK_COMPLETED`
+- HEAD: `972deab321a518638102a1ace6ed87a13456a261`
+- Re-read Exp29 PRD, registry, EffectErase recovery/preregistration reports,
+  MiniMax data-yield reports, and current code pointers before any new GPU
+  task.
+- EffectErase remains weights-ready and smoke-preregistered; no inference has
+  run yet.
+- MiniMax remains data-yield insufficient; no recipe or 30-step micro is
+  allowed in this state.
+- Left CLI was checked read-only. GPU1-GPU4 remain reserved by left runtime
+  locks. No signal was sent and no left file was modified.

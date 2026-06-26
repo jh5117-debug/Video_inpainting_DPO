@@ -142,3 +142,14 @@ Reports:
   diagnostic compatibility smoke only.
 - VOR-Eval and non-VOR OR rows are not used. All rows are tagged
   `diagnostic_only_vor_confounded` and `eligible_for_training=false`.
+
+## 2026-06-26 Continuation V3 Readback
+
+- Status: `EXP29_CONTINUATION_V3_READBACK_COMPLETED`.
+- Confirmed branch HEAD `972deab321a518638102a1ace6ed87a13456a261`.
+- EffectErase remains weights-ready and smoke-preregistered; no inference has
+  run yet.
+- MiniMax remains data-yield insufficient; no recipe or 30-step task is
+  allowed before expanded source-pool evidence.
+- Left CLI was read-only audited; no signal and no file mutation.
+- Report: `reports/exp29_continuation_v3_readback.md`.

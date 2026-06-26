@@ -79,3 +79,9 @@ EffectErase smoke inputs are locked before output review. The locked rows are
 VOR diagnostics only and cannot be used to claim scientific adapter success.
 Visual review remains pending until the smoke is actually run and the generated
 videos are opened per sample.
+
+## 2026-06-26 Continuation V3 Readback
+
+No new visual evidence was generated. EffectErase visual review remains
+pending. MiniMax remains blocked by data-yield, not by a visual-quality
+positive result.
