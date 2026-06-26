@@ -1,0 +1,351 @@
+metric,metric_key,video,delta_candidate_minus_fresh
+PSNR,whole_video_psnr,bear,-0.613771830614
+PSNR,whole_video_psnr,blackswan,-0.0768479997595
+PSNR,whole_video_psnr,bmx-bumps,0.0721448733205
+PSNR,whole_video_psnr,bmx-trees,0.068826627598
+PSNR,whole_video_psnr,boat,0.657860119288
+PSNR,whole_video_psnr,breakdance,-0.233925470659
+PSNR,whole_video_psnr,breakdance-flare,-0.178655797957
+PSNR,whole_video_psnr,bus,-0.549359729183
+PSNR,whole_video_psnr,camel,0.1533958824
+PSNR,whole_video_psnr,car-roundabout,0.111874350555
+PSNR,whole_video_psnr,car-shadow,-0.644003850637
+PSNR,whole_video_psnr,car-turn,-0.781849227732
+PSNR,whole_video_psnr,cows,0.501225292775
+PSNR,whole_video_psnr,dance-jump,0.551453811613
+PSNR,whole_video_psnr,dance-twirl,0.128710163179
+PSNR,whole_video_psnr,dog,-0.0617830417281
+PSNR,whole_video_psnr,dog-agility,-1.11916927134
+PSNR,whole_video_psnr,drift-chicane,-0.229180532568
+PSNR,whole_video_psnr,drift-straight,0.0299541993385
+PSNR,whole_video_psnr,drift-turn,-0.139058177628
+PSNR,whole_video_psnr,elephant,-0.679871468901
+PSNR,whole_video_psnr,flamingo,-0.272175480304
+PSNR,whole_video_psnr,goat,0.971924018257
+PSNR,whole_video_psnr,hike,-0.177376713279
+PSNR,whole_video_psnr,hockey,-0.431783651504
+PSNR,whole_video_psnr,horsejump-high,0.609304632493
+PSNR,whole_video_psnr,horsejump-low,-0.203047639282
+PSNR,whole_video_psnr,kite-surf,0.400922626073
+PSNR,whole_video_psnr,kite-walk,-3.88591604487
+PSNR,whole_video_psnr,libby,0.121440931886
+PSNR,whole_video_psnr,lucia,0.79623846473
+PSNR,whole_video_psnr,mallard-fly,-0.194520859985
+PSNR,whole_video_psnr,mallard-water,0.0206187870964
+PSNR,whole_video_psnr,motocross-bumps,0.147922228497
+PSNR,whole_video_psnr,motocross-jump,-0.106074820926
+PSNR,whole_video_psnr,motorbike,-0.455508297388
+PSNR,whole_video_psnr,paragliding,0.0469140447862
+PSNR,whole_video_psnr,paragliding-launch,-0.0659428296864
+PSNR,whole_video_psnr,parkour,0.27725181601
+PSNR,whole_video_psnr,rhino,0.283411859287
+PSNR,whole_video_psnr,rollerblade,-0.157459814818
+PSNR,whole_video_psnr,scooter-black,0.0934272179291
+PSNR,whole_video_psnr,scooter-gray,-0.102072858402
+PSNR,whole_video_psnr,soapbox,-0.353967018805
+PSNR,whole_video_psnr,soccerball,0.0607330975736
+PSNR,whole_video_psnr,stroller,0.182190879001
+PSNR,whole_video_psnr,surf,-0.126685872062
+PSNR,whole_video_psnr,swing,-0.507818054615
+PSNR,whole_video_psnr,tennis,0.112025880488
+PSNR,whole_video_psnr,train,-0.311959507707
+SSIM,whole_video_ssim,bear,-0.000734870289278
+SSIM,whole_video_ssim,blackswan,-0.00145881017714
+SSIM,whole_video_ssim,bmx-bumps,0.000806409289442
+SSIM,whole_video_ssim,bmx-trees,5.79210980152e-05
+SSIM,whole_video_ssim,boat,0.018595547797
+SSIM,whole_video_ssim,breakdance,-0.00190876124715
+SSIM,whole_video_ssim,breakdance-flare,-0.00064649107496
+SSIM,whole_video_ssim,bus,-0.000848238449172
+SSIM,whole_video_ssim,camel,0.000182481302007
+SSIM,whole_video_ssim,car-roundabout,0.000177719952805
+SSIM,whole_video_ssim,car-shadow,-0.000686206020892
+SSIM,whole_video_ssim,car-turn,-0.00647136779012
+SSIM,whole_video_ssim,cows,0.00111149009871
+SSIM,whole_video_ssim,dance-jump,0.00180709092156
+SSIM,whole_video_ssim,dance-twirl,0.000862232675577
+SSIM,whole_video_ssim,dog,-0.0003665378834
+SSIM,whole_video_ssim,dog-agility,-0.0103112114749
+SSIM,whole_video_ssim,drift-chicane,-0.00272764335963
+SSIM,whole_video_ssim,drift-straight,0.000842428509384
+SSIM,whole_video_ssim,drift-turn,-0.0011173152538
+SSIM,whole_video_ssim,elephant,-0.00126791378177
+SSIM,whole_video_ssim,flamingo,-0.000977348934544
+SSIM,whole_video_ssim,goat,0.00535946135283
+SSIM,whole_video_ssim,hike,-0.000678882937056
+SSIM,whole_video_ssim,hockey,-0.000220058688664
+SSIM,whole_video_ssim,horsejump-high,0.00305596019997
+SSIM,whole_video_ssim,horsejump-low,-0.00107198065981
+SSIM,whole_video_ssim,kite-surf,0.00129398664259
+SSIM,whole_video_ssim,kite-walk,-0.00516606877088
+SSIM,whole_video_ssim,libby,0.000117772316247
+SSIM,whole_video_ssim,lucia,0.00222878069867
+SSIM,whole_video_ssim,mallard-fly,-0.00316096212374
+SSIM,whole_video_ssim,mallard-water,-0.000230615312599
+SSIM,whole_video_ssim,motocross-bumps,0.00136166789961
+SSIM,whole_video_ssim,motocross-jump,-0.00143637346335
+SSIM,whole_video_ssim,motorbike,-0.000946831119354
+SSIM,whole_video_ssim,paragliding,-0.000918552522172
+SSIM,whole_video_ssim,paragliding-launch,3.73297156271e-05
+SSIM,whole_video_ssim,parkour,0.00198801771482
+SSIM,whole_video_ssim,rhino,0.00661113296233
+SSIM,whole_video_ssim,rollerblade,-5.94284375466e-05
+SSIM,whole_video_ssim,scooter-black,0.000142409122569
+SSIM,whole_video_ssim,scooter-gray,-0.000259551232284
+SSIM,whole_video_ssim,soapbox,-0.000651144833984
+SSIM,whole_video_ssim,soccerball,-0.000964693009053
+SSIM,whole_video_ssim,stroller,0.00125189745786
+SSIM,whole_video_ssim,surf,0.000122182989403
+SSIM,whole_video_ssim,swing,-0.00193906014753
+SSIM,whole_video_ssim,tennis,-0.000111495918656
+SSIM,whole_video_ssim,train,0.000640109274422
+strict mask PSNR,strict_mask_pixel_psnr,bear,-0.613771830614
+strict mask PSNR,strict_mask_pixel_psnr,blackswan,-0.0768479997595
+strict mask PSNR,strict_mask_pixel_psnr,bmx-bumps,0.0721448733205
+strict mask PSNR,strict_mask_pixel_psnr,bmx-trees,0.068826627598
+strict mask PSNR,strict_mask_pixel_psnr,boat,0.657860119288
+strict mask PSNR,strict_mask_pixel_psnr,breakdance,-0.233925470659
+strict mask PSNR,strict_mask_pixel_psnr,breakdance-flare,-0.178655797957
+strict mask PSNR,strict_mask_pixel_psnr,bus,-0.549359729183
+strict mask PSNR,strict_mask_pixel_psnr,camel,0.1533958824
+strict mask PSNR,strict_mask_pixel_psnr,car-roundabout,0.111874350555
+strict mask PSNR,strict_mask_pixel_psnr,car-shadow,-0.644003850637
+strict mask PSNR,strict_mask_pixel_psnr,car-turn,-0.781849227732
+strict mask PSNR,strict_mask_pixel_psnr,cows,0.501225292775
+strict mask PSNR,strict_mask_pixel_psnr,dance-jump,0.551453811613
+strict mask PSNR,strict_mask_pixel_psnr,dance-twirl,0.128710163179
+strict mask PSNR,strict_mask_pixel_psnr,dog,-0.0617830417281
+strict mask PSNR,strict_mask_pixel_psnr,dog-agility,-1.11916927134
+strict mask PSNR,strict_mask_pixel_psnr,drift-chicane,-0.229180532568
+strict mask PSNR,strict_mask_pixel_psnr,drift-straight,0.0299541993385
+strict mask PSNR,strict_mask_pixel_psnr,drift-turn,-0.139058177628
+strict mask PSNR,strict_mask_pixel_psnr,elephant,-0.679871468901
+strict mask PSNR,strict_mask_pixel_psnr,flamingo,-0.272175480304
+strict mask PSNR,strict_mask_pixel_psnr,goat,0.971924018257
+strict mask PSNR,strict_mask_pixel_psnr,hike,-0.177376713279
+strict mask PSNR,strict_mask_pixel_psnr,hockey,-0.431783651504
+strict mask PSNR,strict_mask_pixel_psnr,horsejump-high,0.609304632493
+strict mask PSNR,strict_mask_pixel_psnr,horsejump-low,-0.203047639282
+strict mask PSNR,strict_mask_pixel_psnr,kite-surf,0.400922626073
+strict mask PSNR,strict_mask_pixel_psnr,kite-walk,-3.88591604487
+strict mask PSNR,strict_mask_pixel_psnr,libby,0.121440931886
+strict mask PSNR,strict_mask_pixel_psnr,lucia,0.79623846473
+strict mask PSNR,strict_mask_pixel_psnr,mallard-fly,-0.194520859985
+strict mask PSNR,strict_mask_pixel_psnr,mallard-water,0.0206187870964
+strict mask PSNR,strict_mask_pixel_psnr,motocross-bumps,0.147922228497
+strict mask PSNR,strict_mask_pixel_psnr,motocross-jump,-0.106074820927
+strict mask PSNR,strict_mask_pixel_psnr,motorbike,-0.455508297388
+strict mask PSNR,strict_mask_pixel_psnr,paragliding,0.0469140447862
+strict mask PSNR,strict_mask_pixel_psnr,paragliding-launch,-0.0659428296864
+strict mask PSNR,strict_mask_pixel_psnr,parkour,0.27725181601
+strict mask PSNR,strict_mask_pixel_psnr,rhino,0.283411859287
+strict mask PSNR,strict_mask_pixel_psnr,rollerblade,-0.157459814818
+strict mask PSNR,strict_mask_pixel_psnr,scooter-black,0.0934272179291
+strict mask PSNR,strict_mask_pixel_psnr,scooter-gray,-0.102072858402
+strict mask PSNR,strict_mask_pixel_psnr,soapbox,-0.353967018805
+strict mask PSNR,strict_mask_pixel_psnr,soccerball,0.0607330975736
+strict mask PSNR,strict_mask_pixel_psnr,stroller,0.182190879001
+strict mask PSNR,strict_mask_pixel_psnr,surf,-0.126685872062
+strict mask PSNR,strict_mask_pixel_psnr,swing,-0.507818054615
+strict mask PSNR,strict_mask_pixel_psnr,tennis,0.112025880488
+strict mask PSNR,strict_mask_pixel_psnr,train,-0.311959507707
+boundary PSNR,boundary_pixel_psnr,bear,-0.187562704475
+boundary PSNR,boundary_pixel_psnr,blackswan,-0.0263056376837
+boundary PSNR,boundary_pixel_psnr,bmx-bumps,0.0356821380336
+boundary PSNR,boundary_pixel_psnr,bmx-trees,0.0106639899784
+boundary PSNR,boundary_pixel_psnr,boat,0.549730718281
+boundary PSNR,boundary_pixel_psnr,breakdance,-0.0552801902335
+boundary PSNR,boundary_pixel_psnr,breakdance-flare,-0.164615527172
+boundary PSNR,boundary_pixel_psnr,bus,0.0905725388088
+boundary PSNR,boundary_pixel_psnr,camel,-0.0491629440241
+boundary PSNR,boundary_pixel_psnr,car-roundabout,0.0297165240362
+boundary PSNR,boundary_pixel_psnr,car-shadow,-0.229991396911
+boundary PSNR,boundary_pixel_psnr,car-turn,-0.0342067595967
+boundary PSNR,boundary_pixel_psnr,cows,-0.285663335944
+boundary PSNR,boundary_pixel_psnr,dance-jump,0.279053107994
+boundary PSNR,boundary_pixel_psnr,dance-twirl,-0.00069663485138
+boundary PSNR,boundary_pixel_psnr,dog,-0.0647950377621
+boundary PSNR,boundary_pixel_psnr,dog-agility,0.473778090757
+boundary PSNR,boundary_pixel_psnr,drift-chicane,0.393826400551
+boundary PSNR,boundary_pixel_psnr,drift-straight,-0.0583564565545
+boundary PSNR,boundary_pixel_psnr,drift-turn,-0.213175628929
+boundary PSNR,boundary_pixel_psnr,elephant,-0.152628955158
+boundary PSNR,boundary_pixel_psnr,flamingo,0.16230733945
+boundary PSNR,boundary_pixel_psnr,goat,0.423759760418
+boundary PSNR,boundary_pixel_psnr,hike,0.323144831902
+boundary PSNR,boundary_pixel_psnr,hockey,-0.641498984805
+boundary PSNR,boundary_pixel_psnr,horsejump-high,0.216910863745
+boundary PSNR,boundary_pixel_psnr,horsejump-low,0.0282761701494
+boundary PSNR,boundary_pixel_psnr,kite-surf,0.170660101565
+boundary PSNR,boundary_pixel_psnr,kite-walk,-1.00251279496
+boundary PSNR,boundary_pixel_psnr,libby,0.0268386661001
+boundary PSNR,boundary_pixel_psnr,lucia,-0.000118285362852
+boundary PSNR,boundary_pixel_psnr,mallard-fly,0.38735899111
+boundary PSNR,boundary_pixel_psnr,mallard-water,0.298494268008
+boundary PSNR,boundary_pixel_psnr,motocross-bumps,0.211317622686
+boundary PSNR,boundary_pixel_psnr,motocross-jump,0.445589581599
+boundary PSNR,boundary_pixel_psnr,motorbike,-0.147526045147
+boundary PSNR,boundary_pixel_psnr,paragliding,0.025159052308
+boundary PSNR,boundary_pixel_psnr,paragliding-launch,-0.107827828182
+boundary PSNR,boundary_pixel_psnr,parkour,0.100727866471
+boundary PSNR,boundary_pixel_psnr,rhino,-0.248263356779
+boundary PSNR,boundary_pixel_psnr,rollerblade,-0.538753893935
+boundary PSNR,boundary_pixel_psnr,scooter-black,0.246261684887
+boundary PSNR,boundary_pixel_psnr,scooter-gray,-0.118698052069
+boundary PSNR,boundary_pixel_psnr,soapbox,0.355977435367
+boundary PSNR,boundary_pixel_psnr,soccerball,-0.456937616179
+boundary PSNR,boundary_pixel_psnr,stroller,0.256948376094
+boundary PSNR,boundary_pixel_psnr,surf,0.0366029997724
+boundary PSNR,boundary_pixel_psnr,swing,-0.232325693302
+boundary PSNR,boundary_pixel_psnr,tennis,0.049587214481
+boundary PSNR,boundary_pixel_psnr,train,-0.278133657757
+LPIPS,whole_video_lpips,bear,-0.000950885567969
+LPIPS,whole_video_lpips,blackswan,-5.0682380485e-05
+LPIPS,whole_video_lpips,bmx-bumps,0.000580571281413
+LPIPS,whole_video_lpips,bmx-trees,0.000159031051832
+LPIPS,whole_video_lpips,boat,-0.00223998197665
+LPIPS,whole_video_lpips,breakdance,-0.00164626375772
+LPIPS,whole_video_lpips,breakdance-flare,-0.000523527928938
+LPIPS,whole_video_lpips,bus,-6.09473014871e-05
+LPIPS,whole_video_lpips,camel,-0.00442176948612
+LPIPS,whole_video_lpips,car-roundabout,1.76123576239e-05
+LPIPS,whole_video_lpips,car-shadow,0.000158126407769
+LPIPS,whole_video_lpips,car-turn,0.00163918353307
+LPIPS,whole_video_lpips,cows,-0.00250148086343
+LPIPS,whole_video_lpips,dance-jump,0.000444756277526
+LPIPS,whole_video_lpips,dance-twirl,-0.000419417920057
+LPIPS,whole_video_lpips,dog,-0.000775570049882
+LPIPS,whole_video_lpips,dog-agility,0.00126372626983
+LPIPS,whole_video_lpips,drift-chicane,0.00237730378285
+LPIPS,whole_video_lpips,drift-straight,-0.000630800961517
+LPIPS,whole_video_lpips,drift-turn,-0.000873299703623
+LPIPS,whole_video_lpips,elephant,0.00142122479156
+LPIPS,whole_video_lpips,flamingo,0.00058647916497
+LPIPS,whole_video_lpips,goat,-0.00151330298589
+LPIPS,whole_video_lpips,hike,0.000543572319051
+LPIPS,whole_video_lpips,hockey,0.00150212545608
+LPIPS,whole_video_lpips,horsejump-high,0.00321831197167
+LPIPS,whole_video_lpips,horsejump-low,0.000246493301044
+LPIPS,whole_video_lpips,kite-surf,-4.76831919514e-05
+LPIPS,whole_video_lpips,kite-walk,0.000668594846502
+LPIPS,whole_video_lpips,libby,-2.00898891004e-05
+LPIPS,whole_video_lpips,lucia,1.31972677385e-05
+LPIPS,whole_video_lpips,mallard-fly,0.000996509799734
+LPIPS,whole_video_lpips,mallard-water,3.54378134944e-05
+LPIPS,whole_video_lpips,motocross-bumps,-0.000308218722542
+LPIPS,whole_video_lpips,motocross-jump,0.00029245535067
+LPIPS,whole_video_lpips,motorbike,0.000521680631209
+LPIPS,whole_video_lpips,paragliding,0.00346314643199
+LPIPS,whole_video_lpips,paragliding-launch,0.000603420834523
+LPIPS,whole_video_lpips,parkour,0.000380722961078
+LPIPS,whole_video_lpips,rhino,-0.000572017704447
+LPIPS,whole_video_lpips,rollerblade,-0.00123395289605
+LPIPS,whole_video_lpips,scooter-black,5.52677665837e-05
+LPIPS,whole_video_lpips,scooter-gray,0.0012403219007
+LPIPS,whole_video_lpips,soapbox,-0.00115033477778
+LPIPS,whole_video_lpips,soccerball,0.00159597458939
+LPIPS,whole_video_lpips,stroller,-0.000542034123403
+LPIPS,whole_video_lpips,surf,-0.000614494259935
+LPIPS,whole_video_lpips,swing,0.000272238452453
+LPIPS,whole_video_lpips,tennis,-0.000215722092738
+LPIPS,whole_video_lpips,train,0.000762719350557
+Ewarp,ewarp,bear,0.0403558774649
+Ewarp,ewarp,blackswan,-0.0158604031996
+Ewarp,ewarp,bmx-bumps,-0.0116597537113
+Ewarp,ewarp,bmx-trees,-0.0057237263283
+Ewarp,ewarp,boat,-0.230909730105
+Ewarp,ewarp,breakdance,-0.0166165358994
+Ewarp,ewarp,breakdance-flare,0.0170829817248
+Ewarp,ewarp,bus,-0.0113465256341
+Ewarp,ewarp,camel,-0.0220664331447
+Ewarp,ewarp,car-roundabout,-0.0406120620344
+Ewarp,ewarp,car-shadow,-0.00336121909482
+Ewarp,ewarp,car-turn,-0.00400358365606
+Ewarp,ewarp,cows,-0.0169271522242
+Ewarp,ewarp,dance-jump,-0.0022080645937
+Ewarp,ewarp,dance-twirl,0.00725747288569
+Ewarp,ewarp,dog,0.0183551582386
+Ewarp,ewarp,dog-agility,0.0526743495594
+Ewarp,ewarp,drift-chicane,0.00396197783234
+Ewarp,ewarp,drift-straight,-0.161924338697
+Ewarp,ewarp,drift-turn,0.0333305671001
+Ewarp,ewarp,elephant,0.060542628331
+Ewarp,ewarp,flamingo,0.0077901084138
+Ewarp,ewarp,goat,0.0128269033587
+Ewarp,ewarp,hike,0.0244945935581
+Ewarp,ewarp,hockey,0.00429919252739
+Ewarp,ewarp,horsejump-high,-0.88047294918
+Ewarp,ewarp,horsejump-low,-0.308990245685
+Ewarp,ewarp,kite-surf,-0.0226538547355
+Ewarp,ewarp,kite-walk,0.0431514496956
+Ewarp,ewarp,libby,-0.00672390603501
+Ewarp,ewarp,lucia,0.0629592281969
+Ewarp,ewarp,mallard-fly,-0.0727521053151
+Ewarp,ewarp,mallard-water,0.0183545053005
+Ewarp,ewarp,motocross-bumps,0.0147592306704
+Ewarp,ewarp,motocross-jump,0.280613413728
+Ewarp,ewarp,motorbike,0.0164249719566
+Ewarp,ewarp,paragliding,-0.0210486721936
+Ewarp,ewarp,paragliding-launch,-0.00262532747634
+Ewarp,ewarp,parkour,0.0723161451195
+Ewarp,ewarp,rhino,0.0100171436434
+Ewarp,ewarp,rollerblade,-0.0827213567074
+Ewarp,ewarp,scooter-black,-0.0873690714007
+Ewarp,ewarp,scooter-gray,0.0222533455361
+Ewarp,ewarp,soapbox,0.00207792238697
+Ewarp,ewarp,soccerball,0.00728018905806
+Ewarp,ewarp,stroller,-0.0241397596572
+Ewarp,ewarp,surf,0.0205007989122
+Ewarp,ewarp,swing,0.00522951797947
+Ewarp,ewarp,tennis,0.0197977313529
+Ewarp,ewarp,train,-0.0487767848308
+outside diff mean,outside_diff_mean,bear,0
+outside diff mean,outside_diff_mean,blackswan,0
+outside diff mean,outside_diff_mean,bmx-bumps,0
+outside diff mean,outside_diff_mean,bmx-trees,0
+outside diff mean,outside_diff_mean,boat,0
+outside diff mean,outside_diff_mean,breakdance,0
+outside diff mean,outside_diff_mean,breakdance-flare,0
+outside diff mean,outside_diff_mean,bus,0
+outside diff mean,outside_diff_mean,camel,0
+outside diff mean,outside_diff_mean,car-roundabout,0
+outside diff mean,outside_diff_mean,car-shadow,0
+outside diff mean,outside_diff_mean,car-turn,0
+outside diff mean,outside_diff_mean,cows,0
+outside diff mean,outside_diff_mean,dance-jump,0
+outside diff mean,outside_diff_mean,dance-twirl,0
+outside diff mean,outside_diff_mean,dog,0
+outside diff mean,outside_diff_mean,dog-agility,0
+outside diff mean,outside_diff_mean,drift-chicane,0
+outside diff mean,outside_diff_mean,drift-straight,0
+outside diff mean,outside_diff_mean,drift-turn,0
+outside diff mean,outside_diff_mean,elephant,0
+outside diff mean,outside_diff_mean,flamingo,0
+outside diff mean,outside_diff_mean,goat,0
+outside diff mean,outside_diff_mean,hike,0
+outside diff mean,outside_diff_mean,hockey,0
+outside diff mean,outside_diff_mean,horsejump-high,0
+outside diff mean,outside_diff_mean,horsejump-low,0
+outside diff mean,outside_diff_mean,kite-surf,0
+outside diff mean,outside_diff_mean,kite-walk,0
+outside diff mean,outside_diff_mean,libby,0
+outside diff mean,outside_diff_mean,lucia,0
+outside diff mean,outside_diff_mean,mallard-fly,0
+outside diff mean,outside_diff_mean,mallard-water,0
+outside diff mean,outside_diff_mean,motocross-bumps,0
+outside diff mean,outside_diff_mean,motocross-jump,0
+outside diff mean,outside_diff_mean,motorbike,0
+outside diff mean,outside_diff_mean,paragliding,0
+outside diff mean,outside_diff_mean,paragliding-launch,0
+outside diff mean,outside_diff_mean,parkour,0
+outside diff mean,outside_diff_mean,rhino,0
+outside diff mean,outside_diff_mean,rollerblade,0
+outside diff mean,outside_diff_mean,scooter-black,0
+outside diff mean,outside_diff_mean,scooter-gray,0
+outside diff mean,outside_diff_mean,soapbox,0
+outside diff mean,outside_diff_mean,soccerball,0
+outside diff mean,outside_diff_mean,stroller,0
+outside diff mean,outside_diff_mean,surf,0
+outside diff mean,outside_diff_mean,swing,0
+outside diff mean,outside_diff_mean,tennis,0
+outside diff mean,outside_diff_mean,train,0

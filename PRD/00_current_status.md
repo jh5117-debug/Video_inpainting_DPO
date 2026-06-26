@@ -11,7 +11,8 @@ Exp28 CLI4 has partial fresh-paired evidence, but no positive promotion:
 ```text
 EXP28_PAIRA_EVAL_FAILED_FINAL
 EXP28_PAIRB_INNER4_REDUCED_METRIC_MIXED
-EXP28_PAIRC_INNER8_RUNNING
+EXP28_PAIRC_INNER8_TRAINING_COMPLETE_REDUCED_EVAL_NEGATIVE_MIXED
+EXP28_PAIRC_FULL_EVAL_FAILED_FINAL_RESOURCE_IOWAIT_RECURRED
 NO_INNER_RADIUS_POSITIVE
 NO_SCIENTIFIC_POSITIVE
 ```
@@ -31,9 +32,19 @@ but human review is only sampled. The sampled review found no systemic outside
 collapse, but `surf` has temporal-risk evidence and `cows` shows localized
 perceptual-risk evidence. Pair B is therefore `VISUAL_ASSETS_GENERATED_PARTIAL_HUMAN_REVIEW_MIXED`.
 
-Pair C (`inner8_candidate`) is still running. `fresh_control_C` Stage1 completed
-checkpoint-2000 and Stage2 is running. No conclusion is allowed until Pair C
-and reduced DAVIS50 evaluation complete.
+Pair C (`inner8_candidate` vs `fresh_control_C`) completed Stage1/Stage2
+training for both models through checkpoint-2000. Auto-eval completed
+`sft48000_baseline`, `fresh_s2_1000`, and `candidate_s2_1000`, then was paused
+for NAS iowait, resumed once, and stopped on a second iowait recurrence while
+GPU0 had an external process. No further auto-resume is allowed for this lane.
+
+The completed reduced Stage2-1000 comparison is negative/mixed:
+
+| Comparison | PSNR delta | Win rate | LPIPS delta | Ewarp delta | Status |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `candidate_s2_1000 - fresh_s2_1000` | -0.125200 | 0.46 | +0.000075 | -0.024456 | reduced negative/mixed |
+
+Pair C therefore cannot support `INNER_RADIUS_POSITIVE`.
 
 ## 2026-06-25 Exp28 Fine Inner Boundary Sweep
 

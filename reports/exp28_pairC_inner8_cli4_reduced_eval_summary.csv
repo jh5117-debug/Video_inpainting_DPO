@@ -1,0 +1,8 @@
+metric,metric_key,direction,n,mean_delta,median_delta,min_delta,max_delta,directional_win_rate
+PSNR,whole_video_psnr,higher_is_better,50,-0.125200281163,-0.0713954147229,-3.88591604487,0.971924018257,0.460000
+SSIM,whole_video_ssim,higher_is_better,50,2.631230156e-05,-0.000225337000632,-0.0103112114749,0.018595547797,0.440000
+strict mask PSNR,strict_mask_pixel_psnr,higher_is_better,50,-0.125200281163,-0.0713954147229,-3.88591604487,0.971924018257,0.460000
+boundary PSNR,boundary_pixel_psnr,higher_is_better,50,0.00667817833553,0.0179115211432,-1.00251279496,0.549730718281,0.520000
+LPIPS,whole_video_lpips,lower_is_better,50,7.49545484238e-05,4.5352790039e-05,-0.00442176948612,0.00346314643199,0.440000
+Ewarp,ewarp,lower_is_better,50,-0.0244557231401,0.00301995010966,-0.88047294918,0.280613413728,0.480000
+outside diff mean,outside_diff_mean,lower_is_better,50,0,0,0,0,0.000000

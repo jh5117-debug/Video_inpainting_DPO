@@ -1,0 +1,15 @@
+{
+  "action": "TERM_OWN_LEFT_RESUME_PGID_AND_MARK_FAILED_FINAL",
+  "eval_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp28_fine_inner_boundary_sweep/paired_davis50_eval/pairC_inner8_cli4",
+  "eval_top_dirs": 4,
+  "gpu0_action": "none",
+  "gpu0_observed_external_pid": "579604",
+  "lane": "exp28_pairC_inner8_eval_resume_after_iowait",
+  "partial_labels": "fresh_stage1_1000_sft_s2",
+  "pgid": 539362,
+  "preserved_training": "fresh_control_C and inner8_candidate stage1/stage2 checkpoint-2000 complete",
+  "reason": "NAS_IOWAIT_RECURRED_AFTER_ONE_RESUME_WHILE_GPU0_EXTERNAL_ACTIVE",
+  "status": "FAILED_FINAL_RESOURCE_IOWAIT_RECURRED",
+  "summary_labels": "candidate_s2_1000,fresh_s2_1000,sft48000_baseline",
+  "time": "2026-06-27T01:23:17+08:00"
+}

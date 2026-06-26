@@ -1,6 +1,6 @@
 experiment_name: exp28_fine_inner_boundary_sweep
 branch: research/exp28-fine-inner-boundary-sweep-20260625
-status: CLI4_WAVE_RUNNING_PAIRB_REDUCED_METRIC_MIXED_NO_POSITIVE
+status: CLI4_WAVE_STOPPED_PAIRC_FAILED_FINAL_IOWAIT_RECURRED_NO_POSITIVE
 base_branch: origin/research/exp23-two-stage-pool-morphology-sweep
 outer_geometry: legacy_outer_one_pool_step
 inner_geometry: image_space_pixel_erosion_area_pool

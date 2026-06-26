@@ -4,7 +4,7 @@
 | --- | --- | --- |
 | Exp28 Pair A inner2 | training complete; eval failed-final after one resume due missing optional metric assets | `experiment_registry/exp28_fine_inner_boundary_sweep`, runtime logs |
 | Exp28 Pair B inner4 | training/eval complete; reduced-metric mixed; no positive claim | `reports/exp28_pairB_inner4_cli4_final_decision.md`, `reports/exp28_pairB_inner4_cli4_paired_statistics.csv`, `reports/exp28_pairB_inner4_cli4_visual_review_human_audit.md` |
-| Exp28 Pair C inner8 | running; fresh control Stage1 complete, Stage2 running | `experiment_registry/exp28_fine_inner_boundary_sweep` |
+| Exp28 Pair C inner8 | training complete; reduced 1000-step eval negative/mixed; full eval failed-final after iowait recurrence | `reports/exp28_pairC_inner8_cli4_failed_final_report.md`, `reports/exp28_pairC_inner8_cli4_reduced_eval_summary.csv` |
 
 Decision so far:
 

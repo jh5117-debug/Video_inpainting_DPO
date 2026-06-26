@@ -2,3 +2,8 @@ time,pair_id,model,stage,queue_index,gpus,config_hash
 2026-06-26T15:27:33+08:00,pairB_inner4_cli4,inner4_candidate,eval_complete,Wave2,GPU1-2,bc87bcd3bfd396d6
 2026-06-26T15:14:00+08:00,pairC_inner8_cli4,fresh_control_C,stage1_complete,Wave2,GPU3-4,4240887dc95d7476
 2026-06-26T15:20:52+08:00,pairC_inner8_cli4,fresh_control_C,stage2_running,Wave2,GPU3-4,4240887dc95d7476
+2026-06-26T17:39:13+08:00,pairC_inner8_cli4,fresh_control_C,stage2_complete,Wave2,GPU3-4,4240887dc95d7476
+2026-06-26T20:39:00+08:00,pairC_inner8_cli4,inner8_candidate,stage1_complete,Wave2,GPU3-4,4240887dc95d7476
+2026-06-27T00:36:13+08:00,pairC_inner8_cli4,inner8_candidate,stage2_complete,Wave2,GPU3-4,4240887dc95d7476
+2026-06-27T01:09:52+08:00,pairC_inner8_cli4,inner8_candidate,eval_paused_iowait_after_baseline_fresh_s2_1000,Wave2,GPU3-4,4240887dc95d7476
+2026-06-27T01:23:17+08:00,pairC_inner8_cli4,inner8_candidate,eval_failed_final_iowait_recurred_after_resume,Wave2,GPU3-4,4240887dc95d7476

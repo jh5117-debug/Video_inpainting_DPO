@@ -1,6 +1,6 @@
 # PRD 50: Exp28 Fine Inner Boundary Sweep
 
-Status: `CLI4_WAVE_RUNNING_PAIRB_REDUCED_METRIC_MIXED_NO_POSITIVE`
+Status: `CLI4_WAVE_STOPPED_PAIRC_FAILED_FINAL_IOWAIT_RECURRED_NO_POSITIVE`
 
 Branch: `research/exp28-fine-inner-boundary-sweep-20260625`
 
@@ -52,8 +52,43 @@ NO_INNER_RADIUS_POSITIVE
 NO_SCIENTIFIC_POSITIVE
 ```
 
-Pair C (`inner8_candidate`) is running. `fresh_control_C` Stage1 completed
-checkpoint-2000 on 2026-06-26 15:14 CST and Stage2 is running.
+Pair C (`inner8_candidate`) completed both fresh-control and candidate
+Stage1/Stage2 training through checkpoint-2000. The full auto-eval did not
+complete: it was paused once for NAS iowait, resumed once, then stopped when
+iowait recurred while GPU0 had an external process. The lane is marked
+`FAILED_FINAL_RESOURCE_IOWAIT_RECURRED` and must not be auto-resumed in this
+CLI wave.
+
+Completed Pair C eval labels:
+
+- `sft48000_baseline`
+- `fresh_s2_1000`
+- `candidate_s2_1000`
+
+Incomplete partial label:
+
+- `fresh_stage1_1000_sft_s2`
+
+Reduced Stage2-1000 comparison:
+
+| Metric | Delta (`candidate_s2_1000 - fresh_s2_1000`) |
+| --- | ---: |
+| PSNR | -0.125200 |
+| SSIM | +0.000026 |
+| strict mask PSNR | -0.125200 |
+| boundary PSNR | +0.006678 |
+| LPIPS | +0.000075 |
+| Ewarp | -0.024456 |
+| per-video PSNR win rate | 0.46 |
+
+Status:
+
+```text
+INNER8_REDUCED_EVAL_NEGATIVE_MIXED
+PAIR_C_FULL_EVAL_FAILED_FINAL_RESOURCE_IOWAIT_RECURRED
+NO_INNER_RADIUS_POSITIVE
+NO_SCIENTIFIC_POSITIVE
+```
 
 Evidence files:
 
@@ -61,6 +96,9 @@ Evidence files:
 - `reports/exp28_pairB_inner4_cli4_paired_statistics.csv`
 - `reports/exp28_pairB_inner4_cli4_summary_deltas.csv`
 - `reports/exp28_pairB_inner4_cli4_visual_review_human_audit.md`
+- `reports/exp28_pairC_inner8_cli4_failed_final_report.md`
+- `reports/exp28_pairC_inner8_cli4_reduced_eval_summary.csv`
+- `reports/exp28_pairC_inner8_cli4_reduced_eval_paired_deltas.csv`
 
 ## Question
 
