@@ -594,3 +594,25 @@ distribution, but it is not a universal-adapter or final SOTA claim.
 
 No external checkpoint reselection, retraining, mask reselection, seed
 reselection, or source-row replacement was performed.
+
+## 2026-06-26 External Validation Metrics
+
+- status: `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+- primary comparison: fixed `Step50 - Step0`
+- split: preregistered external DAVIS-derived 32-row 49F split
+- primary range: frame1-48
+- primary variant: comp
+- strict mask PSNR delta: `-2.610576`
+- strict mask PSNR win rate: `0.218750`
+- strict mask PSNR probability improved: `0.006500`
+- boundary PSNR delta: `+0.662358`
+- LPIPS delta: `+0.002466`
+- Ewarp delta: `-3.602171`
+- whole comp PSNR delta: `-2.563047`
+- no-first-frame comp TC/VFID:
+  - Step0: TC `0.962637`, VFID `0.420941`
+  - Step50: TC `0.961672`, VFID `0.397402`
+
+Primary external metrics failed the preregistered gate. External video review
+remains pending to characterize failure modes, but this split cannot be used
+for Step30 reselection, seed/mask changes, or additional VideoPainter training.

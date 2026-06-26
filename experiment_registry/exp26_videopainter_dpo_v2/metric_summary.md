@@ -177,3 +177,35 @@ Locked manifest SHA256 values:
 
 The next metric milestone is fixed external Step50-vs-Step0 inference and
 frame1-48 paired statistics. Step10/30 remain trajectory-only diagnostics.
+
+## 2026-06-26 External Validation Metrics
+
+Status: `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+
+Primary endpoint: frame1-48 comp, fixed Step50 - fixed Step0 on the
+preregistered 32-row DAVIS-derived external split.
+
+| Metric | Mean delta | Median delta | Win rate | Bootstrap 95% CI | Probability improved |
+| --- | ---: | ---: | ---: | --- | ---: |
+| strict mask PSNR | `-2.610576` | `-3.378906` | `0.218750` | `[-4.434436, -0.624556]` | `0.006500` |
+| boundary PSNR | `+0.662358` | `-0.287562` | `0.437500` | `[-1.275275, +2.649467]` | `0.742700` |
+| LPIPS | `+0.002466` | `+0.004605` | `0.437500` | `[-0.008718, +0.013012]` | `0.323800` |
+| Ewarp | `-3.602171` | `-0.039578` | `0.500000` | `[-16.682015, +6.197310]` | `0.699300` |
+
+Whole comp PSNR delta on frame1-48: `-2.563047`.
+
+No-first-frame comp TC/VFID-style:
+
+| step | TC | VFID/FVD-style |
+| --- | ---: | ---: |
+| Step0 | `0.962637` | `0.420941` |
+| Step50 | `0.961672` | `0.397402` |
+
+Gate failure reasons:
+
+- strict mask PSNR failed;
+- whole comp PSNR dropped beyond tolerance;
+- LPIPS worsened beyond tolerance.
+
+Step10 and Step30 remain trajectory diagnostics only and cannot replace Step50
+based on this external split.

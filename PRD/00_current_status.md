@@ -2173,3 +2173,26 @@ benchmarking.
 - Note: this milestone did not retrain VideoPainter, did not change masks,
   seeds, prompts, or source rows, and did not use Step10/30 for checkpoint
   reselection. External metrics and visual review remain separate gates.
+
+## 2026-06-26 Exp26 External Validation Metrics
+
+- Status: `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+- Scope: fixed Step50 vs fixed Step0 on the preregistered external 32-row
+  DAVIS-derived 49F split.
+- Primary range: frame1-48, comp outputs.
+- strict mask PSNR delta: `-2.610576`
+- strict mask PSNR win rate: `0.218750`
+- strict mask PSNR bootstrap probability improved: `0.006500`
+- boundary PSNR delta: `+0.662358`
+- LPIPS delta: `+0.002466`
+- Ewarp delta: `-3.602171`
+- whole comp PSNR delta: `-2.563047`
+- TC/VFID-style no-first-frame comp:
+  - Step0: TC `0.962637`, VFID `0.420941`
+  - Step50: TC `0.961672`, VFID `0.397402`
+
+The external metrics do not reproduce the shadow-dev improvement. The gate
+failed on strict mask PSNR, whole comp PSNR, and LPIPS. Step10/30 remain
+trajectory-only diagnostics and cannot replace Step50 based on this external
+split. No retraining, 100-step continuation, or checkpoint reselection is
+authorized. External visual review remains pending to classify failure modes.

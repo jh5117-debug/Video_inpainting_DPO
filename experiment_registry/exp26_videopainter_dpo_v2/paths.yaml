@@ -76,3 +76,14 @@ external_validation_process_registry: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/
 external_validation_reports:
   generation_status: reports/exp26_external_validation_generation_status.md
   leakage_audit: reports/exp26_external_validation_leakage_audit.md
+  metrics: reports/exp26_external_validation_metrics.md
+  aggregate_all49: reports/exp26_external_validation_aggregate_metrics_all49.csv
+  aggregate_no_first_frame: reports/exp26_external_validation_aggregate_metrics_no_first_frame.csv
+  per_video_all49: reports/exp26_external_validation_per_video_metrics_all49.csv
+  per_video_no_first_frame: reports/exp26_external_validation_per_video_metrics_no_first_frame.csv
+  paired_statistics: reports/exp26_external_validation_paired_statistics.json
+  checkpoint_curve: reports/exp26_external_validation_checkpoint_curve.csv
+  paired_deltas: reports/exp26_external_validation_paired_deltas.csv
+  tc_vfid: reports/exp26_external_validation_tc_vfid.md
+  tc_vfid_per_video: reports/exp26_external_validation_tc_vfid_per_video.csv
+  tc_vfid_summary: reports/exp26_external_validation_tc_vfid_summary.csv

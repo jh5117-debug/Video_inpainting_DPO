@@ -1170,3 +1170,56 @@ Reports:
 - `reports/exp26_external_validation_generation_status.csv`
 - `reports/exp26_external_validation_leakage_audit.md`
 - `reports/exp26_external_validation_leakage_audit.csv`
+
+## 2026-06-26 External Validation Metrics
+
+Status:
+
+- `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED`
+- `EXTERNAL_VIDEO_REVIEW_PENDING`
+- `NO_CHECKPOINT_RESELECTION`
+- `NO_100STEP_OR_LONGER`
+
+The fixed external 32-row DAVIS-derived validation split did not reproduce the
+large search-dev/shadow-dev improvement. The primary comparison remains fixed
+Step50 minus fixed Step0 on frame1-48 comp outputs.
+
+Primary frame1-48 comp Step50-Step0 deltas:
+
+| Metric | Mean delta | Median delta | Win rate | Bootstrap 95% CI | Probability improved |
+| --- | ---: | ---: | ---: | --- | ---: |
+| strict mask PSNR | `-2.610576` | `-3.378906` | `0.218750` | `[-4.434436, -0.624556]` | `0.006500` |
+| boundary PSNR | `+0.662358` | `-0.287562` | `0.437500` | `[-1.275275, +2.649467]` | `0.742700` |
+| LPIPS | `+0.002466` | `+0.004605` | `0.437500` | `[-0.008718, +0.013012]` | `0.323800` |
+| Ewarp | `-3.602171` | `-0.039578` | `0.500000` | `[-16.682015, +6.197310]` | `0.699300` |
+
+Whole comp PSNR decreased by `-2.563047` on frame1-48. No-first-frame comp
+TC/VFID-style diagnostics were mixed:
+
+- Step0 comp: TC `0.962637`, VFID/FVD-style `0.420941`
+- Step50 comp: TC `0.961672`, VFID/FVD-style `0.397402`
+
+Failure reasons from the preregistered metric gate:
+
+- strict mask PSNR gate failed;
+- whole comp PSNR dropped beyond tolerance;
+- LPIPS worsened beyond tolerance.
+
+Step10 and Step30 remain trajectory diagnostics only. The external split cannot
+be used to choose Step30 over Step50, change masks/seeds/prompts, or trigger
+new training. The next required milestone is full external video review to
+classify visible failure modes, not checkpoint reselection.
+
+Reports:
+
+- `reports/exp26_external_validation_metrics.md`
+- `reports/exp26_external_validation_aggregate_metrics_all49.csv`
+- `reports/exp26_external_validation_aggregate_metrics_no_first_frame.csv`
+- `reports/exp26_external_validation_per_video_metrics_all49.csv`
+- `reports/exp26_external_validation_per_video_metrics_no_first_frame.csv`
+- `reports/exp26_external_validation_checkpoint_curve.csv`
+- `reports/exp26_external_validation_paired_deltas.csv`
+- `reports/exp26_external_validation_paired_statistics.json`
+- `reports/exp26_external_validation_tc_vfid.md`
+- `reports/exp26_external_validation_tc_vfid_per_video.csv`
+- `reports/exp26_external_validation_tc_vfid_summary.csv`

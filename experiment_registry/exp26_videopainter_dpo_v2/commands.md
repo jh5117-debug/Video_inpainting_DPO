@@ -191,3 +191,28 @@ python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py leak
   --report-dir /tmp/exp26_external_analysis_out/reports \
   --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter
 ```
+
+External validation metrics/statistics:
+
+```bash
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py metrics \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered/manifests/vp2_external_validation_preregistered.jsonl \
+  --report-dir /tmp/exp26_external_analysis_out/reports \
+  --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter \
+  --device cuda
+
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py stats \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered/manifests/vp2_external_validation_preregistered.jsonl \
+  --report-dir /tmp/exp26_external_analysis_out/reports \
+  --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter \
+  --device cuda
+
+python exp26_videopainter_dpo_v2/code/postconfirmation_external_analysis.py tc-vfid \
+  --run-root /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation \
+  --manifest /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626/external_validation/preregistered/manifests/vp2_external_validation_preregistered.jsonl \
+  --report-dir /tmp/exp26_external_analysis_out/reports \
+  --project-root /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp26_videopainter \
+  --device cuda
+```
