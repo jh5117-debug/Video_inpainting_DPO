@@ -116,3 +116,13 @@ Reports:
 - Left CLI was read-only audited; no signal and no file mutation.
 - Right-side GPU tasks remain blocked until architecture-family audit and
   EffectErase smoke pre-registration are committed.
+
+## 2026-06-26 Architecture Family Audit
+
+- Status: `EXP29_ARCHITECTURE_FAMILY_AUDIT_COMPLETED`.
+- DiffuEraser: SD1.5 / UNet-style latent diffusion, confirmed adapter backbone.
+- VideoPainter: CogVideoX-style video model, confirmed adapter backbone.
+- MiniMax: Wan2.1 / DiT / flow matching with `epsilon - z0` target, candidate
+  only; no target mismatch in current Exp29 code path.
+- EffectErase: Wan / DiT / flow-style removal pipeline, baseline/diagnostic
+  until smoke and training-forward gates are proven.

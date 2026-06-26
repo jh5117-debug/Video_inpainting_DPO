@@ -62,6 +62,12 @@ the stable update was too small to produce a meaningful heldout output change.
   `models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth`,
   `models_t5_umt5-xxl-enc-bf16.pth`.
 
+## 2026-06-26 Architecture Family Audit
+
+No metric-producing task ran. The audit confirms MiniMax gates use a native
+flow velocity target (`epsilon - z0`) rather than DiffuEraser epsilon DPO, so
+`MINIMAX_GATE_INVALID_TARGET_MISMATCH` is not triggered.
+
 ## 2026-06-26 MiniMax Preference Data Quality Gate
 
 - source rows: 32

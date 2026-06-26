@@ -271,3 +271,22 @@ Reports:
 Report:
 
 - `reports/exp29_continuation_v2_readback.md`
+
+## 2026-06-26 Architecture Family Audit
+
+- Status: `EXP29_ARCHITECTURE_FAMILY_AUDIT_COMPLETED`
+- DiffuEraser and VideoPainter are confirmed LoVI-DPO adapter backbones but do
+  not imply one shared SD1.5 trainer.
+- MiniMax is audited as Wan2.1 / DiT / flow-matching with target `epsilon - z0`.
+  The current Exp29 MiniMax code path does not trigger
+  `MINIMAX_GATE_INVALID_TARGET_MISMATCH`.
+- EffectErase is audited as Wan / DiT / flow-style remove pipeline with
+  recovered weights, but remains OR baseline/diagnostic until inference smoke
+  and any trainable-forward gates are proven.
+- Required language: model-specific backend adapter. Forbidden language:
+  universal adapter, all models supported, final SOTA.
+
+Reports:
+
+- `reports/exp29_architecture_family_audit.md`
+- `reports/exp29_architecture_family_audit.csv`

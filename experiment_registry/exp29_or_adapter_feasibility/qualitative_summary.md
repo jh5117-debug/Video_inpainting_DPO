@@ -54,6 +54,13 @@ Recovered weights only unblock the next inference-smoke milestone. They do not
 support `EFFECTERASE_OR_BASELINE_READY`, adapter feasibility, or scientific
 positive language until actual videos and metrics are produced and reviewed.
 
+## 2026-06-26 Architecture Family Audit
+
+Scientific wording is constrained to model-specific backend adapters. The
+project has cross-backbone evidence from DiffuEraser and VideoPainter, while
+MiniMax and EffectErase remain candidates with different Wan/DiT flow-style
+semantics. This is not a universal adapter result.
+
 ## 2026-06-26 MiniMax Preference Data Quality Gate
 
 All 24 low-resolution review pages were opened and checked. MiniMax can produce

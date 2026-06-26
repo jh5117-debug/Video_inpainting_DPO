@@ -22,3 +22,11 @@ minimax_micro_data_gate:
   required_heldout_rows: 16
   split_rule: scene_group_disjoint
   result: MINIMAX_DATA_YIELD_INSUFFICIENT
+architecture_family_audit:
+  result: EXP29_ARCHITECTURE_FAMILY_AUDIT_COMPLETED
+  minimax_target_mismatch: false
+  required_language: model-specific backend adapter
+  forbidden_language:
+    - universal_adapter
+    - all_models_supported
+    - final_sota
