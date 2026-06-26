@@ -51,6 +51,17 @@ the stable update was too small to produce a meaningful heldout output change.
 - Split result: train rows 9, heldout rows 0; no scene-disjoint train16 and
   heldout16 split can be formed.
 
+## 2026-06-26 EffectErase Weight Recovery
+
+- SHA256 manifest entries checked: 19.
+- SHA256 result: all `OK`.
+- Cache size: 20G.
+- File count: 53.
+- Key assets recovered: `EffectErase.ckpt`, `Wan2.1_VAE.pth`,
+  `diffusion_pytorch_model.safetensors`,
+  `models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth`,
+  `models_t5_umt5-xxl-enc-bf16.pth`.
+
 ## 2026-06-26 MiniMax Preference Data Quality Gate
 
 - source rows: 32

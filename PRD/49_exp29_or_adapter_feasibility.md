@@ -231,3 +231,25 @@ Reports:
 - `reports/exp29_minimax_preference_data_quality.csv`
 - `reports/exp29_minimax_preference_video_review.csv`
 - `reports/exp29_minimax_preference_data_quality_summary.json`
+
+## 2026-06-26 EffectErase Weight Recovery
+
+- Status: `EFFECTERASE_WEIGHTS_READY`
+- Official EffectErase and Wan2.1-Fun InP assets were downloaded on HAL and
+  rsynced to the Exp29 PAI/NAS autoresearch cache.
+- PAI SHA256 verification checked 19 manifest entries and all returned `OK`.
+- Key recovered assets: `EffectErase.ckpt`, `Wan2.1_VAE.pth`,
+  `diffusion_pytorch_model.safetensors`,
+  `models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth`, and
+  `models_t5_umt5-xxl-enc-bf16.pth`.
+- Asset root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626`
+- This milestone does not run inference smoke or adapter gates. EffectErase
+  remains VOR baseline/diagnostic only until non-confounded evaluation is
+  locked.
+
+Reports:
+
+- `reports/exp29_effecterase_weight_recovery.md`
+- `reports/exp29_effecterase_weight_recovery.csv`
+- `reports/exp29_effecterase_weight_recovery.json`

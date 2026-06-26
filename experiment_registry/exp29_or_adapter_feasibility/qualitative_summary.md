@@ -47,6 +47,13 @@ trivial-bad, too close, or technically invalid. Since usable candidates are
 clustered in only 9 source groups, the MiniMax micro data gate is not ready for
 training.
 
+## 2026-06-26 EffectErase Weight Recovery
+
+No EffectErase video evidence has been generated yet after weight recovery.
+Recovered weights only unblock the next inference-smoke milestone. They do not
+support `EFFECTERASE_OR_BASELINE_READY`, adapter feasibility, or scientific
+positive language until actual videos and metrics are produced and reviewed.
+
 ## 2026-06-26 MiniMax Preference Data Quality Gate
 
 All 24 low-resolution review pages were opened and checked. MiniMax can produce

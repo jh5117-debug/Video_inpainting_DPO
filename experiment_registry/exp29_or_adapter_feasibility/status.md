@@ -95,3 +95,14 @@ Reports:
   - `reports/exp29_minimax_preference_data_quality.csv`
   - `reports/exp29_minimax_preference_video_review.csv`
   - `reports/exp29_minimax_preference_data_quality_summary.json`
+
+## 2026-06-26 EffectErase Weight Recovery
+
+- Status: `EFFECTERASE_WEIGHTS_READY`.
+- Official EffectErase and Wan2.1-Fun InP assets recovered into the Exp29
+  autoresearch cache.
+- SHA256 verification: 19 manifest entries checked, all `OK`.
+- No inference smoke, trainable forward, zero-gap, one-step, or adapter micro
+  has run yet.
+- EffectErase remains VOR baseline/diagnostic only until a non-confounded smoke
+  and evaluation design are completed.

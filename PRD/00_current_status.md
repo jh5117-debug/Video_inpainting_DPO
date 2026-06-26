@@ -2355,3 +2355,11 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Locked manifests: train rows 9, heldout rows 0, rejected rows 87.
 - No MiniMax recipe search, 30-step micro, long training, or RC-FPO was
   launched from this insufficient data gate.
+
+## 2026-06-26 Exp29 EffectErase Weight Recovery
+
+- Status: `EFFECTERASE_WEIGHTS_READY`
+- Official EffectErase and Wan2.1-Fun InP assets were recovered into the Exp29
+  NAS cache and verified with 19/19 SHA manifest entries OK.
+- No inference smoke or adapter gate has run yet; EffectErase remains OR
+  baseline/diagnostic pending smoke.
