@@ -29,3 +29,15 @@ universal_adapter_claim: false
 rcfpo_started: false
 long_training_authorized: false
 next_allowed_gate: EXTERNAL_CROSS_DATASET_BENCHMARK_REQUIRED
+postconfirmation_sanity_status: EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED
+postconfirmation_external_validation_status: PENDING
+postconfirmation_allowed_scope:
+  - external_49f_inventory
+  - fixed_step0_vs_step50_external_validation
+  - result_evidence_pack
+  - third_model_compatibility_audit
+postconfirmation_forbidden_scope:
+  - videopainter_retraining
+  - step100_or_longer
+  - checkpoint_reselection
+  - rcfpo

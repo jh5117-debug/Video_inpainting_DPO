@@ -53,3 +53,14 @@ leakage, comp mask overwrite, or global collapse was observed. Visual evidence
 supports `VIDEOPAINTER_SHADOWDEV_CONFIRMED` for the current VOR-BG
 distribution, while leaving external cross-dataset validation as the next
 scientific requirement.
+
+## 2026-06-26 Post-Confirmation Sanity Audit
+
+The post-confirmation readback did not change the qualitative conclusion.
+Shadow-dev review evidence remains `32/32` complete: Step50 better in `25`
+rows, tied in `3`, and worse or newly artifacted in `4`. The observed benefit
+is local object-removal cleanup rather than a universal failure-free generator:
+water, grass, and foliage cases still account for the main visible artifacts.
+
+No new VideoPainter training was run, and no Step10/30/50 reselection was made.
+External clean-source validation is the next required qualitative check.

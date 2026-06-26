@@ -676,3 +676,4 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Evidence | Next Restriction |
 | --- | --- | --- | --- |
 | Exp26 VideoPainter DPO v2 | `VIDEOPAINTER_SHADOWDEV_CONFIRMED` | Fixed Step50 vs fixed Step0 on independent 32-row shadow-dev: strict mask PSNR `+5.186942`, boundary PSNR `+12.175098`, LPIPS `-0.040142`, Ewarp `-8.378847`, TC `+0.004378`, VFID/FVD-style `-0.031428`; 32/32 visual review; seed robustness pass `3/3`. | No 100-step+, no RC-FPO, no universal/final SOTA claim before external cross-dataset benchmark. |
+| Exp26 VideoPainter post-confirmation sanity | `EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED` | Re-read checkpoint identity, search/shadow reports, leakage audit, visual review, seed robustness, and dynamics. Evidence remains internally consistent; no unexpected GT leakage or comp mask overwrite was found. | Proceed only to external 49F validation / evidence pack / compatibility audit; still no training. |

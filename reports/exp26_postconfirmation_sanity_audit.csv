@@ -1,0 +1,22 @@
+check,result,evidence
+step50_same_trajectory,PASS,reports/exp26_vp_shadowdev_checkpoint_identity.json
+step0_fixed_official_initialization,PASS,reports/exp26_vp_shadowdev_checkpoint_identity.json
+step50_differs_from_step0,PASS,step50 delta_vs_step0_tree=true
+fallback_detected,NO,reports/exp26_vp_shadowdev_checkpoint_identity.json
+primary_search_shadow_overlap,PASS,train/search/shadow overlap 0/0/0
+shadow_used_for_selection,NO,reports/exp26_vp_shadowdev_final_decision.md
+frame0_gt_separate,PASS,primary metrics use frame1-48
+comp_outside_semantics,PASS,reports/exp26_vp_shadowdev_leakage_audit.csv
+unexpected_gt_leakage,NO,0/128 leakage flags
+raw_outside_preservation_audited,PASS,reports/exp26_vp_shadowdev_aggregate_metrics.csv
+visual_review_32_of_32,PASS,reports/exp26_vp_shadowdev_visual_review.csv
+seed_robustness,PASS,3/3 seeds
+strict_mask_psnr_delta,PASS,+5.186942
+boundary_psnr_delta,PASS,+12.175098
+lpips_delta,PASS,-0.040142
+ewarp_delta,PASS,-8.378847
+tc_delta,PASS,+0.004378
+vfid_delta,PASS,-0.031428
+100step_authorized,NO,NO_100STEP_BY_PROTOCOL
+sanity_audit_status,PASS,EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED
+

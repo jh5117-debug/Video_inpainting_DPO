@@ -96,3 +96,22 @@ python exp26_videopainter_dpo_v2/code/run_vp2_gate64_official_generation.py \
   --guidance-scale 6.0 \
   --seed 20260620
 ```
+
+Post-confirmation sanity/readback:
+
+```bash
+git fetch --all --prune
+git branch --show-current
+git rev-parse HEAD
+git status --short
+git diff --check
+```
+
+Reports:
+
+```text
+reports/exp26_postconfirmation_readback.md
+reports/exp26_postconfirmation_sanity_audit.md
+reports/exp26_postconfirmation_sanity_audit.csv
+reports/exp26_postconfirmation_sanity_audit.json
+```

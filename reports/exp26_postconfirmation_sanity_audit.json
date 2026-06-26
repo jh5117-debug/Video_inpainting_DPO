@@ -1,0 +1,55 @@
+{
+  "created_utc": "2026-06-26T01:10:21Z",
+  "status": "EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED",
+  "branch": "research/exp26-videopainter-dpo-v2",
+  "head": "dde67b6cad69a525e378e99ed37337a932f869b1",
+  "primary32_sha256": "82f661f2f30a581a213972533817624217eabb97eba7aaeedc00ee2109e4e716",
+  "search_dev_sha256": "41c6571d26e4a5130818dd50fbbe1314c9d953284561a3cd20f630572f7c2a71",
+  "shadow_dev_sha256": "0338dba1513cfe0e5dd85cbf793b3782902b981ac9610b0e472c6a048f738c02",
+  "fixed_trajectory": "vp_primary32_50step_20260625_171032",
+  "checks": {
+    "step50_same_trajectory": true,
+    "step0_fixed_official_initialization": true,
+    "step50_differs_from_step0": true,
+    "fallback_detected": false,
+    "train_search_shadow_overlap_zero": true,
+    "shadow_used_for_selection": false,
+    "frame0_gt_separate": true,
+    "comp_outside_semantics": true,
+    "unexpected_gt_leakage": false,
+    "raw_outside_preservation_audited": true,
+    "visual_review_complete": true,
+    "seed_robustness_pass": true,
+    "left_cli_touched": false
+  },
+  "primary_frame1_48_comp_deltas": {
+    "strict_mask_psnr": 5.186942,
+    "boundary_psnr": 12.175098,
+    "lpips": -0.040142,
+    "ewarp": -8.378847,
+    "whole_comp_psnr": 5.160739,
+    "tc": 0.004378,
+    "vfid_fvd_style": -0.031428
+  },
+  "visual_review": {
+    "rows": 32,
+    "step50_clearly_better": 12,
+    "step50_slightly_better": 13,
+    "tie": 3,
+    "step0_slightly_better": 1,
+    "step50_new_artifact": 3
+  },
+  "dynamics": {
+    "max_grad_norm": 471.683581,
+    "p95_grad_norm": 136.259904,
+    "grad_gt_10": 41,
+    "grad_gt_50": 7,
+    "grad_gt_100": 4,
+    "implicit_accuracy_mean": 0.28,
+    "implicit_accuracy_last": 0.0,
+    "loser_dominant_mean": 0.12,
+    "loser_dominant_last": 0.0,
+    "recommendation": "NO_100STEP_BY_PROTOCOL"
+  },
+  "next_scientific_check": "external clean-source 49F validation"
+}

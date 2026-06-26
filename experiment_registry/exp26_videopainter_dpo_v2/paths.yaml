@@ -45,3 +45,10 @@ shadowdev_reports:
   tc_vfid: reports/exp26_vp_shadowdev_tc_vfid.md
   seed_robustness: reports/exp26_vp_shadowdev_seed_robustness.md
   visual_review: reports/exp26_vp_shadowdev_visual_review.md
+postconfirmation_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp26_videopainter_dpo_v2/postconfirmation_20260626
+postconfirmation_experiment_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/postconfirmation_20260626
+postconfirmation_reports:
+  readback: reports/exp26_postconfirmation_readback.md
+  sanity_audit: reports/exp26_postconfirmation_sanity_audit.md
+  sanity_audit_csv: reports/exp26_postconfirmation_sanity_audit.csv
+  sanity_audit_json: reports/exp26_postconfirmation_sanity_audit.json

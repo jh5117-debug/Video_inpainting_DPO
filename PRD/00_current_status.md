@@ -2113,3 +2113,16 @@ This confirms cross-backbone adapter evidence for DiffuEraser + VideoPainter
 on the current VOR-BG distribution. It does not authorize universal-adapter,
 final SOTA, RC-FPO, or 100-step+ claims without external cross-dataset
 benchmarking.
+
+## 2026-06-26 Exp26 Post-Confirmation Sanity Audit
+
+- Status: `EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED`
+- Branch: `research/exp26-videopainter-dpo-v2`
+- HEAD: `dde67b6cad69a525e378e99ed37337a932f869b1`
+- Scope: read-only audit of the completed VideoPainter Step50 vs Step0
+  shadow-dev confirmation.
+- Result: the fixed trajectory, held-out split identity, leakage audit, 32/32
+  visual review, TC/VFID diagnostics, and seed robustness are internally
+  consistent.
+- Restriction: no 100-step, no RC-FPO, no universal/final-SOTA claim; next
+  required scientific check is external clean-source 49F validation.

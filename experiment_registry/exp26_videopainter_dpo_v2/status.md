@@ -521,3 +521,21 @@ shadow rows: Step50 better `25`, tie `3`, Step0 better/new Step50 artifact
 
 This confirms held-out VideoPainter evidence for the current VOR-BG
 distribution, but it is not a universal-adapter or final SOTA claim.
+
+## 2026-06-26 Post-Confirmation Sanity Audit
+
+- status: `EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED`
+- scope: read-only audit of the completed fixed Step50 vs fixed Step0
+  shadow-dev confirmation.
+- evidence:
+  - fixed trajectory: `vp_primary32_50step_20260625_171032`
+  - primary32/search/shadow SHA256 identities unchanged
+  - train/search/shadow overlap `0 / 0 / 0`
+  - no unexpected GT/winner leakage in `128` audited rows
+  - shadow visual review `32 / 32`
+  - seed robustness pass `3 / 3`
+- reports:
+  - `reports/exp26_postconfirmation_readback.md`
+  - `reports/exp26_postconfirmation_sanity_audit.md`
+  - `reports/exp26_postconfirmation_sanity_audit.csv`
+  - `reports/exp26_postconfirmation_sanity_audit.json`

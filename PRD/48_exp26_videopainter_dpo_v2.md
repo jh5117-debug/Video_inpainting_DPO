@@ -1017,3 +1017,32 @@ Reports:
 - `reports/exp26_vp_shadowdev_seed_robustness.md`
 - `reports/exp26_vp_shadowdev_visual_review.md`
 - `reports/exp26_vp_50step_dynamics_audit.md`
+
+## 2026-06-26 Post-Confirmation Sanity Audit
+
+Status:
+
+- `EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED`
+- `NO_RETRAINING`
+- `NO_100STEP_OR_LONGER`
+- `NO_RCFPO`
+
+The completed shadow-dev confirmation was re-read after the held-out decision.
+The audit verifies the fixed `vp_primary32_50step_20260625_171032`
+trajectory, the fixed official Step0 baseline, Step50 non-identity versus
+Step0, zero train/search/shadow overlap, no shadow-dev checkpoint selection,
+frame1-48 primary metric handling, comp outside-mask semantics, no unexpected
+winner/GT leakage, 32/32 visual review completion, and 3/3 inference-seed
+robustness.
+
+Primary held-out deltas remain unchanged: strict mask PSNR `+5.186942`,
+boundary PSNR `+12.175098`, LPIPS `-0.040142`, Ewarp `-8.378847`, TC
+`+0.004378`, and VFID/FVD-style `-0.031428` on the no-first-frame comp
+comparison. Dynamics still recommend `NO_100STEP_BY_PROTOCOL`.
+
+Reports:
+
+- `reports/exp26_postconfirmation_readback.md`
+- `reports/exp26_postconfirmation_sanity_audit.md`
+- `reports/exp26_postconfirmation_sanity_audit.csv`
+- `reports/exp26_postconfirmation_sanity_audit.json`

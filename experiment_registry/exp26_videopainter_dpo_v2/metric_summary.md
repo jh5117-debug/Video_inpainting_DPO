@@ -134,3 +134,21 @@ Seed robustness over fixed 16-row subset:
 - mean boundary PSNR delta: `+13.627635`
 - mean LPIPS delta: `-0.056193`
 - mean Ewarp delta: `-9.325711`
+
+## 2026-06-26 Post-Confirmation Sanity Audit
+
+Status: `EXP26_POSTCONFIRMATION_SANITY_AUDIT_PASSED`
+
+The audit re-read the completed held-out evidence and found no metric or
+identity inconsistency. Primary no-first-frame comp deltas remain:
+
+| Metric | Step50 - Step0 |
+| --- | ---: |
+| strict mask PSNR | `+5.186942` |
+| boundary PSNR | `+12.175098` |
+| LPIPS | `-0.040142` |
+| Ewarp | `-8.378847` |
+| TC | `+0.004378` |
+| VFID/FVD-style | `-0.031428` |
+
+No external-validation metric has been run yet.
