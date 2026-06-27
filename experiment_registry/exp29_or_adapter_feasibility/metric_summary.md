@@ -246,3 +246,13 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Training eligibility: false.
 - No EffectErase model output, image/video metric, adapter metric, or training
   metric was produced by this materialization milestone.
+
+## 2026-06-27 EffectErase Official 81F Command Validation
+
+- Rows validated: 8.
+- Assets ready: true.
+- Inputs ready: true.
+- Official help/import return code: 0.
+- Command protocol: 81 frames, 832x480, seed 2025, CFG 1.0, 50 steps.
+- No EffectErase model output, image/video metric, adapter metric, or training
+  metric was produced by this command-validation milestone.

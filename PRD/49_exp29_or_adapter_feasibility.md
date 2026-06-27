@@ -659,3 +659,25 @@ Reports:
 - `reports/exp29_effecterase_official81_input_materialization.json`
 - `reports/exp29_effecterase_official81_materialized_preview_review.csv`
 - `reports/exp29_effecterase_official81_materialized_previews/`
+
+## 2026-06-27 EffectErase Official 81F Command Validation
+
+- Status: `EFFECTERASE_OFFICIAL81_COMMAND_READY`
+- Validated the official EffectErase command in dry-run mode only; no full model
+  inference was launched.
+- Official script import/help returned successfully in the pinned EffectErase
+  venv.
+- Assets ready: true.
+- Inputs ready: true, 8/8 rows.
+- Command uses `--num_frames 81`, `--height 480`, `--width 832`, seed 2025,
+  CFG 1.0, and 50 inference steps.
+- VOR-Eval use: false.
+- Training eligibility: false.
+- This unlocks 81F inference smoke, but still does not support baseline-ready,
+  trainable-forward, adapter, or scientific-positive claims.
+
+Reports:
+
+- `reports/exp29_effecterase_official81_command_validation.md`
+- `reports/exp29_effecterase_official81_command_validation.json`
+- `reports/exp29_effecterase_official81_command_validation_inputs.csv`

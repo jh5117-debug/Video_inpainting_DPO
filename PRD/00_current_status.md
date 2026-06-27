@@ -2546,3 +2546,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Codex opened all 8 materialized preview sheets; input sanity passed 8/8.
 - No EffectErase inference, baseline-ready claim, trainable-forward claim, or
   adapter claim yet.
+
+## 2026-06-27 Exp29 EffectErase Official 81F Command Validation
+
+- Status: `EFFECTERASE_OFFICIAL81_COMMAND_READY`
+- Dry-run only: no full EffectErase inference was launched.
+- Official script import/help passed in the pinned EffectErase venv.
+- Assets ready: true.
+- Inputs ready: true, 8/8 rows.
+- Constructed commands use official 81-frame inputs and `--num_frames 81`.
+- VOR-Eval use and training eligibility remain false.

@@ -193,3 +193,15 @@ Final qualitative input decision: `EFFECTERASE_OFFICIAL81_INPUTS_READY`.
 This unlocks official command validation only. EffectErase remains not
 baseline-ready and not adapter-ready until actual 81F inference outputs are
 generated, measured, and reviewed.
+
+## 2026-06-27 EffectErase Official 81F Command Validation
+
+The official EffectErase dry-run command validates the pinned venv, official
+script import/help, recovered weights, and 8/8 materialized official-81F inputs.
+The constructed commands explicitly use `--num_frames 81`; no full inference was
+launched in this milestone.
+
+Final qualitative command decision: `EFFECTERASE_OFFICIAL81_COMMAND_READY`.
+This unlocks the next inference-smoke milestone only. EffectErase remains not
+baseline-ready and not adapter-ready until generated videos are measured and
+reviewed.

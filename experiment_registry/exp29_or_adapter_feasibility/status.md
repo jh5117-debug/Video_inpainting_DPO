@@ -348,3 +348,19 @@ Reports:
   pass.
 - No EffectErase inference, OR baseline-ready claim, trainable-forward claim,
   adapter claim, or training was launched.
+
+## 2026-06-27 EffectErase Official 81F Command Validation
+
+- Status: `EFFECTERASE_OFFICIAL81_COMMAND_READY`.
+- Dry-run only; no full EffectErase inference was launched.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- Rows validated: 8.
+- Assets ready: true.
+- Inputs ready: true.
+- Official help/import return code: 0.
+- `--num_frames`, `--cfg`, `--num_inference_steps`, and `--seed` are supported.
+- Constructed commands use `--num_frames 81`.
+- VOR-Eval use: false.
+- Training eligibility: false.
+- This unlocks inference smoke only, not baseline-ready or adapter claims.

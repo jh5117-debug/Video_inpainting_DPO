@@ -248,6 +248,26 @@ effecterase_official81_source_audit:
   eligible_for_training: false
   launched_inference: false
   launched_adapter_gate: false
+effecterase_official81_command_validation:
+  result: EFFECTERASE_OFFICIAL81_COMMAND_READY
+  rows_validated: 8
+  assets_ready: true
+  inputs_ready: true
+  official_help_returncode: 0
+  supports_num_frames: true
+  supports_cfg: true
+  supports_steps: true
+  supports_seed: true
+  num_frames: 81
+  seed: 2025
+  cfg: 1.0
+  num_inference_steps: 50
+  manifest_sha256: 706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3
+  vor_eval_used: false
+  eligible_for_training: false
+  dry_run_only: true
+  launched_inference: false
+  launched_adapter_gate: false
 effecterase_official81_input_materialization:
   result: EFFECTERASE_OFFICIAL81_INPUTS_READY
   rows: 8
