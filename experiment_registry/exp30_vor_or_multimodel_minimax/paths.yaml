@@ -1,0 +1,10 @@
+worktree_hal: /home/hj/H20_Video_inpainting_DPO_exp30_vor_or_minimax
+worktree_pai_planned: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp30_vor_or_minimax
+output_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax
+experiment_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp30_vor_or_multimodel_minimax
+readback_report: reports/exp30_readback.md
+paper_positioning_report: reports/exp30_three_backbone_paper_positioning.md
+paper_positioning_csv: reports/exp30_three_backbone_paper_positioning.csv
+source_pool_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_pool128_sources.jsonl
+reserve_pool_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_pool128_reserve.jsonl
+

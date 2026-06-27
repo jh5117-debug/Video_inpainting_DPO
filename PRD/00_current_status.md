@@ -2582,3 +2582,29 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - No zero-gap, one-step, 10-step, DPO, RC-FPO, or long training was run.
 - Scientific language remains constrained: EffectErase is an OR
   baseline/diagnostic, not true adapter or universal-adapter evidence.
+
+## 2026-06-27 Exp30 VOR-OR Multi-Model MiniMax Readback
+
+- Status: `EXP30_READBACK_COMPLETED`
+- Branch:
+  `research/exp30-vor-or-multimodel-minimax-adapter-20260627`
+- Start HEAD:
+  `6bc6c67c60b5cf2fe8d937ffd1e1d88a4684991c`
+- New PRD:
+  `PRD/50_exp30_vor_or_multimodel_minimax.md`
+- New registry:
+  `experiment_registry/exp30_vor_or_multimodel_minimax/`
+- Scope:
+  VOR-OR multi-model medium-hard pool, MiniMax quality-positive micro gate,
+  DiffuEraser VOR-OR Stage1/Stage2 micro, and paper three-backbone evidence
+  plan.
+- Readback confirmed:
+  EffectErase is `EFFECTERASE_OR_BASELINE_READY` but
+  `EFFECTERASE_BASELINE_ONLY_FOR_NOW`; MiniMax is
+  `MINIMAX_EXPANDED_DATA_YIELD_INSUFFICIENT`; VideoPainter is
+  `VIDEOPAINTER_SHADOWDEV_CONFIRMED` with external DAVIS-derived validation not
+  confirmed.
+- Missing Exp25 source files were recorded as missing rather than fabricated.
+- PAI GPU readback found no compute processes; left CLI runtime locks still
+  reserve GPU1/GPU2/GPU3/GPU4.
+- No GPU task, inference, training, RC-FPO, or left-side action was launched.
