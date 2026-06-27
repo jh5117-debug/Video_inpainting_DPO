@@ -1,0 +1,39 @@
+{
+  "best_per_source_counts": {
+    "HARD_BUT_PLAUSIBLE": 1,
+    "MEDIUM_HARD_ELIGIBLE": 9,
+    "TRIVIAL_BAD": 6
+  },
+  "best_per_source_usable": 10,
+  "candidate_count": 64,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 2,
+    "MEDIUM_HARD_ELIGIBLE": 12,
+    "TOO_CLOSE": 1,
+    "TRIVIAL_BAD": 49
+  },
+  "controlled_v3_usable_source_count": 8,
+  "gate_rule": "pass if candidate_count>=64, source_count=16, technical-valid>=90%, usable>=14, best-per-source usable>=10/16, controlled usable sources>=7/16, and usable candidates from at least two generator families",
+  "model_classification_counts": {
+    "controlled_corruption_v3:MEDIUM_HARD_ELIGIBLE": 8,
+    "controlled_corruption_v3:TRIVIAL_BAD": 8,
+    "diffueraser:TRIVIAL_BAD": 16,
+    "minimax_official_v3:HARD_BUT_PLAUSIBLE": 1,
+    "minimax_official_v3:MEDIUM_HARD_ELIGIBLE": 2,
+    "minimax_official_v3:TOO_CLOSE": 1,
+    "minimax_official_v3:TRIVIAL_BAD": 12,
+    "propainter:HARD_BUT_PLAUSIBLE": 1,
+    "propainter:MEDIUM_HARD_ELIGIBLE": 2,
+    "propainter:TRIVIAL_BAD": 13
+  },
+  "source_count": 16,
+  "status": "MULTIMODEL_OR_SMOKE32_V3_PASS",
+  "technical_valid_candidates": 64,
+  "technical_valid_rate": 1.0,
+  "total_usable_candidates": 14,
+  "usable_generator_families": [
+    "controlled_corruption_v3",
+    "minimax_official_v3",
+    "propainter"
+  ]
+}

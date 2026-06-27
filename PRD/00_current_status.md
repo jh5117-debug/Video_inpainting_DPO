@@ -2871,3 +2871,10 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   `320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9`.
 - This only unlocks Smoke32 candidate generation. Smoke32 pass, Gate64, adapter
   gates, RC-FPO, and training remain stopped.
+
+
+## 2026-06-27 Exp30 Smoke32 V3 Candidate Confirmation
+
+Exp30 status: `MULTIMODEL_OR_SMOKE32_V3_PASS`.
+
+Smoke32 v3 passed with low margin: 64/64 technical-valid candidates, 14 usable candidates, 10/16 usable best-per-source coverage, 8/16 controlled-corruption usable coverage, and 3 usable generator families. Limited Gate64 pool preparation is now allowed, but no MiniMax adapter gate, long training, RC-FPO, universal-adapter claim, or data-ready claim has been made.

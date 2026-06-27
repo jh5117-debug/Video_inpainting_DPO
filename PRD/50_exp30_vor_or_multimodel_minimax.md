@@ -641,3 +641,35 @@ Reports:
 - `reports/exp30_smoke32_v3_materialization.md`
 - `reports/exp30_smoke32_v3_materialization.csv`
 - `reports/exp30_smoke32_v3_materialization.json`
+
+
+## 2026-06-27 Smoke32 V3 Multi-Model Candidate Confirmation
+
+- Status: `MULTIMODEL_OR_SMOKE32_V3_PASS`.
+- Candidate rows: 64 non-EffectErase candidates across controlled corruption v3, MiniMax official v3, ProPainter verified full16, and DiffuEraser no-PCM full16.
+- Source rows: 16 confirmation source groups, disjoint from Smoke16.
+- Technical-valid candidates: 64/64.
+- Total usable candidates: 14.
+- Best-per-source usable coverage: 10/16.
+- Controlled corruption usable source coverage: 8/16.
+- Usable generator families: controlled corruption v3, MiniMax official v3, ProPainter.
+- Model classification counts:
+  - controlled corruption v3: 8 medium-hard, 8 trivial-bad.
+  - MiniMax official v3: 2 medium-hard, 1 hard-plausible, 1 too-close, 12 trivial-bad.
+  - ProPainter: 2 medium-hard, 1 hard-plausible, 13 trivial-bad.
+  - DiffuEraser no-PCM: 16 trivial-bad, 0 usable.
+- Codex opened 4 controlled review pages, 4 MiniMax review pages, and 8 verified-generator review pages before final classification.
+- Interpretation: Smoke32 v3 passes the preregistered confirmation gate but with low margin. The pass is primarily controlled-corruption driven, with small supporting contributions from MiniMax and ProPainter; DiffuEraser remains technically runnable but unusable for this Smoke32 pool.
+- This unlocks limited Gate64 pool preparation only. It does not unlock MiniMax adapter training by itself, does not make the pool data-ready, and does not support universal-adapter language.
+- Left CLI, Exp31, and Exp33 were treated as protected lanes and not modified.
+
+Reports/assets:
+
+- `reports/exp30_multimodel_or_smoke32_v3.md`
+- `reports/exp30_multimodel_or_smoke32_v3.csv`
+- `reports/exp30_multimodel_or_smoke32_metrics_v3.csv`
+- `reports/exp30_multimodel_or_smoke32_visual_review_v3.csv`
+- `reports/exp30_multimodel_or_smoke32_summary_v3.json`
+- `reports/exp30_multimodel_or_smoke32_best_per_source_v3.csv`
+- `reports/exp30_verified_generators_smoke32_v3_visual_review_final.csv`
+- `reports/exp30_smoke32_v3_assets/`

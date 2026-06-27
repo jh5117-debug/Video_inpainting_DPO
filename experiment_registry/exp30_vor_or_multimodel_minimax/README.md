@@ -36,3 +36,8 @@ controlled corruption v3. Smoke32 v3 is preregistered with 16 new disjoint
 source groups and BLENDER/REAL 8/8 balance. Gate64 and all adapter/training
 gates remain stopped until Smoke32 materialization, generation, metrics, and
 visual review pass.
+
+
+## 2026-06-27 Smoke32 V3
+
+Smoke32 v3 passed the preregistered confirmation gate with 64/64 technical-valid candidates, 14 usable candidates, 10/16 usable source groups, and usable contributions from controlled corruption v3, MiniMax official v3, and ProPainter. DiffuEraser no-PCM was technical-valid but contributed 0 usable candidates. This unlocks limited Gate64 pool preparation only; adapter gates remain locked until Gate64 produces scene-disjoint train/heldout data.

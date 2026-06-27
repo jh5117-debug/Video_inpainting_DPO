@@ -173,3 +173,17 @@ No OR candidate metrics were produced. The source materialization gate passed:
   `320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9`.
 
 Smoke32 candidate metrics remain pending.
+
+
+## 2026-06-27 Smoke32 V3 Multi-Model Candidate Metrics
+
+Smoke32 v3 generated and reviewed 64 non-EffectErase candidate rows:
+
+- Technical-valid: 64/64.
+- Usable candidates: 14/64.
+- Best-per-source usable: 10/16.
+- Controlled v3 usable source coverage: 8/16.
+- Classification counts: 12 medium-hard, 2 hard-plausible, 1 too-close, 49 trivial-bad.
+- Model counts: controlled v3 8 medium-hard / 8 trivial-bad; MiniMax official v3 2 medium-hard / 1 hard-plausible / 1 too-close / 12 trivial-bad; ProPainter 2 medium-hard / 1 hard-plausible / 13 trivial-bad; DiffuEraser no-PCM 16 trivial-bad.
+
+The gate passes exactly at the usable-candidate and best-per-source thresholds, so the result should be treated as a low-margin candidate-generation pass, not as data-ready evidence.

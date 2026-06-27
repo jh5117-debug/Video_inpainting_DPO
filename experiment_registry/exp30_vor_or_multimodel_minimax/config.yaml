@@ -266,3 +266,19 @@ smoke32_v3_materialization:
   smoke32_pass: false
   gate64_unlocked: false
   launched_training: false
+
+smoke32_v3_gate:
+  result: MULTIMODEL_OR_SMOKE32_V3_PASS
+  candidate_count: 64
+  source_count: 16
+  technical_valid_candidates: 64
+  usable_candidates: 14
+  best_per_source_usable: 10
+  controlled_v3_usable_source_count: 8
+  usable_generator_families:
+    - controlled_corruption_v3
+    - minimax_official_v3
+    - propainter
+  gate64_unlocked: true
+  minimax_adapter_unlocked: false
+  launched_training: false
