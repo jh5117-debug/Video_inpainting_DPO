@@ -2940,3 +2940,21 @@ used.
 
 No GPU inference, no training, no 30-step, no long run, no RC-FPO, and no
 protected-lane action was launched by readback. Exp31/cli4 remain protected.
+
+## 2026-06-27 Exp35 MiniMax No-Change Forensic Audit
+
+Exp35 root-cause status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+
+Forensic audit read Exp30 MiniMax frozen/EMA checkpoints, diagnostics, and
+heldout Step0/Step10 frames without training. Checkpoint keys matched
+`461/461` with 0 missing/unexpected keys for both recipes. Step10 outputs were
+not byte-identical to Step0 (`0/32` byte-identical rows), so the adapted
+checkpoint was not simply ignored. The output movement was sub-perceptual:
+mean full/mask/affected/outside absolute pixel diff was `0.1314`, `0.1867`,
+`0.1731`, and `0.1085`.
+
+The previous utility scale was effectively flat: frozen linear utility mean
+`0.4999983`, EMA `0.5000004`; abs margin means were `2.86e-05` and
+`1.28e-05`. Parameter movement was also tiny: delta/param norm ratio about
+`5.6e-06` for both recipes. Next required step is inference-sensitivity
+positive-control, not more training steps.

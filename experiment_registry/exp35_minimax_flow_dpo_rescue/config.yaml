@@ -16,4 +16,18 @@ readback:
   gpu_training_launched: false
   long_training_launched: false
   rc_fpo_launched: false
-
+forensic_audit:
+  status: MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK
+  checkpoint_common_keys: 461
+  checkpoint_missing_keys: 0
+  checkpoint_unexpected_keys: 0
+  step10_byte_identical_rows: 0
+  output_diff_mean_full_abs: 0.13143352206508793
+  output_diff_mean_mask_abs: 0.18672874342540607
+  output_diff_mean_affected_abs: 0.1731182035360047
+  output_diff_mean_outside_abs: 0.10850902535158265
+  frozen_delta_param_norm_ratio: 5.6404525516172905e-06
+  ema_delta_param_norm_ratio: 5.630459939756668e-06
+  frozen_linear_utility_mean: 0.4999982982873917
+  ema_linear_utility_mean: 0.5000003516674042
+  training_launched: false

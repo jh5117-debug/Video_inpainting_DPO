@@ -65,3 +65,53 @@ Report:
 No GPU training, inference, 30-step, RC-FPO, or protected-lane action was
 launched by this readback milestone.
 
+## 2026-06-27 No-Change Forensic Audit
+
+- Status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+- Training performed in this milestone: false.
+- Exp30 checkpoints audited: frozen and EMA `checkpoint-0` vs `checkpoint-10`.
+- Common safetensor keys: 461 per recipe.
+- Missing/unexpected keys: 0/0 for both recipes.
+- Parameter count read: 1,127,055,424 per recipe.
+- Frozen mean abs parameter delta: `1.5329060227168864e-08`.
+- Frozen max abs parameter delta: `8.106231689453125e-06`.
+- Frozen delta / param norm ratio: `5.6404525516172905e-06`.
+- EMA mean abs parameter delta: `1.5302821461092914e-08`.
+- EMA max abs parameter delta: `8.106231689453125e-06`.
+- EMA delta / param norm ratio: `5.630459939756668e-06`.
+- Step0 vs Step10 output rows compared: 32.
+- Byte-identical rows: 0.
+- Mean full / mask / affected / outside absolute pixel diff:
+  `0.13143352206508793`, `0.18672874342540607`,
+  `0.1731182035360047`, `0.10850902535158265`.
+- Max absolute pixel diff: 28.
+
+Loss / utility scale:
+
+- Frozen linear utility mean/min/max:
+  `0.4999982982873917` / `0.49997058510780334` /
+  `0.5000085830688477`.
+- Frozen abs margin mean: `2.8578052297234536e-05`.
+- EMA linear utility mean/min/max:
+  `0.5000003516674042` / `0.49999284744262695` /
+  `0.5000050663948059`.
+- EMA abs margin mean: `1.2780050747096539e-05`.
+- t range in Exp30 diagnostics: `0.24` to `0.69`, mean `0.465`.
+
+Conclusion:
+
+The previous Exp30 Step10 checkpoint was not a silent fallback to Step0:
+checkpoint keys match, parameter deltas are nonzero, and Step0/Step10 outputs
+are not byte-identical. The movement is simply far below useful visual scale.
+The dominant audited cause is a near-constant Linear-DPO utility around 0.5
+with tiny margins, compounded by very small parameter movement. Exp35 should
+next run an inference-sensitivity positive-control before redesigning recipes.
+
+Reports:
+
+- `reports/exp35_minimax_10step_forensic_audit.md`
+- `reports/exp35_minimax_10step_forensic_audit.csv`
+- `reports/exp35_minimax_10step_output_diff.csv`
+- `reports/exp35_minimax_10step_param_delta.csv`
+- `reports/exp35_minimax_10step_loss_scale.csv`
+- `reports/exp35_minimax_10step_forensic_summary.json`

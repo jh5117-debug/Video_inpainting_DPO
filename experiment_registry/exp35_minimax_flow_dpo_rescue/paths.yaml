@@ -3,6 +3,11 @@ pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp35_m
 output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp35_minimax_flow_dpo_rescue
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue
 readback_report: reports/exp35_minimax_rescue_readback.md
+forensic_audit_report: reports/exp35_minimax_10step_forensic_audit.md
+forensic_audit_csv: reports/exp35_minimax_10step_forensic_audit.csv
+forensic_output_diff_csv: reports/exp35_minimax_10step_output_diff.csv
+forensic_param_delta_csv: reports/exp35_minimax_10step_param_delta.csv
+forensic_loss_scale_csv: reports/exp35_minimax_10step_loss_scale.csv
+forensic_summary_json: reports/exp35_minimax_10step_forensic_summary.json
 exp30_train32_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_train32_v3.jsonl
 exp30_heldout16_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_heldout16_v3.jsonl
-

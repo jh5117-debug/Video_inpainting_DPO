@@ -12,3 +12,17 @@ Readback imports the Exp30 MiniMax 10-step heldout summary:
 
 Next metric milestone: no-change forensic audit.
 
+## 2026-06-27 No-Change Forensic Audit
+
+- Root-cause status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+- Frozen parameter delta / param norm ratio: `5.6404525516172905e-06`.
+- EMA parameter delta / param norm ratio: `5.630459939756668e-06`.
+- Step0/Step10 byte-identical rows: 0/32.
+- Mean full abs pixel diff: `0.13143352206508793`.
+- Mean mask abs pixel diff: `0.18672874342540607`.
+- Mean affected abs pixel diff: `0.1731182035360047`.
+- Mean outside abs pixel diff: `0.10850902535158265`.
+- Frozen linear utility mean: `0.4999982982873917`.
+- EMA linear utility mean: `0.5000003516674042`.
+
+The audit shows nonzero but sub-perceptual checkpoint/output movement.
