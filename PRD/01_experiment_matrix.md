@@ -1,3 +1,9 @@
+## 2026-06-28 Exp34 Readback Refresh
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp34 objective ablation prep | `EXP34_READBACK_REFRESHED_OBJECTIVE_PREP_STILL_PENDING`; no new PAI outputs/runtime; no objective GPU study | `reports/exp34_readback_refresh_20260628.md`, `experiment_registry/exp34_objective_ablation_prep_postminimax/` |
+
 ## 2026-06-27 Exp34 Objective Ablation Prep
 
 | User-facing name | Status | Evidence / registry |

@@ -1,3 +1,16 @@
+## 2026-06-28 Exp34 Readback Refresh
+
+Status: `EXP34_READBACK_REFRESHED_OBJECTIVE_PREP_STILL_PENDING`
+
+The left CLI refreshed Exp34 as CPU/readback-only while Exp31 evaluation was
+running. The remote branch still points to
+`d6bc680a2c95ebf637f66748077811a6f69559c7`, matching the local HEAD. PAI log,
+experiment, and runtime roots for Exp34 contain no new files.
+
+No O0-O5 objective study, LocalDPO 24F GPU run, RC-FPO, MiniMax run, or adapter
+training was launched. The previous decision remains unchanged: Exp34 is only a
+preparation lane until an explicit later authorization.
+
 ## 2026-06-27 Exp34 Objective Ablation Prep Readback
 
 Status: `EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING`

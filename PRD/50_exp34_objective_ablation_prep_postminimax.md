@@ -68,7 +68,14 @@ exist and stale MiniMax locks reserve GPU0 and GPU5. Exp34 does not need a GPU.
 
 ## Status
 
-Current status: `EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING`
+Current status: `EXP34_READBACK_REFRESHED_OBJECTIVE_PREP_STILL_PENDING`
 
 Objective-run status: `OBJECTIVE_ABLATION_NOT_RUN_RIGHT_PLUGIN_ACTIVE`
 
+2026-06-28 refresh:
+
+- local and remote HEAD both remain
+  `d6bc680a2c95ebf637f66748077811a6f69559c7`;
+- PAI Exp34 log, output, and runtime roots had no new files at readback time;
+- no O0-O5, LocalDPO 24F, RC-FPO, MiniMax, adapter training, or GPU objective
+  run was launched.

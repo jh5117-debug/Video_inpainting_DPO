@@ -1,3 +1,3 @@
 run_id	status	gpu_run	objective_study	rcfpo	report
 exp34_readback_20260627	EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING	no	not_started	not_started	reports/exp34_objective_ablation_prep_readback.md
-
+exp34_readback_refresh_20260628	EXP34_READBACK_REFRESHED_OBJECTIVE_PREP_STILL_PENDING	no	not_started	not_started	reports/exp34_readback_refresh_20260628.md
