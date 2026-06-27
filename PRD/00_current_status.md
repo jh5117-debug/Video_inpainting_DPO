@@ -1,3 +1,21 @@
+## 2026-06-27 Exp34 Objective Ablation Prep Readback
+
+Status: `EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING`
+
+An isolated Exp34 branch and worktree were created from
+`origin/research/exp27-paper-grounded-preference-study` at
+`17b99a421fbf1bb79a446713a1f30ef6c8ecc769`.
+
+Exp27 source-of-truth now has true-model SDPO parity and Linear-DPO
+Frozen/EMA 1/10-step complete. LocalDPO 24F adaptation, O0-O5 controlled
+objective study, and RC-FPO remain unstarted.
+
+Exp34 is CPU/readback/preparation only while right-side Exp30/MiniMax remains
+protected. No GPU objective run is authorized by this readback.
+
+Next required milestone: CPU-only objective config scaffolding and guardrail
+tests, or remain `OBJECTIVE_ABLATION_NOT_RUN_RIGHT_PLUGIN_ACTIVE`.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

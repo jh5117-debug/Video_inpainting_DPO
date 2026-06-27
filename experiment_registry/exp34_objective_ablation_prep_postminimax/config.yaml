@@ -1,0 +1,16 @@
+experiment: exp34_objective_ablation_prep_postminimax
+status: EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING
+gpu_required: false
+objective_runs_allowed: false
+blocked_until: right_side_minimax_completed_or_released
+prepared_items_pending:
+  - localdpo_objective_args_manifest_bugfix
+  - o0_o5_config_skeletons
+  - linear_frozen_ema_minimax_flow_target_config
+  - sdpo_safe_lambda_config
+forbidden_runs:
+  - O0-O5 GPU study
+  - RC-FPO
+  - LocalDPO 24F GPU run
+  - MiniMax training
+

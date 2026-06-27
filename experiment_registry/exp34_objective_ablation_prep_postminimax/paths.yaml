@@ -1,0 +1,8 @@
+branch: research/exp34-objective-ablation-prep-postminimax-20260627
+base_branch: origin/research/exp27-paper-grounded-preference-study
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp34_objective_prep
+pai_runtime_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp34_objective_prep
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp34_objective_ablation_prep_postminimax
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp34_objective_ablation_prep_postminimax
+monitor_log: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/idle_gpu_parallel_20260627/monitor_5min.csv
+

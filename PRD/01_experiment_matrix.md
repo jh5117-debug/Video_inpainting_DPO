@@ -1,3 +1,15 @@
+## 2026-06-27 Exp34 Objective Ablation Prep
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp34 objective ablation prep | `EXP34_READBACK_COMPLETED_OBJECTIVE_PREP_PENDING`; CPU-only; no objective GPU study | `PRD/50_exp34_objective_ablation_prep_postminimax.md`, `reports/exp34_objective_ablation_prep_readback.md`, `experiment_registry/exp34_objective_ablation_prep_postminimax/` |
+
+Notes:
+
+- SDPO true-model and Linear-DPO 1/10-step are already complete in Exp27.
+- LocalDPO 24F, O0-O5, and RC-FPO remain unstarted.
+- No right-side Exp30/MiniMax files or outputs are touched.
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |
