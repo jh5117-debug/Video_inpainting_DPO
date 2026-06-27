@@ -75,6 +75,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--primary-csv", type=Path, required=True)
     parser.add_argument("--summary-json", type=Path, required=True)
     parser.add_argument("--seed", type=int, default=20260627)
+    parser.add_argument("--label", default="Smoke16 V3")
+    parser.add_argument("--min-primary-usable", type=int, default=8)
+    parser.add_argument("--max-primary-trivial-bad", type=int, default=6)
+    parser.add_argument("--success-status", default="CONTROLLED_CORRUPTION_V3_READY")
+    parser.add_argument("--low-yield-status", default="CONTROLLED_CORRUPTION_V3_LOW_YIELD")
     return parser.parse_args()
 
 
@@ -439,22 +444,25 @@ def main() -> int:
         [r for r in primary_rows if float(r["outside_psnr"]) < 40.0 or float(r["outside_mae"]) > 2.0]
     )
     status = (
-        "CONTROLLED_CORRUPTION_V3_READY"
+        args.success_status
         if primary_technical_valid >= 15
-        and primary_usable >= 8
-        and primary_counts["TRIVIAL_BAD"] <= 6
+        and primary_usable >= args.min_primary_usable
+        and primary_counts["TRIVIAL_BAD"] <= args.max_primary_trivial_bad
         and primary_outside_fail == 0
-        else "CONTROLLED_CORRUPTION_V3_LOW_YIELD"
+        else args.low_yield_status
     )
     summary = {
         "status": status,
+        "label": args.label,
         "candidate_count": len(review_rows),
         "source_count": len(primary_rows),
         "all_classification_counts": dict(all_counts),
         "primary_classification_counts": dict(primary_counts),
         "primary_usable_count": primary_usable,
+        "primary_usable_required": args.min_primary_usable,
         "primary_technical_valid_count": primary_technical_valid,
         "primary_outside_fail_count": primary_outside_fail,
+        "primary_trivial_bad_max": args.max_primary_trivial_bad,
         "review_csv": str(args.review_csv),
         "metrics_csv": str(args.metrics_csv),
         "primary_csv": str(args.primary_csv),
@@ -463,13 +471,13 @@ def main() -> int:
     args.summary_json.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     args.report_md.parent.mkdir(parents=True, exist_ok=True)
     args.report_md.write_text(
-        "# Exp30 Controlled-Corruption Smoke16 V3\n\n"
+        f"# Exp30 Controlled-Corruption {args.label}\n\n"
         f"Status: `{status}`\n\n"
         f"- Candidate count: {len(review_rows)}\n"
         f"- Source count: {len(primary_rows)}\n"
         f"- All classification counts: `{dict(all_counts)}`\n"
         f"- Primary classification counts: `{dict(primary_counts)}`\n"
-        f"- Primary usable count: {primary_usable}\n"
+        f"- Primary usable count: {primary_usable} / required {args.min_primary_usable}\n"
         f"- Primary technical-valid count: {primary_technical_valid}\n"
         f"- Primary outside-fail count: {primary_outside_fail}\n\n"
         "The v3 controlled fallback follows the preregistered profile schedule "
@@ -480,7 +488,7 @@ def main() -> int:
         encoding="utf-8",
     )
     print(json.dumps(summary, indent=2, sort_keys=True))
-    return 0 if status == "CONTROLLED_CORRUPTION_V3_READY" else 2
+    return 0 if status == args.success_status else 2
 
 
 if __name__ == "__main__":
