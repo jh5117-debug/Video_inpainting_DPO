@@ -1,5 +1,5 @@
 experiment: exp31_videopainter_2000step_longrun
-status: VIDEOPAINTER_2000_FRESH_FROM_STEP0
+status: VIDEOPAINTER_2000_L0_L1_PASSED
 planned_gpu: 1
 reserved_gpus:
   - 0
@@ -19,6 +19,10 @@ checkpoint_steps:
 primary_endpoint: shadow_dev_step2000_minus_step0
 resume_policy: fresh_from_step0
 resume_policy_reason: step50_has_optimizer_but_no_scheduler_or_rng_state
+l0_l1_status: VIDEOPAINTER_2000_L0_L1_PASSED
+l0_l1_run_id: exp31_vp_l0_l1_20260627_132158
+actual_pai_runtime_root_for_l0_l1: /home/hj/runtime_code/H20_Video_inpainting_DPO_exp31_vp2000
+actual_l0_l1_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp_l0_l1_20260627_132158
 forbidden_changes:
   - exp26_outputs
   - exp30_outputs

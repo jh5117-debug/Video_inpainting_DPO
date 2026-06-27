@@ -1,3 +1,20 @@
+## 2026-06-27 Exp31 L0/L1
+
+Status: `VIDEOPAINTER_2000_L0_L1_PASSED`
+
+Exp31 reran the strict primary32 one-batch forward and one-step reload gate on
+GPU1. L0 had finite loss, finite policy gradient, and zero reference gradient.
+L1 changed policy weights, left the reference unchanged, and strict reload had
+max absolute diff `0.0`.
+
+The requested PAI runtime/output parents were not writable by user `hj`, so the
+run used `/home/hj/runtime_code/H20_Video_inpainting_DPO_exp31_vp2000` for code
+and the Exp31-only log root for L0/L1 outputs. No Exp26 or Exp30 outputs were
+modified.
+
+Next required milestone: launch fresh-from-Step0 2000-step training under the
+same protocol.
+
 ## 2026-06-27 Exp31 Resume Policy Audit
 
 Status: `VIDEOPAINTER_2000_FRESH_FROM_STEP0`

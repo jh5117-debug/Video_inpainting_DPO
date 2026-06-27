@@ -79,7 +79,7 @@ The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `VIDEOPAINTER_2000_FRESH_FROM_STEP0`.
+Current status: `VIDEOPAINTER_2000_L0_L1_PASSED`.
 
 Resume-policy decision:
 
@@ -88,3 +88,15 @@ Resume-policy decision:
 - Step50 RNG state is absent.
 - The 2000-step run must start fresh from Step0 and must not be described as a
   continuation from Step50.
+
+L0/L1 decision:
+
+- run id: `exp31_vp_l0_l1_20260627_132158`
+- CUDA_VISIBLE_DEVICES: `1`
+- L0 loss: `0.695064902305603`
+- L0 policy grad norm: `14.379269412062548`
+- reference gradient: `false`
+- L1 policy delta norm: `1.6732703166152714`
+- L1 reference delta norm: `0.0`
+- strict reload max abs diff: `0.0`
+- decision: `VIDEOPAINTER_2000_L0_L1_PASSED`

@@ -1,0 +1,3 @@
+gate,loss,dpo_loss,implicit_acc,policy_grad_norm,policy_delta_norm,reference_delta_norm,reload_max_abs_diff
+L0,0.695064902305603,0.6931471824645996,0.0,14.379269412062548,,,
+L1,2.0102181434631348,1.5281749963760376,0.0,,1.6732703166152714,0.0,0.0
