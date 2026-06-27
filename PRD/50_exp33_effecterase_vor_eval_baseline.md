@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_AUDIT_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -96,3 +96,23 @@ Audit scaffold:
 - `eligible_for_training=false` is mandatory;
 - no inference, adapter training, loser mining, or checkpoint selection is
   launched by the audit.
+
+Compatibility audit:
+
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945`
+- VOR-Eval triplets audited: `43`
+- ready rows: `43`
+- rejected rows: `0`
+- ready manifest:
+  `exp33_effecterase_vor_eval_baseline/manifests/effecterase_vor_eval_official81_ready.jsonl`
+- ready manifest SHA256:
+  `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`
+- source member index copy:
+  `reports/exp33_source_vor_eval_member_index.csv`
+- source member index SHA256:
+  `3c135d0d9bd4ba99017e4e36e70033bd895d46dcb60169ff95a242c145eabb9d`
+- mask buckets: `small=13`, `medium=8`, `large=22`
+- source type: `REAL=43`
+- preview sanity review: 3 stratified rows passed
+- inference: not started

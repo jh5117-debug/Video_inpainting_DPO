@@ -5,3 +5,5 @@ No Exp33 VOR-Eval metrics exist yet.
 Prior Exp29 official 81-frame diagnostic metrics are recorded in
 `reports/exp33_effecterase_vor_eval_readback.md` only as readback context.
 
+The Exp33 VOR-Eval official81 compatibility audit passed for 43/43 rows, but
+EffectErase inference and project metrics have not started.

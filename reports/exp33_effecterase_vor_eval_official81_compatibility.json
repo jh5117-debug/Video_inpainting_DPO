@@ -1,0 +1,25 @@
+{
+  "adapter_training": "forbidden",
+  "eligible_for_training": false,
+  "extracted_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_eval_full/VOR-Eval/VOR-Eval",
+  "inference_started": false,
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/manifests/effecterase_vor_eval_official81_ready.jsonl",
+  "manifest_sha256": "d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811",
+  "mask_bucket_counts": {
+    "large": 22,
+    "medium": 8,
+    "small": 13
+  },
+  "member_index": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp33_effecterase_eval/reports/vor_eval_member_index.csv",
+  "member_index_sha256": "3c135d0d9bd4ba99017e4e36e70033bd895d46dcb60169ff95a242c145eabb9d",
+  "ready_rows": 43,
+  "rejected_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/manifests/effecterase_vor_eval_official81_rejected.jsonl",
+  "rejected_manifest_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "rejected_rows": 0,
+  "source_type_counts": {
+    "REAL": 43
+  },
+  "status": "EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED",
+  "triplets": 43,
+  "vor_eval_used": true
+}

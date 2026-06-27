@@ -1,3 +1,23 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Compatibility
+
+Status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
+
+Exp33 audited the held-out VOR-Eval 43 triplets for official EffectErase
+81-frame baseline inference compatibility.
+
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945`
+- ready rows: `43/43`
+- rejected rows: `0`
+- ready manifest SHA256:
+  `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`
+- VOR-Eval use: held-out baseline only
+- eligible for training: `false`
+- EffectErase inference: not started
+
+Preview sheets were generated for all 43 rows. A stratified small/medium/large
+preview sanity check passed for 3 rows.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Audit Scaffold
 
 Status: `EXP33_VOREVAL_OFFICIAL81_AUDIT_READY`

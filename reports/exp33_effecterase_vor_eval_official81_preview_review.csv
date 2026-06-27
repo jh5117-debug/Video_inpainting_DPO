@@ -1,0 +1,4 @@
+sample_id,mask_bucket,preview_path,reviewed_frames,reviewer_pass,reason
+REAL_ENV900_00001_001_03,small,reports/exp33_effecterase_vor_eval_official81_previews/00_REAL_ENV900_00001_001_03.jpg,"0,5,10,16,21,26,32,37,42,48,53,58,64,69,74,80",pass,"condition contains foreground target, winner is clean background, mask overlay tracks target region"
+REAL_ENV900_00013_004_03,medium,reports/exp33_effecterase_vor_eval_official81_previews/11_REAL_ENV900_00013_004_03.jpg,"0,5,10,16,21,26,32,37,42,48,53,58,64,69,74,80",pass,"person target is present in condition, absent in winner, and overlay follows the foreground body"
+REAL_ENV900_00032_001_04,large,reports/exp33_effecterase_vor_eval_official81_previews/25_REAL_ENV900_00032_001_04.jpg,"0,5,10,16,21,26,32,37,42,48,53,58,64,69,74,80",pass,"large foreground/mask region is visible and paired with corresponding clean winner frames"

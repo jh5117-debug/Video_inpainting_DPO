@@ -1,0 +1,60 @@
+# Exp33 EffectErase VOR-Eval Official81 Compatibility
+
+Status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
+
+- VOR-Eval triplets audited: 43
+- Ready rows: 43
+- Rejected rows: 0
+- Manifest: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/manifests/effecterase_vor_eval_official81_ready.jsonl`
+- Manifest SHA256: `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`
+- Preview dir: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/reports/exp33_effecterase_vor_eval_official81_previews`
+- Role: held-out EffectErase baseline only.
+- Training/adaptation/loser mining/checkpoint selection: forbidden.
+
+| sample_id | condition/winner/mask frames | resolution | non-empty mask frames | mask area median | status | reason |
+| --- | --- | --- | ---: | ---: | --- | --- |
+| REAL_ENV900_00001_001_03 | 240/240/240 | 1280x720 | 81 | 0.021008 | `READY` |  |
+| REAL_ENV900_00002_002_05 | 240/240/240 | 1280x720 | 81 | 0.004909 | `READY` |  |
+| REAL_ENV900_00003_001_04 | 240/240/240 | 1280x720 | 81 | 0.037955 | `READY` |  |
+| REAL_ENV900_00004_004_02 | 240/240/240 | 1280x720 | 81 | 0.101182 | `READY` |  |
+| REAL_ENV900_00005_001_04 | 240/240/240 | 1280x720 | 81 | 0.248087 | `READY` |  |
+| REAL_ENV900_00007_004_03 | 240/240/240 | 1280x720 | 47 | 0.001547 | `READY` |  |
+| REAL_ENV900_00008_003_01 | 240/240/240 | 1280x720 | 81 | 0.027135 | `READY` |  |
+| REAL_ENV900_00009_002_02 | 240/240/240 | 1280x720 | 81 | 0.026211 | `READY` |  |
+| REAL_ENV900_00010_001_04 | 240/240/240 | 1280x720 | 81 | 0.078236 | `READY` |  |
+| REAL_ENV900_00011_001_04 | 240/240/240 | 1280x720 | 81 | 0.002640 | `READY` |  |
+| REAL_ENV900_00012_002_02 | 240/240/240 | 1280x720 | 81 | 0.024564 | `READY` |  |
+| REAL_ENV900_00013_004_03 | 240/240/240 | 1280x720 | 81 | 0.039769 | `READY` |  |
+| REAL_ENV900_00017_001_01 | 240/240/240 | 1280x720 | 81 | 0.188780 | `READY` |  |
+| REAL_ENV900_00018_005_05 | 240/240/240 | 1280x720 | 81 | 0.180690 | `READY` |  |
+| REAL_ENV900_00019_002_01 | 240/240/240 | 1280x720 | 81 | 0.136862 | `READY` |  |
+| REAL_ENV900_00020_002_01 | 240/240/240 | 1280x720 | 81 | 0.206580 | `READY` |  |
+| REAL_ENV900_00021_004_03 | 240/240/240 | 1280x720 | 81 | 0.011153 | `READY` |  |
+| REAL_ENV900_00022_006_05 | 240/240/240 | 1280x720 | 81 | 0.159757 | `READY` |  |
+| REAL_ENV900_00024_002_01 | 240/240/240 | 1280x720 | 81 | 0.143742 | `READY` |  |
+| REAL_ENV900_00025_001_01 | 240/240/240 | 1280x720 | 81 | 0.013112 | `READY` |  |
+| REAL_ENV900_00026_006_03 | 240/240/240 | 1280x720 | 81 | 0.224527 | `READY` |  |
+| REAL_ENV900_00027_001_03 | 240/240/240 | 1280x720 | 81 | 0.051657 | `READY` |  |
+| REAL_ENV900_00028_002_01 | 240/240/240 | 1280x720 | 81 | 0.073852 | `READY` |  |
+| REAL_ENV900_00029_002_01 | 240/240/240 | 1280x720 | 81 | 0.026270 | `READY` |  |
+| REAL_ENV900_00030_005_03 | 240/240/240 | 1280x720 | 81 | 0.090464 | `READY` |  |
+| REAL_ENV900_00032_001_04 | 240/240/240 | 1280x720 | 81 | 0.463923 | `READY` |  |
+| REAL_ENV900_00033_001_03 | 240/240/240 | 1280x720 | 81 | 0.148275 | `READY` |  |
+| REAL_ENV900_00034_001_03 | 240/240/240 | 1280x720 | 81 | 0.239933 | `READY` |  |
+| REAL_ENV900_00035_001_02 | 240/240/240 | 1280x720 | 81 | 0.073521 | `READY` |  |
+| REAL_ENV900_00036_002_02 | 240/240/240 | 1280x720 | 81 | 0.150164 | `READY` |  |
+| REAL_ENV900_00037_003_01 | 240/240/240 | 1280x720 | 81 | 0.101774 | `READY` |  |
+| REAL_ENV900_00040_002_04 | 240/240/240 | 1280x720 | 81 | 0.041239 | `READY` |  |
+| REAL_ENV900_00042_003_02 | 240/240/240 | 1280x720 | 81 | 0.034696 | `READY` |  |
+| REAL_ENV900_00043_003_04 | 240/240/240 | 1280x720 | 81 | 0.457386 | `READY` |  |
+| REAL_ENV900_00044_002_04 | 240/240/240 | 1280x720 | 81 | 0.142525 | `READY` |  |
+| REAL_ENV900_00045_002_04 | 240/240/240 | 1280x720 | 81 | 0.214545 | `READY` |  |
+| REAL_ENV900_00046_001_03 | 240/240/240 | 1280x720 | 81 | 0.122447 | `READY` |  |
+| REAL_ENV900_00047_002_01 | 240/240/240 | 1280x720 | 81 | 0.115636 | `READY` |  |
+| REAL_ENV900_00048_001_03 | 240/240/240 | 1280x720 | 81 | 0.105362 | `READY` |  |
+| REAL_ENV900_00051_001_05 | 240/240/240 | 1280x720 | 81 | 0.124137 | `READY` |  |
+| REAL_ENV900_00053_001_01 | 240/240/240 | 1280x720 | 81 | 0.021506 | `READY` |  |
+| REAL_ENV900_00054_001_02 | 240/240/240 | 1280x720 | 81 | 0.007083 | `READY` |  |
+| REAL_ENV900_00055_001_05 | 240/240/240 | 1280x720 | 81 | 0.236431 | `READY` |  |
+
+No EffectErase inference was launched by this compatibility audit.

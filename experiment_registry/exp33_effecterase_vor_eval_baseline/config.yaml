@@ -1,5 +1,5 @@
 experiment: exp33_effecterase_vor_eval_baseline
-status: EXP33_VOREVAL_OFFICIAL81_AUDIT_READY
+status: EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED
 planned_gpu: 3
 reserved_gpus:
   - 0
@@ -16,3 +16,9 @@ official_inference_steps: 50
 vor_eval_use: held_out_only
 audit_script: exp33_effecterase_vor_eval_baseline/scripts/audit_vor_eval_official81.py
 audit_inference_started: false
+compatibility_run_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945
+compatibility_ready_rows: 43
+compatibility_rejected_rows: 0
+ready_manifest_sha256: d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811
+source_member_index: reports/exp33_source_vor_eval_member_index.csv
+source_member_index_sha256: 3c135d0d9bd4ba99017e4e36e70033bd895d46dcb60169ff95a242c145eabb9d
