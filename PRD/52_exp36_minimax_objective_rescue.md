@@ -92,3 +92,37 @@ Reports:
 
 Next eligible milestone: Exp36 inference sensitivity test. No 30-step or long
 training is unlocked.
+
+## 2026-06-27 Inference Sensitivity Test
+
+Status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+
+Ran a no-training Exp36 sensitivity diagnostic on PAI GPU0. The task replayed
+the same Step0 checkpoint twice with the same seed and then evaluated a
+temporary Exp36-only checkpoint where 16 MiniMax transformer tensors were
+scaled by `1.01`.
+
+Results:
+
+- Rows: `4` (2 heldout, 2 train).
+- Identity control max full MAE: `0.0`.
+- Perturbed mean full MAE: `0.08821829589193357`.
+- Perturbed mean mask MAE: `0.15630244233590715`.
+- Visual review: Codex opened `4/4` comparison strips.
+- Identity controls were visually identical.
+- Perturbed outputs showed subtle nonzero response.
+- Collapse / black-purple / new artifact count: `0`.
+- Quality-positive claim unlocked: `false`.
+
+Interpretation: MiniMax inference consumes transformer weights. The old
+failure is not an inference fallback or ignored checkpoint. This is sensitivity
+evidence only; it does not show heldout quality improvement and does not
+unlock 30-step.
+
+Reports:
+
+- `reports/exp36_minimax_inference_sensitivity.md`
+- `reports/exp36_minimax_inference_sensitivity.csv`
+- `reports/exp36_minimax_inference_sensitivity_visual_review.csv`
+- `reports/exp36_minimax_inference_sensitivity_summary.json`
+- `reports/exp36_minimax_inference_sensitivity_assets/`

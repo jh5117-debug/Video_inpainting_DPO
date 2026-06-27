@@ -1,0 +1,23 @@
+{
+  "adapter_scale_sweep_status": "NOT_APPLICABLE_NO_LORA_SCOPE_IN_EXP30",
+  "codex_visual_review_status": "REVIEWED_4_OF_4",
+  "heldout_manifest_sha256": "84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade",
+  "identity_full_mae_max": 0.0,
+  "interpretation": "MiniMax inference consumes transformer weights; perturbation changes outputs subtly without collapse, but this is sensitivity evidence only, not a quality-positive adapter result.",
+  "max_perturb_tensors": 16,
+  "perturb_full_mae_mean": 0.08821829589193357,
+  "perturb_mask_mae_mean": 0.15630244233590715,
+  "perturb_scale": 1.01,
+  "perturbed_tensors": 16,
+  "quality_positive_claim_unlocked": false,
+  "rows": 4,
+  "seed": 20260627,
+  "status": "MINIMAX_INFERENCE_SENSITIVITY_PASS",
+  "step0_checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen/checkpoint-0",
+  "temporary_perturbed_checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue/sensitivity_20260627/output/temporary_perturbed_checkpoint",
+  "train_manifest_sha256": "1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196",
+  "visual_collapse_count": 0,
+  "visual_identity_identical_count": 4,
+  "visual_new_artifact_count": 0,
+  "visual_perturb_subtle_nonzero_count": 4
+}

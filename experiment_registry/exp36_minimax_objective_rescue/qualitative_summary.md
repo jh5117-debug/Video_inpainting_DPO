@@ -15,3 +15,13 @@ No new videos were generated. The audit preserves the previous visual
 source-of-truth: MiniMax movement is real but not quality-positive. Current
 failure is not black/purple collapse; it is tie/slight degradation and local
 metric harm.
+
+## 2026-06-27 Inference Sensitivity Test
+
+Codex opened `4/4` Exp36 sensitivity comparison strips:
+
+- Identity controls: visually identical `4/4`.
+- Perturbed outputs: subtle nonzero response `4/4`.
+- Collapse / black-purple / new artifact: `0/4`.
+
+This confirms inference sensitivity, not heldout quality improvement.

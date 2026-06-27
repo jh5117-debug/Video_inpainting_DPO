@@ -19,3 +19,13 @@ Prior metrics summarized under Exp36:
   `-0.081454`.
 - Exp35 R1/R2/R3 mean boundary PSNR deltas: `-0.423993`, `-0.434234`,
   `-0.493050`.
+
+## 2026-06-27 Inference Sensitivity Test
+
+- Identity replay max full MAE: `0.0`.
+- Perturbation mean full MAE: `0.08821829589193357`.
+- Perturbation mean mask MAE: `0.15630244233590715`.
+- Perturbed tensors: `16`.
+- Perturb scale: `1.01`.
+
+These are sensitivity metrics, not quality metrics.

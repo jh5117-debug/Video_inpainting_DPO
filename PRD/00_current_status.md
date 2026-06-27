@@ -3098,3 +3098,17 @@ The dominant issue is that previous preference objectives either had
 near-constant utility/margins or produced harmful heldout movement.
 
 No 30-step or long MiniMax training is unlocked.
+
+## 2026-06-27 Exp36 MiniMax Inference Sensitivity
+
+Exp36 sensitivity status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+
+Ran a no-training diagnostic on PAI GPU0 with 2 heldout and 2 train rows.
+Step0 identity replay was exact (`identity_full_mae_max=0.0`). A temporary
+Exp36-only `1.01x` perturbation of 16 MiniMax transformer tensors produced
+nonzero response (`perturb_full_mae_mean=0.088218`,
+`perturb_mask_mae_mean=0.156302`). Codex opened all 4 comparison strips and
+found subtle nonzero response with no collapse or new artifact.
+
+Interpretation: MiniMax inference uses trained transformer weights. This is
+not a quality-positive result and does not unlock 30-step.

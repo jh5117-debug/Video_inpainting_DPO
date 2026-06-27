@@ -1,3 +1,4 @@
 milestone	status	notes
 readback	EXP36_READBACK_COMPLETED	Created Exp36 scaffold from Exp35 HEAD fb70266; reread Exp30/Exp35 reports and protected-lane state; no GPU task, training, 30-step, RC-FPO, or protected-lane action launched
 nochange_forensic_audit	MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK	Reread Exp30/Exp35 checkpoints, output-diff, loss-scale, SFT-control, and rescue reports without training; checkpoint fallback and ignored trainable scope are not supported; previous objectives either had near-constant utility or harmful heldout movement
+inference_sensitivity	MINIMAX_INFERENCE_SENSITIVITY_PASS	No-training diagnostic on 2 heldout and 2 train rows; Step0 identity replay max full MAE 0.0, temporary 1.01x transformer perturbation mean full/mask MAE 0.088218/0.156302; Codex reviewed 4/4 strips and found subtle nonzero response with no collapse or new artifact; no quality-positive claim

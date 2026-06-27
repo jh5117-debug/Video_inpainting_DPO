@@ -34,3 +34,21 @@ Reports:
 
 - `reports/exp36_minimax_nochange_forensic_audit.md`
 - `reports/exp36_minimax_nochange_summary.json`
+
+## 2026-06-27 Inference Sensitivity Test
+
+- Status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+- Training launched: false.
+- GPU used: PAI GPU0.
+- Runtime PID/PGID: `1898322` / `1898322`.
+- Identity control max full MAE: `0.0`.
+- Perturbed mean full/mask MAE: `0.08821829589193357` /
+  `0.15630244233590715`.
+- Visual review: `4/4` strips opened.
+- Collapse/new artifact count: `0`.
+- Quality-positive claim unlocked: false.
+
+Reports:
+
+- `reports/exp36_minimax_inference_sensitivity.md`
+- `reports/exp36_minimax_inference_sensitivity_summary.json`
