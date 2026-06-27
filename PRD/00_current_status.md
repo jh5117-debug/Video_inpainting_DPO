@@ -1,10 +1,35 @@
+## 2026-06-27 Exp33 VOR-Eval EffectErase Inference Launch
+
+Status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`
+
+Exp33 launched held-out VOR-Eval official81 EffectErase baseline inference on
+GPU3 after command validation passed. This is baseline inference only; no
+adapter training, DPO, loser mining, or checkpoint selection is running.
+
+- launch time: `2026-06-27T14:21:56+08:00`
+- GPU: `GPU3`
+- launcher PID/PGID: `1349871/1349871`
+- runner PID/PGID: `1349893/1349871`
+- current sample at launch-status snapshot: `REAL_ENV900_00003_001_04`
+- completed rows at launch-status snapshot: `2/43`
+- completed row technical check: `2/2` outputs open, `81` frames,
+  `832x480`
+- GPU3 snapshot: `12457 MiB`, `100%`
+- concurrent Exp31 snapshot: step `166`, GPU1 `135273 MiB`, `100%`
+- protected GPUs: GPU0 and GPU5 remained at `0 MiB`
+
+The first two outputs are technical-valid files only. No metric or visual
+quality conclusion is claimed yet.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Command Validation
 
 Status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
 
-Exp33 ran dry-run command validation on PAI against the official EffectErase
-venv, recovered assets, and the materialized held-out VOR-Eval official81
-manifest. No EffectErase inference or training was launched by this validation.
+Exp33 first ran dry-run command validation on PAI against the official
+EffectErase venv, recovered assets, and the materialized held-out VOR-Eval
+official81 manifest. The launch run repeated command validation with
+`dry_run_only=false` immediately before starting baseline inference. No adapter
+training or DPO was launched by either validation path.
 
 - rows validated: `43/43`
 - input ready: `true`
@@ -22,8 +47,8 @@ manifest. No EffectErase inference or training was launched by this validation.
   image encoder
   `628c9998b613391f193eb67ff68da9667d75f492911e4eb3decf23460a158c38`
 
-Next step: launch baseline inference on a non-reserved idle GPU only after a
-fresh GPU0/GPU5 protection check.
+Initial dry-run validation passed. Launch-time validation also passed with
+`dry_run_only=false` immediately before baseline inference.
 
 ## 2026-06-27 Exp33 VOR-Eval Official81 Runner Scaffold
 

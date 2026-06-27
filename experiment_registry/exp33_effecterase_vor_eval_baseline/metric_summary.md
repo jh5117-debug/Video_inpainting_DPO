@@ -14,3 +14,7 @@ because official EffectErase inference has not run.
 Command validation passed for 43/43 rows with assets ready and no
 training-eligible rows present. Metrics remain not started because the dry-run
 did not launch EffectErase inference.
+
+EffectErase baseline inference is now running. The launch-status snapshot has
+2/43 rows with technical-valid MP4 outputs. Project metrics are still not
+started and no metric conclusion is available.

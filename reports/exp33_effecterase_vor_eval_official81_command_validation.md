@@ -3,7 +3,7 @@
 Status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
 
 - Branch: `research/exp33-effecterase-vor-eval-baseline-20260627`
-- Commit: `bc19856b80ce0dc5f4caba81179bc16a67c36529`
+- Commit: `1a8c3e44535b64f4c1f69ce8ae6a8b8d7aefccd1`
 - Manifest: `/home/hj/runtime_code/H20_Video_inpainting_DPO_exp33_effecterase_eval/exp33_effecterase_vor_eval_baseline/manifests/effecterase_vor_eval_official81_ready.jsonl`
 - Manifest SHA256: `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`
 - Rows validated: 43
@@ -20,7 +20,7 @@ Status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
 - VOR-Eval rows required: True
 - Training eligible rows present: False
 - Adapter/training launched: false
-- Dry-run only: True
+- Dry-run only: False
 
 ## Constructed Command Example
 

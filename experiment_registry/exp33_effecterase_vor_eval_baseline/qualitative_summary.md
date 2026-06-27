@@ -16,3 +16,6 @@ passed for 3 rows. These are still input previews only.
 
 Command validation passed, but it was dry-run only. No EffectErase output video
 or output visual review exists yet.
+
+EffectErase baseline inference is now running. The launch-status snapshot has
+2/43 technical-valid output files, but output visual review has not started.

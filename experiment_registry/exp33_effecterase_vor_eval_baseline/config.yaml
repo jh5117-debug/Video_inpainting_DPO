@@ -1,5 +1,5 @@
 experiment: exp33_effecterase_vor_eval_baseline
-status: EXP33_VOREVAL_OFFICIAL81_COMMAND_READY
+status: EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING
 planned_gpu: 3
 reserved_gpus:
   - 0
@@ -34,4 +34,11 @@ command_validation_started: true
 command_validation_status: EXP33_VOREVAL_OFFICIAL81_COMMAND_READY
 command_validation_rows: 43
 command_validation_report: reports/exp33_effecterase_vor_eval_official81_command_validation.md
-effecterase_inference_started: false
+effecterase_inference_started: true
+effecterase_inference_status: EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING
+effecterase_inference_gpu: 3
+effecterase_launcher_pid: 1349871
+effecterase_launcher_pgid: 1349871
+effecterase_runner_pid: 1349893
+effecterase_runner_pgid: 1349871
+effecterase_completed_rows_launch_snapshot: 2

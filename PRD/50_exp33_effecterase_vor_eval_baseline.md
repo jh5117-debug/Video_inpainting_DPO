@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
+Current status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -153,7 +153,8 @@ Runner scaffold:
 Command validation:
 
 - status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
-- dry-run only: `true`
+- initial dry-run only: `true`
+- launch-time validation dry-run only: `false`
 - rows validated: `43/43`
 - assets ready: `true`
 - inputs ready: `true`
@@ -164,5 +165,17 @@ Command validation:
 - report:
   `reports/exp33_effecterase_vor_eval_official81_command_validation.md`
 
-Next step: launch held-out baseline inference on an idle non-reserved GPU after
-refreshing GPU0/GPU5 protection checks.
+Inference launch:
+
+- status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`
+- launch time: `2026-06-27T14:21:56+08:00`
+- GPU: `GPU3`
+- launcher PID/PGID: `1349871/1349871`
+- runner PID/PGID: `1349893/1349871`
+- launch-status snapshot current sample: `REAL_ENV900_00003_001_04`
+- completed rows at launch-status snapshot: `2/43`
+- technical-valid outputs at launch-status snapshot: `2/2`
+- report: `reports/exp33_effecterase_vor_eval_official81_launch_status.md`
+
+Next step: wait for the 43-row baseline inference to complete, then run metrics
+and output visual review. The launch snapshot is not a quality conclusion.
