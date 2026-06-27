@@ -41,3 +41,7 @@ visual review pass.
 ## 2026-06-27 Smoke32 V3
 
 Smoke32 v3 passed the preregistered confirmation gate with 64/64 technical-valid candidates, 14 usable candidates, 10/16 usable source groups, and usable contributions from controlled corruption v3, MiniMax official v3, and ProPainter. DiffuEraser no-PCM was technical-valid but contributed 0 usable candidates. This unlocks limited Gate64 pool preparation only; adapter gates remain locked until Gate64 produces scene-disjoint train/heldout data.
+
+## 2026-06-27 Gate64 V3 Preregistration
+
+Gate64 v3 source rows are locked: 64 scene-disjoint rows, BLENDER/REAL 32/32. This is metadata-only and unlocks selective extraction/materialization, not adapter training.

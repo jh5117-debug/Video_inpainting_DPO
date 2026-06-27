@@ -154,3 +154,7 @@ Smoke32 qualitative pass, no pool-ready claim, and no Gate64 unlock.
 Codex opened the Smoke32 v3 controlled, MiniMax, ProPainter, and DiffuEraser review pages before final classification. Controlled corruption v3 provided the strongest usable source coverage but still produced 8 trivial-bad cases from over-strong or temporally unstable local defects. MiniMax contributed three usable candidates but was mostly trivial-bad due to outside damage, flicker, or over-strong local changes. ProPainter contributed three usable candidates but most rows were either too clean/strong or artifacted. DiffuEraser no-PCM showed systematic white/blur artifacts or outside damage in this split and contributed no usable candidates.
 
 The qualitative conclusion matches the low-margin pass: proceed only to limited Gate64 pool preparation, with no adapter-training claim yet.
+
+## 2026-06-27 Gate64 V3 Preregistration
+
+No video review was performed because no videos were extracted or generated. Qualitative review remains pending materialization and candidate generation.

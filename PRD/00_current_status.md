@@ -2878,3 +2878,7 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 Exp30 status: `MULTIMODEL_OR_SMOKE32_V3_PASS`.
 
 Smoke32 v3 passed with low margin: 64/64 technical-valid candidates, 14 usable candidates, 10/16 usable best-per-source coverage, 8/16 controlled-corruption usable coverage, and 3 usable generator families. Limited Gate64 pool preparation is now allowed, but no MiniMax adapter gate, long training, RC-FPO, universal-adapter claim, or data-ready claim has been made.
+
+## 2026-06-27 Exp30 Gate64 V3 Preregistration
+
+Exp30 locked `EXP30_GATE64_V3_PREREGISTERED`: 64 source groups, BLENDER/REAL 32/32, SHA256 `c4a0f5e07ef75aae57c9b40010f7fec85d10d5aa6c26a8056e1079d807bcf7f2`. No extraction, inference, or training yet.

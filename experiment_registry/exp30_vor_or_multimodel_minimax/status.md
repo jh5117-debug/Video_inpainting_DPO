@@ -464,3 +464,21 @@ Reports/assets:
 - `reports/exp30_multimodel_or_smoke32_best_per_source_v3.csv`
 - `reports/exp30_verified_generators_smoke32_v3_visual_review_final.csv`
 - `reports/exp30_smoke32_v3_assets/`
+
+
+## 2026-06-27 Gate64 V3 Preregistration
+
+- Status: `EXP30_GATE64_V3_PREREGISTERED`.
+- Locked 64 source groups after Smoke16 v3 and Smoke32 v3 both passed.
+- Excluded Smoke16 and Smoke32 scene groups plus known invalid rows.
+- Source balance: BLENDER / REAL = 32 / 32.
+- Manifest SHA256: `c4a0f5e07ef75aae57c9b40010f7fec85d10d5aa6c26a8056e1079d807bcf7f2`.
+- No extraction, model output, visual selection, VOR-Eval access, adapter gate, RC-FPO, or training was launched by this milestone.
+- This only unlocks Gate64 selective extraction/materialization and candidate generation.
+
+Reports:
+
+- `reports/exp30_vor_or_gate64_preregistration_v3.md`
+- `reports/exp30_vor_or_gate64_preregistration_v3.csv`
+- `reports/exp30_vor_or_gate64_preregistration_v3.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3.jsonl`

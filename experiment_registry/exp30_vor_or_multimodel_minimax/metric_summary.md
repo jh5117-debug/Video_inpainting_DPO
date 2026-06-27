@@ -187,3 +187,7 @@ Smoke32 v3 generated and reviewed 64 non-EffectErase candidate rows:
 - Model counts: controlled v3 8 medium-hard / 8 trivial-bad; MiniMax official v3 2 medium-hard / 1 hard-plausible / 1 too-close / 12 trivial-bad; ProPainter 2 medium-hard / 1 hard-plausible / 13 trivial-bad; DiffuEraser no-PCM 16 trivial-bad.
 
 The gate passes exactly at the usable-candidate and best-per-source thresholds, so the result should be treated as a low-margin candidate-generation pass, not as data-ready evidence.
+
+## 2026-06-27 Gate64 V3 Preregistration
+
+No model metrics were produced. The milestone locked 64 metadata rows with BLENDER/REAL 32/32 balance and scene overlap 0 against Smoke16/Smoke32.

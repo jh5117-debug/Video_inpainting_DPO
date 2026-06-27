@@ -282,3 +282,13 @@ smoke32_v3_gate:
   gate64_unlocked: true
   minimax_adapter_unlocked: false
   launched_training: false
+gate64_v3_preregistration:
+  result: EXP30_GATE64_V3_PREREGISTERED
+  rows: 64
+  scene_groups: 64
+  source_type_counts:
+    BLENDER: 32
+    REAL: 32
+  manifest_sha256: c4a0f5e07ef75aae57c9b40010f7fec85d10d5aa6c26a8056e1079d807bcf7f2
+  generated_model_outputs: false
+  launched_training: false
