@@ -1,0 +1,3 @@
+split,rows,review_status,reason
+primary128,128,VISUAL_PREVIEW_PENDING,metadata-only source-pool lock; videos not extracted yet
+reserve128,128,VISUAL_PREVIEW_PENDING,metadata-only source-pool lock; videos not extracted yet

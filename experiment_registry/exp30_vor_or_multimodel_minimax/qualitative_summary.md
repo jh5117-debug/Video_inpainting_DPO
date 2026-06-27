@@ -39,3 +39,10 @@ full-index recovery and source-pool v2 sampling before any smoke or training.
 
 No videos were extracted or reviewed in this milestone. The milestone verifies
 metadata-only VOR-OR triplet identity and unlocks source-pool v2 sampling.
+
+## 2026-06-27 Source-Pool V2
+
+No videos were extracted or reviewed. Source-pool v2 is metadata-ready only;
+visual preview status is `metadata_only_visual_preview_pending`. It unlocks
+smoke16 but not data-ready, pool-ready after visual generation, or adapter
+claims.

@@ -88,3 +88,28 @@ full_vor_index_recovery:
   archive_scanned: false
   videos_extracted: false
   next_gate: VOR_OR_SOURCE_POOL_V2_READY
+source_pool_v2:
+  result: VOR_OR_SOURCE_POOL_V2_READY
+  primary_rows: 128
+  reserve_rows: 128
+  reserve2_rows: 128
+  strict_excluded_scene_groups: 209
+  strict_candidates: 1240
+  relaxed_diagnostic_exclusion_used: false
+  primary_source_type_counts:
+    BLENDER: 64
+    REAL: 64
+  reserve_source_type_counts:
+    BLENDER: 20
+    REAL: 108
+  reserve2_source_type_counts:
+    REAL: 128
+  mask_bucket_status: unknown_metadata_unavailable
+  effect_type_status: unknown_metadata_unavailable
+  visual_preview_status: metadata_only_visual_preview_pending
+  primary_sha256: cf8104cbf8a859b66a5c3e7358b8c72c3c77177279ed78297063f7538903975b
+  reserve_sha256: cfb661b2ce86b936b1c85961173f2c83e16b6cc094505ff3b6dfa0c940c55cb0
+  reserve2_sha256: 0f457bc5439580bb13ee2390ae1f19fb53438a2a6b28a758ce0201a6270b4823
+  archive_scanned: false
+  videos_extracted: false
+  next_gate: MULTIMODEL_OR_SMOKE16_V2_PASS

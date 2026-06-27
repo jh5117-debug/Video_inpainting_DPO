@@ -1,0 +1,79 @@
+{
+  "archive_scanned": false,
+  "effect_type_counts_primary": {
+    "unknown": 128
+  },
+  "exclusion_sources": [
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/effecterase_smoke_official81_preregistered.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/minimax_expanded_rejected_v2.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/minimax_expanded_source_pool_v2.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/minimax_expanded_train16_v2.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/minimax_micro_heldout16.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/minimax_micro_train16.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/vor_or_pool128_sources.jsonl"
+    },
+    {
+      "exists": true,
+      "path": "/tmp/exp30_source_pool_v2_inputs/vor_or_source_pool_rejected.jsonl"
+    }
+  ],
+  "manifest_sha256": {
+    "primary_sha256": "cf8104cbf8a859b66a5c3e7358b8c72c3c77177279ed78297063f7538903975b",
+    "rejected_sha256": "2b2dd22549d1f31a710694c1fa0bec85dbf5288a2a8751f817cdf9906d96c6b3",
+    "reserve2_sha256": "0f457bc5439580bb13ee2390ae1f19fb53438a2a6b28a758ce0201a6270b4823",
+    "reserve_sha256": "cfb661b2ce86b936b1c85961173f2c83e16b6cc094505ff3b6dfa0c940c55cb0"
+  },
+  "metadata_index": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "metadata_rows_after_quarantine": 57750,
+  "metadata_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "primary_count": 128,
+  "primary_mask_bucket_counts": {
+    "unknown": 128
+  },
+  "primary_source_type_counts": {
+    "BLENDER": 64,
+    "REAL": 64
+  },
+  "prior_diagnostic_seen_count": 209,
+  "rejected_count": 1065,
+  "relaxed_diagnostic_exclusion_used": false,
+  "reserve2_count": 128,
+  "reserve2_source_type_counts": {
+    "REAL": 128
+  },
+  "reserve_count": 128,
+  "reserve_mask_bucket_counts": {
+    "unknown": 128
+  },
+  "reserve_source_type_counts": {
+    "BLENDER": 20,
+    "REAL": 108
+  },
+  "scene_groups_total_after_quarantine": 1449,
+  "status": "VOR_OR_SOURCE_POOL_V2_READY",
+  "strict_candidates": 1240,
+  "strict_exclusion_sample_ids": 288,
+  "strict_exclusion_scene_groups": 209,
+  "videos_extracted": false,
+  "visual_preview_status": "metadata_only_visual_preview_pending"
+}

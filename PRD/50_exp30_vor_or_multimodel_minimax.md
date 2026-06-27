@@ -176,3 +176,47 @@ Reports/manifests:
 - `reports/exp30_full_vor_index_recovery.csv`
 - `reports/exp30_full_vor_index_summary.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_full_valid_triplet_index_ref.json`
+
+## 2026-06-27 Source-Pool V2 Sampling From Full Index
+
+- Status: `VOR_OR_SOURCE_POOL_V2_READY`
+- Metadata rows after known-bad quarantine: 57,750.
+- Scene groups after known-bad quarantine: 1,449.
+- Strict excluded scene groups: 209.
+- Strict candidates after exclusion: 1,240.
+- Relaxed diagnostic exclusion used: false.
+- Primary rows: 128.
+- Reserve rows: 128.
+- Reserve2 rows: 128.
+- Primary source type counts: BLENDER 64; REAL 64.
+- Reserve source type counts: BLENDER 20; REAL 108.
+- Reserve2 source type counts: REAL 128.
+- Mask bucket metadata: unavailable, recorded as `unknown`.
+- Effect type metadata: unavailable, recorded as `unknown`.
+- Visual preview status: `metadata_only_visual_preview_pending`.
+- Videos extracted: no.
+- Archives scanned: no.
+
+Manifest SHA256:
+
+- Primary:
+  `cf8104cbf8a859b66a5c3e7358b8c72c3c77177279ed78297063f7538903975b`
+- Reserve:
+  `cfb661b2ce86b936b1c85961173f2c83e16b6cc094505ff3b6dfa0c940c55cb0`
+- Reserve2:
+  `0f457bc5439580bb13ee2390ae1f19fb53438a2a6b28a758ce0201a6270b4823`
+
+This unlocks multi-model OR smoke16 only. It does not unlock Gate64, MiniMax
+adapter training, DiffuEraser micro training, or any data-ready/scientific
+claim without video generation, metrics, and visual review.
+
+Reports/manifests:
+
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_primary128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve2_128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_rejected.jsonl`
+- `reports/exp30_vor_or_source_pool_v2_sampling.md`
+- `reports/exp30_vor_or_source_pool_v2_sampling.csv`
+- `reports/exp30_vor_or_source_pool_v2_summary.json`
+- `reports/exp30_vor_or_source_pool_v2_preview_review.csv`

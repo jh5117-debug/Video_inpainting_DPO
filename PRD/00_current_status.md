@@ -2665,3 +2665,19 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Pairing rule verified by exact basename across FG_BG, BG, and MASK.
 - No archive scan, extraction, GPU task, or left-side modification occurred.
 - Next action is source-pool v2 sampling from the full index.
+
+## 2026-06-27 Exp30 Source-Pool V2 Sampling
+
+- Status: `VOR_OR_SOURCE_POOL_V2_READY`
+- Source-pool v2 was sampled from the full VOR metadata index, not from the
+  prior exact extraction caches.
+- Primary rows: 128, with BLENDER 64 and REAL 64.
+- Reserve rows: 128, with BLENDER 20 and REAL 108.
+- Reserve2 rows: 128, with REAL 128.
+- Strict prior-diagnostic exclusions removed 209 scene groups; relaxed
+  diagnostic exclusion was not needed.
+- Mask/effect labels remain metadata-unavailable and are recorded as
+  `unknown`, not inferred.
+- No archive scan, video extraction, GPU task, smoke, Gate64, or training was
+  launched by this milestone.
+- Next allowed action is multi-model OR smoke16.

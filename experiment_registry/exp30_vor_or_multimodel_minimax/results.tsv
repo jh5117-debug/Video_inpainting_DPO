@@ -4,3 +4,4 @@ paper_positioning	EXP30_THREE_BACKBONE_POSITIONING_LOCKED	DiffuEraser/VideoPaint
 source_pool	VOR_OR_SOURCE_POOL_BLOCKED	Existing exact caches yielded only 80 usable scene groups after exclusions, reserve 0, REAL/BLENDER 71/9; no downstream generation launched
 continuation_v2_readback	EXP30_CONTINUATION_V2_READBACK_COMPLETED	Full metadata index with 57,751 rows located on PAI; previous block traced to exact-cache subset, not full VOR shortage
 full_vor_index_recovery	FULL_VOR_VALID_TRIPLET_INDEX_READY	Verified 57,751 metadata rows and 57,750 valid triplets after quarantining BLENDER_RIVER007_00001; exact FG_BG/BG/MASK pairing confirmed
+source_pool_v2	VOR_OR_SOURCE_POOL_V2_READY	Built metadata-only primary128/reserve128/reserve2 from full VOR index; primary BLENDER/REAL 64/64, reserve 20/108, reserve2 REAL 128; visual preview pending

@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `FULL_VOR_VALID_TRIPLET_INDEX_READY`
+Current status: `VOR_OR_SOURCE_POOL_V2_READY`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -118,3 +118,28 @@ Reports/manifests:
 - `reports/exp30_full_vor_index_recovery.csv`
 - `reports/exp30_full_vor_index_summary.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_full_valid_triplet_index_ref.json`
+
+## 2026-06-27 Source-Pool V2 Sampling
+
+- Status: `VOR_OR_SOURCE_POOL_V2_READY`.
+- Primary rows: 128.
+- Reserve rows: 128.
+- Reserve2 rows: 128.
+- Strict candidates after exclusion: 1,240.
+- Relaxed diagnostic exclusion used: false.
+- Primary source type counts: BLENDER 64; REAL 64.
+- Reserve source type counts: BLENDER 20; REAL 108.
+- Mask/effect metadata unavailable; values recorded as `unknown`.
+- Visual preview status: `metadata_only_visual_preview_pending`.
+- No videos were extracted and no smoke/training was launched.
+
+Reports/manifests:
+
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_primary128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve2_128.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_rejected.jsonl`
+- `reports/exp30_vor_or_source_pool_v2_sampling.md`
+- `reports/exp30_vor_or_source_pool_v2_sampling.csv`
+- `reports/exp30_vor_or_source_pool_v2_summary.json`
+- `reports/exp30_vor_or_source_pool_v2_preview_review.csv`

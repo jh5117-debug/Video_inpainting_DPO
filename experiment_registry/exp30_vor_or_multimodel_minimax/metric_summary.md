@@ -41,3 +41,10 @@ cache subset.
 No model metrics were produced. Data-index metrics: 57,751 metadata rows,
 57,750 valid triplets after one known-bad quarantine, 1,449 scene groups,
 BLENDER 21,495 rows, REAL 36,256 rows.
+
+## 2026-06-27 Source-Pool V2
+
+No model metrics were produced. Source-pool metrics: primary 128 rows
+(BLENDER 64, REAL 64), reserve 128 rows (BLENDER 20, REAL 108), reserve2 128
+rows (REAL 128). Mask/effect labels are metadata-unavailable and remain
+unknown.
