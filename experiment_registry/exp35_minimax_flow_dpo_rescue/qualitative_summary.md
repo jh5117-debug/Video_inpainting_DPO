@@ -26,3 +26,11 @@ Qualitative interpretation: inference does not ignore MiniMax transformer
 weights, but the output is low-sensitivity to small weight movement. This
 supports continuing to trainable-scope and objective-scale diagnostics before
 any rescue recipe training.
+
+## 2026-06-27 Trainable-Scope Audit
+
+No new videos were generated. The audit ties the previous visual sensitivity
+result to the trainable scope: Exp30 used the full MiniMax transformer and the
+temporary perturbation was visible as subtle nonzero response. The lack of
+quality-positive Step10 movement should not be described as a LoRA/scope
+visibility failure.

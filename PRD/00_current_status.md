@@ -2977,3 +2977,16 @@ temporal artifact, or new systematic outside damage. This proves MiniMax
 inference consumes the transformer checkpoint weights. It is not a
 quality-positive adapter result; the next gates remain trainable-scope,
 winner-SFT positive-control, and bad-noise/objective-scale diagnostics.
+
+## 2026-06-27 Exp35 MiniMax Trainable-Scope Audit
+
+Exp35 trainable-scope status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`.
+
+Audited the MiniMax Step0 transformer checkpoint with no training and no GPU.
+The checkpoint contains `461` tensors and `1127055424` parameters, with `0`
+LoRA/adapter tensors. Exp30 therefore trained the full transformer scope, not
+a small LoRA that might be invisible. Combined with the sensitivity
+positive-control, this rules out "scope too small" and "inference ignores
+trainable weights" as primary causes. No expanded LoRA scope was prepared in
+this milestone; the next bottleneck remains objective/update scale and
+bad-noise/hard-timestep selection.

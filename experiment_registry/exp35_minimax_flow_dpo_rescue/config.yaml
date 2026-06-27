@@ -48,3 +48,15 @@ inference_sensitivity:
   collapse_count: 0
   new_artifact_count: 0
   adapter_scale_sweep_status: NOT_APPLICABLE_NO_LORA_SCOPE_IN_EXP30
+trainable_scope:
+  status: MINIMAX_TRAINABLE_SCOPE_CURRENT_OK
+  training_launched: false
+  gpu_used: false
+  checkpoint_tensor_count: 461
+  total_numel: 1127055424
+  lora_or_adapter_tensor_count: 0
+  exp30_trainable_scope: all_transformer_parameters
+  current_scope_too_small: false
+  current_scope_ignored_by_inference: false
+  expanded_lora_scope_prepared: false
+  in_forward_path_evidence: MINIMAX_INFERENCE_SENSITIVITY_PASS

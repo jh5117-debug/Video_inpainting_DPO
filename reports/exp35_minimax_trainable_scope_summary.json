@@ -1,0 +1,202 @@
+{
+  "checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen/checkpoint-0",
+  "checkpoint_tensor_file": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen/checkpoint-0/diffusion_pytorch_model.safetensors",
+  "current_scope_ignored_by_inference": false,
+  "current_scope_too_small": false,
+  "exp30_trainable_scope": "all_transformer_parameters",
+  "expanded_lora_scope_prepared": false,
+  "expanded_lora_scope_reason": "not prepared because Exp30 scope is already full transformer and sensitivity positive-control proves checkpoint weights are used",
+  "family_counts": {
+    "attention_k": 60,
+    "attention_other": 60,
+    "attention_out": 60,
+    "attention_q": 60,
+    "attention_v": 60,
+    "embedding_or_positional": 8,
+    "mlp": 120,
+    "other": 31,
+    "projection_other": 2
+  },
+  "family_numel": {
+    "attention_k": 70824960,
+    "attention_other": 92160,
+    "attention_out": 70824960,
+    "attention_q": 70824960,
+    "attention_v": 70824960,
+    "embedding_or_positional": 17217024,
+    "mlp": 826068480,
+    "other": 279552,
+    "projection_other": 98368
+  },
+  "in_forward_path_evidence": "MINIMAX_INFERENCE_SENSITIVITY_PASS",
+  "lora_or_adapter_tensor_count": 0,
+  "lora_scope_present": false,
+  "sensitivity_perturb_full_mae_mean": 0.08821829589193357,
+  "sensitivity_perturb_mask_mae_mean": 0.15630244233590715,
+  "sensitivity_status": "MINIMAX_INFERENCE_SENSITIVITY_PASS",
+  "status": "MINIMAX_TRAINABLE_SCOPE_CURRENT_OK",
+  "tensor_count": 461,
+  "top_groups_by_numel": [
+    {
+      "module_group": "blocks.0",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.1",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.10",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.11",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.12",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.13",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.14",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.15",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.16",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.17",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.18",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.19",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.2",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.20",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.21",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.22",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.23",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.24",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.25",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.26",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.27",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.28",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.29",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.3",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.4",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.5",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.6",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.7",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.8",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "blocks.9",
+      "numel": 36991232,
+      "tensor_count": 15
+    },
+    {
+      "module_group": "condition_embedder.time_proj",
+      "numel": 14164992,
+      "tensor_count": 2
+    },
+    {
+      "module_group": "condition_embedder.time_embedder",
+      "numel": 2755584,
+      "tensor_count": 4
+    }
+  ],
+  "total_numel": 1127055424
+}

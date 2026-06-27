@@ -1,6 +1,6 @@
 # Exp35 Status
 
-Current status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`
+Current status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`
 
 ## 2026-06-27 Readback
 
@@ -51,3 +51,16 @@ Report:
 
 This confirms that MiniMax inference consumes the transformer checkpoint
 weights. It is not a quality-positive adapter result.
+
+## 2026-06-27 Trainable-Scope Audit
+
+- Status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`.
+- Training launched: false.
+- GPU used: none.
+- Checkpoint tensors: `461`.
+- Total parameters represented: `1127055424`.
+- LoRA/adapter tensors: `0`.
+- Exp30 scope: `all_transformer_parameters`.
+
+The current scope is in the inference path and is not too small. No expanded
+LoRA scope was prepared in this milestone.

@@ -41,3 +41,16 @@ The audit shows nonzero but sub-perceptual checkpoint/output movement.
 The metric result confirms that the MiniMax inference path responds to
 transformer-weight changes. The response remains visually subtle, so this
 milestone is a path/sensitivity pass only, not a quality-positive adapter gate.
+
+## 2026-06-27 Trainable-Scope Audit
+
+- Status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`.
+- Checkpoint tensor count: `461`.
+- Total parameter count represented: `1127055424`.
+- LoRA/adapter tensor count: `0`.
+- Attention q/k/v/out tensors: `60` each.
+- MLP tensors: `120`.
+- MLP parameter count: `826068480`.
+
+No metric-positive adapter result is implied. The audit only rules out a too
+small or ignored trainable scope.

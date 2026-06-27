@@ -157,3 +157,37 @@ Reports:
 - `reports/exp35_minimax_inference_sensitivity.csv`
 - `reports/exp35_minimax_inference_sensitivity_visual_review.csv`
 - `reports/exp35_minimax_inference_sensitivity_summary.json`
+
+## 2026-06-27 Trainable-Scope Audit
+
+- Status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`.
+- Training performed in this milestone: false.
+- GPU used: none.
+- Audited checkpoint:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen/checkpoint-0`.
+- Tensor count: `461`.
+- Total parameter count represented by the checkpoint: `1127055424`.
+- LoRA / adapter tensor count: `0`.
+- Exp30 trainable scope: `all_transformer_parameters`.
+- Sensitivity evidence: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+
+Module-family summary:
+
+- attention q/k/v/out tensors: `60` each.
+- MLP tensors: `120`, covering `826068480` parameters.
+- Each MiniMax transformer block contributes about `36991232` parameters.
+
+Conclusion:
+
+The current Exp30 trainable scope is not too small and is not ignored by
+inference. It is the full transformer scope. No expanded LoRA scope was
+prepared in this milestone because the bottleneck is now better explained by
+objective/update scale and missing hard-noise/timestep selection. Future rescue
+recipes must still remain bounded and must not blindly extend the old
+full-transformer 10-step recipe.
+
+Reports:
+
+- `reports/exp35_minimax_trainable_scope_audit.md`
+- `reports/exp35_minimax_trainable_scope_audit.csv`
+- `reports/exp35_minimax_trainable_scope_summary.json`
