@@ -412,13 +412,14 @@ def main() -> int:
     for item in commands:
         sample_id = item["sample_id"]
         heartbeat(args.runtime_dir, RUNNING_STATUS, sample_id, args.gpu)
+        output_path = Path(next(row["output_path"] for row in rows if row["sample_id"] == sample_id))
+        output_path.parent.mkdir(parents=True, exist_ok=True)
         log_path = args.output_root / "logs" / f"{sample_id}.log"
         log_path.parent.mkdir(parents=True, exist_ok=True)
         start = time.time()
         with log_path.open("w", encoding="utf-8") as log_handle:
             proc = subprocess.run(item["cmd"], cwd=args.repo, env=env, stdout=log_handle, stderr=subprocess.STDOUT)
         elapsed = time.time() - start
-        output_path = Path(next(row["output_path"] for row in rows if row["sample_id"] == sample_id))
         row = {
             "sample_id": sample_id,
             "exit_code": proc.returncode,
