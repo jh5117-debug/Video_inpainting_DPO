@@ -1,0 +1,22 @@
+{
+  "effect_type_counts": {
+    "unknown": 16
+  },
+  "gpu_used": false,
+  "manifest": "exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke16_v2_sources.jsonl",
+  "manifest_sha256": "1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3",
+  "mask_bucket_counts": {
+    "unknown": 16
+  },
+  "model_outputs_generated": false,
+  "rows": 16,
+  "scene_groups": 16,
+  "source_pool": "exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_primary128.jsonl",
+  "source_pool_sha256": "cf8104cbf8a859b66a5c3e7358b8c72c3c77177279ed78297063f7538903975b",
+  "source_type_counts": {
+    "BLENDER": 8,
+    "REAL": 8
+  },
+  "status": "EXP30_SMOKE16_V2_PREREGISTERED",
+  "vor_eval_used": false
+}

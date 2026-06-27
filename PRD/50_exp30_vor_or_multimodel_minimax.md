@@ -220,3 +220,30 @@ Reports/manifests:
 - `reports/exp30_vor_or_source_pool_v2_sampling.csv`
 - `reports/exp30_vor_or_source_pool_v2_summary.json`
 - `reports/exp30_vor_or_source_pool_v2_preview_review.csv`
+
+## 2026-06-27 Smoke16 V2 Preregistration
+
+- Status: `EXP30_SMOKE16_V2_PREREGISTERED`
+- Locked 16 source groups from source-pool v2 before any extraction or model
+  output review.
+- Source types: BLENDER 8; REAL 8.
+- Scene groups: 16.
+- Mask/effect labels remain metadata-unavailable and are recorded as
+  `unknown`, not inferred.
+- VOR-Eval used: no.
+- Model outputs generated: no.
+- GPU used: no.
+- Manifest:
+  `exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke16_v2_sources.jsonl`
+- Manifest SHA256:
+  `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`
+
+This preregistration only locks the smoke16 rows. It does not by itself satisfy
+`MULTIMODEL_OR_SMOKE16_V2_PASS`, unlock Gate64, unlock MiniMax adapter
+training, or support any data-ready/scientific claim.
+
+Reports:
+
+- `reports/exp30_multimodel_or_smoke16_v2_preregistration.md`
+- `reports/exp30_multimodel_or_smoke16_v2_preregistration.csv`
+- `reports/exp30_multimodel_or_smoke16_v2_preregistration.json`

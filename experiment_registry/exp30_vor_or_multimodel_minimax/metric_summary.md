@@ -48,3 +48,12 @@ No model metrics were produced. Source-pool metrics: primary 128 rows
 (BLENDER 64, REAL 64), reserve 128 rows (BLENDER 20, REAL 108), reserve2 128
 rows (REAL 128). Mask/effect labels are metadata-unavailable and remain
 unknown.
+
+## 2026-06-27 Smoke16 V2 Preregistration
+
+- Metric status: not applicable yet; no model outputs or candidate metrics were
+  generated.
+- Locked rows: 16.
+- Source type balance: BLENDER 8; REAL 8.
+- Manifest SHA256:
+  `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`.

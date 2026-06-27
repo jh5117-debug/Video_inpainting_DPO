@@ -2681,3 +2681,14 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - No archive scan, video extraction, GPU task, smoke, Gate64, or training was
   launched by this milestone.
 - Next allowed action is multi-model OR smoke16.
+
+## 2026-06-27 Exp30 Smoke16 V2 Preregistration
+
+- Status: `EXP30_SMOKE16_V2_PREREGISTERED`
+- Locked 16 source groups from source-pool v2 before extraction or model
+  output review.
+- Source types: BLENDER 8; REAL 8.
+- Manifest SHA256:
+  `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`
+- No video extraction, GPU inference, Gate64, MiniMax adapter training, or
+  scientific claim is unlocked yet.

@@ -5,3 +5,4 @@ source_pool	VOR_OR_SOURCE_POOL_BLOCKED	Existing exact caches yielded only 80 usa
 continuation_v2_readback	EXP30_CONTINUATION_V2_READBACK_COMPLETED	Full metadata index with 57,751 rows located on PAI; previous block traced to exact-cache subset, not full VOR shortage
 full_vor_index_recovery	FULL_VOR_VALID_TRIPLET_INDEX_READY	Verified 57,751 metadata rows and 57,750 valid triplets after quarantining BLENDER_RIVER007_00001; exact FG_BG/BG/MASK pairing confirmed
 source_pool_v2	VOR_OR_SOURCE_POOL_V2_READY	Built metadata-only primary128/reserve128/reserve2 from full VOR index; primary BLENDER/REAL 64/64, reserve 20/108, reserve2 REAL 128; visual preview pending
+smoke16_v2_preregistration	EXP30_SMOKE16_V2_PREREGISTERED	Locked 16 source groups from source-pool v2, BLENDER/REAL 8/8, SHA256 1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3; no extraction/model output/GPU yet

@@ -143,3 +143,17 @@ Reports/manifests:
 - `reports/exp30_vor_or_source_pool_v2_sampling.csv`
 - `reports/exp30_vor_or_source_pool_v2_summary.json`
 - `reports/exp30_vor_or_source_pool_v2_preview_review.csv`
+
+## 2026-06-27 Smoke16 V2 Preregistration
+
+- Status: `EXP30_SMOKE16_V2_PREREGISTERED`.
+- Rows: 16.
+- Scene groups: 16.
+- Source type counts: BLENDER 8; REAL 8.
+- Mask/effect metadata unavailable; values recorded as `unknown`.
+- Manifest SHA256:
+  `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`.
+- VOR-Eval used: no.
+- Model outputs generated: no.
+- GPU used: no.
+- Next gate: `MULTIMODEL_OR_SMOKE16_V2_PASS`.

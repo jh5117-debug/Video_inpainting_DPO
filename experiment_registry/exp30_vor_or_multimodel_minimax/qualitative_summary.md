@@ -46,3 +46,9 @@ No videos were extracted or reviewed. Source-pool v2 is metadata-ready only;
 visual preview status is `metadata_only_visual_preview_pending`. It unlocks
 smoke16 but not data-ready, pool-ready after visual generation, or adapter
 claims.
+
+## 2026-06-27 Smoke16 V2 Preregistration
+
+No video review has occurred for smoke16 v2 yet. The row lock is metadata-only
+and preserves the rule that `MULTIMODEL_OR_SMOKE16_V2_PASS` requires generated
+videos, metrics, per-sample review sheets, and visual inspection.
