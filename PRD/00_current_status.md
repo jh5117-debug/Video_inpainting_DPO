@@ -1,3 +1,15 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Materializer Scaffold
+
+Status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
+
+Exp33 now has a dedicated materializer for held-out VOR-Eval official81
+EffectErase inputs. The materializer requires `vor_eval=true`,
+`eligible_for_training=false`, and
+`source_role=held_out_vor_eval_baseline`.
+
+Validation passed: `git diff --check`, `py_compile`, 6 unit tests, and
+`bash -n`. No inference or training has been launched by this scaffold.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Compatibility
 
 Status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`

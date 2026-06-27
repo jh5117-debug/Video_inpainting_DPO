@@ -1,6 +1,6 @@
 # Exp33 EffectErase VOR-Eval Baseline Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
+Current status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
 
 - branch: `research/exp33-effecterase-vor-eval-baseline-20260627`
 - base: `origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626`
@@ -12,6 +12,7 @@ Current status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
 - ready manifest SHA256:
   `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`.
 - preview sanity review: 3 stratified rows passed.
+- materializer script: ready; materialization not started.
 - inference: not started.
 
 Current final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`

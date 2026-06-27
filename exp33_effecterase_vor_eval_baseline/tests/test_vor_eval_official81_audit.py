@@ -5,6 +5,7 @@ from exp33_effecterase_vor_eval_baseline.scripts.audit_vor_eval_official81 impor
     role_from_member,
     strip_vor_eval_prefix,
 )
+from exp33_effecterase_vor_eval_baseline.scripts.materialize_vor_eval_official81_inputs import validate_exp33_row
 
 
 class TestVOREvalOfficial81Audit(unittest.TestCase):
@@ -45,6 +46,28 @@ class TestVOREvalOfficial81Audit(unittest.TestCase):
         self.assertEqual(triplets[0]["condition_member_path"], "FG_BG/REAL_ENV900_00001_001_03.mp4")
         self.assertEqual(triplets[0]["winner_member_path"], "BG/REAL_ENV900_00001_001_03.mp4")
         self.assertEqual(triplets[0]["mask_member_path"], "MASK/REAL_ENV900_00001_001_03.mp4")
+
+    def test_materializer_requires_held_out_vor_eval_role(self):
+        self.assertEqual(
+            validate_exp33_row(
+                {
+                    "vor_eval": True,
+                    "eligible_for_training": False,
+                    "source_role": "held_out_vor_eval_baseline",
+                }
+            ),
+            [],
+        )
+        errors = validate_exp33_row(
+            {
+                "vor_eval": False,
+                "eligible_for_training": True,
+                "source_role": "diagnostic_only",
+            }
+        )
+        self.assertIn("row_not_marked_vor_eval", errors)
+        self.assertIn("training_eligible_row_not_allowed", errors)
+        self.assertIn("source_role_not_held_out_vor_eval_baseline", errors)
 
 
 if __name__ == "__main__":

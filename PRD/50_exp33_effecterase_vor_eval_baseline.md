@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_COMPATIBILITY_PASSED`
+Current status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -116,3 +116,12 @@ Compatibility audit:
 - source type: `REAL=43`
 - preview sanity review: 3 stratified rows passed
 - inference: not started
+
+Materializer scaffold:
+
+- script:
+  `exp33_effecterase_vor_eval_baseline/scripts/materialize_vor_eval_official81_inputs.py`
+- validates `vor_eval=true`, `eligible_for_training=false`, and
+  `source_role=held_out_vor_eval_baseline`;
+- writes 81-frame 832x480 condition/winner/mask MP4s;
+- no EffectErase inference is launched by materialization.
