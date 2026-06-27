@@ -284,3 +284,31 @@ effecterase_official81_input_materialization:
   eligible_for_training: false
   launched_inference: false
   launched_adapter_gate: false
+effecterase_official81_inference_smoke:
+  result: EFFECTERASE_OR_BASELINE_READY
+  rows: 8
+  successful_rows: 8
+  technical_valid_rows: 8
+  num_frames: 81
+  resolution: 832x480
+  manifest_sha256: 706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3
+  gpu_used: GPU0
+  codex_visual_review:
+    temporal_pages_opened: 8
+    crop_pages_opened: 8
+    object_removed: 8
+    black_purple_collapse: 0
+    baseline_ready: 8
+    medium_hard_loser_ready: 0
+  project_metric_means:
+    whole_psnr: 27.416948
+    whole_ssim: 0.840580
+    whole_lpips: 0.085822
+    mask_region_psnr: 25.778614
+    boundary_psnr: 25.696018
+    ewarp_mask_region: 1.766501
+    outside_diff_mean: 8.210687
+  vor_eval_used: false
+  eligible_for_training: false
+  launched_adapter_gate: false
+  launched_training: false

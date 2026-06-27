@@ -1,0 +1,10 @@
+{
+  "metric_backend": "inference/metrics.py",
+  "adapter": "tools/run_inpainting_metric_eval.py",
+  "pair_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_official81_inference_20260627/reports/exp29_effecterase_official81_metric_manifest.csv",
+  "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_official81_inference_20260627/project_metric_eval",
+  "num_rows": 8,
+  "num_ok": 8,
+  "compute_lpips": true,
+  "compute_ewarp": true
+}

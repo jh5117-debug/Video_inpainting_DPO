@@ -2556,3 +2556,18 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Inputs ready: true, 8/8 rows.
 - Constructed commands use official 81-frame inputs and `--num_frames 81`.
 - VOR-Eval use and training eligibility remain false.
+
+## 2026-06-27 Exp29 EffectErase Official 81F Inference Smoke
+
+- Status: `EFFECTERASE_OR_BASELINE_READY`
+- Official EffectErase inference completed 8/8 locked diagnostic rows on
+  right-side GPU0.
+- All raw outputs decode as 81 frames at 832x480.
+- Codex opened 8/8 temporal review pages and 8/8 crop pages.
+- Visual outcome: target/effect removal succeeded 8/8; no black/purple collapse
+  or frame-order failure was found.
+- Project metric means: whole PSNR `27.416948`, LPIPS `0.085822`, mask PSNR
+  `25.778614`, boundary PSNR `25.696018`, Ewarp `1.766501`.
+- This is OR strong baseline / diagnostic readiness only. It is not true
+  adapter evidence, not a DPO training result, and not universal-adapter
+  evidence.

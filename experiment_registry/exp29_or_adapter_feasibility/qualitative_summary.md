@@ -178,6 +178,22 @@ rows with small/medium/large masks. No empty-mask, padding, loop, or visible
 frame-order/source mismatch was found.
 
 Final qualitative source decision: `EFFECTERASE_OFFICIAL81_PREREGISTERED`.
+
+## 2026-06-27 EffectErase Official 81F Inference Smoke
+
+Codex opened all 8 generated temporal review pages and all 8 crop pages. The
+model removed the target object/effect in every reviewed row, including sports,
+indoor people, night object, island/water, and dark submarine-like scenes. No
+black/purple collapse or decode/frame-order failure was visible.
+
+The qualitative caveat is important: outputs are often too strong and clean for
+medium-hard loser use, and some raw outputs regenerate broader context. The
+soccer and island/water rows show the clearest outside/context regeneration.
+The night object, submarine-like, and small indoor rows are cleaner strong
+baseline cases.
+
+Final qualitative decision: `EFFECTERASE_OR_BASELINE_READY`, diagnostic-only.
+No true adapter, DPO, or universal-adapter claim is supported.
 This is only source sanity for diagnostic OR smoke. No EffectErase output video
 has been generated yet, so EffectErase is still not baseline-ready or
 adapter-ready.

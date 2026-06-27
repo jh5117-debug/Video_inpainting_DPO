@@ -681,3 +681,47 @@ Reports:
 - `reports/exp29_effecterase_official81_command_validation.md`
 - `reports/exp29_effecterase_official81_command_validation.json`
 - `reports/exp29_effecterase_official81_command_validation_inputs.csv`
+
+## 2026-06-27 EffectErase Official 81F Inference Smoke
+
+- Status: `EFFECTERASE_OR_BASELINE_READY`
+- Full official EffectErase inference ran on the locked 8-row official-81F
+  diagnostic manifest.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- GPU used: right-side GPU0 only.
+- Output rows: 8/8.
+- Exit codes: 8/8 zero.
+- Frame audit: 8/8 raw outputs decode as 81 frames at 832x480.
+- Project metric wrapper:
+  - whole PSNR: `27.416948`
+  - whole SSIM: `0.840580`
+  - whole LPIPS: `0.085822`
+  - mask PSNR: `25.778614`
+  - boundary PSNR: `25.696018`
+  - Ewarp mask-region: `1.766501`
+  - outside diff mean: `8.210687`
+- Codex opened all 8 temporal review pages and all 8 crop pages.
+- Visual result: 8/8 show strong object/effect removal and no black/purple
+  collapse.
+- Caveat: the model is strong and VOR-trained; raw outputs sometimes regenerate
+  outside/context regions and are too clean/strong for primary medium-hard loser
+  use.
+
+Decision:
+
+`EFFECTERASE_OR_BASELINE_READY`
+
+This is an OR baseline / diagnostic readiness result only. It does not support
+`EFFECTERASE_TRUE_ADAPTER_FEASIBILITY_CONFIRMED`, `SCIENTIFIC_POSITIVE`, or
+`UNIVERSAL_ADAPTER`.
+
+Reports:
+
+- `reports/exp29_effecterase_official81_inference_smoke.md`
+- `reports/exp29_effecterase_official81_inference_smoke.csv`
+- `reports/exp29_effecterase_official81_inference_visual_review.csv`
+- `reports/exp29_effecterase_official81_aggregate_metrics.csv`
+- `reports/exp29_effecterase_official81_inference_summary.json`
+- `reports/exp29_effecterase_official81_project_metric_eval/`
+- `reports/exp29_effecterase_official81_inference_previews/`

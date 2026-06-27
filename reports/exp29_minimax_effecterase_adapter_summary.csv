@@ -1,4 +1,3 @@
 model,repo_ready,weights_ready,inference_smoke,visual_quality,trainable_forward,target_type,policy_reference_clone,zero_gap,one_step,ten_step,heldout_positive,role,blocked_reason,final_status
 MiniMax-Remover,true,true,passed,mixed,passed,flow_velocity_eps_minus_z0,passed,passed,passed,pareto_mixed,false,ADAPTER_POSSIBLE_NEEDS_MORE_WORK,"10-step heldout quality nearly unchanged; smoke OR quality mixed",MINIMAX_ADAPTER_POSSIBLE_NEEDS_MORE_WORK
-EffectErase,true,false,blocked,not_reviewed,blocked,unknown,not_run,not_run,not_run,not_run,false,OR_STRONG_BASELINE,"Official EffectErase.ckpt and Wan2.1-Fun-1.3B-InP assets missing",EFFECTERASE_BLOCKED
-
+EffectErase,true,true,official81_passed,strong_or_baseline,not_run,wan_dit_flow_style_inference_only_for_now,not_run,not_run,not_run,not_run,false,OR_STRONG_BASELINE,"Official 81F smoke passed 8/8 and is baseline-ready, but VOR-trained outputs are diagnostic only and no trainable adapter gate has run",EFFECTERASE_OR_BASELINE_READY

@@ -178,6 +178,31 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
 - Final failure: official pipeline defaulted to 81 frames internally, producing
   noise latent time dimension 21 while the locked 17-frame inputs produced time
   dimension 5.
+
+## 2026-06-27 EffectErase Official 81F Inference Smoke
+
+- Full inference rows: 8.
+- Successful rows: 8.
+- Raw output frame audit: 81/81 frames for all rows.
+- Basic postprocess aggregate:
+  - whole PSNR: `27.416948`
+  - whole SSIM: `0.840580`
+  - strict mask PSNR: `25.485254`
+  - boundary PSNR: `26.143048`
+  - outside abs diff mean: `8.210540`
+  - object/effect residual ratio: `0.321885`
+- Existing project metric wrapper aggregate:
+  - whole PSNR: `27.416948`
+  - whole SSIM: `0.840580`
+  - whole LPIPS: `0.085822`
+  - mask-region PSNR: `25.778614`
+  - boundary PSNR: `25.696018`
+  - Ewarp mask-region: `1.766501`
+  - outside diff mean: `8.210687`
+
+Metric conclusion: EffectErase official81 produces technically valid strong OR
+baseline outputs. The large-context rows also show raw-output outside/context
+regeneration, so this is not a medium-hard loser-quality pass.
 - Metrics are unavailable because no output video was produced.
 
 ## 2026-06-26 MiniMax Full-VOR Source Audit

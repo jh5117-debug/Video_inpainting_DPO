@@ -23,11 +23,16 @@ and the 10-step heldout outputs are effectively unchanged from Step0.
 
 ## EffectErase
 
-Final status: `EFFECTERASE_BLOCKED`
+Final status: `EFFECTERASE_OR_BASELINE_READY`
 
-EffectErase has a local official repo but no verified official weights in the
-audited paths. It remains a strong OR baseline / diagnostic candidate once
-assets are available, but this run cannot validate inference or adapter gates.
+EffectErase now has verified official weights and Wan2.1-Fun InP assets. The
+official 81-frame inference smoke ran 8/8 diagnostic VOR rows successfully.
+Codex opened all temporal review pages and crop pages. The outputs show strong
+object/effect removal with no black/purple collapse.
+
+This result promotes EffectErase to OR strong baseline / diagnostic status. It
+does not promote EffectErase to true adapter status because no training forward,
+zero-gap, one-step, or non-confounded heldout adapter gate has run.
 
 EffectErase remains VOR-confounded for scientific adapter claims because the
 model is trained on VOR. VOR use should be diagnostic/baseline only unless a
@@ -48,3 +53,5 @@ Still not allowed:
 MiniMax provides a credible next-adapter path, but it has not yet produced a
 heldout-positive 10-step micro result.
 
+EffectErase provides a strong OR baseline/diagnostic path, but it has not
+provided true-adapter evidence.

@@ -364,3 +364,22 @@ Reports:
 - VOR-Eval use: false.
 - Training eligibility: false.
 - This unlocks inference smoke only, not baseline-ready or adapter claims.
+
+## 2026-06-27 EffectErase Official 81F Inference Smoke
+
+- Status: `EFFECTERASE_OR_BASELINE_READY`.
+- Full inference rows: 8.
+- Successful rows: 8.
+- Raw output frame audit: 8/8 have 81 decoded frames at 832x480.
+- Codex visual review: opened 8 temporal review pages and 8 crop pages.
+- Visual decision: strong OR removal baseline, not medium-hard primary loser.
+- Project metric wrapper means:
+  - whole PSNR `27.416948`
+  - whole SSIM `0.840580`
+  - whole LPIPS `0.085822`
+  - mask PSNR `25.778614`
+  - boundary PSNR `25.696018`
+  - Ewarp `1.766501`
+  - outside diff mean `8.210687`
+- EffectErase remains VOR-confounded and inference-only for this milestone.
+  Adapter gates, zero-gap, one-step, and DPO micro were not run.

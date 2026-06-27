@@ -1,0 +1,28 @@
+[
+  {
+    "model_label": "EffectErase_official81_raw",
+    "rows": 8,
+    "boundary_psnr_mean": 25.696017718266305,
+    "boundary_psnr_median": 24.222048341759567,
+    "boundary_ssim_mean": 0.768534060384346,
+    "boundary_ssim_median": 0.8148899636003002,
+    "ewarp_mask_region_mean": 1.7665013803224383,
+    "ewarp_mask_region_median": 0.1394576929442337,
+    "mask_region_psnr_mean": 25.77861440191762,
+    "mask_region_psnr_median": 24.163257448173106,
+    "mask_region_ssim_mean": 0.7606670306575147,
+    "mask_region_ssim_median": 0.8107678386522738,
+    "outside_region_diff_max_mean": 141.55864197530863,
+    "outside_region_diff_max_median": 154.08641975308643,
+    "outside_region_diff_mean_mean": 8.210686874426441,
+    "outside_region_diff_mean_median": 7.933665137232086,
+    "temporal_diff_delta_vs_gt_mean": 1.7665013803224383,
+    "temporal_diff_delta_vs_gt_median": 0.1394576929442337,
+    "whole_video_lpips_mean": 0.08582170023640365,
+    "whole_video_lpips_median": 0.06297597939861409,
+    "whole_video_psnr_mean": 27.41694819351966,
+    "whole_video_psnr_median": 27.17477775417429,
+    "whole_video_ssim_mean": 0.8405797504870495,
+    "whole_video_ssim_median": 0.8893808234542565
+  }
+]
