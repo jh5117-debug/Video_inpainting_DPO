@@ -131,3 +131,9 @@ Codex opened 4/4 review sheets:
 
 The generator wiring is now visually smoke-tested, but the sample count is too
 small for pool readiness. Smoke16 v3 still needs to run and pass.
+
+## 2026-06-27 Smoke32 V3 Preregistration
+
+No videos were generated or reviewed. The preregistration only locks the
+confirmation sources for the next Smoke32 validation run. It therefore carries
+no qualitative pass, no data-ready claim, and no Gate64 unlock by itself.

@@ -149,3 +149,10 @@ The automatic smoke metric classified 4/4 as trivial-bad because raw outside
 PSNR was low versus winner. Visual review shows the useful distinction: the
 first forest row is too close to winner, while the car row contains usable
 local defects.
+
+## 2026-06-27 Smoke32 V3 Preregistration
+
+No model metrics were produced. The milestone only locked 16 new confirmation
+source groups, disjoint from Smoke16, with BLENDER/REAL 8/8 balance and
+manifest SHA256
+`ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45`.

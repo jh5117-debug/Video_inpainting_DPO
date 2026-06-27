@@ -1,0 +1,32 @@
+{
+  "effect_type_counts": {
+    "unknown": 16
+  },
+  "excluded_smoke16_rows": 16,
+  "excluded_smoke16_scene_groups": 16,
+  "gpu_used": false,
+  "known_invalid_sample_ids": [
+    "BLENDER_CARTOON006_00001",
+    "REAL_ENV044_00004_001_01",
+    "REAL_ENV046_00001_001_01"
+  ],
+  "manifest": "exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke32_v3_sources.jsonl",
+  "manifest_sha256": "ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45",
+  "mask_bucket_counts": {
+    "unknown": 16
+  },
+  "model_outputs_generated": false,
+  "rows": 16,
+  "scene_groups": 16,
+  "source_pool_sha256": {
+    "exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_primary128.jsonl": "cf8104cbf8a859b66a5c3e7358b8c72c3c77177279ed78297063f7538903975b",
+    "exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve128.jsonl": "cfb661b2ce86b936b1c85961173f2c83e16b6cc094505ff3b6dfa0c940c55cb0",
+    "exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_reserve2_128.jsonl": "0f457bc5439580bb13ee2390ae1f19fb53438a2a6b28a758ce0201a6270b4823"
+  },
+  "source_type_counts": {
+    "BLENDER": 8,
+    "REAL": 8
+  },
+  "status": "EXP30_SMOKE32_V3_PREREGISTERED",
+  "vor_eval_used": false
+}

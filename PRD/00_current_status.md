@@ -2849,3 +2849,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   candidates and DiffuEraser adds 0 usable candidates on this fixed set.
 - Smoke32 validation is unlocked next. Gate64, MiniMax adapter gates,
   DiffuEraser micro, RC-FPO, and long training remain stopped.
+
+## 2026-06-27 Exp30 Smoke32 V3 Preregistration
+
+- Status: `EXP30_SMOKE32_V3_PREREGISTERED`
+- Locked 16 new confirmation source groups, disjoint from Smoke16 and balanced
+  BLENDER / REAL = 8 / 8.
+- Manifest SHA256:
+  `ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45`.
+- No extraction, model output, Gate64, MiniMax adapter gate, DiffuEraser micro,
+  RC-FPO, or training launched from this manifest yet.

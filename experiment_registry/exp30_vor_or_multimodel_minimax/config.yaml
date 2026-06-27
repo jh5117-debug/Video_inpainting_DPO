@@ -226,3 +226,18 @@ verified_generator_smoke2:
   smoke16_v3_generator_inclusion_unlocked: true
   gate64_unlocked: false
   launched_training: false
+smoke32_v3_preregistration:
+  result: EXP30_SMOKE32_V3_PREREGISTERED
+  rows: 16
+  scene_groups: 16
+  source_type_counts:
+    BLENDER: 8
+    REAL: 8
+  manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke32_v3_sources.jsonl
+  manifest_sha256: ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45
+  excludes_smoke16_scene_groups: true
+  excludes_known_invalid_smoke16_rows: true
+  vor_eval_used: false
+  generated_model_outputs: false
+  gate64_unlocked: false
+  launched_training: false

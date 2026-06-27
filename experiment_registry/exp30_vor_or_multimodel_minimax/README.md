@@ -30,3 +30,9 @@ must remain one family in a multi-model pool rather than the sole generator.
 Controlled-corruption v3 planning is locked. It caps smoke16 v3 controlled
 candidates at 24 and keeps controlled corruption as a fallback/data-source
 only.
+
+Smoke16 v3 has now passed as a multi-model smoke gate, driven primarily by
+controlled corruption v3. Smoke32 v3 is preregistered with 16 new disjoint
+source groups and BLENDER/REAL 8/8 balance. Gate64 and all adapter/training
+gates remain stopped until Smoke32 materialization, generation, metrics, and
+visual review pass.

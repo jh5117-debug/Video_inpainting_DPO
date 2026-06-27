@@ -388,3 +388,23 @@ Reports/assets:
 - `reports/exp30_verified_generators_smoke16_v3_visual_review_final.csv`
 - `reports/exp30_verified_generators_smoke16_v3_summary.json`
 - `reports/exp30_verified_generators_smoke16_v3_assets/`
+
+## 2026-06-27 Smoke32 V3 Preregistration
+
+- Status: `EXP30_SMOKE32_V3_PREREGISTERED`.
+- Locked 16 new confirmation source groups, disjoint from Smoke16, after
+  Smoke16 v3 passed.
+- Excluded known pre-inference invalid rows from the Smoke16 repair audit:
+  `BLENDER_CARTOON006_00001`, `REAL_ENV044_00004_001_01`,
+  `REAL_ENV046_00001_001_01`.
+- Source balance: BLENDER / REAL = 8 / 8.
+- Manifest SHA256:
+  `ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45`.
+- No extraction, model generation, GPU task, Gate64, adapter gate, or training
+  was launched in this milestone.
+
+Reports:
+
+- `reports/exp30_smoke32_v3_preregistration.md`
+- `reports/exp30_smoke32_v3_preregistration.csv`
+- `reports/exp30_smoke32_v3_preregistration.json`
