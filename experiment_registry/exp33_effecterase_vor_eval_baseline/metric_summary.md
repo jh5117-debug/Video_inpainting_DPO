@@ -10,3 +10,7 @@ EffectErase inference and project metrics have not started.
 
 Input materialization also passed for 43/43 rows. Metrics remain not started
 because official EffectErase inference has not run.
+
+Command validation passed for 43/43 rows with assets ready and no
+training-eligible rows present. Metrics remain not started because the dry-run
+did not launch EffectErase inference.

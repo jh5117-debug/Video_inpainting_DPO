@@ -1,3 +1,30 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Command Validation
+
+Status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
+
+Exp33 ran dry-run command validation on PAI against the official EffectErase
+venv, recovered assets, and the materialized held-out VOR-Eval official81
+manifest. No EffectErase inference or training was launched by this validation.
+
+- rows validated: `43/43`
+- input ready: `true`
+- assets ready: `true`
+- VOR-Eval rows required: `true`
+- training-eligible rows present: `false`
+- manifest SHA256:
+  `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`
+- asset SHA256s: lora
+  `4e9ace4607a348a0d820328f827f7f4f751a0e44d4cf60665c03e9740dfa024d`,
+  text encoder
+  `7cace0da2b446bbbbc57d031ab6cf163a3d59b366da94e5afe36745b746fd81d`,
+  vae `38071ab59bd94681c686fa51d75a1968f64e470262043be31f7a094e442fd981`,
+  dit `8495d2b1673ffb18abb548a64ff3b0e4bd367734f653096f7a8a3ad46954d511`,
+  image encoder
+  `628c9998b613391f193eb67ff68da9667d75f492911e4eb3decf23460a158c38`
+
+Next step: launch baseline inference on a non-reserved idle GPU only after a
+fresh GPU0/GPU5 protection check.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Runner Scaffold
 
 Status: `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`

@@ -1,0 +1,71 @@
+{
+  "adapter_training_allowed": false,
+  "all_vor_eval_rows": true,
+  "asset_records": [
+    {
+      "bytes": 1438679011,
+      "exists": true,
+      "name": "lora",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/FudanCVL/EffectErase/EffectErase.ckpt",
+      "sha256": "4e9ace4607a348a0d820328f827f7f4f751a0e44d4cf60665c03e9740dfa024d"
+    },
+    {
+      "bytes": 11361920418,
+      "exists": true,
+      "name": "text_encoder",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_t5_umt5-xxl-enc-bf16.pth",
+      "sha256": "7cace0da2b446bbbbc57d031ab6cf163a3d59b366da94e5afe36745b746fd81d"
+    },
+    {
+      "bytes": 507609880,
+      "exists": true,
+      "name": "vae",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/Wan2.1_VAE.pth",
+      "sha256": "38071ab59bd94681c686fa51d75a1968f64e470262043be31f7a094e442fd981"
+    },
+    {
+      "bytes": 3128957992,
+      "exists": true,
+      "name": "dit",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/diffusion_pytorch_model.safetensors",
+      "sha256": "8495d2b1673ffb18abb548a64ff3b0e4bd367734f653096f7a8a3ad46954d511"
+    },
+    {
+      "bytes": 4772359047,
+      "exists": true,
+      "name": "image_encoder",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626/Wan-AI/Wan2.1-Fun-1.3B-InP/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth",
+      "sha256": "628c9998b613391f193eb67ff68da9667d75f492911e4eb3decf23460a158c38"
+    }
+  ],
+  "asset_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_weight_recovery_20260626",
+  "assets_ready": true,
+  "branch": "research/exp33-effecterase-vor-eval-baseline-20260627",
+  "cfg": 1.0,
+  "commands_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/commands.jsonl",
+  "commit": "bc19856b80ce0dc5f4caba81179bc16a67c36529",
+  "diagnostic_comp_optional": true,
+  "dry_run_only": true,
+  "eligible_for_training": false,
+  "gpu": "3",
+  "height": 480,
+  "input_ready": true,
+  "manifest": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp33_effecterase_eval/exp33_effecterase_vor_eval_baseline/manifests/effecterase_vor_eval_official81_ready.jsonl",
+  "manifest_sha256": "d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811",
+  "num_frames": 81,
+  "num_inference_steps": 50,
+  "official_help_returncode": 0,
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945",
+  "python": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/venvs/effecterase_smoke/bin/python",
+  "raw_output_primary": true,
+  "repo": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/third_party/EffectErase",
+  "rows": 43,
+  "runtime_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/idle_gpu_parallel_20260627/exp33_effecterase_vor_eval_official81",
+  "seed": 2025,
+  "status": "EXP33_VOREVAL_OFFICIAL81_COMMAND_READY",
+  "supports_cfg": true,
+  "supports_num_frames": true,
+  "supports_seed": true,
+  "supports_steps": true,
+  "width": 832
+}

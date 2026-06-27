@@ -13,3 +13,6 @@ for 3 rows. These are input previews only, not EffectErase output evidence.
 Exp33 also generated 43 materialized-input preview sheets after writing 81-frame
 832x480 MP4 inputs. A stratified small/medium/large materialized sanity review
 passed for 3 rows. These are still input previews only.
+
+Command validation passed, but it was dry-run only. No EffectErase output video
+or output visual review exists yet.

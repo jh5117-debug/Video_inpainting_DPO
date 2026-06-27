@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -150,5 +150,19 @@ Runner scaffold:
 - no adapter training, loser mining, DPO, or checkpoint selection is allowed by
   the runner.
 
-Next step: run command validation on PAI against the EffectErase venv/assets,
-then launch held-out baseline inference only if the command gate is ready.
+Command validation:
+
+- status: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`
+- dry-run only: `true`
+- rows validated: `43/43`
+- assets ready: `true`
+- inputs ready: `true`
+- VOR-Eval rows required: `true`
+- training-eligible rows present: `false`
+- official EffectErase help returned `0` and supports `--num_frames`, `--cfg`,
+  `--num_inference_steps`, and `--seed`.
+- report:
+  `reports/exp33_effecterase_vor_eval_official81_command_validation.md`
+
+Next step: launch held-out baseline inference on an idle non-reserved GPU after
+refreshing GPU0/GPU5 protection checks.

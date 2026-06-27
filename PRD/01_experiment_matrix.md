@@ -2,12 +2,12 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp33 EffectErase VOR-Eval baseline | `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`; inputs materialized, command validation pending; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_official81_runner_scaffold.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
+| Exp33 EffectErase VOR-Eval baseline | `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`; command validation passed, baseline inference pending; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_official81_command_validation.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
 
 Notes:
 
 - Exp29 official 81F diagnostic smoke is baseline-ready context only.
-- Exp33 still needs command validation before baseline inference.
+- Exp33 still needs baseline inference and output review.
 - EffectErase remains baseline-only for this lane.
 
 ## 2026-06-24 Exp26 Gate16 Final Video Review
