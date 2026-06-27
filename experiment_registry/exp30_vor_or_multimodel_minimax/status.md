@@ -313,3 +313,19 @@ Reports/assets:
 - `reports/exp30_new_generators_smoke2_visual_review.csv`
 - `reports/exp30_new_generators_smoke2_summary.json`
 - `reports/exp30_verified_generators_smoke2_assets/`
+
+## 2026-06-27 Controlled-Corruption V3 Generator
+
+- Status: `CONTROLLED_CORRUPTION_V3_GENERATOR_IMPLEMENTED`.
+- Implemented `run_controlled_corruption_smoke16_v3.py` with the previously
+  locked CC-v3-A/B/C schedule.
+- Candidate cap: 24 controlled candidates across the 16 Smoke16 sources.
+- The script emits all candidate metrics/review rows plus one deterministic
+  primary controlled candidate per source.
+- No Smoke16 v3 candidate generation, Gate64, MiniMax adapter training, long
+  training, or RC-FPO was launched by this implementation milestone.
+- Left CLI, Exp31, and Exp33 paths/processes remain untouched.
+
+Report:
+
+- `reports/exp30_controlled_corruption_v3_generator_impl.md`

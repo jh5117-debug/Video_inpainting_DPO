@@ -2818,3 +2818,12 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   hard-but-plausible, 1 medium-hard, 0 final trivial-bad.
 - This only supports including those families in Smoke16 v3. It does not unlock
   Smoke32, Gate64, MiniMax adapter gate, DiffuEraser micro, or training.
+
+## 2026-06-27 Exp30 Controlled Corruption V3 Generator
+
+- Status: `CONTROLLED_CORRUPTION_V3_GENERATOR_IMPLEMENTED`
+- Implemented the preregistered CC-v3-A/B/C controlled-corruption generator and
+  deterministic one-primary-per-source selection script.
+- Existing Smoke16 v2 outputs are untouched; no Smoke16 v3 generation, Smoke32,
+  Gate64, MiniMax adapter gate, DiffuEraser micro, RC-FPO, or training was
+  launched by this code milestone.

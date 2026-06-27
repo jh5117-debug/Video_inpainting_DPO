@@ -512,3 +512,19 @@ Reports/assets:
 - `reports/exp30_new_generators_smoke2_visual_review.csv`
 - `reports/exp30_new_generators_smoke2_summary.json`
 - `reports/exp30_verified_generators_smoke2_assets/`
+
+## 2026-06-27 Controlled-Corruption V3 Generator
+
+- Status: `CONTROLLED_CORRUPTION_V3_GENERATOR_IMPLEMENTED`.
+- Added an Exp30-local v3 controlled corruption generator using the locked
+  CC-v3-A/B/C profile schedule.
+- The generator writes only new v3 outputs and does not overwrite Smoke16 v2.
+- It emits all 24 preregistered controlled candidates and a deterministic
+  primary candidate per source for the later Smoke16 v3 aggregate gate.
+- This milestone did not run candidate generation, Gate64, MiniMax adapter
+  training, long training, or RC-FPO.
+- Left CLI, Exp31, and Exp33 were not modified.
+
+Report:
+
+- `reports/exp30_controlled_corruption_v3_generator_impl.md`
