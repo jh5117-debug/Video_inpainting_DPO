@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `VOR_OR_SOURCE_POOL_BLOCKED`
+Current status: `EXP30_CONTINUATION_V2_READBACK_COMPLETED`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -82,3 +82,19 @@ Reports/manifests:
 - `reports/exp30_vor_or_source_pool_visual_review.csv`
 - `reports/exp30_vor_or_source_pool_summary.json`
 - `reports/exp30_vor_or_source_pool_previews/`
+
+## 2026-06-27 Continuation V2 Readback
+
+- Status: `EXP30_CONTINUATION_V2_READBACK_COMPLETED`.
+- Previous source pool failed because it used exact extraction caches only.
+- Full metadata index located:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`
+- Rows: 57,751.
+- SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`.
+- Pairing rule: exact basename across FG_BG, BG, and MASK.
+- No GPU task or left-side action was launched.
+
+Report:
+
+- `reports/exp30_continuation_v2_readback.md`

@@ -118,3 +118,30 @@ Reports/manifests:
 - `reports/exp30_vor_or_source_pool_visual_review.csv`
 - `reports/exp30_vor_or_source_pool_summary.json`
 - `reports/exp30_vor_or_source_pool_previews/`
+
+## 2026-06-27 Continuation V2 Readback
+
+- Status: `EXP30_CONTINUATION_V2_READBACK_COMPLETED`
+- Previous blocked source pool was traced to using exact extraction caches only,
+  not to a full VOR data shortage.
+- Previous cache roots contained 192 extracted triplets; after prior diagnostic
+  exclusions only 80 usable scene groups remained.
+- Full metadata index located on PAI:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`
+- Full metadata rows: 57,751.
+- Full metadata SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`
+- Pairing rule uses exact basename across:
+  `VOR-Train/FG_BG/<sample_id>.mp4`,
+  `VOR-Train/BG/<sample_id>.mp4`, and `MASK/<sample_id>.mp4`.
+- Left CLI was checked read-only. No signals were sent and no left-side files
+  were modified.
+- No GPU task, inference, generation, training, or RC-FPO was launched.
+
+Next gate:
+
+`FULL_VOR_VALID_TRIPLET_INDEX_READY` or `FULL_VOR_INDEX_BLOCKED`.
+
+Report:
+
+- `reports/exp30_continuation_v2_readback.md`

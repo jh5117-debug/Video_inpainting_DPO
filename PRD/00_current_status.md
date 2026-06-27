@@ -2640,3 +2640,16 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   imbalanced for pool128/reserve128.
 - No multi-model OR smoke, Gate128, MiniMax adapter, DiffuEraser VOR-OR micro,
   GPU task, or training was launched.
+
+## 2026-06-27 Exp30 Continuation V2 Readback
+
+- Status: `EXP30_CONTINUATION_V2_READBACK_COMPLETED`
+- Previous Exp30 source-pool gate failed because only two exact extraction
+  caches were used, yielding 192 discovered triplets and 80 usable scene groups
+  after exclusions.
+- Full VOR metadata index is readable on PAI with 57,751 rows:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`
+- SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`
+- No GPU task was launched. Left CLI was only read.
+- Next action is full VOR index recovery, not Gate128 or training.

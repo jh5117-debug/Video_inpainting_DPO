@@ -65,3 +65,11 @@ source_pool_audit:
   pool_ready: false
   launched_generation: false
   launched_training: false
+continuation_v2_readback:
+  result: EXP30_CONTINUATION_V2_READBACK_COMPLETED
+  previous_block_reason: exact_extraction_cache_subset_only
+  full_vor_metadata_index: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl
+  full_vor_metadata_rows: 57751
+  full_vor_metadata_sha256: 33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4
+  launched_gpu_task: false
+  next_gate: FULL_VOR_VALID_TRIPLET_INDEX_READY

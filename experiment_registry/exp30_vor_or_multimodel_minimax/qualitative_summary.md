@@ -29,3 +29,8 @@ rows show aligned condition/winner/mask strips with non-empty masks and visible
 affected regions. However, they are dominated by REAL scenes and do not provide
 the requested pool size or reserve. No source-pool-ready, data-ready, smoke, or
 training claim is supported.
+
+## 2026-06-27 Continuation V2
+
+No new video generation or qualitative promotion occurred. The next work is
+full-index recovery and source-pool v2 sampling before any smoke or training.

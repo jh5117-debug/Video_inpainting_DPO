@@ -29,3 +29,9 @@ No new metrics were produced. This milestone locks interpretation only.
 
 Metric decision: the source pool is blocked before model generation because it
 does not meet the 128 source + 128 reserve requirement and is not balanced.
+
+## 2026-06-27 Continuation V2
+
+No new model metrics were produced. The readback located the full VOR metadata
+index with 57,751 rows and confirmed the previous 80-row pool was an extracted
+cache subset.
