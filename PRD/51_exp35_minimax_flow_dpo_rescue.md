@@ -324,3 +324,46 @@ Reports:
 
 - `reports/exp35_minimax_rescue_recipe_preregistration.md`
 - `reports/exp35_minimax_rescue_recipe_preregistration.json`
+
+## 2026-06-27 Rescue 10-Step Recipe Gate
+
+Exp35 rescue recipe status: `MINIMAX_RESCUE_RECIPE_NOT_READY`.
+
+This milestone ran only the preregistered bounded 10-step rescue recipes:
+`R1` LoVI-Linear-Frozen-HardNoise, `R2` LoVI-Linear-EMA-HardNoise, and `R3`
+WinnerAnchor-Linear-Hybrid. It used the locked Exp30 Gate64 train32 /
+heldout16 split, fixed `hard_state_A`, LR `1e-5`, utility scale `10`, and PAI
+GPU0. No 30-step, long training, RC-FPO, protected-lane action, or left-side
+controller action was launched.
+
+Heldout metric deltas, Step10 minus Step0:
+
+| Recipe | full PSNR | mask PSNR | boundary PSNR | outside PSNR | temporal-diff MAE |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| R1 | `+0.065600` | `-0.048611` | `-0.423993` | `-0.307885` | `+0.303775` |
+| R2 | `+0.057080` | `-0.053910` | `-0.434234` | `-0.321102` | `+0.305560` |
+| R3 | `+0.002126` | `-0.081454` | `-0.493050` | `-0.419038` | `+0.299251` |
+
+Codex visual review covered `48/48` heldout Step0-vs-Step10 temporal strips:
+
+- R1: `9` tie, `5` slightly worse, `2` metric-mixed but not visibly better.
+- R2: `9` tie, `5` slightly worse, `2` metric-mixed but not visibly better.
+- R3: `8` tie, `6` slightly worse, `2` metric-mixed but not visibly better.
+
+There were no collapse-level black/purple failures, but also no reliable
+quality-positive rows. The three recipes produced subtle output movement,
+brightness/texture drift, and negative local/boundary/outside metrics rather
+than usable repair. Therefore:
+
+- `MINIMAX_RESCUE_10STEP_RECIPE_PASS`: false.
+- 30-step confirmatory MiniMax micro: not unlocked and not run.
+- Third-backbone quality-positive evidence: not supported.
+- MiniMax remains trainable/plumbing-positive only.
+
+Reports:
+
+- `reports/exp35_minimax_rescue_10step.md`
+- `reports/exp35_minimax_rescue_10step_metrics.csv`
+- `reports/exp35_minimax_rescue_10step_diagnostics.csv`
+- `reports/exp35_minimax_rescue_10step_visual_review.csv`
+- `reports/exp35_minimax_rescue_10step_summary.json`

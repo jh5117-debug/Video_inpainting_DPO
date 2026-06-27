@@ -102,3 +102,23 @@ metric, PSNR gate, LPIPS gate, or visual quality pass is implied.
 No metrics were generated in this milestone. The next recipe milestone must
 report heldout16 Step0-vs-Step10 whole, mask, boundary, affected, outside,
 TC, Ewarp, output-diff, and visual-review metrics before any pass status.
+
+## 2026-06-27 Rescue 10-Step Recipe Gate
+
+- Status: `MINIMAX_RESCUE_RECIPE_NOT_READY`.
+- Recipes: `R1`, `R2`, `R3`.
+- Heldout rows per recipe: `16`.
+- Step budget: `10`.
+- 30-step unlocked: false.
+
+Aggregate deltas, Step10 minus Step0:
+
+| Recipe | full PSNR | mask PSNR | boundary PSNR | outside PSNR | temporal-diff MAE | mask win rate | boundary win rate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| R1 | `+0.065600` | `-0.048611` | `-0.423993` | `-0.307885` | `+0.303775` | `0.375` | `0.188` |
+| R2 | `+0.057080` | `-0.053910` | `-0.434234` | `-0.321102` | `+0.305560` | `0.375` | `0.188` |
+| R3 | `+0.002126` | `-0.081454` | `-0.493050` | `-0.419038` | `+0.299251` | `0.375` | `0.188` |
+
+Heavyweight LPIPS/TC/Ewarp was not promoted to a pass-stage rerun because the
+preliminary heldout local, boundary, outside, temporal, and visual gates all
+failed. This result stops before 30-step.

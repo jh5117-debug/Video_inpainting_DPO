@@ -3039,3 +3039,26 @@ flow-residual SDPO true-model parity is separately validated.
 No training, inference, metrics, video review, 30-step, long training, or
 RC-FPO was launched. The next run may execute only the preregistered 10-step
 recipe gate; 30-step remains locked unless that gate passes.
+
+## 2026-06-27 Exp35 MiniMax Rescue 10-Step Recipe Gate
+
+Exp35 rescue 10-step status: `MINIMAX_RESCUE_RECIPE_NOT_READY`.
+
+Ran the preregistered R1/R2/R3 MiniMax rescue recipes on PAI GPU0 with locked
+Exp30 Gate64 train32/heldout16 and fixed `hard_state_A`. All recipes produced
+nonzero output movement, but heldout quality did not improve:
+
+- R1 mean full/mask/boundary/outside PSNR deltas:
+  `+0.065600`, `-0.048611`, `-0.423993`, `-0.307885`.
+- R2 mean full/mask/boundary/outside PSNR deltas:
+  `+0.057080`, `-0.053910`, `-0.434234`, `-0.321102`.
+- R3 mean full/mask/boundary/outside PSNR deltas:
+  `+0.002126`, `-0.081454`, `-0.493050`, `-0.419038`.
+
+Codex reviewed `48/48` Step0-vs-Step10 temporal strips: R1 had `9` tie,
+`5` slightly worse, `2` metric-mixed; R2 had `9` tie, `5` slightly worse,
+`2` metric-mixed; R3 had `8` tie, `6` slightly worse, `2` metric-mixed.
+There were `0` visual better rows and no collapse-level artifacts.
+
+Conclusion: no 10-step recipe pass, no 30-step unlock, no third-backbone
+quality-positive language. MiniMax remains trainable/plumbing-positive only.

@@ -142,3 +142,49 @@ rescue_recipe_preregistration:
   lambda_outside_R3: 0.02
   ema_decay_R2: 0.995
   thirty_step_unlocked: false
+rescue_10step_recipe_gate:
+  status: MINIMAX_RESCUE_RECIPE_NOT_READY
+  training_launched: true
+  long_training_launched: false
+  thirty_step_unlocked: false
+  thirty_step_launched: false
+  gpu: PAI_GPU0
+  train_rows: 32
+  heldout_rows: 16
+  steps: 10
+  lr: 1.0e-05
+  utility_scale: 10
+  hard_state_policy: fixed_hard_state_A
+  recipes:
+    R1:
+      name: LoVI-Linear-Frozen-HardNoise
+      mean_delta_full_psnr: 0.065600
+      mean_delta_mask_psnr: -0.048611
+      mean_delta_boundary_psnr: -0.423993
+      mean_delta_outside_psnr: -0.307885
+      visual_counts:
+        tie: 9
+        slightly_worse: 5
+        metric_mixed_not_better: 2
+    R2:
+      name: LoVI-Linear-EMA-HardNoise
+      mean_delta_full_psnr: 0.057080
+      mean_delta_mask_psnr: -0.053910
+      mean_delta_boundary_psnr: -0.434234
+      mean_delta_outside_psnr: -0.321102
+      visual_counts:
+        tie: 9
+        slightly_worse: 5
+        metric_mixed_not_better: 2
+    R3:
+      name: WinnerAnchor-Linear-Hybrid
+      mean_delta_full_psnr: 0.002126
+      mean_delta_mask_psnr: -0.081454
+      mean_delta_boundary_psnr: -0.493050
+      mean_delta_outside_psnr: -0.419038
+      visual_counts:
+        tie: 8
+        slightly_worse: 6
+        metric_mixed_not_better: 2
+  codex_visual_review: REVIEWED_48_OF_48
+  recipe_pass: false

@@ -70,3 +70,24 @@ requires that the next 10-step recipe run generate heldout16 videos, temporal
 strips, crops, output-difference evidence, metrics, and per-row Codex visual
 review. No recipe pass, micro-positive, or third-backbone language may be
 written from preregistration alone.
+
+## 2026-06-27 Rescue 10-Step Recipe Gate
+
+Codex reviewed `48/48` heldout Step0-vs-Step10 temporal comparison strips:
+`16` rows for each of R1, R2, and R3.
+
+Visual counts:
+
+- R1: `9` tie, `5` slightly worse, `2` metric-mixed / not visibly better.
+- R2: `9` tie, `5` slightly worse, `2` metric-mixed / not visibly better.
+- R3: `8` tie, `6` slightly worse, `2` metric-mixed / not visibly better.
+
+No recipe produced a row that should be called clearly or slightly better.
+Several rows showed subtle brightness, texture, or boundary drift, but those
+changes were not reliable repairs and matched the negative mask/boundary/
+outside metric direction. There were no collapse-level black/purple failures.
+
+Qualitative conclusion: `MINIMAX_RESCUE_RECIPE_NOT_READY`. MiniMax remains
+trainable and inference-sensitive, but this rescue objective did not create a
+quality-positive heldout result. No 30-step or third-backbone positive claim
+is unlocked.

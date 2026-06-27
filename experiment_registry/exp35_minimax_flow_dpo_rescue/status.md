@@ -1,6 +1,6 @@
 # Exp35 Status
 
-Current status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`
+Current status: `MINIMAX_RESCUE_RECIPE_NOT_READY`
 
 ## 2026-06-27 Readback
 
@@ -121,3 +121,36 @@ testing only. It is not a quality-positive adapter result and does not unlock
 The next eligible milestone is the preregistered 10-step recipe run. It must
 produce real heldout videos, metrics, strict reload evidence, and per-video
 review before any recipe pass or quality language is allowed.
+
+## 2026-06-27 Rescue 10-Step Recipe Gate
+
+- Status: `MINIMAX_RESCUE_RECIPE_NOT_READY`.
+- Training launched: true, bounded preregistered 10-step only.
+- GPU used: PAI GPU0.
+- Recipes: `R1`, `R2`, `R3`.
+- Train rows: `32`.
+- Heldout rows: `16`.
+- Codex visual review: `48/48` heldout Step0-vs-Step10 temporal strips.
+- New collapse / black-purple artifact count: `0`.
+- Quality-positive visual rows: `0`.
+- 30-step unlocked: false.
+
+Metric summary:
+
+- R1 mean full/mask/boundary/outside PSNR deltas:
+  `+0.065600`, `-0.048611`, `-0.423993`, `-0.307885`.
+- R2 mean full/mask/boundary/outside PSNR deltas:
+  `+0.057080`, `-0.053910`, `-0.434234`, `-0.321102`.
+- R3 mean full/mask/boundary/outside PSNR deltas:
+  `+0.002126`, `-0.081454`, `-0.493050`, `-0.419038`.
+- Temporal-difference MAE increased on `15/16` rows for each recipe.
+
+Visual conclusion:
+
+- R1: `9` tie, `5` slightly worse, `2` metric-mixed but not visibly better.
+- R2: `9` tie, `5` slightly worse, `2` metric-mixed but not visibly better.
+- R3: `8` tie, `6` slightly worse, `2` metric-mixed but not visibly better.
+
+The gate failed the heldout-quality and visual-improvement requirements, so
+Exp35 must not launch 30-step confirmatory MiniMax micro training from these
+recipes and must not write third-backbone quality-positive language.
