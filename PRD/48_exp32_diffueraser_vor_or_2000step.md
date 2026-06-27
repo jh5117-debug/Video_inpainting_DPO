@@ -79,7 +79,14 @@ preflight pass. It must not start MiniMax training or write Exp30 outputs.
 
 ## Status
 
-Current status: `EXP32_READBACK_COMPLETED_DATA_GATE_PENDING`
+Current status: `EXP32_READBACK_REFRESHED_DATA_GATE_STILL_PENDING`
 
 Training status: `DIFFUSERASER_VOR_OR_BLOCKED`
 
+2026-06-28 refresh:
+
+- local and remote HEAD both remain
+  `b79ee0ff526616e8ac0e0435f7c7f097150e4df7`;
+- PAI Exp32 log, output, and runtime roots had no new files at readback time;
+- no GPU work, data generation, training, or loser mining was launched;
+- the train32 + heldout16 scene-disjoint data gate is still missing.

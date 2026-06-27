@@ -1,3 +1,9 @@
+## 2026-06-28 Exp32 Readback Refresh
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp32 DiffuEraser VOR-OR 2000-step | `EXP32_READBACK_REFRESHED_DATA_GATE_STILL_PENDING`; no new PAI outputs/runtime; training still blocked | `reports/exp32_readback_refresh_20260628.md`, `experiment_registry/exp32_diffueraser_vor_or_2000step/` |
+
 ## 2026-06-27 Exp32 DiffuEraser VOR-OR 2000-Step
 
 | User-facing name | Status | Evidence / registry |

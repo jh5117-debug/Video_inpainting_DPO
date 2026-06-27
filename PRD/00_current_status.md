@@ -1,3 +1,16 @@
+## 2026-06-28 Exp32 Readback Refresh
+
+Status: `EXP32_READBACK_REFRESHED_DATA_GATE_STILL_PENDING`
+
+The left CLI refreshed Exp32 as readback-only while Exp31 evaluation was running.
+The remote branch still points to
+`b79ee0ff526616e8ac0e0435f7c7f097150e4df7`, matching the local HEAD. PAI log,
+experiment, and runtime roots for Exp32 contain no new files.
+
+No DiffuEraser VOR-OR training, candidate generation, loser mining, or adapter
+work was launched. The previous decision remains unchanged: Exp32 is blocked
+until a train32 + heldout16 scene-disjoint data gate is verified.
+
 ## 2026-06-27 Exp32 DiffuEraser VOR-OR Readback
 
 Status: `EXP32_READBACK_COMPLETED_DATA_GATE_PENDING`
