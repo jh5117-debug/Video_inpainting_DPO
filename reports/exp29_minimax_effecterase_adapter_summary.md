@@ -54,4 +54,6 @@ MiniMax provides a credible next-adapter path, but it has not yet produced a
 heldout-positive 10-step micro result.
 
 EffectErase provides a strong OR baseline/diagnostic path, but it has not
-provided true-adapter evidence.
+provided true-adapter evidence. A follow-up code audit found that the generic
+Wan training path is not the removal-specific EffectErase path; therefore
+EffectErase is `EFFECTERASE_BASELINE_ONLY_FOR_NOW` for adapter feasibility.

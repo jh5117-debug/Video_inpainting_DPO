@@ -2571,3 +2571,14 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - This is OR strong baseline / diagnostic readiness only. It is not true
   adapter evidence, not a DPO training result, and not universal-adapter
   evidence.
+
+## 2026-06-27 Exp29 EffectErase Trainable Forward Audit
+
+- Status: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
+- Preserved baseline status: `EFFECTERASE_OR_BASELINE_READY`
+- Official removal inference code was audited after the 81F smoke passed.
+- The audited `WanRemovePipeline` exposes no removal-specific training loss;
+  generic Wan training is not an equivalent EffectErase removal adapter path.
+- No zero-gap, one-step, 10-step, DPO, RC-FPO, or long training was run.
+- Scientific language remains constrained: EffectErase is an OR
+  baseline/diagnostic, not true adapter or universal-adapter evidence.

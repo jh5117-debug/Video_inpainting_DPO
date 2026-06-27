@@ -221,3 +221,15 @@ Final qualitative command decision: `EFFECTERASE_OFFICIAL81_COMMAND_READY`.
 This unlocks the next inference-smoke milestone only. EffectErase remains not
 baseline-ready and not adapter-ready until generated videos are measured and
 reviewed.
+
+## 2026-06-27 EffectErase Trainable Forward Audit
+
+No new video was generated. This was a code-path audit after the official 81F
+smoke passed.
+
+Qualitative decision: EffectErase is a strong OR baseline / diagnostic, but
+not a true-adapter-ready backend in Exp29. The official removal inference path
+contains removal-specific modules that are not represented by the generic Wan
+training path. Therefore no video-quality or adapter-quality claim can be made
+from zero-gap, one-step, or DPO training, because those gates were correctly
+not run.

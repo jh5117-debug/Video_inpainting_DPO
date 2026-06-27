@@ -725,3 +725,31 @@ Reports:
 - `reports/exp29_effecterase_official81_inference_summary.json`
 - `reports/exp29_effecterase_official81_project_metric_eval/`
 - `reports/exp29_effecterase_official81_inference_previews/`
+
+## 2026-06-27 EffectErase Trainable Forward Audit
+
+- Status: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`.
+- Preserved baseline status: `EFFECTERASE_OR_BASELINE_READY`.
+- Official repo commit:
+  `bcee0a5da5ef387c2ba39390dc4d579503669fb8`.
+- Audited `examples/remove_wan/infer_remove_wan.py` and
+  `diffsynth/pipelines/wan_video.py::WanRemovePipeline`.
+- The official removal path uses removal-specific adapters/task token modules,
+  but the pipeline has no removal-specific `training_loss` and its call path is
+  inference/no-grad.
+- The generic Wan training path exists, but it is not the EffectErase removal
+  path and was not used as a substitute.
+- No zero-gap, one-step, 10-step, DPO, or RC-FPO was run.
+
+Decision:
+
+`EFFECTERASE_BASELINE_ONLY_FOR_NOW`
+
+EffectErase remains useful as a VOR-confounded OR strong baseline/diagnostic.
+It is not true adapter evidence and must not be described as universal adapter
+support.
+
+Reports:
+
+- `reports/exp29_effecterase_trainable_forward_audit.md`
+- `reports/exp29_effecterase_trainable_forward_audit.json`

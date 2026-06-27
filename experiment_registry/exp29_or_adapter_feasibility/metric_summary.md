@@ -205,6 +205,19 @@ baseline outputs. The large-context rows also show raw-output outside/context
 regeneration, so this is not a medium-hard loser-quality pass.
 - Metrics are unavailable because no output video was produced.
 
+## 2026-06-27 EffectErase Trainable Forward Audit
+
+- Adapter training metrics: not run.
+- Zero-gap metrics: not run.
+- One-step metrics: not run.
+- 10-step metrics: not run.
+- Reason: the audited official removal path does not expose a
+  removal-specific trainable forward or `training_loss`.
+
+Metric conclusion: the previous `EFFECTERASE_OR_BASELINE_READY` result remains
+valid for OR baseline / diagnostic use, but there is no EffectErase adapter
+metric evidence in Exp29.
+
 ## 2026-06-26 MiniMax Full-VOR Source Audit
 
 - Full metadata rows read: 57,751.

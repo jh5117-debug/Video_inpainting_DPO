@@ -312,3 +312,21 @@ effecterase_official81_inference_smoke:
   eligible_for_training: false
   launched_adapter_gate: false
   launched_training: false
+effecterase_trainable_forward_audit:
+  result: EFFECTERASE_BASELINE_ONLY_FOR_NOW
+  preserved_baseline_status: EFFECTERASE_OR_BASELINE_READY
+  repo: /home/hj/video_inpainting_third_party/EffectErase
+  commit: bcee0a5da5ef387c2ba39390dc4d579503669fb8
+  official_removal_inference_entry: examples/remove_wan/infer_remove_wan.py
+  removal_pipeline: diffsynth/pipelines/wan_video.py::WanRemovePipeline
+  wan_remove_pipeline_has_training_loss: false
+  wan_remove_pipeline_call_no_grad: true
+  generic_wan_training_exists: true
+  generic_training_entry: examples/wanvideo/model_training/train.py
+  generic_training_pipeline: diffsynth/pipelines/wan_video_new.py::WanVideoPipeline.training_loss
+  generic_training_is_removal_specific: false
+  zero_gap_run: false
+  one_step_run: false
+  ten_step_run: false
+  adapter_training_run: false
+  rcfpo_run: false

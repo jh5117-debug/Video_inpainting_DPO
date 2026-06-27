@@ -1,6 +1,6 @@
 # Exp29 Status
 
-Current status: `READBACK_AND_SCAFFOLD_CREATED`
+Current status: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
 Exp29 is an isolated feasibility audit for MiniMax-Remover and EffectErase.
 It inherits the Exp26 conclusion that DiffuEraser plus VideoPainter support
@@ -383,3 +383,32 @@ Reports:
   - outside diff mean `8.210687`
 - EffectErase remains VOR-confounded and inference-only for this milestone.
   Adapter gates, zero-gap, one-step, and DPO micro were not run.
+
+## 2026-06-27 EffectErase Trainable Forward Audit
+
+- Status: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`.
+- Preserved baseline status: `EFFECTERASE_OR_BASELINE_READY`.
+- Official repo:
+  `/home/hj/video_inpainting_third_party/EffectErase`.
+- Official commit:
+  `bcee0a5da5ef387c2ba39390dc4d579503669fb8`.
+- Audited inference entry:
+  `examples/remove_wan/infer_remove_wan.py`.
+- Audited removal pipeline:
+  `diffsynth/pipelines/wan_video.py::WanRemovePipeline`.
+- Finding: the official removal pipeline uses removal-specific adapters, task
+  tokens, and `CrossAttHeadProb`, but `WanRemovePipeline.__call__` is
+  `torch.no_grad()` and the class exposes no removal-specific
+  `training_loss`.
+- Generic Wan training exists in
+  `examples/wanvideo/model_training/train.py` via
+  `diffsynth/pipelines/wan_video_new.py::WanVideoPipeline.training_loss`, but
+  that path is not the EffectErase removal-specific training path.
+- No zero-gap, one-step, 10-step, DPO, RC-FPO, or optimizer update was run.
+- EffectErase remains an OR strong baseline / diagnostic, not a true adapter
+  backend in Exp29.
+
+Reports:
+
+- `reports/exp29_effecterase_trainable_forward_audit.md`
+- `reports/exp29_effecterase_trainable_forward_audit.json`
