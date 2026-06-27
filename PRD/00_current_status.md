@@ -2958,3 +2958,22 @@ The previous utility scale was effectively flat: frozen linear utility mean
 `1.28e-05`. Parameter movement was also tiny: delta/param norm ratio about
 `5.6e-06` for both recipes. Next required step is inference-sensitivity
 positive-control, not more training steps.
+
+## 2026-06-27 Exp35 MiniMax Inference Sensitivity Positive-Control
+
+Exp35 sensitivity status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+
+Ran a no-training positive-control on PAI GPU6 using 2 heldout rows and 2
+train rows from the locked Exp30 Gate64 V3 manifests. Step0 identity replay
+was exactly deterministic: max full MAE `0.0`, with matching frame hashes on
+4/4 rows. A temporary Exp35-only diagnostic checkpoint scaled 16 MiniMax
+transformer tensors by `1.01`; this produced measurable but subtle output
+movement: mean full MAE `0.08821829589193357` and mean mask MAE
+`0.15630244233590715`.
+
+Codex opened all 4 temporal comparison strips. The perturbation created small
+texture/noise-level changes without collapse, black/purple failure, obvious
+temporal artifact, or new systematic outside damage. This proves MiniMax
+inference consumes the transformer checkpoint weights. It is not a
+quality-positive adapter result; the next gates remain trainable-scope,
+winner-SFT positive-control, and bad-noise/objective-scale diagnostics.

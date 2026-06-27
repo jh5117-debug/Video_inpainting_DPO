@@ -1,3 +1,4 @@
 milestone	status	notes
 readback	EXP35_READBACK_COMPLETED	Created Exp35 scaffold from Exp30 HEAD f69688f; reread Exp30 Gate64 pool and MiniMax 10-step reports; identified likely recipe/update-state issue; no GPU inference or training launched
 forensic_audit	MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK	Exp30 checkpoint keys matched and Step10 outputs were not byte-identical, but parameter deltas were tiny and Linear-DPO utility stayed near 0.5; no training launched; next gate is inference sensitivity
+inference_sensitivity	MINIMAX_INFERENCE_SENSITIVITY_PASS	Step0 identity replay was exactly deterministic on 4 rows; a temporary 1.01x perturbation of 16 MiniMax transformer tensors produced mean full/mask MAE 0.088218/0.156302 without visual collapse; no training launched

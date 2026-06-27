@@ -26,3 +26,18 @@ Next metric milestone: no-change forensic audit.
 - EMA linear utility mean: `0.5000003516674042`.
 
 The audit shows nonzero but sub-perceptual checkpoint/output movement.
+
+## 2026-06-27 Inference Sensitivity Positive-Control
+
+- Status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+- Rows: 4, using 2 heldout and 2 train rows.
+- Identity control max full MAE: `0.0`.
+- Perturbed mean full MAE: `0.08821829589193357`.
+- Perturbed mean mask MAE: `0.15630244233590715`.
+- Perturbed tensors: `16`.
+- Perturb scale: `1.01`.
+- Adapter scale sweep: `NOT_APPLICABLE_NO_LORA_SCOPE_IN_EXP30`.
+
+The metric result confirms that the MiniMax inference path responds to
+transformer-weight changes. The response remains visually subtle, so this
+milestone is a path/sensitivity pass only, not a quality-positive adapter gate.

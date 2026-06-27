@@ -13,3 +13,16 @@ No new videos were generated. The audit used existing Exp30 heldout frames and
 confirmed that Step10 outputs are not byte-identical to Step0, but the mean
 pixel movement is sub-perceptual. This supports the prior visual review:
 Step10 was a tie/no visible improvement rather than a hidden positive.
+
+## 2026-06-27 Inference Sensitivity Positive-Control
+
+Codex opened all 4 generated temporal comparison strips. The Step0 identity
+control was visually identical and hash-identical on all rows. The temporary
+perturbed checkpoint produced subtle nonzero texture/noise-level changes on
+all rows, with no visual collapse, black/purple artifact, color drift,
+systematic outside damage, or obvious new temporal artifact.
+
+Qualitative interpretation: inference does not ignore MiniMax transformer
+weights, but the output is low-sensitivity to small weight movement. This
+supports continuing to trainable-scope and objective-scale diagnostics before
+any rescue recipe training.

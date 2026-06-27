@@ -1,6 +1,6 @@
 # Exp35 Status
 
-Current status: `EXP35_READBACK_COMPLETED`
+Current status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`
 
 ## 2026-06-27 Readback
 
@@ -37,3 +37,17 @@ Report:
   `0.5000003516674042` / `0.49999284744262695` /
   `0.5000050663948059`.
 - Decision: run inference-sensitivity positive-control before recipe redesign.
+
+## 2026-06-27 Inference Sensitivity Positive-Control
+
+- Status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+- Training launched: false.
+- GPU used: PAI GPU6.
+- Identity control max full MAE: `0.0`.
+- Perturbed mean full/mask MAE: `0.08821829589193357` /
+  `0.15630244233590715`.
+- Codex visual review: `4/4` comparison strips opened; all showed subtle
+  nonzero response with no collapse or new artifact.
+
+This confirms that MiniMax inference consumes the transformer checkpoint
+weights. It is not a quality-positive adapter result.

@@ -31,3 +31,20 @@ forensic_audit:
   frozen_linear_utility_mean: 0.4999982982873917
   ema_linear_utility_mean: 0.5000003516674042
   training_launched: false
+inference_sensitivity:
+  status: MINIMAX_INFERENCE_SENSITIVITY_PASS
+  training_launched: false
+  gpu: PAI_GPU6
+  rows: 4
+  heldout_rows: 2
+  train_rows: 2
+  seed: 20260627
+  identity_full_mae_max: 0.0
+  perturb_scale: 1.01
+  perturbed_tensors: 16
+  perturb_full_mae_mean: 0.08821829589193357
+  perturb_mask_mae_mean: 0.15630244233590715
+  codex_visual_review_status: REVIEWED_4_OF_4
+  collapse_count: 0
+  new_artifact_count: 0
+  adapter_scale_sweep_status: NOT_APPLICABLE_NO_LORA_SCOPE_IN_EXP30

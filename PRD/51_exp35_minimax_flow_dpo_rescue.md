@@ -115,3 +115,45 @@ Reports:
 - `reports/exp35_minimax_10step_param_delta.csv`
 - `reports/exp35_minimax_10step_loss_scale.csv`
 - `reports/exp35_minimax_10step_forensic_summary.json`
+
+## 2026-06-27 Inference Sensitivity Positive-Control
+
+- Status: `MINIMAX_INFERENCE_SENSITIVITY_PASS`.
+- Training performed in this milestone: false.
+- Rows: 4 total, using 2 heldout rows and 2 train rows from the locked Exp30
+  Gate64 V3 manifests.
+- GPU used: PAI GPU6 only; protected Exp31/cli4/other tasks were read-only
+  audited and were not signaled.
+- Step0 checkpoint:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen/checkpoint-0`.
+- Temporary diagnostic checkpoint:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/inference_sensitivity_20260627/temporary_perturbed_checkpoint`.
+- Perturbation: deterministic scale `1.01` applied to 16 currently trainable
+  MiniMax transformer tensors, saved only under the Exp35 output root.
+
+Results:
+
+- Identity control Step0A vs Step0B: max full MAE `0.0`; frame hashes match
+  `4/4`.
+- Perturbed vs Step0 mean full MAE: `0.08821829589193357`.
+- Perturbed vs Step0 mean mask MAE: `0.15630244233590715`.
+- Adapter scale sweep: `NOT_APPLICABLE_NO_LORA_SCOPE_IN_EXP30` because Exp30
+  trained the full MiniMax transformer rather than a LoRA adapter.
+- Codex visual review: opened `4/4` temporal comparison strips; `4/4` showed
+  subtle nonzero response with no collapse, no black/purple failure, no
+  obvious temporal artifact, and no new visible outside damage.
+
+Interpretation:
+
+MiniMax inference does use the transformer checkpoint weights. The Exp30
+no-change failure is not an ignored-checkpoint or stale-output fallback. The
+positive-control instead reinforces the previous forensic conclusion: useful
+MiniMax rescue requires objective/update-scale, trainable-scope, or
+bad-noise/hard-timestep changes, not blind extra steps.
+
+Reports:
+
+- `reports/exp35_minimax_inference_sensitivity.md`
+- `reports/exp35_minimax_inference_sensitivity.csv`
+- `reports/exp35_minimax_inference_sensitivity_visual_review.csv`
+- `reports/exp35_minimax_inference_sensitivity_summary.json`
