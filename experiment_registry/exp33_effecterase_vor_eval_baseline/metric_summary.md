@@ -1,20 +1,34 @@
 # Exp33 Metric Summary
 
-No Exp33 VOR-Eval metrics exist yet.
+Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
 
-Prior Exp29 official 81-frame diagnostic metrics are recorded in
-`reports/exp33_effecterase_vor_eval_readback.md` only as readback context.
+The held-out VOR-Eval official81 EffectErase baseline has been evaluated on all
+43 completed raw outputs.
 
-The Exp33 VOR-Eval official81 compatibility audit passed for 43/43 rows, but
-EffectErase inference and project metrics have not started.
+| metric | value |
+| --- | ---: |
+| rows | 43 |
+| technical-valid outputs | 43 |
+| full PSNR mean | 21.9229 |
+| full SSIM mean | 0.7349 |
+| mask PSNR mean | 19.3942 |
+| mask SSIM mean | 0.5889 |
+| boundary PSNR mean | 20.0981 |
+| outside L1 mean | 16.4051 |
+| TC absdiff over winner mean | -0.5791 |
+| Ewarp proxy mean | 6.4370 |
 
-Input materialization also passed for 43/43 rows. Metrics remain not started
-because official EffectErase inference has not run.
+Classification counts:
 
-Command validation passed for 43/43 rows with assets ready and no
-training-eligible rows present. Metrics remain not started because the dry-run
-did not launch EffectErase inference.
+- `BASELINE_USABLE`: 9
+- `BASELINE_MIXED`: 17
+- `BASELINE_WEAK`: 17
 
-EffectErase baseline inference is now running. The launch-status snapshot has
-2/43 rows with technical-valid MP4 outputs. Project metrics are still not
-started and no metric conclusion is available.
+LPIPS is not included in the final aggregate because first-run AlexNet weight
+download was too slow. No LPIPS proxy is reported as real LPIPS.
+
+Reports:
+
+- `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`
+- `reports/exp33_effecterase_vor_eval_official81_metrics.csv`
+- `reports/exp33_effecterase_vor_eval_official81_final_report.md`

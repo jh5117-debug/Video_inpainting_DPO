@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`
+Current status: `EXP33_EFFECTERASE_BASELINE_WEAK`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -165,17 +165,31 @@ Command validation:
 - report:
   `reports/exp33_effecterase_vor_eval_official81_command_validation.md`
 
-Inference launch:
+Inference completion and baseline evaluation:
 
-- status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`
+- inference status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_COMPLETED`
+- baseline status: `EXP33_EFFECTERASE_BASELINE_WEAK`
 - launch time: `2026-06-27T14:21:56+08:00`
 - GPU: `GPU3`
 - launcher PID/PGID: `1349871/1349871`
 - runner PID/PGID: `1349893/1349871`
-- launch-status snapshot current sample: `REAL_ENV900_00003_001_04`
-- completed rows at launch-status snapshot: `2/43`
-- technical-valid outputs at launch-status snapshot: `2/2`
-- report: `reports/exp33_effecterase_vor_eval_official81_launch_status.md`
+- completed rows: `43/43`
+- failed rows: `[]`
+- technical-valid outputs: `43/43`, `81` frames, `832x480`
+- classification counts: `BASELINE_USABLE=9`, `BASELINE_MIXED=17`,
+  `BASELINE_WEAK=17`
+- aggregate metrics: full PSNR `21.9229`, full SSIM `0.7349`, mask PSNR
+  `19.3942`, mask SSIM `0.5889`, boundary PSNR `20.0981`, outside L1
+  `16.4051`, Ewarp proxy `6.4370`
+- LPIPS: unavailable in this milestone because first-run AlexNet weight
+  download was too slow; no proxy LPIPS is represented as real LPIPS.
+- reports:
+  `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`,
+  `reports/exp33_effecterase_vor_eval_official81_metrics.csv`,
+  `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,
+  `reports/exp33_effecterase_vor_eval_official81_final_report.md`
 
-Next step: wait for the 43-row baseline inference to complete, then run metrics
-and output visual review. The launch snapshot is not a quality conclusion.
+Visual review opened representative weak/mixed/usable evidence sheets. The
+review supports the weak/mixed metric conclusion: some samples erase the object
+well, but outside damage, exposure drift, and residual background/reflection
+artifacts are common enough that this is not a strong baseline result.

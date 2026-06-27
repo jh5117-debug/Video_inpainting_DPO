@@ -1,3 +1,37 @@
+## 2026-06-28 Exp33 VOR-Eval EffectErase Baseline Metrics and Review
+
+Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+
+Exp33 completed held-out VOR-Eval official81 EffectErase baseline evaluation
+for all 43 rows. Inference had already completed before this milestone; this
+update only computed metrics, generated visual review evidence, and summarized
+the baseline. No EffectErase adapter, DPO, loser mining, MiniMax job,
+VideoPainter training, DiffuEraser VOR-OR training, RC-FPO, or universal
+adapter work was launched.
+
+- rows evaluated: `43/43`
+- technical-valid outputs: `43/43`
+- baseline classification counts: `BASELINE_USABLE=9`,
+  `BASELINE_MIXED=17`, `BASELINE_WEAK=17`
+- aggregate metrics: full PSNR `21.9229`, full SSIM `0.7349`, mask PSNR
+  `19.3942`, mask SSIM `0.5889`, boundary PSNR `20.0981`, outside L1
+  `16.4051`, Ewarp proxy `6.4370`
+- LPIPS: not computed in the committed summary because first-run AlexNet
+  weight download was too slow; no proxy LPIPS is reported as real LPIPS.
+- reports:
+  `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`,
+  `reports/exp33_effecterase_vor_eval_official81_metrics.csv`,
+  `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,
+  `reports/exp33_effecterase_vor_eval_official81_final_report.md`
+
+Visual review opened representative weak/mixed/usable review sheets. The weak
+case `REAL_ENV900_00044_002_04` shows global darkening/shadow drift outside
+the mask; the mixed case `REAL_ENV900_00020_002_01` removes the person but
+retains visible background/reflection residuals; the usable case
+`REAL_ENV900_00017_001_01` removes the subject with acceptable continuity but
+still has tree/dark-region texture error. Conclusion: EffectErase is useful
+baseline evidence, but not a strong VOR-Eval baseline on this 43-row set.
+
 ## 2026-06-27 Exp33 VOR-Eval EffectErase Inference Launch
 
 Status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`

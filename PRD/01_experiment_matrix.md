@@ -2,14 +2,14 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp33 EffectErase VOR-Eval baseline | `EXP33_VOREVAL_EFFECTERASE_INFERENCE_RUNNING`; 2/43 outputs technical-valid at launch snapshot; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_official81_launch_status.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
+| Exp33 EffectErase VOR-Eval baseline | `EXP33_EFFECTERASE_BASELINE_WEAK`; 43/43 outputs technical-valid, but metrics and visual review show many weak/mixed cases; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`, `reports/exp33_effecterase_vor_eval_official81_final_report.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
 
 Notes:
 
 - Exp29 official 81F diagnostic smoke is baseline-ready context only.
-- Exp33 baseline inference is running and still needs completion, metrics, and
-  output review.
-- EffectErase remains baseline-only for this lane.
+- Exp33 baseline inference, metrics, and output review are complete.
+- EffectErase remains baseline-only for this lane; the 43-row VOR-Eval result
+  is weak/mixed overall and is not a promotion claim.
 
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 

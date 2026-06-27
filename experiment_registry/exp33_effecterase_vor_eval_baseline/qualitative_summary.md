@@ -1,21 +1,31 @@
 # Exp33 Qualitative Summary
 
-No Exp33 VOR-Eval visual evidence exists yet.
+Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
 
-Prior Exp29 official 81-frame diagnostic review found 8/8 technical-valid
-baseline outputs, but those are not the held-out VOR-Eval baseline requested
-for Exp33.
+The 43-row visual review evidence pack has been generated for the completed
+EffectErase VOR-Eval baseline. Representative weak/mixed/usable review sheets
+were opened after metric generation.
 
-Exp33 generated 43 input preview sheets for the held-out VOR-Eval official81
-compatibility audit. A stratified small/medium/large input sanity review passed
-for 3 rows. These are input previews only, not EffectErase output evidence.
+Observed pattern:
 
-Exp33 also generated 43 materialized-input preview sheets after writing 81-frame
-832x480 MP4 inputs. A stratified small/medium/large materialized sanity review
-passed for 3 rows. These are still input previews only.
+- Weak cases can introduce large outside-region exposure/shadow drift.
+- Mixed cases often remove the foreground object but retain visible reflection
+  or background residuals.
+- Usable cases show coherent removal, but still have texture errors in darker
+  or fine-detail regions.
 
-Command validation passed, but it was dry-run only. No EffectErase output video
-or output visual review exists yet.
+Opened representative sheets:
 
-EffectErase baseline inference is now running. The launch-status snapshot has
-2/43 technical-valid output files, but output visual review has not started.
+- `REAL_ENV900_00044_002_04`: weak; global darkening / shadow drift.
+- `REAL_ENV900_00020_002_01`: mixed; person removed with reflection/background residual.
+- `REAL_ENV900_00017_001_01`: usable; mostly coherent removal with residual texture error.
+
+Evidence:
+
+- `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`
+- `reports/exp33_effecterase_vor_eval_official81_visual_review.md`
+- `reports/exp33_effecterase_vor_eval_official81_visual_audit_notes.md`
+
+Conclusion: EffectErase provides technically valid baseline evidence, but the
+held-out VOR-Eval official81 result is weak/mixed overall and is not a strong
+baseline or promotion result.
