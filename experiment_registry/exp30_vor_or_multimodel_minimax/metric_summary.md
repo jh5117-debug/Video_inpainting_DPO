@@ -222,3 +222,28 @@ with failed rows 0 and BLENDER/REAL 32/32. Materialized manifest SHA256:
 No adapter-training metric has been produced by this milestone.
 
 Source materialization passed: 64/64 rows, 0 failed, 17 frames, 512x512, BLENDER/REAL 32/32. No OR candidate metrics yet.
+
+## 2026-06-27 MiniMax Gate64 Adapter 10-Step Metrics
+
+MiniMax flow-target adapter gate was evaluated on Gate64 V3 heldout16.
+
+Frozen-reference recipe:
+
+- Mean full PSNR delta: `-0.001136`.
+- Mean mask PSNR delta: `-0.001068`; mask PSNR wins `9/16`.
+- Mean boundary PSNR delta: `-0.002821`; boundary PSNR wins `8/16`.
+- Mean outside PSNR delta: `-0.006340`; outside PSNR wins `3/16`.
+- Mean temporal-diff MAE delta: `+0.001228`.
+
+EMA-reference recipe:
+
+- Mean full PSNR delta: `-0.001723`.
+- Mean mask PSNR delta: `-0.001851`; mask PSNR wins `8/16`.
+- Mean boundary PSNR delta: `-0.003092`; boundary PSNR wins `8/16`.
+- Mean outside PSNR delta: `-0.006033`; outside PSNR wins `3/16`.
+- Mean temporal-diff MAE delta: `+0.001299`.
+
+Zero-gap and one-step strict reload passed, but the 10-step heldout metrics do
+not meet quality-positive criteria. LPIPS/Ewarp were not reimplemented here;
+this micro gate therefore stops conservatively at
+`MINIMAX_ADAPTER_RECIPE_NOT_READY`.

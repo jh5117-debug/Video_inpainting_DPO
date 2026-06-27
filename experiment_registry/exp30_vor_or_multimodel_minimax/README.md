@@ -12,8 +12,11 @@ Current gate sequence:
 4. Run limited Gate64 only if smoke16 passes.
 5. Run MiniMax 10-step adapter gate only if Gate64 provides scene-disjoint
    train/heldout data.
+6. Stop if the MiniMax 10-step gate is not quality-positive.
 
 EffectErase remains an OR strong baseline / diagnostic, not an adapter target.
+
+Current final gate state: `MINIMAX_ADAPTER_RECIPE_NOT_READY`.
 
 ## 2026-06-27 Continuation V3
 
@@ -62,3 +65,14 @@ medium-hard plus 2 hard-plausible. The pool is dominated by controlled
 corruption v3, with MiniMax and ProPainter supplementation and only one
 DiffuEraser selected row. MiniMax 10-step adapter gate is now unlocked; long
 training, RC-FPO, and universal-adapter claims remain forbidden.
+
+## 2026-06-27 MiniMax Gate64 Adapter Gate
+
+The preregistered MiniMax 10-step adapter gate was run on the Gate64 V3
+train32/heldout16 split. Frozen-reference and EMA-reference recipes both passed
+zero-gap and one-step strict reload, but neither produced a quality-positive
+heldout result. Codex opened the Step0/Step10 review pages for both recipes and
+all heldout rows: visual better `0/32`, tie/no visible improvement `32/32`.
+Mean mask, boundary, and outside PSNR deltas were slightly negative for both
+recipes. Final status is `MINIMAX_ADAPTER_RECIPE_NOT_READY`, so MiniMax remains
+plumbing-positive only in Exp30.

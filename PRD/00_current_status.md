@@ -2898,3 +2898,24 @@ Exp30 status: `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
 Gate64 v3 aggregated 256 candidates from controlled corruption v3, MiniMax official v3, ProPainter, and DiffuEraser no-PCM. Codex opened the Gate64 visual review pages for all four families before pool selection. The selected primary pool contains 50 usable pairs: 48 medium-hard and 2 hard-plausible. Model counts are controlled corruption v3 26, MiniMax official v3 17, ProPainter 6, and DiffuEraser 1. The train32 manifest SHA256 is `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`; heldout16 SHA256 is `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`; train/heldout scene overlap is 0.
 
 This unlocks the preregistered MiniMax 10-step adapter gate only. No training, RC-FPO, long run, universal-adapter claim, or scientific-positive claim was launched or made by this pool aggregation.
+
+## 2026-06-27 Exp30 MiniMax Gate64 Adapter 10-Step
+
+Exp30 MiniMax status: `MINIMAX_ADAPTER_RECIPE_NOT_READY`.
+
+The preregistered MiniMax 10-step adapter gate ran on the Gate64 V3
+train32/heldout16 split. Both frozen-reference and EMA-reference recipes used
+the MiniMax flow velocity target `epsilon - z0`; both passed zero-gap and
+one-step strict reload, and neither produced NaN/Inf. Heldout16 Step10,
+however, was not quality-positive: Codex opened 8 combined review pages
+covering Step0/Step10 midframe evidence and 16-frame temporal strips for both
+recipes. Visual better was 0/32 and tie/no visible improvement was 32/32.
+
+Frozen mean deltas: full PSNR `-0.001136`, mask PSNR `-0.001068`,
+boundary PSNR `-0.002821`, outside PSNR `-0.006340`.
+EMA mean deltas: full PSNR `-0.001723`, mask PSNR `-0.001851`,
+boundary PSNR `-0.003092`, outside PSNR `-0.006033`.
+
+MiniMax remains plumbing-positive only in Exp30. No 30-step, long training,
+RC-FPO, universal-adapter claim, or third-backbone quality-positive claim is
+authorized by this result.

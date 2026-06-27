@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`
+Current status: `MINIMAX_ADAPTER_RECIPE_NOT_READY`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -547,3 +547,25 @@ Reports:
 - VOR-Eval used: false.
 - Training started: false.
 - Gate unlocked: preregistered MiniMax 10-step adapter gate only.
+
+## 2026-06-27 MiniMax Gate64 Adapter 10-Step V3
+
+- Status: `MINIMAX_ADAPTER_RECIPE_NOT_READY`.
+- Candidate-generation status: `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
+- Paper claim status: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+- Target: MiniMax flow velocity `epsilon - z0`.
+- Train rows: 32.
+- Heldout rows: 16.
+- Train/heldout scene overlap: 0.
+- Train32 SHA256:
+  `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`.
+- Heldout16 SHA256:
+  `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`.
+- Recipes: frozen reference and EMA reference.
+- Zero-gap: passed for both recipes.
+- One-step strict reload: passed for both recipes.
+- 10-step run: completed for both recipes with no NaN/Inf.
+- Codex visual review: 8 combined pages opened; Step10 better `0/32`,
+  tie/no visible improvement `32/32`, new visible artifact `0/32`.
+- Decision: no MiniMax 30-step, no long training, no RC-FPO, no
+  third-backbone quality-positive claim.

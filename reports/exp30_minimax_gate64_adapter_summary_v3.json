@@ -1,0 +1,132 @@
+{
+  "aggregate_recipe_stats_from_metrics_csv": {
+    "ema": {
+      "boundary_psnr_win_count": 8,
+      "full_psnr_win_count": 7,
+      "heldout_rows": 16,
+      "mask_psnr_win_count": 8,
+      "mean_delta_boundary_psnr": -0.0030915232859123343,
+      "mean_delta_full_psnr": -0.0017233604760844567,
+      "mean_delta_mask_psnr": -0.0018505129677655052,
+      "mean_delta_outside_mae": 0.006383559283088147,
+      "mean_delta_outside_psnr": -0.006032939193278741,
+      "mean_delta_temporal_diff_mae": 0.001298963325098157,
+      "outside_psnr_win_count": 3
+    },
+    "frozen": {
+      "boundary_psnr_win_count": 8,
+      "full_psnr_win_count": 6,
+      "heldout_rows": 16,
+      "mask_psnr_win_count": 9,
+      "mean_delta_boundary_psnr": -0.0028207450887072216,
+      "mean_delta_full_psnr": -0.0011364644212438213,
+      "mean_delta_mask_psnr": -0.0010677232974422024,
+      "mean_delta_outside_mae": 0.006808701683493151,
+      "mean_delta_outside_psnr": -0.006339633863299721,
+      "mean_delta_temporal_diff_mae": 0.0012283524265512824,
+      "outside_psnr_win_count": 3
+    }
+  },
+  "beta": 1.0,
+  "codex_visual_review": {
+    "classification": "TIE_NO_QUALITY_POSITIVE_CHANGE",
+    "decision": "MINIMAX_ADAPTER_RECIPE_NOT_READY",
+    "heldout_rows_per_recipe": 16,
+    "reason": "Both frozen and EMA recipes pass zero-gap/one-step technical gates but Step10 is visually tied with Step0 and mean local/outside PSNR deltas are negative.",
+    "recipes_reviewed": [
+      "ema",
+      "frozen"
+    ],
+    "review_pages_opened": 8,
+    "visual_better_count": 0,
+    "visual_tie_count": 32,
+    "visual_worse_or_new_artifact_count": 0
+  },
+  "dataset_loader_audit": {
+    "dtype": "bfloat16",
+    "frames": 17,
+    "heldout_manifest_sha256": "84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade",
+    "heldout_rows": 16,
+    "target": "MiniMax flow velocity epsilon_minus_z0",
+    "train_manifest_sha256": "1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196",
+    "train_rows": 32,
+    "vor_eval_used": false
+  },
+  "grad_clip": 1.0,
+  "lr": 5e-07,
+  "paper_claim_status": "TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY",
+  "recipes": {
+    "ema": {
+      "checkpoint_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/ema",
+      "mean_delta_boundary_psnr": -0.0030915232859123343,
+      "mean_delta_mask_psnr": -0.0018505129677655052,
+      "mean_delta_outside_psnr": -0.006032939193278741,
+      "nan_detected": false,
+      "one_step_status": "MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED",
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/ema",
+      "peak_vram_mib": 80184.1865234375,
+      "reference_delta_probe": 8.351530297171276e-09,
+      "step10_delta_probe": 2.735606286011216e-07,
+      "step1_delta_probe": 7.843374807622872e-08,
+      "strict_reload_step1": {
+        "missing_keys": [],
+        "unexpected_keys": []
+      },
+      "strict_reload_step10": {
+        "missing_keys": [],
+        "unexpected_keys": []
+      },
+      "ten_step_status": "MINIMAX_10STEP_COMPLETED_NEEDS_CODEX_REVIEW",
+      "zero_gap": {
+        "linear_utility": 0.5,
+        "lose_gap": 0.0,
+        "loser_policy_loss": 0.5572552680969238,
+        "loser_reference_loss": 0.5572552680969238,
+        "loss": 0.6931471824645996,
+        "preference_margin": 0.0,
+        "win_gap": 0.0,
+        "winner_policy_loss": 0.5426751971244812,
+        "winner_reference_loss": 0.5426751971244812
+      },
+      "zero_gap_status": "MINIMAX_ZERO_GAP_PASSED"
+    },
+    "frozen": {
+      "checkpoint_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/checkpoints/frozen",
+      "mean_delta_boundary_psnr": -0.0028207450887072216,
+      "mean_delta_mask_psnr": -0.0010677232974422024,
+      "mean_delta_outside_psnr": -0.006339633863299721,
+      "nan_detected": false,
+      "one_step_status": "MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED",
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/minimax_gate64_adapter_v3_20260627/frozen",
+      "peak_vram_mib": 75796.232421875,
+      "reference_delta_probe": 0.0,
+      "step10_delta_probe": 2.743745512179263e-07,
+      "step1_delta_probe": 7.838806481350047e-08,
+      "strict_reload_step1": {
+        "missing_keys": [],
+        "unexpected_keys": []
+      },
+      "strict_reload_step10": {
+        "missing_keys": [],
+        "unexpected_keys": []
+      },
+      "ten_step_status": "MINIMAX_10STEP_COMPLETED_NEEDS_CODEX_REVIEW",
+      "zero_gap": {
+        "linear_utility": 0.5,
+        "lose_gap": 0.0,
+        "loser_policy_loss": 0.5572552680969238,
+        "loser_reference_loss": 0.5572552680969238,
+        "loss": 0.6931471824645996,
+        "preference_margin": 0.0,
+        "win_gap": 0.0,
+        "winner_policy_loss": 0.5426751971244812,
+        "winner_reference_loss": 0.5426751971244812
+      },
+      "zero_gap_status": "MINIMAX_ZERO_GAP_PASSED"
+    }
+  },
+  "runtime_seconds": 421.0551061630249,
+  "seed": 20260627,
+  "status": "MINIMAX_ADAPTER_RECIPE_NOT_READY",
+  "steps": 10
+}

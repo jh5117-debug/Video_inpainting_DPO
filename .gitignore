@@ -103,3 +103,5 @@ PRD/pai_audit_pai_node_*.md
 *.onnx
 reports/exp26_probe4_mask_visuals/
 reports/exp30_gate64_*_review_pages/
+reports/exp30_minimax_gate64_adapter_v3_assets/
+reports/exp30_minimax_gate64_adapter_v3_review_pages/

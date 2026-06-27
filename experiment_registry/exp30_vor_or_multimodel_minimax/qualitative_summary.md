@@ -182,3 +182,21 @@ blur/white artifacts, or outside damage, with only one selected primary row.
 
 The pool is ready for the preregistered MiniMax 10-step adapter gate, but it is
 not by itself a quality-positive adapter result.
+
+## 2026-06-27 MiniMax Gate64 Adapter Visual Review
+
+Codex opened 8 combined review pages for the MiniMax Gate64 adapter gate,
+covering frozen and EMA recipes across all 16 heldout rows. Each page showed
+Step0 and Step10 midframe review sheets plus 16-frame temporal strips.
+
+Visual classification:
+
+- Step10 clearly/slightly better: 0/32 recipe-row comparisons.
+- Tie / no visible Step10 improvement: 32/32.
+- Step10 new visible artifact: 0/32.
+
+The qualitative finding matches the metrics: the MiniMax model and checkpoint
+state changed, but the rendered heldout outputs are effectively indistinguish-
+able from Step0. No reliable object/effect correction, boundary repair, or
+temporal improvement was visible. MiniMax remains technical/plumbing-positive
+only, not a third-backbone quality-positive adapter result.

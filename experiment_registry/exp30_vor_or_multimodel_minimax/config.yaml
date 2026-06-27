@@ -352,3 +352,32 @@ gate64_v3_multimodel_pool:
   training_started: false
   minimax_10step_gate_unlocked: true
   long_training_unlocked: false
+minimax_gate64_adapter_10step_v3:
+  result: MINIMAX_ADAPTER_RECIPE_NOT_READY
+  target: epsilon_minus_z0_flow_velocity
+  train_rows: 32
+  heldout_rows: 16
+  train32_manifest_sha256: 1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196
+  heldout16_manifest_sha256: 84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade
+  recipes:
+    frozen:
+      zero_gap: MINIMAX_ZERO_GAP_PASSED
+      one_step: MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED
+      mean_delta_full_psnr: -0.0011364644212438213
+      mean_delta_mask_psnr: -0.0010677232974422024
+      mean_delta_boundary_psnr: -0.0028207450887072216
+      mean_delta_outside_psnr: -0.006339633863299721
+      visual_better: 0
+      visual_tie: 16
+    ema:
+      zero_gap: MINIMAX_ZERO_GAP_PASSED
+      one_step: MINIMAX_ONE_STEP_STRICT_RELOAD_PASSED
+      mean_delta_full_psnr: -0.0017233604760844567
+      mean_delta_mask_psnr: -0.0018505129677655052
+      mean_delta_boundary_psnr: -0.0030915232859123343
+      mean_delta_outside_psnr: -0.006032939193278741
+      visual_better: 0
+      visual_tie: 16
+  visual_review_pages_opened: 8
+  long_training_unlocked: false
+  paper_claim_status: TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY

@@ -1,6 +1,6 @@
 # Exp30 VOR-OR Multi-Model MiniMax
 
-Status: `EXP30_READBACK_COMPLETED`
+Status: `MINIMAX_ADAPTER_RECIPE_NOT_READY`
 
 Exp30 is an isolated track for VOR-OR multi-model medium-hard preference pool
 construction, MiniMax true-adapter micro validation, DiffuEraser VOR-OR
@@ -798,3 +798,48 @@ Reports/manifests:
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_train32_v3.jsonl`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_heldout16_v3.jsonl`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_rejected_v3.jsonl`
+
+## 2026-06-27 MiniMax Gate64 Adapter 10-Step V3
+
+- Status: `MINIMAX_ADAPTER_RECIPE_NOT_READY`.
+- Candidate-generation status remains `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
+- Paper claim status: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+- Dataset: Gate64 V3 train32 / heldout16 split, scene overlap 0.
+- Train32 SHA256:
+  `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`.
+- Heldout16 SHA256:
+  `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`.
+- Target: MiniMax flow velocity `epsilon - z0`.
+- Recipes run: frozen reference and EMA reference.
+- Zero-gap: passed for both recipes.
+- One-step strict reload: passed for both recipes.
+- 10-step: completed for both recipes with no NaN/Inf.
+- Frozen mean deltas on heldout16:
+  full PSNR `-0.001136`, mask PSNR `-0.001068`,
+  boundary PSNR `-0.002821`, outside PSNR `-0.006340`.
+- EMA mean deltas on heldout16:
+  full PSNR `-0.001723`, mask PSNR `-0.001851`,
+  boundary PSNR `-0.003092`, outside PSNR `-0.006033`.
+- Codex opened 8 combined review pages covering Step0 and Step10
+  midframe sheets plus 16-frame temporal strips for both recipes and all
+  heldout rows.
+- Visual result: Step10 better `0/32`, tie/no visible improvement `32/32`,
+  new visible artifact `0/32`.
+
+Decision:
+
+MiniMax remains a technical/plumbing-positive flow-style backend in Exp30, but
+this 10-step quality gate is not positive. The outputs are essentially tied
+with Step0 and local/outside metrics are slightly negative on average, so no
+30-step run, long training, RC-FPO, universal-adapter claim, or
+third-backbone quality-positive claim is authorized from this result.
+
+Reports:
+
+- `reports/exp30_minimax_gate64_adapter_zero_gap_v3.md`
+- `reports/exp30_minimax_gate64_adapter_one_step_v3.md`
+- `reports/exp30_minimax_gate64_adapter_10step_v3.md`
+- `reports/exp30_minimax_gate64_adapter_10step_metrics_v3.csv`
+- `reports/exp30_minimax_gate64_adapter_10step_visual_review_v3.csv`
+- `reports/exp30_minimax_gate64_adapter_diagnostics_v3.csv`
+- `reports/exp30_minimax_gate64_adapter_summary_v3.json`
