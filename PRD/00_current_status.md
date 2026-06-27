@@ -1,3 +1,24 @@
+## 2026-06-27 Exp31 VideoPainter 2000-Step Readback
+
+Status: `EXP31_READBACK_COMPLETED`
+
+An isolated Exp31 branch and worktree were created from
+`origin/research/exp26-videopainter-dpo-v2` at
+`568a7dfb48bcdfce893176a1dd48c653414a13a8`.
+
+The Exp26 Step50 identity and outcomes were reread. Search-dev and shadow-dev
+remain positive for the fixed 50-step micro trajectory, while external
+DAVIS-derived validation remains not confirmed. Exp31 is therefore scoped as a
+2000-step long-run, not a universal-adapter claim.
+
+Right-side Exp30/MiniMax protection was checked read-only. No active Exp30 GPU
+process was found, but Exp30 outputs exist and stale MiniMax locks for GPU0 and
+GPU5 remain, so Exp31 will use GPU1 by plan and conservatively reserve GPU0 and
+GPU5.
+
+Training is not started by this readback. Next required milestone:
+`VIDEOPAINTER_2000_RESUME_POLICY_AUDITED`.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 Exp26 VideoPainter v2 Gate16 has now passed the pre-registered Gate16 quality

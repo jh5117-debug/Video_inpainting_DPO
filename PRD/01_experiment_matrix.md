@@ -1,3 +1,17 @@
+## 2026-06-27 Exp31 VideoPainter 2000-Step Long-Run
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp31 VideoPainter 2000-step long-run | `EXP31_READBACK_COMPLETED`; resume-policy and L0/L1 pending; no training started | `PRD/49_exp31_videopainter_2000step_longrun.md`, `reports/exp31_videopainter_2000_readback.md`, `experiment_registry/exp31_videopainter_2000step_longrun/` |
+
+Notes:
+
+- Uses an isolated branch and Exp31-only output roots.
+- Does not modify Exp26 Step0/Step50 outputs.
+- Does not touch Exp30/MiniMax outputs or processes.
+- Step2000 on shadow-dev is the pre-registered primary endpoint once the run
+  passes resume policy and L0/L1.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 | User-facing name | Status | Evidence / registry |
