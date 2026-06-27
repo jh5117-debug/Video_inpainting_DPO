@@ -54,3 +54,19 @@ milestone is a path/sensitivity pass only, not a quality-positive adapter gate.
 
 No metric-positive adapter result is implied. The audit only rules out a too
 small or ignored trainable scope.
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+- Status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`.
+- Winner-SFT loss decreased for all three AdamW recipes:
+  - LR `1e-5`: `0.7092440128 -> 0.0127931200`.
+  - LR `3e-5`: `0.7092440128 -> 0.0181513224`.
+  - LR `1e-4`: `0.7092440128 -> 0.1104465276`.
+- Step10 parameter-delta probes were nonzero:
+  `1.4444718289e-05`, `4.1587465276e-05`, and `0.0002197052693`.
+- Heldout mean mask PSNR deltas were negative:
+  `-0.2448377791`, `-0.8897026274`, `-4.2619560566`.
+- Heldout mean boundary PSNR deltas were negative:
+  `-0.6611956197`, `-2.0405589461`, `-6.4308968032`.
+
+The result proves update sensitivity, not quality improvement.

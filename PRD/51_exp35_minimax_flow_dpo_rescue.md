@@ -191,3 +191,54 @@ Reports:
 - `reports/exp35_minimax_trainable_scope_audit.md`
 - `reports/exp35_minimax_trainable_scope_audit.csv`
 - `reports/exp35_minimax_trainable_scope_summary.json`
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+Exp35 winner-SFT positive-control status:
+`MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`.
+
+This milestone ran bounded 10-step supervised winner reconstruction as a
+positive-control, not DPO and not a long training run. It used PAI GPU6 only
+and did not touch protected left CLI/Exp31/Exp33 processes. Because
+`/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp35_minimax_flow_dpo_rescue`
+was not writable by `hj`, checkpoints for this diagnostic milestone were
+stored under the Exp35 autoresearch log root:
+
+`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/checkpoints`
+
+Results:
+
+- Scope: current full MiniMax transformer (`S0_current_full_transformer`).
+- Steps: `10` per recipe.
+- Recipes: AdamW LR `1e-5`, `3e-5`, `1e-4`.
+- All three recipes reduced train loss and produced nonzero checkpoint/output
+  changes without NaN/Inf.
+- Best training-loss recipe was LR `1e-5`, loss
+  `0.7092440128 -> 0.0127931200`.
+- Heldout mean mask PSNR deltas were negative:
+  `-0.2448377791`, `-0.8897026274`, `-4.2619560566`.
+- Heldout mean boundary PSNR deltas were negative:
+  `-0.6611956197`, `-2.0405589461`, `-6.4308968032`.
+
+Codex visual review:
+
+- Opened `12/12` generated heldout temporal strips.
+- LR `1e-5`: `3/4` slightly worse, `1/4` tie.
+- LR `3e-5`: `3/4` clearly worse, `1/4` Pareto-mixed/tie.
+- LR `1e-4`: `4/4` new artifacts, including green/purple drift, black/cyan
+  blocks, blur/occlusion-like failures, and broad outside damage.
+
+Decision:
+
+This confirms MiniMax can be trained and that inference responds to the
+updated checkpoint. It does not produce heldout quality improvement. Do not
+advance to 30-step from winner-SFT, and do not write third-backbone positive
+evidence from this milestone.
+
+Reports:
+
+- `reports/exp35_minimax_winner_sft_positive_control.md`
+- `reports/exp35_minimax_winner_sft_positive_control.csv`
+- `reports/exp35_minimax_winner_sft_metrics.csv`
+- `reports/exp35_minimax_winner_sft_visual_review.csv`
+- `reports/exp35_minimax_winner_sft_summary.json`

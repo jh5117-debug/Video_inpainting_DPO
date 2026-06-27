@@ -60,3 +60,32 @@ trainable_scope:
   current_scope_ignored_by_inference: false
   expanded_lora_scope_prepared: false
   in_forward_path_evidence: MINIMAX_INFERENCE_SENSITIVITY_PASS
+winner_sft_positive_control:
+  status: MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE
+  training_type: winner_sft_positive_control_not_dpo
+  gpu: PAI_GPU6
+  steps: 10
+  train_rows: 4
+  heldout_rows: 4
+  scope: S0_current_full_transformer
+  recipes:
+    - lr: 1.0e-05
+      loss_start: 0.7092440128326416
+      loss_end: 0.012793119996786118
+      heldout_mean_delta_mask_psnr: -0.24483777910946536
+      heldout_mean_delta_boundary_psnr: -0.6611956197450723
+      visual_quality: mostly_slightly_worse_or_tie
+    - lr: 3.0e-05
+      loss_start: 0.7092440128326416
+      loss_end: 0.01815132237970829
+      heldout_mean_delta_mask_psnr: -0.8897026274277025
+      heldout_mean_delta_boundary_psnr: -2.0405589460600795
+      visual_quality: mostly_worse
+    - lr: 1.0e-04
+      loss_start: 0.7092440128326416
+      loss_end: 0.11044652760028839
+      heldout_mean_delta_mask_psnr: -4.2619560566344346
+      heldout_mean_delta_boundary_psnr: -6.4308968032059015
+      visual_quality: new_artifacts_all_rows
+  codex_visual_review: REVIEWED_12_OF_12
+  thirty_step_unlocked: false

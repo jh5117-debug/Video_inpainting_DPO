@@ -1,0 +1,50 @@
+{
+  "best_recipe_by_loss_decrease": "S0_adamw_lr1em05",
+  "heldout_rows": 4,
+  "recipes": {
+    "S0_adamw_lr0.0001": {
+      "checkpoint_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/checkpoints/S0_adamw_lr0.0001",
+      "heldout_mean_delta_boundary_psnr": -6.4308968032059015,
+      "heldout_mean_delta_mask_psnr": -4.2619560566344346,
+      "heldout_output_changed": true,
+      "loss_decrease": 0.5987974852323532,
+      "loss_end": 0.11044652760028839,
+      "loss_start": 0.7092440128326416,
+      "lr": 0.0001,
+      "nan_detected": false,
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/S0_adamw_lr0.0001",
+      "step10_delta_probe": 0.0002197052692736179
+    },
+    "S0_adamw_lr1em05": {
+      "checkpoint_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/checkpoints/S0_adamw_lr1em05",
+      "heldout_mean_delta_boundary_psnr": -0.6611956197450723,
+      "heldout_mean_delta_mask_psnr": -0.24483777910946536,
+      "heldout_output_changed": true,
+      "loss_decrease": 0.6964508928358555,
+      "loss_end": 0.012793119996786118,
+      "loss_start": 0.7092440128326416,
+      "lr": 1e-05,
+      "nan_detected": false,
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/S0_adamw_lr1em05",
+      "step10_delta_probe": 1.4444718289041703e-05
+    },
+    "S0_adamw_lr3em05": {
+      "checkpoint_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/checkpoints/S0_adamw_lr3em05",
+      "heldout_mean_delta_boundary_psnr": -2.0405589460600795,
+      "heldout_mean_delta_mask_psnr": -0.8897026274277025,
+      "heldout_output_changed": true,
+      "loss_decrease": 0.6910926904529333,
+      "loss_end": 0.01815132237970829,
+      "loss_start": 0.7092440128326416,
+      "lr": 3e-05,
+      "nan_detected": false,
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/winner_sft_positive_control_20260627/S0_adamw_lr3em05",
+      "step10_delta_probe": 4.1587465275938484e-05
+    }
+  },
+  "scope": "S0_current_full_transformer",
+  "status": "MINIMAX_POSITIVE_CONTROL_PASS",
+  "steps": 10,
+  "train_rows": 4,
+  "training_type": "winner_sft_positive_control_not_dpo"
+}

@@ -2990,3 +2990,21 @@ positive-control, this rules out "scope too small" and "inference ignores
 trainable weights" as primary causes. No expanded LoRA scope was prepared in
 this milestone; the next bottleneck remains objective/update scale and
 bad-noise/hard-timestep selection.
+
+## 2026-06-27 Exp35 MiniMax Winner-SFT Positive-Control
+
+Exp35 winner-SFT status:
+`MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`.
+
+Ran a bounded 10-step supervised winner reconstruction positive-control on
+PAI GPU6. This was not DPO and not a long training run. All three AdamW
+recipes reduced training loss and produced nonzero checkpoint/output changes,
+confirming MiniMax is trainable and not frozen. However heldout quality was
+negative: mask PSNR deltas were `-0.244838`, `-0.889703`, and `-4.261956`
+for LR `1e-5`, `3e-5`, and `1e-4`; boundary PSNR deltas were `-0.661196`,
+`-2.040559`, and `-6.430897`.
+
+Codex opened `12/12` heldout temporal strips. LR `1e-5` was mostly slightly
+worse/tie, LR `3e-5` was mostly worse, and LR `1e-4` introduced new artifacts
+on all four heldout rows. This milestone does not unlock 30-step training or
+third-backbone positive language.

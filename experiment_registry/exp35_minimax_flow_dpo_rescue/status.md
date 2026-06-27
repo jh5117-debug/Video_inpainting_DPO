@@ -1,6 +1,6 @@
 # Exp35 Status
 
-Current status: `MINIMAX_TRAINABLE_SCOPE_CURRENT_OK`
+Current status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`
 
 ## 2026-06-27 Readback
 
@@ -64,3 +64,22 @@ weights. It is not a quality-positive adapter result.
 
 The current scope is in the inference path and is not too small. No expanded
 LoRA scope was prepared in this milestone.
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+- Status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE`.
+- Training type: winner reconstruction SFT positive-control, not DPO.
+- GPU used: PAI GPU6.
+- Steps: `10` per recipe.
+- Recipes: AdamW LR `1e-5`, `3e-5`, `1e-4`.
+- Best training-loss recipe: `1e-5`, loss `0.7092440128 -> 0.0127931200`.
+- All recipes produced nonzero parameter/output changes and no NaN/Inf.
+- Heldout quality was negative: mean mask PSNR deltas were `-0.244838`,
+  `-0.889703`, and `-4.261956` for LR `1e-5`, `3e-5`, and `1e-4`.
+- Codex opened `12/12` heldout temporal strips. Visual review found no clear
+  quality-positive rows; LR `1e-4` introduced strong new artifacts on all 4
+  heldout rows.
+
+Conclusion: MiniMax is trainable and not frozen, but naive winner-SFT
+overfits/harms heldout outputs. This does not unlock 30-step training or a
+third-backbone positive claim.
