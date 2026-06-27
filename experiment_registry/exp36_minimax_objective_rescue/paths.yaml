@@ -10,3 +10,10 @@ reports:
   inference_sensitivity: reports/exp36_minimax_inference_sensitivity.md
   trainable_scope: reports/exp36_minimax_trainable_scope_audit.md
   trainable_scope_summary: reports/exp36_minimax_trainable_scope_summary.json
+winner_sft_positive_control:
+  report: reports/exp36_minimax_winner_sft_positive_control.md
+  metrics: reports/exp36_minimax_winner_sft_metrics.csv
+  diagnostics: reports/exp36_minimax_winner_sft_positive_control.csv
+  visual_review: reports/exp36_minimax_winner_sft_visual_review.csv
+  summary: reports/exp36_minimax_winner_sft_summary.json
+  nas_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue/winner_sft_positive_control_20260627_fixed

@@ -41,3 +41,16 @@ No model-quality metrics were generated. The scope contract records:
 
 This milestone adds implementation and checkpoint-roundtrip tests only; it
 does not change MiniMax quality status.
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+Heldout Step10 - Step0 mean deltas by recipe:
+
+- S0 LR `1e-5`: mask PSNR `-0.239675`, boundary PSNR `-0.657298`, outside PSNR `-0.726005`.
+- S0 LR `3e-5`: mask PSNR `-0.864464`, boundary PSNR `-2.036330`, outside PSNR `-2.449896`.
+- S0 LR `1e-4`: mask PSNR `-5.053039`, boundary PSNR `-6.497239`, outside PSNR `-8.740992`.
+- S1 LR `1e-5`: mask PSNR `+0.000986`, boundary PSNR `-0.004270`, outside PSNR `+0.015536`.
+- S1 LR `3e-5`: mask PSNR `-0.005604`, boundary PSNR `-0.030257`, outside PSNR `+0.061951`.
+- S1 LR `1e-4`: mask PSNR `-0.052968`, boundary PSNR `-0.202504`, outside PSNR `+0.160871`.
+
+The tiny S1 local metric movement is not visually meaningful and does not unlock objective rescue.

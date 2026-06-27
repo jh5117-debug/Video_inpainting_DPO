@@ -159,3 +159,30 @@ Reports:
 - `reports/exp36_minimax_trainable_scope_audit.md`
 - `reports/exp36_minimax_trainable_scope_audit.csv`
 - `reports/exp36_minimax_trainable_scope_summary.json`
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+Status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NOT_POSITIVE`.
+
+Ran bounded 10-step supervised winner reconstruction on PAI GPU0 for S0 full-transformer and S1 LoRA attention/projection scopes. This was a positive-control, not DPO and not long training.
+
+Results:
+
+- Strict reload: passed for generated checkpoints.
+- NaN/Inf: none detected.
+- S0/S1 train losses decreased and heldout outputs changed, proving trainability and checkpoint sensitivity.
+- Best heldout local metric was S1 LR `1e-5`, with mask PSNR delta only `+0.000986` and boundary PSNR delta `-0.004270`.
+- Codex opened and inspected `24/24` Step0-vs-Step10 heldout strips.
+- Visual better rows: `0/24`.
+- Tie / no visible quality gain: `20/24`.
+- Clearly worse / new artifact: `4/24`, all from S0 LR `1e-4`.
+
+Interpretation: MiniMax can learn/update technically, but the winner-SFT control did not produce heldout quality improvement. Bad-noise mining, objective rescue, 30-step confirmatory training, and third-backbone-positive language remain locked.
+
+Reports:
+
+- `reports/exp36_minimax_winner_sft_positive_control.md`
+- `reports/exp36_minimax_winner_sft_positive_control.csv`
+- `reports/exp36_minimax_winner_sft_metrics.csv`
+- `reports/exp36_minimax_winner_sft_visual_review.csv`
+- `reports/exp36_minimax_winner_sft_summary.json`

@@ -3127,3 +3127,7 @@ scope contract and tests for Exp36:
 - S2 last-four-block MLP LoRA remains locked until S1 evidence exists.
 
 This is not a quality-positive result and does not unlock 30-step.
+
+## 2026-06-27 Exp36 MiniMax Winner-SFT Positive-Control
+
+Exp36 status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NOT_POSITIVE`. MiniMax S0/S1 winner-SFT controls reduced training loss and changed heldout outputs, but Codex reviewed `24/24` heldout strips with `0` visual better rows and `4` S0 high-LR artifact rows. This keeps MiniMax plumbing/trainability positive but quality rescue locked; no objective rescue, 30-step, long training, or universal-adapter claim is unlocked.

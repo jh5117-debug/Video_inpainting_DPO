@@ -32,3 +32,15 @@ No videos were generated or reviewed. The qualitative source-of-truth remains
 unchanged: MiniMax has measurable weight sensitivity but no heldout
 quality-positive recipe yet. S1 scope readiness only prepares the next
 positive-control test.
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+Codex opened `24/24` Step0-vs-Step10 heldout strips from the fixed winner-SFT positive-control run.
+
+- `CLEARLY_WORSE_NEW_ARTIFACT`: 4 rows, all S0 LR `1e-4`.
+- `TIE_METRIC_WORSE`: 6 rows.
+- `TIE_METRIC_MIXED`: 6 rows.
+- `TIE_NO_VISIBLE_CHANGE`: 8 rows.
+- Visual better: 0 rows.
+
+S1 LoRA is stable but visually tied; S0 high LR proves output sensitivity by producing artifacts. There is no heldout quality-positive positive-control.

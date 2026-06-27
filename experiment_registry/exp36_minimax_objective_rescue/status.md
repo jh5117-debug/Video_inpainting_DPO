@@ -71,3 +71,21 @@ Reports:
 
 - `reports/exp36_minimax_trainable_scope_audit.md`
 - `reports/exp36_minimax_trainable_scope_summary.json`
+
+## 2026-06-27 Winner-SFT Positive-Control
+
+- Status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NOT_POSITIVE`.
+- Training type: supervised winner-SFT positive-control, not DPO.
+- GPU used: PAI GPU0.
+- Scopes: S0 full-transformer baseline and S1 LoRA attention/projection.
+- Strict reload: passed.
+- Visual review: `24/24` strips opened.
+- Better rows: `0/24`.
+- Tie / no visible gain: `20/24`.
+- Clearly worse / new artifact: `4/24`.
+- Next milestones locked: bad-noise miner, objective rescue, and 30-step confirmatory.
+
+Reports:
+
+- `reports/exp36_minimax_winner_sft_positive_control.md`
+- `reports/exp36_minimax_winner_sft_summary.json`

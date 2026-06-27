@@ -26,3 +26,11 @@ scope_plans:
     alpha: 16
     dropout: 0.0
     status: locked_until_s1_positive_control
+winner_sft_positive_control:
+  scopes: [S0, S1]
+  lrs: [1e-5, 3e-5, 1e-4]
+  steps: 10
+  status: MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NOT_POSITIVE
+  unlock_bad_noise: false
+  unlock_objective_rescue: false
+  unlock_30step: false
