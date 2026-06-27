@@ -186,3 +186,18 @@ Reports:
 - `reports/exp36_minimax_winner_sft_metrics.csv`
 - `reports/exp36_minimax_winner_sft_visual_review.csv`
 - `reports/exp36_minimax_winner_sft_summary.json`
+
+## 2026-06-27 Paper Positioning and Exp36 Stop Decision
+
+Final MiniMax status: `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`.
+
+Paper claim status: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+
+Exp36 proves MiniMax is not ignored by inference and is technically trainable: checkpoint loading, weight sensitivity, strict reload, and winner-SFT parameter/output movement all work. However, quality-positive evidence is absent. Winner-SFT heldout review found `0/24` visually better rows, while prior Exp30/Exp35 preference recipes also had `0` visual better rows.
+
+Decision: do not run bad-noise mining, objective rescue, 30-step confirmatory, RC-FPO, or long training from this state. MiniMax remains a flow-style candidate requiring objective/data redesign, not third-backbone success.
+
+Reports:
+
+- `reports/exp36_minimax_paper_positioning.md`
+- `reports/exp36_minimax_paper_positioning.csv`

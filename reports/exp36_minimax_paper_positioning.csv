@@ -1,0 +1,6 @@
+claim,status,basis
+DiffuEraser + VideoPainter cross-backbone adapter evidence,ALLOWED,Both have independent positive validation in prior experiments
+MiniMax plumbing/trainability evidence,ALLOWED,zero-gap/one-step/trainable-forward/inference-sensitivity/winner-SFT technical pass
+MiniMax third-backbone quality-positive evidence,FORBIDDEN,winner-SFT heldout visual better 0/24; previous DPO/Linear recipes better 0
+three-backbone adapter evidence ready,FORBIDDEN,MiniMax has no heldout quality-positive micro
+universal adapter,FORBIDDEN,"Only two backbones are quality-confirmed, external generalization remains mixed"

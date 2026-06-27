@@ -34,3 +34,10 @@ winner_sft_positive_control:
   unlock_bad_noise: false
   unlock_objective_rescue: false
   unlock_30step: false
+final_decision:
+  minimax_status: MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY
+  paper_claim: TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY
+  run_bad_noise: false
+  run_objective_rescue: false
+  run_30step: false
+  universal_adapter_claim: false

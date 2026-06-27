@@ -54,3 +54,7 @@ Heldout Step10 - Step0 mean deltas by recipe:
 - S1 LR `1e-4`: mask PSNR `-0.052968`, boundary PSNR `-0.202504`, outside PSNR `+0.160871`.
 
 The tiny S1 local metric movement is not visually meaningful and does not unlock objective rescue.
+
+## 2026-06-27 Paper Positioning
+
+Final metric stance: MiniMax has no heldout quality-positive metric package. Exp36 winner-SFT best local metric was a non-meaningful S1 LR `1e-5` mask PSNR delta of `+0.000986` with boundary delta `-0.004270`; previous preference recipes had negative mask/boundary deltas. No 30-step metric gate is unlocked.

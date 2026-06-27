@@ -44,3 +44,7 @@ Codex opened `24/24` Step0-vs-Step10 heldout strips from the fixed winner-SFT po
 - Visual better: 0 rows.
 
 S1 LoRA is stable but visually tied; S0 high LR proves output sensitivity by producing artifacts. There is no heldout quality-positive positive-control.
+
+## 2026-06-27 Paper Positioning
+
+Final qualitative stance: MiniMax has `0` visually better heldout rows across Exp36 winner-SFT and prior Exp30/Exp35 preference attempts. The safe paper language is two-backbone adapter evidence plus MiniMax plumbing-only candidate evidence.

@@ -17,3 +17,6 @@ winner_sft_positive_control:
   visual_review: reports/exp36_minimax_winner_sft_visual_review.csv
   summary: reports/exp36_minimax_winner_sft_summary.json
   nas_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue/winner_sft_positive_control_20260627_fixed
+paper_positioning:
+  report: reports/exp36_minimax_paper_positioning.md
+  csv: reports/exp36_minimax_paper_positioning.csv
