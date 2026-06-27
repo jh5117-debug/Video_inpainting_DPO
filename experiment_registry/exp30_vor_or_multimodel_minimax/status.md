@@ -482,3 +482,29 @@ Reports:
 - `reports/exp30_vor_or_gate64_preregistration_v3.csv`
 - `reports/exp30_vor_or_gate64_preregistration_v3.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3.jsonl`
+
+
+## 2026-06-27 Gate64 V3 Pre-Inference Manifest Repair
+
+- Status: `EXP30_GATE64_V3_MANIFEST_REPAIRED_PRE_INFERENCE`.
+- Initial Gate64 materialization decoded 55/64 rows; 9 rows failed because masks were empty across the first 17 decoded frames.
+- Failed rows were repaired before any Gate64 model output, visual selection, adapter gate, or training.
+- Replacement rows: 9 total, matching source type distribution of failures (1 BLENDER, 8 REAL).
+- Final manifest rows: 64.
+- Final scene groups: 64.
+- Final source balance: BLENDER / REAL = 32 / 32.
+- Final manifest SHA256: `c2da063118934f0b03d13d88015cfc1cc57e881aca257307ca42de20cc944eb0`.
+- Replacement manifest SHA256: `32a11315e55ce59d54864568c8225f6d329040282a2e34c26968581317b0062c`.
+- This unlocks replacement-member extraction and final materialization only. Candidate generation and training remain stopped until final materialization passes.
+
+Reports:
+
+- `reports/exp30_vor_or_gate64_materialization_v3_partial.md`
+- `reports/exp30_vor_or_gate64_materialization_v3_partial.csv`
+- `reports/exp30_vor_or_gate64_materialization_v3_partial.json`
+- `reports/exp30_vor_or_gate64_materialization_failed_v3.jsonl`
+- `reports/exp30_vor_or_gate64_manifest_repair_v3.md`
+- `reports/exp30_vor_or_gate64_manifest_repair_v3.csv`
+- `reports/exp30_vor_or_gate64_manifest_repair_v3.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3_final.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3_replacements.jsonl`

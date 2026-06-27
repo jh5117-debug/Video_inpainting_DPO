@@ -158,3 +158,7 @@ The qualitative conclusion matches the low-margin pass: proceed only to limited 
 ## 2026-06-27 Gate64 V3 Preregistration
 
 No video review was performed because no videos were extracted or generated. Qualitative review remains pending materialization and candidate generation.
+
+## 2026-06-27 Gate64 V3 Pre-Inference Repair
+
+No candidate video review yet. The only qualitative finding is source invalidity: 9 rows had empty masks in the first 17 decoded frames and were replaced before inference.

@@ -1,0 +1,9 @@
+{"error": "RuntimeError('BLENDER_RIVER008_00001 has empty mask across 17 decoded frames')", "sample_id": "BLENDER_RIVER008_00001", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV056_00001_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV056_00001_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV057_00001_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV057_00001_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV069_00001_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV069_00001_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV082_00002_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV082_00002_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV085_00004_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV085_00004_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV088_00001_001_02 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV088_00001_001_02", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV101_00001_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV101_00001_001_01", "status": "FAILED"}
+{"error": "RuntimeError('REAL_ENV101_00002_001_01 has empty mask across 17 decoded frames')", "sample_id": "REAL_ENV101_00002_001_01", "status": "FAILED"}

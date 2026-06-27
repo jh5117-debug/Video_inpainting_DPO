@@ -292,3 +292,16 @@ gate64_v3_preregistration:
   manifest_sha256: c4a0f5e07ef75aae57c9b40010f7fec85d10d5aa6c26a8056e1079d807bcf7f2
   generated_model_outputs: false
   launched_training: false
+gate64_v3_manifest_repair:
+  result: EXP30_GATE64_V3_MANIFEST_REPAIRED_PRE_INFERENCE
+  initial_materialized_rows: 55
+  failed_rows: 9
+  replacement_rows: 9
+  final_rows: 64
+  final_scene_groups: 64
+  final_source_type_counts:
+    BLENDER: 32
+    REAL: 32
+  final_manifest_sha256: c2da063118934f0b03d13d88015cfc1cc57e881aca257307ca42de20cc944eb0
+  model_outputs_generated_before_repair: false
+  launched_training: false

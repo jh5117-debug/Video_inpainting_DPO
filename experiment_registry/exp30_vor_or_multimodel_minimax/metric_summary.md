@@ -191,3 +191,7 @@ The gate passes exactly at the usable-candidate and best-per-source thresholds, 
 ## 2026-06-27 Gate64 V3 Preregistration
 
 No model metrics were produced. The milestone locked 64 metadata rows with BLENDER/REAL 32/32 balance and scene overlap 0 against Smoke16/Smoke32.
+
+## 2026-06-27 Gate64 V3 Pre-Inference Repair
+
+Initial materialization metrics: 55/64 rows OK and 9 empty-mask failures. The repair selected 9 same-source-type replacements before any model output. No candidate metrics were produced.

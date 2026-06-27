@@ -2882,3 +2882,7 @@ Smoke32 v3 passed with low margin: 64/64 technical-valid candidates, 14 usable c
 ## 2026-06-27 Exp30 Gate64 V3 Preregistration
 
 Exp30 locked `EXP30_GATE64_V3_PREREGISTERED`: 64 source groups, BLENDER/REAL 32/32, SHA256 `c4a0f5e07ef75aae57c9b40010f7fec85d10d5aa6c26a8056e1079d807bcf7f2`. No extraction, inference, or training yet.
+
+## 2026-06-27 Exp30 Gate64 V3 Manifest Repair
+
+Exp30 repaired Gate64 v3 before inference: 55/64 initial materialization rows passed, 9 empty-mask rows were replaced from source-pool reserve, final manifest SHA256 `c2da063118934f0b03d13d88015cfc1cc57e881aca257307ca42de20cc944eb0`. No Gate64 model output or training yet.
