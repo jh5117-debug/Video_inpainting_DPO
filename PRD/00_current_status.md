@@ -2808,3 +2808,13 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   verified-generator smoke runner.
 - No model output was generated. Smoke16 v3/Gate64/training remain blocked
   until DiffuEraser and ProPainter smoke2 runs and passes with video review.
+
+## 2026-06-27 Exp30 Verified Generator Smoke2
+
+- Status: `NEW_GENERATORS_SMOKE2_PARTIAL_PASS`
+- ProPainter and DiffuEraser no-PCM each generated 2/2 locked smoke rows,
+  17 frames per row.
+- Codex opened 4/4 review sheets. Final quality: 2 too-close, 1
+  hard-but-plausible, 1 medium-hard, 0 final trivial-bad.
+- This only supports including those families in Smoke16 v3. It does not unlock
+  Smoke32, Gate64, MiniMax adapter gate, DiffuEraser micro, or training.

@@ -294,3 +294,22 @@ Reports:
 Report:
 
 - `reports/exp30_verified_generator_wrapper_port.md`
+
+## 2026-06-27 Verified Generator Smoke2
+
+- Status: `NEW_GENERATORS_SMOKE2_PARTIAL_PASS`.
+- ProPainter: 2/2 generated, 17/17 frames each.
+- DiffuEraser no-PCM: 2/2 generated, 17/17 frames each.
+- Codex visual review: 4/4 review sheets opened.
+- Final visual classes: 2 too-close, 1 hard-but-plausible, 1 medium-hard,
+  0 final trivial-bad.
+- Smoke16 v3 may include these generator families, but Smoke16 v3 itself has
+  not run. Smoke32, Gate64, adapter gates, and training remain stopped.
+
+Reports/assets:
+
+- `reports/exp30_new_generators_smoke2.md`
+- `reports/exp30_new_generators_smoke2_metrics.csv`
+- `reports/exp30_new_generators_smoke2_visual_review.csv`
+- `reports/exp30_new_generators_smoke2_summary.json`
+- `reports/exp30_verified_generators_smoke2_assets/`

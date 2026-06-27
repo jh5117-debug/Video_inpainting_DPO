@@ -484,3 +484,31 @@ Reports:
 Report:
 
 - `reports/exp30_verified_generator_wrapper_port.md`
+
+## 2026-06-27 Verified Generator Smoke2
+
+- Status: `NEW_GENERATORS_SMOKE2_PARTIAL_PASS`.
+- PAI Exp30 runtime worktree was created under
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp30_vor_or_minimax_worktree`
+  because `/mnt/workspace/hj/nas_hj` was not writable to `hj`.
+- ProPainter smoke2:
+  2/2 samples generated successfully, 17/17 frames each.
+- DiffuEraser explicit no-PCM smoke2:
+  2/2 samples generated successfully, 17/17 frames each.
+- Codex opened 4/4 review sheets.
+- Final visual classifications:
+  - 2 too-close (`BLENDER_FOREST006_00001`, both models).
+  - 1 hard-but-plausible (ProPainter on `BLENDER_FOREST007_00001`).
+  - 1 medium-hard (DiffuEraser on `BLENDER_FOREST007_00001`).
+  - 0 final trivial-bad.
+- This validates Exp30 generator wiring and permits adding ProPainter and
+  DiffuEraser no-PCM as candidate families in Smoke16 v3. It does not pass
+  Smoke16 v3, Smoke32, Gate64, MiniMax adapter gate, or any training gate.
+
+Reports/assets:
+
+- `reports/exp30_new_generators_smoke2.md`
+- `reports/exp30_new_generators_smoke2_metrics.csv`
+- `reports/exp30_new_generators_smoke2_visual_review.csv`
+- `reports/exp30_new_generators_smoke2_summary.json`
+- `reports/exp30_verified_generators_smoke2_assets/`

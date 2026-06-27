@@ -117,3 +117,17 @@ No new videos were generated or reviewed. Qualitative readiness is split:
 
 Smoke16 v3 remains pending until smoke2 verifies the generator outputs in the
 current Exp30 runtime.
+
+## 2026-06-27 Verified Generator Smoke2
+
+Codex opened 4/4 review sheets:
+
+- ProPainter and DiffuEraser on `BLENDER_FOREST006_00001` were too close to
+  the clean winner; they are not useful medium-hard losers.
+- ProPainter on `BLENDER_FOREST007_00001` removed the car but introduced a
+  dark smear/grid-like blur and local seam, making it hard-but-plausible.
+- DiffuEraser no-PCM on `BLENDER_FOREST007_00001` removed the car with smoky
+  local residual and boundary/texture defects, making it medium-hard.
+
+The generator wiring is now visually smoke-tested, but the sample count is too
+small for pool readiness. Smoke16 v3 still needs to run and pass.

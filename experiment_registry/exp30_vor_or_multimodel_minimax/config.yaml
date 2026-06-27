@@ -203,3 +203,26 @@ verified_generator_wrapper_port:
   default_num_frames: 17
   launched_gpu_smoke: false
   launched_training: false
+verified_generator_smoke2:
+  result: NEW_GENERATORS_SMOKE2_PARTIAL_PASS
+  pai_runtime_worktree: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp30_vor_or_minimax_worktree
+  output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627
+  samples:
+    - BLENDER_FOREST006_00001
+    - BLENDER_FOREST007_00001
+  propainter:
+    generated: 2
+    failed: 0
+    final_visual:
+      too_close: 1
+      hard_but_plausible: 1
+  diffueraser_no_pcm:
+    generated: 2
+    failed: 0
+    final_visual:
+      too_close: 1
+      medium_hard: 1
+  codex_review_pages_opened: 4
+  smoke16_v3_generator_inclusion_unlocked: true
+  gate64_unlocked: false
+  launched_training: false

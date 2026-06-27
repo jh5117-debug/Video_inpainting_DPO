@@ -130,3 +130,22 @@ DiffuEraser root-cause v2 evidence:
 
 These are imported evidence only. Exp30 must still port the exact no-PCM
 wrapper identity and run smoke2 before the generator contributes to Smoke16 v3.
+
+## 2026-06-27 Verified Generator Smoke2
+
+Smoke2 generated 4/4 raw/no-comp candidate outputs:
+
+- ProPainter: 2/2 rows, 17 frames each.
+- DiffuEraser no-PCM: 2/2 rows, 17 frames each.
+
+Final Codex visual counts:
+
+- Too-close: 2.
+- Hard-but-plausible: 1.
+- Medium-hard: 1.
+- Final trivial-bad: 0.
+
+The automatic smoke metric classified 4/4 as trivial-bad because raw outside
+PSNR was low versus winner. Visual review shows the useful distinction: the
+first forest row is too close to winner, while the car row contains usable
+local defects.

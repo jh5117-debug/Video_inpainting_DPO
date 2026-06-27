@@ -1,0 +1,37 @@
+{
+  "status": "NEW_GENERATORS_SMOKE2_PARTIAL_PASS",
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627",
+  "models": [
+    "propainter",
+    "diffueraser"
+  ],
+  "samples": [
+    "BLENDER_FOREST006_00001",
+    "BLENDER_FOREST007_00001"
+  ],
+  "metrics_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/reports/exp30_new_generators_smoke2_metrics.csv",
+  "visual_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/reports/exp30_new_generators_smoke2_visual_review.csv",
+  "review_pages": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/review_assets/propainter_BLENDER_FOREST006_00001_review.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/review_assets/diffueraser_BLENDER_FOREST006_00001_review.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/review_assets/propainter_BLENDER_FOREST007_00001_review.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke2_verified_generators_20260627/review_assets/diffueraser_BLENDER_FOREST007_00001_review.jpg"
+  ],
+  "auto_counts": {
+    "propainter:TRIVIAL_BAD": 2,
+    "diffueraser:TRIVIAL_BAD": 2
+  },
+  "final_counts": {
+    "TOO_CLOSE": 2,
+    "HARD_BUT_PLAUSIBLE": 1,
+    "MEDIUM_HARD_ELIGIBLE": 1
+  },
+  "codex_visual_review": {
+    "reviewed_pages": 4,
+    "technical_valid": 4,
+    "usable": 2,
+    "too_close": 2,
+    "trivial_bad": 0,
+    "notes": "Both generators are technically wired in Exp30. The two-sample smoke is too small to unlock Smoke16 v3 by itself; it supports including these generators in the preregistered Smoke16 v3 candidate set."
+  }
+}
