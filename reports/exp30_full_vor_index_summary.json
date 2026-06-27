@@ -1,0 +1,141 @@
+{
+  "archive_scanned": false,
+  "member_index": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_train_mask_member_index.csv",
+  "member_index_audit": {
+    "available": true,
+    "fields": [
+      "group",
+      "member_index",
+      "member_path",
+      "sample_id",
+      "type",
+      "size",
+      "mtime",
+      "unsafe_reason"
+    ],
+    "file_count": 179183,
+    "prefix_counts": {
+      "MASK": 60224,
+      "VOR-Train/BG": 61208,
+      "VOR-Train/FG_BG": 57751
+    },
+    "row_count": 179189,
+    "type_counts": {
+      "dir": 6,
+      "file": 179183
+    },
+    "unsafe_count": 0
+  },
+  "member_index_sha256": "3b3415c989e72b4df821f85903d01a754fb2c07412e40907749bf9844626d1f8",
+  "metadata_audit": {
+    "duplicate_sample_id_count": 0,
+    "duplicate_sample_ids_sample": [],
+    "examples": [
+      {
+        "comp_mode": "none",
+        "condition_member_path": "VOR-Train/FG_BG/BLENDER_BEACH001_00001.mp4",
+        "condition_role": "FG_BG",
+        "hard_comp": false,
+        "mask_member_path": "MASK/BLENDER_BEACH001_00001.mp4",
+        "mask_role": "MASK",
+        "sample_id": "BLENDER_BEACH001_00001",
+        "scene_group": "BLENDER_BEACH001",
+        "task": "object_removal",
+        "winner_member_path": "VOR-Train/BG/BLENDER_BEACH001_00001.mp4",
+        "winner_role": "BG"
+      },
+      {
+        "comp_mode": "none",
+        "condition_member_path": "VOR-Train/FG_BG/BLENDER_BEACH001_00002.mp4",
+        "condition_role": "FG_BG",
+        "hard_comp": false,
+        "mask_member_path": "MASK/BLENDER_BEACH001_00002.mp4",
+        "mask_role": "MASK",
+        "sample_id": "BLENDER_BEACH001_00002",
+        "scene_group": "BLENDER_BEACH001",
+        "task": "object_removal",
+        "winner_member_path": "VOR-Train/BG/BLENDER_BEACH001_00002.mp4",
+        "winner_role": "BG"
+      },
+      {
+        "comp_mode": "none",
+        "condition_member_path": "VOR-Train/FG_BG/BLENDER_BEACH001_00003.mp4",
+        "condition_role": "FG_BG",
+        "hard_comp": false,
+        "mask_member_path": "MASK/BLENDER_BEACH001_00003.mp4",
+        "mask_role": "MASK",
+        "sample_id": "BLENDER_BEACH001_00003",
+        "scene_group": "BLENDER_BEACH001",
+        "task": "object_removal",
+        "winner_member_path": "VOR-Train/BG/BLENDER_BEACH001_00003.mp4",
+        "winner_role": "BG"
+      },
+      {
+        "comp_mode": "none",
+        "condition_member_path": "VOR-Train/FG_BG/BLENDER_BEACH001_00004.mp4",
+        "condition_role": "FG_BG",
+        "hard_comp": false,
+        "mask_member_path": "MASK/BLENDER_BEACH001_00004.mp4",
+        "mask_role": "MASK",
+        "sample_id": "BLENDER_BEACH001_00004",
+        "scene_group": "BLENDER_BEACH001",
+        "task": "object_removal",
+        "winner_member_path": "VOR-Train/BG/BLENDER_BEACH001_00004.mp4",
+        "winner_role": "BG"
+      },
+      {
+        "comp_mode": "none",
+        "condition_member_path": "VOR-Train/FG_BG/BLENDER_BEACH001_00005.mp4",
+        "condition_role": "FG_BG",
+        "hard_comp": false,
+        "mask_member_path": "MASK/BLENDER_BEACH001_00005.mp4",
+        "mask_role": "MASK",
+        "sample_id": "BLENDER_BEACH001_00005",
+        "scene_group": "BLENDER_BEACH001",
+        "task": "object_removal",
+        "winner_member_path": "VOR-Train/BG/BLENDER_BEACH001_00005.mp4",
+        "winner_role": "BG"
+      }
+    ],
+    "field_missing_counts": {},
+    "invalid_count_including_quarantine": 1,
+    "invalid_rows_sample": [
+      {
+        "line_no": 13920,
+        "reasons": [
+          "known_bad_quarantined"
+        ],
+        "sample_id": "BLENDER_RIVER007_00001",
+        "scene_group": "BLENDER_RIVER007"
+      }
+    ],
+    "quarantined_count": 1,
+    "role_counts": {
+      "condition=FG_BG": 57751,
+      "mask=MASK": 57751,
+      "winner=BG": 57751
+    },
+    "row_count": 57751,
+    "scene_group_count": 1449,
+    "scene_group_row_count_max": 2005,
+    "scene_group_row_count_min": 1,
+    "source_type_counts": {
+      "BLENDER": 21495,
+      "REAL": 36256
+    },
+    "valid_count": 57750
+  },
+  "metadata_index": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "metadata_rows": 57751,
+  "metadata_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "pairing_rule": {
+    "condition": "VOR-Train/FG_BG/<sample_id>.mp4",
+    "mask": "MASK/<sample_id>.mp4",
+    "winner": "VOR-Train/BG/<sample_id>.mp4"
+  },
+  "quarantined_known_bad_count": 1,
+  "status": "FULL_VOR_VALID_TRIPLET_INDEX_READY",
+  "valid_triplet_count": 57750,
+  "videos_extracted": false,
+  "vor_eval_used": false
+}

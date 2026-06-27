@@ -1,0 +1,12 @@
+key,value
+status,FULL_VOR_VALID_TRIPLET_INDEX_READY
+metadata_index,/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl
+metadata_sha256,33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4
+metadata_rows,57751
+valid_triplet_count,57750
+quarantined_known_bad_count,1
+scene_group_count,1449
+source_type_counts,"{""BLENDER"": 21495, ""REAL"": 36256}"
+member_index,/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_train_mask_member_index.csv
+member_index_sha256,3b3415c989e72b4df821f85903d01a754fb2c07412e40907749bf9844626d1f8
+member_prefix_counts,"{""MASK"": 60224, ""VOR-Train/BG"": 61208, ""VOR-Train/FG_BG"": 57751}"

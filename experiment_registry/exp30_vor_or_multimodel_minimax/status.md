@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `EXP30_CONTINUATION_V2_READBACK_COMPLETED`
+Current status: `FULL_VOR_VALID_TRIPLET_INDEX_READY`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -98,3 +98,23 @@ Reports/manifests:
 Report:
 
 - `reports/exp30_continuation_v2_readback.md`
+
+## 2026-06-27 Full VOR Valid Triplet Index Recovery
+
+- Status: `FULL_VOR_VALID_TRIPLET_INDEX_READY`.
+- Metadata rows: 57,751.
+- Valid triplets: 57,750 after quarantining known bad
+  `BLENDER_RIVER007_00001`.
+- Scene groups: 1,449.
+- Source type counts: BLENDER 21,495; REAL 36,256.
+- Pairing rule verified by exact basename across FG_BG, BG, and MASK.
+- Archives scanned: no.
+- Videos extracted: no.
+- VOR-Eval used: no.
+
+Reports/manifests:
+
+- `reports/exp30_full_vor_index_recovery.md`
+- `reports/exp30_full_vor_index_recovery.csv`
+- `reports/exp30_full_vor_index_summary.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_full_valid_triplet_index_ref.json`

@@ -35,3 +35,9 @@ does not meet the 128 source + 128 reserve requirement and is not balanced.
 No new model metrics were produced. The readback located the full VOR metadata
 index with 57,751 rows and confirmed the previous 80-row pool was an extracted
 cache subset.
+
+## 2026-06-27 Full VOR Index Recovery
+
+No model metrics were produced. Data-index metrics: 57,751 metadata rows,
+57,750 valid triplets after one known-bad quarantine, 1,449 scene groups,
+BLENDER 21,495 rows, REAL 36,256 rows.

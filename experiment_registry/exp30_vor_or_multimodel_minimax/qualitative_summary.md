@@ -34,3 +34,8 @@ training claim is supported.
 
 No new video generation or qualitative promotion occurred. The next work is
 full-index recovery and source-pool v2 sampling before any smoke or training.
+
+## 2026-06-27 Full VOR Index Recovery
+
+No videos were extracted or reviewed in this milestone. The milestone verifies
+metadata-only VOR-OR triplet identity and unlocks source-pool v2 sampling.

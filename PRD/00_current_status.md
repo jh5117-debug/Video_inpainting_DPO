@@ -2653,3 +2653,15 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`
 - No GPU task was launched. Left CLI was only read.
 - Next action is full VOR index recovery, not Gate128 or training.
+
+## 2026-06-27 Exp30 Full VOR Valid Triplet Index Recovery
+
+- Status: `FULL_VOR_VALID_TRIPLET_INDEX_READY`
+- Full metadata index identity passed.
+- Metadata rows: 57,751.
+- Valid triplets: 57,750 after quarantining `BLENDER_RIVER007_00001`.
+- Scene groups: 1,449.
+- Source type counts: BLENDER 21,495; REAL 36,256.
+- Pairing rule verified by exact basename across FG_BG, BG, and MASK.
+- No archive scan, extraction, GPU task, or left-side modification occurred.
+- Next action is source-pool v2 sampling from the full index.

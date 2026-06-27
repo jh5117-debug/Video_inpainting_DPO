@@ -145,3 +145,34 @@ Next gate:
 Report:
 
 - `reports/exp30_continuation_v2_readback.md`
+
+## 2026-06-27 Full VOR Valid Triplet Index Recovery
+
+- Status: `FULL_VOR_VALID_TRIPLET_INDEX_READY`
+- Metadata index:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl`
+- Metadata rows: 57,751.
+- Valid triplets after quarantining known bad sample
+  `BLENDER_RIVER007_00001`: 57,750.
+- Scene groups: 1,449.
+- Source type counts: BLENDER 21,495; REAL 36,256.
+- Metadata SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`
+- Member index:
+  `/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_train_mask_member_index.csv`
+- Member index SHA256:
+  `3b3415c989e72b4df821f85903d01a754fb2c07412e40907749bf9844626d1f8`
+- Pairing rule verified:
+  `VOR-Train/FG_BG/<sample_id>.mp4`,
+  `VOR-Train/BG/<sample_id>.mp4`, `MASK/<sample_id>.mp4`.
+- VOR tar archives scanned: no.
+- Videos extracted: no.
+- VOR-Eval used: no.
+- Exp25 worktree modified: no.
+
+Reports/manifests:
+
+- `reports/exp30_full_vor_index_recovery.md`
+- `reports/exp30_full_vor_index_recovery.csv`
+- `reports/exp30_full_vor_index_summary.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_full_valid_triplet_index_ref.json`

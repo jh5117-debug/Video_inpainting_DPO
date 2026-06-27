@@ -3,3 +3,4 @@ readback	EXP30_READBACK_COMPLETED	Exp30 branch/worktree/scaffold created from Ex
 paper_positioning	EXP30_THREE_BACKBONE_POSITIONING_LOCKED	DiffuEraser/VideoPainter/MiniMax/EffectErase paper roles and claim boundaries locked before pool generation
 source_pool	VOR_OR_SOURCE_POOL_BLOCKED	Existing exact caches yielded only 80 usable scene groups after exclusions, reserve 0, REAL/BLENDER 71/9; no downstream generation launched
 continuation_v2_readback	EXP30_CONTINUATION_V2_READBACK_COMPLETED	Full metadata index with 57,751 rows located on PAI; previous block traced to exact-cache subset, not full VOR shortage
+full_vor_index_recovery	FULL_VOR_VALID_TRIPLET_INDEX_READY	Verified 57,751 metadata rows and 57,750 valid triplets after quarantining BLENDER_RIVER007_00001; exact FG_BG/BG/MASK pairing confirmed

@@ -1,0 +1,19 @@
+{
+  "member_index_path": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/reports/vor_train_mask_member_index.csv",
+  "member_index_sha256": "3b3415c989e72b4df821f85903d01a754fb2c07412e40907749bf9844626d1f8",
+  "metadata_index_path": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "metadata_index_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "metadata_rows": 57751,
+  "pairing_rule": {
+    "condition": "VOR-Train/FG_BG/<sample_id>.mp4",
+    "mask": "MASK/<sample_id>.mp4",
+    "winner": "VOR-Train/BG/<sample_id>.mp4"
+  },
+  "quarantined_sample_ids": [
+    "BLENDER_RIVER007_00001"
+  ],
+  "source_of_truth": "Exp25 full VOR-Train metadata index",
+  "source_type_rule": "Infer from sample_id prefix REAL_ or BLENDER_",
+  "status": "FULL_VOR_VALID_TRIPLET_INDEX_READY",
+  "valid_triplet_count": 57750
+}

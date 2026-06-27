@@ -73,3 +73,18 @@ continuation_v2_readback:
   full_vor_metadata_sha256: 33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4
   launched_gpu_task: false
   next_gate: FULL_VOR_VALID_TRIPLET_INDEX_READY
+full_vor_index_recovery:
+  result: FULL_VOR_VALID_TRIPLET_INDEX_READY
+  metadata_rows: 57751
+  valid_triplets: 57750
+  quarantined_sample_ids:
+    - BLENDER_RIVER007_00001
+  scene_groups: 1449
+  source_type_counts:
+    BLENDER: 21495
+    REAL: 36256
+  metadata_sha256: 33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4
+  member_index_sha256: 3b3415c989e72b4df821f85903d01a754fb2c07412e40907749bf9844626d1f8
+  archive_scanned: false
+  videos_extracted: false
+  next_gate: VOR_OR_SOURCE_POOL_V2_READY
