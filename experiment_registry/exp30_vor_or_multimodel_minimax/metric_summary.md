@@ -116,3 +116,17 @@ output. These counts define the v3 calibration target but do not unlock Gate64.
 No new metrics were produced. The metric gate for controlled fallback in
 smoke16 v3 is preregistered as technical-valid >=15/16, usable source coverage
 >=8/16, selected-view trivial-bad <=6/16, and outside systematic damage 0.
+
+## 2026-06-27 DiffuEraser / ProPainter Candidate Audit
+
+No new Exp30 model metrics were produced. The audit imports Exp25
+DiffuEraser root-cause v2 evidence:
+
+- `DE-B_sft_raw6_d8_propainter`: 12/12 ok, 9 medium-hard,
+  3 hard-plausible, 0 trivial-bad, mean mask PSNR 21.977292,
+  mean outside PSNR 28.808167.
+- `DE-A_sft_canonical_raw6_d0_propainter`: 12/12 ok, 8 medium-hard,
+  4 hard-plausible, 0 trivial-bad, mean mask PSNR 20.654364.
+
+These are imported evidence only. Exp30 must still port the exact no-PCM
+wrapper identity and run smoke2 before the generator contributes to Smoke16 v3.

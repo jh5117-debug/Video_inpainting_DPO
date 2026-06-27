@@ -1,0 +1,4 @@
+model,status,verified_stack_or_asset,usable_evidence,required_next_action,notes
+DiffuEraser,DIFFUSERASER_VERIFIED_STACK_FOUND_EXP30_WRAPPER_PORT_REQUIRED,DE-B_sft_raw6_d8_propainter,Exp25 root-cause v2: 12/12 ok; 9 medium-hard; 3 hard-plausible; 0 trivial-bad,Port explicit no-PCM overlay wrapper into Exp30 and run smoke2,Current Exp30 wrapper uses legacy run_OR/PCM-parameterized path and cannot be treated as verified DE-B identity
+ProPainter,PROPAINTER_CANDIDATE_ASSETS_READY,/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter,Wrapper present and complete PAI weights found,Sync/create Exp30 PAI worktree and run smoke2,Do not use /mnt/nas/hj/weights/propainter because it only contains a corrupt RAFT file
+Smoke16_v3,BLOCKED_PENDING_NEW_GENERATORS_SMOKE2,controlled v3 plan plus MiniMax plus verified additional generators,No v3 generation yet,Run generator smoke2 before Smoke16 v3,Gate64/Smoke32/adapter remain stopped

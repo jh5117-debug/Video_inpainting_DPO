@@ -260,3 +260,23 @@ Reports:
 - `reports/exp30_controlled_corruption_v3_plan.md`
 - `reports/exp30_controlled_corruption_v3_plan.json`
 - `reports/exp30_controlled_corruption_v3_profile_table.csv`
+
+## 2026-06-27 DiffuEraser / ProPainter Candidate Audit
+
+- Status: `NEW_GENERATORS_SMOKE2_PENDING`.
+- DiffuEraser verified stack found in Exp25:
+  `DE-B_sft_raw6_d8_propainter`, 12/12 ok, 9 medium-hard, 3 hard-plausible,
+  0 trivial-bad.
+- Exp30 DiffuEraser blocker: current wrapper identity is not the explicit
+  no-PCM overlay wrapper used by Exp25. Port and smoke2 are required.
+- ProPainter status: candidate assets ready. Use
+  `/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter`, not
+  `/mnt/nas/hj/weights/propainter`.
+- PAI Exp30 worktree was missing at audit time; no GPU smoke or training was
+  launched.
+
+Reports:
+
+- `reports/exp30_diffueraser_propainter_candidate_audit.md`
+- `reports/exp30_diffueraser_propainter_candidate_audit.csv`
+- `reports/exp30_diffueraser_propainter_candidate_audit.json`

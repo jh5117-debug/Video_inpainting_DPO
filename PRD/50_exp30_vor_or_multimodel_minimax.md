@@ -439,3 +439,31 @@ Reports:
 - `reports/exp30_controlled_corruption_v3_plan.md`
 - `reports/exp30_controlled_corruption_v3_plan.json`
 - `reports/exp30_controlled_corruption_v3_profile_table.csv`
+
+## 2026-06-27 DiffuEraser / ProPainter Candidate Stack Audit
+
+- Status:
+  `DIFFUSERASER_VERIFIED_STACK_FOUND_EXP30_WRAPPER_PORT_REQUIRED` and
+  `PROPAINTER_CANDIDATE_ASSETS_READY`.
+- DiffuEraser: Exp25 root-cause v2 verifies
+  `DE-B_sft_raw6_d8_propainter` as usable for OR loser generation:
+  12/12 technical-valid, 9 medium-hard, 3 hard-plausible, 0 trivial-bad.
+- DiffuEraser blocker: the current Exp30 wrapper still uses the legacy
+  `run_OR.py` / PCM-parameterized identity, not the Exp25 explicit no-PCM
+  overlay wrapper. It must be ported into Exp30 and smoke-tested before being
+  enabled in Smoke16 v3.
+- ProPainter: the wrapper exists and PAI has a complete valid weight directory
+  at `/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter`.
+  The older `/mnt/nas/hj/weights/propainter` path contains only a corrupt RAFT
+  file and must not be used.
+- PAI Exp30 runtime snapshot was missing at audit time, so no GPU smoke was
+  launched. The next gate is limited Exp30 worktree sync, wrapper port, and
+  two-sample generator smoke.
+- Still stopped: Smoke16 v3, Smoke32, Gate64, MiniMax adapter gate,
+  DiffuEraser training/micro, RC-FPO, and long training.
+
+Reports:
+
+- `reports/exp30_diffueraser_propainter_candidate_audit.md`
+- `reports/exp30_diffueraser_propainter_candidate_audit.csv`
+- `reports/exp30_diffueraser_propainter_candidate_audit.json`

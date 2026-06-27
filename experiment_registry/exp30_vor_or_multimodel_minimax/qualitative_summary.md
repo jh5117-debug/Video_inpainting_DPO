@@ -104,3 +104,16 @@ The qualitative target for v3 is bounded local defect: visible object/effect or
 boundary/texture imperfection in the task region while preserving far outside
 content and avoiding frame-wise flicker. CC-v3-D is deliberately held out of the
 smoke16 v3 run to avoid profile over-search.
+
+## 2026-06-27 DiffuEraser / ProPainter Candidate Audit
+
+No new videos were generated or reviewed. Qualitative readiness is split:
+
+- DiffuEraser has strong Exp25 visual/metric evidence for no-PCM
+  ProPainter-prior OR losers, but Exp30 has not yet ported the exact wrapper
+  identity. It cannot be enabled from the legacy Exp30 wrapper.
+- ProPainter has a valid PAI weight directory and wrapper, so it can enter a
+  two-sample smoke after the Exp30 PAI runtime snapshot is created.
+
+Smoke16 v3 remains pending until smoke2 verifies the generator outputs in the
+current Exp30 runtime.

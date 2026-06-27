@@ -1,0 +1,51 @@
+{
+  "date": "2026-06-27",
+  "status": "NEW_GENERATORS_SMOKE2_PENDING",
+  "diffueraser": {
+    "status": "DIFFUSERASER_VERIFIED_STACK_FOUND_EXP30_WRAPPER_PORT_REQUIRED",
+    "verified_exp25_decision": "DIFFUSERASER_NATIVE_OR_STACK_USABLE",
+    "preferred_stack": "DE-B_sft_raw6_d8_propainter",
+    "core_checkpoint": "/mnt/nas/hj/weights/diffuEraser/converted_weights_step48000",
+    "pcm": "none",
+    "steps": 6,
+    "guidance": 0.0,
+    "prior": "propainter",
+    "mask_dilation_iter": 8,
+    "raw_no_comp": true,
+    "exp25_evidence": {
+      "rows": 12,
+      "ok_rows": 12,
+      "medium_hard": 9,
+      "hard_plausible": 3,
+      "trivial_bad": 0,
+      "mean_mask_psnr": 21.977291971857934,
+      "mean_outside_psnr": 28.808166679156546
+    },
+    "exp30_blocker": "current DPO_finetune/infer_diffueraser_candidate.py is not the explicit no-PCM overlay wrapper identity"
+  },
+  "propainter": {
+    "status": "PROPAINTER_CANDIDATE_ASSETS_READY",
+    "wrapper": "DPO_finetune/infer_propainter_candidate.py",
+    "valid_pai_weight_dir": "/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter",
+    "do_not_use_path": "/mnt/nas/hj/weights/propainter",
+    "required_files": [
+      "ProPainter.pth",
+      "raft-things.pth",
+      "recurrent_flow_completion.pth"
+    ],
+    "hal_sha256": {
+      "ProPainter.pth": "12c070c4b48f374c91d8a2a17851140b85c159621080989f9e191bbc18bd6591",
+      "raft-things.pth": "fcfa4125d6418f4de95d84aec20a3c5f4e205101715a79f193243c186ac9a7e1",
+      "recurrent_flow_completion.pth": "22939a1a7900da878dbe1ccd011d646b1bfb30b8290039d8ff0e0c2fefbfd283"
+    }
+  },
+  "runtime": {
+    "pai_exp30_worktree": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp30_vor_or_minimax",
+    "pai_exp30_worktree_status": "missing_at_audit_time",
+    "left_cli_or_exp31_or_exp33_signals_sent": false,
+    "gpu_generation_launched": false
+  },
+  "next_required_gate": "port DiffuEraser no-PCM wrapper and run DiffuEraser/ProPainter smoke2 before Smoke16 v3",
+  "gate64_unlocked": false,
+  "training_launched": false
+}

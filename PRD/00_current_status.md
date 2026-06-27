@@ -2786,3 +2786,17 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   systematic outside damage.
 - No video generation, Smoke16 v3 run, Smoke32, Gate64, MiniMax adapter gate,
   training, or protected-lane action was launched.
+
+## 2026-06-27 Exp30 DiffuEraser / ProPainter Candidate Audit
+
+- Status: `NEW_GENERATORS_SMOKE2_PENDING`
+- DiffuEraser has verified Exp25 evidence for
+  `DE-B_sft_raw6_d8_propainter`: 12/12 ok, 9 medium-hard, 3 hard-plausible,
+  and 0 trivial-bad.
+- Exp30 cannot yet enable DiffuEraser because its current wrapper is not the
+  explicit no-PCM overlay identity used in the verified Exp25 stack.
+- ProPainter wrapper and PAI weights are ready at
+  `/mnt/nas/hj/data/third_party_video_inpainting/weights/propainter`; the
+  corrupt `/mnt/nas/hj/weights/propainter` path must not be used.
+- Smoke16 v3, Smoke32, Gate64, MiniMax adapter gate, and all training remain
+  stopped until generator smoke2 passes in the Exp30 runtime.

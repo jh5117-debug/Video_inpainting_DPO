@@ -172,3 +172,24 @@ controlled_corruption_v3_plan:
     outside_systematic_damage: 0
   launched_generation: false
   launched_training: false
+diffueraser_propainter_candidate_audit:
+  result: NEW_GENERATORS_SMOKE2_PENDING
+  diffueraser:
+    verified_stack_found: true
+    verified_stack_id: DE-B_sft_raw6_d8_propainter
+    exp25_decision: DIFFUSERASER_NATIVE_OR_STACK_USABLE
+    exp25_medium_hard: 9
+    exp25_hard_plausible: 3
+    exp25_trivial_bad: 0
+    exp30_wrapper_port_required: true
+    enabled_in_smoke16_v3: false
+  propainter:
+    wrapper_present: true
+    pai_valid_weight_dir: /mnt/nas/hj/data/third_party_video_inpainting/weights/propainter
+    do_not_use_dir: /mnt/nas/hj/weights/propainter
+    assets_ready: true
+    enabled_in_smoke16_v3: false
+  pai_runtime:
+    exp30_worktree_status: missing_at_audit_time
+  launched_gpu_smoke: false
+  launched_training: false
