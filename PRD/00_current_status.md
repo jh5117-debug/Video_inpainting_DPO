@@ -1,3 +1,26 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Input Materialization
+
+Status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
+
+Exp33 materialized the held-out VOR-Eval official81 EffectErase baseline inputs
+under the Exp33 NAS run root.
+
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945`
+- rows: `43`
+- ready rows: `43`
+- blocked rows: `0`
+- videos written: `129` condition/winner/mask MP4 files
+- materialized input size: `152M`
+- resolution: `832x480`
+- frames per stream: `81`
+- VOR-Eval use: held-out baseline only
+- eligible for training: `false`
+- EffectErase inference: not started
+
+Materialized preview sheets were generated for all 43 rows. A stratified
+small/medium/large materialized preview sanity check passed for 3 rows.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Materializer Scaffold
 
 Status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`

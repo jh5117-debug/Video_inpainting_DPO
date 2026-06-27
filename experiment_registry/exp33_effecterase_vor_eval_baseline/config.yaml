@@ -1,5 +1,5 @@
 experiment: exp33_effecterase_vor_eval_baseline
-status: EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY
+status: EXP33_VOREVAL_OFFICIAL81_INPUTS_READY
 planned_gpu: 3
 reserved_gpus:
   - 0
@@ -23,4 +23,8 @@ ready_manifest_sha256: d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f1
 source_member_index: reports/exp33_source_vor_eval_member_index.csv
 source_member_index_sha256: 3c135d0d9bd4ba99017e4e36e70033bd895d46dcb60169ff95a242c145eabb9d
 materializer_script: exp33_effecterase_vor_eval_baseline/scripts/materialize_vor_eval_official81_inputs.py
-materialization_started: false
+materialization_started: true
+materialization_status: EXP33_VOREVAL_OFFICIAL81_INPUTS_READY
+materialized_rows: 43
+materialized_video_files: 129
+materialized_input_size: 152M

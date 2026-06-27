@@ -7,3 +7,6 @@ Prior Exp29 official 81-frame diagnostic metrics are recorded in
 
 The Exp33 VOR-Eval official81 compatibility audit passed for 43/43 rows, but
 EffectErase inference and project metrics have not started.
+
+Input materialization also passed for 43/43 rows. Metrics remain not started
+because official EffectErase inference has not run.

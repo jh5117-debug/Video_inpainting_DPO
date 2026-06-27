@@ -1,0 +1,14 @@
+{
+  "blocked_rows": [],
+  "eligible_for_training": false,
+  "inference_started": false,
+  "manifest": "/home/hj/runtime_code/H20_Video_inpainting_DPO_exp33_effecterase_eval/exp33_effecterase_vor_eval_baseline/manifests/effecterase_vor_eval_official81_ready.jsonl",
+  "manifest_sha256": "d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811",
+  "num_frames": 81,
+  "preview_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline/vor_eval_official81_compat_20260627_134945/reports/exp33_effecterase_vor_eval_official81_materialized_previews",
+  "ready_rows": 43,
+  "resolution": "832x480",
+  "rows": 43,
+  "status": "EXP33_VOREVAL_OFFICIAL81_INPUTS_READY",
+  "vor_eval_used": true
+}

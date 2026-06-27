@@ -9,3 +9,7 @@ for Exp33.
 Exp33 generated 43 input preview sheets for the held-out VOR-Eval official81
 compatibility audit. A stratified small/medium/large input sanity review passed
 for 3 rows. These are input previews only, not EffectErase output evidence.
+
+Exp33 also generated 43 materialized-input preview sheets after writing 81-frame
+832x480 MP4 inputs. A stratified small/medium/large materialized sanity review
+passed for 3 rows. These are still input previews only.

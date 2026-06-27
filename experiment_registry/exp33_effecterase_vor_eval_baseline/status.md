@@ -1,6 +1,6 @@
 # Exp33 EffectErase VOR-Eval Baseline Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
 
 - branch: `research/exp33-effecterase-vor-eval-baseline-20260627`
 - base: `origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626`
@@ -12,7 +12,9 @@ Current status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
 - ready manifest SHA256:
   `d5dc6052aae897ff01dcc2af8209de51dfbd04caf3f37534f0940c1f11a94811`.
 - preview sanity review: 3 stratified rows passed.
-- materializer script: ready; materialization not started.
+- materialization: 43/43 rows ready, 129 condition/winner/mask MP4 files
+  written in the Exp33 NAS run root.
+- materialized preview sanity review: 3 stratified rows passed.
 - inference: not started.
 
 Current final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`

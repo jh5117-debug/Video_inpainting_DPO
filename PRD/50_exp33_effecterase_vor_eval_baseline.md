@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_MATERIALIZER_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -125,3 +125,14 @@ Materializer scaffold:
   `source_role=held_out_vor_eval_baseline`;
 - writes 81-frame 832x480 condition/winner/mask MP4s;
 - no EffectErase inference is launched by materialization.
+
+Input materialization:
+
+- status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
+- rows: `43`
+- ready rows: `43`
+- blocked rows: `0`
+- videos written on NAS: `129`
+- materialized input size: `152M`
+- materialized preview sanity review: 3 stratified rows passed
+- inference: not started
