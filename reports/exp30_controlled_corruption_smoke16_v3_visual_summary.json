@@ -1,0 +1,15 @@
+{
+  "all_candidates_reviewed": 24,
+  "all_classification_counts_visual_final": {
+    "MEDIUM_HARD_ELIGIBLE": 16,
+    "TRIVIAL_BAD": 8
+  },
+  "primary_candidates_reviewed": 16,
+  "primary_classification_counts_visual_final": {
+    "MEDIUM_HARD_ELIGIBLE": 13,
+    "TRIVIAL_BAD": 3
+  },
+  "review_pages_opened": 10,
+  "status": "CONTROLLED_CORRUPTION_V3_READY",
+  "visual_note": "Codex opened 6 all-candidate pages and 4 primary pages; v3 reduces the v2 temporal discontinuity pattern, with 13/16 primary usable and 3/16 remaining trivial-bad."
+}

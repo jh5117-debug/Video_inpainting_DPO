@@ -528,3 +528,33 @@ Reports/assets:
 Report:
 
 - `reports/exp30_controlled_corruption_v3_generator_impl.md`
+
+## 2026-06-27 Controlled-Corruption Smoke16 V3
+
+- Status: `CONTROLLED_CORRUPTION_V3_READY`.
+- Ran the locked CC-v3-A/B/C schedule on the fixed 16-row Smoke16 manifest.
+- Generated 24/24 controlled v3 candidates.
+- Deterministic primary controlled view:
+  - 16/16 technical-valid.
+  - 13 medium-hard.
+  - 3 trivial-bad.
+  - outside-fail count 0.
+- Codex opened 6 all-candidate temporal pages and 4 primary pages, covering
+  24/24 candidates and 16/16 primary choices.
+- Visual conclusion: v3 resolves most of the v2 temporal discontinuity issue,
+  but three source primaries remain too hard / temporally unstable and are kept
+  rejected.
+- This repairs the controlled fallback subgate only. Full Smoke16 v3, Smoke32,
+  Gate64, MiniMax adapter gates, DiffuEraser micro, RC-FPO, and long training
+  remain stopped until the aggregate gate is run and passes.
+
+Reports/assets:
+
+- `reports/exp30_controlled_corruption_smoke16_v3.md`
+- `reports/exp30_controlled_corruption_smoke16_v3_metrics.csv`
+- `reports/exp30_controlled_corruption_smoke16_v3_review.csv`
+- `reports/exp30_controlled_corruption_smoke16_v3_primary.csv`
+- `reports/exp30_controlled_corruption_smoke16_v3_summary.json`
+- `reports/exp30_controlled_corruption_smoke16_v3_visual_review.csv`
+- `reports/exp30_controlled_corruption_smoke16_v3_visual_summary.json`
+- `reports/exp30_controlled_corruption_v3_assets/`

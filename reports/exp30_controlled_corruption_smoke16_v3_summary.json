@@ -1,0 +1,19 @@
+{
+  "all_classification_counts": {
+    "MEDIUM_HARD_ELIGIBLE": 16,
+    "TRIVIAL_BAD": 8
+  },
+  "candidate_count": 24,
+  "metrics_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v3_20260627/controlled_corruption_v3/reports/exp30_controlled_corruption_smoke16_v3_metrics.csv",
+  "primary_classification_counts": {
+    "MEDIUM_HARD_ELIGIBLE": 13,
+    "TRIVIAL_BAD": 3
+  },
+  "primary_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v3_20260627/controlled_corruption_v3/reports/exp30_controlled_corruption_smoke16_v3_primary.csv",
+  "primary_outside_fail_count": 0,
+  "primary_technical_valid_count": 16,
+  "primary_usable_count": 13,
+  "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v3_20260627/controlled_corruption_v3/reports/exp30_controlled_corruption_smoke16_v3_review.csv",
+  "source_count": 16,
+  "status": "CONTROLLED_CORRUPTION_V3_READY"
+}

@@ -2827,3 +2827,14 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Existing Smoke16 v2 outputs are untouched; no Smoke16 v3 generation, Smoke32,
   Gate64, MiniMax adapter gate, DiffuEraser micro, RC-FPO, or training was
   launched by this code milestone.
+
+## 2026-06-27 Exp30 Controlled Corruption Smoke16 V3
+
+- Status: `CONTROLLED_CORRUPTION_V3_READY`
+- Generated 24/24 controlled v3 candidates from the locked 16-row Smoke16
+  manifest.
+- Deterministic primary controlled view: 16/16 technical-valid, 13 medium-hard,
+  3 trivial-bad, outside-fail count 0.
+- Codex opened all 6 candidate review pages and all 4 primary review pages.
+- This repairs only the controlled fallback component; aggregate Smoke16 v3,
+  Smoke32, Gate64, adapter gates, RC-FPO, and training remain stopped.
