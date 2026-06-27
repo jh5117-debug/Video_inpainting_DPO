@@ -25,3 +25,10 @@ Codex opened `4/4` Exp36 sensitivity comparison strips:
 - Collapse / black-purple / new artifact: `0/4`.
 
 This confirms inference sensitivity, not heldout quality improvement.
+
+## 2026-06-27 Trainable Scope Audit
+
+No videos were generated or reviewed. The qualitative source-of-truth remains
+unchanged: MiniMax has measurable weight sensitivity but no heldout
+quality-positive recipe yet. S1 scope readiness only prepares the next
+positive-control test.

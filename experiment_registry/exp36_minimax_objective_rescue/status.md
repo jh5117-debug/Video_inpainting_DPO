@@ -1,6 +1,6 @@
 # Exp36 Status
 
-Current status: `EXP36_READBACK_COMPLETED`
+Current status: `MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY`
 
 ## 2026-06-27 Readback
 
@@ -52,3 +52,22 @@ Reports:
 
 - `reports/exp36_minimax_inference_sensitivity.md`
 - `reports/exp36_minimax_inference_sensitivity_summary.json`
+
+## 2026-06-27 Trainable Scope Audit
+
+- Status: `MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY`.
+- Training launched: false.
+- Inference launched: false.
+- GPU used: none.
+- S0: previous full-transformer MiniMax scope, retained as historical
+  baseline.
+- S1: LoRA attention q/k/v/out + projection scope ready for winner-SFT
+  positive-control.
+- S2: S1 + last-four-block MLP LoRA, still locked until S1 shows useful
+  positive-control evidence.
+- Quality-positive claim unlocked: false.
+
+Reports:
+
+- `reports/exp36_minimax_trainable_scope_audit.md`
+- `reports/exp36_minimax_trainable_scope_summary.json`

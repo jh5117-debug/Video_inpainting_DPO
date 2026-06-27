@@ -1,0 +1,42 @@
+{
+  "status": "MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY",
+  "training_launched": false,
+  "inference_launched": false,
+  "current_scope": {
+    "name": "S0",
+    "status": "MINIMAX_TRAINABLE_SCOPE_CURRENT_OK",
+    "train_full_transformer": true,
+    "checkpoint_tensors": 461,
+    "represented_parameters": 1127055424,
+    "lora_or_adapter_tensor_count": 0,
+    "inference_sensitivity": "MINIMAX_INFERENCE_SENSITIVITY_PASS"
+  },
+  "prepared_scopes": {
+    "S1": {
+      "status": "MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY",
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "families": [
+        "attention_q",
+        "attention_k",
+        "attention_v",
+        "attention_out",
+        "projection_other"
+      ]
+    },
+    "S2": {
+      "status": "DEFINED_LOCKED",
+      "rank": 8,
+      "alpha": 16,
+      "dropout": 0.0,
+      "families": [
+        "S1",
+        "last4_mlp"
+      ],
+      "locked_reason": "Only unlock if S1 has weak positive-control evidence."
+    }
+  },
+  "next_milestone": "MINIMAX_WINNER_SFT_POSITIVE_CONTROL"
+}
+

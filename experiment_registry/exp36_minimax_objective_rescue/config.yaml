@@ -10,4 +10,19 @@ forbidden:
   - long_training
   - gpu_reset
   - protected_lane_signals
-
+scope_plans:
+  S0:
+    description: current Exp30/Exp35 full MiniMax transformer scope
+    status: historical_baseline
+  S1:
+    description: LoRA on DiT self-attention q/k/v/out and output projections
+    rank: 8
+    alpha: 16
+    dropout: 0.0
+    status: ready_for_winner_sft_positive_control
+  S2:
+    description: S1 plus last-four-block MLP LoRA
+    rank: 8
+    alpha: 16
+    dropout: 0.0
+    status: locked_until_s1_positive_control

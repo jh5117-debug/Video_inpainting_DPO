@@ -29,3 +29,15 @@ Prior metrics summarized under Exp36:
 - Perturb scale: `1.01`.
 
 These are sensitivity metrics, not quality metrics.
+
+## 2026-06-27 Trainable Scope Audit
+
+No model-quality metrics were generated. The scope contract records:
+
+- S1 LoRA rank: `8`.
+- S1 LoRA alpha: `16`.
+- S1 dropout: `0.0`.
+- S2 status: locked until S1 positive-control evidence.
+
+This milestone adds implementation and checkpoint-roundtrip tests only; it
+does not change MiniMax quality status.

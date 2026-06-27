@@ -3112,3 +3112,18 @@ found subtle nonzero response with no collapse or new artifact.
 
 Interpretation: MiniMax inference uses trained transformer weights. This is
 not a quality-positive result and does not unlock 30-step.
+
+## 2026-06-27 Exp36 MiniMax Trainable Scope Audit
+
+Exp36 trainable-scope status:
+`MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY`.
+
+No training, inference, or GPU task was launched. The audit added an isolated
+scope contract and tests for Exp36:
+
+- S0 records the previous full-transformer MiniMax scope.
+- S1 LoRA attention/projection scope is ready for the next winner-SFT
+  positive-control.
+- S2 last-four-block MLP LoRA remains locked until S1 evidence exists.
+
+This is not a quality-positive result and does not unlock 30-step.

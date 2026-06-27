@@ -4,4 +4,9 @@ output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp36_minimax_
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue
 base_branch: origin/research/exp35-minimax-flow-dpo-rescue-20260627
 branch: research/exp36-minimax-objective-rescue-20260627
-
+reports:
+  readback: reports/exp36_minimax_objective_rescue_readback.md
+  nochange_forensic: reports/exp36_minimax_nochange_forensic_audit.md
+  inference_sensitivity: reports/exp36_minimax_inference_sensitivity.md
+  trainable_scope: reports/exp36_minimax_trainable_scope_audit.md
+  trainable_scope_summary: reports/exp36_minimax_trainable_scope_summary.json

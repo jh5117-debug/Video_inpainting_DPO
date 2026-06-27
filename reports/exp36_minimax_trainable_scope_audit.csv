@@ -1,0 +1,5 @@
+scope,status,train_full_transformer,rank,alpha,dropout,target_families,locked_reason,next_allowed_use
+S0,MINIMAX_TRAINABLE_SCOPE_CURRENT_OK,true,,,,all_transformer_parameters,,winner_sft_positive_control
+S1,MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY,false,8,16,0.0,attention_q;attention_k;attention_v;attention_out;projection_other,,winner_sft_positive_control
+S2,DEFINED_LOCKED,false,8,16,0.0,attention_q;attention_k;attention_v;attention_out;projection_other;last4_mlp,Only unlock if S1 has weak positive-control evidence,not_allowed_yet
+

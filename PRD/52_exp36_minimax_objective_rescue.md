@@ -1,6 +1,6 @@
 # Exp36 MiniMax Objective Rescue
 
-Status: `EXP36_READBACK_COMPLETED`
+Status: `MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY`
 
 Exp36 is an isolated MiniMax root-cause and objective-rescue track. It starts
 from Exp35, where MiniMax was confirmed trainable and inference-sensitive but
@@ -126,3 +126,36 @@ Reports:
 - `reports/exp36_minimax_inference_sensitivity_visual_review.csv`
 - `reports/exp36_minimax_inference_sensitivity_summary.json`
 - `reports/exp36_minimax_inference_sensitivity_assets/`
+
+## 2026-06-27 Trainable Scope Audit
+
+Status: `MINIMAX_TRAINABLE_SCOPE_EXPANDED_S1_READY`.
+
+No training, inference, or GPU work was launched. This milestone translated the
+Exp36 scope plan into an isolated, testable contract:
+
+- `S0`: current Exp30/Exp35 full MiniMax transformer scope, kept as the
+  historical baseline.
+- `S1`: LoRA on DiT self-attention q/k/v/out and output/projection families
+  with rank `8`, alpha `16`, dropout `0`; eligible for the next
+  winner-SFT positive-control.
+- `S2`: S1 plus last-four-block MLP LoRA; intentionally locked until S1 shows
+  positive-control evidence.
+
+The scope audit preserves the current root-cause conclusion: previous failures
+are not explained by inference ignoring weights, and S1 readiness is not a
+quality-positive result. It only prepares a narrower, auditable update surface
+for the next bounded positive-control milestone.
+
+Tests added:
+
+- `test_minimax_trainable_scope_names.py`
+- `test_minimax_lora_forward_usage.py`
+- `test_minimax_checkpoint_roundtrip.py`
+- `test_minimax_reference_frozen.py`
+
+Reports:
+
+- `reports/exp36_minimax_trainable_scope_audit.md`
+- `reports/exp36_minimax_trainable_scope_audit.csv`
+- `reports/exp36_minimax_trainable_scope_summary.json`
