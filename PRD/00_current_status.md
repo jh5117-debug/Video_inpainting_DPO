@@ -2535,3 +2535,14 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Codex opened all 8 preview sheets; source sanity passed 8/8.
 - No inference, baseline-ready claim, trainable-forward claim, or adapter claim
   yet.
+
+## 2026-06-27 Exp29 EffectErase Official 81F Input Materialization
+
+- Status: `EFFECTERASE_OFFICIAL81_INPUTS_READY`
+- Materialized 8/8 locked diagnostic rows into 832x480 condition/winner/mask
+  MP4 inputs with 81 decoded frames each.
+- VOR-Eval use: false.
+- Training eligibility: false.
+- Codex opened all 8 materialized preview sheets; input sanity passed 8/8.
+- No EffectErase inference, baseline-ready claim, trainable-forward claim, or
+  adapter claim yet.

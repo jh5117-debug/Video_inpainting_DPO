@@ -638,3 +638,24 @@ Reports:
 - `reports/exp29_effecterase_official81_preregistration.json`
 - `reports/exp29_effecterase_official81_preview_review.csv`
 - `reports/exp29_effecterase_official81_previews/`
+
+## 2026-06-27 EffectErase Official 81F Input Materialization
+
+- Status: `EFFECTERASE_OFFICIAL81_INPUTS_READY`
+- Materialized all 8 locked official-81F diagnostic rows into 832x480
+  condition/winner/mask MP4s under the official81 output root.
+- Frame audit: 8/8 rows have condition/winner/mask = 81/81/81 decoded frames.
+- Mask audit: 8/8 rows have non-empty masks; no row is VOR-Eval or training
+  eligible.
+- Codex opened all 8 materialized preview sheets and marked 8/8 as input sanity
+  pass after resize/encoding.
+- No EffectErase inference, baseline-ready claim, trainable-forward claim, or
+  adapter claim is made yet.
+
+Reports:
+
+- `reports/exp29_effecterase_official81_input_materialization.md`
+- `reports/exp29_effecterase_official81_input_materialization.csv`
+- `reports/exp29_effecterase_official81_input_materialization.json`
+- `reports/exp29_effecterase_official81_materialized_preview_review.csv`
+- `reports/exp29_effecterase_official81_materialized_previews/`

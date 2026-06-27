@@ -181,3 +181,15 @@ Final qualitative source decision: `EFFECTERASE_OFFICIAL81_PREREGISTERED`.
 This is only source sanity for diagnostic OR smoke. No EffectErase output video
 has been generated yet, so EffectErase is still not baseline-ready or
 adapter-ready.
+
+## 2026-06-27 EffectErase Official 81F Input Materialization
+
+Codex opened all 8 materialized preview sheets generated from the newly written
+832x480 condition/winner/mask MP4s. The materialized strips preserve the source
+alignment seen in preregistration and do not show empty-mask, frame-order,
+resize, or encoding failure.
+
+Final qualitative input decision: `EFFECTERASE_OFFICIAL81_INPUTS_READY`.
+This unlocks official command validation only. EffectErase remains not
+baseline-ready and not adapter-ready until actual 81F inference outputs are
+generated, measured, and reviewed.

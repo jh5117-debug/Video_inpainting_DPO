@@ -234,3 +234,15 @@ scene-disjoint train16/heldout16 MiniMax micro gate.
   `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
 - No EffectErase model output, image/video metric, adapter metric, or training
   metric was produced by this source audit.
+
+## 2026-06-27 EffectErase Official 81F Input Materialization
+
+- Rows: 8.
+- Ready rows: 8.
+- Blocked rows: 0.
+- Condition/winner/mask frames: 81/81/81 for every locked row.
+- Resolution: 832x480.
+- VOR-Eval use: false.
+- Training eligibility: false.
+- No EffectErase model output, image/video metric, adapter metric, or training
+  metric was produced by this materialization milestone.

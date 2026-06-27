@@ -331,3 +331,20 @@ Reports:
 - The rows remain diagnostic-only VOR-confounded smoke inputs. No EffectErase
   inference, OR baseline-ready claim, trainable-forward claim, adapter claim, or
   training was launched.
+
+## 2026-06-27 EffectErase Official 81F Input Materialization
+
+- Status: `EFFECTERASE_OFFICIAL81_INPUTS_READY`.
+- Manifest SHA256:
+  `706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3`.
+- Rows materialized: 8.
+- Ready rows: 8.
+- Blocked rows: 0.
+- Resolution: 832x480.
+- Frames per stream: 81.
+- VOR-Eval use: false.
+- Training eligibility: false.
+- Codex opened all 8 materialized preview sheets and marked 8/8 input sanity
+  pass.
+- No EffectErase inference, OR baseline-ready claim, trainable-forward claim,
+  adapter claim, or training was launched.

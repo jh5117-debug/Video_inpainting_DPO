@@ -248,3 +248,19 @@ effecterase_official81_source_audit:
   eligible_for_training: false
   launched_inference: false
   launched_adapter_gate: false
+effecterase_official81_input_materialization:
+  result: EFFECTERASE_OFFICIAL81_INPUTS_READY
+  rows: 8
+  ready_rows: 8
+  blocked_rows: 0
+  num_frames: 81
+  resolution: 832x480
+  manifest_sha256: 706cb09286fd8528d7efbbb91eb89673a9ec7ce61b0047e6b3b2e8ea4c9b1fb3
+  codex_materialized_preview_review:
+    opened: 8
+    passed: 8
+    failed: 0
+  vor_eval_used: false
+  eligible_for_training: false
+  launched_inference: false
+  launched_adapter_gate: false
