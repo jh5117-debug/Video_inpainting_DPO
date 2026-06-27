@@ -26,3 +26,7 @@ gates pass.
 Smoke16 v2 failure analysis is complete. It confirms a quality-yield failure:
 controlled corruption needs calibrated temporal/local profiles, and MiniMax
 must remain one family in a multi-model pool rather than the sole generator.
+
+Controlled-corruption v3 planning is locked. It caps smoke16 v3 controlled
+candidates at 24 and keeps controlled corruption as a fallback/data-source
+only.

@@ -152,3 +152,23 @@ smoke16_v2_failure_analysis:
       strong_but_plausible_local_defect: 1
   launched_generation: false
   gate64_unlocked: false
+controlled_corruption_v3_plan:
+  result: CONTROLLED_CORRUPTION_V3_PLAN_LOCKED
+  enabled_profiles_for_smoke16_v3:
+    - CC-v3-A
+    - CC-v3-B
+    - CC-v3-C
+  reserve_profiles:
+    - CC-v3-D
+  controlled_candidate_cap: 24
+  max_candidates_per_source: 2
+  default_profile_all_sources: CC-v3-B
+  mild_repair_source_count: 6
+  affected_soft_source_count: 2
+  success_target:
+    technical_valid_sources: ">=15/16"
+    usable_source_coverage: ">=8/16"
+    trivial_bad_selected_view: "<=6/16"
+    outside_systematic_damage: 0
+  launched_generation: false
+  launched_training: false

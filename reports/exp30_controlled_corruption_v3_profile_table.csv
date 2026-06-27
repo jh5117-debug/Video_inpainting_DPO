@@ -1,0 +1,5 @@
+profile_id,role,region,noise_sigma,condition_mix,blur_ksize,boundary_feather_px,temporal_smoothing,affected_threshold,max_sources_in_smoke16_v3,primary_goal
+CC-v3-A,mild-object,object_mask,2.5,0.25,21,9,ema_alpha_0.75,none,8,repair v2 temporal-discontinuity rows with lower local strength
+CC-v3-B,medium-object,object_mask,4.0,0.35,17,9,ema_alpha_0.65,none,16,default controlled fallback candidate for every smoke16 source
+CC-v3-C,affected-soft,object_mask_union_soft_affected,3.0,0.25,19,11,ema_alpha_0.75,absdiff_norm_p85_or_0.08,4,target effect residual and soft affected-region mismatch
+CC-v3-D,boundary-focused,object_boundary_plus_affected_edge,3.5,0.40,13,5,ema_alpha_0.70,edge_band_5_to_12_px,0,held in reserve for future preregistration only

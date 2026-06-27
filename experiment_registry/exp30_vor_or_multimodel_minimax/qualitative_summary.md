@@ -97,3 +97,10 @@ leaving the outside clean. MiniMax shows a few usable medium-hard examples, but
 many rows have outside damage, black/smudged local artifacts, residual object or
 effect content, or temporal instability. The qualitative conclusion supports a
 preregistered v3 repair rather than direct Gate64.
+
+## 2026-06-27 Controlled Corruption V3 Plan
+
+The qualitative target for v3 is bounded local defect: visible object/effect or
+boundary/texture imperfection in the task region while preserving far outside
+content and avoiding frame-wise flicker. CC-v3-D is deliberately held out of the
+smoke16 v3 run to avoid profile over-search.

@@ -409,3 +409,33 @@ Reports:
 - `reports/exp30_smoke16_v2_failure_analysis.md`
 - `reports/exp30_smoke16_v2_failure_analysis.csv`
 - `reports/exp30_smoke16_v2_failure_summary.json`
+
+## 2026-06-27 Controlled Corruption V3 Calibration Plan
+
+- Status: `CONTROLLED_CORRUPTION_V3_PLAN_LOCKED`.
+- Motivation: v2 controlled corruption failed by temporal discontinuity and
+  hard local residuals, not by outside leakage.
+- Locked profiles:
+  - CC-v3-A mild-object: lower noise, lower condition mix, high temporal
+    smoothing.
+  - CC-v3-B medium-object: default all-source profile, still softer than v2.
+  - CC-v3-C affected-soft: object plus soft affected map, far outside
+    preserved.
+  - CC-v3-D boundary-focused: defined but not enabled in smoke16 v3.
+- Smoke16 v3 controlled schedule:
+  - CC-v3-B for all 16 sources.
+  - CC-v3-A for six temporal-discontinuity repair sources.
+  - CC-v3-C for two affected-soft sources.
+  - Maximum 24 controlled candidates total and at most 2 per source.
+- Success target: technical-valid >=15/16, usable source coverage >=8/16,
+  trivial-bad <=6/16 in the selected controlled view, and outside systematic
+  damage = 0.
+- Controlled corruption remains a fallback/data-source only; it is not a final
+  model or ground truth.
+- No video generation, smoke run, Gate64, adapter gate, or training was run.
+
+Reports:
+
+- `reports/exp30_controlled_corruption_v3_plan.md`
+- `reports/exp30_controlled_corruption_v3_plan.json`
+- `reports/exp30_controlled_corruption_v3_profile_table.csv`

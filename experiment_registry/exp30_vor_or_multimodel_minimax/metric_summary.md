@@ -110,3 +110,9 @@ candidate. Controlled corruption has 5/16 usable candidates and 11 temporal
 discontinuity failures. MiniMax has 4/16 usable candidates, with 7 outside
 damage failures, 4 temporal flicker/instability failures, and 1 too-bad local
 output. These counts define the v3 calibration target but do not unlock Gate64.
+
+## 2026-06-27 Controlled Corruption V3 Plan
+
+No new metrics were produced. The metric gate for controlled fallback in
+smoke16 v3 is preregistered as technical-valid >=15/16, usable source coverage
+>=8/16, selected-view trivial-bad <=6/16, and outside systematic damage 0.

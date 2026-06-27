@@ -2771,3 +2771,18 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   and 4 MiniMax review pages covering all 32 candidates.
 - Gate64, Smoke32, MiniMax adapter gate, DiffuEraser micro, training, and
   universal-adapter language remain stopped.
+
+## 2026-06-27 Exp30 Controlled Corruption V3 Plan
+
+- Status: `CONTROLLED_CORRUPTION_V3_PLAN_LOCKED`
+- Locked four controlled-corruption profiles, but smoke16 v3 will enable only:
+  CC-v3-B for all 16 sources, CC-v3-A for six temporal-discontinuity repair
+  sources, and CC-v3-C for two affected-soft sources. CC-v3-D is defined as a
+  reserve profile but not enabled in smoke16 v3.
+- Controlled candidates in smoke16 v3 are capped at 24 total and at most 2 per
+  source, preventing unbounded sample search.
+- Controlled fallback success target is technical-valid >=15/16, usable source
+  coverage >=8/16, trivial-bad <=6/16 in one-primary-per-source view, and no
+  systematic outside damage.
+- No video generation, Smoke16 v3 run, Smoke32, Gate64, MiniMax adapter gate,
+  training, or protected-lane action was launched.

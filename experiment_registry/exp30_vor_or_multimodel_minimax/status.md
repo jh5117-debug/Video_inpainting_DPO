@@ -243,3 +243,20 @@ Reports:
 - `reports/exp30_smoke16_v2_failure_analysis.md`
 - `reports/exp30_smoke16_v2_failure_analysis.csv`
 - `reports/exp30_smoke16_v2_failure_summary.json`
+
+## 2026-06-27 Controlled Corruption V3 Plan
+
+- Status: `CONTROLLED_CORRUPTION_V3_PLAN_LOCKED`.
+- Locked at most four profiles, with smoke16 v3 using CC-v3-B for all sources,
+  CC-v3-A for six repair rows, CC-v3-C for two affected-soft rows, and
+  CC-v3-D reserved only.
+- Smoke16 v3 controlled candidate cap: 24 total, at most 2 per source.
+- Success target: technical-valid >=15/16, usable source coverage >=8/16,
+  trivial-bad <=6/16 in selected controlled view, outside systematic damage 0.
+- No generation, GPU task, Gate64, adapter gate, or training was launched.
+
+Reports:
+
+- `reports/exp30_controlled_corruption_v3_plan.md`
+- `reports/exp30_controlled_corruption_v3_plan.json`
+- `reports/exp30_controlled_corruption_v3_profile_table.csv`

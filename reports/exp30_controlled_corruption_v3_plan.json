@@ -1,0 +1,100 @@
+{
+  "status": "CONTROLLED_CORRUPTION_V3_PLAN_LOCKED",
+  "date": "2026-06-27",
+  "source_rows": "reuse smoke16 v2 repaired 16 rows unless a row becomes technically invalid",
+  "no_generation_in_this_milestone": true,
+  "profiles": [
+    {
+      "profile_id": "CC-v3-A",
+      "role": "mild-object",
+      "region": "object_mask",
+      "noise_sigma": 2.5,
+      "condition_mix": 0.25,
+      "blur_ksize": 21,
+      "boundary_feather_px": 9,
+      "temporal_smoothing": "ema_alpha_0.75",
+      "outside_reinjection": "strict winner outside feathered region",
+      "max_sources_in_smoke16_v3": 8
+    },
+    {
+      "profile_id": "CC-v3-B",
+      "role": "medium-object",
+      "region": "object_mask",
+      "noise_sigma": 4.0,
+      "condition_mix": 0.35,
+      "blur_ksize": 17,
+      "boundary_feather_px": 9,
+      "temporal_smoothing": "ema_alpha_0.65",
+      "outside_reinjection": "strict winner outside feathered region",
+      "max_sources_in_smoke16_v3": 16
+    },
+    {
+      "profile_id": "CC-v3-C",
+      "role": "affected-soft",
+      "region": "object_mask_union_soft_affected",
+      "noise_sigma": 3.0,
+      "condition_mix": 0.25,
+      "blur_ksize": 19,
+      "boundary_feather_px": 11,
+      "temporal_smoothing": "ema_alpha_0.75",
+      "affected_threshold": "absdiff_norm_p85_or_0.08",
+      "outside_reinjection": "preserve far outside; feather only near affected boundary",
+      "max_sources_in_smoke16_v3": 4
+    },
+    {
+      "profile_id": "CC-v3-D",
+      "role": "boundary-focused",
+      "region": "object_boundary_plus_affected_edge",
+      "noise_sigma": 3.5,
+      "condition_mix": 0.40,
+      "blur_ksize": 13,
+      "boundary_feather_px": 5,
+      "temporal_smoothing": "ema_alpha_0.70",
+      "affected_threshold": "edge_band_5_to_12_px",
+      "outside_reinjection": "strict winner outside narrow edge band",
+      "max_sources_in_smoke16_v3": 0,
+      "note": "defined for later preregistration but not enabled in smoke16_v3"
+    }
+  ],
+  "smoke16_v3_schedule": {
+    "default_all_sources": {
+      "profile_id": "CC-v3-B",
+      "source_count": 16
+    },
+    "mild_repair_sources": {
+      "profile_id": "CC-v3-A",
+      "source_count": 6,
+      "sample_ids": [
+        "BLENDER_FOREST016_00001",
+        "BLENDER_FOREST006_00001",
+        "BLENDER_FOREST008_00001",
+        "BLENDER_FOREST015_00001",
+        "BLENDER_FOREST018_00001",
+        "REAL_ENV045_00003_001_01"
+      ]
+    },
+    "affected_soft_sources": {
+      "profile_id": "CC-v3-C",
+      "source_count": 2,
+      "sample_ids": [
+        "REAL_ENV045_00003_001_01",
+        "REAL_ENV046_00002_001_01"
+      ]
+    },
+    "controlled_candidate_cap": 24,
+    "max_candidates_per_source": 2
+  },
+  "success_target": {
+    "technical_valid_sources": ">=15/16",
+    "usable_source_coverage": ">=8/16",
+    "trivial_bad": "<=6/16 for one-primary-per-source controlled selection",
+    "outside_systematic_damage": 0
+  },
+  "overfitting_controls": [
+    "do not replace source rows unless technically invalid",
+    "do not run all four profiles on all sources",
+    "do not use VOR-Eval",
+    "do not use EffectErase for promotion",
+    "do not tune profile values after seeing smoke16_v3 outputs"
+  ]
+}
