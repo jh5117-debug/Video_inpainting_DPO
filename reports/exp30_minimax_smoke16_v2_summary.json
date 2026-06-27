@@ -1,0 +1,23 @@
+{
+  "candidate_count": 16,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 1,
+    "MEDIUM_HARD_ELIGIBLE": 3,
+    "TRIVIAL_BAD": 12
+  },
+  "eligible_count": 4,
+  "heldout_count": 0,
+  "heldout_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/minimax_smoke16_heldout_placeholder.jsonl",
+  "heldout_sha256": "",
+  "rejected_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/minimax_smoke16_rejected.jsonl",
+  "review_pages": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/review_pages/minimax_candidate_review_page_00.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/review_pages/minimax_candidate_review_page_01.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/review_pages/minimax_candidate_review_page_02.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/review_pages/minimax_candidate_review_page_03.jpg"
+  ],
+  "status": "MINIMAX_DATA_YIELD_INSUFFICIENT",
+  "train_count": 4,
+  "train_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/minimax_v2_review/minimax_smoke16_train_placeholder.jsonl",
+  "train_sha256": "e5eec86fe03ce38267f1b3824155a5433c80d272c8d00a57ce465c95526392df"
+}

@@ -1,0 +1,13 @@
+{
+  "candidate_count": 16,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 2,
+    "MEDIUM_HARD_ELIGIBLE": 3,
+    "TRIVIAL_BAD": 11
+  },
+  "metrics_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/reports/exp30_controlled_corruption_smoke16_v2_metrics.csv",
+  "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/reports/exp30_controlled_corruption_smoke16_v2_review.csv",
+  "status": "CONTROLLED_CORRUPTION_SMOKE16_LOW_YIELD",
+  "technical_valid_count": 16,
+  "usable_count": 5
+}

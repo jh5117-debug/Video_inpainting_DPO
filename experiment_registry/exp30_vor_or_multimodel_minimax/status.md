@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `EXP30_SMOKE16_V2_MATERIALIZED`
+Current status: `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -189,3 +189,18 @@ Reports/manifests:
 - This unlocks smoke16 candidate generation only. It does not unlock
   multi-model smoke pass, Gate64, MiniMax recipe/training, DiffuEraser VOR-OR
   micro, or any data-ready/scientific claim.
+
+## 2026-06-27 Multi-Model OR Smoke16 V2
+
+- Status: `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`.
+- Candidate generators completed: controlled corruption, MiniMax official.
+- Non-EffectErase candidates: 32.
+- Technical valid: 32.
+- Usable: 9.
+- Classification totals: MEDIUM_HARD_ELIGIBLE 6; HARD_BUT_PLAUSIBLE 3;
+  TRIVIAL_BAD 23.
+- Controlled-corruption usable fallback: 5/16, required >=6/16: fail.
+- MiniMax usable: 4/16: low-yield documented.
+- Codex visual review: opened 32/32 temporal strips locally.
+- Not launched: Gate64, MiniMax recipe/training, DiffuEraser VOR-OR micro,
+  long training, RC-FPO.

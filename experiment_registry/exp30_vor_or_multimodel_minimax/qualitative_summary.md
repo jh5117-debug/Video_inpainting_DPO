@@ -68,3 +68,13 @@ materializer wrote source evidence strips for condition/winner/mask and rejected
 empty-mask rows via the new guard. No OR candidate videos have been generated
 yet, so qualitative smoke status remains pending model/controlled-corruption
 outputs and per-video visual inspection.
+
+## 2026-06-27 Multi-Model OR Smoke16 V2
+
+Codex opened 32/32 temporal evidence strips: all 16 controlled-corruption
+candidates and all 16 MiniMax official candidates. Controlled corruption
+preserved outside pixels but often produced hard local residuals or temporal
+artifacts. MiniMax produced a few usable local-defect examples, but most
+candidates were too close, retained the object/effect, or had black/smudged
+local artifacts. The qualitative result matches the metric/classification
+failure, so Gate64 and training remain stopped.

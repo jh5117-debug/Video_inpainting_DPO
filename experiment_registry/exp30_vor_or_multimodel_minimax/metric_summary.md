@@ -80,3 +80,16 @@ unknown.
 - Materialized manifest SHA256:
   `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
 - All final rows passed the non-empty-mask guard.
+
+## 2026-06-27 Multi-Model OR Smoke16 V2
+
+- Non-EffectErase candidates: 32.
+- Technical valid: 32.
+- Usable total: 9.
+- Classification totals: MEDIUM_HARD_ELIGIBLE 6; HARD_BUT_PLAUSIBLE 3;
+  TRIVIAL_BAD 23.
+- Controlled corruption: 16 technical-valid, 5 usable.
+- MiniMax official: 16 technical-valid, 4 usable.
+- Gate failure: controlled-corruption usable fallback is below the required
+  6/16 threshold.
+- Gate64 unlocked: no.

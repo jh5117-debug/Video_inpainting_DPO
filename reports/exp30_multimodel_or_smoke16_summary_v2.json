@@ -1,0 +1,48 @@
+{
+  "by_model": {
+    "controlled_corruption": {
+      "candidate_count": 16,
+      "classification_counts": {
+        "HARD_BUT_PLAUSIBLE": 2,
+        "MEDIUM_HARD_ELIGIBLE": 3,
+        "TRIVIAL_BAD": 11
+      },
+      "technical_valid": 16,
+      "usable": 5
+    },
+    "minimax_official": {
+      "candidate_count": 16,
+      "classification_counts": {
+        "HARD_BUT_PLAUSIBLE": 1,
+        "MEDIUM_HARD_ELIGIBLE": 3,
+        "TRIVIAL_BAD": 12
+      },
+      "technical_valid": 16,
+      "usable": 4
+    }
+  },
+  "candidate_count_non_effecterase": 32,
+  "classification_counts_non_effecterase": {
+    "HARD_BUT_PLAUSIBLE": 3,
+    "MEDIUM_HARD_ELIGIBLE": 6,
+    "TRIVIAL_BAD": 23
+  },
+  "diffueraser_or_stack_status": "DIFFUSERASER_OR_STACK_PENDING_NOT_BLOCKING_SMOKE16",
+  "effecterase_status": "diagnostic_only_not_used_for_training_or_gate",
+  "gate64_unlocked": false,
+  "gates": {
+    "controlled_corruption_usable_at_least_6": false,
+    "minimax_usable_at_least_3_or_documented_low_yield": true,
+    "no_systemic_decode_frame_mask_alignment_failure": true,
+    "technical_valid_non_effecterase_at_least_16": true,
+    "usable_non_effecterase_at_least_8": true
+  },
+  "minimax_adapter_training_unlocked": false,
+  "propainter_status": "available wrapper/weights observed, not launched because smoke already blocked by controlled fallback preregistered gate",
+  "reason": "controlled corruption usable fallback count is 5/16, below preregistered >=6/16 requirement; Gate64 and adapter gates remain stopped",
+  "status": "MULTIMODEL_OR_SMOKE16_V2_BLOCKED",
+  "technical_valid_non_effecterase": 32,
+  "usable_non_effecterase": 9,
+  "videos_reviewed_by_codex": 32,
+  "visual_review_method": "opened all 16 controlled-corruption and all 16 MiniMax temporal strips locally via view_image; review pages/assets saved under reports/"
+}

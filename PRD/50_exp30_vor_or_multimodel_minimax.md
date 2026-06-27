@@ -311,3 +311,46 @@ Reports:
 - `reports/exp30_smoke16_v2_materialization_final.md`
 - `reports/exp30_smoke16_v2_materialization_final.csv`
 - `reports/exp30_smoke16_v2_materialization_final.json`
+
+## 2026-06-27 Multi-Model OR Smoke16 V2
+
+- Status: `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`.
+- Non-EffectErase candidates generated/reviewed: 32.
+- Technical-valid non-EffectErase candidates: 32.
+- Usable non-EffectErase candidates: 9.
+- Classification totals: MEDIUM_HARD_ELIGIBLE 6; HARD_BUT_PLAUSIBLE 3;
+  TRIVIAL_BAD 23.
+- Controlled corruption:
+  - Technical valid: 16/16.
+  - Usable fallback: 5/16.
+  - Required usable fallback: >= 6/16.
+  - Gate result: fail.
+- MiniMax official:
+  - Technical valid: 16/16.
+  - Usable: 4/16.
+  - Gate result: low-yield documented; MiniMax-only criterion passes, but
+    smoke remains blocked by controlled fallback.
+- ProPainter: wrapper/weights observed in the worktree, but not launched after
+  the preregistered controlled-fallback criterion had already failed. Additional
+  model outputs cannot repair that specific gate without changing the rule.
+- DiffuEraser OR stack: `DIFFUSERASER_OR_STACK_PENDING_NOT_BLOCKING_SMOKE16`.
+- EffectErase: diagnostic-only, not used for training or smoke promotion.
+- Codex visual review: opened 32/32 temporal strips locally, covering all
+  controlled-corruption and MiniMax candidates.
+
+Gate64, MiniMax adapter recipe/training, and DiffuEraser VOR-OR micro remain
+stopped. The smoke did not support data-ready or scientific-positive language.
+
+Reports:
+
+- `reports/exp30_multimodel_or_smoke16_v2.md`
+- `reports/exp30_multimodel_or_smoke16_v2.csv`
+- `reports/exp30_multimodel_or_smoke16_metrics_v2.csv`
+- `reports/exp30_multimodel_or_smoke16_visual_review_v2.csv`
+- `reports/exp30_multimodel_or_smoke16_summary_v2.json`
+- `reports/exp30_controlled_corruption_smoke16_v2.md`
+- `reports/exp30_controlled_corruption_smoke16_v2_review.csv`
+- `reports/exp30_controlled_corruption_smoke16_v2_metrics.csv`
+- `reports/exp30_controlled_corruption_smoke16_v2_summary.json`
+- `reports/exp30_minimax_smoke16_v2_metrics.csv`
+- `reports/exp30_minimax_smoke16_v2_summary.json`

@@ -2719,3 +2719,20 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - This unlocks candidate generation for smoke16 only. It still does not unlock
   Gate64, MiniMax adapter training, DiffuEraser micro training, or scientific
   claims.
+
+## 2026-06-27 Exp30 Multi-Model OR Smoke16 V2
+
+- Status: `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`
+- Generated and reviewed 32 non-EffectErase candidates:
+  16 controlled-corruption and 16 MiniMax official.
+- Technical-valid candidates: 32/32.
+- Usable candidates: 9/32 total, with 6 medium-hard and 3 hard-plausible.
+- Controlled fallback usable count: 5/16, below the preregistered required
+  threshold of >=6/16.
+- MiniMax usable count: 4/16; low-yield is documented.
+- Codex opened 32/32 temporal strips and confirmed the low-yield pattern:
+  controlled corruption often produced hard local residual/temporal artifacts,
+  and MiniMax often left residual objects, black smudges, too-close regions, or
+  local artifacts.
+- Gate64, MiniMax adapter recipe/training, and DiffuEraser VOR-OR micro remain
+  stopped.
