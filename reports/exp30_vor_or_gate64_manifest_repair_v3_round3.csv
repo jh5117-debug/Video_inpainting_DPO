@@ -1,0 +1,2 @@
+failed_sample_id,failed_source_type,replacement_sample_id,replacement_scene_group,replacement_source_type,gate64_index,repair_error,replacement_source_pool
+REAL_ENV056_00001_001_01,REAL,REAL_ENV105_00004_001_01,REAL_ENV105_00004,REAL,47,RuntimeError('REAL_ENV056_00001_001_01 has empty mask across 17 decoded frames'),exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_v2_primary128.jsonl

@@ -1,0 +1,4 @@
+group,member_path,sample_id,type,size,status,reason,output_path
+VOR-Train,VOR-Train/BG/REAL_ENV105_00004_001_01.mp4,REAL_ENV105_00004_001_01,file,552954,OK,,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/extracted_exact/VOR-Train/VOR-Train/BG/REAL_ENV105_00004_001_01.mp4
+VOR-Train,VOR-Train/FG_BG/REAL_ENV105_00004_001_01.mp4,REAL_ENV105_00004_001_01,file,797706,OK,,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/extracted_exact/VOR-Train/VOR-Train/FG_BG/REAL_ENV105_00004_001_01.mp4
+VOR-Train-MASK,MASK/REAL_ENV105_00004_001_01.mp4,REAL_ENV105_00004_001_01,file,521117,OK,,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/extracted_exact/VOR-Train-MASK/MASK/REAL_ENV105_00004_001_01.mp4

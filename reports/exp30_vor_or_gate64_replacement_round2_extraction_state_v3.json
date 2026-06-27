@@ -1,0 +1,33 @@
+{
+  "archive_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7",
+  "extract_all": false,
+  "groups": [
+    {
+      "error": "",
+      "group": "VOR-Train",
+      "matched": 2,
+      "missing_members": 0,
+      "seen": 77250,
+      "skipped": 77248,
+      "target_members": 2,
+      "unsafe": 0,
+      "written": 2
+    },
+    {
+      "error": "",
+      "group": "VOR-Train-MASK",
+      "matched": 1,
+      "missing_members": 0,
+      "seen": 44543,
+      "skipped": 44542,
+      "target_members": 1,
+      "unsafe": 0,
+      "written": 1
+    }
+  ],
+  "ok": true,
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/extracted_exact",
+  "sample_id_count": 0,
+  "target_member_count": 3,
+  "triplet_jsonl": "exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3_replacements_round2.jsonl"
+}

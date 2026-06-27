@@ -195,3 +195,7 @@ No model metrics were produced. The milestone locked 64 metadata rows with BLEND
 ## 2026-06-27 Gate64 V3 Pre-Inference Repair
 
 Initial materialization metrics: 55/64 rows OK and 9 empty-mask failures. The repair selected 9 same-source-type replacements before any model output. No candidate metrics were produced.
+
+## 2026-06-27 Gate64 V3 Final Materialization
+
+Source materialization passed: 64/64 rows, 0 failed, 17 frames, 512x512, BLENDER/REAL 32/32. No OR candidate metrics yet.

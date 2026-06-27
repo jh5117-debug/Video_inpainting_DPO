@@ -49,3 +49,7 @@ Gate64 v3 source rows are locked: 64 scene-disjoint rows, BLENDER/REAL 32/32. Th
 ## 2026-06-27 Gate64 V3 Repair
 
 Gate64 v3 source manifest was repaired before inference after 9 empty-mask materialization failures. Final manifest remains 64 scene groups and BLENDER/REAL 32/32; model generation is still pending final materialization.
+
+## 2026-06-27 Gate64 V3 Materialization
+
+Final repaired Gate64 v3 source set materialized successfully: 64/64 rows, failed rows 0. Candidate generation is now unlocked; adapter training remains locked until pool selection passes.

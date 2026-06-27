@@ -2886,3 +2886,7 @@ Exp30 locked `EXP30_GATE64_V3_PREREGISTERED`: 64 source groups, BLENDER/REAL 32/
 ## 2026-06-27 Exp30 Gate64 V3 Manifest Repair
 
 Exp30 repaired Gate64 v3 before inference: 55/64 initial materialization rows passed, 9 empty-mask rows were replaced from source-pool reserve, final manifest SHA256 `c2da063118934f0b03d13d88015cfc1cc57e881aca257307ca42de20cc944eb0`. No Gate64 model output or training yet.
+
+## 2026-06-27 Exp30 Gate64 V3 Final Materialization
+
+Exp30 Gate64 v3 final materialization passed: 64/64 rows, failed rows 0, BLENDER/REAL 32/32, materialized manifest SHA256 `a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13`. Candidate generation is unlocked; adapter gates remain locked.

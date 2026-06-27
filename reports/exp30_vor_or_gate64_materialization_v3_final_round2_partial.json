@@ -1,0 +1,17 @@
+{
+  "failed_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/materialized_17f_512_final_round2/gate64_v3_materialized_final_round2.failed.jsonl",
+  "failed_rows": 1,
+  "frames": 17,
+  "height": 512,
+  "label": "Gate64 V3 Final Round2",
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/gate64_v3_20260627/materialized_17f_512_final_round2/gate64_v3_materialized_final_round2.jsonl",
+  "manifest_sha256": "e17f8058bd4291ae6f1595e48781300f1fbe05a4d02b75dfb8c41e79030d96d8",
+  "materialized_rows": 63,
+  "requested_rows": 64,
+  "source_type_counts": {
+    "BLENDER": 32,
+    "REAL": 31
+  },
+  "status": "EXP30_GATE64_V3_MATERIALIZATION_PARTIAL",
+  "width": 512
+}

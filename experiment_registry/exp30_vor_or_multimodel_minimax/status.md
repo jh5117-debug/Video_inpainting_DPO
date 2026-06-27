@@ -508,3 +508,25 @@ Reports:
 - `reports/exp30_vor_or_gate64_manifest_repair_v3.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3_final.jsonl`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_sources_v3_replacements.jsonl`
+
+
+## 2026-06-27 Gate64 V3 Final Materialization
+
+- Status: `EXP30_GATE64_V3_MATERIALIZED`.
+- Final round3 manifest materialized successfully after pre-inference repairs.
+- Requested rows: 64.
+- Materialized rows: 64.
+- Failed rows: 0.
+- Frames: 17.
+- Resolution: 512 x 512.
+- Source balance: BLENDER / REAL = 32 / 32.
+- Materialized manifest SHA256: `a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13`.
+- This unlocks Gate64 candidate generation only. It is not yet a pool-ready or adapter-training signal.
+- No MiniMax adapter gate, RC-FPO, or long training has been launched.
+
+Reports:
+
+- `reports/exp30_vor_or_gate64_materialization_final_v3.md`
+- `reports/exp30_vor_or_gate64_materialization_final_v3.csv`
+- `reports/exp30_vor_or_gate64_materialization_final_v3.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_materialized_final_v3_ref.jsonl`

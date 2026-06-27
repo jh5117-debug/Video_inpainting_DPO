@@ -162,3 +162,7 @@ No video review was performed because no videos were extracted or generated. Qua
 ## 2026-06-27 Gate64 V3 Pre-Inference Repair
 
 No candidate video review yet. The only qualitative finding is source invalidity: 9 rows had empty masks in the first 17 decoded frames and were replaced before inference.
+
+## 2026-06-27 Gate64 V3 Final Materialization
+
+Source evidence strips were generated on PAI for 64/64 rows. OR candidate visual review remains pending candidate generation.

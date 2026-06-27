@@ -305,3 +305,16 @@ gate64_v3_manifest_repair:
   final_manifest_sha256: c2da063118934f0b03d13d88015cfc1cc57e881aca257307ca42de20cc944eb0
   model_outputs_generated_before_repair: false
   launched_training: false
+gate64_v3_materialization:
+  result: EXP30_GATE64_V3_MATERIALIZED
+  rows: 64
+  failed_rows: 0
+  frames: 17
+  width: 512
+  height: 512
+  source_type_counts:
+    BLENDER: 32
+    REAL: 32
+  materialized_manifest_sha256: a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13
+  candidate_generation_unlocked: true
+  launched_training: false

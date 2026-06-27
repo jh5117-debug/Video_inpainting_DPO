@@ -55,8 +55,12 @@ def main() -> int:
         raise RuntimeError(f"failed rows missing from original manifest: {missing}")
 
     exclude_scenes = set()
+    exclude_sample_ids = set()
     for path in args.exclude_manifest:
-        exclude_scenes.update(scene(row) for row in read_jsonl(path))
+        for row in read_jsonl(path):
+            exclude_scenes.add(scene(row))
+            if row.get("sample_id"):
+                exclude_sample_ids.add(str(row["sample_id"]))
     used_scenes = {scene(row) for row in original}
     used_sample_ids = {str(row["sample_id"]) for row in original}
     used_scenes.update(exclude_scenes)
@@ -80,7 +84,12 @@ def main() -> int:
             row_scene = scene(row)
             if row.get("source_type") != wanted_type:
                 continue
-            if sample_id in KNOWN_INVALID_SAMPLE_IDS or sample_id in used_sample_ids or row_scene in used_scenes:
+            if (
+                sample_id in KNOWN_INVALID_SAMPLE_IDS
+                or sample_id in exclude_sample_ids
+                or sample_id in used_sample_ids
+                or row_scene in used_scenes
+            ):
                 continue
             repl = dict(row)
             repl["gate64_index"] = failed_original.get("gate64_index")
