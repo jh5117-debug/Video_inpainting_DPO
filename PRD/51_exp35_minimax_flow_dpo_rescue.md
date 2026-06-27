@@ -242,3 +242,46 @@ Reports:
 - `reports/exp35_minimax_winner_sft_metrics.csv`
 - `reports/exp35_minimax_winner_sft_visual_review.csv`
 - `reports/exp35_minimax_winner_sft_summary.json`
+
+## 2026-06-27 Bad-Noise / Hard-Timestep Miner
+
+Exp35 bad-noise miner status: `MINIMAX_BAD_NOISE_STATES_READY`.
+
+This milestone mined frozen MiniMax residual states only. It did not update
+model weights, did not run a recipe, did not evaluate output quality, and does
+not unlock 30-step training. The miner used PAI GPU0 after confirming other
+GPUs were occupied or reserved by protected lanes.
+
+State mining details:
+
+- Train rows: `32`.
+- Heldout rows: `16`.
+- Candidate states per row: `16` (`K_noise=4`, `K_timestep=4`).
+- Timesteps: `0.15`, `0.35`, `0.55`, `0.75`.
+- Dtype: `bfloat16`.
+- CSV rows: `768`.
+- Train winner-advantage mask mean: `0.053676288894166646`.
+- Heldout winner-advantage mask mean: `0.030786066912696697`.
+- Train state manifest SHA256:
+  `fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047`.
+- Heldout state manifest SHA256:
+  `947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb`.
+
+Selection policy:
+
+- `hard_state_A`: maximum loser local residual with outside sanity filter.
+- `hard_state_B`: maximum preference violation / weakest winner advantage.
+- `hard_state_C`: maximum winner-risk with outside sanity filter.
+
+Preregistered next-step options are limited to bounded 10-step recipe tests:
+`H0` fixed A, `H1` online K=4 worst valid, or `H2` 50% random plus 50%
+fixed A. No 30-step run is allowed until a 10-step recipe passes the quality
+gate with real heldout metrics and video review.
+
+Reports and manifests:
+
+- `reports/exp35_minimax_bad_noise_miner.md`
+- `reports/exp35_minimax_bad_noise_miner.csv`
+- `reports/exp35_minimax_bad_noise_summary.json`
+- `exp35_minimax_flow_dpo_rescue/manifests/train32_bad_noise_states.jsonl`
+- `exp35_minimax_flow_dpo_rescue/manifests/heldout16_eval_states.jsonl`

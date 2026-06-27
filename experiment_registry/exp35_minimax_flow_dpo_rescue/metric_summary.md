@@ -70,3 +70,21 @@ small or ignored trainable scope.
   `-0.6611956197`, `-2.0405589461`, `-6.4308968032`.
 
 The result proves update sensitivity, not quality improvement.
+
+## 2026-06-27 Bad-Noise / Hard-Timestep Miner
+
+- Status: `MINIMAX_BAD_NOISE_STATES_READY`.
+- Model update: false.
+- Rows scanned: `32` train, `16` heldout.
+- Candidate states per row: `16`.
+- Total candidate-state CSV rows: `768`.
+- Timesteps: `0.15`, `0.35`, `0.55`, `0.75`.
+- Train winner-advantage mask mean: `0.053676288894166646`.
+- Heldout winner-advantage mask mean: `0.030786066912696697`.
+- Train state manifest SHA256:
+  `fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047`.
+- Heldout state manifest SHA256:
+  `947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb`.
+
+These are frozen residual/state-selection diagnostics only. No output-quality
+metric, PSNR gate, LPIPS gate, or visual quality pass is implied.

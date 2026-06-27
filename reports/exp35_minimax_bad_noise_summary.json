@@ -1,0 +1,25 @@
+{
+  "candidate_states_per_row": 16,
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue/reports/exp35_minimax_bad_noise_miner.csv",
+  "csv_rows": 768,
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "heldout_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp35_minimax_rescue_worktree/exp35_minimax_flow_dpo_rescue/manifests/heldout16_eval_states.jsonl",
+  "heldout_manifest_sha256": "947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb",
+  "heldout_rows": 16,
+  "heldout_winner_advantage_mask_mean": 0.030786066912696697,
+  "model_update": false,
+  "noise_count": 4,
+  "status": "MINIMAX_BAD_NOISE_STATES_READY",
+  "timesteps": [
+    0.15,
+    0.35,
+    0.55,
+    0.75
+  ],
+  "train_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp35_minimax_rescue_worktree/exp35_minimax_flow_dpo_rescue/manifests/train32_bad_noise_states.jsonl",
+  "train_manifest_sha256": "fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047",
+  "train_rows": 32,
+  "train_winner_advantage_mask_mean": 0.053676288894166646,
+  "training_launched": false
+}

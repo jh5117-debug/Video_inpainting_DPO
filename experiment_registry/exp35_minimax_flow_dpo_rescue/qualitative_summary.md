@@ -50,3 +50,15 @@ winner-SFT positive control.
 
 Visual conclusion: MiniMax can move under supervised winner reconstruction,
 but this direct objective does not produce heldout quality improvement.
+
+## 2026-06-27 Bad-Noise / Hard-Timestep Miner
+
+No new model outputs or review videos were generated in this milestone. The
+miner only selected frozen hard noise/timestep states for the existing
+train32/heldout16 rows. Therefore no `QUALITY_POSITIVE`,
+`VIDEO_REVIEW_PASS`, or third-backbone evidence language is attached to this
+milestone.
+
+The next eligible work remains a bounded 10-step recipe test using the mined
+states, followed by real heldout video generation, metrics, and per-row visual
+review before any quality claim.

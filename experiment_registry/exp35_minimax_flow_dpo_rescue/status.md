@@ -83,3 +83,23 @@ LoRA scope was prepared in this milestone.
 Conclusion: MiniMax is trainable and not frozen, but naive winner-SFT
 overfits/harms heldout outputs. This does not unlock 30-step training or a
 third-backbone positive claim.
+
+## 2026-06-27 Bad-Noise / Hard-Timestep Miner
+
+- Status: `MINIMAX_BAD_NOISE_STATES_READY`.
+- Training launched: false.
+- GPU used: PAI GPU0.
+- Train rows: `32`.
+- Heldout rows: `16`.
+- Candidate states per row: `16`.
+- Timesteps: `0.15`, `0.35`, `0.55`, `0.75`.
+- CSV rows: `768`.
+- Train state manifest SHA256:
+  `fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047`.
+- Heldout state manifest SHA256:
+  `947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb`.
+
+The miner selected `hard_state_A`, `hard_state_B`, and `hard_state_C` for each
+row using frozen Step0 residuals. This prepares bounded 10-step rescue recipe
+testing only. It is not a quality-positive adapter result and does not unlock
+30-step training.

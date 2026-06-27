@@ -3008,3 +3008,18 @@ Codex opened `12/12` heldout temporal strips. LR `1e-5` was mostly slightly
 worse/tie, LR `3e-5` was mostly worse, and LR `1e-4` introduced new artifacts
 on all four heldout rows. This milestone does not unlock 30-step training or
 third-backbone positive language.
+
+## 2026-06-27 Exp35 MiniMax Bad-Noise / Hard-Timestep Miner
+
+Exp35 bad-noise miner status: `MINIMAX_BAD_NOISE_STATES_READY`.
+
+Frozen Step0 state mining scanned 32 train rows and 16 heldout rows with
+`K_noise=4` and timesteps `0.15`, `0.35`, `0.55`, and `0.75`, producing 768
+candidate-state records and fixed `hard_state_A/B/C` selections. Train and
+heldout state manifest SHA256 values are
+`fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047` and
+`947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb`.
+
+This was not a model update, recipe evaluation, video quality pass, 30-step
+run, RC-FPO run, or long training. It only prepares bounded 10-step rescue
+recipe testing with preregistered hard states.

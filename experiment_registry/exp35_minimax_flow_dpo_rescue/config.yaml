@@ -89,3 +89,29 @@ winner_sft_positive_control:
       visual_quality: new_artifacts_all_rows
   codex_visual_review: REVIEWED_12_OF_12
   thirty_step_unlocked: false
+bad_noise_hard_timestep_miner:
+  status: MINIMAX_BAD_NOISE_STATES_READY
+  training_launched: false
+  model_update: false
+  gpu: PAI_GPU0
+  dtype: bfloat16
+  seed: 20260627
+  noise_count: 4
+  timesteps:
+    - 0.15
+    - 0.35
+    - 0.55
+    - 0.75
+  candidate_states_per_row: 16
+  train_rows: 32
+  heldout_rows: 16
+  csv_rows: 768
+  train_winner_advantage_mask_mean: 0.053676288894166646
+  heldout_winner_advantage_mask_mean: 0.030786066912696697
+  train_manifest_sha256: fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047
+  heldout_manifest_sha256: 947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb
+  selection_policy:
+    hard_state_A: max_loser_local_residual_with_outside_sanity_filter
+    hard_state_B: max_preference_violation_or_weakest_winner_advantage
+    hard_state_C: max_winner_risk_with_outside_sanity_filter
+  thirty_step_unlocked: false
