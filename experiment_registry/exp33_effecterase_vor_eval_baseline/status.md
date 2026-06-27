@@ -1,6 +1,6 @@
 # Exp33 EffectErase VOR-Eval Baseline Status
 
-Current status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+Current status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 - branch: `research/exp33-effecterase-vor-eval-baseline-20260627`
 - base: `origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626`
@@ -11,7 +11,7 @@ Current status: `EXP33_EFFECTERASE_BASELINE_WEAK`
 - input materialization: 43/43 rows ready, 129 condition/winner/mask MP4 files.
 - command validation: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`.
 - inference: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_COMPLETED`, 43/43 rows, failed rows `[]`.
-- metrics and visual review: `EXP33_EFFECTERASE_BASELINE_WEAK`.
+- metrics and visual review: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`.
 
 Metric summary:
 
@@ -32,6 +32,10 @@ Classification:
 
 Evidence:
 
+- `reports/exp33_effecterase_voreval_output_integrity.md`
+- `reports/exp33_effecterase_voreval_metrics.md`
+- `reports/exp33_effecterase_voreval_visual_review.md`
+- `reports/exp33_effecterase_voreval_final_baseline.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics.csv`
 - `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`

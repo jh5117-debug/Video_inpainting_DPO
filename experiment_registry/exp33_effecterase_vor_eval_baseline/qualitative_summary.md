@@ -1,6 +1,6 @@
 # Exp33 Qualitative Summary
 
-Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+Status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 The 43-row visual review evidence pack has been generated for the completed
 EffectErase VOR-Eval baseline. Representative weak/mixed/usable review sheets
@@ -22,6 +22,10 @@ Opened representative sheets:
 
 Evidence:
 
+- `reports/exp33_effecterase_voreval_visual_review.csv`
+- `reports/exp33_effecterase_voreval_visual_review.md`
+- `reports/exp33_effecterase_voreval_visual_review_summary.json`
+- `reports/exp33_effecterase_voreval_final_baseline.md`
 - `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`
 - `reports/exp33_effecterase_vor_eval_official81_visual_review.md`
 - `reports/exp33_effecterase_vor_eval_official81_visual_audit_notes.md`

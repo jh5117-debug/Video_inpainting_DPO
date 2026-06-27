@@ -1,6 +1,6 @@
 # Exp33 Metric Summary
 
-Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+Status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 The held-out VOR-Eval official81 EffectErase baseline has been evaluated on all
 43 completed raw outputs.
@@ -29,6 +29,10 @@ download was too slow. No LPIPS proxy is reported as real LPIPS.
 
 Reports:
 
+- `reports/exp33_effecterase_voreval_metrics.md`
+- `reports/exp33_effecterase_voreval_metrics.csv`
+- `reports/exp33_effecterase_voreval_metrics_summary.json`
+- `reports/exp33_effecterase_voreval_final_baseline.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics.csv`
 - `reports/exp33_effecterase_vor_eval_official81_final_report.md`

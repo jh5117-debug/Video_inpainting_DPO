@@ -2,7 +2,7 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp33 EffectErase VOR-Eval baseline | `EXP33_EFFECTERASE_BASELINE_WEAK`; 43/43 outputs technical-valid, but metrics and visual review show many weak/mixed cases; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`, `reports/exp33_effecterase_vor_eval_official81_final_report.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
+| Exp33 EffectErase VOR-Eval baseline | `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`; 43/43 outputs technical-valid, but metrics and visual review show many weak/mixed cases; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_voreval_final_baseline.md`, `reports/exp33_effecterase_voreval_metrics.csv`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
 
 Notes:
 

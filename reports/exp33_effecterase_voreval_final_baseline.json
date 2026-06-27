@@ -1,0 +1,38 @@
+{
+  "adapter_status": "EFFECTERASE_BASELINE_ONLY_FOR_NOW",
+  "baseline_role": "EFFECTERASE_WEAK_OR_BASELINE",
+  "boundary_psnr_mean": 20.098141418920658,
+  "can_be_adapter_evidence": false,
+  "can_be_dpo_loser_source": false,
+  "classification_counts": {
+    "BASELINE_MIXED": 17,
+    "BASELINE_USABLE": 9,
+    "BASELINE_WEAK": 17
+  },
+  "ewarp_proxy_mean": 6.437035142890241,
+  "final_status": "EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED",
+  "forbidden_claims": [
+    "UNIVERSAL_ADAPTER",
+    "FINAL_SOTA",
+    "TOP_CONFERENCE_NOVELTY_CONFIRMED"
+  ],
+  "full_psnr_mean": 21.92292984159177,
+  "full_ssim_mean": 0.7349384380651554,
+  "lpips_status": "unavailable; no proxy reported as real LPIPS",
+  "mask_psnr_mean": 19.39422713256416,
+  "mask_ssim_mean": 0.5889331274698406,
+  "outside_l1_mean": 16.405127187313244,
+  "paper_use": "held-out baseline only; weak/mixed quality evidence",
+  "rows": 43,
+  "strongest_cases": [
+    "REAL_ENV900_00011_001_04",
+    "REAL_ENV900_00008_003_01",
+    "REAL_ENV900_00013_004_03"
+  ],
+  "technical_valid_outputs": 43,
+  "weakest_cases": [
+    "REAL_ENV900_00044_002_04",
+    "REAL_ENV900_00004_004_02",
+    "REAL_ENV900_00022_006_05"
+  ]
+}

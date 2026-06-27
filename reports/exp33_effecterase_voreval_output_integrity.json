@@ -1,0 +1,8 @@
+{
+  "csv": "reports/exp33_effecterase_voreval_output_integrity.csv",
+  "expected_frames": 81,
+  "expected_resolution": "832x480",
+  "rows": 43,
+  "status": "EFFECTERASE_VOREVAL_OUTPUTS_VALID",
+  "valid_rows": 43
+}

@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+Current status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -168,7 +168,7 @@ Command validation:
 Inference completion and baseline evaluation:
 
 - inference status: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_COMPLETED`
-- baseline status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+- baseline status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 - launch time: `2026-06-27T14:21:56+08:00`
 - GPU: `GPU3`
 - launcher PID/PGID: `1349871/1349871`
@@ -184,6 +184,10 @@ Inference completion and baseline evaluation:
 - LPIPS: unavailable in this milestone because first-run AlexNet weight
   download was too slow; no proxy LPIPS is represented as real LPIPS.
 - reports:
+  `reports/exp33_effecterase_voreval_output_integrity.md`,
+  `reports/exp33_effecterase_voreval_metrics.md`,
+  `reports/exp33_effecterase_voreval_visual_review.md`,
+  `reports/exp33_effecterase_voreval_final_baseline.md`,
   `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`,
   `reports/exp33_effecterase_vor_eval_official81_metrics.csv`,
   `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,

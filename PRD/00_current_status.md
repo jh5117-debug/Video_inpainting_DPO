@@ -1,6 +1,6 @@
 ## 2026-06-28 Exp33 VOR-Eval EffectErase Baseline Metrics and Review
 
-Status: `EXP33_EFFECTERASE_BASELINE_WEAK`
+Status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 Exp33 completed held-out VOR-Eval official81 EffectErase baseline evaluation
 for all 43 rows. Inference had already completed before this milestone; this
@@ -19,6 +19,10 @@ adapter work was launched.
 - LPIPS: not computed in the committed summary because first-run AlexNet
   weight download was too slow; no proxy LPIPS is reported as real LPIPS.
 - reports:
+  `reports/exp33_effecterase_voreval_output_integrity.md`,
+  `reports/exp33_effecterase_voreval_metrics.md`,
+  `reports/exp33_effecterase_voreval_visual_review.md`,
+  `reports/exp33_effecterase_voreval_final_baseline.md`,
   `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`,
   `reports/exp33_effecterase_vor_eval_official81_metrics.csv`,
   `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,
@@ -31,6 +35,7 @@ retains visible background/reflection residuals; the usable case
 `REAL_ENV900_00017_001_01` removes the subject with acceptable continuity but
 still has tree/dark-region texture error. Conclusion: EffectErase is useful
 baseline evidence, but not a strong VOR-Eval baseline on this 43-row set.
+Adapter status remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`.
 
 ## 2026-06-27 Exp33 VOR-Eval EffectErase Inference Launch
 

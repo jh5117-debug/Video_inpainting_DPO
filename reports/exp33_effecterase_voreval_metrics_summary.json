@@ -1,0 +1,28 @@
+{
+  "boundary_psnr_mean": 20.098141418920658,
+  "boundary_psnr_median": 18.628547960912258,
+  "classification_counts": {
+    "BASELINE_MIXED": 17,
+    "BASELINE_USABLE": 9,
+    "BASELINE_WEAK": 17
+  },
+  "ewarp_proxy_mean": 6.437035142890241,
+  "ewarp_proxy_median": 4.468199127912522,
+  "full_psnr_mean": 21.92292984159177,
+  "full_psnr_median": 21.424386189432447,
+  "full_ssim_mean": 0.7349384380651554,
+  "full_ssim_median": 0.8081871079809871,
+  "lpips_mean": NaN,
+  "lpips_median": NaN,
+  "mask_psnr_mean": 19.39422713256416,
+  "mask_psnr_median": 19.728782093738896,
+  "mask_ssim_mean": 0.5889331274698406,
+  "mask_ssim_median": 0.6170155082219912,
+  "ok_rows": 43,
+  "outside_l1_mean": 16.405127187313244,
+  "outside_l1_median": 15.567695417521913,
+  "rows": 43,
+  "status": "EXP33_EFFECTERASE_BASELINE_WEAK",
+  "tc_absdiff_over_winner_mean": -0.579097909729408,
+  "tc_absdiff_over_winner_median": -0.10865587410517041
+}
