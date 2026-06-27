@@ -354,3 +354,37 @@ Reports/assets:
 - `reports/exp30_controlled_corruption_smoke16_v3_visual_review.csv`
 - `reports/exp30_controlled_corruption_smoke16_v3_visual_summary.json`
 - `reports/exp30_controlled_corruption_v3_assets/`
+
+## 2026-06-27 Multi-Model OR Smoke16 V3
+
+- Status: `MULTIMODEL_OR_SMOKE16_V3_PASS`.
+- Candidate rows: 64.
+- Source rows: 16.
+- Technical-valid candidates: 64/64.
+- Best-per-source usable: 13/16.
+- Best-per-source visual counts: 13 medium-hard, 3 trivial-bad.
+- Usable by family:
+  - controlled corruption v3 primary: 13.
+  - MiniMax v2 reused without new seed selection: 4.
+  - ProPainter verified full16: 2.
+  - DiffuEraser no-PCM full16: 0.
+- Codex opened controlled v3 pages and 8 verified-generator overview pages.
+- Interpretation: the Smoke16 v3 aggregate gate passes, driven primarily by
+  controlled corruption v3. ProPainter and DiffuEraser wrappers are technically
+  valid but low-yield on this fixed Smoke16 set.
+- Unlocked next: Smoke32 validation only.
+- Still stopped: Gate64, MiniMax adapter gates, DiffuEraser micro, RC-FPO, and
+  all long training.
+
+Reports/assets:
+
+- `reports/exp30_multimodel_or_smoke16_v3.md`
+- `reports/exp30_multimodel_or_smoke16_v3_candidates.csv`
+- `reports/exp30_multimodel_or_smoke16_v3_best_per_source.csv`
+- `reports/exp30_multimodel_or_smoke16_v3_summary.json`
+- `reports/exp30_verified_generators_smoke16_v3.md`
+- `reports/exp30_verified_generators_smoke16_v3_metrics.csv`
+- `reports/exp30_verified_generators_smoke16_v3_visual_review.csv`
+- `reports/exp30_verified_generators_smoke16_v3_visual_review_final.csv`
+- `reports/exp30_verified_generators_smoke16_v3_summary.json`
+- `reports/exp30_verified_generators_smoke16_v3_assets/`

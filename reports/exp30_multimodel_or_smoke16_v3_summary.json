@@ -1,0 +1,31 @@
+{
+  "best_per_source_counts": {
+    "MEDIUM_HARD_ELIGIBLE": 13,
+    "TRIVIAL_BAD": 3
+  },
+  "best_per_source_usable": 13,
+  "candidate_count": 64,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 1,
+    "MEDIUM_HARD_ELIGIBLE": 18,
+    "TRIVIAL_BAD": 45
+  },
+  "controlled_v3_primary_usable": 13,
+  "diffueraser_usable": 0,
+  "gate_rule": "pass if 16 sources, all candidates technical-valid, and best-per-source usable >=12/16; Smoke32 is allowed next but Gate64/training remain stopped",
+  "minimax_v2_usable": 4,
+  "model_classification_counts": {
+    "controlled_corruption_v3:MEDIUM_HARD_ELIGIBLE": 13,
+    "controlled_corruption_v3:TRIVIAL_BAD": 3,
+    "diffueraser:TRIVIAL_BAD": 16,
+    "minimax_official_v2_reused:HARD_BUT_PLAUSIBLE": 1,
+    "minimax_official_v2_reused:MEDIUM_HARD_ELIGIBLE": 3,
+    "minimax_official_v2_reused:TRIVIAL_BAD": 12,
+    "propainter:MEDIUM_HARD_ELIGIBLE": 2,
+    "propainter:TRIVIAL_BAD": 14
+  },
+  "propainter_usable": 2,
+  "source_count": 16,
+  "status": "MULTIMODEL_OR_SMOKE16_V3_PASS",
+  "technical_valid_candidates": 64
+}

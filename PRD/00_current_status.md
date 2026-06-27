@@ -2838,3 +2838,14 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Codex opened all 6 candidate review pages and all 4 primary review pages.
 - This repairs only the controlled fallback component; aggregate Smoke16 v3,
   Smoke32, Gate64, adapter gates, RC-FPO, and training remain stopped.
+
+## 2026-06-27 Exp30 Multi-Model OR Smoke16 V3
+
+- Status: `MULTIMODEL_OR_SMOKE16_V3_PASS`
+- Aggregate candidates: 64/64 technical-valid across controlled v3, MiniMax v2
+  reused, ProPainter full16, and DiffuEraser no-PCM full16.
+- Best-per-source usable: 13/16.
+- The pass is driven by controlled corruption v3; ProPainter adds 2 usable
+  candidates and DiffuEraser adds 0 usable candidates on this fixed set.
+- Smoke32 validation is unlocked next. Gate64, MiniMax adapter gates,
+  DiffuEraser micro, RC-FPO, and long training remain stopped.
