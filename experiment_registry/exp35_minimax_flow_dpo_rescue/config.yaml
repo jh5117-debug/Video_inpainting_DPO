@@ -1,0 +1,19 @@
+branch: research/exp35-minimax-flow-dpo-rescue-20260627
+base_branch: origin/research/exp30-vor-or-multimodel-minimax-adapter-20260627
+base_head: f69688fe4ff96c4d4f0dcd308eef69822fc1035b
+exp30:
+  gate64_pool_status: VOR_OR_GATE64_MULTIMODEL_POOL_READY
+  minimax_status: MINIMAX_ADAPTER_RECIPE_NOT_READY
+  train32_sha256: 1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196
+  heldout16_sha256: 84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade
+  target: epsilon_minus_z0_flow_velocity
+  previous_recipes:
+    - linear_dpo_frozen_reference
+    - linear_dpo_ema_reference
+readback:
+  status: EXP35_READBACK_COMPLETED
+  protected_lanes_read_only: true
+  gpu_training_launched: false
+  long_training_launched: false
+  rc_fpo_launched: false
+

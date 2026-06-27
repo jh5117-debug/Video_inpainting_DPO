@@ -1,0 +1,3 @@
+milestone	status	notes
+readback	EXP35_READBACK_COMPLETED	Created Exp35 scaffold from Exp30 HEAD f69688f; reread Exp30 Gate64 pool and MiniMax 10-step reports; identified likely recipe/update-state issue; no GPU inference or training launched
+

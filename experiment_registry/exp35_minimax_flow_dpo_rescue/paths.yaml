@@ -1,0 +1,8 @@
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp35_minimax_rescue
+pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp35_minimax_rescue
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp35_minimax_flow_dpo_rescue
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp35_minimax_flow_dpo_rescue
+readback_report: reports/exp35_minimax_rescue_readback.md
+exp30_train32_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_train32_v3.jsonl
+exp30_heldout16_manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_heldout16_v3.jsonl
+

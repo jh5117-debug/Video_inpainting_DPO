@@ -2919,3 +2919,24 @@ boundary PSNR `-0.003092`, outside PSNR `-0.006033`.
 MiniMax remains plumbing-positive only in Exp30. No 30-step, long training,
 RC-FPO, universal-adapter claim, or third-backbone quality-positive claim is
 authorized by this result.
+
+## 2026-06-27 Exp35 MiniMax Flow-DPO Rescue Readback
+
+Exp35 status: `EXP35_READBACK_COMPLETED`.
+
+Created isolated branch/worktree
+`research/exp35-minimax-flow-dpo-rescue-20260627` from Exp30 HEAD
+`f69688fe4ff96c4d4f0dcd308eef69822fc1035b`. Exp35 starts from the locked
+Gate64 V3 train32/heldout16 pool and the Exp30 MiniMax result
+`MINIMAX_ADAPTER_RECIPE_NOT_READY`.
+
+Readback conclusion: MiniMax failure is not currently a data-availability or
+basic plumbing failure. Gate64 data exists, zero-gap and one-step strict reload
+passed, no NaN/Inf occurred, and Step10 inference loaded checkpoint-10. The
+likely issue is recipe/update-state scale or noise/timestep regime: full
+transformer training used LR `5e-7`, linear utility stayed near `0.5`, Step10
+delta probe was only about `2.7e-7`, and no bad-noise/hard-timestep mining was
+used.
+
+No GPU inference, no training, no 30-step, no long run, no RC-FPO, and no
+protected-lane action was launched by readback. Exp31/cli4 remain protected.
