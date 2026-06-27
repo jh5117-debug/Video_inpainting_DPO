@@ -43,3 +43,25 @@ paper_positioning:
     - effecterase_adapter_ready
     - minimax_quality_positive_before_micro_pass
     - final_sota_without_final_benchmark
+source_pool_audit:
+  result: VOR_OR_SOURCE_POOL_BLOCKED
+  method: existing_exact_extraction_cache_only
+  archive_rescan: false
+  discovered_triplets: 192
+  candidate_scene_groups_after_exclusion: 80
+  source_rows: 80
+  reserve_rows: 0
+  source_sha256: 58696bc504e79eec1342f00cbbb93d244b96d8311f128cf14156c3c6283cb595
+  reserve_sha256: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+  source_type_counts:
+    REAL: 71
+    BLENDER: 9
+  mask_bucket_counts:
+    small: 22
+    medium: 40
+    large: 18
+  preview_pages_opened: 10
+  rows_previewed: 80
+  pool_ready: false
+  launched_generation: false
+  launched_training: false

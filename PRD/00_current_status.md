@@ -2623,3 +2623,20 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - Forbidden language remains universal adapter, all models supported,
   EffectErase adapter-ready, MiniMax quality-positive before micro pass, final
   SOTA, and top-conference novelty confirmed.
+
+## 2026-06-27 Exp30 VOR-OR Source Pool Audit
+
+- Status: `VOR_OR_SOURCE_POOL_BLOCKED`
+- Existing exact extraction caches were used; VOR tar archives were not
+  rescanned.
+- Discovered extracted triplets: 192.
+- Candidate scene groups after previous MiniMax/EffectErase exclusions: 80.
+- Source rows: 80.
+- Reserve rows: 0.
+- Source type counts: REAL 71, BLENDER 9.
+- Mask bucket counts: small 22, medium 40, large 18.
+- Codex opened 10/10 batch preview pages covering 80 rows. The rows are
+  visually aligned and valid as VOR-OR triplets, but the pool is too small and
+  imbalanced for pool128/reserve128.
+- No multi-model OR smoke, Gate128, MiniMax adapter, DiffuEraser VOR-OR micro,
+  GPU task, or training was launched.

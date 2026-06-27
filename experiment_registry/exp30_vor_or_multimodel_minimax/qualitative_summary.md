@@ -21,3 +21,11 @@ No new videos were generated. The qualitative role split is:
 - VideoPainter: second backbone for VOR-BG BR/inpainting evidence.
 - MiniMax: flow-style third-backbone candidate pending quality-positive micro.
 - EffectErase: OR strong baseline / diagnostic only.
+
+## 2026-06-27 VOR-OR Source Pool Audit
+
+Codex opened all 10 batch preview pages covering 80 source rows. The available
+rows show aligned condition/winner/mask strips with non-empty masks and visible
+affected regions. However, they are dominated by REAL scenes and do not provide
+the requested pool size or reserve. No source-pool-ready, data-ready, smoke, or
+training claim is supported.

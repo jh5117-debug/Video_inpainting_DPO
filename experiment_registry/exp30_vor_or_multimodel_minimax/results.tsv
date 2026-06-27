@@ -1,3 +1,4 @@
 milestone	status	notes
 readback	EXP30_READBACK_COMPLETED	Exp30 branch/worktree/scaffold created from Exp29 HEAD 6bc6c67; no GPU task launched
 paper_positioning	EXP30_THREE_BACKBONE_POSITIONING_LOCKED	DiffuEraser/VideoPainter/MiniMax/EffectErase paper roles and claim boundaries locked before pool generation
+source_pool	VOR_OR_SOURCE_POOL_BLOCKED	Existing exact caches yielded only 80 usable scene groups after exclusions, reserve 0, REAL/BLENDER 71/9; no downstream generation launched

@@ -1,0 +1,11 @@
+batch_page,rows_reviewed,reviewer_pass,alignment_ok,mask_nonempty_visible,affected_visible,issue,classification
+source_pool_batch_000.jpg,8,true,true,true,true,real_skew_but_valid_triplets,SOURCE_VALIDITY_PASS
+source_pool_batch_001.jpg,8,true,true,true,true,real_skew_but_valid_triplets,SOURCE_VALIDITY_PASS
+source_pool_batch_002.jpg,8,true,true,true,true,large_masks_common_real_rows,SOURCE_VALIDITY_PASS
+source_pool_batch_003.jpg,8,true,true,true,true,repeated_real_scene_style_valid_but_not_balanced,SOURCE_VALIDITY_PASS
+source_pool_batch_004.jpg,8,true,true,true,true,night_and_stair_real_rows_valid,SOURCE_VALIDITY_PASS
+source_pool_batch_005.jpg,8,true,true,true,true,indoor_real_rows_valid,SOURCE_VALIDITY_PASS
+source_pool_batch_006.jpg,8,true,true,true,true,object_mask_rows_valid,SOURCE_VALIDITY_PASS
+source_pool_batch_007.jpg,8,true,true,true,true,small_medium_real_rows_valid,SOURCE_VALIDITY_PASS
+source_pool_batch_008.jpg,8,true,true,true,true,first_blender_rows_valid_but_few,SOURCE_VALIDITY_PASS
+source_pool_batch_009.jpg,8,true,true,true,true,mixed_real_blender_valid_but_pool_short,SOURCE_VALIDITY_PASS

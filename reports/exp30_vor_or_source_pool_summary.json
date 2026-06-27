@@ -1,0 +1,39 @@
+{
+  "cache_roots": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_gate128_exact_20260623",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_train_audit64_exact_20260623"
+  ],
+  "candidate_scene_groups_after_exclusion": 80,
+  "discovered_triplets": 192,
+  "mask_bucket_counts": {
+    "large": 18,
+    "medium": 40,
+    "small": 22
+  },
+  "preview_pages": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_000.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_001.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_002.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_003.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_004.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_005.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_006.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_007.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_008.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/source_pool_20260627/reports/exp30_vor_or_source_pool_previews/source_pool_batch_009.jpg"
+  ],
+  "preview_pages_count": 10,
+  "rejected_count": 112,
+  "reserve_rows": 0,
+  "reserve_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "source_rows": 80,
+  "source_sha256": "58696bc504e79eec1342f00cbbb93d244b96d8311f128cf14156c3c6283cb595",
+  "source_type_counts": {
+    "BLENDER": 9,
+    "REAL": 71
+  },
+  "final_decision": "VOR_OR_SOURCE_POOL_BLOCKED",
+  "status": "VOR_OR_SOURCE_POOL_RESERVE_PARTIAL",
+  "visual_review_pages_opened": 10,
+  "visual_review_rows_covered": 80
+}

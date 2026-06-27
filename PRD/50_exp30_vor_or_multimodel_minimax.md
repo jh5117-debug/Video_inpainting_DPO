@@ -79,3 +79,42 @@ Reports:
 
 - `reports/exp30_three_backbone_paper_positioning.md`
 - `reports/exp30_three_backbone_paper_positioning.csv`
+
+## 2026-06-27 VOR-OR Source Pool Audit
+
+- Status: `VOR_OR_SOURCE_POOL_BLOCKED`
+- Method: existing exact extraction caches only; no VOR tar archive rescan.
+- Discovered extracted triplets: 192.
+- Candidate scene groups after previous MiniMax/EffectErase exclusions: 80.
+- Source manifest rows: 80.
+- Reserve rows: 0.
+- Source type counts: REAL 71, BLENDER 9.
+- Mask bucket counts: small 22, medium 40, large 18.
+- Source manifest SHA256:
+  `58696bc504e79eec1342f00cbbb93d244b96d8311f128cf14156c3c6283cb595`
+- Reserve manifest SHA256:
+  `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`
+- Codex opened 10/10 batch preview pages covering 80/80 source rows.
+- Visual source sanity passed for the rows that exist: condition/winner/mask
+  strips are aligned, masks are non-empty, and affected regions are visible.
+- Gate failure: the pool does not meet the requested 128 source + 128 reserve
+  design and is severely source-type imbalanced.
+
+Decision:
+
+`VOR_OR_SOURCE_POOL_BLOCKED`
+
+No multi-model OR smoke, Gate128 generation, MiniMax adapter gate, DiffuEraser
+VOR-OR micro, GPU task, or training was launched after this blocked source-pool
+audit.
+
+Reports/manifests:
+
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_pool128_sources.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_pool128_reserve.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_source_pool_rejected.jsonl`
+- `reports/exp30_vor_or_source_pool_audit.md`
+- `reports/exp30_vor_or_source_pool_audit.csv`
+- `reports/exp30_vor_or_source_pool_visual_review.csv`
+- `reports/exp30_vor_or_source_pool_summary.json`
+- `reports/exp30_vor_or_source_pool_previews/`
