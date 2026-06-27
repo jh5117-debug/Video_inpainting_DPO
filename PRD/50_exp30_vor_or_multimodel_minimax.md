@@ -739,3 +739,62 @@ Reports:
 - `reports/exp30_vor_or_gate64_materialization_final_v3.csv`
 - `reports/exp30_vor_or_gate64_materialization_final_v3.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_materialized_final_v3_ref.jsonl`
+
+
+## 2026-06-27 Gate64 V3 Multi-Model Pool
+
+- Status: `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
+- Materialized sources: 64.
+- Candidate rows aggregated: 256 across controlled corruption v3, MiniMax
+  official v3, ProPainter, and DiffuEraser no-PCM.
+- Candidate classification totals: 74 medium-hard, 6 hard-plausible,
+  10 too-close, and 166 trivial-bad.
+- Selected primary pairs: 50.
+- Selected primary classification: 48 medium-hard and 2 hard-plausible.
+- Selected primary model counts:
+  - controlled corruption v3: 26.
+  - MiniMax official v3: 17.
+  - ProPainter: 6.
+  - DiffuEraser no-PCM: 1.
+- Train split: 32 rows.
+- Heldout split: 16 rows.
+- Train/heldout scene overlap: 0.
+- Train model counts: controlled corruption v3 15, MiniMax official v3 10,
+  ProPainter 6, DiffuEraser no-PCM 1.
+- Heldout model counts: controlled corruption v3 11, MiniMax official v3 5.
+- Candidate manifest SHA256:
+  `a64610e369e2904de5331913501a55736bc71d962644663e8ac0869dee1568a1`.
+- Selected primary manifest SHA256:
+  `f1621a7fa5dd61844521a7bbfcc6dd45ad0378db4bf0440f8afe787558c3f4c3`.
+- Train32 manifest SHA256:
+  `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`.
+- Heldout16 manifest SHA256:
+  `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`.
+- EffectErase primary used: false.
+- VOR-Eval used: false.
+- Training started: false.
+
+Codex opened Gate64 visual review pages for controlled corruption, MiniMax,
+ProPainter, and DiffuEraser before aggregation. The pool is usable but uneven:
+controlled corruption is the stable medium-hard backbone of the pool, MiniMax
+contributes real but lower-yield examples, ProPainter adds a small number of
+bounded-defect samples, and DiffuEraser remains mostly diagnostic in this
+Gate64 setting with only one selected sample.
+
+This milestone unlocks only the preregistered MiniMax 10-step adapter gate.
+It does not constitute MiniMax quality-positive evidence, DiffuEraser VOR-OR
+adapter evidence, universal-adapter evidence, RC-FPO evidence, or long-training
+authorization.
+
+Reports/manifests:
+
+- `reports/exp30_vor_or_gate64_multimodel_pool_v3.md`
+- `reports/exp30_vor_or_gate64_multimodel_pool_v3.csv`
+- `reports/exp30_vor_or_gate64_multimodel_metrics_v3.csv`
+- `reports/exp30_vor_or_gate64_multimodel_visual_review_v3.csv`
+- `reports/exp30_vor_or_gate64_multimodel_summary_v3.json`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_candidates_all_v3.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_selected_primary_v3.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_train32_v3.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_heldout16_v3.jsonl`
+- `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_rejected_v3.jsonl`

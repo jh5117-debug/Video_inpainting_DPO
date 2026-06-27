@@ -198,4 +198,27 @@ Initial materialization metrics: 55/64 rows OK and 9 empty-mask failures. The re
 
 ## 2026-06-27 Gate64 V3 Final Materialization
 
+Source materialization metrics: 64/64 rows decoded at 17 frames and 512 x 512,
+with failed rows 0 and BLENDER/REAL 32/32. Materialized manifest SHA256:
+`a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13`.
+
+## 2026-06-27 Gate64 V3 Multi-Model Pool Metrics
+
+- Candidate rows: 256.
+- Candidate classification totals: 74 medium-hard, 6 hard-plausible,
+  10 too-close, 166 trivial-bad.
+- Selected primary rows: 50.
+- Selected primary classes: 48 medium-hard, 2 hard-plausible.
+- Selected model counts: controlled corruption v3 26, MiniMax official v3 17,
+  ProPainter 6, DiffuEraser no-PCM 1.
+- Train32 rows: 32.
+- Heldout16 rows: 16.
+- Train/heldout scene overlap: 0.
+- Train32 SHA256:
+  `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`.
+- Heldout16 SHA256:
+  `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`.
+
+No adapter-training metric has been produced by this milestone.
+
 Source materialization passed: 64/64 rows, 0 failed, 17 frames, 512x512, BLENDER/REAL 32/32. No OR candidate metrics yet.

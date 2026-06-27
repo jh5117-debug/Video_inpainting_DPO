@@ -530,3 +530,20 @@ Reports:
 - `reports/exp30_vor_or_gate64_materialization_final_v3.csv`
 - `reports/exp30_vor_or_gate64_materialization_final_v3.json`
 - `exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_materialized_final_v3_ref.jsonl`
+
+
+## 2026-06-27 Gate64 V3 Multi-Model OR Pool
+
+- Status: `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
+- Aggregated candidates: 256.
+- Selected primary usable pairs: 50.
+- Selected classes: 48 medium-hard, 2 hard-plausible.
+- Train rows: 32.
+- Heldout rows: 16.
+- Train/heldout scene overlap: 0.
+- Selected model counts: controlled corruption v3 26, MiniMax official v3 17,
+  ProPainter 6, DiffuEraser no-PCM 1.
+- EffectErase primary used: false.
+- VOR-Eval used: false.
+- Training started: false.
+- Gate unlocked: preregistered MiniMax 10-step adapter gate only.

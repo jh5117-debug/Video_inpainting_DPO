@@ -102,3 +102,4 @@ PRD/pai_audit_pai_node_*.md
 *.bin
 *.onnx
 reports/exp26_probe4_mask_visuals/
+reports/exp30_gate64_*_review_pages/

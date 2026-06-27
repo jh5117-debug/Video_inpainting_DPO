@@ -2890,3 +2890,11 @@ Exp30 repaired Gate64 v3 before inference: 55/64 initial materialization rows pa
 ## 2026-06-27 Exp30 Gate64 V3 Final Materialization
 
 Exp30 Gate64 v3 final materialization passed: 64/64 rows, failed rows 0, BLENDER/REAL 32/32, materialized manifest SHA256 `a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13`. Candidate generation is unlocked; adapter gates remain locked.
+
+## 2026-06-27 Exp30 Gate64 V3 Multi-Model OR Pool
+
+Exp30 status: `VOR_OR_GATE64_MULTIMODEL_POOL_READY`.
+
+Gate64 v3 aggregated 256 candidates from controlled corruption v3, MiniMax official v3, ProPainter, and DiffuEraser no-PCM. Codex opened the Gate64 visual review pages for all four families before pool selection. The selected primary pool contains 50 usable pairs: 48 medium-hard and 2 hard-plausible. Model counts are controlled corruption v3 26, MiniMax official v3 17, ProPainter 6, and DiffuEraser 1. The train32 manifest SHA256 is `1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196`; heldout16 SHA256 is `84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade`; train/heldout scene overlap is 0.
+
+This unlocks the preregistered MiniMax 10-step adapter gate only. No training, RC-FPO, long run, universal-adapter claim, or scientific-positive claim was launched or made by this pool aggregation.

@@ -53,3 +53,12 @@ Gate64 v3 source manifest was repaired before inference after 9 empty-mask mater
 ## 2026-06-27 Gate64 V3 Materialization
 
 Final repaired Gate64 v3 source set materialized successfully: 64/64 rows, failed rows 0. Candidate generation is now unlocked; adapter training remains locked until pool selection passes.
+
+## 2026-06-27 Gate64 V3 Pool
+
+Gate64 v3 pool selection passed. The pool contains 50 selected primary pairs,
+train32 and heldout16 are scene-disjoint, and the selected rows are 48
+medium-hard plus 2 hard-plausible. The pool is dominated by controlled
+corruption v3, with MiniMax and ProPainter supplementation and only one
+DiffuEraser selected row. MiniMax 10-step adapter gate is now unlocked; long
+training, RC-FPO, and universal-adapter claims remain forbidden.

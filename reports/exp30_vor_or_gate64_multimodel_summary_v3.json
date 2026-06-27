@@ -1,0 +1,61 @@
+{
+  "candidate_count": 256,
+  "candidates_manifest_sha256": "a64610e369e2904de5331913501a55736bc71d962644663e8ac0869dee1568a1",
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 6,
+    "MEDIUM_HARD_ELIGIBLE": 74,
+    "TOO_CLOSE": 10,
+    "TRIVIAL_BAD": 166
+  },
+  "effecterase_primary_used": false,
+  "gate_rule": "ready if selected_primary>=48, train32=32, heldout16=16, and train/heldout scenes are disjoint",
+  "heldout16_count": 16,
+  "heldout16_manifest_sha256": "84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade",
+  "heldout_model_counts": {
+    "controlled_corruption_v3": 11,
+    "minimax_official_v3": 5
+  },
+  "materialized_manifest_sha256": "a32d42b9d5f9894e3e4c8f177b04e8d98271670b864f2388f72a5cb98dc02d13",
+  "model_classification_counts": {
+    "controlled_corruption_v3:HARD_BUT_PLAUSIBLE": 2,
+    "controlled_corruption_v3:MEDIUM_HARD_ELIGIBLE": 47,
+    "controlled_corruption_v3:TRIVIAL_BAD": 15,
+    "diffueraser:MEDIUM_HARD_ELIGIBLE": 1,
+    "diffueraser:TOO_CLOSE": 1,
+    "diffueraser:TRIVIAL_BAD": 62,
+    "minimax_official_v3:HARD_BUT_PLAUSIBLE": 3,
+    "minimax_official_v3:MEDIUM_HARD_ELIGIBLE": 17,
+    "minimax_official_v3:TOO_CLOSE": 6,
+    "minimax_official_v3:TRIVIAL_BAD": 38,
+    "propainter:HARD_BUT_PLAUSIBLE": 1,
+    "propainter:MEDIUM_HARD_ELIGIBLE": 9,
+    "propainter:TOO_CLOSE": 3,
+    "propainter:TRIVIAL_BAD": 51
+  },
+  "rejected_manifest_sha256": "25a8e081214a6dc7ee55bde57a8ce55ebd470db7f481a99b66eeffc55ddc36a9",
+  "selected_classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 2,
+    "MEDIUM_HARD_ELIGIBLE": 48
+  },
+  "selected_model_counts": {
+    "controlled_corruption_v3": 26,
+    "diffueraser": 1,
+    "minimax_official_v3": 17,
+    "propainter": 6
+  },
+  "selected_primary_count": 50,
+  "selected_primary_manifest_sha256": "f1621a7fa5dd61844521a7bbfcc6dd45ad0378db4bf0440f8afe787558c3f4c3",
+  "source_count": 64,
+  "status": "VOR_OR_GATE64_MULTIMODEL_POOL_READY",
+  "train32_count": 32,
+  "train32_manifest_sha256": "1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196",
+  "train_heldout_scene_overlap": [],
+  "train_model_counts": {
+    "controlled_corruption_v3": 15,
+    "diffueraser": 1,
+    "minimax_official_v3": 10,
+    "propainter": 6
+  },
+  "training_started": false,
+  "vor_eval_used": false
+}

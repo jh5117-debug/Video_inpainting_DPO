@@ -166,3 +166,19 @@ No candidate video review yet. The only qualitative finding is source invalidity
 ## 2026-06-27 Gate64 V3 Final Materialization
 
 Source evidence strips were generated on PAI for 64/64 rows. OR candidate visual review remains pending candidate generation.
+
+## 2026-06-27 Gate64 V3 Multi-Model Visual Review
+
+Codex opened Gate64 review pages for controlled corruption, MiniMax,
+ProPainter, and DiffuEraser before pool aggregation. Controlled corruption v3
+is the most stable medium-hard source, usually preserving far outside content
+while leaving bounded local residual, boundary, or texture defects. MiniMax
+adds useful but lower-yield examples; many rejected MiniMax rows retain object
+content, show color/temporal instability, or damage the outside. ProPainter
+adds a small set of bounded-defect examples but is often too clean/strong or
+artifacted. DiffuEraser no-PCM is mostly diagnostic in Gate64: it is technically
+runnable, but the reviewed pages showed mostly too-close/too-clean behavior,
+blur/white artifacts, or outside damage, with only one selected primary row.
+
+The pool is ready for the preregistered MiniMax 10-step adapter gate, but it is
+not by itself a quality-positive adapter result.
