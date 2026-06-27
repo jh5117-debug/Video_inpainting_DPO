@@ -1,3 +1,16 @@
+## 2026-06-27 Exp32 DiffuEraser VOR-OR 2000-Step
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp32 DiffuEraser VOR-OR 2000-step | `EXP32_READBACK_COMPLETED_DATA_GATE_PENDING`; training blocked until train32 + heldout16 scene-disjoint gate passes | `PRD/48_exp32_diffueraser_vor_or_2000step.md`, `reports/exp32_diffueraser_vor_or_readback.md`, `experiment_registry/exp32_diffueraser_vor_or_2000step/` |
+
+Notes:
+
+- Prior CLI4 DE-B Gate16 passed but is not large enough to train.
+- No VOR-Eval row may be used for training, loser mining, tuning, or checkpoint
+  choice.
+- No MiniMax adapter or right-side Exp30 output is touched.
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |

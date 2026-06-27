@@ -1,3 +1,23 @@
+## 2026-06-27 Exp32 DiffuEraser VOR-OR Readback
+
+Status: `EXP32_READBACK_COMPLETED_DATA_GATE_PENDING`
+
+An isolated Exp32 branch and worktree were created from
+`origin/research/exp25-vor-or-preference-data` at
+`bc6dc80206f5e397bda577ba62f9371813e5a657`.
+
+The Exp25 base and CLI4 Gate16 reports were reread. CLI4 Gate16 passed with
+`16/16` technical valid rows and `14/16` medium-hard or hard-plausible rows
+using `DE-B_sft_raw6_d8_propainter`, but this is only Gate16 evidence. Exp32
+does not yet have a verified train32 + heldout16 scene-disjoint data gate, so
+Stage1/Stage2 2000-step training remains blocked.
+
+Right-side Exp30/MiniMax protection was checked read-only. GPU0 and GPU5 remain
+conservatively reserved because stale MiniMax locks and Exp30 outputs exist.
+
+Next required milestone: `DIFFUSERASER_VOR_OR_DATA_READY` data-gate report, or
+remain `DIFFUSERASER_VOR_OR_BLOCKED`.
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

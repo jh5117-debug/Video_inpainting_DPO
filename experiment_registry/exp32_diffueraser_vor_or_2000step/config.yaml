@@ -1,0 +1,18 @@
+experiment: exp32_diffueraser_vor_or_2000step
+status: EXP32_READBACK_COMPLETED_DATA_GATE_PENDING
+planned_gpu: 2
+reserved_gpus:
+  - 0
+  - 5
+data_gate_required: true
+allowed_generator_stack_after_readback: DE-B_sft_raw6_d8_propainter
+stage1_steps: 2000
+stage2_steps: 2000
+training_allowed: false
+blocked_reason: train32_plus_heldout16_scene_disjoint_gate_not_verified
+forbidden_inputs:
+  - VOR-Eval training rows
+  - hard_comp_primary_loser
+  - EffectErase primary DPO loser
+  - MiniMax adapter output from right-side active roots
+

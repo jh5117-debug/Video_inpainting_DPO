@@ -1,0 +1,3 @@
+run_id	status	data_gate	stage1	stage2	report
+exp32_readback_20260627	EXP32_READBACK_COMPLETED_DATA_GATE_PENDING	pending	not_started	not_started	reports/exp32_diffueraser_vor_or_readback.md
+
