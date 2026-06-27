@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `EXP30_SMOKE16_V2_MANIFEST_REPAIRED_PRE_INFERENCE`
+Current status: `EXP30_SMOKE16_V2_MATERIALIZED`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -174,3 +174,18 @@ Reports/manifests:
   `7e8cfd1b672b17b131476c9dd82804841d22d7450adf26301cf9ae8ff83f7f76`.
 - Still not unlocked: smoke pass, Gate64, MiniMax adapter training,
   DiffuEraser VOR-OR micro, data-ready, or scientific-positive claims.
+
+## 2026-06-27 Smoke16 V2 Final Materialization
+
+- Status: `EXP30_SMOKE16_V2_MATERIALIZED`.
+- Requested rows: 16.
+- Materialized rows: 16.
+- Failed rows: 0.
+- Frames per row: 17.
+- Resolution: 512 x 512.
+- Source type counts: BLENDER 8; REAL 8.
+- Materialized manifest SHA256:
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
+- This unlocks smoke16 candidate generation only. It does not unlock
+  multi-model smoke pass, Gate64, MiniMax recipe/training, DiffuEraser VOR-OR
+  micro, or any data-ready/scientific claim.

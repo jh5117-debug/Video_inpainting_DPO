@@ -60,3 +60,11 @@ removes technical-invalid source rows discovered during materialization: one
 short decoded row and two empty-mask rows. The final manifest remains balanced
 at BLENDER/REAL 8/8, but qualitative smoke status is still pending candidate
 generation, per-video review sheets, and Codex visual inspection.
+
+## 2026-06-27 Smoke16 V2 Final Materialization
+
+Source materialization is now technically valid for 16/16 rows. The
+materializer wrote source evidence strips for condition/winner/mask and rejected
+empty-mask rows via the new guard. No OR candidate videos have been generated
+yet, so qualitative smoke status remains pending model/controlled-corruption
+outputs and per-video visual inspection.

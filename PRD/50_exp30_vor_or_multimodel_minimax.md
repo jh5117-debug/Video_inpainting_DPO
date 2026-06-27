@@ -283,3 +283,31 @@ Reports:
 - `reports/exp30_multimodel_or_smoke16_v2_manifest_repair.md`
 - `reports/exp30_multimodel_or_smoke16_v2_manifest_repair.csv`
 - `reports/exp30_multimodel_or_smoke16_v2_manifest_repair.json`
+
+## 2026-06-27 Smoke16 V2 Final Materialization
+
+- Status: `EXP30_SMOKE16_V2_MATERIALIZED`.
+- Requested rows: 16.
+- Materialized rows: 16.
+- Failed rows: 0.
+- Frames per row: 17.
+- Resolution: 512 x 512.
+- Source type counts: BLENDER 8; REAL 8.
+- Empty-mask guard: active; no empty-mask row passed.
+- Materialized manifest:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke16_v2_20260627/materialized_17f_512_final/smoke16_v2_materialized_final.jsonl`
+- Materialized manifest SHA256:
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
+- Local reference manifest:
+  `exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke16_v2_materialized_final_ref.jsonl`
+
+This unlocks candidate generation for smoke16 only. It still does not satisfy
+`MULTIMODEL_OR_SMOKE16_V2_PASS`, unlock Gate64, unlock MiniMax adapter
+training, or support data-ready/scientific claims without generated OR
+candidates, metrics, and per-video visual review.
+
+Reports:
+
+- `reports/exp30_smoke16_v2_materialization_final.md`
+- `reports/exp30_smoke16_v2_materialization_final.csv`
+- `reports/exp30_smoke16_v2_materialization_final.json`

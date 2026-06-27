@@ -68,3 +68,15 @@ unknown.
 - Final source type balance: BLENDER 8; REAL 8.
 - Final manifest SHA256:
   `7e8cfd1b672b17b131476c9dd82804841d22d7450adf26301cf9ae8ff83f7f76`.
+
+## 2026-06-27 Smoke16 V2 Final Materialization
+
+- Model metric status: not generated yet.
+- Materialization rows: 16/16.
+- Failed rows: 0.
+- Frames: 17.
+- Resolution: 512 x 512.
+- Source type balance: BLENDER 8; REAL 8.
+- Materialized manifest SHA256:
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
+- All final rows passed the non-empty-mask guard.

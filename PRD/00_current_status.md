@@ -2706,3 +2706,16 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - This remains pre-smoke. No Gate64, adapter training, or scientific claim is
   unlocked until final materialization, model candidate generation, metrics, and
   visual review pass.
+
+## 2026-06-27 Exp30 Smoke16 V2 Final Materialization
+
+- Status: `EXP30_SMOKE16_V2_MATERIALIZED`
+- Final smoke16 manifest materialized successfully: 16/16 rows, 17 frames each,
+  512 x 512, failed rows = 0.
+- Empty-mask protection is now active in the materializer, and no empty-mask row
+  passed the final run.
+- Materialized manifest SHA256:
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`
+- This unlocks candidate generation for smoke16 only. It still does not unlock
+  Gate64, MiniMax adapter training, DiffuEraser micro training, or scientific
+  claims.
