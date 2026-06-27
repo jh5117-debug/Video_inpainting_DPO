@@ -102,3 +102,11 @@ usable, controlled corruption was 5/16 usable against a required 6/16, and
 MiniMax was 4/16 usable. The next metric-producing task is smoke16 v3 only
 after failure analysis, calibration planning, generator stack audit, and
 preregistration.
+
+## 2026-06-27 Smoke16 V2 Failure Analysis
+
+No new metrics were produced; existing v2 metrics were reclassified per
+candidate. Controlled corruption has 5/16 usable candidates and 11 temporal
+discontinuity failures. MiniMax has 4/16 usable candidates, with 7 outside
+damage failures, 4 temporal flicker/instability failures, and 1 too-bad local
+output. These counts define the v3 calibration target but do not unlock Gate64.

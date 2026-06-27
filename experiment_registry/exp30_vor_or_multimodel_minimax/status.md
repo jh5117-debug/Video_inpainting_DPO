@@ -223,3 +223,23 @@ Reports/manifests:
 Report:
 
 - `reports/exp30_continuation_v3_readback.md`
+
+## 2026-06-27 Smoke16 V2 Failure Analysis
+
+- Status: `SMOKE16_V2_FAILURE_ANALYZED`.
+- Analyzed 32/32 v2 non-EffectErase candidates; no new candidate generation,
+  GPU task, Gate64, adapter gate, or training ran.
+- Controlled corruption: 16/16 technical-valid, 5/16 usable; dominant blocker
+  is temporal discontinuity from a single aggressive frame-wise corruption
+  profile.
+- MiniMax official: 16/16 technical-valid, 4/16 usable; dominant blockers are
+  outside damage and temporal flicker/instability, with a few usable
+  medium-hard/hard-plausible rows.
+- Continuation v3 visual readback opened 4 controlled overview pages and 4
+  MiniMax review pages covering all 32 v2 candidates.
+
+Reports:
+
+- `reports/exp30_smoke16_v2_failure_analysis.md`
+- `reports/exp30_smoke16_v2_failure_analysis.csv`
+- `reports/exp30_smoke16_v2_failure_summary.json`

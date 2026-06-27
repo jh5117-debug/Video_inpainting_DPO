@@ -131,3 +131,24 @@ continuation_v3_readback:
     exp33_gpu: GPU3
   launched_gpu_task: false
   launched_training: false
+smoke16_v2_failure_analysis:
+  result: SMOKE16_V2_FAILURE_ANALYZED
+  candidate_count: 32
+  technical_valid: 32
+  usable: 9
+  controlled_corruption:
+    usable: 5
+    failure_counts:
+      temporal_discontinuity: 11
+      local_residual_too_sharp: 2
+      bounded_local_texture_mismatch: 3
+  minimax_official:
+    usable: 4
+    failure_counts:
+      outside_damage: 7
+      temporal_flicker_instability: 4
+      too_bad: 1
+      bounded_residual_medium_hard: 3
+      strong_but_plausible_local_defect: 1
+  launched_generation: false
+  gate64_unlocked: false

@@ -87,3 +87,13 @@ controlled corruption needs softer and more temporally coherent medium-hard
 profiles, while MiniMax needs supplemental generator families rather than being
 treated as a sole candidate source. DiffuEraser and ProPainter require verified
 stack smoke before they can be enabled in smoke16 v3.
+
+## 2026-06-27 Smoke16 V2 Failure Analysis
+
+Continuation v3 opened 4 controlled-corruption overview pages and 4 MiniMax
+review pages, covering all 32 candidates. Controlled corruption often shows
+hard mask-local residuals or frame-to-frame inconsistent local texture while
+leaving the outside clean. MiniMax shows a few usable medium-hard examples, but
+many rows have outside damage, black/smudged local artifacts, residual object or
+effect content, or temporal instability. The qualitative conclusion supports a
+preregistered v3 repair rather than direct Gate64.

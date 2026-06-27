@@ -22,3 +22,7 @@ with failure analysis and controlled-corruption calibration planning before any
 new candidate generation. Direct Gate64, MiniMax adapter gates, long training,
 and universal-adapter claims remain forbidden until the preregistered smoke
 gates pass.
+
+Smoke16 v2 failure analysis is complete. It confirms a quality-yield failure:
+controlled corruption needs calibrated temporal/local profiles, and MiniMax
+must remain one family in a multi-model pool rather than the sole generator.

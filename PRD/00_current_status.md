@@ -2755,3 +2755,19 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - No GPU generation, Smoke32, Gate64, MiniMax adapter gate, DiffuEraser
   VOR-OR micro, training, or protected-lane action was launched by this
   readback.
+
+## 2026-06-27 Exp30 Smoke16 V2 Failure Analysis
+
+- Status: `SMOKE16_V2_FAILURE_ANALYZED`
+- Analyzed all 32 smoke16 v2 non-EffectErase candidates from existing metrics,
+  review CSVs, and visual evidence pages; no new generation or GPU task ran.
+- Controlled corruption failure counts: temporal discontinuity 11, local
+  residual too sharp 2, bounded local texture mismatch 3. It remains 5/16
+  usable, below the required >=6/16 fallback gate.
+- MiniMax failure counts: outside damage 7, temporal flicker/instability 4,
+  too bad 1, bounded residual/medium-hard 3, strong but plausible local defect
+  1. It remains 4/16 usable.
+- Continuation v3 visual readback opened 4 controlled-corruption overview pages
+  and 4 MiniMax review pages covering all 32 candidates.
+- Gate64, Smoke32, MiniMax adapter gate, DiffuEraser micro, training, and
+  universal-adapter language remain stopped.

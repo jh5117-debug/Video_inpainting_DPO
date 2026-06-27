@@ -1,0 +1,58 @@
+{
+  "by_model": {
+    "controlled_corruption": {
+      "candidate_count": 16,
+      "classification_counts": {
+        "HARD_BUT_PLAUSIBLE": 2,
+        "MEDIUM_HARD_ELIGIBLE": 3,
+        "TRIVIAL_BAD": 11
+      },
+      "failure_counts": {
+        "bounded local texture mismatch": 3,
+        "local residual too sharp": 2,
+        "temporal discontinuity": 11
+      },
+      "technical_valid": 16,
+      "usable": 5
+    },
+    "minimax_official": {
+      "candidate_count": 16,
+      "classification_counts": {
+        "HARD_BUT_PLAUSIBLE": 1,
+        "MEDIUM_HARD_ELIGIBLE": 3,
+        "TRIVIAL_BAD": 12
+      },
+      "failure_counts": {
+        "bounded residual / medium-hard": 3,
+        "outside damage": 7,
+        "strong but plausible local defect": 1,
+        "temporal flicker / instability": 4,
+        "too bad": 1
+      },
+      "technical_valid": 16,
+      "usable": 4
+    }
+  },
+  "candidate_count": 32,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 3,
+    "MEDIUM_HARD_ELIGIBLE": 6,
+    "TRIVIAL_BAD": 23
+  },
+  "continuation_v3_visual_evidence_opened": {
+    "candidate_coverage": 32,
+    "controlled_corruption_overview_pages": 4,
+    "minimax_review_pages": 4
+  },
+  "gate64_unlocked": false,
+  "status": "SMOKE16_V2_FAILURE_ANALYZED",
+  "technical_valid": 32,
+  "usable": 9,
+  "v3_preregistered_fix_items": [
+    "controlled corruption must reduce frame-independent noise and add temporal smoothing",
+    "controlled corruption must include mild/medium object and affected-soft profiles, not one aggressive profile",
+    "MiniMax should remain one family in a multi-model pool, not the sole source of training losers",
+    "DiffuEraser and ProPainter may be enabled only after verified stack smoke",
+    "EffectErase remains diagnostic-only and excluded from smoke promotion/training pairs"
+  ]
+}

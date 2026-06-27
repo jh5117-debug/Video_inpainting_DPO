@@ -377,3 +377,35 @@ Reports:
 - Still not allowed: direct Gate64, Smoke32 before smoke16 v3 pass, MiniMax
   adapter gate before Gate64 pool ready, any long training, RC-FPO, universal
   adapter language, or modification of `inference/metrics.py` / shared trainer.
+
+## 2026-06-27 Smoke16 V2 Failure Analysis
+
+- Status: `SMOKE16_V2_FAILURE_ANALYZED`.
+- Inputs: `reports/exp30_multimodel_or_smoke16_metrics_v2.csv`,
+  `reports/exp30_multimodel_or_smoke16_visual_review_v2.csv`, existing v2
+  temporal strips/review assets, and continuation v3 visual evidence readback.
+- Candidate coverage: 32/32 non-EffectErase candidates.
+- Technical validity: 32/32.
+- Controlled corruption:
+  - Usable: 5/16.
+  - Failure counts: temporal discontinuity 11, local residual too sharp 2,
+    bounded local texture mismatch 3.
+  - Interpretation: outside preservation is not the dominant issue; the single
+    frame-wise corruption profile is too aggressive and not temporally coherent.
+- MiniMax official:
+  - Usable: 4/16.
+  - Failure counts: outside damage 7, temporal flicker/instability 4, too bad 1,
+    bounded residual/medium-hard 3, strong but plausible local defect 1.
+  - Interpretation: MiniMax can contribute a few useful candidates, but cannot
+    be the only VOR-OR loser source.
+- Required v3 fixes: preregistered controlled-corruption profiles, no infinite
+  sampling, and DiffuEraser/ProPainter stack audit before enabling those
+  candidate families.
+- Still stopped: direct Gate64, Smoke32 before smoke16 v3 pass, MiniMax adapter
+  gate, DiffuEraser micro training, RC-FPO, and long training.
+
+Reports:
+
+- `reports/exp30_smoke16_v2_failure_analysis.md`
+- `reports/exp30_smoke16_v2_failure_analysis.csv`
+- `reports/exp30_smoke16_v2_failure_summary.json`
