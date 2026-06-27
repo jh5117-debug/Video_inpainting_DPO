@@ -79,7 +79,7 @@ The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `VIDEOPAINTER_2000_L0_L1_PASSED`.
+Current status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`.
 
 Resume-policy decision:
 
@@ -100,3 +100,13 @@ L0/L1 decision:
 - L1 reference delta norm: `0.0`
 - strict reload max abs diff: `0.0`
 - decision: `VIDEOPAINTER_2000_L0_L1_PASSED`
+
+Checkpoint ladder readiness:
+
+- trainer argument: `--checkpoint_steps`
+- planned explicit checkpoints:
+  `0,1,10,50,100,200,500,1000,1500,2000`
+- retention behavior: explicit checkpoint steps are protected from pruning.
+- periodic checkpointing may be disabled with `--checkpointing_steps 0` when an
+  explicit list is provided.
+- validation: `git diff --check`, `py_compile`, 28 unit tests, and `bash -n`.

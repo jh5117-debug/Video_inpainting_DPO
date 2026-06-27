@@ -28,7 +28,7 @@ import shutil
 import sys
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, Iterable, List, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Set, Tuple
 
 import numpy as np
 import torch
@@ -108,6 +108,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max_train_steps", type=int, default=2000)
     parser.add_argument("--checkpointing_steps", type=int, default=500)
     parser.add_argument("--checkpoints_total_limit", type=int, default=5)
+    parser.add_argument(
+        "--checkpoint_steps",
+        default="",
+        help="Comma-separated exact checkpoint steps to preserve, e.g. 0,1,10,50.",
+    )
     parser.add_argument("--train_batch_size", type=int, default=1)
     parser.add_argument("--num_workers", type=int, default=0)
     parser.add_argument("--learning_rate", type=float, default=1e-5)
@@ -785,20 +790,32 @@ class VideoPainterDPOTrainer:
         }
         return loss, diag
 
-    def save_branch_checkpoint(self, step: int, optimizer: torch.optim.Optimizer) -> None:
+    def save_branch_checkpoint(
+        self,
+        step: int,
+        optimizer: torch.optim.Optimizer,
+        protected_steps: Optional[Iterable[int]] = None,
+    ) -> None:
         output_dir = Path(self.args.output_dir)
         ckpt = output_dir / f"checkpoint-{step}"
         ckpt.mkdir(parents=True, exist_ok=True)
         self.policy_branch.save_pretrained(ckpt / "branch", safe_serialization=True, max_shard_size="5GB")
         torch.save({"step": step, "optimizer": optimizer.state_dict()}, ckpt / "trainer_state.pt")
 
+        protected = set(protected_steps or [])
         checkpoints = sorted(
             [p for p in output_dir.iterdir() if p.is_dir() and p.name.startswith("checkpoint-")],
             key=lambda p: int(p.name.split("-")[-1]),
         )
         excess = len(checkpoints) - self.args.checkpoints_total_limit
-        for p in checkpoints[: max(0, excess)]:
+        for p in checkpoints:
+            if excess <= 0:
+                break
+            ckpt_step = int(p.name.split("-")[-1])
+            if ckpt_step in protected:
+                continue
             shutil.rmtree(p)
+            excess -= 1
 
     def save_last_weights(self, step: int) -> None:
         last = Path(self.args.output_dir) / "last_weights"
@@ -845,6 +862,32 @@ def grad_norm(parameters: Iterable[torch.nn.Parameter]) -> float:
     return math.sqrt(total)
 
 
+def parse_checkpoint_steps(raw: str, max_train_steps: int) -> Set[int]:
+    if not raw.strip():
+        return set()
+    steps: Set[int] = set()
+    for item in raw.split(","):
+        token = item.strip()
+        if not token:
+            continue
+        try:
+            step = int(token)
+        except ValueError as exc:
+            raise ValueError(f"Invalid checkpoint step {token!r}") from exc
+        if step < 0:
+            raise ValueError(f"Checkpoint step must be non-negative, got {step}")
+        if step > max_train_steps:
+            raise ValueError(f"Checkpoint step {step} exceeds max_train_steps={max_train_steps}")
+        steps.add(step)
+    return steps
+
+
+def should_save_checkpoint(step: int, checkpointing_steps: int, checkpoint_steps: Set[int]) -> bool:
+    if step in checkpoint_steps:
+        return True
+    return checkpointing_steps > 0 and step % checkpointing_steps == 0
+
+
 def run(args: argparse.Namespace) -> None:
     args = apply_official_config_to_args(args)
     Path(args.output_dir).mkdir(parents=True, exist_ok=True)
@@ -869,10 +912,16 @@ def run(args: argparse.Namespace) -> None:
     )
     trainer = VideoPainterDPOTrainer(args)
     optimizer = make_vp2_optimizer(trainer.policy_branch.parameters(), args)
+    explicit_checkpoint_steps = parse_checkpoint_steps(args.checkpoint_steps, args.max_train_steps)
+    if args.checkpointing_steps <= 0 and not explicit_checkpoint_steps:
+        raise ValueError("checkpointing_steps <= 0 requires non-empty --checkpoint_steps")
 
     ensure_diag_header(args.dpo_diag_csv)
 
     iterator = iter(loader) if args.preflight_only else repeating_epoch_iterator(loader)
+    if not args.preflight_only and 0 in explicit_checkpoint_steps:
+        trainer.save_branch_checkpoint(0, optimizer, protected_steps=explicit_checkpoint_steps)
+
     progress = tqdm(range(1, (1 if args.preflight_only else args.max_train_steps) + 1), desc="Exp26 VideoPainter v2 DPO")
     for step in progress:
         batch = next(iterator)
@@ -905,8 +954,8 @@ def run(args: argparse.Namespace) -> None:
                 json.dump(report, f, indent=2)
             return
 
-        if step % args.checkpointing_steps == 0:
-            trainer.save_branch_checkpoint(step, optimizer)
+        if should_save_checkpoint(step, args.checkpointing_steps, explicit_checkpoint_steps):
+            trainer.save_branch_checkpoint(step, optimizer, protected_steps=explicit_checkpoint_steps)
 
     trainer.save_last_weights(args.max_train_steps)
 

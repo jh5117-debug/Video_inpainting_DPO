@@ -1,3 +1,15 @@
+## 2026-06-27 Exp31 Checkpoint Ladder Support
+
+Status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`
+
+The isolated Exp31 VideoPainter trainer now accepts an explicit
+`--checkpoint_steps` list and preserves those checkpoints from retention. This
+is required for the planned Step0/1/10/50/100/200/500/1000/1500/2000 audit
+ladder and avoids creating 2000 per-step checkpoints.
+
+Validation passed: `git diff --check`, `py_compile`, 28 unit tests, and
+`bash -n`.
+
 ## 2026-06-27 Exp31 L0/L1
 
 Status: `VIDEOPAINTER_2000_L0_L1_PASSED`
