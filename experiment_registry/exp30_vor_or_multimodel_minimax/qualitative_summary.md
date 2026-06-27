@@ -13,3 +13,11 @@ Readback imported the following qualitative constraints:
 - DiffuEraser needs VOR-OR micro evidence if the paper frames VOR-OR and
   MiniMax together.
 
+## 2026-06-27 Three-Backbone Positioning
+
+No new videos were generated. The qualitative role split is:
+
+- DiffuEraser: original backbone and VOR-OR micro target.
+- VideoPainter: second backbone for VOR-BG BR/inpainting evidence.
+- MiniMax: flow-style third-backbone candidate pending quality-positive micro.
+- EffectErase: OR strong baseline / diagnostic only.

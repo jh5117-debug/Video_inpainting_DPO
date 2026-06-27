@@ -32,3 +32,22 @@ Exp30 starts from Exp29 and is scoped to:
 - No GPU task, inference, training, RC-FPO, or left-side action was launched by
   readback.
 
+## 2026-06-27 Three-Backbone Paper Positioning
+
+- Status: `EXP30_THREE_BACKBONE_POSITIONING_LOCKED`.
+- DiffuEraser role: primary original backbone and VOR-OR adapter baseline to
+  validate with Stage1/Stage2 micro.
+- VideoPainter role: second backbone for VOR-BG BR/inpainting adapter evidence;
+  not a standard VOR-OR result.
+- MiniMax role: flow-style Wan/DiT third-backbone adapter candidate, blocked
+  until multi-model medium-hard data and heldout micro gates pass.
+- EffectErase role: OR strong baseline / diagnostic / upper reference only.
+- Allowed language: model-specific backend adapters and cross-backbone evidence
+  from DiffuEraser plus VideoPainter.
+- Forbidden language: universal adapter, all models supported, EffectErase
+  adapter-ready, MiniMax quality-positive before heldout micro, final SOTA.
+
+Reports:
+
+- `reports/exp30_three_backbone_paper_positioning.md`
+- `reports/exp30_three_backbone_paper_positioning.csv`

@@ -28,4 +28,18 @@ readback:
   pai_hostname: dsw-753014-85f54df947-bkp7h
   pai_compute_processes: 0
   launched_gpu_task: false
-
+paper_positioning:
+  result: EXP30_THREE_BACKBONE_POSITIONING_LOCKED
+  diffueraser_role: primary_original_backbone_plus_vor_or_micro_baseline
+  videopainter_role: second_backbone_vor_bg_br_evidence
+  minimax_role: flow_style_third_backbone_candidate
+  effecterase_role: or_strong_baseline_diagnostic_only
+  allowed_claims:
+    - cross_backbone_adapter_evidence_diffueraser_videopainter
+    - model_specific_backend_adapters
+  forbidden_claims:
+    - universal_adapter
+    - all_models_supported
+    - effecterase_adapter_ready
+    - minimax_quality_positive_before_micro_pass
+    - final_sota_without_final_benchmark

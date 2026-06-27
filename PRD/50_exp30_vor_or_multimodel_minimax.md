@@ -51,3 +51,31 @@ Readback report:
 No GPU task, inference, training, RC-FPO, or left-side action was launched by
 this readback milestone.
 
+## 2026-06-27 Three-Backbone Paper Positioning
+
+- Status: `EXP30_THREE_BACKBONE_POSITIONING_LOCKED`
+- DiffuEraser: primary original backbone plus VOR-OR adapter baseline to
+  validate with Stage1/Stage2 micro.
+- VideoPainter: second backbone with VOR-BG BR/inpainting adapter evidence;
+  external DAVIS-derived validation remains not confirmed.
+- MiniMax: Wan2.1 / DiT / flow-matching third-backbone candidate with
+  plumbing-positive gates but no quality-positive heldout micro yet.
+- EffectErase: OR strong baseline / diagnostic / upper reference only.
+
+Allowed claim:
+
+- Model-specific backend adapters with cross-backbone evidence currently from
+  DiffuEraser plus VideoPainter.
+
+Forbidden claims:
+
+- Universal adapter.
+- All models supported.
+- EffectErase adapter-ready.
+- MiniMax quality-positive before Exp30 heldout micro.
+- Final SOTA or top-conference novelty confirmed.
+
+Reports:
+
+- `reports/exp30_three_backbone_paper_positioning.md`
+- `reports/exp30_three_backbone_paper_positioning.csv`

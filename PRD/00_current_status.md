@@ -2608,3 +2608,18 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - PAI GPU readback found no compute processes; left CLI runtime locks still
   reserve GPU1/GPU2/GPU3/GPU4.
 - No GPU task, inference, training, RC-FPO, or left-side action was launched.
+
+## 2026-06-27 Exp30 Three-Backbone Paper Positioning
+
+- Status: `EXP30_THREE_BACKBONE_POSITIONING_LOCKED`
+- DiffuEraser: original backbone and VOR-OR micro-validation target.
+- VideoPainter: second backbone for VOR-BG BR/inpainting adapter evidence, not
+  a standard VOR-OR adapter.
+- MiniMax: Wan/DiT flow-style third-backbone adapter candidate; quality-positive
+  evidence is still pending Exp30 data pool and heldout micro gates.
+- EffectErase: OR strong baseline / diagnostic / upper reference only.
+- Allowed language remains model-specific backend adapters and cross-backbone
+  evidence from DiffuEraser + VideoPainter.
+- Forbidden language remains universal adapter, all models supported,
+  EffectErase adapter-ready, MiniMax quality-positive before micro pass, final
+  SOTA, and top-conference novelty confirmed.

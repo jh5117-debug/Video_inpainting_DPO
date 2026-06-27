@@ -12,3 +12,6 @@ Readback imported the following source-of-truth metric conclusions:
 - Exp26 VideoPainter shadow-dev confirmed, but external DAVIS-derived
   validation was not confirmed.
 
+## 2026-06-27 Three-Backbone Positioning
+
+No new metrics were produced. This milestone locks interpretation only.
