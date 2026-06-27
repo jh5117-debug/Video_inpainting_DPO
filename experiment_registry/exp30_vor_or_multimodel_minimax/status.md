@@ -204,3 +204,22 @@ Reports/manifests:
 - Codex visual review: opened 32/32 temporal strips locally.
 - Not launched: Gate64, MiniMax recipe/training, DiffuEraser VOR-OR micro,
   long training, RC-FPO.
+
+## 2026-06-27 Continuation V3 Readback
+
+- Status: `EXP30_CONTINUATION_V3_READBACK_COMPLETED`.
+- Branch/HEAD: `research/exp30-vor-or-multimodel-minimax-adapter-20260627`
+  at `bd8777274dfe898dc9278cadcc1dd971536a5e2c`.
+- Reread PRD, registry, smoke16 v2 reports, source-pool/full-index reports,
+  and Exp30 scripts/code.
+- Confirmed v2 blocker: controlled corruption only reached 5/16 usable
+  fallback candidates, below the preregistered >=6/16 threshold. The blocker is
+  quality yield, not technical validity.
+- Protected PAI lanes remain active: Exp31 on GPU1, Exp33 on GPU3, and cli4
+  locks reserving GPU1-GPU4. No protected process or file was modified.
+- No GPU generation, Gate64, MiniMax adapter gate, training, RC-FPO, or
+  protected-lane action was launched.
+
+Report:
+
+- `reports/exp30_continuation_v3_readback.md`

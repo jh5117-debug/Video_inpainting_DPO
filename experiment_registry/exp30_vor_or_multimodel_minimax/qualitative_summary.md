@@ -78,3 +78,12 @@ artifacts. MiniMax produced a few usable local-defect examples, but most
 candidates were too close, retained the object/effect, or had black/smudged
 local artifacts. The qualitative result matches the metric/classification
 failure, so Gate64 and training remain stopped.
+
+## 2026-06-27 Continuation V3 Readback
+
+No new videos were generated or reviewed in this milestone. The readback
+classifies v2 as a quality-yield failure, not a source/materialization failure:
+controlled corruption needs softer and more temporally coherent medium-hard
+profiles, while MiniMax needs supplemental generator families rather than being
+treated as a sole candidate source. DiffuEraser and ProPainter require verified
+stack smoke before they can be enabled in smoke16 v3.

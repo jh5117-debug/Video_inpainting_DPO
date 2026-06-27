@@ -354,3 +354,26 @@ Reports:
 - `reports/exp30_controlled_corruption_smoke16_v2_summary.json`
 - `reports/exp30_minimax_smoke16_v2_metrics.csv`
 - `reports/exp30_minimax_smoke16_v2_summary.json`
+
+## 2026-06-27 Continuation V3 Readback
+
+- Status: `EXP30_CONTINUATION_V3_READBACK_COMPLETED`.
+- Branch/HEAD: `research/exp30-vor-or-multimodel-minimax-adapter-20260627`
+  at `bd8777274dfe898dc9278cadcc1dd971536a5e2c`.
+- Readback covered the current PRDs, Exp30 registry, smoke16 v2 reports,
+  source-pool/full-index reports, Exp30 scripts/code, and read-only runtime
+  state on PAI.
+- Smoke16 v2 blocker is confirmed as quality yield only:
+  controlled corruption reached 5/16 usable fallback candidates, MiniMax
+  reached 4/16 usable, and there were no systemic decode/frame/mask failures.
+- Repaired smoke16 source rows remain valid for planning smoke16 v3:
+  materialized manifest SHA256
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
+- Protected-lane readback found Exp31 on GPU1 and Exp33 on GPU3; left CLI locks
+  reserve GPU1-GPU4. Exp30 must not touch those tasks, locks, branches, or
+  output roots.
+- Next allowed work: v2 failure analysis, controlled-corruption v3 plan,
+  DiffuEraser/ProPainter stack audit, and smoke16 v3 preregistration.
+- Still not allowed: direct Gate64, Smoke32 before smoke16 v3 pass, MiniMax
+  adapter gate before Gate64 pool ready, any long training, RC-FPO, universal
+  adapter language, or modification of `inference/metrics.py` / shared trainer.

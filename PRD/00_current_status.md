@@ -2736,3 +2736,22 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   local artifacts.
 - Gate64, MiniMax adapter recipe/training, and DiffuEraser VOR-OR micro remain
   stopped.
+
+## 2026-06-27 Exp30 Continuation V3 Readback
+
+- Status: `EXP30_CONTINUATION_V3_READBACK_COMPLETED`
+- Confirmed branch `research/exp30-vor-or-multimodel-minimax-adapter-20260627`
+  at HEAD `bd8777274dfe898dc9278cadcc1dd971536a5e2c`.
+- Smoke16 v2 remains blocked by quality yield, not by technical validity:
+  32/32 non-EffectErase candidates were technical-valid, but controlled
+  corruption reached only 5/16 usable fallback candidates versus the
+  preregistered >=6/16 gate.
+- Current repaired smoke16 source rows remain valid for v3 planning:
+  16 rows, BLENDER/REAL 8/8, materialized manifest SHA256
+  `72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d`.
+- PAI read-only audit found Exp31 running on GPU1 and Exp33 running on GPU3;
+  left CLI locks still reserve GPU1-GPU4. Exp30 must not use or touch those
+  lanes.
+- No GPU generation, Smoke32, Gate64, MiniMax adapter gate, DiffuEraser
+  VOR-OR micro, training, or protected-lane action was launched by this
+  readback.

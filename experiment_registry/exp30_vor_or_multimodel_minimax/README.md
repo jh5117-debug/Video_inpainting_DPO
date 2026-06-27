@@ -14,3 +14,11 @@ Current gate sequence:
    train/heldout data.
 
 EffectErase remains an OR strong baseline / diagnostic, not an adapter target.
+
+## 2026-06-27 Continuation V3
+
+Current gate remains `MULTIMODEL_OR_SMOKE16_V2_BLOCKED`. Continuation v3 starts
+with failure analysis and controlled-corruption calibration planning before any
+new candidate generation. Direct Gate64, MiniMax adapter gates, long training,
+and universal-adapter claims remain forbidden until the preregistered smoke
+gates pass.

@@ -113,3 +113,21 @@ source_pool_v2:
   archive_scanned: false
   videos_extracted: false
   next_gate: MULTIMODEL_OR_SMOKE16_V2_PASS
+continuation_v3_readback:
+  result: EXP30_CONTINUATION_V3_READBACK_COMPLETED
+  start_head: bd8777274dfe898dc9278cadcc1dd971536a5e2c
+  smoke16_v2_status: MULTIMODEL_OR_SMOKE16_V2_BLOCKED
+  controlled_corruption_usable: 5
+  controlled_corruption_required: 6
+  minimax_usable: 4
+  materialized_manifest_sha256: 72be9884335fef61926c307c66878fdc05dec85e9be4da28ab1547db98f8c26d
+  protected_pai_lanes:
+    left_cli_reserved_gpus:
+      - GPU1
+      - GPU2
+      - GPU3
+      - GPU4
+    exp31_gpu: GPU1
+    exp33_gpu: GPU3
+  launched_gpu_task: false
+  launched_training: false

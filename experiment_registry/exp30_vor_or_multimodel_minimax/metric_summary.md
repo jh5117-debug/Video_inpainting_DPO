@@ -93,3 +93,12 @@ unknown.
 - Gate failure: controlled-corruption usable fallback is below the required
   6/16 threshold.
 - Gate64 unlocked: no.
+
+## 2026-06-27 Continuation V3 Readback
+
+No new model metrics were produced. The readback confirmed the smoke16 v2
+metric state: 32/32 non-EffectErase candidates were technical-valid, 9/32 were
+usable, controlled corruption was 5/16 usable against a required 6/16, and
+MiniMax was 4/16 usable. The next metric-producing task is smoke16 v3 only
+after failure analysis, calibration planning, generator stack audit, and
+preregistration.
