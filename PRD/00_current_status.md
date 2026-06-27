@@ -2859,3 +2859,15 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   `ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45`.
 - No extraction, model output, Gate64, MiniMax adapter gate, DiffuEraser micro,
   RC-FPO, or training launched from this manifest yet.
+
+## 2026-06-27 Exp30 Smoke32 V3 Materialization
+
+- Status: `EXP30_SMOKE32_V3_MATERIALIZED`
+- Selective extraction completed from existing VOR split archives:
+  `VOR-Train` 32/32 target members and `VOR-Train-MASK` 16/16 target members.
+- Materialized 16/16 locked Smoke32 rows at 17 frames and 512 x 512.
+- Failed rows: 0.
+- Materialized manifest SHA256:
+  `320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9`.
+- This only unlocks Smoke32 candidate generation. Smoke32 pass, Gate64, adapter
+  gates, RC-FPO, and training remain stopped.

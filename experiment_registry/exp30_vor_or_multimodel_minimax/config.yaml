@@ -241,3 +241,28 @@ smoke32_v3_preregistration:
   generated_model_outputs: false
   gate64_unlocked: false
   launched_training: false
+smoke32_v3_materialization:
+  result: EXP30_SMOKE32_V3_MATERIALIZED
+  extraction:
+    archive_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/downloads/fa09dc61128ca0418a4a13364d97a08018ea9cc7
+    output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke32_v3_20260627/extracted_exact
+    target_member_count: 48
+    vor_train_written: 32
+    vor_train_mask_written: 16
+    missing_members: 0
+    unsafe_members: 0
+  materialization:
+    rows: 16
+    failed_rows: 0
+    frames: 17
+    width: 512
+    height: 512
+    source_type_counts:
+      BLENDER: 8
+      REAL: 8
+    manifest: exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke32_v3_materialized_ref.jsonl
+    manifest_sha256: 320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9
+  generated_model_outputs: false
+  smoke32_pass: false
+  gate64_unlocked: false
+  launched_training: false

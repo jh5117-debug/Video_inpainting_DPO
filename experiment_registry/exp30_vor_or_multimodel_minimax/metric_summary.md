@@ -156,3 +156,20 @@ No model metrics were produced. The milestone only locked 16 new confirmation
 source groups, disjoint from Smoke16, with BLENDER/REAL 8/8 balance and
 manifest SHA256
 `ee8e056b05b9dcdd6d9d4a842637d32711eac4e397fbac0fdf728a33d65ddf45`.
+
+## 2026-06-27 Smoke32 V3 Materialization
+
+No OR candidate metrics were produced. The source materialization gate passed:
+
+- Selective extraction target members: 48/48.
+- Extraction missing members: 0.
+- Extraction unsafe members: 0.
+- Materialized rows: 16/16.
+- Failed rows: 0.
+- Frames: 17.
+- Resolution: 512 x 512.
+- Source type balance: BLENDER 8; REAL 8.
+- Materialized manifest SHA256:
+  `320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9`.
+
+Smoke32 candidate metrics remain pending.

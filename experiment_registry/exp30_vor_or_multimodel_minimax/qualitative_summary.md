@@ -137,3 +137,13 @@ small for pool readiness. Smoke16 v3 still needs to run and pass.
 No videos were generated or reviewed. The preregistration only locks the
 confirmation sources for the next Smoke32 validation run. It therefore carries
 no qualitative pass, no data-ready claim, and no Gate64 unlock by itself.
+
+## 2026-06-27 Smoke32 V3 Materialization
+
+Source evidence was generated for all 16 Smoke32 confirmation rows:
+condition, winner, mask overlay, side-by-side mp4s, and 16-frame temporal
+strips under the PAI Smoke32 materialization output root. This confirms the
+locked sources can be decoded and prepared for candidate generation.
+
+No OR candidate videos were generated in this milestone, so there is still no
+Smoke32 qualitative pass, no pool-ready claim, and no Gate64 unlock.

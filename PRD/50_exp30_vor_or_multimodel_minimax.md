@@ -613,3 +613,31 @@ Reports:
 - `reports/exp30_smoke32_v3_preregistration.md`
 - `reports/exp30_smoke32_v3_preregistration.csv`
 - `reports/exp30_smoke32_v3_preregistration.json`
+
+## 2026-06-27 Smoke32 V3 Selective Extraction and Materialization
+
+- Status: `EXP30_SMOKE32_V3_MATERIALIZED`.
+- Used the preregistered Smoke32 v3 manifest without row replacement.
+- Selective extraction streamed the existing VOR split archives once and wrote
+  only the 48 locked target members:
+  - `VOR-Train`: 32/32 condition/winner members.
+  - `VOR-Train-MASK`: 16/16 mask members.
+  - missing members: 0.
+  - unsafe members: 0.
+- Materialization decoded 16/16 rows at 17 frames and 512 x 512.
+- Failed rows: 0.
+- Source balance: BLENDER / REAL = 8 / 8.
+- Materialized manifest SHA256:
+  `320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9`.
+- This unlocks Smoke32 v3 candidate generation only.
+- Smoke32 pass, Gate64, MiniMax adapter gate, DiffuEraser micro, RC-FPO, and
+  all training remain stopped.
+- Left CLI, Exp31, and Exp33 remained untouched.
+
+Reports:
+
+- `reports/exp30_smoke32_v3_selective_extraction.csv`
+- `reports/exp30_smoke32_v3_selective_extraction_state.json`
+- `reports/exp30_smoke32_v3_materialization.md`
+- `reports/exp30_smoke32_v3_materialization.csv`
+- `reports/exp30_smoke32_v3_materialization.json`

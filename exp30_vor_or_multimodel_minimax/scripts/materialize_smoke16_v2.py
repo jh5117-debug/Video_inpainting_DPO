@@ -29,6 +29,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--frames", type=int, default=17)
     parser.add_argument("--width", type=int, default=512)
     parser.add_argument("--height", type=int, default=512)
+    parser.add_argument("--label", default="Smoke16 V2")
+    parser.add_argument("--success-status", default="EXP30_SMOKE16_V2_MATERIALIZED")
+    parser.add_argument("--partial-status", default="EXP30_SMOKE16_V2_MATERIALIZATION_PARTIAL")
     return parser.parse_args()
 
 
@@ -242,7 +245,8 @@ def main() -> int:
         writer.writeheader()
         writer.writerows(csv_rows)
     summary = {
-        "status": "EXP30_SMOKE16_V2_MATERIALIZED" if len(out_rows) == len(rows) else "EXP30_SMOKE16_V2_MATERIALIZATION_PARTIAL",
+        "status": args.success_status if len(out_rows) == len(rows) else args.partial_status,
+        "label": args.label,
         "requested_rows": len(rows),
         "materialized_rows": len(out_rows),
         "failed_rows": len(failures),
@@ -256,7 +260,7 @@ def main() -> int:
     }
     args.summary_json.write_text(json.dumps(summary, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     args.summary_md.write_text(
-        "# Exp30 Smoke16 V2 Materialization\n\n"
+        f"# Exp30 {args.label} Materialization\n\n"
         f"Status: `{summary['status']}`\n\n"
         f"- Requested rows: {summary['requested_rows']}\n"
         f"- Materialized rows: {summary['materialized_rows']}\n"

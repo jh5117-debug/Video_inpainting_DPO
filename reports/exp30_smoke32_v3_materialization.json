@@ -1,0 +1,17 @@
+{
+  "failed_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke32_v3_20260627/materialized_17f_512/smoke32_v3_materialized.failed.jsonl",
+  "failed_rows": 0,
+  "frames": 17,
+  "height": 512,
+  "label": "Smoke32 V3",
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp30_vor_or_multimodel_minimax/smoke32_v3_20260627/materialized_17f_512/smoke32_v3_materialized.jsonl",
+  "manifest_sha256": "320bb89ba16fb61a005e533ab319a2f4fb9ee6362cb8c269d4f2f0223a3e2ce9",
+  "materialized_rows": 16,
+  "requested_rows": 16,
+  "source_type_counts": {
+    "BLENDER": 8,
+    "REAL": 8
+  },
+  "status": "EXP30_SMOKE32_V3_MATERIALIZED",
+  "width": 512
+}
