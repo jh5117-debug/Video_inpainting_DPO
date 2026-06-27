@@ -1,5 +1,5 @@
 experiment: exp31_videopainter_2000step_longrun
-status: EXP31_READBACK_COMPLETED
+status: VIDEOPAINTER_2000_FRESH_FROM_STEP0
 planned_gpu: 1
 reserved_gpus:
   - 0
@@ -17,11 +17,11 @@ checkpoint_steps:
   - 1500
   - 2000
 primary_endpoint: shadow_dev_step2000_minus_step0
-resume_policy: pending_audit
+resume_policy: fresh_from_step0
+resume_policy_reason: step50_has_optimizer_but_no_scheduler_or_rng_state
 forbidden_changes:
   - exp26_outputs
   - exp30_outputs
   - inference_metrics_py
   - shared_trainer
   - minimax_adapter
-

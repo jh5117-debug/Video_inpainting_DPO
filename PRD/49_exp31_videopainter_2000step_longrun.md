@@ -79,5 +79,12 @@ The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `EXP31_READBACK_COMPLETED`.
+Current status: `VIDEOPAINTER_2000_FRESH_FROM_STEP0`.
 
+Resume-policy decision:
+
+- Step50 optimizer state exists.
+- Step50 scheduler state is absent.
+- Step50 RNG state is absent.
+- The 2000-step run must start fresh from Step0 and must not be described as a
+  continuation from Step50.

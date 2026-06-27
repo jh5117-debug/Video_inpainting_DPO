@@ -1,0 +1,29 @@
+{
+  "status": "VIDEOPAINTER_2000_FRESH_FROM_STEP0",
+  "audit_time": "2026-06-27T13:20:00+08:00",
+  "source_run": "vp_primary32_50step_20260625_171032",
+  "source_checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50",
+  "trainer_state_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032/checkpoint-50/trainer_state.pt",
+  "trainer_state_exists": true,
+  "trainer_state_keys": [
+    "optimizer",
+    "step"
+  ],
+  "step": 50,
+  "optimizer_state_present": true,
+  "optimizer_state_len": 60,
+  "optimizer_param_groups_len": 1,
+  "scheduler_state_present": false,
+  "rng_state_present": false,
+  "run_config_present": true,
+  "run_config_max_train_steps": 50,
+  "run_config_lr_scheduler": "constant",
+  "run_config_seed": 20260625,
+  "full_resume_state_present": false,
+  "decision": "fresh total-2000 from Step0",
+  "reason": "Step50 contains optimizer state but no scheduler state and no RNG state; the prompt requires full optimizer/scheduler state for continuation.",
+  "next_policy_checkpoint": "official VideoPainter branch checkpoint",
+  "next_reference_checkpoint": "official VideoPainter branch checkpoint",
+  "forbidden_decision": "do not label as continued from Step50"
+}
+

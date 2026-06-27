@@ -1,3 +1,14 @@
+## 2026-06-27 Exp31 Resume Policy Audit
+
+Status: `VIDEOPAINTER_2000_FRESH_FROM_STEP0`
+
+The Exp26 Step50 checkpoint has branch weights and optimizer state, but no
+scheduler state and no RNG state. Because the prompt requires full
+optimizer/scheduler state for a true Step50 continuation, Exp31 must start a
+fresh total-2000 run from Step0 using the same locked protocol.
+
+No Exp26 or Exp30 files were modified.
+
 ## 2026-06-27 Exp31 VideoPainter 2000-Step Readback
 
 Status: `EXP31_READBACK_COMPLETED`

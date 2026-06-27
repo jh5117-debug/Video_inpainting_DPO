@@ -1,3 +1,3 @@
 run_id	status	split	comparison	whole_psnr_delta	strict_mask_psnr_delta	boundary_psnr_delta	lpips_delta	ewarp_delta	visual_better	visual_tie	visual_worse_or_artifact	report
 exp31_readback_20260627	EXP31_READBACK_COMPLETED	readback	none									reports/exp31_videopainter_2000_readback.md
-
+exp31_resume_policy_20260627	VIDEOPAINTER_2000_FRESH_FROM_STEP0	readback	resume_policy									reports/exp31_vp_resume_policy_audit.md
