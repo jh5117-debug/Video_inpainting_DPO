@@ -1,3 +1,14 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Audit Scaffold
+
+Status: `EXP33_VOREVAL_OFFICIAL81_AUDIT_READY`
+
+Exp33 now has an isolated VOR-Eval compatibility audit script for EffectErase
+official 81-frame baseline inference. It permits VOR-Eval only as held-out
+baseline input and stamps all generated rows `eligible_for_training=false`.
+
+Validation passed: `git diff --check`, `py_compile`, 5 unit tests, and
+`bash -n`. No inference or training has been launched by this scaffold.
+
 ## 2026-06-27 Exp33 EffectErase VOR-Eval Baseline Readback
 
 Status: `EXP33_READBACK_COMPLETED_VOREVAL_PENDING`

@@ -83,7 +83,16 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_READBACK_COMPLETED_VOREVAL_PENDING`
+Current status: `EXP33_VOREVAL_OFFICIAL81_AUDIT_READY`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
+Audit scaffold:
+
+- script:
+  `exp33_effecterase_vor_eval_baseline/scripts/audit_vor_eval_official81.py`
+- generated rows are held-out baseline only;
+- `vor_eval=true` is allowed for Exp33 baseline evaluation;
+- `eligible_for_training=false` is mandatory;
+- no inference, adapter training, loser mining, or checkpoint selection is
+  launched by the audit.
