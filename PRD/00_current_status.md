@@ -7,6 +7,10 @@ The isolated Exp31 VideoPainter trainer now accepts an explicit
 is required for the planned Step0/1/10/50/100/200/500/1000/1500/2000 audit
 ladder and avoids creating 2000 per-step checkpoints.
 
+Each trainer checkpoint also records optimizer state, explicit `lr_scheduler`
+state (`None` for the locked constant-lr trainer), and Python/NumPy/Torch/CUDA
+RNG state.
+
 Validation passed: `git diff --check`, `py_compile`, 28 unit tests, and
 `bash -n`.
 

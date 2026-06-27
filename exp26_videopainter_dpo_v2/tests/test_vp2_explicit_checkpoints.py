@@ -51,6 +51,15 @@ class TestVP2ExplicitCheckpoints(unittest.TestCase):
             self.assertNotIn("checkpoint-2", names)
             self.assertIn("checkpoint-3", names)
 
+            state = torch.load(Path(td) / "checkpoint-3" / "trainer_state.pt", weights_only=False)
+            self.assertEqual(state["step"], 3)
+            self.assertIn("optimizer", state)
+            self.assertIn("rng_state", state)
+            self.assertIn("torch_random", state["rng_state"])
+            self.assertIn("python_random", state["rng_state"])
+            self.assertIn("numpy_random", state["rng_state"])
+            self.assertIn("lr_scheduler", state)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -10,6 +10,9 @@ This preserves the requested audit checkpoints without saving every step.
 Explicit steps are protected from retention pruning. Periodic checkpoints can be
 disabled with `--checkpointing_steps 0` when an explicit list is supplied.
 
+`trainer_state.pt` now contains optimizer state, an explicit `lr_scheduler`
+field, and Python/NumPy/Torch/CUDA RNG state.
+
 Validation:
 
 - `git diff --check`: passed

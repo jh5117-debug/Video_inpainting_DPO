@@ -800,7 +800,15 @@ class VideoPainterDPOTrainer:
         ckpt = output_dir / f"checkpoint-{step}"
         ckpt.mkdir(parents=True, exist_ok=True)
         self.policy_branch.save_pretrained(ckpt / "branch", safe_serialization=True, max_shard_size="5GB")
-        torch.save({"step": step, "optimizer": optimizer.state_dict()}, ckpt / "trainer_state.pt")
+        torch.save(
+            {
+                "step": step,
+                "optimizer": optimizer.state_dict(),
+                "lr_scheduler": None,
+                "rng_state": capture_rng_state(),
+            },
+            ckpt / "trainer_state.pt",
+        )
 
         protected = set(protected_steps or [])
         checkpoints = sorted(
@@ -860,6 +868,15 @@ def grad_norm(parameters: Iterable[torch.nn.Parameter]) -> float:
             continue
         total += float(p.grad.detach().data.norm(2).cpu()) ** 2
     return math.sqrt(total)
+
+
+def capture_rng_state() -> Dict[str, object]:
+    return {
+        "python_random": random.getstate(),
+        "numpy_random": np.random.get_state(),
+        "torch_random": torch.get_rng_state(),
+        "cuda_random_all": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
+    }
 
 
 def parse_checkpoint_steps(raw: str, max_train_steps: int) -> Set[int]:

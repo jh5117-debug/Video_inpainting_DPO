@@ -13,6 +13,7 @@ Current status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`
 - L0/L1: passed on GPU1 in run `exp31_vp_l0_l1_20260627_132158`.
 - checkpoint ladder: ready, with explicit protected checkpoints
   `0,1,10,50,100,200,500,1000,1500,2000`.
+- trainer state: optimizer, explicit `lr_scheduler`, and RNG state are saved.
 - training: not started.
 - next milestone: fresh-from-Step0 2000-step training.
 

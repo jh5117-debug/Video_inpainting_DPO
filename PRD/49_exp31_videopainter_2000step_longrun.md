@@ -107,6 +107,8 @@ Checkpoint ladder readiness:
 - planned explicit checkpoints:
   `0,1,10,50,100,200,500,1000,1500,2000`
 - retention behavior: explicit checkpoint steps are protected from pruning.
+- trainer state: optimizer, explicit `lr_scheduler`, and Python/NumPy/Torch/CUDA
+  RNG state are saved in `trainer_state.pt`.
 - periodic checkpointing may be disabled with `--checkpointing_steps 0` when an
   explicit list is provided.
 - validation: `git diff --check`, `py_compile`, 28 unit tests, and `bash -n`.
