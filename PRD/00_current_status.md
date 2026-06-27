@@ -1,3 +1,25 @@
+## 2026-06-27 Exp33 VOR-Eval Official81 Runner Scaffold
+
+Status: `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`
+
+Exp33 now has a dedicated runner for held-out VOR-Eval official81 EffectErase
+baseline inference:
+
+`exp33_effecterase_vor_eval_baseline/scripts/run_effecterase_vor_eval_official81.py`
+
+The runner is deliberately narrower than the Exp29 diagnostic runner:
+
+- requires `vor_eval=true`;
+- requires `eligible_for_training=false`;
+- requires `source_role=held_out_vor_eval_baseline`;
+- requires `scientific_role=held_out_baseline_only_not_training`;
+- requires raw EffectErase output as the primary artifact;
+- rejects output paths outside the Exp33 output root;
+- does not allow adapter training, loser mining, DPO, or checkpoint selection.
+
+Validation passed: `py_compile` and 5 unit tests. Command validation and
+EffectErase inference have not yet been launched by this scaffold commit.
+
 ## 2026-06-27 Exp33 VOR-Eval Official81 Input Materialization
 
 Status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`

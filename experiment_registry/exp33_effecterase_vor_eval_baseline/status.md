@@ -1,6 +1,6 @@
 # Exp33 EffectErase VOR-Eval Baseline Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`
 
 - branch: `research/exp33-effecterase-vor-eval-baseline-20260627`
 - base: `origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626`
@@ -15,6 +15,9 @@ Current status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
 - materialization: 43/43 rows ready, 129 condition/winner/mask MP4 files
   written in the Exp33 NAS run root.
 - materialized preview sanity review: 3 stratified rows passed.
+- runner: `exp33_effecterase_vor_eval_baseline/scripts/run_effecterase_vor_eval_official81.py`
+- runner policy: held-out VOR-Eval baseline only, no adapter/training.
+- command validation: pending.
 - inference: not started.
 
 Current final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`

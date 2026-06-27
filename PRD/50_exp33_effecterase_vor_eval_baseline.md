@@ -83,7 +83,7 @@ GPU3 by plan and must avoid GPU0 and GPU5.
 
 ## Status
 
-Current status: `EXP33_VOREVAL_OFFICIAL81_INPUTS_READY`
+Current status: `EXP33_VOREVAL_OFFICIAL81_RUNNER_READY`
 
 Final-status family: `EFFECTERASE_BASELINE_ONLY_FOR_NOW`
 
@@ -136,3 +136,19 @@ Input materialization:
 - materialized input size: `152M`
 - materialized preview sanity review: 3 stratified rows passed
 - inference: not started
+
+Runner scaffold:
+
+- script:
+  `exp33_effecterase_vor_eval_baseline/scripts/run_effecterase_vor_eval_official81.py`
+- requires `vor_eval=true`;
+- requires `eligible_for_training=false`;
+- requires `source_role=held_out_vor_eval_baseline`;
+- requires `scientific_role=held_out_baseline_only_not_training`;
+- rejects output paths outside the Exp33 output root;
+- writes command validation and inference status reports under Exp33 reports;
+- no adapter training, loser mining, DPO, or checkpoint selection is allowed by
+  the runner.
+
+Next step: run command validation on PAI against the EffectErase venv/assets,
+then launch held-out baseline inference only if the command gate is ready.

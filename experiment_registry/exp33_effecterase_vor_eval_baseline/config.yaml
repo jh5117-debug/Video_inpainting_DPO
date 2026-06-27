@@ -1,5 +1,5 @@
 experiment: exp33_effecterase_vor_eval_baseline
-status: EXP33_VOREVAL_OFFICIAL81_INPUTS_READY
+status: EXP33_VOREVAL_OFFICIAL81_RUNNER_READY
 planned_gpu: 3
 reserved_gpus:
   - 0
@@ -28,3 +28,7 @@ materialization_status: EXP33_VOREVAL_OFFICIAL81_INPUTS_READY
 materialized_rows: 43
 materialized_video_files: 129
 materialized_input_size: 152M
+runner_script: exp33_effecterase_vor_eval_baseline/scripts/run_effecterase_vor_eval_official81.py
+runner_policy: held_out_vor_eval_baseline_only
+command_validation_started: false
+effecterase_inference_started: false
