@@ -467,3 +467,20 @@ Reports:
 - `reports/exp30_diffueraser_propainter_candidate_audit.md`
 - `reports/exp30_diffueraser_propainter_candidate_audit.csv`
 - `reports/exp30_diffueraser_propainter_candidate_audit.json`
+
+## 2026-06-27 Verified Generator Wrapper Port
+
+- Status: `EXP30_VERIFIED_GENERATOR_WRAPPERS_PORTED_SMOKE2_PENDING`.
+- Added Exp30-isolated DiffuEraser no-PCM overlay wrapper:
+  `exp30_vor_or_multimodel_minimax/scripts/infer_diffueraser_or_exp30.py`.
+- Added Exp30 verified-generator smoke runner:
+  `exp30_vor_or_multimodel_minimax/scripts/run_verified_or_generator_smoke.py`.
+- The wrapper preserves explicit PCM identity and no-PCM raw/no-comp generation;
+  it does not silently fallback to PCM or hard comp.
+- No GPU smoke, Smoke16 v3, Smoke32, Gate64, adapter gate, or training was
+  launched. The next gate remains two-sample generator smoke after PAI runtime
+  sync.
+
+Report:
+
+- `reports/exp30_verified_generator_wrapper_port.md`

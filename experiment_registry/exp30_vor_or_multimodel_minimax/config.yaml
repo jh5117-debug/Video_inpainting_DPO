@@ -193,3 +193,13 @@ diffueraser_propainter_candidate_audit:
     exp30_worktree_status: missing_at_audit_time
   launched_gpu_smoke: false
   launched_training: false
+verified_generator_wrapper_port:
+  result: EXP30_VERIFIED_GENERATOR_WRAPPERS_PORTED_SMOKE2_PENDING
+  diffueraser_wrapper: exp30_vor_or_multimodel_minimax/scripts/infer_diffueraser_or_exp30.py
+  smoke_runner: exp30_vor_or_multimodel_minimax/scripts/run_verified_or_generator_smoke.py
+  no_pcm_env:
+    steps: EXP30_NO_PCM_STEPS
+    guidance: EXP30_NO_PCM_GUIDANCE
+  default_num_frames: 17
+  launched_gpu_smoke: false
+  launched_training: false

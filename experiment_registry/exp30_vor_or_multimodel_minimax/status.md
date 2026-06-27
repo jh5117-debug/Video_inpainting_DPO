@@ -280,3 +280,17 @@ Reports:
 - `reports/exp30_diffueraser_propainter_candidate_audit.md`
 - `reports/exp30_diffueraser_propainter_candidate_audit.csv`
 - `reports/exp30_diffueraser_propainter_candidate_audit.json`
+
+## 2026-06-27 Verified Generator Wrapper Port
+
+- Status: `EXP30_VERIFIED_GENERATOR_WRAPPERS_PORTED_SMOKE2_PENDING`.
+- Added:
+  `exp30_vor_or_multimodel_minimax/scripts/infer_diffueraser_or_exp30.py`
+  and
+  `exp30_vor_or_multimodel_minimax/scripts/run_verified_or_generator_smoke.py`.
+- No GPU smoke or model output was launched.
+- Next gate: PAI runtime sync and two-sample DiffuEraser/ProPainter smoke.
+
+Report:
+
+- `reports/exp30_verified_generator_wrapper_port.md`

@@ -2800,3 +2800,11 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   corrupt `/mnt/nas/hj/weights/propainter` path must not be used.
 - Smoke16 v3, Smoke32, Gate64, MiniMax adapter gate, and all training remain
   stopped until generator smoke2 passes in the Exp30 runtime.
+
+## 2026-06-27 Exp30 Verified Generator Wrapper Port
+
+- Status: `EXP30_VERIFIED_GENERATOR_WRAPPERS_PORTED_SMOKE2_PENDING`
+- Added Exp30-local DiffuEraser explicit no-PCM overlay wrapper and
+  verified-generator smoke runner.
+- No model output was generated. Smoke16 v3/Gate64/training remain blocked
+  until DiffuEraser and ProPainter smoke2 runs and passes with video review.
