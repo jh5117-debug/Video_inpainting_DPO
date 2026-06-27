@@ -2692,3 +2692,17 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
   `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`
 - No video extraction, GPU inference, Gate64, MiniMax adapter training, or
   scientific claim is unlocked yet.
+
+## 2026-06-27 Exp30 Smoke16 V2 Pre-Inference Repair
+
+- Status: `EXP30_SMOKE16_V2_MANIFEST_REPAIRED_PRE_INFERENCE`
+- First materialization exposed three technical-invalid preregistered rows:
+  one short decoded video and two empty-mask rows.
+- Replaced before any model output review using deterministic same-source-type,
+  scene-disjoint rows from source-pool v2.
+- Final smoke16 rows: 16; scene groups: 16; BLENDER/REAL = 8/8.
+- Final manifest SHA256:
+  `7e8cfd1b672b17b131476c9dd82804841d22d7450adf26301cf9ae8ff83f7f76`
+- This remains pre-smoke. No Gate64, adapter training, or scientific claim is
+  unlocked until final materialization, model candidate generation, metrics, and
+  visual review pass.

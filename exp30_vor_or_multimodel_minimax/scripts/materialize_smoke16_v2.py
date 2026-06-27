@@ -171,6 +171,8 @@ def main() -> int:
                 write_rgb(winner_dir / f"{i:05d}.png", w)
                 write_mask(mask_dir / f"{i:05d}.png", m)
             mask_area = [float((m > 20).mean()) for m in masks]
+            if max(mask_area) <= 0.0:
+                raise RuntimeError(f"{sample_id} has empty mask across {args.frames} decoded frames")
             affected = [float(np.mean(np.abs(c.astype(np.float32) - w.astype(np.float32))[m > 20])) if (m > 20).any() else 0.0 for c, w, m in zip(condition, winner, masks)]
             evidence_dir = args.output_root / "source_evidence" / sample_id
             write_mp4(evidence_dir / "condition.mp4", condition)

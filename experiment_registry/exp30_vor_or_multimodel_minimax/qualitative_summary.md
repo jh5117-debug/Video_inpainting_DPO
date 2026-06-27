@@ -52,3 +52,11 @@ claims.
 No video review has occurred for smoke16 v2 yet. The row lock is metadata-only
 and preserves the rule that `MULTIMODEL_OR_SMOKE16_V2_PASS` requires generated
 videos, metrics, per-sample review sheets, and visual inspection.
+
+## 2026-06-27 Smoke16 V2 Pre-Inference Repair
+
+No model candidate videos have been generated or reviewed yet. The repair only
+removes technical-invalid source rows discovered during materialization: one
+short decoded row and two empty-mask rows. The final manifest remains balanced
+at BLENDER/REAL 8/8, but qualitative smoke status is still pending candidate
+generation, per-video review sheets, and Codex visual inspection.

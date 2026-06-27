@@ -57,3 +57,14 @@ unknown.
 - Source type balance: BLENDER 8; REAL 8.
 - Manifest SHA256:
   `1871f8e1aa23579425a87661040f91a992e934492aaa98c196f924ff21990ca3`.
+
+## 2026-06-27 Smoke16 V2 Pre-Inference Repair
+
+- Metric status: not applicable yet; no model outputs or candidate metrics were
+  generated.
+- Technical source repair: 3 rows replaced before inference.
+- Final locked rows: 16.
+- Final scene groups: 16.
+- Final source type balance: BLENDER 8; REAL 8.
+- Final manifest SHA256:
+  `7e8cfd1b672b17b131476c9dd82804841d22d7450adf26301cf9ae8ff83f7f76`.

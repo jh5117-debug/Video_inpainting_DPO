@@ -1,6 +1,6 @@
 # Exp30 Status
 
-Current status: `VOR_OR_SOURCE_POOL_V2_READY`
+Current status: `EXP30_SMOKE16_V2_MANIFEST_REPAIRED_PRE_INFERENCE`
 
 Exp30 starts from Exp29 and is scoped to:
 
@@ -157,3 +157,20 @@ Reports/manifests:
 - Model outputs generated: no.
 - GPU used: no.
 - Next gate: `MULTIMODEL_OR_SMOKE16_V2_PASS`.
+
+## 2026-06-27 Smoke16 V2 Pre-Inference Repair
+
+- Status: `EXP30_SMOKE16_V2_MANIFEST_REPAIRED_PRE_INFERENCE`.
+- Invalid rows: `BLENDER_CARTOON006_00001`,
+  `REAL_ENV044_00004_001_01`, `REAL_ENV046_00001_001_01`.
+- Replacement rows: `BLENDER_FOREST019_00001`,
+  `REAL_ENV046_00004_001_01`, `REAL_ENV046_00005_001_01`.
+- Replacement rule: same source type, scene-disjoint, deterministic source-pool
+  v2 replacement before any model output review.
+- Final rows: 16.
+- Final scene groups: 16.
+- Final source type counts: BLENDER 8; REAL 8.
+- Final manifest SHA256:
+  `7e8cfd1b672b17b131476c9dd82804841d22d7450adf26301cf9ae8ff83f7f76`.
+- Still not unlocked: smoke pass, Gate64, MiniMax adapter training,
+  DiffuEraser VOR-OR micro, data-ready, or scientific-positive claims.
