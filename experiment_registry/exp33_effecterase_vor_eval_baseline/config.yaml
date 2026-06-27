@@ -1,0 +1,17 @@
+experiment: exp33_effecterase_vor_eval_baseline
+status: EXP33_READBACK_COMPLETED_VOREVAL_PENDING
+planned_gpu: 3
+reserved_gpus:
+  - 0
+  - 5
+task: held_out_vor_eval_baseline
+training_allowed: false
+adapter_allowed: false
+official_num_frames: 81
+official_height: 480
+official_width: 832
+official_seed: 2025
+official_cfg: 1.0
+official_inference_steps: 50
+vor_eval_use: held_out_only
+

@@ -1,3 +1,15 @@
+## 2026-06-27 Exp33 EffectErase VOR-Eval Baseline
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp33 EffectErase VOR-Eval baseline | `EXP33_READBACK_COMPLETED_VOREVAL_PENDING`; no training or adapter work | `PRD/50_exp33_effecterase_vor_eval_baseline.md`, `reports/exp33_effecterase_vor_eval_readback.md`, `experiment_registry/exp33_effecterase_vor_eval_baseline/` |
+
+Notes:
+
+- Exp29 official 81F diagnostic smoke is baseline-ready context only.
+- Exp33 still needs a held-out VOR-Eval compatibility audit before inference.
+- EffectErase remains baseline-only for this lane.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 | User-facing name | Status | Evidence / registry |

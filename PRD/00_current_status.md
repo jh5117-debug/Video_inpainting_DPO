@@ -1,3 +1,23 @@
+## 2026-06-27 Exp33 EffectErase VOR-Eval Baseline Readback
+
+Status: `EXP33_READBACK_COMPLETED_VOREVAL_PENDING`
+
+An isolated Exp33 branch and worktree were created from
+`origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626` at
+`6bc6c67c60b5cf2fe8d937ffd1e1d88a4684991c`.
+
+Exp29 already verified official EffectErase 81-frame diagnostic inference on
+8 rows with `8/8` technical-valid outputs and baseline-ready visual review.
+That prior run is not VOR-Eval. Exp33 is scoped to audit and run held-out
+VOR-Eval baseline inference only.
+
+No training, adapter gate, zero-gap, one-step, DPO, or MiniMax work is allowed
+in Exp33. GPU0 and GPU5 remain conservatively reserved for right-side or
+stale-lock protection.
+
+Next required milestone: VOR-Eval 81-frame compatibility audit and
+preregistration.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 Exp26 VideoPainter v2 Gate16 has now passed the pre-registered Gate16 quality

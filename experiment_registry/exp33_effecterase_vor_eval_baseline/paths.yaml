@@ -1,0 +1,9 @@
+branch: research/exp33-effecterase-vor-eval-baseline-20260627
+base_branch: origin/research/exp29-minimax-effecterase-adapter-feasibility-20260626
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp33_effecterase_eval
+pai_runtime_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp33_effecterase_eval
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp33_effecterase_vor_eval_baseline
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp33_effecterase_vor_eval_baseline
+monitor_log: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/idle_gpu_parallel_20260627/monitor_5min.csv
+prior_official81_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp29_or_adapter_feasibility/effecterase_inference_smoke_official81_20260626
+
