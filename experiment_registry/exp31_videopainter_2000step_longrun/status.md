@@ -1,6 +1,6 @@
 # Exp31 VideoPainter 2000-Step Long-Run Status
 
-Current status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`
+Current status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
 
 - branch: `research/exp31-videopainter-2000step-longrun-20260627`
 - base: `origin/research/exp26-videopainter-dpo-v2`
@@ -14,7 +14,13 @@ Current status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`
 - checkpoint ladder: ready, with explicit protected checkpoints
   `0,1,10,50,100,200,500,1000,1500,2000`.
 - trainer state: optimizer, explicit `lr_scheduler`, and RNG state are saved.
-- training: not started.
-- next milestone: fresh-from-Step0 2000-step training.
+- training: completed in run `exp31_vp2000_fresh_step0_20260627_133831`.
+- final training step: `2000`.
+- evaluation: running in
+  `exp31_vp2000_eval_step0_50_2000_20260628_032700`.
+- evaluation GPU: GPU1.
+- evaluation checkpoints: `step0`, `step50`, `step2000`.
+- evaluation splits: fixed search-dev and fixed shadow-dev.
+- next milestone: complete Step0/50/2000 metrics and visual review.
 
 No Exp26 or Exp30 files were modified.

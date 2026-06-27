@@ -1,3 +1,29 @@
+## 2026-06-28 Exp31 Step0/50/2000 Evaluation Launch
+
+Status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
+
+Exp31 VideoPainter fresh-from-Step0 2000-step training completed on PAI before
+this evaluation milestone. The left CLI launched an evaluation-only controller
+on GPU1 for the fixed search-dev and shadow-dev manifests:
+
+- run id: `exp31_vp2000_eval_step0_50_2000_20260628_032700`
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700`
+- controller PID/PGID at launch check: `1945068/1945066`
+- active child at launch check: `run_vp2_gate64_official_generation.py`
+  on GPU1
+- current task at launch check: `search step0`
+- checkpoints evaluated: `step0`, `step50`, `step2000`
+- splits evaluated: `search`, `shadow`
+- training launched by this milestone: `false`
+- MiniMax / Exp36 touched: `false`
+- GPU0 touched: `false`
+
+The controller first wrote a checkpoint audit for the explicit ladder
+`0,1,10,50,100,200,500,1000,1500,2000`, then started formal 49F generation and
+visual review. Scientific status remains pending until all six evaluations
+complete and the review sheets are inspected.
+
 ## 2026-06-27 Exp31 Checkpoint Ladder Support
 
 Status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`

@@ -73,13 +73,14 @@ right-side or stale-lock protection unless the user explicitly releases them.
 2. `VIDEOPAINTER_2000_RESUME_POLICY_AUDITED`
 3. `VIDEOPAINTER_2000_L0_L1_PASSED`
 4. `VIDEOPAINTER_2000_TRAINING_COMPLETED`
-5. `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
+5. `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
+6. `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
 
 The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `VIDEOPAINTER_2000_CHECKPOINT_LADDER_READY`.
+Current status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`.
 
 Resume-policy decision:
 
@@ -112,3 +113,27 @@ Checkpoint ladder readiness:
 - periodic checkpointing may be disabled with `--checkpointing_steps 0` when an
   explicit list is provided.
 - validation: `git diff --check`, `py_compile`, 28 unit tests, and `bash -n`.
+
+Training completion readback:
+
+- run id: `exp31_vp2000_fresh_step0_20260627_133831`
+- status: completed / `rc=0`
+- final step: `2000`
+- checkpoint ladder present:
+  `0,1,10,50,100,200,500,1000,1500,2000`
+- dpo diagnostics rows: `2000`
+
+Evaluation launch:
+
+- eval run id: `exp31_vp2000_eval_step0_50_2000_20260628_032700`
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700`
+- GPU: `GPU1`
+- controller PID/PGID at launch check: `1945068/1945066`
+- checkpoints: `step0`, `step50`, `step2000`
+- splits: fixed `search-dev` and fixed `shadow-dev`
+- no new training is launched by this evaluation controller.
+- no MiniMax / Exp36 / GPU0 work is launched or modified.
+
+Scientific conclusion remains pending until all Step0/50/2000 search-dev and
+shadow-dev outputs, metrics, and visual review evidence finish.
