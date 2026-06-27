@@ -3062,3 +3062,25 @@ There were `0` visual better rows and no collapse-level artifacts.
 
 Conclusion: no 10-step recipe pass, no 30-step unlock, no third-backbone
 quality-positive language. MiniMax remains trainable/plumbing-positive only.
+
+## 2026-06-27 Exp36 MiniMax Objective Rescue Readback
+
+Exp36 status: `EXP36_READBACK_COMPLETED`.
+
+Created isolated branch/worktree
+`research/exp36-minimax-objective-rescue-20260627` at
+`fb70266d53f5f9abd5e8d09ef9d2de324a10b7d6`, based on Exp35. This lane is for
+MiniMax root-cause analysis and objective rescue only. It reread Exp30/Exp35
+PRDs, registries, metrics, diagnostics, and visual-review reports before any
+new GPU work.
+
+Readback source-of-truth:
+
+- Exp30 MiniMax frozen/EMA 10-step did not improve heldout quality.
+- Exp35 R1/R2/R3 10-step rescue recipes also failed quality gates.
+- MiniMax inference does consume transformer weights.
+- Winner-SFT proves trainability but hurts heldout quality.
+- No 30-step, long training, RC-FPO, protected-lane action, or universal
+  adapter claim is allowed from the current evidence.
+
+Report: `reports/exp36_minimax_objective_rescue_readback.md`.

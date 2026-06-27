@@ -1,0 +1,13 @@
+experiment: exp36_minimax_objective_rescue
+base_experiment: exp35_minimax_flow_dpo_rescue
+model: MiniMax-Remover
+flow_target: epsilon_minus_z0
+max_unlocked_steps_without_pass: 10
+conditional_30step_requires: MINIMAX_OBJECTIVE_RESCUE_10STEP_PASS
+forbidden:
+  - universal_adapter_claim
+  - rc_fpo
+  - long_training
+  - gpu_reset
+  - protected_lane_signals
+

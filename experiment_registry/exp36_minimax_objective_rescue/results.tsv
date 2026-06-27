@@ -1,0 +1,3 @@
+milestone	status	notes
+readback	EXP36_READBACK_COMPLETED	Created Exp36 scaffold from Exp35 HEAD fb70266; reread Exp30/Exp35 reports and protected-lane state; no GPU task, training, 30-step, RC-FPO, or protected-lane action launched
+
