@@ -3084,3 +3084,17 @@ Readback source-of-truth:
   adapter claim is allowed from the current evidence.
 
 Report: `reports/exp36_minimax_objective_rescue_readback.md`.
+
+## 2026-06-27 Exp36 MiniMax No-Change Forensic Audit
+
+Exp36 forensic status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+
+No new training or inference was launched. Re-audited Exp30/Exp35 parameter
+deltas, output diffs, loss/utility scale, winner-SFT positive-control, and
+rescue recipe diagnostics. The failure is not best explained by checkpoint
+fallback or an ignored trainable scope: MiniMax Step10 outputs differed from
+Step0, and Exp35 already proved inference sensitivity to transformer weights.
+The dominant issue is that previous preference objectives either had
+near-constant utility/margins or produced harmful heldout movement.
+
+No 30-step or long MiniMax training is unlocked.

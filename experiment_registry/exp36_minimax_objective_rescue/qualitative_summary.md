@@ -9,3 +9,9 @@ Prior qualitative source-of-truth:
 - Collapse / black-purple artifact rows: `0`.
 - Failure mode: mostly tie or slight degradation, not catastrophic collapse.
 
+## 2026-06-27 No-Change Forensic Audit
+
+No new videos were generated. The audit preserves the previous visual
+source-of-truth: MiniMax movement is real but not quality-positive. Current
+failure is not black/purple collapse; it is tie/slight degradation and local
+metric harm.

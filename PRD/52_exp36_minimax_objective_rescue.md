@@ -63,3 +63,32 @@ Next eligible milestone:
 - No-change forensic audit using previous Exp30/Exp35 checkpoints and logs,
   with no new training.
 
+## 2026-06-27 No-Change Forensic Audit
+
+Status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+
+No new training or inference was launched. The audit reread Exp30/Exp35
+checkpoint, output-diff, loss-scale, SFT-control, hard-noise, and rescue
+recipe reports.
+
+Conclusion:
+
+- Checkpoint fallback is not supported: Step10 outputs are not byte-identical,
+  keys match, and Exp35 sensitivity showed inference consumes weights.
+- Trainable-scope failure is not supported by current evidence: Exp30/Exp35
+  used the full MiniMax transformer scope, and updates moved outputs.
+- Exp30 utility/margin was too weak, staying near `0.5` with tiny margins.
+- Exp35 hard-noise rescue made stronger movement but moved in a harmful
+  direction: all R1/R2/R3 heldout mask, boundary, and outside PSNR deltas were
+  negative and visual better rows stayed `0/48`.
+
+Reports:
+
+- `reports/exp36_minimax_nochange_forensic_audit.md`
+- `reports/exp36_minimax_nochange_param_delta.csv`
+- `reports/exp36_minimax_nochange_output_diff.csv`
+- `reports/exp36_minimax_nochange_loss_scale.csv`
+- `reports/exp36_minimax_nochange_summary.json`
+
+Next eligible milestone: Exp36 inference sensitivity test. No 30-step or long
+training is unlocked.

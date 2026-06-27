@@ -1,0 +1,6 @@
+source,recipe,rows,byte_identical_rows,mean_full_abs_diff,mean_mask_abs_diff,mean_affected_abs_diff,mean_outside_abs_diff,max_abs_diff,mean_review_frame_pixel_diff,visual_better,visual_tie_or_mixed,visual_worse,new_collapse,interpretation
+Exp30,frozen_ema_combined,32,0,0.13143352206508793,0.18672874342540607,0.1731182035360047,0.10850902535158265,28.0,,0,32,0,0,not byte-identical but visually tied
+Exp35,R1,16,,0.06560041784974446,-0.04861096201406878,,-0.30788538316796754,,3.355972468852997,0,11,5,0,nonzero movement but slight degradation
+Exp35,R2,16,,0.057080344866849875,-0.053909890988202536,,-0.32110202504586005,,3.3715626001358032,0,11,5,0,nonzero movement but slight degradation
+Exp35,R3,16,,0.0021258529143656224,-0.08145429555217598,,-0.4190378161719277,,3.54348715643088,0,10,6,0,nonzero movement but slight degradation
+

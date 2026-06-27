@@ -1,0 +1,33 @@
+{
+  "status": "MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK",
+  "training_launched": false,
+  "inference_launched": false,
+  "checkpoint_load_cause_supported": false,
+  "trainable_scope_cause_supported": false,
+  "lr_too_small_supported_for_exp30": true,
+  "utility_scale_too_weak_supported": true,
+  "timestep_too_easy_supported_for_exp30_only": true,
+  "output_insensitive_supported": "partial",
+  "exp30": {
+    "trainable_scope": "all_transformer_parameters",
+    "flow_target": "epsilon_minus_z0",
+    "bad_noise_used": false,
+    "frozen_delta_param_norm_ratio": 5.6404525516172905e-06,
+    "ema_delta_param_norm_ratio": 5.630459939756668e-06,
+    "utility_mean_frozen": 0.4999982982873917,
+    "utility_mean_ema": 0.5000003516674042,
+    "visual_better": 0,
+    "visual_total": 32
+  },
+  "exp35": {
+    "inference_sensitivity": "MINIMAX_INFERENCE_SENSITIVITY_PASS",
+    "trainable_scope": "MINIMAX_TRAINABLE_SCOPE_CURRENT_OK",
+    "winner_sft": "MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE",
+    "bad_noise": "MINIMAX_BAD_NOISE_STATES_READY",
+    "rescue_final": "MINIMAX_RESCUE_RECIPE_NOT_READY",
+    "rescue_visual_better": 0,
+    "rescue_visual_total": 48
+  },
+  "next_milestone": "MINIMAX_INFERENCE_SENSITIVITY_TEST_UNDER_EXP36"
+}
+

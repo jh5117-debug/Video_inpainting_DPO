@@ -1,0 +1,10 @@
+source,recipe,step_budget,trainable_scope,param_count,mean_abs_delta,max_abs_delta,delta_param_norm_ratio,zero_delta_tensors,reference_delta,interpretation
+Exp30,frozen,10,all_transformer_parameters,1127055424,1.5329060227168864e-08,8.106231689453125e-06,5.6404525516172905e-06,60,0.0,nonzero but too small for useful visual movement
+Exp30,ema,10,all_transformer_parameters,1127055424,1.5302821461092914e-08,8.106231689453125e-06,5.630459939756668e-06,60,8.351530297171276e-09,nonzero but too small for useful visual movement
+Exp35,R1_LoVI_Linear_Frozen_HardNoise,10,all_transformer_parameters,1127055424,,,9.816519515482014e-06,,0.0,nonzero movement but heldout quality negative
+Exp35,R2_LoVI_Linear_EMA_HardNoise,10,all_transformer_parameters,1127055424,,,9.681482419310328e-06,,1.4152197621523227e-07,nonzero movement but heldout quality negative
+Exp35,R3_WinnerAnchor_Linear_Hybrid,10,all_transformer_parameters,1127055424,,,9.7728e-06,,0.0,nonzero movement but heldout quality negative
+Exp35,SFT_LR_1e-5,10,all_transformer_parameters,1127055424,,,1.4444718289041703e-05,,0.0,larger supervised update but heldout quality negative
+Exp35,SFT_LR_3e-5,10,all_transformer_parameters,1127055424,,,4.1587465275938484e-05,,0.0,larger supervised update but heldout quality negative
+Exp35,SFT_LR_1e-4,10,all_transformer_parameters,1127055424,,,0.0002197052692736179,,0.0,large supervised update with artifacts
+

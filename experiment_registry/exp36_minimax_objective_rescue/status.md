@@ -19,3 +19,18 @@ Report:
 
 - `reports/exp36_minimax_objective_rescue_readback.md`
 
+## 2026-06-27 No-Change Forensic Audit
+
+- Status: `MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK`.
+- Training launched: false.
+- Inference launched: false.
+- Checkpoint fallback cause: not supported.
+- Trainable-scope cause: not supported by current evidence.
+- Dominant cause: Exp30 utility/margins were too weak; Exp35 hard-noise
+  rescue produced movement but not useful heldout repair.
+- Exp35 rescue visual better rows: `0/48`.
+
+Reports:
+
+- `reports/exp36_minimax_nochange_forensic_audit.md`
+- `reports/exp36_minimax_nochange_summary.json`

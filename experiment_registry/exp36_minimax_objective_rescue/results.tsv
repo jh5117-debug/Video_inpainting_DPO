@@ -1,3 +1,3 @@
 milestone	status	notes
 readback	EXP36_READBACK_COMPLETED	Created Exp36 scaffold from Exp35 HEAD fb70266; reread Exp30/Exp35 reports and protected-lane state; no GPU task, training, 30-step, RC-FPO, or protected-lane action launched
-
+nochange_forensic_audit	MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK	Reread Exp30/Exp35 checkpoints, output-diff, loss-scale, SFT-control, and rescue reports without training; checkpoint fallback and ignored trainable scope are not supported; previous objectives either had near-constant utility or harmful heldout movement
