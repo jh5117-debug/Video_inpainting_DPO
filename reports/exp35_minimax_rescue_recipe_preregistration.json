@@ -1,0 +1,98 @@
+{
+  "status": "MINIMAX_RESCUE_RECIPES_PREREGISTERED",
+  "training_launched": false,
+  "inference_launched": false,
+  "thirty_step_unlocked": false,
+  "preconditions": {
+    "root_cause_status": "MINIMAX_NOCHANGE_CAUSE_UTILITY_SCALE_TOO_WEAK",
+    "inference_sensitivity_status": "MINIMAX_INFERENCE_SENSITIVITY_PASS",
+    "trainable_scope_status": "MINIMAX_TRAINABLE_SCOPE_CURRENT_OK",
+    "positive_control_status": "MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NEGATIVE",
+    "bad_noise_status": "MINIMAX_BAD_NOISE_STATES_READY"
+  },
+  "data": {
+    "train_rows": 32,
+    "heldout_rows": 16,
+    "vor_eval_used": false,
+    "train_state_manifest": "exp35_minimax_flow_dpo_rescue/manifests/train32_bad_noise_states.jsonl",
+    "heldout_state_manifest": "exp35_minimax_flow_dpo_rescue/manifests/heldout16_eval_states.jsonl",
+    "train_state_manifest_sha256": "fbadd0d2565c4bb49245931742215c4d074c9834b369342398058b4ed9732047",
+    "heldout_state_manifest_sha256": "947f6c0f660229f1da92cb756ee7e03cda4b2215d1ae8f154999574b590ec1fb"
+  },
+  "fixed_training": {
+    "target": "epsilon_minus_z0_flow_velocity",
+    "trainable_scope": "S0_current_full_transformer_from_Exp30",
+    "steps": 10,
+    "endpoint": "step10",
+    "save_steps": [0, 1, 5, 10],
+    "strict_reload_required": true,
+    "lr": 0.00001,
+    "optimizer": "AdamW",
+    "betas": [0.9, 0.95],
+    "eps": 0.00000001,
+    "weight_decay": 0.0001,
+    "grad_clip": 1.0,
+    "utility_scale": 10,
+    "hard_state_policy": "fixed_hard_state_A"
+  },
+  "recipes": [
+    {
+      "id": "R1",
+      "name": "LoVI-Linear-Frozen-HardNoise",
+      "active": true,
+      "reference": "frozen_step0",
+      "objective": "linear_dpo_region_weighted_flow_residual",
+      "hard_state": "hard_state_A",
+      "utility_scale": 10,
+      "lambda_winner_sft": 0.0,
+      "lambda_outside": 0.0
+    },
+    {
+      "id": "R2",
+      "name": "LoVI-Linear-EMA-HardNoise",
+      "active": true,
+      "reference": "ema",
+      "ema_decay": 0.995,
+      "objective": "linear_dpo_region_weighted_flow_residual",
+      "hard_state": "hard_state_A",
+      "utility_scale": 10,
+      "lambda_winner_sft": 0.0,
+      "lambda_outside": 0.0
+    },
+    {
+      "id": "R3",
+      "name": "WinnerAnchor-Linear-Hybrid",
+      "active": true,
+      "reference": "frozen_step0",
+      "objective": "linear_dpo_region_weighted_flow_residual_plus_winner_anchor",
+      "hard_state": "hard_state_A",
+      "utility_scale": 10,
+      "lambda_winner_sft": 0.05,
+      "lambda_outside": 0.02
+    },
+    {
+      "id": "R4",
+      "name": "SDPO-Safe-Linear-Hybrid",
+      "active": false,
+      "blocked_reason": "MiniMax flow-residual SDPO true-model parity has not been separately validated"
+    }
+  ],
+  "pass_gate": {
+    "nan_inf": "none",
+    "strict_reload": "pass",
+    "output_change": "nontrivial",
+    "collapse": "none",
+    "heldout_global": "not_worse",
+    "local_or_effect_metrics_improved_min_count": 2,
+    "outside_systematic_worse": false,
+    "visual_better_min": 6,
+    "visual_worse_or_new_artifact_max": 4,
+    "all_tie_or_no_change_allowed": false
+  },
+  "allowed_outcomes": [
+    "MINIMAX_RESCUE_10STEP_RECIPE_PASS",
+    "MINIMAX_RESCUE_10STEP_PARETO_MIXED",
+    "MINIMAX_RESCUE_NO_OUTPUT_CHANGE",
+    "MINIMAX_RESCUE_NEGATIVE"
+  ]
+}

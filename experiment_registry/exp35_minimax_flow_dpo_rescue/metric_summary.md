@@ -88,3 +88,17 @@ The result proves update sensitivity, not quality improvement.
 
 These are frozen residual/state-selection diagnostics only. No output-quality
 metric, PSNR gate, LPIPS gate, or visual quality pass is implied.
+
+## 2026-06-27 Rescue Recipe Preregistration
+
+- Status: `MINIMAX_RESCUE_RECIPES_PREREGISTERED`.
+- Active recipes: `R1`, `R2`, `R3`.
+- Fixed steps: `10`.
+- LR: `1e-5`.
+- Utility scale: `10`.
+- Hard state: `hard_state_A`.
+- R4 SDPO-safe hybrid: inactive.
+
+No metrics were generated in this milestone. The next recipe milestone must
+report heldout16 Step0-vs-Step10 whole, mask, boundary, affected, outside,
+TC, Ewarp, output-diff, and visual-review metrics before any pass status.

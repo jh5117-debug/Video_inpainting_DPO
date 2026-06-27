@@ -115,3 +115,30 @@ bad_noise_hard_timestep_miner:
     hard_state_B: max_preference_violation_or_weakest_winner_advantage
     hard_state_C: max_winner_risk_with_outside_sanity_filter
   thirty_step_unlocked: false
+rescue_recipe_preregistration:
+  status: MINIMAX_RESCUE_RECIPES_PREREGISTERED
+  training_launched: false
+  inference_launched: false
+  steps: 10
+  endpoint: step10
+  lr: 1.0e-05
+  optimizer: AdamW
+  betas:
+    - 0.9
+    - 0.95
+  eps: 1.0e-08
+  weight_decay: 1.0e-04
+  grad_clip: 1.0
+  utility_scale: 10
+  hard_state_policy: fixed_hard_state_A
+  trainable_scope: S0_current_full_transformer_from_Exp30
+  active_recipes:
+    - R1_LoVI_Linear_Frozen_HardNoise
+    - R2_LoVI_Linear_EMA_HardNoise
+    - R3_WinnerAnchor_Linear_Hybrid
+  inactive_recipes:
+    R4_SDPO_Safe_Linear_Hybrid: blocked_pending_minimax_sdpo_true_model_parity
+  lambda_winner_sft_R3: 0.05
+  lambda_outside_R3: 0.02
+  ema_decay_R2: 0.995
+  thirty_step_unlocked: false

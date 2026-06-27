@@ -3023,3 +3023,19 @@ heldout state manifest SHA256 values are
 This was not a model update, recipe evaluation, video quality pass, 30-step
 run, RC-FPO run, or long training. It only prepares bounded 10-step rescue
 recipe testing with preregistered hard states.
+
+## 2026-06-27 Exp35 MiniMax Rescue Recipe Preregistration
+
+Exp35 recipe preregistration status:
+`MINIMAX_RESCUE_RECIPES_PREREGISTERED`.
+
+Locked three active 10-step recipes for the next milestone: R1
+LoVI-Linear-Frozen-HardNoise, R2 LoVI-Linear-EMA-HardNoise, and R3
+WinnerAnchor-Linear-Hybrid. All use fixed `hard_state_A`, LR `1e-5`, utility
+scale `10`, the locked Gate64 train32/heldout16 rows, and MiniMax flow target
+`epsilon - z0`. R4 SDPO-safe hybrid remains inactive until MiniMax
+flow-residual SDPO true-model parity is separately validated.
+
+No training, inference, metrics, video review, 30-step, long training, or
+RC-FPO was launched. The next run may execute only the preregistered 10-step
+recipe gate; 30-step remains locked unless that gate passes.

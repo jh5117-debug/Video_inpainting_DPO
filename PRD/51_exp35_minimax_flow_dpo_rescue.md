@@ -285,3 +285,42 @@ Reports and manifests:
 - `reports/exp35_minimax_bad_noise_summary.json`
 - `exp35_minimax_flow_dpo_rescue/manifests/train32_bad_noise_states.jsonl`
 - `exp35_minimax_flow_dpo_rescue/manifests/heldout16_eval_states.jsonl`
+
+## 2026-06-27 Rescue Recipe Preregistration
+
+Exp35 recipe preregistration status:
+`MINIMAX_RESCUE_RECIPES_PREREGISTERED`.
+
+This milestone wrote the bounded 10-step recipe plan only. No training,
+inference, metrics, video review, 30-step, long training, or RC-FPO was run.
+
+Active recipes:
+
+- `R1` LoVI-Linear-Frozen-HardNoise.
+- `R2` LoVI-Linear-EMA-HardNoise with EMA decay `0.995`.
+- `R3` WinnerAnchor-Linear-Hybrid with `lambda_winner_sft=0.05` and
+  `lambda_outside=0.02`.
+
+Fixed settings:
+
+- Train/heldout data: locked Exp30 Gate64 V3 train32 / heldout16.
+- State policy: fixed `hard_state_A`.
+- Target: MiniMax flow velocity `epsilon - z0`.
+- Trainable scope: `S0_current_full_transformer_from_Exp30`.
+- Steps: `10` only.
+- LR: `1e-5`.
+- Optimizer: AdamW with betas `(0.9, 0.95)`, eps `1e-8`, weight decay
+  `1e-4`, grad clip `1.0`.
+- Utility scale: `10`.
+
+R4 SDPO-safe hybrid is inactive because MiniMax flow-residual SDPO
+true-model parity has not been separately validated.
+
+The next milestone may run only the preregistered 10-step recipes. A 30-step
+confirmatory run remains forbidden unless the 10-step gate returns
+`MINIMAX_RESCUE_10STEP_RECIPE_PASS`.
+
+Reports:
+
+- `reports/exp35_minimax_rescue_recipe_preregistration.md`
+- `reports/exp35_minimax_rescue_recipe_preregistration.json`

@@ -3,7 +3,7 @@
 Exp35 tracks the MiniMax flow-DPO rescue after Exp30 showed data readiness and
 technical plumbing success but no quality-positive 10-step output movement.
 
-Current status: `MINIMAX_BAD_NOISE_STATES_READY`.
+Current status: `MINIMAX_RESCUE_RECIPES_PREREGISTERED`.
 
 Gate order:
 
@@ -24,3 +24,6 @@ Latest milestone:
   16 candidate states per row, wrote fixed state manifests, and launched no
   training. This prepares bounded 10-step recipe testing only; 30-step remains
   locked.
+- Rescue recipe preregistration locked three active 10-step recipes and no
+  training. R4 SDPO-safe hybrid remains inactive until MiniMax SDPO true-model
+  parity exists.

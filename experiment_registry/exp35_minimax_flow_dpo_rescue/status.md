@@ -103,3 +103,21 @@ The miner selected `hard_state_A`, `hard_state_B`, and `hard_state_C` for each
 row using frozen Step0 residuals. This prepares bounded 10-step rescue recipe
 testing only. It is not a quality-positive adapter result and does not unlock
 30-step training.
+
+## 2026-06-27 Rescue Recipe Preregistration
+
+- Status: `MINIMAX_RESCUE_RECIPES_PREREGISTERED`.
+- Training launched: false.
+- Inference launched: false.
+- Active recipes: `R1`, `R2`, `R3`.
+- Inactive recipe: `R4` SDPO-safe hybrid, blocked until MiniMax SDPO
+  true-model parity exists.
+- Steps: `10`.
+- LR: `1e-5`.
+- Utility scale: `10`.
+- Hard-state policy: fixed `hard_state_A`.
+- 30-step unlocked: false.
+
+The next eligible milestone is the preregistered 10-step recipe run. It must
+produce real heldout videos, metrics, strict reload evidence, and per-video
+review before any recipe pass or quality language is allowed.

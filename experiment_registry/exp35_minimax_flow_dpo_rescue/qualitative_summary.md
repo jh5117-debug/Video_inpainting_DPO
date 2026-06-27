@@ -62,3 +62,11 @@ milestone.
 The next eligible work remains a bounded 10-step recipe test using the mined
 states, followed by real heldout video generation, metrics, and per-row visual
 review before any quality claim.
+
+## 2026-06-27 Rescue Recipe Preregistration
+
+No videos were generated or reviewed in this milestone. The preregistration
+requires that the next 10-step recipe run generate heldout16 videos, temporal
+strips, crops, output-difference evidence, metrics, and per-row Codex visual
+review. No recipe pass, micro-positive, or third-backbone language may be
+written from preregistration alone.
