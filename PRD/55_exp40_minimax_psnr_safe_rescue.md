@@ -136,3 +136,79 @@ Reports:
 - `reports/exp40_r1_sample_level_diagnosis.csv`
 - `reports/exp40_r1_visual_review.csv`
 - `reports/exp40_r1_diagnosis_summary.json`
+
+## 2026-06-29 LocalDPO v3 PSNR-Safe Pool
+
+Milestone C status: `MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM`.
+
+No MiniMax training was launched. GPU0/GPU1 remained unused by this milestone
+after the earlier stale Exp30 process-group cleanup; GPU2-GPU7 were untouched.
+
+Pool construction:
+
+- Source: VOR-Train only.
+- VOR-Eval used: `false`.
+- Hard comp used: `false`.
+- Condition: `V_obj`.
+- Winner: `V_bg`.
+- Loser: locally corrupted `V_bg`.
+- Candidate rows: `336`.
+- Candidate rows per source: `<= 3`.
+- Selected split counts: `train=64`, `search=24`, `shadow=24`.
+- Selected source balance:
+  - train: `BLENDER=32`, `REAL=32`
+  - search: `BLENDER=12`, `REAL=12`
+  - shadow: `BLENDER=12`, `REAL=12`
+- Selected classification: all `112/112` rows are
+  `MEDIUM_HARD_ELIGIBLE`.
+- Scene overlap:
+  - train/search: `0`
+  - train/shadow: `0`
+  - search/shadow: `0`
+
+Target caveat:
+
+- The requested target was `train96/search32/shadow32`.
+- The run reached the pre-registered minimum `train64/search24/shadow24`, not
+  the full target.
+- This is enough to continue with small Step0/SFT diagnostics, but later paper
+  claims must keep the minimum-pool caveat.
+
+Extraction / materialization:
+
+- A full tar extraction attempt was stopped before completion because the
+  gzip-tar member scan was slow and an existing exact materialized cache was
+  available.
+- The selected pool uses existing materialized refs plus the exact cache:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_train_audit64_exact_20260623`.
+- Metadata index SHA256:
+  `33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4`.
+
+Visual review:
+
+- Codex opened all 19 temporal-strip review pages covering all 112 selected
+  rows.
+- Review status: `REVIEWED_PASS_TEMPORAL_STRIP_POOL_AUDIT`.
+- Observed pattern: local object/affected-region perturbations, no global
+  collapse, no black/purple failure, and no systematic far-outside damage in
+  the review sheets.
+- This is a data-pool construction pass only. It is not a model quality pass and
+  does not imply MiniMax adapter success.
+
+Output caveat:
+
+- PAI `hj` could not write to the requested Exp40 experiments output root, so
+  this milestone stores selected-pool outputs under the Exp40 log root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425`.
+
+Reports and manifests:
+
+- `reports/exp40_localdpo_v3_pool.md`
+- `reports/exp40_localdpo_v3_pool.csv`
+- `reports/exp40_localdpo_v3_visual_review.csv`
+- `reports/exp40_localdpo_v3_summary.json`
+- `reports/exp40_localdpo_v3_review_pages/`
+- `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_train96.jsonl`
+- `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl`
+- `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_shadow32.jsonl`
+- `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_rejected.jsonl`

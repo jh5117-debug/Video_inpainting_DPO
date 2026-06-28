@@ -211,6 +211,20 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 # Experiment Matrix
 
+## 2026-06-29 Exp40 MiniMax PSNR-Safe Rescue
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp40 LocalDPO v3 pool | `MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM`; ready for Step0/SFT diagnostics only | `PRD/55_exp40_minimax_psnr_safe_rescue.md`, `experiment_registry/exp40_minimax_psnr_safe_rescue`, `reports/exp40_localdpo_v3_pool.md`, `reports/exp40_localdpo_v3_summary.json` |
+
+Notes:
+
+- VOR-Train only; VOR-Eval not used.
+- Selected pool is `train64/search24/shadow24`, not the full target
+  `train96/search32/shadow32`.
+- No MiniMax quality-positive claim exists yet.
+- GPU2-GPU7 remain untouched by Exp40.
+
 ## 2026-06-18 Exp19 Flow-Adapter Attempt
 
 | User-facing name | Status | Evidence / registry |

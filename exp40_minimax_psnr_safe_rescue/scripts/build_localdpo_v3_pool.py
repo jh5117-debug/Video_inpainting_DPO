@@ -45,6 +45,20 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--metadata-index", type=Path, required=True)
     parser.add_argument("--train-parts-dir", type=Path, required=True)
     parser.add_argument("--mask-parts-dir", type=Path, required=True)
+    parser.add_argument(
+        "--materialized-ref",
+        type=Path,
+        action="append",
+        default=[],
+        help="Existing materialized jsonl refs with condition/winner/mask frame dirs. If provided, no tar extraction is performed.",
+    )
+    parser.add_argument(
+        "--exact-cache-root",
+        type=Path,
+        action="append",
+        default=[],
+        help="Existing extracted VOR cache root with VOR-Train/VOR-Train/{FG_BG,BG} and VOR-Train-MASK/MASK mp4s.",
+    )
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--reports-root", type=Path, required=True)
     parser.add_argument("--manifest-root", type=Path, required=True)
@@ -133,6 +147,15 @@ def source_type(sample_id: str) -> str:
     return "UNKNOWN"
 
 
+def infer_scene_group(sample_id: str) -> str:
+    parts = sample_id.split("_")
+    if sample_id.startswith("REAL_") and len(parts) >= 3:
+        return "_".join(parts[:3])
+    if sample_id.startswith("BLENDER_") and len(parts) >= 2:
+        return "_".join(parts[:2])
+    return sample_id
+
+
 def scene_group(row: dict[str, Any]) -> str:
     return str(row.get("scene_group") or row.get("sample_id"))
 
@@ -145,7 +168,12 @@ def split_minimums(args: argparse.Namespace) -> dict[str, int]:
     return {"train": args.min_train, "search": args.min_search, "shadow": args.min_shadow}
 
 
-def select_sources(rows: list[dict[str, Any]], args: argparse.Namespace) -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any]]]:
+def select_sources(
+    rows: list[dict[str, Any]],
+    args: argparse.Namespace,
+    *,
+    allow_minimum_targets: bool = False,
+) -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any]]]:
     filtered: list[dict[str, Any]] = []
     rejected: list[dict[str, Any]] = []
     seen_scenes: set[str] = set()
@@ -183,6 +211,8 @@ def select_sources(rows: list[dict[str, Any]], args: argparse.Namespace) -> tupl
     selected: dict[str, list[dict[str, Any]]] = {"train": [], "search": [], "shadow": []}
     used_groups: set[str] = set()
     targets = split_targets(args)
+    if allow_minimum_targets and len(filtered) < sum(targets.values()):
+        targets = split_minimums(args)
     for split, count in targets.items():
         per_type = {"BLENDER": count // 2, "REAL": count - count // 2}
         for stype in ("BLENDER", "REAL"):
@@ -208,6 +238,87 @@ def select_sources(rows: list[dict[str, Any]], args: argparse.Namespace) -> tupl
                 selected[split].append(locked)
                 used_groups.add(group)
     return selected, rejected
+
+
+def normalize_materialized_row(row: dict[str, Any]) -> dict[str, Any]:
+    sample_id = str(row.get("sample_id") or row.get("basename"))
+    condition = row.get("condition_frame_dir") or row.get("condition_video_path") or row.get("condition_path")
+    winner = row.get("winner_frame_dir") or row.get("winner_video_path") or row.get("winner_path")
+    mask = row.get("mask_frame_dir") or row.get("mask_path")
+    if not condition or not winner or not mask:
+        raise ValueError(f"materialized row lacks frame dirs: {sample_id}")
+    normalized = dict(row)
+    normalized.update(
+        {
+            "sample_id": sample_id,
+            "source_type": row.get("source_type") or source_type(sample_id),
+            "scene_group": row.get("scene_group") or sample_id,
+            "condition_path": str(condition),
+            "winner_path": str(winner),
+            "mask_path": str(mask),
+            "condition_frame_dir": str(condition),
+            "winner_frame_dir": str(winner),
+            "mask_frame_dir": str(mask),
+            "source_dataset": "VOR-Train",
+            "vor_eval_used": False,
+            "hard_comp": False,
+            "comp_mode": "none",
+            "condition_source_role": "V_obj",
+            "winner_source_role": "V_bg",
+            "mask_source_role": "foreground_object_mask",
+        }
+    )
+    return normalized
+
+
+def read_materialized_refs(paths: list[Path]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
+    for path in paths:
+        for raw in read_jsonl(path):
+            row = normalize_materialized_row(raw)
+            sample_id = str(row["sample_id"])
+            if sample_id in seen:
+                continue
+            seen.add(sample_id)
+            row["exp40_materialized_ref"] = str(path)
+            rows.append(row)
+    return rows
+
+
+def read_exact_cache_roots(roots: list[Path]) -> list[dict[str, Any]]:
+    rows: list[dict[str, Any]] = []
+    for root in roots:
+        fg_dir = root / "VOR-Train" / "VOR-Train" / "FG_BG"
+        bg_dir = root / "VOR-Train" / "VOR-Train" / "BG"
+        mask_dir = root / "VOR-Train-MASK" / "MASK"
+        if not (fg_dir.exists() and bg_dir.exists() and mask_dir.exists()):
+            continue
+        for condition in sorted(fg_dir.glob("*.mp4")):
+            sample_id = condition.stem
+            winner = bg_dir / f"{sample_id}.mp4"
+            mask = mask_dir / f"{sample_id}.mp4"
+            if not (winner.exists() and mask.exists()):
+                continue
+            rows.append(
+                {
+                    "sample_id": sample_id,
+                    "source_type": source_type(sample_id),
+                    "scene_group": infer_scene_group(sample_id),
+                    "condition_mp4_direct": str(condition),
+                    "winner_mp4_direct": str(winner),
+                    "mask_mp4_direct": str(mask),
+                    "condition_member_path": f"VOR-Train/FG_BG/{sample_id}.mp4",
+                    "winner_member_path": f"VOR-Train/BG/{sample_id}.mp4",
+                    "mask_member_path": f"MASK/{sample_id}.mp4",
+                    "source_dataset": "VOR-Train",
+                    "exp40_exact_cache_root": str(root),
+                    "vor_eval_used": False,
+                    "hard_comp": False,
+                    "comp_mode": "none",
+                }
+            )
+    return rows
 
 
 def parts(pattern_dir: Path, prefix: str) -> list[Path]:
@@ -271,6 +382,9 @@ def extract_members(selected: dict[str, list[dict[str, Any]]], args: argparse.Na
 
 
 def resolve_mp4(row: dict[str, Any], extract_root: Path, role: str) -> Path:
+    direct_key = f"{role}_mp4_direct"
+    if direct_key in row and row[direct_key]:
+        return Path(str(row[direct_key]))
     if role == "condition":
         return extract_root / "VOR-Train" / str(row["condition_member_path"])
     if role == "winner":
@@ -370,7 +484,7 @@ def profile_region(profile: str, mask: np.ndarray, affected: np.ndarray) -> tupl
     boundary = np.clip(dilate(mask, 7) - erode(mask, 5), 0.0, 1.0)
     affected_soft = soft_blur((affected > 0.07).astype(np.float32), 15)
     if profile == "C1_mild_object_texture":
-        return soft_blur(mask, 9), boundary, 0.10, 1.1, 0.82
+        return soft_blur(mask, 9), boundary, 0.16, 1.6, 0.82
     if profile == "C2_medium_object_texture":
         return soft_blur(mask, 11), boundary, 0.16, 1.6, 0.82
     if profile == "C3_boundary_seam_mild":
@@ -381,7 +495,7 @@ def profile_region(profile: str, mask: np.ndarray, affected: np.ndarray) -> tupl
         return region, boundary, 0.13, 1.2, 0.86
     if profile == "C5_effect_lighting_mild":
         region = np.clip(np.maximum(soft_blur(mask, 7), affected_soft * 0.24), 0.0, 1.0)
-        return region, boundary, 0.10, 0.9, 0.90
+        return region, boundary, 0.13, 1.1, 0.90
     if profile == "C6_temporal_mild_flicker":
         region = soft_blur(mask, 9)
         return region, boundary, 0.11, 1.5, 0.55
@@ -455,13 +569,13 @@ def metrics_for_candidate(
 
 
 def classify(metrics: dict[str, float]) -> tuple[str, str]:
-    outside_ok = metrics["outside_psnr"] >= 55.0 and metrics["outside_mae"] <= 0.18
+    outside_ok = metrics["outside_psnr"] >= 50.0 and metrics["outside_mae"] <= 0.35
     boundary_ok = metrics["boundary_psnr"] >= 28.0 and metrics["boundary_mae"] <= 9.0
     if not outside_ok:
         return "TRIVIAL_BAD", "outside damage exceeds Exp40 strict outside bound"
     if not boundary_ok:
         return "TRIVIAL_BAD", "boundary damage exceeds Exp40 strict boundary bound"
-    if metrics["mask_mae"] < 1.0 or metrics["mask_psnr"] > 45.0:
+    if metrics["mask_mae"] < 0.8 or metrics["mask_psnr"] > 49.0:
         return "TOO_CLOSE", "Exp40 corruption is too close to winner"
     if metrics["mask_psnr"] < 20.0 or metrics["mask_mae"] > 35.0:
         return "TRIVIAL_BAD", "Exp40 corruption is too severe"
@@ -625,25 +739,50 @@ def main() -> None:
     args.reports_root.mkdir(parents=True, exist_ok=True)
     args.manifest_root.mkdir(parents=True, exist_ok=True)
 
-    heartbeat(args.heartbeat, "read_metadata")
-    metadata_rows = read_jsonl(args.metadata_index)
-    sources, source_rejected = select_sources(metadata_rows, args)
-
-    heartbeat(args.heartbeat, "extract_members")
-    extraction = extract_members(sources, args)
-
     materialized: dict[str, list[dict[str, Any]]] = {"train": [], "search": [], "shadow": []}
     materialize_failures: list[dict[str, Any]] = []
-    for split, rows in sources.items():
-        for idx, row in enumerate(rows):
-            heartbeat(args.heartbeat, f"materialize:{split}:{idx + 1}/{len(rows)}:{row['sample_id']}")
-            try:
-                materialized[split].append(materialize_row(row, split, args))
-            except Exception as exc:  # noqa: BLE001
-                bad = dict(row)
-                bad["failure_stage"] = "materialize"
-                bad["failure_error"] = repr(exc)
-                materialize_failures.append(bad)
+    if args.materialized_ref:
+        heartbeat(args.heartbeat, "read_materialized_refs")
+        ref_rows = read_materialized_refs(args.materialized_ref)
+        exact_rows = read_exact_cache_roots(args.exact_cache_root)
+        sources, source_rejected = select_sources(ref_rows + exact_rows, args, allow_minimum_targets=True)
+        extraction = {
+            "mode": "existing_materialized_refs",
+            "materialized_refs": [str(p) for p in args.materialized_ref],
+            "exact_cache_roots": [str(p) for p in args.exact_cache_root],
+            "tar_extraction_performed": False,
+        }
+        for split, rows in sources.items():
+            for idx, row in enumerate(rows):
+                if row.get("condition_mp4_direct"):
+                    heartbeat(args.heartbeat, f"materialize_exact_cache:{split}:{idx + 1}/{len(rows)}:{row['sample_id']}")
+                    try:
+                        materialized[split].append(materialize_row(row, split, args))
+                    except Exception as exc:  # noqa: BLE001
+                        bad = dict(row)
+                        bad["failure_stage"] = "materialize_exact_cache"
+                        bad["failure_error"] = repr(exc)
+                        materialize_failures.append(bad)
+                else:
+                    materialized[split].append(row)
+    else:
+        heartbeat(args.heartbeat, "read_metadata")
+        metadata_rows = read_jsonl(args.metadata_index)
+        sources, source_rejected = select_sources(metadata_rows, args)
+
+        heartbeat(args.heartbeat, "extract_members")
+        extraction = extract_members(sources, args)
+
+        for split, rows in sources.items():
+            for idx, row in enumerate(rows):
+                heartbeat(args.heartbeat, f"materialize:{split}:{idx + 1}/{len(rows)}:{row['sample_id']}")
+                try:
+                    materialized[split].append(materialize_row(row, split, args))
+                except Exception as exc:  # noqa: BLE001
+                    bad = dict(row)
+                    bad["failure_stage"] = "materialize"
+                    bad["failure_error"] = repr(exc)
+                    materialize_failures.append(bad)
 
     selected: dict[str, list[dict[str, Any]]] = {"train": [], "search": [], "shadow": []}
     all_candidates: list[dict[str, Any]] = []

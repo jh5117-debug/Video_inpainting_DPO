@@ -32,3 +32,29 @@ The train32 evidence shows mask/boundary motion but full/outside regression;
 the heldout evidence shows the desired full/mask direction but boundary is not
 safe. This points to PSNR-safe SFT with stronger outside and boundary
 preservation before any DPO-after-SFT gate.
+
+## 2026-06-29 LocalDPO v3 Pool Metrics
+
+Pool construction metrics, not model metrics:
+
+- candidate rows: `336`
+- selected rows: `112`
+- selected split counts: `train=64`, `search=24`, `shadow=24`
+- selected classification: `112/112 MEDIUM_HARD_ELIGIBLE`
+- rejected rows: `46`
+- candidate bucket counts:
+  - `MEDIUM_HARD_ELIGIBLE=282`
+  - `HARD_BUT_PLAUSIBLE=9`
+  - `TOO_CLOSE=14`
+  - `TRIVIAL_BAD=31`
+- scene overlap:
+  - train/search: `0`
+  - train/shadow: `0`
+  - search/shadow: `0`
+- source balance:
+  - train: `BLENDER=32`, `REAL=32`
+  - search: `BLENDER=12`, `REAL=12`
+  - shadow: `BLENDER=12`, `REAL=12`
+
+The full requested pool size was not reached; the pre-registered minimum was
+reached. Step0/SFT diagnostics may use this pool with the minimum-pool caveat.

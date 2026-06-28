@@ -29,3 +29,20 @@ R1 sample-level review preserves the prior visual evidence:
 Conclusion: a recipe that only increases DPO pressure is likely to amplify the
 wrong behavior. Exp40 should first build cleaner local corruption data and run
 PSNR-safe SFT.
+
+## 2026-06-29 LocalDPO v3 Pool Visual Review
+
+Codex opened all 19 temporal-strip review pages covering the selected
+`train64/search24/shadow24` rows.
+
+Observed:
+
+- local object/affected-region corruptions are visible;
+- no global black/purple collapse was seen;
+- no run-wide fogging or full-frame degradation was seen;
+- far outside regions are visually stable in the review pages;
+- boundary defects are mostly mild and bounded by metric gates.
+
+This review only supports using the pool for the next Step0/SFT diagnostics. It
+does not promote MiniMax model quality and does not unlock any adapter-positive
+claim.

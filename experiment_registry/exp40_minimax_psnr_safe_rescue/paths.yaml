@@ -12,5 +12,17 @@ reports:
   r1_sample_level_csv: reports/exp40_r1_sample_level_diagnosis.csv
   r1_visual_review: reports/exp40_r1_visual_review.csv
   r1_summary: reports/exp40_r1_diagnosis_summary.json
+  localdpo_v3_pool: reports/exp40_localdpo_v3_pool.md
+  localdpo_v3_pool_csv: reports/exp40_localdpo_v3_pool.csv
+  localdpo_v3_visual_review: reports/exp40_localdpo_v3_visual_review.csv
+  localdpo_v3_summary: reports/exp40_localdpo_v3_summary.json
+  localdpo_v3_review_pages: reports/exp40_localdpo_v3_review_pages/
+manifests:
+  localdpo_v3_train: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_train96.jsonl
+  localdpo_v3_search: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl
+  localdpo_v3_shadow: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_shadow32.jsonl
+  localdpo_v3_rejected: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_rejected.jsonl
+runtime_outputs:
+  localdpo_v3_pool_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425
 gpu_audits:
   stale_exp30_cleanup: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/gpu0_1_preclean_exp30_stale_20260629_030722.txt

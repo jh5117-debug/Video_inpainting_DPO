@@ -2,7 +2,7 @@ experiment: exp40_minimax_psnr_safe_rescue
 model: MiniMax-Remover
 branch: research/exp40-minimax-psnr-safe-rescue-20260628
 base_exp: exp38_minimax_full_adapter_breakthrough
-status: EXP40_READBACK_COMPLETED
+status: MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM
 primary_eval: raw_output
 diagnostic_comp_only: true
 gpu_policy:
@@ -55,3 +55,29 @@ r1_sample_diagnosis:
     R1_TIE: 4
     R1_FOGGING_OVER_ERASURE: 1
   decision: boundary_outside_preservation_and_psnr_safe_sft_before_dpo
+localdpo_v3_pool:
+  status: MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM
+  target_counts:
+    train: 96
+    search: 32
+    shadow: 32
+  minimum_counts:
+    train: 64
+    search: 24
+    shadow: 24
+  selected_counts:
+    train: 64
+    search: 24
+    shadow: 24
+  selected_classification: MEDIUM_HARD_ELIGIBLE
+  selected_rows: 112
+  candidate_rows: 336
+  vor_eval_used: false
+  hard_comp_used: false
+  scene_overlap:
+    train_search: 0
+    train_shadow: 0
+    search_shadow: 0
+  visual_review_status: REVIEWED_PASS_TEMPORAL_STRIP_POOL_AUDIT
+  model_quality_claim: false
+  output_root_actual: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425

@@ -1,0 +1,99 @@
+{
+  "candidate_rows": 336,
+  "candidate_rows_per_source_max": 3,
+  "classification_counts": {
+    "HARD_BUT_PLAUSIBLE": 9,
+    "MEDIUM_HARD_ELIGIBLE": 282,
+    "TOO_CLOSE": 14,
+    "TRIVIAL_BAD": 31
+  },
+  "extraction": {
+    "exact_cache_roots": [
+      "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/effecterase_vor/extracted/vor_train_audit64_exact_20260623"
+    ],
+    "materialized_refs": [
+      "/home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe/exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke16_v2_materialized_final_ref.jsonl",
+      "/home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe/exp30_vor_or_multimodel_minimax/manifests/vor_or_smoke32_v3_materialized_ref.jsonl",
+      "/home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe/exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_materialized_final_v3_ref.jsonl"
+    ],
+    "mode": "existing_materialized_refs",
+    "tar_extraction_performed": false
+  },
+  "hard_comp_used": false,
+  "materialized_counts": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "metadata_index": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp25_vor/exp25_vor_or_preference_data/manifests/vor_train_metadata_index.jsonl",
+  "metadata_sha256": "33d57a3ea23c5799b583d476a311089f95cbce1b0d11280822a63b8c9edcddc4",
+  "minimums": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "rejected_rows": 46,
+  "scene_overlap": {
+    "search_shadow": 0,
+    "train_search": 0,
+    "train_shadow": 0
+  },
+  "selected_classification_counts": {
+    "search": {
+      "MEDIUM_HARD_ELIGIBLE": 24
+    },
+    "shadow": {
+      "MEDIUM_HARD_ELIGIBLE": 24
+    },
+    "train": {
+      "MEDIUM_HARD_ELIGIBLE": 64
+    }
+  },
+  "selected_counts": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "selected_mask_bucket_counts": {
+    "search": {
+      "large": 1,
+      "small": 2,
+      "unknown": 21
+    },
+    "shadow": {
+      "large": 2,
+      "medium": 1,
+      "small": 2,
+      "unknown": 19
+    },
+    "train": {
+      "medium": 5,
+      "small": 9,
+      "unknown": 50
+    }
+  },
+  "selected_source_type_counts": {
+    "search": {
+      "BLENDER": 12,
+      "REAL": 12
+    },
+    "shadow": {
+      "BLENDER": 12,
+      "REAL": 12
+    },
+    "train": {
+      "BLENDER": 32,
+      "REAL": 32
+    }
+  },
+  "status": "MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM",
+  "targets": {
+    "search": 32,
+    "shadow": 32,
+    "train": 96
+  },
+  "visual_review_note": "Codex opened all 19 temporal-strip review pages covering all 112 selected rows. This is pool-construction review, not model quality promotion.",
+  "visual_review_pages": "reports/exp40_localdpo_v3_review_pages/exp40_localdpo_v3_review_page_00.jpg..18.jpg",
+  "visual_review_status": "REVIEWED_PASS_TEMPORAL_STRIP_POOL_AUDIT",
+  "vor_eval_used": false
+}

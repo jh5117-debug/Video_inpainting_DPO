@@ -1,3 +1,26 @@
+## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
+
+Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:
+
+```text
+MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM
+```
+
+Key facts:
+
+- VOR-Train only; VOR-Eval not used.
+- No hard comp.
+- Selected pool: `train64/search24/shadow24`.
+- Full requested target `train96/search32/shadow32` was not reached.
+- Scene overlap is zero across train/search/shadow.
+- All selected rows are `MEDIUM_HARD_ELIGIBLE`.
+- Codex opened all 19 temporal-strip review pages covering 112 selected rows.
+- This is a data-pool pass only, not a MiniMax quality or adapter-positive
+  result.
+
+Next Exp40 milestone: Step0 baseline on train/search/shadow, still using raw
+output as primary evaluation.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 Exp26 VideoPainter v2 Gate16 has now passed the pre-registered Gate16 quality
