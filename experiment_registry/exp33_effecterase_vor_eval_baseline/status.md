@@ -12,6 +12,9 @@ Current status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 - command validation: `EXP33_VOREVAL_OFFICIAL81_COMMAND_READY`.
 - inference: `EXP33_VOREVAL_EFFECTERASE_INFERENCE_COMPLETED`, 43/43 rows, failed rows `[]`.
 - metrics and visual review: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`.
+- full visual contact-sheet review: `43/43` review sheets and `43/43` crop
+  sheets opened under
+  `reports/exp33_effecterase_voreval_review_contact_sheets/`.
 
 Metric summary:
 
@@ -35,6 +38,7 @@ Evidence:
 - `reports/exp33_effecterase_voreval_output_integrity.md`
 - `reports/exp33_effecterase_voreval_metrics.md`
 - `reports/exp33_effecterase_voreval_visual_review.md`
+- `reports/exp33_effecterase_voreval_full_contact_sheet_review.md`
 - `reports/exp33_effecterase_voreval_final_baseline.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`
 - `reports/exp33_effecterase_vor_eval_official81_metrics.csv`

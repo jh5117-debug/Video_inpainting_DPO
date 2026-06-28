@@ -193,7 +193,8 @@ Inference completion and baseline evaluation:
   `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,
   `reports/exp33_effecterase_vor_eval_official81_final_report.md`
 
-Visual review opened representative weak/mixed/usable evidence sheets. The
-review supports the weak/mixed metric conclusion: some samples erase the object
-well, but outside damage, exposure drift, and residual background/reflection
-artifacts are common enough that this is not a strong baseline result.
+Visual review opened all `43/43` review sheets and all `43/43` crop sheets via
+contact-sheet pages. The review supports the weak/mixed metric conclusion: some
+samples erase the object well, but outside damage, exposure drift, and residual
+background/reflection artifacts are common enough that this is not a strong
+baseline result.

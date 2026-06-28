@@ -11,6 +11,12 @@
   },
   "ewarp_proxy_mean": 6.437035142890241,
   "final_status": "EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED",
+  "full_contact_sheet_review": {
+    "all43_contact_sheets_opened": true,
+    "contact_sheet_dir": "reports/exp33_effecterase_voreval_review_contact_sheets",
+    "crop_sheets_reviewed": 43,
+    "review_sheets_reviewed": 43
+  },
   "forbidden_claims": [
     "UNIVERSAL_ADAPTER",
     "FINAL_SOTA",

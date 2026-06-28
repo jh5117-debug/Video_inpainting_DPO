@@ -3,8 +3,8 @@
 Status: `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED`
 
 The 43-row visual review evidence pack has been generated for the completed
-EffectErase VOR-Eval baseline. Representative weak/mixed/usable review sheets
-were opened after metric generation.
+EffectErase VOR-Eval baseline. The full `43/43` review sheets and `43/43` crop
+sheets were opened through contact sheets after metric generation.
 
 Observed pattern:
 
@@ -14,7 +14,12 @@ Observed pattern:
 - Usable cases show coherent removal, but still have texture errors in darker
   or fine-detail regions.
 
-Opened representative sheets:
+Full review contact sheets:
+
+- `reports/exp33_effecterase_voreval_review_contact_sheets/exp33_review_sheets_all43_page*.jpg`
+- `reports/exp33_effecterase_voreval_review_contact_sheets/exp33_crop_sheets_all43_page*.jpg`
+
+Representative examples remain:
 
 - `REAL_ENV900_00044_002_04`: weak; global darkening / shadow drift.
 - `REAL_ENV900_00020_002_01`: mixed; person removed with reflection/background residual.
@@ -26,6 +31,7 @@ Evidence:
 - `reports/exp33_effecterase_voreval_visual_review.md`
 - `reports/exp33_effecterase_voreval_visual_review_summary.json`
 - `reports/exp33_effecterase_voreval_final_baseline.md`
+- `reports/exp33_effecterase_voreval_full_contact_sheet_review.md`
 - `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`
 - `reports/exp33_effecterase_vor_eval_official81_visual_review.md`
 - `reports/exp33_effecterase_vor_eval_official81_visual_audit_notes.md`

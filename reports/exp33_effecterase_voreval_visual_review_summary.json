@@ -6,11 +6,11 @@
     "BASELINE_WEAK": 17
   },
   "ok_rows": 43,
-  "representative_review_sheets_opened": [
-    "REAL_ENV900_00044_002_04",
-    "REAL_ENV900_00020_002_01",
-    "REAL_ENV900_00017_001_01"
-  ],
+  "all43_contact_sheets_opened": true,
+  "contact_sheet_dir": "reports/exp33_effecterase_voreval_review_contact_sheets",
+  "crop_sheets_reviewed": 43,
+  "raw_asset_cache_status": "local_untracked_203M_cache",
+  "review_sheets_reviewed": 43,
   "rows": 43,
   "status": "EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED",
   "visual_review_csv": "reports/exp33_effecterase_voreval_visual_review.csv"

@@ -26,16 +26,19 @@ adapter work was launched.
   `reports/exp33_effecterase_vor_eval_official81_metrics_summary.md`,
   `reports/exp33_effecterase_vor_eval_official81_metrics.csv`,
   `reports/exp33_effecterase_vor_eval_official81_visual_review.csv`,
+  `reports/exp33_effecterase_voreval_full_contact_sheet_review.md`,
+  `reports/exp33_effecterase_voreval_review_contact_sheets/`,
   `reports/exp33_effecterase_vor_eval_official81_final_report.md`
 
-Visual review opened representative weak/mixed/usable review sheets. The weak
-case `REAL_ENV900_00044_002_04` shows global darkening/shadow drift outside
-the mask; the mixed case `REAL_ENV900_00020_002_01` removes the person but
-retains visible background/reflection residuals; the usable case
-`REAL_ENV900_00017_001_01` removes the subject with acceptable continuity but
-still has tree/dark-region texture error. Conclusion: EffectErase is useful
-baseline evidence, but not a strong VOR-Eval baseline on this 43-row set.
-Adapter status remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`.
+Visual review opened all `43/43` review sheets and all `43/43` crop sheets via
+contact-sheet pages. The weak case `REAL_ENV900_00044_002_04` shows global
+darkening/shadow drift outside the mask; the mixed case
+`REAL_ENV900_00020_002_01` removes the person but retains visible
+background/reflection residuals; the usable case `REAL_ENV900_00017_001_01`
+removes the subject with acceptable continuity but still has tree/dark-region
+texture error. Conclusion: EffectErase is useful technical baseline evidence,
+but not a strong VOR-Eval baseline on this 43-row set. Adapter status remains
+`EFFECTERASE_BASELINE_ONLY_FOR_NOW`.
 
 ## 2026-06-27 Exp33 VOR-Eval EffectErase Inference Launch
 
@@ -2781,3 +2784,9 @@ or `UNIVERSAL_ADAPTER`. No long training or RC-FPO was launched.
 - No zero-gap, one-step, 10-step, DPO, RC-FPO, or long training was run.
 - Scientific language remains constrained: EffectErase is an OR
   baseline/diagnostic, not true adapter or universal-adapter evidence.
+
+## 2026-06-28 Exp33 EffectErase VOR-Eval Baseline
+
+| Experiment | Status | Evidence | Restriction |
+| --- | --- | --- | --- |
+| Exp33 EffectErase VOR-Eval | `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED` | 43/43 held-out VOR-Eval outputs are technically valid at 81 frames, 832x480. Aggregate metrics: full PSNR `21.9229`, full SSIM `0.7349`, mask PSNR `19.3942`, boundary PSNR `20.0981`, outside L1 `16.4051`, Ewarp proxy `6.4370`. Full visual contact-sheet review opened 43/43 review sheets and 43/43 crop sheets. Classification: `BASELINE_USABLE=9`, `BASELINE_MIXED=17`, `BASELINE_WEAK=17`. | EffectErase remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`. It is not adapter evidence, not a DPO loser source in this prompt, not a strong baseline, and not universal-adapter/final-SOTA evidence. |

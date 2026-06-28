@@ -728,3 +728,9 @@ Gate64 and DPO training were not started.
 | Exp29 EffectErase official 81F command validation | `EFFECTERASE_OFFICIAL81_COMMAND_READY` | Dry-run validated official EffectErase command/import/assets/inputs for 8/8 official-81F rows. Commands use `--num_frames 81`; no full inference, baseline-ready claim, or adapter claim yet. |
 | Exp29 EffectErase official 81F inference smoke | `EFFECTERASE_OR_BASELINE_READY` | Official 81F inference completed 8/8 diagnostic VOR rows on right-side GPU0. All raw outputs decode as 81 frames at 832x480. Codex opened 8 temporal pages and 8 crop pages: target/effect removal succeeded 8/8 with no black/purple collapse. Project metric means: whole PSNR 27.416948, LPIPS 0.085822, mask PSNR 25.778614, boundary PSNR 25.696018, Ewarp 1.766501. This is OR strong baseline / diagnostic readiness only; no true adapter, DPO, or universal-adapter claim. |
 | Exp29 EffectErase trainable-forward audit | `EFFECTERASE_BASELINE_ONLY_FOR_NOW` | Official removal pipeline audit found no removal-specific trainable forward/training loss exposed by `WanRemovePipeline`; the generic Wan training path is not equivalent to the EffectErase removal adapter path. Zero-gap, one-step, 10-step, DPO, and RC-FPO were not run. EffectErase remains an OR strong baseline/diagnostic, not true adapter evidence. |
+
+## 2026-06-28 Exp33 EffectErase VOR-Eval Baseline
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp33 EffectErase VOR-Eval | `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED` | 43/43 outputs are valid and full contact-sheet visual review covered 43/43 review sheets plus 43/43 crop sheets. The baseline is technically complete but weak/mixed: 9 usable, 17 mixed, 17 weak. Adapter status remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`. |

@@ -22,7 +22,11 @@ EffectErase completed held-out VOR-Eval baseline evaluation on all 43 rows. The 
 - `BASELINE_MIXED`: 17
 - `BASELINE_WEAK`: 17
 
-Opened representative evidence sheets: weak `REAL_ENV900_00044_002_04`, mixed `REAL_ENV900_00020_002_01`, usable `REAL_ENV900_00017_001_01`. The observed pattern is outside exposure/shadow drift in weak cases, reflection/background residuals in mixed cases, and residual fine texture errors even in usable cases.
+Opened all `43/43` review sheets and all `43/43` crop sheets through contact
+sheet pages under `reports/exp33_effecterase_voreval_review_contact_sheets/`.
+The observed pattern is outside exposure/shadow drift in weak cases,
+reflection/background residuals in mixed cases, and residual fine texture errors
+even in usable cases.
 
 ## Paper Role
 
