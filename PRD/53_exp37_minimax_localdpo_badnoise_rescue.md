@@ -1,6 +1,6 @@
 # Exp37 MiniMax LocalDPO-BadNoise Hybrid Rescue
 
-Status: `EXP37_READBACK_COMPLETED`
+Status: `MINIMAX_BAD_NOISE_STATES_READY`
 
 Scope: MiniMax-only local corruption and bad-noise objective rescue after Exp36.
 This lane must not repeat failed Exp36 recipes, must not run 30-step unless a
@@ -115,3 +115,47 @@ Reports and manifests:
 - `reports/exp37_localdpo_style_or_corruption_pool_summary.json`
 - `exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl`
 - `exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl`
+
+## 2026-06-28 MiniMax Bad-Noise Diagnostic Scan
+
+Status: `MINIMAX_BAD_NOISE_STATES_READY`.
+
+Ran the preregistered diagnostic scan on PAI GPU0 using the locked
+LocalDPO-style train32 manifest. This was a no-training scan:
+
+- Training launched: `false`.
+- Model update: `false`.
+- Train rows: `32`.
+- Candidate states per row: `64` (`K_noise=8`, `K_timestep=8`).
+- Total candidate states: `2048`.
+- Timesteps: `0.05, 0.15, 0.25, 0.35, 0.5, 0.65, 0.8, 0.95`.
+- State manifest SHA256:
+  `492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4`.
+
+The scan selected `hard_state_A`, `hard_state_B`, and `hard_state_C` for each
+train row. `hard_state_A` applies an outside-sanity filter before maximizing
+local loser residual. As a result, it is intentionally not the globally largest
+residual state: mean hard-A/random gradient proxy ratio was `0.570900`, and
+mean hard-A/random loser-local ratio was `0.331205`. This is useful diagnostic
+evidence that the rescue recipes must use locally controlled hard states rather
+than simply maximizing raw residuals, which often includes outside damage.
+
+Observed selected-state tendencies:
+
+- `hard_state_A`: mostly `t=0.25` (`28/32` rows), mean gradient proxy
+  `1.449670`, mean loser-local score `1.119573`.
+- `hard_state_B`: split between `t=0.25` and `t=0.95`, mean gradient proxy
+  `1.204644`, mean loser-local score `0.728243`.
+- `hard_state_C`: mostly `t=0.25` (`30/32` rows), mean gradient proxy
+  `1.430135`, mean loser-local score `1.070902`.
+
+This unlocks only objective-recipe preregistration. It does not unlock 10-step
+training until the recipes are explicitly preregistered, and it does not unlock
+30-step or long training.
+
+Reports and manifests:
+
+- `reports/exp37_minimax_badnoise_diagnostic_scan.md`
+- `reports/exp37_minimax_badnoise_diagnostic_scan.csv`
+- `reports/exp37_minimax_badnoise_summary.json`
+- `exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl`

@@ -14,9 +14,14 @@ reports:
   localdpo_pool_metrics: reports/exp37_localdpo_style_or_corruption_pool.csv
   localdpo_pool_visual_review: reports/exp37_localdpo_style_visual_review.csv
   localdpo_pool_summary: reports/exp37_localdpo_style_or_corruption_pool_summary.json
+  badnoise_scan: reports/exp37_minimax_badnoise_diagnostic_scan.md
+  badnoise_scan_csv: reports/exp37_minimax_badnoise_diagnostic_scan.csv
+  badnoise_scan_summary: reports/exp37_minimax_badnoise_summary.json
 manifests:
   localdpo_train32: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl
   localdpo_heldout16: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl
+  badnoise_states: exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl
 runtime_outputs:
   train_vs_heldout: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/train_vs_heldout_20260628
   localdpo_pool: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/localdpo_pool_20260628
+  badnoise_scan: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/badnoise_scan_20260628

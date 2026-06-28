@@ -29,3 +29,21 @@ milestones:
     vor_eval_used: false
     visual_review_rows: 48
     status: LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS
+  badnoise_scan:
+    train_rows: 32
+    noise_count: 8
+    timesteps:
+      - 0.05
+      - 0.15
+      - 0.25
+      - 0.35
+      - 0.5
+      - 0.65
+      - 0.8
+      - 0.95
+    candidate_states_per_row: 64
+    total_candidate_states: 2048
+    training_launched: false
+    model_update: false
+    manifest_sha256: 492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4
+    status: MINIMAX_BAD_NOISE_STATES_READY

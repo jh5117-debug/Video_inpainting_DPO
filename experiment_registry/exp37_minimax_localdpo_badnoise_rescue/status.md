@@ -1,6 +1,6 @@
 # Exp37 Status
 
-Current status: `EXP37_READBACK_COMPLETED`
+Current status: `MINIMAX_BAD_NOISE_STATES_READY`
 
 ## 2026-06-28 Readback
 
@@ -61,3 +61,31 @@ Reports:
 - `reports/exp37_localdpo_style_or_corruption_pool.csv`
 - `reports/exp37_localdpo_style_visual_review.csv`
 - `reports/exp37_localdpo_style_or_corruption_pool_summary.json`
+
+## 2026-06-28 Bad-Noise Diagnostic Scan
+
+Current status: `MINIMAX_BAD_NOISE_STATES_READY`
+
+- Scanned locked LocalDPO-style train32 rows only.
+- Training launched: `false`.
+- Model update: `false`.
+- Candidate states per row: `64` (`K_noise=8`, `K_timestep=8`).
+- Total candidate states: `2048`.
+- Timesteps: `0.05, 0.15, 0.25, 0.35, 0.5, 0.65, 0.8, 0.95`.
+- State manifest SHA256:
+  `492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4`.
+- Mean hard-A/random gradient proxy ratio: `0.570900`.
+- Mean hard-A/random loser-local ratio: `0.331205`.
+
+Interpretation: the outside-sane hard states are not simply the maximum raw
+residual states. They are lower-gradient than the random baseline on average
+because the random state often includes outside damage. Objective rescue must
+therefore use the preregistered local hard states and outside preservation
+terms rather than a blind residual maximization rule.
+
+Reports:
+
+- `reports/exp37_minimax_badnoise_diagnostic_scan.md`
+- `reports/exp37_minimax_badnoise_diagnostic_scan.csv`
+- `reports/exp37_minimax_badnoise_summary.json`
+- `exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl`

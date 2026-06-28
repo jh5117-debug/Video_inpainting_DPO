@@ -3172,3 +3172,19 @@ hard-but-plausible), with no global collapse or systematic far-outside damage.
 This unlocks only the diagnostic bad-noise scan. MiniMax training remains
 locked until bad-noise states and recipe preregistration are complete. No
 30-step, long training, RC-FPO, or universal-adapter claim is unlocked.
+
+## 2026-06-28 Exp37 MiniMax Bad-Noise Diagnostic Scan
+
+Exp37 status: `MINIMAX_BAD_NOISE_STATES_READY`. The locked LocalDPO-style
+train32 pool was scanned with `K_noise=8` and `K_timestep=8`, producing `2048`
+frozen-model candidate states and one `hard_state_A/B/C` manifest row per
+train example. Training launched = `false`; model update = `false`. Manifest
+SHA256 is `492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4`.
+
+The scan found mean hard-A/random gradient proxy ratio `0.570900` and
+hard-A/random loser-local ratio `0.331205`. This is not a failure of the scan:
+the hard-A selector enforces outside sanity, while the random baseline can have
+larger residuals by damaging outside regions. Next allowed step is objective
+recipe preregistration using these local hard states. No 10-step training is
+allowed before preregistration; no 30-step, 2000-step, RC-FPO, or
+universal-adapter claim is unlocked.

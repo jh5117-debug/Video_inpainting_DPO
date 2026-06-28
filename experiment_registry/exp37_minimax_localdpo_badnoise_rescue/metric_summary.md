@@ -36,3 +36,32 @@ Status: `LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS`.
 The auto rule preserved in the CSV was intentionally conservative. The final
 classification keeps `auto_classification` and writes Codex-reviewed final
 classification separately.
+
+## 2026-06-28 Bad-Noise Diagnostic Scan
+
+Status: `MINIMAX_BAD_NOISE_STATES_READY`.
+
+| Quantity | Value |
+| --- | ---: |
+| Train rows | 32 |
+| States per row | 64 |
+| Total candidate states | 2048 |
+| K noise | 8 |
+| K timestep | 8 |
+| Hard-A/random gradient proxy ratio mean | 0.570900 |
+| Hard-A/random gradient proxy ratio max | 0.813708 |
+| Hard-A/random loser-local ratio mean | 0.331205 |
+| Hard-A/random loser-local ratio max | 0.538964 |
+
+Selected-state means:
+
+| Selection | Mean gradient proxy | Median gradient proxy | Mean loser-local score | Dominant timestep |
+| --- | ---: | ---: | ---: | --- |
+| hard_state_A | 1.449670 | 1.256254 | 1.119573 | t=0.25, 28/32 |
+| hard_state_B | 1.204644 | 1.033997 | 0.728243 | t=0.25 or t=0.95 |
+| hard_state_C | 1.430135 | 1.234349 | 1.070902 | t=0.25, 30/32 |
+
+The selected hard states are lower than random on raw gradient/local-residual
+proxy because the selection includes outside-sanity filtering. This is expected
+for LocalDPO-style rescue: the objective should use local hard states with
+outside preservation, not blindly maximize global residual.

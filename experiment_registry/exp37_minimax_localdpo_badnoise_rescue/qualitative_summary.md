@@ -41,3 +41,12 @@ background preserved. Final visual counts:
 No black/purple collapse, global frame damage, or systematic far-outside
 breakage was observed. Several REAL human/animal rows remain intentionally
 hard and are labeled `HARD_BUT_PLAUSIBLE`, not medium-hard.
+
+## 2026-06-28 Bad-Noise Diagnostic Scan
+
+No videos were generated in this milestone. It was a frozen-model diagnostic
+forward scan over latent/noise/timestep states. The qualitative implication is
+that the next recipe must avoid using arbitrary high-residual states: the
+random baseline often had larger local and gradient proxies because it also
+introduced outside damage. The selected `hard_state_A/B/C` states preserve the
+LocalDPO goal of local difficulty with outside sanity.
