@@ -2,7 +2,7 @@ experiment: exp40_minimax_psnr_safe_rescue
 model: MiniMax-Remover
 branch: research/exp40-minimax-psnr-safe-rescue-20260628
 base_exp: exp38_minimax_full_adapter_breakthrough
-status: MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM
+status: MINIMAX_STEP0_BASELINE_ESTABLISHED
 primary_eval: raw_output
 diagnostic_comp_only: true
 gpu_policy:
@@ -81,3 +81,38 @@ localdpo_v3_pool:
   visual_review_status: REVIEWED_PASS_TEMPORAL_STRIP_POOL_AUDIT
   model_quality_claim: false
   output_root_actual: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425
+step0_baseline:
+  status: MINIMAX_STEP0_BASELINE_ESTABLISHED
+  training_launched: false
+  raw_output_primary: true
+  diagnostic_comp_used: false
+  hard_comp_used: false
+  vor_eval_used: false
+  selected_counts:
+    train: 64
+    search: 24
+    shadow: 24
+  aggregate_metrics:
+    train:
+      full_psnr: 23.965598
+      mask_psnr: 18.485359
+      boundary_psnr: 19.395954
+      outside_psnr: 26.458319
+      outside_mae: 10.077378
+      temporal_diff_mae: 2.334655
+    search:
+      full_psnr: 25.043807
+      mask_psnr: 20.493872
+      boundary_psnr: 21.409812
+      outside_psnr: 27.765446
+      outside_mae: 8.877102
+      temporal_diff_mae: 3.845744
+    shadow:
+      full_psnr: 26.209732
+      mask_psnr: 21.645338
+      boundary_psnr: 24.277694
+      outside_psnr: 29.577002
+      outside_mae: 7.695790
+      temporal_diff_mae: 2.199505
+  visual_review_pages_opened: 42
+  model_quality_claim: false

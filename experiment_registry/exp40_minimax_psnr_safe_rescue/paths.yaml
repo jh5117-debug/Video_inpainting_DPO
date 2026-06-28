@@ -24,5 +24,10 @@ manifests:
   localdpo_v3_rejected: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_rejected.jsonl
 runtime_outputs:
   localdpo_v3_pool_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425
+  step0_baseline_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/step0_baseline_20260629_0457
+  step0_baseline_review_pages_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/step0_baseline_20260629_0457/reports/step0_review_pages
+  step0_baseline_review_pages_git: reports/exp40_minimax_step0_review_pages/
+  step0_baseline_metrics: reports/exp40_minimax_step0_baseline_metrics.csv
+  step0_baseline_visual_review: reports/exp40_minimax_step0_visual_review.csv
 gpu_audits:
   stale_exp30_cleanup: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/gpu0_1_preclean_exp30_stale_20260629_030722.txt

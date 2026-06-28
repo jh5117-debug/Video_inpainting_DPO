@@ -212,3 +212,53 @@ Reports and manifests:
 - `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl`
 - `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_shadow32.jsonl`
 - `exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_rejected.jsonl`
+
+## 2026-06-29 Step0 Baseline
+
+Milestone D status: `MINIMAX_STEP0_BASELINE_ESTABLISHED`.
+
+This milestone ran inference only. No training, DPO, 30-step, 100-step, hard
+comp, VOR-Eval use, or metric-definition change was performed. Raw MiniMax
+output remains the primary evaluation target.
+
+GPU usage:
+
+- GPU0: Step0 baseline inference for the train split.
+- GPU1: Step0 baseline inference for the search and shadow splits.
+- GPU2-GPU7: untouched by Exp40.
+- OOM/CUDA/Xid: none observed in this milestone.
+
+Split counts:
+
+- train: `64`
+- search: `24`
+- shadow: `24`
+- total: `112`
+
+Aggregate Step0 raw metrics:
+
+| split | rows | full PSNR | mask PSNR | boundary PSNR | outside PSNR | outside MAE | temporal diff MAE |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| train | 64 | 23.965598 | 18.485359 | 19.395954 | 26.458319 | 10.077378 | 2.334655 |
+| search | 24 | 25.043807 | 20.493872 | 21.409812 | 27.765446 | 8.877102 | 3.845744 |
+| shadow | 24 | 26.209732 | 21.645338 | 24.277694 | 29.577002 | 7.695790 | 2.199505 |
+
+Codex visual review:
+
+- Opened `14` midframe review pages and `28` temporal-strip pages, covering all
+  `112/112` Step0 baseline rows.
+- Observed pattern: BLENDER mountain/product/river rows are comparatively
+  stable; REAL indoor/person rows more often show object residuals, local color
+  drift, ghosting, dark fills, or mild fogging.
+- This is a baseline establishment step only. It is not a model-quality pass and
+  does not unlock DPO or MiniMax third-backbone evidence.
+
+Reports:
+
+- `reports/exp40_minimax_step0_baseline.md`
+- `reports/exp40_minimax_step0_baseline_metrics.csv`
+- `reports/exp40_minimax_step0_visual_review.csv`
+- `reports/exp40_minimax_step0_summary.json`
+- `reports/exp40_minimax_step0_review_pages/`
+
+Next status target: `MINIMAX_SFT_PSNRSAFE_*`.

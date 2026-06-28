@@ -3380,3 +3380,18 @@ existing Exp38 train-overfit audit. The blocker is not merely lack of output
 movement. The blocker is unsafe outside/background drift, boundary cost, and
 fogging/over-erasure risk. Exp40 next step is LocalDPO v3 pool construction and
 PSNR-safe SFT before DPO.
+
+## 2026-06-29 Exp40 Step0 Baseline
+
+Exp40 status: `MINIMAX_STEP0_BASELINE_ESTABLISHED`.
+
+Step0 raw MiniMax baseline inference completed on the locked LocalDPO v3
+minimum pool (`train64/search24/shadow24`). GPU0 handled train and GPU1 handled
+search/shadow; GPU2-GPU7 were untouched. No training, DPO, hard comp, VOR-Eval
+use, or metric change occurred.
+
+Shadow Step0 baseline full/mask/boundary/outside PSNR:
+`26.209732` / `21.645338` / `24.277694` / `29.577002`.
+
+Codex opened `42` review pages covering all `112` baseline rows. This is a
+baseline-only milestone and does not unlock MiniMax positive or DPO claims.

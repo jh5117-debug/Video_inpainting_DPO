@@ -58,3 +58,16 @@ Pool construction metrics, not model metrics:
 
 The full requested pool size was not reached; the pre-registered minimum was
 reached. Step0/SFT diagnostics may use this pool with the minimum-pool caveat.
+
+## 2026-06-29 Step0 Baseline Metrics
+
+Raw MiniMax Step0 baseline, inference only:
+
+| split | rows | full PSNR | mask PSNR | boundary PSNR | outside PSNR | outside MAE | temporal diff MAE |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| train | 64 | 23.965598 | 18.485359 | 19.395954 | 26.458319 | 10.077378 | 2.334655 |
+| search | 24 | 25.043807 | 20.493872 | 21.409812 | 27.765446 | 8.877102 | 3.845744 |
+| shadow | 24 | 26.209732 | 21.645338 | 24.277694 | 29.577002 | 7.695790 | 2.199505 |
+
+No training or checkpoint selection occurred. These numbers are the fixed
+baseline for PSNR-safe SFT and any later DPO-after-SFT comparisons.

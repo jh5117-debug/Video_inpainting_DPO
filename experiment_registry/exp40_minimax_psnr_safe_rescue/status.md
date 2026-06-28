@@ -54,3 +54,26 @@ Current status: `MINIMAX_LOCALDPO_V3_POOL_READY_MINIMUM`
   are under the Exp40 log root.
 
 Next status target: `MINIMAX_STEP0_BASELINE_READY`.
+
+## 2026-06-29 Step0 Baseline
+
+Current status: `MINIMAX_STEP0_BASELINE_ESTABLISHED`
+
+- Ran Step0 MiniMax official baseline on the locked LocalDPO v3 minimum pool:
+  `train=64`, `search=24`, `shadow=24`.
+- Inference only: no training, DPO, 30-step, 100-step, hard comp, or VOR-Eval.
+- Raw output is primary; diagnostic comp was not used.
+- GPU0 ran train64; GPU1 ran search24+shadow24. GPU2-GPU7 were untouched.
+- Aggregate raw metrics:
+  - train full/mask/boundary/outside PSNR:
+    `23.965598` / `18.485359` / `19.395954` / `26.458319`
+  - search full/mask/boundary/outside PSNR:
+    `25.043807` / `20.493872` / `21.409812` / `27.765446`
+  - shadow full/mask/boundary/outside PSNR:
+    `26.209732` / `21.645338` / `24.277694` / `29.577002`
+- Codex opened 42 review pages: 14 midframe pages and 28 temporal-strip pages
+  covering all 112 rows.
+- This milestone establishes the baseline only; it is not a positive model
+  result and does not unlock DPO.
+
+Next status target: `MINIMAX_SFT_PSNRSAFE_30STEP_GATE`.

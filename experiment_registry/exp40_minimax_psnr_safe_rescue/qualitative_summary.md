@@ -46,3 +46,22 @@ Observed:
 This review only supports using the pool for the next Step0/SFT diagnostics. It
 does not promote MiniMax model quality and does not unlock any adapter-positive
 claim.
+
+## 2026-06-29 Step0 Baseline Visual Review
+
+Codex opened all Step0 baseline review pages:
+
+- 14 midframe review pages.
+- 28 temporal-strip pages.
+- 112/112 rows covered.
+
+Observed baseline pattern:
+
+- BLENDER mountain/product/river scenes are comparatively stable.
+- REAL indoor/person scenes show more residual objects, local color drift,
+  ghosting, dark fills, or mild fogging.
+- Search/shadow splits contain both stable and challenging cases, which is
+  useful for the next SFT gate.
+
+This is not a quality-positive result. It establishes what Step0 must be
+improved against without boundary/outside damage.
