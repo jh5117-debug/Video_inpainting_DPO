@@ -1,6 +1,6 @@
 # Exp40 Status
 
-Current status: `EXP40_READBACK_COMPLETED`
+Current status: `MINIMAX_SFT_PSNRSAFE_NEGATIVE`
 
 ## 2026-06-28 Readback
 
@@ -77,3 +77,42 @@ Current status: `MINIMAX_STEP0_BASELINE_ESTABLISHED`
   result and does not unlock DPO.
 
 Next status target: `MINIMAX_SFT_PSNRSAFE_30STEP_GATE`.
+
+## 2026-06-29 PSNR-Safe SFT 30-Step Grid
+
+Current status: `MINIMAX_SFT_PSNRSAFE_NEGATIVE`
+
+- Ran the winner-SFT-only 30-step grid on GPU0/GPU1:
+  - GPU0: `SFT-A`, `SFT-B`
+  - GPU1: `SFT-C`, `SFT-D`
+- Scope: `S0`.
+- LR grid: `3e-5`, `1e-4`, `3e-4`.
+- Search rows evaluated: `288` recipe-row outputs.
+- Raw output was primary; hard comp and VOR-Eval were not used.
+- GPU2-GPU7 were untouched; no PID/PGID needed to be killed for this milestone.
+- No OOM/CUDA/Xid was observed.
+- All 12 recipe aggregates failed the search numeric gate.
+- Best aggregate recipe: `SFTmC_S0_lr3em05`, still negative:
+  full/mask/boundary/outside `-1.816781` / `-1.634597` /
+  `-1.899575` / `-2.624405`.
+- Codex opened representative best/worst strips. High-LR recipes show obvious
+  noisy/color collapse; low-LR recipes still have negative aggregate PSNR and
+  unsafe boundary/outside tradeoff.
+
+Decision:
+
+- `MINIMAX_SFT_PSNRSAFE_NEGATIVE`
+- no 100-step
+- no DPO-after-SFT
+- no 300/500-step confirmation
+- MiniMax remains `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`
+
+## 2026-06-29 Paper Positioning
+
+Current paper status: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`
+
+- DiffuEraser + VideoPainter remain the confirmed positive adapter evidence.
+- MiniMax remains plumbing-positive and trainable, but Exp40 does not provide
+  third-backbone adapter-positive evidence.
+- Universal-adapter / all-models-supported / final-SOTA language remains
+  forbidden.

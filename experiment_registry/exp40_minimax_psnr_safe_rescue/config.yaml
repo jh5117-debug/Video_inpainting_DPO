@@ -2,7 +2,7 @@ experiment: exp40_minimax_psnr_safe_rescue
 model: MiniMax-Remover
 branch: research/exp40-minimax-psnr-safe-rescue-20260628
 base_exp: exp38_minimax_full_adapter_breakthrough
-status: MINIMAX_STEP0_BASELINE_ESTABLISHED
+status: MINIMAX_SFT_PSNRSAFE_NEGATIVE
 primary_eval: raw_output
 diagnostic_comp_only: true
 gpu_policy:
@@ -116,3 +116,42 @@ step0_baseline:
       temporal_diff_mae: 2.199505
   visual_review_pages_opened: 42
   model_quality_claim: false
+sft_psnr_safe_grid:
+  status: MINIMAX_SFT_PSNRSAFE_NEGATIVE
+  training_type: winner_sft_only
+  dpo_used: false
+  hard_comp_used: false
+  vor_eval_used: false
+  raw_output_primary: true
+  scope: S0
+  steps: 30
+  train_rows: 64
+  search_rows: 24
+  recipes:
+    - SFT-A
+    - SFT-B
+    - SFT-C
+    - SFT-D
+  lrs:
+    - 3e-5
+    - 1e-4
+    - 3e-4
+  recipe_count: 12
+  evaluated_recipe_rows: 288
+  gpu_used:
+    - 0
+    - 1
+  gpu2_to_gpu7_touched: false
+  best_recipe_by_mean_full_psnr: SFTmC_S0_lr3em05
+  best_recipe_mean_deltas:
+    full_psnr: -1.816781
+    mask_psnr: -1.634597
+    boundary_psnr: -1.899575
+    outside_psnr: -2.624405
+    temporal_diff_mae: 0.525111
+  promotion_decision:
+    run_100step: false
+    run_dpo_after_sft: false
+    run_300_500_confirmation: false
+  metric_note: LPIPS_Ewarp_not_produced_by_current_minimax_runner
+  final_minimax_status: MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY

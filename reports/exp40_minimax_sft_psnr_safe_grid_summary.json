@@ -1,0 +1,184 @@
+{
+  "best_recipe_by_mean_full_psnr": "SFTmC_S0_lr3em05",
+  "best_recipe_summary": {
+    "collapse_or_large_artifact_rows": 2,
+    "full_positive_rows": 5,
+    "mean_delta_boundary_psnr": -1.8995745600075515,
+    "mean_delta_full_psnr": -1.8167808683742408,
+    "mean_delta_mask_psnr": -1.6345966234822953,
+    "mean_delta_outside_psnr": -2.6244054175298355,
+    "mean_delta_temporal_diff_mae": 0.5251112956708918,
+    "mean_step0_step30_full_mae": 7.842835800515281,
+    "region_safe_positive_rows": 1,
+    "rows": 24
+  },
+  "codex_visual_assets_opened": [
+    "reports/exp40_minimax_sft_psnr_safe_grid_review_assets/SFTmB_lr3e-5_PRODUCT004_best_strip.jpg",
+    "reports/exp40_minimax_sft_psnr_safe_grid_review_assets/SFTmC_lr3e-5_PRODUCT004_good_strip.jpg",
+    "reports/exp40_minimax_sft_psnr_safe_grid_review_assets/SFTmD_lr3e-4_MOUNTAIN009_worst_strip.jpg"
+  ],
+  "diagnostic_rows": 360,
+  "gpu2_to_gpu7_untouched_by_exp40": true,
+  "gpu_used": [
+    0,
+    1
+  ],
+  "lpips_ewarp_note": "not produced by the existing MiniMax runner; no values invented",
+  "metric_rows": 288,
+  "promotion_decision": "DO_NOT_RUN_100STEP_DO_NOT_RUN_DPO_AFTER_SFT",
+  "reason": "all 12 SFT 30-step recipes failed the search numeric gate; best mean full PSNR delta is still negative and region metrics are unsafe",
+  "recipe_summary": {
+    "SFTmA_S0_lr0.0001": {
+      "collapse_or_large_artifact_rows": 17,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -6.30112041005883,
+      "mean_delta_full_psnr": -7.1722232702493764,
+      "mean_delta_mask_psnr": -6.615491862044916,
+      "mean_delta_outside_psnr": -8.01323853095296,
+      "mean_delta_temporal_diff_mae": 0.47537297344145674,
+      "mean_step0_step30_full_mae": 21.9761327902476,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmA_S0_lr0.0003": {
+      "collapse_or_large_artifact_rows": 24,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -10.424002869084136,
+      "mean_delta_full_psnr": -13.827805545283304,
+      "mean_delta_mask_psnr": -10.202384094331608,
+      "mean_delta_outside_psnr": -16.048282762872756,
+      "mean_delta_temporal_diff_mae": 7.137380820155765,
+      "mean_step0_step30_full_mae": 59.77251600556903,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmA_S0_lr3em05": {
+      "collapse_or_large_artifact_rows": 3,
+      "full_positive_rows": 5,
+      "mean_delta_boundary_psnr": -1.975436421598653,
+      "mean_delta_full_psnr": -2.303277590089223,
+      "mean_delta_mask_psnr": -1.7116634236920634,
+      "mean_delta_outside_psnr": -3.36593848508678,
+      "mean_delta_temporal_diff_mae": 0.5847674366086721,
+      "mean_step0_step30_full_mae": 9.484424435430103,
+      "region_safe_positive_rows": 1,
+      "rows": 24
+    },
+    "SFTmB_S0_lr0.0001": {
+      "collapse_or_large_artifact_rows": 15,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -5.718433011917039,
+      "mean_delta_full_psnr": -6.963161292291957,
+      "mean_delta_mask_psnr": -5.897037064337819,
+      "mean_delta_outside_psnr": -8.2641818477251,
+      "mean_delta_temporal_diff_mae": 0.4366548143637677,
+      "mean_step0_step30_full_mae": 21.79243628515138,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmB_S0_lr0.0003": {
+      "collapse_or_large_artifact_rows": 24,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -9.675966695789535,
+      "mean_delta_full_psnr": -10.849289479305574,
+      "mean_delta_mask_psnr": -9.839992187841323,
+      "mean_delta_outside_psnr": -12.674500961731098,
+      "mean_delta_temporal_diff_mae": 7.373320595749344,
+      "mean_step0_step30_full_mae": 37.86643176277479,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmB_S0_lr3em05": {
+      "collapse_or_large_artifact_rows": 3,
+      "full_positive_rows": 5,
+      "mean_delta_boundary_psnr": -1.9526296959059668,
+      "mean_delta_full_psnr": -2.3060743308904668,
+      "mean_delta_mask_psnr": -1.6666561945552612,
+      "mean_delta_outside_psnr": -3.3552567558491586,
+      "mean_delta_temporal_diff_mae": 0.595905582110087,
+      "mean_step0_step30_full_mae": 9.462222966882917,
+      "region_safe_positive_rows": 1,
+      "rows": 24
+    },
+    "SFTmC_S0_lr0.0001": {
+      "collapse_or_large_artifact_rows": 16,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -5.605922570787165,
+      "mean_delta_full_psnr": -6.736656460367872,
+      "mean_delta_mask_psnr": -5.87832893571802,
+      "mean_delta_outside_psnr": -8.168580730726227,
+      "mean_delta_temporal_diff_mae": 0.9383851228437076,
+      "mean_step0_step30_full_mae": 21.65209822522269,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmC_S0_lr0.0003": {
+      "collapse_or_large_artifact_rows": 24,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -11.12405965165762,
+      "mean_delta_full_psnr": -14.573954942514154,
+      "mean_delta_mask_psnr": -10.318875910796471,
+      "mean_delta_outside_psnr": -17.20173728192319,
+      "mean_delta_temporal_diff_mae": 28.548662644267704,
+      "mean_step0_step30_full_mae": 62.429713404840896,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmC_S0_lr3em05": {
+      "collapse_or_large_artifact_rows": 2,
+      "full_positive_rows": 5,
+      "mean_delta_boundary_psnr": -1.8995745600075515,
+      "mean_delta_full_psnr": -1.8167808683742408,
+      "mean_delta_mask_psnr": -1.6345966234822953,
+      "mean_delta_outside_psnr": -2.6244054175298355,
+      "mean_delta_temporal_diff_mae": 0.5251112956708918,
+      "mean_step0_step30_full_mae": 7.842835800515281,
+      "region_safe_positive_rows": 1,
+      "rows": 24
+    },
+    "SFTmD_S0_lr0.0001": {
+      "collapse_or_large_artifact_rows": 14,
+      "full_positive_rows": 1,
+      "mean_delta_boundary_psnr": -6.300287118499285,
+      "mean_delta_full_psnr": -6.80120965532888,
+      "mean_delta_mask_psnr": -6.469688576520025,
+      "mean_delta_outside_psnr": -7.698792784051814,
+      "mean_delta_temporal_diff_mae": 1.1569518936642755,
+      "mean_step0_step30_full_mae": 21.045306824975544,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmD_S0_lr0.0003": {
+      "collapse_or_large_artifact_rows": 24,
+      "full_positive_rows": 0,
+      "mean_delta_boundary_psnr": -11.678146991854346,
+      "mean_delta_full_psnr": -15.079109985267747,
+      "mean_delta_mask_psnr": -10.781671695441917,
+      "mean_delta_outside_psnr": -17.713054213064837,
+      "mean_delta_temporal_diff_mae": 24.7380191849079,
+      "mean_step0_step30_full_mae": 67.055876834525,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    },
+    "SFTmD_S0_lr3em05": {
+      "collapse_or_large_artifact_rows": 4,
+      "full_positive_rows": 5,
+      "mean_delta_boundary_psnr": -2.440808773924134,
+      "mean_delta_full_psnr": -2.3953894863103513,
+      "mean_delta_mask_psnr": -2.186769452371929,
+      "mean_delta_outside_psnr": -3.14043300534167,
+      "mean_delta_temporal_diff_mae": 0.41459306663212675,
+      "mean_step0_step30_full_mae": 9.042155014144049,
+      "region_safe_positive_rows": 0,
+      "rows": 24
+    }
+  },
+  "recipes_evaluated": 12,
+  "runroot": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/sft_psnr_safe_grid_20260629_0524",
+  "status": "MINIMAX_SFT_PSNRSAFE_NEGATIVE",
+  "visual_rows": 288,
+  "workers": [
+    "gpu0_ab",
+    "gpu1_cd"
+  ]
+}

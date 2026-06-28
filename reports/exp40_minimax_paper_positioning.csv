@@ -1,0 +1,11 @@
+field,value
+status,TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY
+minimax_status,MINIMAX_SFT_PSNRSAFE_NEGATIVE
+third_backbone_adapter_positive,false
+universal_adapter_allowed,false
+best_recipe,SFTmC_S0_lr3em05
+best_full_delta,-1.816781
+best_mask_delta,-1.634597
+best_boundary_delta,-1.899575
+best_outside_delta,-2.624405
+next_step,do_not_extend_current_recipes

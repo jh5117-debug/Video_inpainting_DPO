@@ -1,5 +1,6 @@
 worktree: /home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
-pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
+pai_runtime_code_root_requested: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
+pai_runtime_code_root_actual: /home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
 output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp40_minimax_psnr_safe_rescue
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue
 runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp40_minimax_psnr_safe_rescue
@@ -17,6 +18,15 @@ reports:
   localdpo_v3_visual_review: reports/exp40_localdpo_v3_visual_review.csv
   localdpo_v3_summary: reports/exp40_localdpo_v3_summary.json
   localdpo_v3_review_pages: reports/exp40_localdpo_v3_review_pages/
+  sft_psnr_safe_grid: reports/exp40_minimax_sft_psnr_safe_grid.md
+  sft_psnr_safe_grid_metrics: reports/exp40_minimax_sft_psnr_safe_grid_metrics.csv
+  sft_psnr_safe_grid_diagnostics: reports/exp40_minimax_sft_psnr_safe_grid_diagnostics.csv
+  sft_psnr_safe_grid_visual_review: reports/exp40_minimax_sft_psnr_safe_grid_visual_review.csv
+  sft_psnr_safe_grid_summary: reports/exp40_minimax_sft_psnr_safe_grid_summary.json
+  sft_psnr_safe_grid_runtime_reports: reports/exp40_sft_psnr_safe_grid_runtime/
+  sft_psnr_safe_grid_review_assets: reports/exp40_minimax_sft_psnr_safe_grid_review_assets/
+  paper_positioning: reports/exp40_minimax_paper_positioning.md
+  paper_positioning_csv: reports/exp40_minimax_paper_positioning.csv
 manifests:
   localdpo_v3_train: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_train96.jsonl
   localdpo_v3_search: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl
@@ -25,6 +35,7 @@ manifests:
 runtime_outputs:
   localdpo_v3_pool_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/localdpo_v3_refs_exact_v3_20260629_042425
   step0_baseline_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/step0_baseline_20260629_0457
+  sft_psnr_safe_grid_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/sft_psnr_safe_grid_20260629_0524
   step0_baseline_review_pages_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/step0_baseline_20260629_0457/reports/step0_review_pages
   step0_baseline_review_pages_git: reports/exp40_minimax_step0_review_pages/
   step0_baseline_metrics: reports/exp40_minimax_step0_baseline_metrics.csv

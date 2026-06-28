@@ -65,3 +65,28 @@ Observed baseline pattern:
 
 This is not a quality-positive result. It establishes what Step0 must be
 improved against without boundary/outside damage.
+
+## 2026-06-29 PSNR-Safe SFT Visual Review
+
+Codex opened representative Step0-vs-Step30 temporal strips for the best and
+worst rows from the SFT grid:
+
+- `SFTmB_lr3e-5_PRODUCT004_best_strip.jpg`
+- `SFTmC_lr3e-5_PRODUCT004_good_strip.jpg`
+- `SFTmD_lr3e-4_MOUNTAIN009_worst_strip.jpg`
+
+Observed:
+
+- PRODUCT004 has local waterline/bubble differences and explains why a few
+  isolated rows have positive local/full PSNR deltas.
+- These isolated rows are not recipe-level wins; the aggregate full/mask/
+  boundary/outside metrics remain negative.
+- The MOUNTAIN009 high-LR case shows obvious whole-frame noisy/color collapse,
+  so high-LR recipes are visually unsafe.
+
+Conclusion:
+
+- No SFT recipe is visually promotable.
+- No `VIDEO_REVIEW_PASS`, `QUALITY_POSITIVE`, `THIRD_BACKBONE`, or
+  `PAPER_READY` status is assigned.
+- Stop before 100-step and DPO-after-SFT.

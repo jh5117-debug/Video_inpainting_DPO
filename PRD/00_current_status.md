@@ -3395,3 +3395,32 @@ Shadow Step0 baseline full/mask/boundary/outside PSNR:
 
 Codex opened `42` review pages covering all `112` baseline rows. This is a
 baseline-only milestone and does not unlock MiniMax positive or DPO claims.
+
+## 2026-06-29 Exp40 PSNR-Safe SFT Grid
+
+Exp40 status: `MINIMAX_SFT_PSNRSAFE_NEGATIVE`.
+
+Ran the winner-SFT-only 30-step grid on GPU0/GPU1:
+
+- recipes: `SFT-A`, `SFT-B`, `SFT-C`, `SFT-D`;
+- LR grid: `3e-5`, `1e-4`, `3e-4`;
+- scope: `S0`;
+- search outputs evaluated: `288` raw recipe-row outputs;
+- GPU2-GPU7 untouched;
+- no hard comp, no DPO, no VOR-Eval, no metric-definition change.
+
+Best aggregate recipe was `SFTmC_S0_lr3em05`, but it was still negative:
+full/mask/boundary/outside PSNR deltas
+`-1.816781` / `-1.634597` / `-1.899575` / `-2.624405`.
+
+Representative visual review confirmed that isolated PRODUCT004 local changes
+do not make a recipe-level win, while high-LR MOUNTAIN rows show obvious
+noisy/color collapse.
+
+Decision:
+
+- no 100-step;
+- no DPO-after-SFT;
+- no 300/500-step confirmation;
+- MiniMax remains plumbing-positive / recipe-not-ready, not third-backbone
+  adapter evidence.

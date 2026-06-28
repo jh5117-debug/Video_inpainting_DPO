@@ -262,3 +262,105 @@ Reports:
 - `reports/exp40_minimax_step0_review_pages/`
 
 Next status target: `MINIMAX_SFT_PSNRSAFE_*`.
+
+## 2026-06-29 PSNR-Safe SFT 30-Step Grid
+
+Milestone E status: `MINIMAX_SFT_PSNRSAFE_NEGATIVE`.
+
+This milestone ran the preregistered winner-SFT-only warmup grid. No DPO,
+hard comp, VOR-Eval, 100-step, 300/500-step, 1000/2000-step, or metric
+definition change was performed. Raw MiniMax output remained the primary
+evaluation target.
+
+GPU usage:
+
+- GPU0: SFT-A and SFT-B 30-step workers.
+- GPU1: SFT-C and SFT-D 30-step workers.
+- GPU2-GPU7: untouched by Exp40.
+- Killed PID/PGID during this milestone: none.
+- OOM/CUDA/Xid: none observed.
+
+Grid:
+
+- scope: `S0` full-transformer scope used by prior Exp38 gates.
+- train split: locked LocalDPO v3 `train64`.
+- search split: locked LocalDPO v3 `search24`.
+- recipes: `SFT-A`, `SFT-B`, `SFT-C`, `SFT-D`.
+- LR grid: `3e-5`, `1e-4`, `3e-4`.
+- steps per recipe: `30`.
+- total evaluated recipe/search rows: `12 * 24 = 288`.
+
+Aggregate raw search deltas:
+
+| recipe | full PSNR | mask PSNR | boundary PSNR | outside PSNR | temporal proxy | full-positive rows | safe-positive rows | large-artifact rows |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| `SFTmC_S0_lr3em05` | -1.816781 | -1.634597 | -1.899575 | -2.624405 | 0.525111 | 5 | 1 | 2 |
+| `SFTmA_S0_lr3em05` | -2.303278 | -1.711663 | -1.975436 | -3.365938 | 0.584767 | 5 | 1 | 3 |
+| `SFTmB_S0_lr3em05` | -2.306074 | -1.666656 | -1.952630 | -3.355257 | 0.595906 | 5 | 1 | 3 |
+| `SFTmD_S0_lr3em05` | -2.395389 | -2.186769 | -2.440809 | -3.140433 | 0.414593 | 5 | 0 | 4 |
+| `SFTmC_S0_lr0.0001` | -6.736656 | -5.878329 | -5.605923 | -8.168581 | 0.938385 | 0 | 0 | 16 |
+| `SFTmD_S0_lr0.0001` | -6.801210 | -6.469689 | -6.300287 | -7.698793 | 1.156952 | 1 | 0 | 14 |
+| `SFTmB_S0_lr0.0001` | -6.963161 | -5.897037 | -5.718433 | -8.264182 | 0.436655 | 0 | 0 | 15 |
+| `SFTmA_S0_lr0.0001` | -7.172223 | -6.615492 | -6.301120 | -8.013239 | 0.475373 | 0 | 0 | 17 |
+| `SFTmB_S0_lr0.0003` | -10.849289 | -9.839992 | -9.675967 | -12.674501 | 7.373321 | 0 | 0 | 24 |
+| `SFTmA_S0_lr0.0003` | -13.827806 | -10.202384 | -10.424003 | -16.048283 | 7.137381 | 0 | 0 | 24 |
+| `SFTmC_S0_lr0.0003` | -14.573955 | -10.318876 | -11.124060 | -17.201737 | 28.548663 | 0 | 0 | 24 |
+| `SFTmD_S0_lr0.0003` | -15.079110 | -10.781672 | -11.678147 | -17.713054 | 24.738019 | 0 | 0 | 24 |
+
+Best aggregate recipe by mean full PSNR delta:
+
+- `SFTmC_S0_lr3em05`, but its mean full/mask/boundary/outside PSNR deltas are
+  still negative: `-1.816781` / `-1.634597` / `-1.899575` / `-2.624405`.
+
+Codex visual review:
+
+- Opened representative best-case and worst-case temporal strips copied under
+  `reports/exp40_minimax_sft_psnr_safe_grid_review_assets/`.
+- The best-looking PRODUCT004 strips show local waterline/bubble changes, but
+  not a clean recipe-level quality win.
+- The high-LR MOUNTAIN009 strip shows obvious noisy/color collapse across the
+  frame.
+- Since every aggregate recipe fails the numeric gate, no `PASS`, `POSITIVE`,
+  `PAPER_READY`, or `THIRD_BACKBONE` promotion is made.
+
+Metric caveat:
+
+- This isolated MiniMax runner reports the existing raw PSNR/mask/boundary/
+  outside/temporal proxy metrics from the project MiniMax gate path.
+- LPIPS/Ewarp are not produced by this runner; no replacement values are
+  invented.
+
+Decision:
+
+- `MINIMAX_SFT_PSNRSAFE_NEGATIVE`.
+- Do not run 100-step.
+- Do not run DPO-after-SFT.
+- Do not run 300/500-step confirmation.
+- MiniMax remains plumbing-positive / recipe-not-ready, not third-backbone
+  adapter positive evidence.
+
+Reports:
+
+- `reports/exp40_minimax_sft_psnr_safe_grid.md`
+- `reports/exp40_minimax_sft_psnr_safe_grid_metrics.csv`
+- `reports/exp40_minimax_sft_psnr_safe_grid_diagnostics.csv`
+- `reports/exp40_minimax_sft_psnr_safe_grid_visual_review.csv`
+- `reports/exp40_minimax_sft_psnr_safe_grid_summary.json`
+- `reports/exp40_sft_psnr_safe_grid_runtime/`
+- `reports/exp40_minimax_sft_psnr_safe_grid_review_assets/`
+
+Next status target: `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`.
+
+## 2026-06-29 Paper Positioning
+
+Paper status: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+
+Exp40 does not add MiniMax as third-backbone adapter evidence. DiffuEraser and
+VideoPainter remain the confirmed positive adapter evidence; MiniMax remains
+trainable, inference-sensitive, and data-ready, but the current SFT/DPO rescue
+family is not quality-positive.
+
+Report:
+
+- `reports/exp40_minimax_paper_positioning.md`
+- `reports/exp40_minimax_paper_positioning.csv`
