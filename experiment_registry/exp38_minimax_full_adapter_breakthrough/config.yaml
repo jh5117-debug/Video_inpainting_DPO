@@ -63,3 +63,16 @@ milestones:
     rejected_rows: 5
     vor_eval_used: false
     next_milestone: bad_noise_v2
+  badnoise_v2:
+    status: MINIMAX_BAD_NOISE_STATES_READY
+    gpu: 0
+    training_launched: false
+    model_update: false
+    train_rows: 30
+    noise_count: 8
+    timestep_count: 8
+    total_candidate_states: 1920
+    manifest_sha256: 22dbd28c776dcccf2b8b4e49bb81f17ebf79cfbee58867699471e65958b30bac
+    hard_A_vs_random_gradient_proxy_ratio_mean: 0.5630424951565653
+    hard_A_vs_random_loser_local_ratio_mean: 0.33030099217206405
+    next_milestone: bounded_sft_dpo_rescue

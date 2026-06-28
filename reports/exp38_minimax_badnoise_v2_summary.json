@@ -1,0 +1,28 @@
+{
+  "candidate_states_per_row": 64,
+  "csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/badnoise_v2_20260628/reports/exp37_minimax_badnoise_diagnostic_scan.csv",
+  "device": "cuda:0",
+  "dtype": "bfloat16",
+  "hard_A_vs_random_gradient_proxy_ratio_max": 0.8563401955349145,
+  "hard_A_vs_random_gradient_proxy_ratio_mean": 0.5630424951565653,
+  "hard_A_vs_random_loser_local_ratio_max": 0.7053227485260329,
+  "hard_A_vs_random_loser_local_ratio_mean": 0.33030099217206405,
+  "manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/badnoise_v2_20260628/manifests/exp37_badnoise_states.jsonl",
+  "manifest_sha256": "22dbd28c776dcccf2b8b4e49bb81f17ebf79cfbee58867699471e65958b30bac",
+  "model_update": false,
+  "noise_count": 8,
+  "status": "MINIMAX_BAD_NOISE_STATES_READY",
+  "timesteps": [
+    0.05,
+    0.15,
+    0.25,
+    0.35,
+    0.5,
+    0.65,
+    0.8,
+    0.95
+  ],
+  "total_candidate_states": 1920,
+  "train_rows": 30,
+  "training_launched": false
+}

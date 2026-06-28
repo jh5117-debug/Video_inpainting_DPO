@@ -86,3 +86,23 @@ Manifests:
 
 Next milestone: bad-noise v2 hard-state mining on the filtered pool using
 GPU0/GPU1.
+
+## 2026-06-28 Bad-Noise v2 Mining
+
+Current status: `MINIMAX_BAD_NOISE_STATES_READY`
+
+- Ran on PAI GPU0.
+- GPU1 remained idle for the next bounded rescue step.
+- Input pool: filtered LocalDPO v2 train30.
+- Candidate states: `1920` (`30 * 8 * 8`).
+- Output manifest:
+  `exp38_minimax_full_adapter_breakthrough/manifests/badnoise_v2_train30_states.jsonl`.
+- Manifest SHA256:
+  `22dbd28c776dcccf2b8b4e49bb81f17ebf79cfbee58867699471e65958b30bac`.
+- Training launched: false.
+- Model update: false.
+
+Important caveat: hard_state_A is not stronger than random states by the proxy
+metrics on average (`gradient_proxy_ratio_mean=0.563042`,
+`loser_local_ratio_mean=0.330301`). The next 10-step rescue is therefore a
+bounded diagnostic, not a positive gate.

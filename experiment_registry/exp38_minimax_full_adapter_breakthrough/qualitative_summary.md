@@ -47,3 +47,10 @@ unlocked.
 - Five rows are too strong/trivial, mostly red/boundary stripe artifacts; these
   are preserved in the audit but excluded from filtered rescue manifests.
 - The filtered train30 + heldout13 pool is suitable for bad-noise v2 mining.
+
+## 2026-06-28 Bad-Noise v2
+
+No videos were generated in this mining milestone. The state manifest is ready,
+but proxy metrics indicate hard_state_A is not a stronger learning signal than
+random states on average. A 10-step rescue can be run as a bounded diagnostic;
+no qualitative or positive claim is unlocked by bad-noise v2 alone.

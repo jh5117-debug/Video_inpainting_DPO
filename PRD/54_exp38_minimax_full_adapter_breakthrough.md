@@ -231,3 +231,32 @@ Reports:
 - `reports/exp38_localdpo_v2_visual_review_codex.csv`
 - `reports/exp38_localdpo_v2_codex_review.md`
 - `reports/exp38_localdpo_v2_codex_summary.json`
+
+## 2026-06-28 Bad-Noise v2 Mining on GPU0
+
+Status: `MINIMAX_BAD_NOISE_STATES_READY`.
+
+Using the filtered LocalDPO v2 train30 pool, Exp38 mined `64` states per row
+(`K_noise=8`, `K_timestep=8`) on PAI GPU0. GPU1 remained free. The miner wrote
+hard_state_A/B/C entries for all `30` rows and did not update model weights.
+
+Manifest:
+
+- `exp38_minimax_full_adapter_breakthrough/manifests/badnoise_v2_train30_states.jsonl`
+- SHA256 `22dbd28c776dcccf2b8b4e49bb81f17ebf79cfbee58867699471e65958b30bac`
+
+Diagnostic caveat:
+
+- hard_A vs random gradient-proxy ratio mean: `0.563042`.
+- hard_A vs random loser-local ratio mean: `0.330301`.
+
+So the miner completed, but hard_state_A does not amplify the proxy signal
+relative to random states on average. A bounded 10-step rescue may still be run
+as requested, but the evidence does not unlock 30-step and should be treated as
+low-expectation diagnostics unless videos and metrics improve.
+
+Reports:
+
+- `reports/exp38_minimax_badnoise_v2_diagnostic_scan.md`
+- `reports/exp38_minimax_badnoise_v2_diagnostic_scan.csv`
+- `reports/exp38_minimax_badnoise_v2_summary.json`

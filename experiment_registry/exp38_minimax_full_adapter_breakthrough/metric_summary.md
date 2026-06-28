@@ -57,3 +57,15 @@ unlocked.
 - Filtered heldout manifest SHA256:
   `feed05a2c5ca296313a1f82f7b0d6d22ef6b231d4edf6de16321b341f2385490`.
 - VOR-Eval rows used: `false`.
+
+## 2026-06-28 Bad-Noise v2
+
+- Train rows scanned: `30`.
+- Candidate states per row: `64`.
+- Total candidate states: `1920`.
+- hard_A vs random gradient-proxy ratio mean/max:
+  `0.563042` / `0.856340`.
+- hard_A vs random loser-local ratio mean/max:
+  `0.330301` / `0.705323`.
+- This completes state mining but does not show hard-state signal
+  amplification over random states.

@@ -29,3 +29,10 @@ localdpo_v2:
     codex_visual_review: reports/exp38_localdpo_v2_visual_review_codex.csv
     codex_review_md: reports/exp38_localdpo_v2_codex_review.md
     codex_summary: reports/exp38_localdpo_v2_codex_summary.json
+badnoise_v2:
+  pai_run_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/badnoise_v2_20260628
+  states_manifest: exp38_minimax_full_adapter_breakthrough/manifests/badnoise_v2_train30_states.jsonl
+  reports:
+    md: reports/exp38_minimax_badnoise_v2_diagnostic_scan.md
+    csv: reports/exp38_minimax_badnoise_v2_diagnostic_scan.csv
+    summary: reports/exp38_minimax_badnoise_v2_summary.json
