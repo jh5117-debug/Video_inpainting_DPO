@@ -1,6 +1,6 @@
 # Exp41 H20 MiniMax Parallel BF16
 
-Status: `H20_MINIMAX_BF16_SAFE_READY`
+Status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
 
 Exp41 is an H20-only parallel MiniMax adapter track. PAI remains read-only and
 continues to own any active Exp40/PAI-side work. This branch does not modify
@@ -63,7 +63,7 @@ Report:
 
 ## H20 Data / Weight Audit
 
-Status: `H20_MINIMAX_BF16_SAFE_READY`
+Status: `H20_MINIMAX_DATA_READY`
 
 H20 mirror validation passed after filling missing evidence assets from PAI
 read-only rsync. The final audit checked `2242` active refs across Exp30, Exp37,
