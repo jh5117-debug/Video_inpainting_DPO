@@ -1,0 +1,17 @@
+experiment: exp37_minimax_localdpo_badnoise_rescue
+base_experiment: exp36_minimax_objective_rescue
+model: MiniMax-Remover
+forbidden:
+  - repeat_exp36_failed_recipes
+  - blind_30step
+  - long_training_2000step
+  - rc_fpo
+  - protected_lane_signals
+  - inference_metrics_py_changes
+  - shared_trainer_changes
+  - universal_adapter_claim
+conditional_gates:
+  localdpo_pool_required_for_training: true
+  badnoise_scan_required_for_training: true
+  preregistration_required_before_training: true
+  thirty_step_requires: MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE

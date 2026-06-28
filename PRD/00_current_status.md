@@ -3135,3 +3135,13 @@ Exp36 status: `MINIMAX_POSITIVE_CONTROL_PASS_HELDOUT_QUALITY_NOT_POSITIVE`. Mini
 ## 2026-06-27 Exp36 Final MiniMax Positioning
 
 Exp36 final status: `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY` / `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`. MiniMax remains technically trainable and inference-sensitive but lacks heldout quality-positive evidence. Do not write third-backbone success or universal adapter; do not continue MiniMax 30-step from this state.
+
+## 2026-06-28 Exp37 MiniMax LocalDPO-BadNoise Readback
+
+Exp37 status: `EXP37_READBACK_COMPLETED`. The new lane is isolated on
+`research/exp37-minimax-localdpo-badnoise-rescue-20260627` from Exp36 HEAD
+`3cd87e4b1a5b30a369ac3604086b7e31a4f45163`. Readback confirms the next
+question is not basic plumbing; it is train-vs-heldout behavior and whether a
+cleaner LocalDPO-style local corruption pool plus preregistered bad-noise
+states can create a meaningful MiniMax signal. No 30-step, 2000-step, RC-FPO,
+protected-lane action, or universal-adapter claim is unlocked.

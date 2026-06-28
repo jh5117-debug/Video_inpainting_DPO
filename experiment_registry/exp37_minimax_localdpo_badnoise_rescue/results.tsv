@@ -1,0 +1,2 @@
+milestone	status	notes
+readback	EXP37_READBACK_COMPLETED	Reread Exp30/35/36 PRDs, registries, metrics, diagnostics, and visual reports; checkpoint/load and ignored-weight failures are ruled out, but heldout quality remains non-positive with prior visual better rows Exp30 0/32, Exp35 0/48, Exp36 0/24; next allowed step is train-vs-heldout diagnosis only
