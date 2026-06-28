@@ -21,6 +21,7 @@ Reports:
 - `reports/exp31_vp_2000_lpips_ewarp_metrics.md`
 - `reports/exp31_vp_2000_final_decision.md`
 - `reports/exp31_vp_2000_base_identity_audit.md`
+- `reports/exp31_vp_2000_paper_evidence.md`
 
 Caveats:
 

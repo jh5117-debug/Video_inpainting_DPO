@@ -47,5 +47,8 @@ Current status: `VIDEOPAINTER_2000_POSITIVE`
 - comp outside caveat: comp frames use winner pixels outside the mask, so outside
   L1 is exactly `0.0` by construction and is not evidence of model-predicted
   outside preservation.
+- paper evidence status:
+  `DIFFUERASER_PLUS_VIDEOPAINTER_POSITIVE_EFFECTERASE_BASELINE_ONLY`.
+- paper evidence report: `reports/exp31_vp_2000_paper_evidence.md`.
 
 No Exp26 or Exp30 files were modified.

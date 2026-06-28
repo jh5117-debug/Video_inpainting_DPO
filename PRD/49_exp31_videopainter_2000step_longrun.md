@@ -238,3 +238,16 @@ LPIPS/Ewarp completion:
 - Outside caveat: comp outside pixels are copied from the winner, so outside L1
   is exactly `0.0` by construction and is not model-predicted outside
   preservation evidence.
+
+Paper evidence table:
+
+- status: `DIFFUERASER_PLUS_VIDEOPAINTER_POSITIVE_EFFECTERASE_BASELINE_ONLY`
+- report: `reports/exp31_vp_2000_paper_evidence.md`
+- csv: `reports/exp31_vp_2000_paper_evidence.csv`
+- VideoPainter Step2000 can be reported as 2000-step long-run positive under
+  the fixed Exp31 VideoPainter protocol.
+- VideoPainter Step50 remains micro evidence / trajectory context.
+- MiniMax Exp36 remains plumbing-only and is not promoted.
+- EffectErase VOR-Eval remains baseline-only and weak/failed.
+- no universal adapter, final-SOTA, all-models-supported, or top-conference
+  novelty claim is allowed.
