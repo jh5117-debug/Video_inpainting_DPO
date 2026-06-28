@@ -1,0 +1,46 @@
+{
+  "audited_existing_runners": [
+    {
+      "blocker": "hard cap steps > 10",
+      "path": "exp35_minimax_flow_dpo_rescue/scripts/run_minimax_winner_sft_positive_control.py",
+      "role": "winner SFT micro positive control"
+    },
+    {
+      "blocker": "hard cap steps > 10",
+      "path": "exp36_minimax_objective_rescue/scripts/run_minimax_winner_sft_positive_control.py",
+      "role": "winner SFT micro positive control with S0/S1 scopes"
+    },
+    {
+      "blocker": "hard cap steps > 10 and DPO-only recipes",
+      "path": "exp35_minimax_flow_dpo_rescue/scripts/run_minimax_rescue_10step_recipes.py",
+      "role": "Linear-DPO rescue"
+    },
+    {
+      "blocker": "hard cap DPO steps > 10 and SFT warmup > 5",
+      "path": "exp37_minimax_localdpo_badnoise_rescue/scripts/run_exp37_minimax_localdpo_badnoise_10step.py",
+      "role": "LocalDPO bad-noise rescue"
+    },
+    {
+      "blocker": "inference only",
+      "path": "exp38_minimax_full_adapter_breakthrough/scripts/evaluate_minimax_existing_checkpoint.py",
+      "role": "existing checkpoint evaluator"
+    },
+    {
+      "blocker": "inference only",
+      "path": "exp40_minimax_psnr_safe_rescue/scripts/run_step0_baseline.py",
+      "role": "Step0 baseline evaluator"
+    }
+  ],
+  "forbidden_claims": [
+    "UNIVERSAL_ADAPTER",
+    "FINAL_SOTA",
+    "TOP_CONFERENCE_NOVELTY_CONFIRMED",
+    "H20_MINIMAX_THIRD_BACKBONE_POSITIVE"
+  ],
+  "next_required_action": "Authorize an Exp41-isolated SFT ladder training runner or explicitly authorize a source patch to an existing runner.",
+  "pai_policy": "read_only_only",
+  "quality_claim": "none",
+  "reason": "No existing no-source-change runner supports the required 30/100/300-step SFT-only bad-noise ladder.",
+  "status": "H20_MINIMAX_SFT_BLOCKED",
+  "training_launched": false
+}

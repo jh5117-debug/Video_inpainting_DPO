@@ -2,7 +2,7 @@ experiment: exp41_h20_minimax_parallel_bf16
 model: MiniMax-Remover
 branch: research/exp41-h20-minimax-parallel-bf16-20260629
 base_exp: exp40_minimax_psnr_safe_rescue
-status: H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL
+status: H20_MINIMAX_SFT_BLOCKED
 source_modification_allowed: false
 training_authorized_after_readback: false
 pai_policy:
@@ -27,7 +27,7 @@ gates:
   data: passed
   bf16: passed
   protocol: passed
-  sft: pending
+  sft: blocked
   dpo: pending
   confirmation_500: pending
 success_targets:
@@ -52,3 +52,8 @@ official_executable_num_inference_steps: 12
 official_executable_iterations: 6
 feature_6step_probe_status: DIAGNOSTIC_ONLY_NOT_ADOPTED
 training_authorized_after_protocol_gate: true
+
+sft_ladder_status: H20_MINIMAX_SFT_BLOCKED
+sft_ladder_training_launched: false
+sft_ladder_blocker: existing_minimax_runners_cap_steps_at_10_no_no_source_change_30step_runner
+sft_ladder_patch_proposal: reports/exp41_h20_sft_ladder_patch_proposal.md

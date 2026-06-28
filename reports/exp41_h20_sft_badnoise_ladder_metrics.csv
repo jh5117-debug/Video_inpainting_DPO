@@ -1,0 +1,2 @@
+status,training_launched,reason,existing_sft_cap_steps,required_gate_steps,blocked_runner_examples
+H20_MINIMAX_SFT_BLOCKED,false,existing MiniMax SFT/DPO runners hard-cap at 10 steps and no no-source-change Lane A runner exists,10,30/100/300,"exp35 winner-SFT; exp36 winner-SFT; exp37 LocalDPO badnoise"

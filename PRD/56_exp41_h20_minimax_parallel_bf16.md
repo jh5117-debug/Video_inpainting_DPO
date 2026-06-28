@@ -1,6 +1,6 @@
 # Exp41 H20 MiniMax Parallel BF16
 
-Status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
+Status: `H20_MINIMAX_SFT_BLOCKED`
 
 Exp41 is an H20-only parallel MiniMax adapter track. PAI remains read-only and
 continues to own any active Exp40/PAI-side work. This branch does not modify
@@ -166,3 +166,32 @@ H20_MINIMAX_SFT_100STEP_PASS / H20_MINIMAX_SFT_300STEP_PASS / PARETO_MIXED / NEG
 
 No DPO or 500-step lane is authorized until the SFT ladder produces a safe
 checkpoint and passes its gate.
+
+## Lane A SFT Bad-Noise Ladder
+
+Status: `H20_MINIMAX_SFT_BLOCKED`
+
+Lane A was audited after the protocol gate passed. H20 GPU0-GPU7 had no compute
+apps at the fresh readback, but no SFT training was launched.
+
+Blocker: the existing MiniMax training scripts do not expose a no-source-change
+30/100/300-step SFT-only ladder.
+
+- Exp35 winner-SFT positive control hard-caps `steps > 10`.
+- Exp36 winner-SFT positive control with S0/S1 scopes hard-caps `steps > 10`.
+- Exp35 rescue recipes are DPO-oriented and hard-cap `steps > 10`.
+- Exp37 LocalDPO bad-noise recipes hard-cap DPO steps at 10 and SFT warmup at
+  5.
+- Exp38 and Exp40 scripts available in this branch are evaluators, not SFT
+  trainers.
+
+Under the no-source-code-modification rule, Exp41 cannot bypass those caps or
+create a new training runner. A patch proposal was written instead.
+
+Reports:
+
+- `reports/exp41_h20_sft_badnoise_ladder.md`
+- `reports/exp41_h20_sft_badnoise_ladder_metrics.csv`
+- `reports/exp41_h20_sft_badnoise_ladder_visual_review.csv`
+- `reports/exp41_h20_sft_badnoise_ladder_summary.json`
+- `reports/exp41_h20_sft_ladder_patch_proposal.md`

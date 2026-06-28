@@ -1,0 +1,2 @@
+status,training_launched,visual_outputs_reviewed,classification,reason
+H20_MINIMAX_SFT_BLOCKED,false,0,NOT_APPLICABLE_NO_TRAINING,"Lane A 30-step SFT ladder was not launched because existing runners hard-cap at 10 steps"

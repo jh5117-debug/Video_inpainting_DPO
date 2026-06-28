@@ -32,3 +32,10 @@ README/test protocol: `UniPCMultistepScheduler`, `float16`,
 
 This gate does not claim MiniMax quality improvement. The next allowed lane is
 the gated SFT-only bad-noise ladder after fresh readback and H20 GPU audit.
+
+## 2026-06-29 SFT Ladder Blocker
+
+`H20_MINIMAX_SFT_BLOCKED` was recorded before training. Existing MiniMax
+training scripts cap SFT/DPO micro gates at 10 steps, but Lane A requires a
+30-step SFT gate and longer gated continuations. Exp41 wrote a patch proposal
+instead of changing training source.

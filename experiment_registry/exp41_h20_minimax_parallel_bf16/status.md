@@ -1,6 +1,27 @@
 # Exp41 Status
 
-Current status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
+Current status: `H20_MINIMAX_SFT_BLOCKED`
+
+## 2026-06-29 SFT Bad-Noise Ladder Blocked
+
+Current status: `H20_MINIMAX_SFT_BLOCKED`
+
+- Data, BF16/SIGFPE, and protocol gates passed before this milestone.
+- Fresh H20 readback found GPU0-GPU7 with no compute apps.
+- No SFT/DPO training was launched.
+- Existing MiniMax SFT/DPO runners hard-cap at 10 steps; Exp37 warmup caps at
+  5 steps.
+- Lane A requires 30/100/300-step SFT-only training and has no legal
+  no-source-change runner in this branch.
+- A patch proposal was written instead of modifying training code.
+
+Reports:
+
+- `reports/exp41_h20_sft_badnoise_ladder.md`
+- `reports/exp41_h20_sft_badnoise_ladder_metrics.csv`
+- `reports/exp41_h20_sft_badnoise_ladder_visual_review.csv`
+- `reports/exp41_h20_sft_badnoise_ladder_summary.json`
+- `reports/exp41_h20_sft_ladder_patch_proposal.md`
 
 ## 2026-06-29 Official MiniMax Protocol Audit
 

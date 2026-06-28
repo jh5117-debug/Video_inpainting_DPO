@@ -45,3 +45,9 @@ evaluation.
 
 The 6-step probe is diagnostic only because the executable README/test protocol
 uses 12 steps. It does not replace the current Exp40/H20 Step0 protocol.
+
+## 2026-06-29 SFT Bad-Noise Ladder
+
+No SFT ladder metrics were produced because Lane A was blocked before training.
+The blocker is source scope: existing MiniMax SFT/DPO runners hard-cap at
+10 steps, while Lane A requires 30/100/300-step SFT-only gates.

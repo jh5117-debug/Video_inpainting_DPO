@@ -45,3 +45,9 @@ observed. MiniMax Step0 baseline still shows quality issues on several rows,
 including over-erasure/fog-like fills, terrain/shore hallucination, and dark
 masked-region artifacts. This is protocol-ready evidence only, not visual
 quality-positive evidence.
+
+## 2026-06-29 SFT Bad-Noise Ladder
+
+No SFT ladder videos were generated or reviewed because no training was
+launched. The existing training entrypoints do not legally support the required
+30-step SFT gate without source changes.

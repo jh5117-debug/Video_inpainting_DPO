@@ -1,3 +1,16 @@
+## 2026-06-29 Exp41 H20 MiniMax SFT Ladder Blocked
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp41 H20 MiniMax SFT-only bad-noise ladder | `H20_MINIMAX_SFT_BLOCKED`; no SFT/DPO training launched because existing SFT/DPO runners hard-cap at 10 steps and no no-source-change 30/100/300-step SFT ladder entrypoint exists | `reports/exp41_h20_sft_badnoise_ladder.md`, `reports/exp41_h20_sft_ladder_patch_proposal.md`, `experiment_registry/exp41_h20_minimax_parallel_bf16/status.md` |
+
+Notes:
+
+- This is a source-scope blocker, not a GPU/runtime blocker.
+- Required next action is explicit authorization for an Exp41-isolated SFT
+  ladder runner or a source patch to an existing runner.
+- No universal adapter, final SOTA, or MiniMax third-backbone claim is made.
+
 ## 2026-06-29 Exp41 H20 MiniMax Official Protocol
 
 | User-facing name | Status | Evidence / registry |

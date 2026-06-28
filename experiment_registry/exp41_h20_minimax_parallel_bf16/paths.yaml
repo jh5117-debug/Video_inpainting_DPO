@@ -38,3 +38,8 @@ h20_safe_exp40_manifests:
   official_protocol_visual_review_csv: reports/exp41_h20_official_vs_current_visual_review.csv
   official_protocol_summary: reports/exp41_h20_official_protocol_summary.json
   official_protocol_video_decode_audit: reports/exp41_h20_official_protocol_video_decode_audit.csv
+  sft_badnoise_ladder: reports/exp41_h20_sft_badnoise_ladder.md
+  sft_badnoise_ladder_metrics: reports/exp41_h20_sft_badnoise_ladder_metrics.csv
+  sft_badnoise_ladder_visual_review: reports/exp41_h20_sft_badnoise_ladder_visual_review.csv
+  sft_badnoise_ladder_summary: reports/exp41_h20_sft_badnoise_ladder_summary.json
+  sft_ladder_patch_proposal: reports/exp41_h20_sft_ladder_patch_proposal.md

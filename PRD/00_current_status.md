@@ -1,3 +1,26 @@
+## 2026-06-29 Exp41 H20 MiniMax SFT Ladder Blocked
+
+Exp41 attempted the Lane A SFT-only bad-noise ladder gate after protocol pass,
+but advanced to:
+
+```text
+H20_MINIMAX_SFT_BLOCKED
+```
+
+Reason: existing MiniMax SFT/DPO runners are micro-gate scripts and hard-cap at
+10 steps. Lane A requires 30-step and 100-step gates, with 300-step only after
+100-step passes. No existing no-source-change runner supports that ladder, and
+the prompt does not allow adding training internals under an Exp41 helper.
+
+No SFT/DPO training was launched. H20 GPUs remained compute-free at the fresh
+GPU audit. A patch proposal was written instead of modifying trainer code.
+
+Reports:
+
+- `reports/exp41_h20_sft_badnoise_ladder.md`
+- `reports/exp41_h20_sft_badnoise_ladder_summary.json`
+- `reports/exp41_h20_sft_ladder_patch_proposal.md`
+
 ## 2026-06-29 Exp41 H20 MiniMax Official Protocol
 
 Exp41 advanced to:
