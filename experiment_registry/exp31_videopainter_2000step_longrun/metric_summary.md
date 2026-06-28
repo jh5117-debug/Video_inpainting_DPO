@@ -27,5 +27,8 @@ LPIPS and Ewarp were not computed in this fast summary, so the formal
 favor Step2000.
 
 Strict validation readback is complete in
-`reports/exp31_vp_2000_strict_readback.md`. LPIPS/Ewarp and replay identity
-remain pending before formal promotion.
+`reports/exp31_vp_2000_strict_readback.md`. Official base identity replay
+passed in `reports/exp31_vp_2000_base_identity_audit.md`: official base and
+Step0 weights match, replay-vs-existing raw/comp frames are exact on 2
+search-dev + 2 shadow-dev rows for Step0/50/2000, and comp formula/polarity
+recomputation is exact. LPIPS/Ewarp remain pending before formal promotion.

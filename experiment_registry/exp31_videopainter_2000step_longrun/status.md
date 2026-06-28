@@ -32,5 +32,12 @@ Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
   `VIDEOPAINTER_2000_POSITIVE` gate is not satisfied.
 - strict readback: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`.
 - strict readback report: `reports/exp31_vp_2000_strict_readback.md`.
+- official base identity audit: `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED`.
+- base identity report: `reports/exp31_vp_2000_base_identity_audit.md`.
+- replay identity: official base, Step0, Step50, and Step2000 replayed on 2
+  search-dev + 2 shadow-dev rows; replay and existing raw/comp frames matched
+  exactly (`MAE=0`, `max_abs=0`, 49/49 frames), and comp formula/polarity
+  recomputation was exact.
+- remaining blocker: LPIPS/Ewarp completion.
 
 No Exp26 or Exp30 files were modified.

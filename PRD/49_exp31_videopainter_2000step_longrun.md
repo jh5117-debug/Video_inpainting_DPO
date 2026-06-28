@@ -77,6 +77,7 @@ right-side or stale-lock protection unless the user explicitly releases them.
 6. `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
 7. `VIDEOPAINTER_2000_PARETO_MIXED`
 8. `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`
+9. `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED`
 
 The 2000-step run must not start until resume policy and L0/L1 pass.
 
@@ -180,5 +181,32 @@ Strict validation readback:
 - current finding: source/config readback supports same official base family,
   same search/shadow rows, same 49F protocol, same seed, same mask polarity, and
   same diagnostic comp formula for Step0/50/2000.
-- formal-positive blocker remains: official base replay identity and
-  LPIPS/Ewarp completion are still pending.
+
+Official base identity audit:
+
+- status: `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED`
+- report: `reports/exp31_vp_2000_base_identity_audit.md`
+- csv: `reports/exp31_vp_2000_base_identity_audit.csv`
+- replay diff: `reports/exp31_vp_2000_replay_diff.csv`
+- comp formula audit: `reports/exp31_vp_2000_comp_formula_audit.csv`
+- summary json: `reports/exp31_vp_2000_base_identity_summary.json`
+- replay run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_base_identity_replay_20260628_091019`
+- official base and Step0 branch weights match exactly:
+  `5d01728cb0cb605b591f41cbea033db22d5ae72d0b37565957feae71b089be8e`.
+- Step50 weight SHA:
+  `3849eafbeb9f30a7fb0f52df4c5f0a172d4d437e4161a182a075e15699b2430b`.
+- Step2000 weight SHA:
+  `fd02a22088da6869fafed437284287b011181882943f81d5ec8b1a493472c148`.
+- 2 search-dev and 2 shadow-dev rows were replayed for official base, Step0,
+  Step50, and Step2000 using the same 49F/720x480/seed-20260627 protocol.
+- official base vs replay Step0, official base vs existing Step0, and
+  replay Step0/50/2000 vs existing Step0/50/2000 were all exact:
+  `MAE=0`, `max_abs=0`, 49/49 frames, hash-equal raw and comp frames.
+- recomputed comp frames exactly match
+  `comp = raw inside mask + winner outside mask`, with mask threshold
+  `>127` and first-frame mask zeroing; `comp_recalc_mae=0` and first-frame
+  mask sum `0` for every checked row.
+- no MiniMax, EffectErase adapter, shared trainer, or `inference/metrics.py`
+  change was made by the audit.
+- formal-positive blocker remains: LPIPS/Ewarp completion is still pending.

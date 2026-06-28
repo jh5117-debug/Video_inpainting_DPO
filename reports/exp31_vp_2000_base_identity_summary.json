@@ -1,0 +1,24 @@
+{
+  "architecture_config_same": true,
+  "base_identity_audit_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_base_identity_replay_20260628_091019/reports/exp31_vp_2000_base_identity_audit.csv",
+  "comp_formula_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_base_identity_replay_20260628_091019/reports/exp31_vp_2000_comp_formula_audit.csv",
+  "comp_formula_exact": true,
+  "eval_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700",
+  "gpu": "1",
+  "identity_exact": true,
+  "official_weight_sha256": "5d01728cb0cb605b591f41cbea033db22d5ae72d0b37565957feae71b089be8e",
+  "replay_diff_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_base_identity_replay_20260628_091019/reports/exp31_vp_2000_replay_diff.csv",
+  "replay_exact": true,
+  "run_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_base_identity_replay_20260628_091019",
+  "samples_per_split": 2,
+  "splits": [
+    "search",
+    "shadow"
+  ],
+  "status": "VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED",
+  "step0_weight_matches_official_base": true,
+  "step0_weight_sha256": "5d01728cb0cb605b591f41cbea033db22d5ae72d0b37565957feae71b089be8e",
+  "step2000_weight_sha256": "fd02a22088da6869fafed437284287b011181882943f81d5ec8b1a493472c148",
+  "step50_weight_sha256": "3849eafbeb9f30a7fb0f52df4c5f0a172d4d437e4161a182a075e15699b2430b",
+  "vp_base": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp14_videopainter_gate/third_party/VideoPainter/ckpt/CogVideoX-5b-I2V"
+}
