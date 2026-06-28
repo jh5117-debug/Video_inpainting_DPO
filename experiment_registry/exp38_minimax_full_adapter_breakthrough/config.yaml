@@ -76,3 +76,31 @@ milestones:
     hard_A_vs_random_gradient_proxy_ratio_mean: 0.5630424951565653
     hard_A_vs_random_loser_local_ratio_mean: 0.33030099217206405
     next_milestone: bounded_sft_dpo_rescue
+  sft_dpo_rescue_10step:
+    status: MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE
+    gpu: 1
+    gpu0_1_killed_processes: 0
+    recipes:
+      - R1_LocalDPO_Linear_HardNoise
+      - R2_LocalDPO_Linear_SDPO
+      - R3_LocalDPO_SFTWarmup_Linear
+    heldout_rows: 13
+    steps: 10
+    lr: 1.0e-5
+    utility_scale: 18.0
+    r1_delta_full_mask_boundary_outside_psnr:
+      - 0.10216652598434259
+      - 0.11723035974246716
+      - -0.14151014483381752
+      - -0.037262280248663106
+    r2_delta_full_mask_boundary_outside_psnr:
+      - -0.2584819133255137
+      - -0.07880658124927614
+      - -0.47507090706441457
+      - -0.6984594332304735
+    r3_delta_full_mask_boundary_outside_psnr:
+      - -0.6040976084529677
+      - -0.15918355004123194
+      - -0.6683353974948664
+      - -1.5288543690979282
+    thirty_step_unlocked: false

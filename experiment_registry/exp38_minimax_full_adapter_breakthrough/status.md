@@ -106,3 +106,25 @@ Important caveat: hard_state_A is not stronger than random states by the proxy
 metrics on average (`gradient_proxy_ratio_mean=0.563042`,
 `loser_local_ratio_mean=0.330301`). The next 10-step rescue is therefore a
 bounded diagnostic, not a positive gate.
+
+## 2026-06-28 SFT/DPO Rescue 10-Step
+
+Current status: `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`
+
+- Ran on PAI GPU1 after GPU0/GPU1 were audited empty.
+- GPU0/GPU1 processes killed: `0`.
+- Protected GPU2/GPU3/GPU4 jobs were not touched.
+- Recipes run: `R1`, `R2`, `R3`.
+- Heldout rows: `13`.
+- R1 is numerically mixed and visually not quality-positive.
+- R2 and R3 are negative.
+- 30-step remains locked.
+
+Artifacts:
+
+- `reports/exp38_minimax_sft_dpo_rescue_10step.md`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_codex_review.md`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_metrics.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_visual_review.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_diagnostics.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_summary.json`

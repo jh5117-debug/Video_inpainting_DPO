@@ -260,3 +260,50 @@ Reports:
 - `reports/exp38_minimax_badnoise_v2_diagnostic_scan.md`
 - `reports/exp38_minimax_badnoise_v2_diagnostic_scan.csv`
 - `reports/exp38_minimax_badnoise_v2_summary.json`
+
+## 2026-06-28 SFT/DPO Rescue 10-Step on GPU1
+
+Status: `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`.
+
+The bounded rescue ran on PAI GPU1 using the filtered LocalDPO v2 heldout13
+pool and the bad-noise v2 state manifest. GPU0/GPU1 were audited before use and
+again after completion; both were free and no GPU0/GPU1 process needed to be
+killed. GPU2/GPU3/GPU4 jobs were left untouched.
+
+Recipes:
+
+- R1 `LocalDPO-Linear-HardNoise`
+- R2 `LocalDPO-Linear-SDPO`
+- R3 `LocalDPO-SFTWarmup-Linear`
+
+Aggregate heldout13 results:
+
+- R1 full/mask/boundary/outside PSNR deltas:
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- R2 full/mask/boundary/outside PSNR deltas:
+  `-0.258482` / `-0.078807` / `-0.475071` / `-0.698459`.
+- R3 full/mask/boundary/outside PSNR deltas:
+  `-0.604098` / `-0.159184` / `-0.668335` / `-1.528854`.
+
+Codex reviewed the generated montage and representative individual high-diff
+and ambiguous temporal strips. R1 is the only recipe with mild positive
+full/mask metrics, but the video evidence is local tradeoff/over-erasure rather
+than reliable quality improvement. R2 and R3 are negative. No recipe reaches the
+pre-registered 10-step quality gate, so 30-step remains locked.
+
+Final interpretation:
+
+- MiniMax still uses trained weights and can move outputs.
+- The current SFT/DPO rescue objective changes outputs but does not produce
+  heldout quality-positive behavior.
+- `THIRD_BACKBONE_MICRO_POSITIVE_EVIDENCE` is not unlocked.
+- `UNIVERSAL_ADAPTER` remains forbidden.
+
+Reports:
+
+- `reports/exp38_minimax_sft_dpo_rescue_10step.md`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_codex_review.md`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_metrics.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_visual_review.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_diagnostics.csv`
+- `reports/exp38_minimax_sft_dpo_rescue_10step_summary.json`

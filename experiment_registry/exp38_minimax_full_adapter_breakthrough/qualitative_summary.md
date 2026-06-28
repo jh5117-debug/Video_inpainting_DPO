@@ -54,3 +54,20 @@ No videos were generated in this mining milestone. The state manifest is ready,
 but proxy metrics indicate hard_state_A is not a stronger learning signal than
 random states on average. A 10-step rescue can be run as a bounded diagnostic;
 no qualitative or positive claim is unlocked by bad-noise v2 alone.
+
+## 2026-06-28 SFT/DPO Rescue 10-Step
+
+Codex reviewed the generated SFT/DPO rescue montage and representative
+individual high-diff/ambiguous temporal strips for all three recipes. The review
+does not unlock `QUALITY_POSITIVE`.
+
+- R1 changes outputs and has mild full/mask numeric gains, but the visible
+  changes are local tradeoffs: over-erasure, soft/foggy local fill, and boundary
+  or outside degradation on enough rows to fail the gate.
+- R2 introduces stronger unwanted drift and worsens aggregate boundary/outside
+  metrics.
+- R3 moves outputs the most, but that movement is mostly harmful and lowers
+  outside PSNR by `-1.528854`.
+
+No recipe provides enough clear heldout visual wins, so no 30-step confirmatory
+run is allowed.

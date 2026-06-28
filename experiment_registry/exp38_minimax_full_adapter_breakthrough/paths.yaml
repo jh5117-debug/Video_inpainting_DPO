@@ -36,3 +36,13 @@ badnoise_v2:
     md: reports/exp38_minimax_badnoise_v2_diagnostic_scan.md
     csv: reports/exp38_minimax_badnoise_v2_diagnostic_scan.csv
     summary: reports/exp38_minimax_badnoise_v2_summary.json
+sft_dpo_rescue_10step:
+  pai_run_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/sft_dpo_rescue_20260628
+  local_runtime_cache: reports/exp38_sft_dpo_rescue_runtime
+  reports:
+    runner_md: reports/exp38_minimax_sft_dpo_rescue_10step.md
+    codex_review_md: reports/exp38_minimax_sft_dpo_rescue_10step_codex_review.md
+    metrics: reports/exp38_minimax_sft_dpo_rescue_10step_metrics.csv
+    visual_review: reports/exp38_minimax_sft_dpo_rescue_10step_visual_review.csv
+    diagnostics: reports/exp38_minimax_sft_dpo_rescue_10step_diagnostics.csv
+    summary: reports/exp38_minimax_sft_dpo_rescue_10step_summary.json

@@ -3287,3 +3287,26 @@ Outcome:
 Next step is LocalDPO v2 plus bad-noise v2 with stricter local restriction and
 outside preservation before any SFT/DPO rescue. 30-step, long training,
 RC-FPO, and universal-adapter language remain locked.
+
+## 2026-06-28 Exp38 MiniMax SFT/DPO Rescue 10-Step
+
+Exp38 status: `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`.
+
+GPU0/GPU1 were reserved by the user and audited empty; no GPU0/GPU1 process
+needed to be killed. GPU2/GPU3/GPU4 jobs remained untouched. The rescue ran
+R1/R2/R3 on GPU1 with filtered LocalDPO v2 heldout13 and completed without
+NaN/Inf.
+
+Heldout aggregate deltas:
+
+- R1 `LocalDPO-Linear-HardNoise`: full/mask/boundary/outside PSNR
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- R2 `LocalDPO-Linear-SDPO`: full/mask/boundary/outside PSNR
+  `-0.258482` / `-0.078807` / `-0.475071` / `-0.698459`.
+- R3 `LocalDPO-SFTWarmup-Linear`: full/mask/boundary/outside PSNR
+  `-0.604098` / `-0.159184` / `-0.668335` / `-1.528854`.
+
+Codex reviewed the generated montage plus representative individual temporal
+strips. R1 is a metric/local tradeoff rather than a reliable visual win; R2/R3
+are negative. The 10-step quality gate failed, so 30-step remains locked and
+MiniMax remains plumbing-positive only.

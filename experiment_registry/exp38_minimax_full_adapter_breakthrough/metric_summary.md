@@ -69,3 +69,19 @@ unlocked.
   `0.330301` / `0.705323`.
 - This completes state mining but does not show hard-state signal
   amplification over random states.
+
+## 2026-06-28 SFT/DPO Rescue 10-Step
+
+Heldout13 aggregate deltas:
+
+- R1 `LocalDPO-Linear-HardNoise`: full/mask/boundary/outside PSNR
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- R2 `LocalDPO-Linear-SDPO`: full/mask/boundary/outside PSNR
+  `-0.258482` / `-0.078807` / `-0.475071` / `-0.698459`.
+- R3 `LocalDPO-SFTWarmup-Linear`: full/mask/boundary/outside PSNR
+  `-0.604098` / `-0.159184` / `-0.668335` / `-1.528854`.
+
+All recipes completed without NaN/Inf and with frozen reference probe delta
+`0.0`. The best numeric recipe, R1, is still not a quality-positive gate because
+boundary/outside quality does not hold and video strips show local tradeoff
+rather than reliable improvement.
