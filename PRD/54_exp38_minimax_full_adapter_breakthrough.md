@@ -190,3 +190,44 @@ Reports:
 - `reports/exp38_minimax_train_overfit_metrics.csv`
 - `reports/exp38_minimax_train_overfit_visual_review.csv`
 - `reports/exp38_minimax_train_overfit_summary.json`
+
+## 2026-06-28 LocalDPO v2 Filtered Pool
+
+Status: `MINIMAX_LOCALDPO_V2_FILTERED_POOL_READY`.
+
+The Exp38 LocalDPO v2 corruption pool completed on PAI under
+`localdpo_v2_20260628`. The outer SSH session returned `143`, but heartbeat and
+file inspection showed the pool had already finished and written reports and
+manifests, so no rerun or overwrite was needed.
+
+Codex inspected the 48 selected review sheets. The pool is cleaner than prior
+LocalDPO corruption: corruption is local, outside reinjection works, and no
+global black/purple collapse was observed. Five rows are still too harsh or
+visually trivial, mostly red/boundary stripe artifacts, so the unfiltered pool
+is not promoted.
+
+Filtered pool for the next GPU milestones:
+
+- train: `exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_train30_filtered.jsonl`,
+  rows `30`, SHA256 `dd371ff2953da1cb60876351af84af3ca30b95418cc80f5d964adc0d59283ca0`.
+- heldout: `exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_heldout13_filtered.jsonl`,
+  rows `13`, SHA256 `feed05a2c5ca296313a1f82f7b0d6d22ef6b231d4edf6de16321b341f2385490`.
+
+Raw selected pool:
+
+- train32: `30` usable, `2` rejected.
+- heldout16: `13` usable, `3` rejected.
+- VOR-Eval used: `false`.
+
+Next action: run bad-noise v2 on the filtered train pool using GPU0/GPU1, then
+run a bounded SFT/DPO rescue only if hard-state mining succeeds. Long training
+and 30-step remain locked until a strict 10-step pass.
+
+Reports:
+
+- `reports/exp38_localdpo_v2_pool.md`
+- `reports/exp38_localdpo_v2_pool.csv`
+- `reports/exp38_localdpo_v2_visual_review.csv`
+- `reports/exp38_localdpo_v2_visual_review_codex.csv`
+- `reports/exp38_localdpo_v2_codex_review.md`
+- `reports/exp38_localdpo_v2_codex_summary.json`

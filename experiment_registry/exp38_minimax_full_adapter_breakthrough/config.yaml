@@ -50,3 +50,16 @@ milestones:
         checkpoint: exp36 S1 winner-SFT checkpoint-10
         result: near_no_change_train_and_heldout
     next_milestone: localdpo_v2_badnoise_v2
+  localdpo_v2:
+    status: MINIMAX_LOCALDPO_V2_FILTERED_POOL_READY
+    candidate_rows_per_source_max: 2
+    profiles:
+      - V2_object_micro
+      - V2_object_mild
+      - V2_boundary_effect_mild
+      - V2_object_affected_local
+    filtered_train_rows: 30
+    filtered_heldout_rows: 13
+    rejected_rows: 5
+    vor_eval_used: false
+    next_milestone: bad_noise_v2

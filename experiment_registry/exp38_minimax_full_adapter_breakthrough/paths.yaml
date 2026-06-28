@@ -16,3 +16,16 @@ reports:
   train_overfit_visual_review: reports/exp38_minimax_train_overfit_visual_review.csv
   train_overfit_summary: reports/exp38_minimax_train_overfit_summary.json
 prd: PRD/54_exp38_minimax_full_adapter_breakthrough.md
+localdpo_v2:
+  pai_run_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/localdpo_v2_20260628
+  raw_train_manifest: exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_train32.jsonl
+  raw_heldout_manifest: exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_heldout16.jsonl
+  filtered_train_manifest: exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_train30_filtered.jsonl
+  filtered_heldout_manifest: exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_heldout13_filtered.jsonl
+  reports:
+    pool_md: reports/exp38_localdpo_v2_pool.md
+    pool_csv: reports/exp38_localdpo_v2_pool.csv
+    raw_visual_review: reports/exp38_localdpo_v2_visual_review.csv
+    codex_visual_review: reports/exp38_localdpo_v2_visual_review_codex.csv
+    codex_review_md: reports/exp38_localdpo_v2_codex_review.md
+    codex_summary: reports/exp38_localdpo_v2_codex_summary.json

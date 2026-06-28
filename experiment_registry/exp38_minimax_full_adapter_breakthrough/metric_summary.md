@@ -47,3 +47,13 @@ Exp36 S1 winner-SFT checkpoint-10:
 Conclusion: R1 confirms output movement but with local/global tradeoffs; S1 is
 too weak to count as train-overfit. No quality-positive or 30-step gate is
 unlocked.
+
+## 2026-06-28 LocalDPO v2 Pool
+
+- Raw selected train pool: 32 rows, 30 usable, 2 visually rejected.
+- Raw selected heldout pool: 16 rows, 13 usable, 3 visually rejected.
+- Filtered train manifest SHA256:
+  `dd371ff2953da1cb60876351af84af3ca30b95418cc80f5d964adc0d59283ca0`.
+- Filtered heldout manifest SHA256:
+  `feed05a2c5ca296313a1f82f7b0d6d22ef6b231d4edf6de16321b341f2385490`.
+- VOR-Eval rows used: `false`.

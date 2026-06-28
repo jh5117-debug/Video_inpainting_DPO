@@ -1,0 +1,15 @@
+{
+  "filtered_heldout_rows": 13,
+  "filtered_train_rows": 30,
+  "heldout_manifest": "exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_heldout13_filtered.jsonl",
+  "heldout_sha256": "feed05a2c5ca296313a1f82f7b0d6d22ef6b231d4edf6de16321b341f2385490",
+  "raw_heldout_rows": 16,
+  "raw_train_rows": 32,
+  "rejected_heldout_rows": 3,
+  "rejected_train_rows": 2,
+  "status": "MINIMAX_LOCALDPO_V2_FILTERED_POOL_READY",
+  "train_manifest": "exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_train30_filtered.jsonl",
+  "train_sha256": "dd371ff2953da1cb60876351af84af3ca30b95418cc80f5d964adc0d59283ca0",
+  "visual_review": "48 selected review sheets inspected via local montage and representative individual sheets; trivial rows rejected, no global black-purple collapse observed",
+  "vor_eval_used": false
+}

@@ -66,3 +66,23 @@ Reports:
 - `reports/exp38_minimax_train_overfit_metrics.csv`
 - `reports/exp38_minimax_train_overfit_visual_review.csv`
 - `reports/exp38_minimax_train_overfit_summary.json`
+
+## 2026-06-28 LocalDPO v2 Filtered Pool
+
+Current status: `MINIMAX_LOCALDPO_V2_FILTERED_POOL_READY`
+
+- PAI run completed under `localdpo_v2_20260628`; the outer SSH session ended
+  with `143` after outputs were already written.
+- Codex reviewed 48 selected review sheets.
+- Raw train32/heldout16 selected pool contains 5 visually trivial rows.
+- Filtered pool excludes trivial rows and keeps train30 + heldout13.
+- VOR-Eval was not used.
+- No new training was launched in this milestone.
+
+Manifests:
+
+- `exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_train30_filtered.jsonl`
+- `exp38_minimax_full_adapter_breakthrough/manifests/localdpo_v2_heldout13_filtered.jsonl`
+
+Next milestone: bad-noise v2 hard-state mining on the filtered pool using
+GPU0/GPU1.

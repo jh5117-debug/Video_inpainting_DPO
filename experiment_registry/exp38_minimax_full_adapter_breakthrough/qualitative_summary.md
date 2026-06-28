@@ -39,3 +39,11 @@ Visual conclusion:
 
 No `QUALITY_POSITIVE`, `THIRD_BACKBONE`, or `UNIVERSAL_ADAPTER` language is
 unlocked.
+
+## 2026-06-28 LocalDPO v2 Pool
+
+- Codex inspected the 48 selected review sheets pulled from the PAI run.
+- The corruption is localized and does not show global black/purple collapse.
+- Five rows are too strong/trivial, mostly red/boundary stripe artifacts; these
+  are preserved in the audit but excluded from filtered rescue manifests.
+- The filtered train30 + heldout13 pool is suitable for bad-noise v2 mining.
