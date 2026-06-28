@@ -86,3 +86,53 @@ Answers:
 
 Next milestone: sample-level R1 diagnosis and recipe narrowing. No GPU training
 is allowed until the readback commit is pushed.
+
+## 2026-06-28 R1 Sample-Level Diagnosis
+
+Milestone B status: `MINIMAX_R1_SIGNAL_AUDITED`.
+
+No new training, inference, or GPU task was launched. This milestone used
+existing Exp38/Exp37 R1 evidence only.
+
+Availability caveat:
+
+- Exp38 SFT/DPO rescue R1 wrote heldout13 outputs only.
+- It did not write per-train R1 outputs under the R1 rescue output root.
+- Train-side diagnosis therefore uses the existing Exp38 train-overfit audit of
+  the Exp37 R1 checkpoint on train32/heldout16.
+- Metrics not present in those prior reports, including LPIPS, Ewarp, affected
+  PSNR, object residual, and effect residual, are explicitly marked
+  `NOT_AVAILABLE` in the CSV rather than inferred.
+
+Aggregate diagnosis:
+
+- Exp38 SFT/DPO R1 heldout13: full/mask/boundary/outside means
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- Existing train-overfit Exp37 R1 train32: full/mask/boundary/outside means
+  `-0.586255` / `+0.152062` / `+0.069123` / `-0.895018`.
+- Existing train-overfit Exp37 R1 heldout16: full/mask/boundary/outside means
+  `+0.200826` / `+0.161946` / `-0.049755` / `+0.028198`.
+
+Diagnosis counts across available rows:
+
+- `R1_GOOD_BUT_OUTSIDE_BAD`: `28`
+- `R1_GOOD_BUT_BOUNDARY_BAD`: `9`
+- `R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE`: `10`
+- `R1_WORSE`: `9`
+- `R1_TIE`: `4`
+- `R1_FOGGING_OVER_ERASURE`: `1`
+
+Decision:
+
+R1 failures are dominated by outside/background drift, boundary cost, and local
+over-erasure/fogging risk. Exp40 must not run a broader DPO search first. The
+next recipe family must start with a larger, cleaner LocalDPO v3 pool and
+PSNR-safe SFT with stronger boundary/outside preservation; DPO is allowed only
+after SFT produces search/shadow-safe improvement.
+
+Reports:
+
+- `reports/exp40_r1_sample_level_diagnosis.md`
+- `reports/exp40_r1_sample_level_diagnosis.csv`
+- `reports/exp40_r1_visual_review.csv`
+- `reports/exp40_r1_diagnosis_summary.json`

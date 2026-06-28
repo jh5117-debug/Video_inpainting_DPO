@@ -1,2 +1,3 @@
 milestone	status	notes
 readback	EXP40_READBACK_COMPLETED	Read Exp38 MiniMax PSNR signal and failure evidence. R1 is useful only as a small local/raw-PSNR clue; boundary/outside and visual tradeoff block promotion. GPU0/GPU1 were reserved and stale Exp30 GPU0 heartbeat PGID 1715134 was terminated after audit; no GPU2-GPU7 action.
+r1_sample_diagnosis	MINIMAX_R1_SIGNAL_AUDITED	Existing R1 evidence shows outside/background drift and boundary cost dominate failures. Exp38 SFT/DPO R1 has only heldout13 outputs; train-side context uses existing Exp38 train-overfit Exp37 R1 train32/heldout16. Next recipes must use larger LocalDPO v3 data and PSNR-safe SFT before DPO.

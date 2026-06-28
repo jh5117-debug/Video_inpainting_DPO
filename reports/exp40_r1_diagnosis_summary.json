@@ -1,0 +1,69 @@
+{
+  "counts_by_source_split": {
+    "exp38_sft_dpo_rescue_R1_heldout13/heldout13": {
+      "boundary_mean": -0.14151014483381752,
+      "full_mean": 0.10216652598434259,
+      "mask_mean": 0.11723035974246716,
+      "outside_mean": -0.037262280248663106,
+      "rows": 13
+    },
+    "exp38_train_overfit_exp37_R1_existing_outputs/heldout": {
+      "boundary_mean": -0.04975460712293833,
+      "full_mean": 0.20082559915485043,
+      "mask_mean": 0.16194584415847513,
+      "outside_mean": 0.02819821215723395,
+      "rows": 16
+    },
+    "exp38_train_overfit_exp37_R1_existing_outputs/train": {
+      "boundary_mean": 0.06912309225349994,
+      "full_mean": -0.5862552490496452,
+      "mask_mean": 0.15206195503104442,
+      "outside_mean": -0.8950177796085169,
+      "rows": 32
+    }
+  },
+  "decision": "R1 failures are dominated by boundary/outside cost and local over-erasure/fogging risk; Exp40 recipes must add boundary/outside preservation and use PSNR-safe SFT before DPO.",
+  "diagnosis_counts": {
+    "R1_FOGGING_OVER_ERASURE": 1,
+    "R1_GOOD_BUT_BOUNDARY_BAD": 9,
+    "R1_GOOD_BUT_OUTSIDE_BAD": 28,
+    "R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE": 10,
+    "R1_TIE": 4,
+    "R1_WORSE": 9
+  },
+  "exp38_sft_dpo_r1_heldout_rows": 13,
+  "exp38_sft_dpo_r1_train_outputs_available": false,
+  "exp38_train_overfit_exp37_r1_rows": 48,
+  "heldout13_diagnosis_counts": {
+    "R1_FOGGING_OVER_ERASURE": 1,
+    "R1_GOOD_BUT_BOUNDARY_BAD": 3,
+    "R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE": 3,
+    "R1_TIE": 1,
+    "R1_WORSE": 5
+  },
+  "metrics_missing_from_existing_reports": [
+    "affected_psnr",
+    "LPIPS",
+    "mask_LPIPS",
+    "boundary_LPIPS",
+    "Ewarp",
+    "object_residual",
+    "effect_residual"
+  ],
+  "new_gpu_task_launched": false,
+  "new_training_launched": false,
+  "status": "MINIMAX_R1_SIGNAL_AUDITED",
+  "train_overfit_heldout16_counts": {
+    "R1_GOOD_BUT_BOUNDARY_BAD": 3,
+    "R1_GOOD_BUT_OUTSIDE_BAD": 6,
+    "R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE": 2,
+    "R1_TIE": 3,
+    "R1_WORSE": 2
+  },
+  "train_overfit_train32_counts": {
+    "R1_GOOD_BUT_BOUNDARY_BAD": 3,
+    "R1_GOOD_BUT_OUTSIDE_BAD": 22,
+    "R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE": 5,
+    "R1_WORSE": 2
+  }
+}

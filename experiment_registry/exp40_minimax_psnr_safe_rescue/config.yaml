@@ -40,3 +40,18 @@ readback:
   r1_clear_visual_better: 0
   r1_worse_or_tradeoff: 9
   r1_tie_or_local_numeric_gain: 4
+r1_sample_diagnosis:
+  status: MINIMAX_R1_SIGNAL_AUDITED
+  new_training_launched: false
+  new_gpu_task_launched: false
+  exp38_sft_dpo_r1_train_outputs_available: false
+  exp38_sft_dpo_r1_heldout_rows: 13
+  train_context_source: exp38_train_overfit_exp37_R1_existing_outputs
+  diagnosis_counts:
+    R1_GOOD_BUT_OUTSIDE_BAD: 28
+    R1_GOOD_BUT_BOUNDARY_BAD: 9
+    R1_GOOD_LOCAL_IMPROVEMENT_NOT_DECISIVE: 10
+    R1_WORSE: 9
+    R1_TIE: 4
+    R1_FOGGING_OVER_ERASURE: 1
+  decision: boundary_outside_preservation_and_psnr_safe_sft_before_dpo

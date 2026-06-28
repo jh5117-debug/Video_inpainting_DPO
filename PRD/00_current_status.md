@@ -3338,3 +3338,22 @@ Readback conclusion:
   boundary `-0.141510`, outside `-0.037262`, `0/13` clear visual better.
 - Exp40 must target PSNR-safe SFT first and only use DPO after SFT proves safe.
 - No GPU training or inference was launched in this milestone.
+
+## 2026-06-28 Exp40 R1 Sample-Level Diagnosis
+
+Exp40 status: `MINIMAX_R1_SIGNAL_AUDITED`.
+
+No new training or GPU task was launched. Existing evidence shows:
+
+- Exp38 SFT/DPO R1 heldout13: full/mask/boundary/outside
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- Existing train-overfit Exp37 R1 train32: full/mask/boundary/outside
+  `-0.586255` / `+0.152062` / `+0.069123` / `-0.895018`.
+- Existing train-overfit Exp37 R1 heldout16: full/mask/boundary/outside
+  `+0.200826` / `+0.161946` / `-0.049755` / `+0.028198`.
+
+Exp38 SFT/DPO R1 does not have per-train outputs; train-side evidence uses the
+existing Exp38 train-overfit audit. The blocker is not merely lack of output
+movement. The blocker is unsafe outside/background drift, boundary cost, and
+fogging/over-erasure risk. Exp40 next step is LocalDPO v3 pool construction and
+PSNR-safe SFT before DPO.
