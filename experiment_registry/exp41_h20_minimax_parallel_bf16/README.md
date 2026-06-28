@@ -16,3 +16,9 @@ Forbidden in this branch:
 
 `H20_MINIMAX_DATA_READY` passed. H20 mirror and MiniMax weights are ready for
 BF16/SIGFPE preflight; no training has been launched.
+
+## 2026-06-29 BF16 Safe Gate
+
+`H20_MINIMAX_BF16_SAFE_READY` passed for P0-P7, including DDP8 one-batch
+MiniMax training. This does not authorize quality claims; official protocol
+audit remains pending.

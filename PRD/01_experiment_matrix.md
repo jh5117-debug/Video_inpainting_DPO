@@ -1,3 +1,14 @@
+## 2026-06-29 Exp41 H20 MiniMax BF16 Safe
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp41 H20 MiniMax parallel BF16 | `H20_MINIMAX_BF16_SAFE_READY`; P0-P7 passed, including DDP8 one-batch bf16-safe MiniMax train/checkpoint reload; no quality claim | `reports/exp41_h20_bf16_preflight.md`, `reports/exp41_h20_bf16_preflight.csv`, `experiment_registry/exp41_h20_minimax_parallel_bf16/status.md` |
+
+Notes:
+
+- Runtime is ready for official protocol audit and gated short experiments.
+- No SFT/DPO promotion or third-backbone claim is made by this gate.
+
 ## 2026-06-29 Exp41 H20 MiniMax Data Ready
 
 | User-facing name | Status | Evidence / registry |

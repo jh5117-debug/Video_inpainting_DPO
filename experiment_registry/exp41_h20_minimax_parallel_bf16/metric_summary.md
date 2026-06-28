@@ -24,3 +24,8 @@ with mask/boundary/outside, LPIPS, Ewarp, and visual safety.
 No Exp41 training metric has been run. Data readiness passed: `2242` active
 manifest refs validated on H20 with `0` missing, and Exp40 decode audit had
 `0` failures. This does not change MiniMax quality status.
+
+## 2026-06-29 BF16 Preflight
+
+Runtime-only preflight passed. P0-P7 were finite, including P7 DDP8 bf16-safe
+one-batch training. No model-quality metric was run in this milestone.

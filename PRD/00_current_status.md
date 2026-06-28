@@ -1,3 +1,24 @@
+## 2026-06-29 Exp41 H20 MiniMax BF16 Safe
+
+Exp41 advanced to:
+
+```text
+H20_MINIMAX_BF16_SAFE_READY
+```
+
+P0-P7 passed on H20, including bf16-safe DDP8 one-batch MiniMax training with
+finite loss/gradients and rank0 checkpoint reload. No SIGFPE, OOM, CUDA error,
+NaN/Inf, or Xid was observed. Final H20 GPU0-GPU7 compute apps: none.
+
+This is runtime-only evidence. Official MiniMax protocol audit remains pending,
+and no quality-positive MiniMax claim is made.
+
+Reports:
+
+- `reports/exp41_h20_bf16_preflight.md`
+- `reports/exp41_h20_bf16_preflight.csv`
+- `reports/exp41_h20_bf16_preflight_summary.json`
+
 ## 2026-06-29 Exp41 H20 MiniMax Data Ready
 
 Exp41 advanced to:

@@ -28,3 +28,8 @@ h20_safe_exp40_manifests:
   train: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_train_h20.jsonl
   search: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_search_h20.jsonl
   shadow: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_shadow_h20.jsonl
+
+  bf16_preflight: reports/exp41_h20_bf16_preflight.md
+  bf16_preflight_csv: reports/exp41_h20_bf16_preflight.csv
+  bf16_preflight_summary: reports/exp41_h20_bf16_preflight_summary.json
+  bf16_preflight_rank_details: reports/exp41_h20_bf16_preflight_rank_details.csv

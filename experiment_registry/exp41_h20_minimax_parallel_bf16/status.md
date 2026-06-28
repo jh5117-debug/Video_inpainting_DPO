@@ -1,6 +1,6 @@
 # Exp41 Status
 
-Current status: `EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED`
+Current status: `H20_MINIMAX_BF16_SAFE_READY`
 
 ## 2026-06-29 Readback / GPU Release
 
@@ -57,3 +57,25 @@ Reports:
 - `reports/exp41_h20_minimax_manifest_validation.csv`
 - `reports/exp41_h20_minimax_missing_assets.csv`
 - `reports/exp41_h20_minimax_decode_audit.csv`
+
+## 2026-06-29 BF16 / SIGFPE Preflight
+
+Current status: `H20_MINIMAX_BF16_SAFE_READY`
+
+- P0 torch bf16 matmul/backward: PASS.
+- P1 VAE fp32 encode/decode: PASS.
+- P2 DiT bf16 forward no grad: PASS.
+- P3 DiT bf16 forward/backward with fp32 loss: PASS.
+- P4 MiniMax fp32 one-batch train + checkpoint reload: PASS.
+- P5 MiniMax bf16-safe single-GPU one-batch train + checkpoint reload: PASS.
+- P6 MiniMax bf16-safe DDP2 one-batch train + rank0 checkpoint reload: PASS.
+- P7 MiniMax bf16-safe DDP8 one-batch train + rank0 checkpoint reload: PASS.
+- No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was observed.
+- Final H20 GPU0-GPU7 compute apps: none.
+
+Reports:
+
+- `reports/exp41_h20_bf16_preflight.md`
+- `reports/exp41_h20_bf16_preflight.csv`
+- `reports/exp41_h20_bf16_preflight_summary.json`
+- `reports/exp41_h20_bf16_preflight_rank_details.csv`

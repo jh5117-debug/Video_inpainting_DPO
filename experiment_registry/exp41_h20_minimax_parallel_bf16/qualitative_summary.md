@@ -19,3 +19,8 @@ strips, crops, per-video metrics, aggregate metrics, and visual review CSV.
 No Exp41 qualitative model review has been performed. Evidence availability is
 now complete for the audited manifests: raw outputs and review assets resolve
 on H20, and the Exp40 raw/source/winner/mask mp4 first-frame decode audit passed.
+
+## 2026-06-29 BF16 Preflight
+
+No qualitative model review was performed. This milestone validates runtime
+stability only: no SIGFPE/OOM/CUDA/Xid occurred in P0-P7.

@@ -1,6 +1,6 @@
 # Exp41 H20 MiniMax Parallel BF16
 
-Status: `H20_MINIMAX_DATA_READY`
+Status: `H20_MINIMAX_BF16_SAFE_READY`
 
 Exp41 is an H20-only parallel MiniMax adapter track. PAI remains read-only and
 continues to own any active Exp40/PAI-side work. This branch does not modify
@@ -63,7 +63,7 @@ Report:
 
 ## H20 Data / Weight Audit
 
-Status: `H20_MINIMAX_DATA_READY`
+Status: `H20_MINIMAX_BF16_SAFE_READY`
 
 H20 mirror validation passed after filling missing evidence assets from PAI
 read-only rsync. The final audit checked `2242` active refs across Exp30, Exp37,
@@ -86,6 +86,32 @@ Reports:
 - `reports/exp41_h20_minimax_manifest_validation.csv`
 - `reports/exp41_h20_minimax_missing_assets.csv`
 - `reports/exp41_h20_minimax_decode_audit.csv`
+
+
+## BF16 / SIGFPE Runtime Preflight
+
+Status: `H20_MINIMAX_BF16_SAFE_READY`
+
+Exp41 ran P0-P7 on H20 using an Exp41-only helper and launcher. The helper kept
+VAE encode/decode in fp32, ran MiniMax DiT bf16 where required, reduced losses
+in fp32, disabled flash/memory-efficient SDPA where PyTorch exposes backend
+toggles, and used xFormers/flash-attn disable env flags.
+
+All cases passed: P0 torch bf16 backward, P1 VAE fp32 encode/decode, P2/P3 DiT
+bf16 forward/backward, P4 fp32 one-batch train, P5 bf16-safe single-GPU train,
+P6 bf16-safe DDP2 train, and P7 bf16-safe DDP8 train. Rank0 checkpoint
+save/reload passed for P4-P7. No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was
+observed. Final H20 GPU compute apps: none.
+
+This is a runtime gate only. It does not claim MiniMax quality improvement and
+does not replace the official MiniMax protocol audit.
+
+Reports:
+
+- `reports/exp41_h20_bf16_preflight.md`
+- `reports/exp41_h20_bf16_preflight.csv`
+- `reports/exp41_h20_bf16_preflight_summary.json`
+- `reports/exp41_h20_bf16_preflight_rank_details.csv`
 
 ## Readback Decision
 
