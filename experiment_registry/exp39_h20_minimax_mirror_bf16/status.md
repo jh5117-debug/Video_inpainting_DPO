@@ -40,3 +40,12 @@ Still forbidden:
 - Approximate referenced transfer size: `2.781 GiB`.
 - PAI model symlink target is about `2.6G`.
 - No PAI process was signaled, no PAI GPU was used, and no PAI file was modified.
+
+## 2026-06-28 H20 Env / Weight / GPU Audit
+
+- Status: `H20_ENV_WEIGHT_GPU_AUDIT_COMPLETED_PARTIAL_WORKTREE_BLOCKED`.
+- 8 H20 GPUs were idle during audit.
+- BF16 support is available in multiple torch environments.
+- `/home/nvme01` has about `367G` free but is `90%` used.
+- MiniMax `weights/minimax_remover/current` is missing on H20.
+- H20 Exp39 worktree remains blocked until the bad partial clone is removed and a clean mirror is created.

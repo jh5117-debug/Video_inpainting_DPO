@@ -1,0 +1,90 @@
+record,value
+raw,host	instance-afs92r3e
+raw,date	2026-06-28T21:54:09+08:00
+raw,id	uid=1000(ubuntu) gid=0(root) groups=0(root)
+raw,gpu
+raw,"0, NVIDIA H20, 28, 97871, 0"
+raw,"1, NVIDIA H20, 1, 97871, 0"
+raw,"2, NVIDIA H20, 1, 97871, 0"
+raw,"3, NVIDIA H20, 1, 97871, 0"
+raw,"4, NVIDIA H20, 1, 97871, 0"
+raw,"5, NVIDIA H20, 1, 97871, 0"
+raw,"6, NVIDIA H20, 1, 97871, 0"
+raw,"7, NVIDIA H20, 1, 97871, 0"
+raw,compute
+raw,df
+raw,Filesystem      Size  Used Avail Use% Mounted on
+raw,/dev/nvme0n1p1  3.4T  3.1T  367G  90% /home/nvme01
+raw,/dev/sda4       341G  108G  233G  32% /home
+raw,paths
+raw,exists	/home/nvme01/H20_Video_inpainting_DPO	1.6T
+raw,drwxr-xr-x 40 ubuntu root 4096 Jun  5 04:56 /home/nvme01/H20_Video_inpainting_DPO
+raw,exists	/home/nvme01/H20_Video_inpainting_DPO_exp39_minimax_h20	6.6M
+raw,drwxr-xr-x 3 ubuntu root 4096 Jun 28 21:28 /home/nvme01/H20_Video_inpainting_DPO_exp39_minimax_h20
+raw,exists	/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax	2.6M
+raw,drwxr-xr-x 3 ubuntu root 4096 Jun 28 21:06 /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
+raw,missing	/home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current
+raw,exists	/home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover	8.0K
+raw,drwxr-xr-x 2 ubuntu root 4096 May 25 10:31 /home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover
+raw,exists	/home/nvme01/H20_Video_inpainting_DPO/weights	93G
+raw,drwxr-xr-x 15 ubuntu root 4096 May 25 10:31 /home/nvme01/H20_Video_inpainting_DPO/weights
+raw,missing	/home/nvme01/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/minimax
+raw,python
+raw,PY /usr/bin/python3
+raw,TORCH 2.7.1+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/bin/python
+raw,TORCH 2.7.1+cu126 CUDA 12.6 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/SiT/bin/python
+raw,TORCH 2.7.0 CUDA None AVAILABLE False
+raw,PY /home/nvme01/miniconda3/envs/bd3lm/bin/python
+raw,TORCH 2.7.1+cu126 CUDA 12.6 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/brain/bin/python
+raw,TORCH 2.5.1+cu124 CUDA 12.4 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/chat/bin/python
+raw,TORCH 2.9.1+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/flux/bin/python
+raw,TORCH 2.4.1+cu121 CUDA 12.1 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/hongyuqi_slam/bin/python
+raw,TORCH 2.5.1+cu124 CUDA 12.4 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/hsretargeting/bin/python
+raw,TORCH 2.10.0+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/hssim/bin/python
+raw,TORCH 2.7.0+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/phystwin/bin/python
+raw,TORCH 2.10.0+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/roboos/bin/python
+raw,TORCH 2.9.1+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/scaffold_gs/bin/python
+raw,TORCH 1.12.1 CUDA 11.6 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/scaffold_gs_cuda12/bin/python
+raw,TORCH 2.1.2 CUDA 12.1 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/sim/bin/python
+raw,TORCH 2.7.0+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/sphere/bin/python
+raw,TORCH 2.10.0+cu128 CUDA 12.8 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/t2v/bin/python
+raw,TORCH 2.5.1+cu124 CUDA 12.4 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/twin/bin/python
+raw,TORCH_ERROR ImportError('/home/nvme01/miniconda3/envs/twin/lib/python3.10/site-packages/torch/lib/libtorch_cpu.so: undefined symbol: iJIT_NotifyEvent')
+raw,PY /home/nvme01/miniconda3/envs/wan/bin/python
+raw,TORCH 2.5.1+cu124 CUDA 12.4 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
+raw,PY /home/nvme01/miniconda3/envs/wan_env/bin/python
+raw,TORCH 2.5.1+cu121 CUDA 12.1 AVAILABLE True
+raw,"GPU0 NVIDIA H20 BF16 True CAP (9, 0)"
