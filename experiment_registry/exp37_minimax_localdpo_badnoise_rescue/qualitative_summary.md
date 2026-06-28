@@ -25,3 +25,19 @@ visually indistinguishable from Step0 in all checked strips; the diff columns
 were near black.
 
 Qualitative diagnosis: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK`.
+
+## 2026-06-28 LocalDPO-style OR Corruption Pool
+
+Codex opened all `48/48` selected primary review sheets in six batches. The
+pool contains localized object/affected/boundary defects with far-outside
+background preserved. Final visual counts:
+
+- Medium-hard: `38`.
+- Hard-but-plausible: `10`.
+- Too-close: `0`.
+- Trivial-bad: `0` after Codex final review.
+- Technical-invalid: `0`.
+
+No black/purple collapse, global frame damage, or systematic far-outside
+breakage was observed. Several REAL human/animal rows remain intentionally
+hard and are labeled `HARD_BUT_PLAUSIBLE`, not medium-hard.

@@ -3159,3 +3159,16 @@ is not pure generalization failure. MiniMax still needs cleaner
 LocalDPO-style local corruption pairs and bad-noise diagnostics before any
 10-step rescue. No 30-step, 2000-step, RC-FPO, protected-lane action, or
 universal-adapter claim is unlocked.
+
+## 2026-06-28 Exp37 LocalDPO-style OR Corruption Pool
+
+Exp37 status: `LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS`. Built locked
+train32/heldout16 local-corruption manifests from VOR-Train Gate64 rows only:
+condition `V_obj`, winner `V_bg`, loser locally corrupted `V_bg`, and object
+mask. VOR-Eval was not used. Codex opened `48/48` selected primary review
+sheets. Final usable rows: `48/48` (`38` medium-hard, `10`
+hard-but-plausible), with no global collapse or systematic far-outside damage.
+
+This unlocks only the diagnostic bad-noise scan. MiniMax training remains
+locked until bad-noise states and recipe preregistration are complete. No
+30-step, long training, RC-FPO, or universal-adapter claim is unlocked.

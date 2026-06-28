@@ -38,3 +38,26 @@ Reports:
 - `reports/exp37_minimax_train_vs_heldout_metrics.csv`
 - `reports/exp37_minimax_train_vs_heldout_visual_review.csv`
 - `reports/exp37_minimax_train_vs_heldout_summary.json`
+
+## 2026-06-28 LocalDPO-style OR Corruption Pool
+
+Current status: `LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS`
+
+- Built train32/heldout16 local-corruption manifests from VOR-Train style
+  Gate64 rows only; VOR-Eval used = `false`.
+- Candidate rows per source <= `2`.
+- Automatic selected usable: `39/48`.
+- Codex final visual usable: `48/48`.
+- Train32 final: `24` medium-hard, `8` hard-but-plausible.
+- Heldout16 final: `14` medium-hard, `2` hard-but-plausible.
+- No global collapse or systematic far-outside damage found in 48 selected
+  review sheets.
+- Next allowed milestone: diagnostic bad-noise scan. Training is still locked
+  until bad-noise states and recipe preregistration are complete.
+
+Reports:
+
+- `reports/exp37_localdpo_style_or_corruption_pool.md`
+- `reports/exp37_localdpo_style_or_corruption_pool.csv`
+- `reports/exp37_localdpo_style_visual_review.csv`
+- `reports/exp37_localdpo_style_or_corruption_pool_summary.json`

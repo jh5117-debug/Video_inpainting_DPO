@@ -1,0 +1,67 @@
+{
+  "auto_rule_note": "Initial auto usable was 39/48 because outside_psnr counted affected/boundary soft-region corruption as outside damage; Codex final review preserves auto_classification and writes final classification separately.",
+  "candidate_rows_per_source_max": 2,
+  "codex_visual_review": "48/48 selected primary review sheets opened; final usable 48/48; no global collapse; far outside visually preserved.",
+  "heldout16": {
+    "auto_classification_counts": {
+      "MEDIUM_HARD_ELIGIBLE": 14,
+      "TRIVIAL_BAD": 2
+    },
+    "auto_usable_selected": 14,
+    "candidate_rows": 32,
+    "classification_counts": {
+      "MEDIUM_HARD_ELIGIBLE": 14,
+      "TRIVIAL_BAD": 2
+    },
+    "codex_visual_review": "reviewed_selected_primary_sheet",
+    "final_classification_counts": {
+      "HARD_BUT_PLAUSIBLE": 2,
+      "MEDIUM_HARD_ELIGIBLE": 14
+    },
+    "final_usable_selected": 16,
+    "outside_mae_mean": 0.26096745457849996,
+    "profile_counts": {
+      "L1_object_mild": 4,
+      "L2_object_medium": 4,
+      "L3_object_affected_soft": 7,
+      "L4_boundary_effect": 1
+    },
+    "scene_groups": 16,
+    "selected_rows": 16,
+    "usable_selected": 14
+  },
+  "heldout_manifest": "exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl",
+  "status": "LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS",
+  "train32": {
+    "auto_classification_counts": {
+      "HARD_BUT_PLAUSIBLE": 1,
+      "MEDIUM_HARD_ELIGIBLE": 24,
+      "TRIVIAL_BAD": 7
+    },
+    "auto_usable_selected": 25,
+    "candidate_rows": 64,
+    "classification_counts": {
+      "HARD_BUT_PLAUSIBLE": 1,
+      "MEDIUM_HARD_ELIGIBLE": 24,
+      "TRIVIAL_BAD": 7
+    },
+    "codex_visual_review": "reviewed_selected_primary_sheet",
+    "final_classification_counts": {
+      "HARD_BUT_PLAUSIBLE": 8,
+      "MEDIUM_HARD_ELIGIBLE": 24
+    },
+    "final_usable_selected": 32,
+    "outside_mae_mean": 0.8318346175679999,
+    "profile_counts": {
+      "L1_object_mild": 8,
+      "L2_object_medium": 9,
+      "L3_object_affected_soft": 9,
+      "L4_boundary_effect": 6
+    },
+    "scene_groups": 32,
+    "selected_rows": 32,
+    "usable_selected": 25
+  },
+  "train_manifest": "exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl",
+  "vor_eval_used": false
+}

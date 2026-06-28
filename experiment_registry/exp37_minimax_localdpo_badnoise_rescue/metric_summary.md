@@ -22,3 +22,17 @@ Status: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK`.
 The numeric movement is small and not visually meaningful. Train-side local
 mask PSNR is still negative on average, and heldout is negative across full,
 mask, boundary, and outside PSNR.
+
+## 2026-06-28 LocalDPO-style OR Corruption Pool
+
+Status: `LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS`.
+
+| Split | Rows | Auto Usable | Codex Final Usable | Final Medium-Hard | Final Hard-Plausible | Mean Outside MAE |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| train32 | 32 | 25 | 32 | 24 | 8 | 0.831835 |
+| heldout16 | 16 | 14 | 16 | 14 | 2 | 0.260967 |
+| total | 48 | 39 | 48 | 38 | 10 | - |
+
+The auto rule preserved in the CSV was intentionally conservative. The final
+classification keeps `auto_classification` and writes Codex-reviewed final
+classification separately.

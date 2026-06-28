@@ -10,5 +10,13 @@ reports:
   train_vs_heldout_metrics: reports/exp37_minimax_train_vs_heldout_metrics.csv
   train_vs_heldout_visual_review: reports/exp37_minimax_train_vs_heldout_visual_review.csv
   train_vs_heldout_summary: reports/exp37_minimax_train_vs_heldout_summary.json
+  localdpo_pool: reports/exp37_localdpo_style_or_corruption_pool.md
+  localdpo_pool_metrics: reports/exp37_localdpo_style_or_corruption_pool.csv
+  localdpo_pool_visual_review: reports/exp37_localdpo_style_visual_review.csv
+  localdpo_pool_summary: reports/exp37_localdpo_style_or_corruption_pool_summary.json
+manifests:
+  localdpo_train32: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl
+  localdpo_heldout16: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl
 runtime_outputs:
   train_vs_heldout: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/train_vs_heldout_20260628
+  localdpo_pool: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/localdpo_pool_20260628

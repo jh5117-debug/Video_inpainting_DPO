@@ -22,3 +22,10 @@ milestones:
     heldout_rows: 16
     visual_review_rows: 32
     status: MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK
+  localdpo_pool:
+    train_rows: 32
+    heldout_rows: 16
+    candidate_rows_per_source_max: 2
+    vor_eval_used: false
+    visual_review_rows: 48
+    status: LOCALDPO_STYLE_POOL_READY_VISUAL_REVIEW_PASS
