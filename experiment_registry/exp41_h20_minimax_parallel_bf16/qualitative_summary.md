@@ -13,3 +13,9 @@ Imported visual state:
 
 Exp41 must not promote any PASS/POSITIVE status without raw videos, temporal
 strips, crops, per-video metrics, aggregate metrics, and visual review CSV.
+
+## 2026-06-29 Data Audit
+
+No Exp41 qualitative model review has been performed. Evidence availability is
+now complete for the audited manifests: raw outputs and review assets resolve
+on H20, and the Exp40 raw/source/winner/mask mp4 first-frame decode audit passed.

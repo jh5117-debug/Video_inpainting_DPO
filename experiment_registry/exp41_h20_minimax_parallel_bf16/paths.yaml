@@ -18,3 +18,13 @@ reports:
   readback: reports/exp41_h20_minimax_parallel_readback.md
   gpu_release: reports/exp41_h20_gpu_release_audit.md
   gpu_release_csv: reports/exp41_h20_gpu_release_audit.csv
+
+  data_audit: reports/exp41_h20_minimax_data_audit.md
+  data_audit_csv: reports/exp41_h20_minimax_data_audit.csv
+  manifest_validation_csv: reports/exp41_h20_minimax_manifest_validation.csv
+  missing_assets_csv: reports/exp41_h20_minimax_missing_assets.csv
+  decode_audit_csv: reports/exp41_h20_minimax_decode_audit.csv
+h20_safe_exp40_manifests:
+  train: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_train_h20.jsonl
+  search: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_search_h20.jsonl
+  shadow: exp41_h20_minimax_parallel_bf16/manifests/exp41_exp40_localdpo_v3_shadow_h20.jsonl

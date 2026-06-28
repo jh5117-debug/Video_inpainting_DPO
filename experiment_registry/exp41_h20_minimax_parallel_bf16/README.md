@@ -11,3 +11,8 @@ Forbidden in this branch:
 - modifying shared trainers;
 - rewriting Exp1-Exp40 source/result history;
 - claiming universal adapter, final SOTA, or top-conference novelty.
+
+## 2026-06-29 Data Ready Gate
+
+`H20_MINIMAX_DATA_READY` passed. H20 mirror and MiniMax weights are ready for
+BF16/SIGFPE preflight; no training has been launched.

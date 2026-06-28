@@ -1,2 +1,3 @@
 milestone	status	notes
 readback	EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED	Read Exp30/35/36/37/38/39/40 MiniMax state, created local/H20 Exp41 worktrees, released H20 GPU4 non-system compute PGID 3365988 with TERM, and confirmed GPU0-GPU7 have no compute apps. No MiniMax training launched.
+data_weight_audit	H20_MINIMAX_DATA_READY	Validated 2242 active refs across Exp30/37/38/Exp41 manifests with 0 missing; filled 224 Exp40 evidence and 232 legacy evidence files from PAI read-only; MiniMax weights resolve; decode audit passed for Exp40 raw/source/winner/mask mp4s.

@@ -30,3 +30,30 @@ Reports:
 
 - `reports/exp41_h20_minimax_parallel_readback.md`
 - `reports/exp41_h20_gpu_release_audit.md`
+
+## 2026-06-29 Data / Weight Audit
+
+Current status: `H20_MINIMAX_DATA_READY`
+
+- H20 mirror active-path validation passed for Exp30/37/38 and Exp41/Exp40
+  LocalDPO manifests: `2242` refs checked, `0` missing.
+- Exp40 H20-safe manifests are present for LocalDPO v3 train/search/shadow:
+  `64/24/24` rows.
+- Missing Exp40 evidence files were filled from PAI read-only: `224` files,
+  `333063059` bytes.
+- Missing legacy evidence files were filled from PAI read-only: `232` files,
+  `237644031` bytes.
+- H20 decode audit passed for `112` Exp40 raw outputs and de-duplicated
+  source/winner/mask mp4s.
+- MiniMax scheduler/transformer/VAE weights resolve under the H20 `current`
+  symlink.
+- This is not a quality-positive MiniMax result; BF16/SIGFPE and official
+  protocol gates remain pending.
+
+Reports:
+
+- `reports/exp41_h20_minimax_data_audit.md`
+- `reports/exp41_h20_minimax_data_audit.csv`
+- `reports/exp41_h20_minimax_manifest_validation.csv`
+- `reports/exp41_h20_minimax_missing_assets.csv`
+- `reports/exp41_h20_minimax_decode_audit.csv`

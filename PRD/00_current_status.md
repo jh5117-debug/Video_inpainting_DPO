@@ -1,3 +1,26 @@
+## 2026-06-29 Exp41 H20 MiniMax Data Ready
+
+Exp41 advanced to:
+
+```text
+H20_MINIMAX_DATA_READY
+```
+
+H20 mirror validation checked `2242` active refs across Exp30/37/38 and
+Exp41/Exp40 manifests with `0` missing. Missing evidence assets were filled from
+PAI read-only only: `224` Exp40 files and `232` legacy files. MiniMax weights
+resolve on H20, and Exp40 raw/source/winner/mask decode audit passed.
+
+No Exp41 training was launched. MiniMax remains plumbing/data-ready only until
+BF16/SIGFPE preflight, official protocol audit, shadow metrics, and video review
+pass.
+
+Reports:
+
+- `reports/exp41_h20_minimax_data_audit.md`
+- `reports/exp41_h20_minimax_manifest_validation.csv`
+- `reports/exp41_h20_minimax_decode_audit.csv`
+
 ## 2026-06-29 Exp41 H20 MiniMax Parallel BF16 Readback
 
 Exp41 has started as an H20-only MiniMax parallel adapter/debug track:

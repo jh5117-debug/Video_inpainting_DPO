@@ -18,3 +18,9 @@ Imported baselines:
 
 Exp41 success requires shadow raw full PSNR at least `+0.20 dB` over Step0
 with mask/boundary/outside, LPIPS, Ewarp, and visual safety.
+
+## 2026-06-29 Data Audit
+
+No Exp41 training metric has been run. Data readiness passed: `2242` active
+manifest refs validated on H20 with `0` missing, and Exp40 decode audit had
+`0` failures. This does not change MiniMax quality status.

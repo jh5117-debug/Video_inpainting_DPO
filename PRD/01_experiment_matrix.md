@@ -1,3 +1,15 @@
+## 2026-06-29 Exp41 H20 MiniMax Data Ready
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp41 H20 MiniMax parallel BF16 | `H20_MINIMAX_DATA_READY`; H20 mirror has 2242/2242 active refs resolved, Exp40 H20-safe train/search/shadow manifests ready, MiniMax weights resolve; no training launched | `reports/exp41_h20_minimax_data_audit.md`, `reports/exp41_h20_minimax_manifest_validation.csv`, `experiment_registry/exp41_h20_minimax_parallel_bf16/status.md` |
+
+Notes:
+
+- This is a data/weight readiness gate only.
+- BF16/SIGFPE runtime preflight and official protocol audit remain pending.
+- No universal adapter, final SOTA, or quality-positive MiniMax claim is made.
+
 ## 2026-06-29 Exp41 H20 MiniMax Parallel BF16
 
 | User-facing name | Status | Evidence / registry |

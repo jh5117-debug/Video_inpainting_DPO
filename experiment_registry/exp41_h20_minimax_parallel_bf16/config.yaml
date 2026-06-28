@@ -2,7 +2,7 @@ experiment: exp41_h20_minimax_parallel_bf16
 model: MiniMax-Remover
 branch: research/exp41-h20-minimax-parallel-bf16-20260629
 base_exp: exp40_minimax_psnr_safe_rescue
-status: EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED
+status: H20_MINIMAX_DATA_READY
 source_modification_allowed: false
 training_authorized_after_readback: false
 pai_policy:
@@ -24,7 +24,7 @@ forbidden:
   - final_sota_claim
   - top_conference_novelty_claim
 gates:
-  data: pending
+  data: passed
   bf16: pending
   protocol: pending
   sft: pending
@@ -37,3 +37,7 @@ success_targets:
   shadow_outside_psnr_delta: 0.00
   lpips_worse_limit: 0.001
   ewarp_worse_limit: 0.05
+
+data_audit_refs_checked: 2242
+data_audit_missing_refs: 0
+training_authorized_after_data_gate: false

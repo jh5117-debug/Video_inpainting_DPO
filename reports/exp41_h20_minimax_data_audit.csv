@@ -1,0 +1,18 @@
+item,status,rows_or_refs,missing,notes
+exp30_heldout16_v3,PASS,134,0,all active paths resolved on H20 mirror
+exp30_train32_v3,PASS,240,0,all active paths resolved on H20 mirror
+exp37_badnoise_states,PASS,128,0,all active paths resolved on H20 mirror
+exp37_heldout16,PASS,96,0,all active paths resolved on H20 mirror
+exp37_train32,PASS,192,0,all active paths resolved on H20 mirror
+exp38_badnoise_v2_train30,PASS,120,0,all active paths resolved on H20 mirror
+exp38_heldout13_filtered,PASS,78,0,all active paths resolved on H20 mirror
+exp38_train30_filtered,PASS,180,0,all active paths resolved on H20 mirror
+exp41_exp40_search_h20,PASS,225,0,all active paths resolved on H20 mirror
+exp41_exp40_shadow_h20,PASS,231,0,all active paths resolved on H20 mirror
+exp41_exp40_train_h20,PASS,618,0,all active paths resolved on H20 mirror
+exp40_h20_safe_manifests,PASS,64 train / 24 search / 24 shadow,0,new Exp41 H20 manifests point to /home/nvme01 mirror paths
+exp40_missing_evidence_transfer,PASS,224 files,0,333063059 bytes pulled read-only from PAI and pushed to H20
+legacy_missing_evidence_transfer,PASS,232 files,0,237644031 bytes pulled read-only from PAI and pushed to H20
+weights_minimax_remover_current,PASS,5 files + .cache marker,0,"scheduler, transformer, vae configs and safetensors resolve on H20"
+decode_audit,PASS,178,0,raw_output_mp4=112; direct source/winner/mask mp4=22 each; empty first-frame masks=0
+h20_gpu_compute_apps,PASS,0 compute apps,0,"latest query: GPU0 28MiB, GPU1-GPU7 1MiB, util 0%"

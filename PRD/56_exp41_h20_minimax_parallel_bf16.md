@@ -1,6 +1,6 @@
 # Exp41 H20 MiniMax Parallel BF16
 
-Status: `EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED`
+Status: `H20_MINIMAX_DATA_READY`
 
 Exp41 is an H20-only parallel MiniMax adapter track. PAI remains read-only and
 continues to own any active Exp40/PAI-side work. This branch does not modify
@@ -59,6 +59,33 @@ Report:
 
 - `reports/exp41_h20_gpu_release_audit.md`
 - `reports/exp41_h20_gpu_release_audit.csv`
+
+
+## H20 Data / Weight Audit
+
+Status: `H20_MINIMAX_DATA_READY`
+
+H20 mirror validation passed after filling missing evidence assets from PAI
+read-only rsync. The final audit checked `2242` active refs across Exp30, Exp37,
+Exp38, and Exp41/Exp40 manifests with `0` missing. Exp40 H20-safe LocalDPO v3
+manifests are available for `64` train, `24` search, and `24` shadow rows.
+
+Additional checks:
+
+- Exp40 raw output decode: `112/112` readable.
+- Exp40 direct VOR condition/winner/mask decode: `22/22` each readable.
+- First-frame mask non-empty check: `0` empty masks.
+- MiniMax scheduler/transformer/VAE files resolve via H20 `current` symlink.
+
+This gate does not authorize training by itself. BF16/SIGFPE runtime preflight
+and official protocol audit remain pending.
+
+Reports:
+
+- `reports/exp41_h20_minimax_data_audit.md`
+- `reports/exp41_h20_minimax_manifest_validation.csv`
+- `reports/exp41_h20_minimax_missing_assets.csv`
+- `reports/exp41_h20_minimax_decode_audit.csv`
 
 ## Readback Decision
 
