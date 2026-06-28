@@ -1,0 +1,2 @@
+milestone	status	notes
+readback	EXP40_READBACK_COMPLETED	Read Exp38 MiniMax PSNR signal and failure evidence. R1 is useful only as a small local/raw-PSNR clue; boundary/outside and visual tradeoff block promotion. GPU0/GPU1 were reserved and stale Exp30 GPU0 heartbeat PGID 1715134 was terminated after audit; no GPU2-GPU7 action.

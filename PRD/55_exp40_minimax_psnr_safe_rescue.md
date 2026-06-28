@@ -1,0 +1,88 @@
+# Exp40 MiniMax PSNR-Safe Rescue
+
+Status: `EXP40_READBACK_COMPLETED`
+
+Branch: `research/exp40-minimax-psnr-safe-rescue-20260628`
+
+Base: `origin/research/exp38-minimax-full-adapter-breakthrough-20260628`
+
+## Scope
+
+Exp40 continues MiniMax only. The goal is to rescue the small Exp38 R1 PSNR
+signal while making boundary, outside, LPIPS, Ewarp, and visual quality safe.
+
+Forbidden:
+
+- use GPU2-GPU7;
+- repeat Exp38 R1/R2/R3 exactly;
+- use VOR-Eval for training, selection, or thresholding;
+- use hard comp as primary evaluation;
+- modify `inference/metrics.py`;
+- modify shared trainer;
+- rewrite Exp1-Exp38 history or overwrite Exp38 outputs;
+- claim universal adapter, final SOTA, or top-conference novelty.
+
+## 2026-06-28 Readback And R1 Positive-Signal Audit
+
+Milestone A status: `EXP40_READBACK_COMPLETED`.
+
+Git start:
+
+- start HEAD: `06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8`
+- source commit: Exp38 `Run Exp38 MiniMax SFT-DPO rescue gate`
+
+GPU0/GPU1 policy:
+
+- PAI GPU0/GPU1 were audited.
+- A stale Exp30 GPU0 heartbeat/bash process group was recorded and terminated:
+  PGID `1715134`; command was the old Exp30 MiniMax gate64 launcher; no compute
+  PID existed before cleanup.
+- GPU0/GPU1 after cleanup: `0 MiB`, `0%`, no compute PID.
+- GPU2-GPU7 were not used or signaled.
+- audit path:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/gpu0_1_preclean_exp30_stale_20260629_030722.txt`
+
+Exp38 R1 signal:
+
+- R1 full/mask/boundary/outside PSNR deltas:
+  `+0.102167` / `+0.117230` / `-0.141510` / `-0.037262`.
+- R1 positive full PSNR rows: `7/13`.
+- R1 positive mask PSNR rows: `7/13`.
+- R1 boundary-negative rows: `9/13`.
+- R1 outside-negative rows: `8/13`.
+- R1 outside-MAE-worse rows: `10/13`.
+- R1 visual classification:
+  `0/13` clear better, `9/13` worse/tradeoff, `4/13` tie/local numeric gain.
+
+Answers:
+
+1. R1 had `+0.102` full PSNR because several rows moved local mask content
+   toward the winner. It failed visually because the movement was often
+   over-erasure, fogging, or boundary/outside damage instead of clean object or
+   effect removal.
+2. Improved rows by numeric full/mask include `REAL_ENV103_00001_001_01`,
+   `REAL_ENV089_00001_001_01`, `REAL_ENV093_00001_001_01`,
+   `REAL_ENV103_00004_001_01`, `REAL_ENV095_00002_001_01`,
+   `REAL_ENV104_00001_001_01`, and `REAL_ENV105_00004_001_01`.
+3. R1 train-overfit did not establish clean train improvement either: earlier
+   Exp38 train32 had full/outside regression with local movement.
+4. Boundary loss is a primary blocker: R1 boundary PSNR is negative in `9/13`
+   rows and mean boundary delta is `-0.141510`.
+5. Outside damage is also a blocker: outside PSNR is negative in `8/13` rows
+   and outside MAE worsens in `10/13`.
+6. R1 likely used useful local Linear-DPO/hard-noise pressure but insufficient
+   boundary/outside preservation; the issue is not simply "more DPO".
+7. Keep from R1: frozen-reference local Linear-DPO, hard-state evaluation,
+   and the observation that MiniMax output can move in the right raw-PSNR
+   direction.
+8. Do not repeat R2/R3: SDPO-safe and SFT-warmup variants from Exp38 produced
+   larger harmful drift and negative aggregate boundary/outside metrics.
+9. Exp40 success target: shadow raw full PSNR `> +0.2 dB`, mask PSNR
+   improvement, boundary/outside nonnegative or safe, LPIPS/Ewarp safe, and
+   visual review without fogging, over-erasure, boundary damage, or outside
+   damage.
+10. Readback files are listed in
+   `reports/exp40_minimax_psnr_safe_readback.md`.
+
+Next milestone: sample-level R1 diagnosis and recipe narrowing. No GPU training
+is allowed until the readback commit is pushed.

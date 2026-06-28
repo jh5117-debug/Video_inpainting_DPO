@@ -3310,3 +3310,31 @@ Codex reviewed the generated montage plus representative individual temporal
 strips. R1 is a metric/local tradeoff rather than a reliable visual win; R2/R3
 are negative. The 10-step quality gate failed, so 30-step remains locked and
 MiniMax remains plumbing-positive only.
+
+## 2026-06-28 Exp40 MiniMax PSNR-Safe Rescue Readback
+
+Exp40 status: `EXP40_READBACK_COMPLETED`.
+
+Created isolated branch `research/exp40-minimax-psnr-safe-rescue-20260628`
+from Exp38 HEAD `06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8`.
+
+GPU0/GPU1 are reserved for Exp40. A stale old Exp30 GPU0 heartbeat process
+group was recorded and terminated with targeted PGID TERM:
+
+- PGID `1715134`
+- user `hj`
+- cwd `/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp30_vor_or_minimax_worktree`
+- no compute PID and no GPU memory before cleanup
+- no KILL required
+
+After cleanup GPU0/GPU1 were `0 MiB`, `0%`, with no compute PID. GPU2-GPU7 were
+not used or signaled.
+
+Readback conclusion:
+
+- Exp38 R1 is the only useful MiniMax signal: full/mask PSNR
+  `+0.102167` / `+0.117230`.
+- R1 failed because boundary/outside metrics and visual quality are not safe:
+  boundary `-0.141510`, outside `-0.037262`, `0/13` clear visual better.
+- Exp40 must target PSNR-safe SFT first and only use DPO after SFT proves safe.
+- No GPU training or inference was launched in this milestone.

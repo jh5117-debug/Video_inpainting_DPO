@@ -1,0 +1,12 @@
+worktree: /home/hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
+pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp40_minimax_psnr_safe
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp40_minimax_psnr_safe_rescue
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp40_minimax_psnr_safe_rescue
+branch: research/exp40-minimax-psnr-safe-rescue-20260628
+base_branch: origin/research/exp38-minimax-full-adapter-breakthrough-20260628
+prd: PRD/55_exp40_minimax_psnr_safe_rescue.md
+reports:
+  readback: reports/exp40_minimax_psnr_safe_readback.md
+gpu_audits:
+  stale_exp30_cleanup: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp40_minimax_psnr_safe_rescue/gpu0_1_preclean_exp30_stale_20260629_030722.txt

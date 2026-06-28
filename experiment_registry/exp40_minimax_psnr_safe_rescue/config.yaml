@@ -1,0 +1,42 @@
+experiment: exp40_minimax_psnr_safe_rescue
+model: MiniMax-Remover
+branch: research/exp40-minimax-psnr-safe-rescue-20260628
+base_exp: exp38_minimax_full_adapter_breakthrough
+status: EXP40_READBACK_COMPLETED
+primary_eval: raw_output
+diagnostic_comp_only: true
+gpu_policy:
+  allowed:
+    - 0
+    - 1
+  forbidden:
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+forbidden:
+  - VOR_Eval_training_or_selection
+  - hard_comp_primary_eval
+  - repeat_exp38_r1_r2_r3_exactly
+  - inference_metrics_py_changes
+  - shared_trainer_changes
+  - universal_adapter_claim
+targets:
+  shadow_full_psnr_delta: 0.20
+  shadow_mask_psnr_delta: 0.12
+  boundary_psnr_safe: nonnegative_or_close_to_zero
+  outside_psnr_safe: nonnegative_or_close_to_zero
+  lpips_worse_limit: 0.001
+  ewarp_worse_limit: 0.05
+readback:
+  start_head: 06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8
+  r1_full_mask_boundary_outside_delta:
+    - 0.102167
+    - 0.117230
+    - -0.141510
+    - -0.037262
+  r1_clear_visual_better: 0
+  r1_worse_or_tradeoff: 9
+  r1_tie_or_local_numeric_gain: 4
