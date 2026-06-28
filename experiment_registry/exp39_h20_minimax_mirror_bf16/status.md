@@ -64,3 +64,18 @@ Still forbidden:
 Report:
 
 - `reports/exp39_h20_transfer_blocked_by_disk_margin.md`
+
+## 2026-06-29 H20 Storage Cleanup
+
+- Status: `H20_STORAGE_CLEANUP_COMPLETED`.
+- `/home/nvme01` changed from `90%` used / `367G` free to `58%` used /
+  `1.5T` free.
+- Deleted stale caches, old archives, old VideoDPO runs, old VC2 logs, upload
+  staging assets, and two obsolete generated-loser directories.
+- Preserved H20 model weights, experiments, raw external datasets, project
+  source, and `data/h20_mirror/minimax`.
+- PAI remained untouched.
+
+Report:
+
+- `reports/exp39_h20_storage_cleanup_20260629.md`
