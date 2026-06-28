@@ -75,12 +75,13 @@ right-side or stale-lock protection unless the user explicitly releases them.
 4. `VIDEOPAINTER_2000_TRAINING_COMPLETED`
 5. `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
 6. `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
+7. `VIDEOPAINTER_2000_PARETO_MIXED`
 
 The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`.
+Current status: `VIDEOPAINTER_2000_PARETO_MIXED`.
 
 Resume-policy decision:
 
@@ -135,5 +136,38 @@ Evaluation launch:
 - no new training is launched by this evaluation controller.
 - no MiniMax / Exp36 / GPU0 work is launched or modified.
 
-Scientific conclusion remains pending until all Step0/50/2000 search-dev and
-shadow-dev outputs, metrics, and visual review evidence finish.
+Evaluation completion:
+
+- eval run id: `exp31_vp2000_eval_step0_50_2000_20260628_032700`
+- completed checkpoints: `step0`, `step50`, `step2000`
+- completed splits: fixed `search-dev` and fixed `shadow-dev`
+- all 6 generation/review groups completed with `32/32` valid rows.
+- external status: `VIDEOPAINTER_2000_EXTERNAL_NOT_AVAILABLE`; no Exp31-specific
+  external Step0/Step2000 evaluation was fabricated or reused from Exp26.
+
+Final decision:
+
+- final status: `VIDEOPAINTER_2000_PARETO_MIXED`
+- search-dev Step2000 vs Step0: full PSNR `+5.5701`, mask PSNR `+9.9747`,
+  sampled boundary PSNR `+12.0920`, win rate `0.9688`.
+- search-dev Step2000 vs Step50: full PSNR `+6.1338`, mask PSNR `+1.8747`,
+  sampled boundary PSNR `+3.7226`, sampled outside L1 `-10.0351`, win rate
+  `1.0000`.
+- shadow-dev Step2000 vs Step0: full PSNR `+6.2632`, mask PSNR `+10.8860`,
+  sampled boundary PSNR `+12.2343`, win rate `1.0000`.
+- shadow-dev Step2000 vs Step50: full PSNR `+6.4772`, mask PSNR `+2.0832`,
+  sampled boundary PSNR `+3.9405`, sampled outside L1 `-10.5232`, win rate
+  `1.0000`.
+
+Video review covered the all-32 evidence/crop pages for search-dev and
+shadow-dev at Step0, Step50, and Step2000. Step2000 is visibly cleaner than
+Step50 and not collapsed; Step50 has repeated outside brightness/color
+pollution that is much reduced at Step2000. A minority of Step2000 rows still
+show finite residual local texture or mild darkening.
+
+The result is deliberately not promoted to `VIDEOPAINTER_2000_POSITIVE` because
+LPIPS and Ewarp were not computed in this fast summary, and the prompt requires
+those metrics for a formal positive gate. The allowed paper wording is
+qualified 2000-step long-run evidence, with the prior 50-step result retained as
+micro evidence. Universal-adapter, final-SOTA, all-models-supported, and
+top-conference-novelty claims remain forbidden.

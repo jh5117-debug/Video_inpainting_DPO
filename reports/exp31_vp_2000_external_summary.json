@@ -1,0 +1,5 @@
+{
+  "action": "Do not fabricate external evidence or tune/select checkpoints from external split.",
+  "reason": "No Exp31-specific locked external Step0/Step2000 evaluation was generated in this prompt; Exp26 external validation cannot be reused as Exp31 evidence.",
+  "status": "VIDEOPAINTER_2000_EXTERNAL_NOT_AVAILABLE"
+}

@@ -1,0 +1,115 @@
+{
+  "rows": [
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-0/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-0",
+      "config_exists": true,
+      "step": 0,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "5d01728cb0cb605b591f41cbea033db22d5ae72d0b37565957feae71b089be8e"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1",
+      "config_exists": true,
+      "step": 1,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "9ed1a5d824752f05703e7d9563236cca48b53affabc231a00f79a765e7201df3"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-10/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-10",
+      "config_exists": true,
+      "step": 10,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "c2ef250961b56675393cd1f2d85b57078ba371e1ff52e025512e673594bc0f0c"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-50/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-50",
+      "config_exists": true,
+      "step": 50,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "3849eafbeb9f30a7fb0f52df4c5f0a172d4d437e4161a182a075e15699b2430b"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-100/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-100",
+      "config_exists": true,
+      "step": 100,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "2569c2433246eb813a97aead54e9cf018713a199dbe6161c6b5286b1b1bcedb5"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-200/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-200",
+      "config_exists": true,
+      "step": 200,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "3ba27bf6cbfe5f1ffd6303eafea486f2cd295d7e1a512725db142de7683c2bd5"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-500/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-500",
+      "config_exists": true,
+      "step": 500,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "575051c98e04775a4fb16bc61e5c5459b8e80046aba0bd10bf72def5a20e2f2e"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1000/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1000",
+      "config_exists": true,
+      "step": 1000,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "3e06b15125e36456544fdec29b5c26190955f9911ef5646836f999c381d64986"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1500/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-1500",
+      "config_exists": true,
+      "step": 1500,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "a2a831e85bbbffdcd97b4e20ba2e0e8f3f934a86c043291885b5acffc2db73f0"
+    },
+    {
+      "branch_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-2000/branch",
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_fresh_step0_20260627_133831/checkpoint-2000",
+      "config_exists": true,
+      "step": 2000,
+      "strict_load_status": "pending_generation_runtime_strict_load",
+      "trainer_state_exists": true,
+      "weights_bytes": 712360464,
+      "weights_exists": true,
+      "weights_sha256": "fd02a22088da6869fafed437284287b011181882943f81d5ec8b1a493472c148"
+    }
+  ],
+  "status": "VIDEOPAINTER_2000_CHECKPOINTS_READY"
+}

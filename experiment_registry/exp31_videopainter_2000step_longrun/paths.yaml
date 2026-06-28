@@ -6,4 +6,8 @@ output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp31_videopai
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun
 monitor_log: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/idle_gpu_parallel_20260627/monitor_5min.csv
 source_exp26_run: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp26_videopainter_dpo_v2/vp_primary32_50step_20260625_171032
-
+final_decision_report: reports/exp31_vp_2000_final_decision.md
+visual_review_report: reports/exp31_vp_2000_visual_review.md
+searchdev_summary_report: reports/exp31_vp_2000_searchdev_summary.md
+shadowdev_summary_report: reports/exp31_vp_2000_shadowdev_summary.md
+paper_evidence_report: reports/paper_evidence_status_after_exp31_exp33.md

@@ -1,5 +1,7 @@
 # Exp31 Metric Summary
 
+Final status: `VIDEOPAINTER_2000_PARETO_MIXED`
+
 Exp31 L0/L1 technical metrics:
 
 - run id: `exp31_vp_l0_l1_20260627_132158`
@@ -11,8 +13,15 @@ Exp31 L0/L1 technical metrics:
 - L1 reference delta norm: `0.0`
 - strict reload max abs diff: `0.0`
 
-No Exp31 quality metrics exist yet. The L0/L1 result is a technical training
-gate only.
+Quality metrics:
 
-Primary Exp31 metrics will compare Step2000 to Step0 on shadow-dev after
-training and evaluation complete.
+| split | comparison | win rate | full PSNR delta | mask PSNR delta | sampled boundary PSNR delta | sampled outside L1 delta | temporal delta |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| search | Step2000 vs Step0 | 0.9688 | +5.5701 | +9.9747 | +12.0920 | +0.7533 | -0.5468 |
+| search | Step2000 vs Step50 | 1.0000 | +6.1338 | +1.8747 | +3.7226 | -10.0351 | +0.2022 |
+| shadow | Step2000 vs Step0 | 1.0000 | +6.2632 | +10.8860 | +12.2343 | +0.7666 | -0.5314 |
+| shadow | Step2000 vs Step50 | 1.0000 | +6.4772 | +2.0832 | +3.9405 | -10.5232 | +0.2140 |
+
+LPIPS and Ewarp were not computed in this fast summary, so the formal
+`VIDEOPAINTER_2000_POSITIVE` gate is blocked even though the available metrics
+favor Step2000.

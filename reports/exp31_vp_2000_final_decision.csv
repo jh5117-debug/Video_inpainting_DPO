@@ -1,0 +1,2 @@
+final_status,search_step2000_vs_step0_full_delta,search_step2000_vs_step50_full_delta,shadow_step2000_vs_step0_full_delta,shadow_step2000_vs_step50_full_delta,shadow_step2000_vs_step0_win_rate,shadow_step2000_vs_step50_win_rate,formal_positive_blocker,paper_position
+VIDEOPAINTER_2000_PARETO_MIXED,5.570088461503816,6.133848627378094,6.263179666453968,6.477248257898671,1.0,1.0,LPIPS/Ewarp missing in fast summary; sampled outside-L1 slightly worse vs Step0,qualified 2000-step long-run evidence; no universal/final SOTA claim

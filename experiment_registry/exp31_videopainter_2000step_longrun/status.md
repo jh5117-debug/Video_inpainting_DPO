@@ -1,6 +1,6 @@
 # Exp31 VideoPainter 2000-Step Long-Run Status
 
-Current status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
+Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
 
 - branch: `research/exp31-videopainter-2000step-longrun-20260627`
 - base: `origin/research/exp26-videopainter-dpo-v2`
@@ -16,11 +16,19 @@ Current status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
 - trainer state: optimizer, explicit `lr_scheduler`, and RNG state are saved.
 - training: completed in run `exp31_vp2000_fresh_step0_20260627_133831`.
 - final training step: `2000`.
-- evaluation: running in
+- evaluation: completed in
   `exp31_vp2000_eval_step0_50_2000_20260628_032700`.
 - evaluation GPU: GPU1.
 - evaluation checkpoints: `step0`, `step50`, `step2000`.
 - evaluation splits: fixed search-dev and fixed shadow-dev.
-- next milestone: complete Step0/50/2000 metrics and visual review.
+- search-dev status: `VIDEOPAINTER_2000_SEARCHDEV_EVALUATED`.
+- shadow-dev status: `VIDEOPAINTER_2000_SHADOWDEV_EVALUATED`.
+- external status: `VIDEOPAINTER_2000_EXTERNAL_NOT_AVAILABLE`.
+- visual review: completed from all-32 evidence and crop pages for Step0,
+  Step50, and Step2000 on both splits.
+- final decision: `VIDEOPAINTER_2000_PARETO_MIXED`.
+- reason: available metrics and video evidence strongly favor Step2000, but
+  LPIPS and Ewarp were not computed in this fast summary, so the formal
+  `VIDEOPAINTER_2000_POSITIVE` gate is not satisfied.
 
 No Exp26 or Exp30 files were modified.

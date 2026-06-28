@@ -1,0 +1,91 @@
+{
+  "paired_summary": [
+    {
+      "boundary_psnr_sampled4_delta_mean": "12.23426152163006",
+      "comparison": "step2000_vs_step0",
+      "full_psnr_delta_mean": "6.263179666453968",
+      "full_ssim_delta_mean": "0.03664344309696129",
+      "mask_psnr_delta_mean": "10.885962256967884",
+      "outside_l1_sampled4_delta_mean": "0.7665550941601396",
+      "outside_psnr_sampled4_delta_mean": "-0.4684801956747211",
+      "primary_metric_win_rate": "1.0",
+      "rows": "32",
+      "split": "shadow",
+      "temporal_absdiff_max_delta_mean": "-2.051701432093978",
+      "temporal_absdiff_mean_delta_mean": "-0.5313734786565572",
+      "temporal_not_worse_rate": "0.84375"
+    },
+    {
+      "boundary_psnr_sampled4_delta_mean": "3.940465287898192",
+      "comparison": "step2000_vs_step50",
+      "full_psnr_delta_mean": "6.477248257898671",
+      "full_ssim_delta_mean": "0.055640599443292124",
+      "mask_psnr_delta_mean": "2.083183559164702",
+      "outside_l1_sampled4_delta_mean": "-10.52321407571435",
+      "outside_psnr_sampled4_delta_mean": "6.431180906886456",
+      "primary_metric_win_rate": "1.0",
+      "rows": "32",
+      "split": "shadow",
+      "temporal_absdiff_max_delta_mean": "0.07063178159296513",
+      "temporal_absdiff_mean_delta_mean": "0.21403775864746408",
+      "temporal_not_worse_rate": "0.59375"
+    }
+  ],
+  "split": "shadow",
+  "status": "VIDEOPAINTER_2000_SHADOWDEV_EVALUATED",
+  "step_summary": [
+    {
+      "full_psnr_mean": "21.568504222373768",
+      "full_ssim_mean": "0.8009059679865532",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step0/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "5",
+      "mask_psnr_mean": "15.246579349227199",
+      "medium_hard": "26",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step0/step0_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "shadow",
+      "step": "0",
+      "technical_invalid": "0",
+      "trivial_bad": "1"
+    },
+    {
+      "full_psnr_mean": "21.354435630929068",
+      "full_ssim_mean": "0.7819088116402225",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step50/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "0",
+      "mask_psnr_mean": "24.04935804703038",
+      "medium_hard": "32",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step50/step50_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "shadow",
+      "step": "50",
+      "technical_invalid": "0",
+      "trivial_bad": "0"
+    },
+    {
+      "full_psnr_mean": "27.831683888827744",
+      "full_ssim_mean": "0.8375494110835146",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step2000/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "0",
+      "mask_psnr_mean": "26.13254160619509",
+      "medium_hard": "31",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/shadow/step2000/step2000_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "shadow",
+      "step": "2000",
+      "technical_invalid": "0",
+      "trivial_bad": "0"
+    }
+  ],
+  "visual_review": {
+    "all_32_crop_pages_opened": true,
+    "all_32_evidence_pages_opened": true,
+    "formal_positive_blocker": "LPIPS and Ewarp not computed in fast summary",
+    "step0_pattern": "weak/noisy local fill and boundary errors",
+    "step2000_pattern": "cleaner than step50 with finite residual local artifacts",
+    "step50_pattern": "local improvement but systematic outside/color pollution"
+  }
+}

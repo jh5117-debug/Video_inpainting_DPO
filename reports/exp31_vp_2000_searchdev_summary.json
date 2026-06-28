@@ -1,0 +1,91 @@
+{
+  "paired_summary": [
+    {
+      "boundary_psnr_sampled4_delta_mean": "12.092022637601826",
+      "comparison": "step2000_vs_step0",
+      "full_psnr_delta_mean": "5.570088461503816",
+      "full_ssim_delta_mean": "0.032715148501554304",
+      "mask_psnr_delta_mean": "9.974694802423162",
+      "outside_l1_sampled4_delta_mean": "0.7532911617308855",
+      "outside_psnr_sampled4_delta_mean": "-0.6667335567553149",
+      "primary_metric_win_rate": "0.96875",
+      "rows": "32",
+      "split": "search",
+      "temporal_absdiff_max_delta_mean": "-2.985952027142048",
+      "temporal_absdiff_mean_delta_mean": "-0.546821543374487",
+      "temporal_not_worse_rate": "0.90625"
+    },
+    {
+      "boundary_psnr_sampled4_delta_mean": "3.722573116281936",
+      "comparison": "step2000_vs_step50",
+      "full_psnr_delta_mean": "6.133848627378094",
+      "full_ssim_delta_mean": "0.046980401596092444",
+      "mask_psnr_delta_mean": "1.8746786412197047",
+      "outside_l1_sampled4_delta_mean": "-10.03510513715446",
+      "outside_psnr_sampled4_delta_mean": "6.338524006262596",
+      "primary_metric_win_rate": "1.0",
+      "rows": "32",
+      "split": "search",
+      "temporal_absdiff_max_delta_mean": "-0.18857979774475098",
+      "temporal_absdiff_mean_delta_mean": "0.20223060303639306",
+      "temporal_not_worse_rate": "0.59375"
+    }
+  ],
+  "split": "search",
+  "status": "VIDEOPAINTER_2000_SEARCHDEV_EVALUATED",
+  "step_summary": [
+    {
+      "full_psnr_mean": "22.686590706671215",
+      "full_ssim_mean": "0.8375352821027747",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step0/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "4",
+      "mask_psnr_mean": "16.161731836029535",
+      "medium_hard": "27",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step0/step0_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "search",
+      "step": "0",
+      "technical_invalid": "0",
+      "trivial_bad": "1"
+    },
+    {
+      "full_psnr_mean": "22.12283054079693",
+      "full_ssim_mean": "0.8232700290082368",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step50/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "0",
+      "mask_psnr_mean": "24.261747997232984",
+      "medium_hard": "32",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step50/step50_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "search",
+      "step": "50",
+      "technical_invalid": "0",
+      "trivial_bad": "0"
+    },
+    {
+      "full_psnr_mean": "28.256679168175026",
+      "full_ssim_mean": "0.8702504306043287",
+      "generation_summary": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step2000/official_generation/gate64_generation_summary.json",
+      "hard_plausible": "0",
+      "mask_psnr_mean": "26.136426638452694",
+      "medium_hard": "32",
+      "ok_rows": "32",
+      "review_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700/search/step2000/step2000_review/gate64_visual_review.csv",
+      "rows": "32",
+      "split": "search",
+      "step": "2000",
+      "technical_invalid": "0",
+      "trivial_bad": "0"
+    }
+  ],
+  "visual_review": {
+    "all_32_crop_pages_opened": true,
+    "all_32_evidence_pages_opened": true,
+    "formal_positive_blocker": "LPIPS and Ewarp not computed in fast summary",
+    "step0_pattern": "weak/noisy local fill and boundary errors",
+    "step2000_pattern": "cleaner than step50 with finite residual local artifacts",
+    "step50_pattern": "local improvement but systematic outside/color pollution"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "classification_counts": {
+    "LONGRUN_LOCAL_OR_TEMPORAL_MIXED": 1,
+    "LONGRUN_VISUALLY_BETTER_BUT_FORMAL_POSITIVE_BLOCKED": 63
+  },
+  "formal_positive_blocker": "LPIPS and Ewarp not computed in fast summary.",
+  "montage_assets": "reports/exp31_vp_2000_visual_review_montages/",
+  "rows": 64,
+  "status": "VIDEOPAINTER_2000_VISUAL_REVIEW_COMPLETE_FORMAL_POSITIVE_BLOCKED",
+  "visual_conclusion": "Step2000 visually improves over Step0 and Step50, but finite residual artifacts remain."
+}

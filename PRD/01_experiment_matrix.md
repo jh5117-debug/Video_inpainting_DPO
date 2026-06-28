@@ -701,3 +701,11 @@ Gate64 and DPO training were not started.
 | Exp26 VideoPainter evidence pack | `EXP26_RESULT_PACK_COMPLETE` | Built a 30-case discussion pack spanning search-dev examples, shadow-dev confirmed positives/ties/failures, and external DAVIS-derived limited positives/failures. The pack strengthens cross-backbone evidence for DiffuEraser + VideoPainter on VOR-BG but explicitly preserves `EXP26_EXTERNAL_VALIDATION_NOT_CONFIRMED` for external generalization. |
 
 | Exp26 third-model compatibility audit | `EXP26_THIRD_MODEL_COMPATIBILITY_AUDIT_COMPLETE` | Static audit found no third model currently `TRUE_DPO_ADAPTER_READY`. CoCoCo is the lowest-risk future adapter candidate after weights/dependency/native-parity gates; MiniMax/ProPainter are better immediate baseline or loser-generator targets. No third-model training launched. |
+
+## 2026-06-28 Exp31 / Exp33 Paper Evidence Update
+
+| Experiment | Status | Notes |
+| --- | --- | --- |
+| Exp31 VideoPainter 2000-step | `VIDEOPAINTER_2000_PARETO_MIXED` | Step2000 improves over Step0 and Step50 on fixed search-dev and shadow-dev available metrics and visual review. Formal positive is blocked because LPIPS/Ewarp were not computed in this fast summary. |
+| Exp33 EffectErase VOR-Eval | `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED` | 43/43 outputs were valid and reviewed, but only 9 usable, 17 mixed, and 17 weak baseline cases were found. Adapter status remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`. |
+| Paper evidence after Exp31/Exp33 | `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY` | Current defensible paper framing is DiffuEraser plus VideoPainter evidence. MiniMax is not a third successful adapter, and EffectErase is weak baseline evidence only. |
