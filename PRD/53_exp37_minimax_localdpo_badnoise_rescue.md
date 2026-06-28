@@ -35,3 +35,38 @@ or long training is unlocked by readback.
 Report:
 
 - `reports/exp37_minimax_readback.md`
+
+## 2026-06-28 Train-vs-Heldout Diagnosis
+
+Status: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK`.
+
+Evaluated the best Exp36 S1 winner-SFT/control checkpoint
+`S1_adamw_lr1em05/checkpoint-10` on locked Gate64 `train16` and `heldout16`.
+The run used PAI GPU0 only, wrote to the Exp37 NAS log root, and did not touch
+Exp31, Exp33, or left CLI processes.
+
+Metrics:
+
+- Train16 mean delta full/mask/boundary/outside PSNR:
+  `+0.029083` / `-0.008362` / `+0.001128` / `+0.048654`.
+- Heldout16 mean delta full/mask/boundary/outside PSNR:
+  `-0.010218` / `-0.008293` / `-0.010939` / `-0.014499`.
+- Positive mask rows: train `9/16`, heldout `6/16`.
+- Positive boundary rows: train `7/16`, heldout `5/16`.
+
+Codex reviewed all `32/32` Step0-vs-Step10 temporal strips. Visual result:
+`0` better, `32` tie/no visible change, `0` new artifacts. The train-side
+videos do not show meaningful local OR-quality improvement, so the failure is
+not a pure train-positive/heldout-negative generalization issue. The current
+signal remains too weak at the objective/update level.
+
+Allowed next step: build cleaner LocalDPO-style local corruption pairs and then
+run the preregistered bad-noise diagnostic scan. No 30-step, 2000-step,
+RC-FPO, or universal-adapter claim is unlocked.
+
+Reports:
+
+- `reports/exp37_minimax_train_vs_heldout_diagnosis.md`
+- `reports/exp37_minimax_train_vs_heldout_metrics.csv`
+- `reports/exp37_minimax_train_vs_heldout_visual_review.csv`
+- `reports/exp37_minimax_train_vs_heldout_summary.json`

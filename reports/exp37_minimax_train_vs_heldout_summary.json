@@ -1,0 +1,32 @@
+{
+  "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue/winner_sft_positive_control_20260627_fixed/checkpoints/S1_adamw_lr1em05/checkpoint-10",
+  "diagnosis": "Train-side output does not show meaningful local/visual improvement; heldout is also non-positive. This is objective/update signal too weak, not a pure generalization failure.",
+  "heldout16": {
+    "mean_delta_boundary_psnr": -0.010939469992591544,
+    "mean_delta_full_psnr": -0.010218427520994777,
+    "mean_delta_mask_psnr": -0.008293223270011918,
+    "mean_delta_outside_psnr": -0.01449947267098417,
+    "positive_boundary_rows": 5,
+    "positive_mask_rows": 6,
+    "rows": 16,
+    "visual_better": 0,
+    "visual_tie_no_visible_change": 16,
+    "visual_worse_or_new_artifact": 0
+  },
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/train_vs_heldout_20260628/outputs",
+  "scope": "S1",
+  "status": "MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK",
+  "train16": {
+    "mean_delta_boundary_psnr": 0.0011279138985205162,
+    "mean_delta_full_psnr": 0.029083430233938667,
+    "mean_delta_mask_psnr": -0.008362488504179977,
+    "mean_delta_outside_psnr": 0.04865372640022514,
+    "positive_boundary_rows": 7,
+    "positive_mask_rows": 9,
+    "rows": 16,
+    "visual_better": 0,
+    "visual_tie_no_visible_change": 16,
+    "visual_worse_or_new_artifact": 0
+  },
+  "visual_review": "32/32 strips reviewed; 0 visual better, 32 tie/no visible change, 0 new artifact."
+}

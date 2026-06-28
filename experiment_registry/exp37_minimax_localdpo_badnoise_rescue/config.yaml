@@ -15,3 +15,10 @@ conditional_gates:
   badnoise_scan_required_for_training: true
   preregistration_required_before_training: true
   thirty_step_requires: MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE
+milestones:
+  train_vs_heldout:
+    checkpoint: exp36_s1_adamw_lr1em05_checkpoint_10
+    train_rows: 16
+    heldout_rows: 16
+    visual_review_rows: 32
+    status: MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK

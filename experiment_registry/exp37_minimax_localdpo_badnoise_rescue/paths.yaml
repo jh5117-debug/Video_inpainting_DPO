@@ -6,3 +6,9 @@ base_branch: origin/research/exp36-minimax-objective-rescue-20260627
 branch: research/exp37-minimax-localdpo-badnoise-rescue-20260627
 reports:
   readback: reports/exp37_minimax_readback.md
+  train_vs_heldout: reports/exp37_minimax_train_vs_heldout_diagnosis.md
+  train_vs_heldout_metrics: reports/exp37_minimax_train_vs_heldout_metrics.csv
+  train_vs_heldout_visual_review: reports/exp37_minimax_train_vs_heldout_visual_review.csv
+  train_vs_heldout_summary: reports/exp37_minimax_train_vs_heldout_summary.json
+runtime_outputs:
+  train_vs_heldout: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/train_vs_heldout_20260628

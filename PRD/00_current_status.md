@@ -3145,3 +3145,17 @@ question is not basic plumbing; it is train-vs-heldout behavior and whether a
 cleaner LocalDPO-style local corruption pool plus preregistered bad-noise
 states can create a meaningful MiniMax signal. No 30-step, 2000-step, RC-FPO,
 protected-lane action, or universal-adapter claim is unlocked.
+
+## 2026-06-28 Exp37 MiniMax Train-vs-Heldout Diagnosis
+
+Exp37 status: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK`. Exp36 S1 checkpoint-10 was
+evaluated on locked Gate64 `train16` and `heldout16`. Train mask/boundary PSNR
+deltas were `-0.008362` / `+0.001128`; heldout mask/boundary PSNR deltas were
+`-0.008293` / `-0.010939`. Codex reviewed `32/32` Step0-vs-Step10 temporal
+strips: `0` better, `32` tie/no visible change, `0` new artifacts.
+
+Interpretation: the train-side outputs are not meaningfully improved, so this
+is not pure generalization failure. MiniMax still needs cleaner
+LocalDPO-style local corruption pairs and bad-noise diagnostics before any
+10-step rescue. No 30-step, 2000-step, RC-FPO, protected-lane action, or
+universal-adapter claim is unlocked.
