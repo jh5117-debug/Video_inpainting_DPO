@@ -3228,3 +3228,25 @@ visual gate. Therefore 30-step remains locked, MiniMax remains
 `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`, and paper language remains
 `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`. No third-backbone-success,
 universal-adapter, or long-training claim is unlocked.
+## 2026-06-28 Exp38 MiniMax Full Adapter Breakthrough Readback
+
+Exp38 status: `EXP38_READBACK_COMPLETED`. Created isolated branch
+`research/exp38-minimax-full-adapter-breakthrough-20260628` from Exp37 HEAD
+`558c2f263469f4ee6ee46e2a1b26a8082515dded` and reread Exp30/35/36/37 MiniMax
+PRDs, registries, reports, metrics, visual reviews, and relevant scripts.
+
+Readback conclusion: MiniMax remains `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`.
+Exp36 ruled out checkpoint/load and ignored-weight failure, while Exp37 showed
+only `1/16` visible heldout improvement per LocalDPO-badnoise recipe. Exp38
+therefore starts with failure taxonomy, official protocol audit, train-overfit
+diagnosis, and stricter preregistration; it does not repeat failed recipes,
+launch 30-step, launch 2000-step, modify protected lanes, or claim universal
+adapter.
+
+PAI readback: GPU0 and GPU1 are physically free by `nvidia-smi`; GPU2-GPU7 are
+occupied by other `/usr/local/bin/python3.10` jobs and were untouched. Legacy
+cli4 GPU lock files still exist. Exp38 log root is writable on PAI, but
+`/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo` is not writable by `hj`
+at readback time, so future checkpoint/output milestones need a minimal Exp38
+directory permission fix or must keep diagnostics under the writable log root
+until fixed.

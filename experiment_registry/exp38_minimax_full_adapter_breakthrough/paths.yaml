@@ -1,0 +1,10 @@
+worktree: /home/hj/H20_Video_inpainting_DPO_exp38_minimax_full
+pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp38_minimax_full
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp38_minimax_full_adapter_breakthrough
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough
+base_branch: origin/research/exp37-minimax-localdpo-badnoise-rescue-20260627
+branch: research/exp38-minimax-full-adapter-breakthrough-20260628
+reports:
+  readback: reports/exp38_minimax_full_readback.md
+prd: PRD/54_exp38_minimax_full_adapter_breakthrough.md
+

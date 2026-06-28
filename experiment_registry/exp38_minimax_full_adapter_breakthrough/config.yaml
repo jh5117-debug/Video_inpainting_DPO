@@ -1,0 +1,28 @@
+experiment: exp38_minimax_full_adapter_breakthrough
+base_experiment: exp37_minimax_localdpo_badnoise_rescue
+model: MiniMax-Remover
+status: EXP38_READBACK_COMPLETED
+forbidden:
+  - blind_30step
+  - long_training_2000step
+  - rc_fpo
+  - protected_lane_signals
+  - inference_metrics_py_changes
+  - shared_trainer_changes
+  - exp30_exp35_exp36_exp37_output_overwrite
+  - universal_adapter_claim
+conditional_gates:
+  gpu_task_requires_readback_commit: true
+  ten_step_requires_preregistration: true
+  thirty_step_requires_quality_positive_10step: true
+  long_run_requires_explicit_user_authorization: true
+readback:
+  start_head: 558c2f263469f4ee6ee46e2a1b26a8082515dded
+  minimax_current_status: MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY
+  paper_claim: TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY
+  pai_gpu0_physically_free: true
+  pai_gpu1_physically_free: true
+  pai_gpu2_to_gpu7_occupied: true
+  pai_log_root_writable: true
+  pai_experiment_root_writable: false
+

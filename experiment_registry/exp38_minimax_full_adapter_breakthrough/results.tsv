@@ -1,0 +1,3 @@
+milestone	status	notes
+readback	EXP38_READBACK_COMPLETED	Reread Exp30/35/36/37 MiniMax evidence plus VideoPainter/DiffuEraser paper evidence candidates. MiniMax remains plumbing-positive but not quality-positive; no GPU task or training launched.
+
