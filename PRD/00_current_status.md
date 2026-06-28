@@ -1,3 +1,31 @@
+## 2026-06-28 Exp39 H20 MiniMax Mirror Readback
+
+Exp39 has started as an isolated H20 mirror and bf16/SIGFPE debug track:
+
+```text
+EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED
+```
+
+The source-of-truth MiniMax branch is now
+`origin/research/exp38-minimax-full-adapter-breakthrough-20260628` at
+`06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8`. Latest MiniMax status remains
+quality-negative: Exp38 SFT-DPO 10-step rescue is
+`MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`, and 30-step MiniMax remains locked.
+
+H20 SSH access was restored and the old H20 repo was audited as dirty/old, so
+it was preserved without checkout/reset/clean. H20 GitHub object transfer was
+too slow/unreliable to declare the H20 Exp39 worktree ready in this milestone.
+PAI was inspected read-only only; no PAI process was signaled, no PAI GPU was
+used, and no PAI file was modified.
+
+Next allowed Exp39 milestones are PAI read-only MiniMax asset inventory and H20
+environment/weight/GPU audit. H20 MiniMax training is not authorized until
+mirror, manifests, weights, environment, and bf16/SIGFPE smoke pass.
+
+Report:
+
+- `reports/exp39_h20_minimax_mirror_readback.md`
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 Exp26 VideoPainter v2 Gate16 has now passed the pre-registered Gate16 quality

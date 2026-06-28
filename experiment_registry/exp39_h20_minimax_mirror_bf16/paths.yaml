@@ -1,0 +1,10 @@
+branch: research/exp39-h20-minimax-mirror-bf16-20260628
+base_branch: origin/research/exp38-minimax-full-adapter-breakthrough-20260628
+base_head: 06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8
+local_readback_worktree: /home/hj/H20_Video_inpainting_DPO_exp39_minimax_h20_local
+h20_repo_root: /home/nvme01/H20_Video_inpainting_DPO
+h20_preferred_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp39_minimax_h20
+h20_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
+h20_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp39_h20_minimax_mirror_bf16
+h20_log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp39_h20_minimax_mirror_bf16
+h20_runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp39_h20_minimax_mirror_bf16

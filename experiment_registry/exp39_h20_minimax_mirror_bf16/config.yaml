@@ -1,0 +1,11 @@
+status: EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED
+pai_mode: read_only
+h20_training_authorized: false
+pai_gpu_use_authorized: false
+minimax_30step_authorized: false
+rc_fpo_authorized: false
+bf16_debug_priority:
+  - audit_h20_env
+  - reproduce_sigfpe_with_minimal_smoke
+  - prefer_runtime_or_config_fix
+  - isolate_code_patch_only_if_required

@@ -1,0 +1,2 @@
+milestone	status	notes
+readback	EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED	H20 SSH works, old repo preserved, PAI read-only protection held, Exp38 latest state is negative.
