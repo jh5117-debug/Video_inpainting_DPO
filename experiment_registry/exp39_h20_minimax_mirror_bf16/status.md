@@ -48,4 +48,7 @@ Still forbidden:
 - BF16 support is available in multiple torch environments.
 - `/home/nvme01` has about `367G` free but is `90%` used.
 - MiniMax `weights/minimax_remover/current` is missing on H20.
-- H20 Exp39 worktree remains blocked until the bad partial clone is removed and a clean mirror is created.
+- The bad H20 Exp39 partial clone created by this session was removed after
+  audit; the H20 Exp39 worktree is currently absent and must be recreated
+  cleanly.
+- H20 Exp39 worktree remains blocked until a clean mirror is created.

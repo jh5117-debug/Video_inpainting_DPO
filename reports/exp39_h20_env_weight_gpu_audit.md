@@ -13,9 +13,10 @@ This audit used H20 read-only inspection. No H20 training was launched.
 - `/home/nvme01`: 3.4T total, 3.1T used, 367G free, 90% used.
 - H20 old repo `/home/nvme01/H20_Video_inpainting_DPO` exists and is large
   (`1.6T` observed by `du -sh`). It remains preserved.
-- H20 Exp39 partial clone path was observed at 6.6M during audit, but it is not
-  trusted because prior sparse checkout timed out. It should be removed/retried
-  before any H20 training.
+- H20 Exp39 partial clone path was observed at 6.6M during audit, but it was not
+  trusted because prior sparse checkout timed out. After the audit, the partial
+  clone created by this session was removed; the H20 Exp39 worktree is currently
+  absent and must be recreated cleanly before any H20 training.
 - H20 `weights/minimax_remover/current` is missing.
 - H20 `/home/nvme01/H20_Video_inpainting_DPO/weights` exists and is about 93G,
   but MiniMax current symlink is not present.
@@ -127,4 +128,4 @@ H20_ENV_WEIGHT_GPU_AUDIT_COMPLETED_PARTIAL_WORKTREE_BLOCKED
 
 H20 hardware and BF16 support look viable, but the code mirror and MiniMax
 weight symlink are not ready. Do not start H20 MiniMax training until those are
-fixed and a minimal smoke passes.
+fixed, the worktree is recreated cleanly, and a minimal smoke passes.
