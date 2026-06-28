@@ -1,9 +1,9 @@
-## 2026-06-28 Exp39 H20 MiniMax Mirror Readback
+## 2026-06-29 Exp39 H20 MiniMax Mirror Transfer / Env Repair
 
-Exp39 has started as an isolated H20 mirror and bf16/SIGFPE debug track:
+Exp39 H20 mirror transfer and environment smoke are now complete:
 
 ```text
-EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED
+EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED
 ```
 
 The source-of-truth MiniMax branch is now
@@ -12,19 +12,32 @@ The source-of-truth MiniMax branch is now
 quality-negative: Exp38 SFT-DPO 10-step rescue is
 `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`, and 30-step MiniMax remains locked.
 
-H20 SSH access was restored and the old H20 repo was audited as dirty/old, so
-it was preserved without checkout/reset/clean. H20 GitHub object transfer was
-too slow/unreliable to declare the H20 Exp39 worktree ready in this milestone.
-PAI was inspected read-only only; no PAI process was signaled, no PAI GPU was
-used, and no PAI file was modified.
+H20 source, selected PAI data, MiniMax official repo, and resolved MiniMax
+weights were mirrored under
+`/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax`. The H20
+MiniMax weight symlink was repaired, eleven manifests were rewritten for H20
+paths, and required manifest path audit passed with `0` missing required paths.
+Optional review-only assets remain incomplete (`1256` missing refs), but these
+are review sheets / temporal strips / side-by-side or diagnostic videos rather
+than training/smoke inputs.
 
-Next allowed Exp39 milestones are PAI read-only MiniMax asset inventory and H20
-environment/weight/GPU audit. H20 MiniMax training is not authorized until
-mirror, manifests, weights, environment, and bf16/SIGFPE smoke pass.
+H20 `wan` environment smoke passed for torch/CUDA/BF16, MiniMax module imports,
+required packages, required manifests, and MiniMax transformer/VAE weights. No
+training, inference run, optimizer step, or full model load was launched.
+
+PAI remained read-only. One over-broad PAI `find` command from this session was
+still in D-state NAS I/O wait at last read-only `ps` check and was not signaled
+or killed due the no-signal PAI protection rule.
+
+H20 MiniMax training is still not authorized by this milestone. 30-step
+MiniMax, RC-FPO, universal-adapter, final-SOTA, and top-conference-novelty
+claims remain forbidden.
 
 Report:
 
 - `reports/exp39_h20_minimax_mirror_readback.md`
+- `reports/exp39_h20_mirror_transfer_and_env_repair.md`
+- `reports/h20_mirror_runtime/exp39_h20_env_smoke_summary.md`
 
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 

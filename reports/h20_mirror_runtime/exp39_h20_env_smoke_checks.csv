@@ -1,0 +1,21 @@
+check,ok,detail
+repo_exists,True,/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs/mnt/nas/hj/official_repos/MiniMax-Remover_28e12b4
+weights_link_exists,True,/home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current
+weights_target_dir,True,/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs/mnt/nas/hj/H20_Video_inpainting_DPO_scp_backup_20260515_101902/third_party_video_inpainting/weights/minimax
+weight_file:transformer/diffusion_pytorch_model.safetensors,True,2254157576 bytes
+weight_file:vae/diffusion_pytorch_model.safetensors,True,507591892 bytes
+weight_file:transformer/config.json,True,422 bytes
+weight_file:vae/config.json,True,724 bytes
+weight_file:scheduler/scheduler_config.json,True,751 bytes
+torch_cuda_bf16_query,True,"{""bf16_supported"": true, ""capability0"": [9, 0], ""cuda_available"": true, ""cuda_runtime"": ""12.4"", ""device0"": ""NVIDIA H20"", ""device_count"": 8, ""torch"": ""2.5.1+cu124""}"
+import:pipeline_minimax_remover,True,ok
+import:transformer_minimax_remover,True,ok
+import_pkg:diffusers,True,0.33.0
+import_pkg:transformers,True,4.57.6
+import_pkg:safetensors,True,0.7.0
+import_pkg:accelerate,True,1.12.0
+import_pkg:cv2,True,4.11.0
+import_pkg:decord,True,0.6.0
+required_manifest_audit_exists,True,/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/reports/exp39_h20_required_manifest_path_audit.md
+required_manifest_missing_zero,True,missing=0
+nvidia_smi_readonly,True,"0, NVIDIA H20, 72215, 97871, 100; 1, NVIDIA H20, 72314, 97871, 100; 2, NVIDIA H20, 70952, 97871, 100; 3, NVIDIA H20, 69992, 97871, 100; 4, NVIDIA H20, 4, 97871, 0; 5, NVIDIA H20, 4, 97871, 0; 6, NVIDIA H20, 4, 97871, 0; 7, NVIDIA H20, 72188, 97871, 100"

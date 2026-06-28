@@ -1,6 +1,6 @@
 # Exp39 H20 MiniMax Mirror + BF16/SIGFPE Debug
 
-Status: `EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED`
+Status: `EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED`
 
 Exp39 is an isolated H20 mirror and runtime-debug track for the MiniMax
 experiments from Exp30/35/36/37/38. It does not take over PAI training and does
@@ -55,3 +55,36 @@ environment audit, and bf16/SIGFPE smoke all pass.
 Report:
 
 - `reports/exp39_h20_minimax_mirror_readback.md`
+
+## 2026-06-29 H20 Mirror Transfer / Env Repair
+
+- Status: `EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED`.
+- H20 source snapshot exists at
+  `/home/nvme01/H20_Video_inpainting_DPO_exp39_minimax_h20`.
+- H20 mirror root is
+  `/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax`.
+- `pai_abs` contains `9449` files and is about `5.5G`.
+- Data archive SHA256:
+  `05e283fd7313d24fe6fac0c97f0fdd0030a0a22cca2899d0dcf3442ed56be786`.
+- Weight/repo archive SHA256:
+  `dd35570b2bf0f182ccfabe98d974ae4417d8ab99ff121f836193e3c124135782`.
+- MiniMax `weights/minimax_remover/current` was repaired to point inside the
+  H20 mirror.
+- Eleven MiniMax manifests were copied and rewritten for H20 paths.
+- Full manifest path audit has `1256` missing optional review/evidence assets,
+  but the required-path audit has `0` missing training/smoke paths.
+- H20 `wan` environment smoke passed for torch/CUDA/BF16, MiniMax module
+  imports, required packages, required manifests, and MiniMax weight files.
+
+PAI protection note:
+
+- PAI remained read-only.
+- One over-broad read-only PAI `find` command from this session remained in
+  D-state NAS I/O wait at last `ps` readback. It was not signaled or killed to
+  preserve the explicit PAI no-signal rule.
+
+Reports:
+
+- `reports/exp39_h20_mirror_transfer_and_env_repair.md`
+- `reports/h20_mirror_runtime/exp39_h20_env_smoke_summary.md`
+- `reports/h20_mirror_runtime/exp39_h20_required_manifest_path_audit.md`

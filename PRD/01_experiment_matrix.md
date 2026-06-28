@@ -1,8 +1,8 @@
-## 2026-06-28 Exp39 H20 MiniMax Mirror
+## 2026-06-29 Exp39 H20 MiniMax Mirror
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp39 H20 MiniMax mirror + bf16/SIGFPE debug | `EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED`; H20 old repo preserved; PAI read-only protection held; no training launched | `PRD/55_exp39_h20_minimax_mirror_bf16.md`, `experiment_registry/exp39_h20_minimax_mirror_bf16/status.md`, `reports/exp39_h20_minimax_mirror_readback.md` |
+| Exp39 H20 MiniMax mirror + bf16/SIGFPE debug | `EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED`; selected data/repo/weights mirrored to H20; required manifest paths complete; H20 env smoke passed; no training launched | `PRD/55_exp39_h20_minimax_mirror_bf16.md`, `experiment_registry/exp39_h20_minimax_mirror_bf16/status.md`, `reports/exp39_h20_mirror_transfer_and_env_repair.md` |
 
 Notes:
 
@@ -10,10 +10,14 @@ Notes:
   at `06b17c0a4be2cb82d1ffbdf7b6c93406f37a3ff8`.
 - Latest MiniMax status remains `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`;
   MiniMax is still plumbing-positive but not quality-positive.
-- H20 GitHub object transfer was unreliable, so H20 worktree readiness is
-  blocked pending small-file sync or a successful retry.
-- PAI was inspected read-only only. No PAI signals, no PAI GPU use, and no PAI
-  output mutation occurred.
+- H20 mirror `pai_abs` now contains `9449` files, about `5.5G`; mirror root is
+  about `12G`.
+- Eleven manifests were rewritten. Required training/smoke paths have `0`
+  missing refs; `1256` optional review-only evidence refs are not mirrored.
+- H20 `wan` environment passed torch/CUDA/BF16, MiniMax imports, required
+  packages, required manifests, and weight-file checks.
+- PAI was read-only. One over-broad read-only PAI `find` remains in D-state NAS
+  I/O wait and was not signaled due the no-signal protection rule.
 - 30-step MiniMax, RC-FPO, universal-adapter, final-SOTA, and
   top-conference-novelty language remain forbidden.
 

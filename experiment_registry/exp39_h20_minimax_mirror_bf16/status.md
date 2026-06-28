@@ -1,6 +1,6 @@
 # Exp39 Status
 
-Current status: `EXP39_H20_MIRROR_READBACK_COMPLETED_H20_GIT_SYNC_BLOCKED`
+Current status: `EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED`
 
 ## 2026-06-28 H20 Mirror Readback
 
@@ -79,3 +79,36 @@ Report:
 Report:
 
 - `reports/exp39_h20_storage_cleanup_20260629.md`
+
+## 2026-06-29 H20 Mirror Transfer / Env Repair
+
+- Status: `EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED`.
+- H20 source snapshot recreated at
+  `/home/nvme01/H20_Video_inpainting_DPO_exp39_minimax_h20`.
+- Selected PAI absolute data, MiniMax official repo, and resolved MiniMax
+  weights were transferred to H20 mirror storage.
+- H20 mirror `pai_abs` now has `9449` files and is about `5.5G`.
+- H20 mirror root is about `12G`.
+- Data tar SHA256:
+  `05e283fd7313d24fe6fac0c97f0fdd0030a0a22cca2899d0dcf3442ed56be786`.
+- Weights/repo tar SHA256:
+  `dd35570b2bf0f182ccfabe98d974ae4417d8ab99ff121f836193e3c124135782`.
+- H20 MiniMax weight symlink now resolves to the mirrored weight target.
+- Eleven MiniMax manifests were copied and rewritten for H20 paths.
+- Required manifest path audit passed with `0` missing required paths.
+- Optional visual-review/evidence assets remain missing: `1256` full-path refs.
+- H20 `wan` environment smoke passed for torch/CUDA/BF16, MiniMax imports,
+  required packages, required manifests, and MiniMax weights.
+
+PAI protection incident:
+
+- One over-broad read-only PAI `find` command is still in D-state NAS I/O wait
+  at last read-only `ps` check. It was not signaled or killed because PAI
+  process signaling is forbidden for this track.
+
+Reports:
+
+- `reports/exp39_h20_mirror_transfer_and_env_repair.md`
+- `reports/h20_mirror_runtime/exp39_h20_rewritten_manifest_audit.md`
+- `reports/h20_mirror_runtime/exp39_h20_required_manifest_path_audit.md`
+- `reports/h20_mirror_runtime/exp39_h20_env_smoke_summary.md`

@@ -4,3 +4,4 @@ pai_inventory	PAI_MINIMAX_ASSET_INVENTORY_COMPLETED_READ_ONLY	758 manifest-refer
 h20_audit	H20_ENV_WEIGHT_GPU_AUDIT_COMPLETED_PARTIAL_WORKTREE_BLOCKED	8 H20 GPUs idle and BF16 supported, but MiniMax current weight symlink and clean Exp39 worktree are missing.
 transfer	H20_TRANSFER_BLOCKED_DISK_MARGIN_LT_20_PERCENT	No copy started because /home/nvme01 free margin is about 10.8%, below the 20% threshold.
 storage_cleanup	H20_STORAGE_CLEANUP_COMPLETED	/home/nvme01 is now 58% used with 1.5T free; stale caches, archives, old logs/runs, upload staging, and obsolete generated losers were deleted.
+mirror_transfer_env	EXP39_H20_MINIMAX_MIRROR_TRANSFER_ENV_SMOKE_PASSED	Selected PAI data plus MiniMax repo/weights mirrored to H20; required manifest paths complete; H20 wan env smoke passed; optional review-only assets missing; no training launched.
