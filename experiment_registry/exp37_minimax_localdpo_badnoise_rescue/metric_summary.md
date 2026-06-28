@@ -65,3 +65,15 @@ The selected hard states are lower than random on raw gradient/local-residual
 proxy because the selection includes outside-sanity filtering. This is expected
 for LocalDPO-style rescue: the objective should use local hard states with
 outside preservation, not blindly maximize global residual.
+
+## 2026-06-28 Objective Rescue Preregistration
+
+No model metrics were produced. The preregistered numeric constants are:
+
+- Utility scale: `18.0`.
+- LR: `1e-5`.
+- Winner anchor: `0.05`.
+- Outside preservation: `0.02`.
+- 10-step visual gate: better `>=6/16`, worse `<=4/16`.
+- LPIPS guard: no worse than `0.001`.
+- Ewarp guard: no worse than `0.05`.

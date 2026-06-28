@@ -1,6 +1,6 @@
 # Exp37 Status
 
-Current status: `MINIMAX_BAD_NOISE_STATES_READY`
+Current status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`
 
 ## 2026-06-28 Readback
 
@@ -89,3 +89,27 @@ Reports:
 - `reports/exp37_minimax_badnoise_diagnostic_scan.csv`
 - `reports/exp37_minimax_badnoise_summary.json`
 - `exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl`
+
+## 2026-06-28 Objective Rescue Preregistration
+
+Current status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`
+
+- Recipes locked: R1 `LocalDPO-Linear-HardNoise`, R2
+  `LocalDPO-Linear-SDPO`, R3 `LocalDPO-SFTWarmup-Linear`.
+- Utility scale: `18.0`, derived before training from the bad-noise
+  hard-A/random gradient proxy ratio.
+- LR: `1e-5`.
+- Winner anchor: `0.05`.
+- Outside preservation: `0.02`.
+- Training launched: `false`.
+- Inference launched: `false`.
+- Checkpoint update: `false`.
+
+Next allowed milestone: bounded 10-step rescue exactly as preregistered.
+30-step remains locked unless the 10-step status is
+`MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE`.
+
+Reports:
+
+- `reports/exp37_minimax_objective_rescue_preregistration.md`
+- `reports/exp37_minimax_objective_rescue_preregistration.json`

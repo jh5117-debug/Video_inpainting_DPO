@@ -17,6 +17,8 @@ reports:
   badnoise_scan: reports/exp37_minimax_badnoise_diagnostic_scan.md
   badnoise_scan_csv: reports/exp37_minimax_badnoise_diagnostic_scan.csv
   badnoise_scan_summary: reports/exp37_minimax_badnoise_summary.json
+  objective_preregistration: reports/exp37_minimax_objective_rescue_preregistration.md
+  objective_preregistration_json: reports/exp37_minimax_objective_rescue_preregistration.json
 manifests:
   localdpo_train32: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl
   localdpo_heldout16: exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl

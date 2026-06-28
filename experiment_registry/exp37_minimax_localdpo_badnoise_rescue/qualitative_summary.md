@@ -50,3 +50,9 @@ that the next recipe must avoid using arbitrary high-residual states: the
 random baseline often had larger local and gradient proxies because it also
 introduced outside damage. The selected `hard_state_A/B/C` states preserve the
 LocalDPO goal of local difficulty with outside sanity.
+
+## 2026-06-28 Objective Rescue Preregistration
+
+No videos were generated. The qualitative gate is locked before training:
+Step10 must not be visually identical to Step0, heldout better rows must be at
+least `6/16`, and heldout worse/new-artifact rows must be at most `4/16`.

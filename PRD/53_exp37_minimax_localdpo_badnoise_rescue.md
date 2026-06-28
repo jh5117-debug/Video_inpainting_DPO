@@ -1,6 +1,6 @@
 # Exp37 MiniMax LocalDPO-BadNoise Hybrid Rescue
 
-Status: `MINIMAX_BAD_NOISE_STATES_READY`
+Status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`
 
 Scope: MiniMax-only local corruption and bad-noise objective rescue after Exp36.
 This lane must not repeat failed Exp36 recipes, must not run 30-step unless a
@@ -159,3 +159,29 @@ Reports and manifests:
 - `reports/exp37_minimax_badnoise_diagnostic_scan.csv`
 - `reports/exp37_minimax_badnoise_summary.json`
 - `exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl`
+
+## 2026-06-28 Objective Rescue Preregistration
+
+Status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`.
+
+Locked three 10-step recipes before any rescue training:
+
+- R1 `LocalDPO-Linear-HardNoise`
+- R2 `LocalDPO-Linear-SDPO`, conditional on a stable SDPO geometry preflight
+- R3 `LocalDPO-SFTWarmup-Linear`
+
+The fixed utility scale is `18.0`, derived before training from the bad-noise
+diagnostic ratio (`10 / 0.570900 ~= 17.52`). The fixed LR is `1e-5`, inherited
+from the best Exp36 winner-SFT control. All recipes use the Exp37
+LocalDPO-style train32/heldout16 manifests, `hard_state_A`, winner anchor
+`0.05`, and outside preservation `0.02`.
+
+This milestone launched no training, no inference, and no checkpoint update.
+It only unlocks the bounded 10-step recipe run. It still does not unlock
+30-step unless the 10-step gate reaches
+`MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE`.
+
+Reports:
+
+- `reports/exp37_minimax_objective_rescue_preregistration.md`
+- `reports/exp37_minimax_objective_rescue_preregistration.json`

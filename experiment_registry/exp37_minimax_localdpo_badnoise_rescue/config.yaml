@@ -47,3 +47,15 @@ milestones:
     model_update: false
     manifest_sha256: 492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4
     status: MINIMAX_BAD_NOISE_STATES_READY
+  objective_preregistration:
+    status: MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED
+    training_launched: false
+    inference_launched: false
+    utility_scale: 18.0
+    lr: 1.0e-5
+    winner_anchor_lambda: 0.05
+    outside_preservation_lambda: 0.02
+    recipes:
+      - R1_LocalDPO_Linear_HardNoise
+      - R2_LocalDPO_Linear_SDPO_conditional
+      - R3_LocalDPO_SFTWarmup_Linear

@@ -1,0 +1,68 @@
+{
+  "status": "MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED",
+  "training_launched": false,
+  "inference_launched": false,
+  "model_update": false,
+  "train_manifest": "exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_train32.jsonl",
+  "heldout_manifest": "exp37_minimax_localdpo_badnoise_rescue/manifests/localdpo_or_heldout16.jsonl",
+  "badnoise_manifest": "exp37_minimax_localdpo_badnoise_rescue/manifests/exp37_badnoise_states.jsonl",
+  "badnoise_manifest_sha256": "492210b2cd725faa348adcbafaf37bf82cc6790b4eb0607b9f758047d1c795d4",
+  "trainable_scope": "exp36_s1_lora_attention_projection",
+  "base_lr": 0.00001,
+  "utility_scale": 18.0,
+  "utility_scale_rationale": "previous scale 10 divided by hard_A_vs_random_gradient_proxy_ratio_mean 0.570900, rounded before training",
+  "recipes": [
+    {
+      "id": "R1",
+      "name": "LocalDPO-Linear-HardNoise",
+      "active": true,
+      "objective": "linear_dpo_frozen_reference",
+      "noise_state": "hard_state_A",
+      "region": "local_mask_affected_boundary",
+      "lr": 0.00001,
+      "steps": 10,
+      "utility_scale": 18.0,
+      "winner_anchor_lambda": 0.05,
+      "outside_preservation_lambda": 0.02
+    },
+    {
+      "id": "R2",
+      "name": "LocalDPO-Linear-SDPO",
+      "active": "conditional",
+      "objective": "linear_dpo_with_sdpo_safe_lambda",
+      "enable_condition": "finite_gradient_geometry_and_safe_lambda_in_0_1_without_winner_risk_violation",
+      "skip_status": "SDPO_GEOMETRY_UNSTABLE_SKIP",
+      "noise_state": "hard_state_A",
+      "region": "local_mask_affected_boundary",
+      "lr": 0.00001,
+      "steps": 10,
+      "utility_scale": 18.0,
+      "winner_anchor_lambda": 0.05,
+      "outside_preservation_lambda": 0.02
+    },
+    {
+      "id": "R3",
+      "name": "LocalDPO-SFTWarmup-Linear",
+      "active": true,
+      "objective": "5_step_winner_sft_local_anchor_then_linear_dpo",
+      "warmup_steps": 5,
+      "linear_dpo_steps": 10,
+      "noise_state": "hard_state_A",
+      "region": "local_mask_affected_boundary",
+      "lr": 0.00001,
+      "utility_scale": 18.0,
+      "winner_anchor_lambda": 0.05,
+      "outside_preservation_lambda": 0.02
+    }
+  ],
+  "pass_gate": {
+    "heldout_visual_better_min": 6,
+    "heldout_visual_worse_max": 4,
+    "local_or_effect_metrics_improved_min": 2,
+    "lpips_worse_max": 0.001,
+    "ewarp_worse_max": 0.05,
+    "outside_systematic_worse_allowed": false,
+    "step10_identical_allowed": false
+  },
+  "conditional_30step_unlock": "MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE"
+}

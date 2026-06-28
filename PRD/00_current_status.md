@@ -3188,3 +3188,15 @@ larger residuals by damaging outside regions. Next allowed step is objective
 recipe preregistration using these local hard states. No 10-step training is
 allowed before preregistration; no 30-step, 2000-step, RC-FPO, or
 universal-adapter claim is unlocked.
+
+## 2026-06-28 Exp37 Objective Rescue Preregistration
+
+Exp37 status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`. Locked three
+bounded 10-step recipes before training: R1 `LocalDPO-Linear-HardNoise`, R2
+`LocalDPO-Linear-SDPO` conditional on stable geometry, and R3
+`LocalDPO-SFTWarmup-Linear`. Utility scale is fixed at `18.0`, LR at `1e-5`,
+winner anchor at `0.05`, and outside preservation at `0.02`.
+
+This milestone did not launch training or inference. The next allowed step is
+to run exactly the preregistered 10-step rescue. 30-step remains locked unless
+the 10-step gate is `MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE`.
