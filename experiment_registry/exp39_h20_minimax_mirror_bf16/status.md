@@ -31,3 +31,12 @@ Still forbidden:
 - 30-step MiniMax continuation.
 - RC-FPO.
 - Universal-adapter or final-SOTA claims.
+
+## 2026-06-28 PAI Asset Inventory
+
+- Status: `PAI_MINIMAX_ASSET_INVENTORY_COMPLETED_READ_ONLY`.
+- Unique manifest-referenced PAI paths: `758`.
+- Existing referenced paths: `758`.
+- Approximate referenced transfer size: `2.781 GiB`.
+- PAI model symlink target is about `2.6G`.
+- No PAI process was signaled, no PAI GPU was used, and no PAI file was modified.

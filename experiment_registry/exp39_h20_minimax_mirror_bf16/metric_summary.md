@@ -1,9 +1,12 @@
 # Exp39 Metric Summary
 
-No H20 metric or training run has been launched.
+No H20 MiniMax training or quality metric run has been launched.
 
-Readback conclusion:
+Inventory metrics:
 
-- MiniMax remains plumbing-positive but not quality-positive.
-- Exp38 latest bounded rescue is `MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`.
-- 30-step MiniMax continuation remains locked.
+- Manifest-referenced PAI paths: `758`.
+- Existing referenced PAI paths: `758`.
+- Approximate selected transfer size: `2.781 GiB`.
+
+MiniMax scientific state remains quality-negative: Exp38 latest bounded rescue is
+`MINIMAX_SFT_DPO_RESCUE_10STEP_NEGATIVE`.
