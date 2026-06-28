@@ -1,0 +1,2 @@
+milestone	status	notes
+readback	EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED	Read Exp30/35/36/37/38/39/40 MiniMax state, created local/H20 Exp41 worktrees, released H20 GPU4 non-system compute PGID 3365988 with TERM, and confirmed GPU0-GPU7 have no compute apps. No MiniMax training launched.

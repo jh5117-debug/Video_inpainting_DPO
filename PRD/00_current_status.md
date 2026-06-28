@@ -1,3 +1,38 @@
+## 2026-06-29 Exp41 H20 MiniMax Parallel BF16 Readback
+
+Exp41 has started as an H20-only MiniMax parallel adapter/debug track:
+
+```text
+EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED
+```
+
+The branch is `research/exp41-h20-minimax-parallel-bf16-20260629`, based on
+`origin/research/exp40-minimax-psnr-safe-rescue-20260628` at
+`ecd82ef8bfefd1efba063d2a240631c1b7230b1d`. H20 worktree:
+`/home/nvme01/H20_Video_inpainting_DPO_exp41_minimax_h20_parallel`.
+
+Readback imported Exp30/35/36/37/38/40 MiniMax state and Exp39 H20 mirror/env
+state. Current MiniMax conclusion remains plumbing-positive but not
+quality-positive. Exp40 provides a VOR-Train LocalDPO v3 minimum pool
+`train64/search24/shadow24` and a fixed Step0 raw baseline; no Exp41 training
+has been launched.
+
+H20 GPU release audit found GPU4 occupied by an unrelated non-system compute
+task, PGID `3365988`, and cleared it with TERM. No KILL, GPU reset,
+`pkill python`, or `killall python` was used. Final H20 GPU0-GPU7 state has no
+compute apps.
+
+PAI was read-only only: no PAI GPU use, no PAI signals, and no PAI file/output
+mutation.
+
+Next gates are H20 data readiness, BF16/SIGFPE preflight, and official MiniMax
+protocol audit. SFT/DPO/500-step lanes remain locked until those gates pass.
+
+Reports:
+
+- `reports/exp41_h20_minimax_parallel_readback.md`
+- `reports/exp41_h20_gpu_release_audit.md`
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

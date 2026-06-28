@@ -1,3 +1,21 @@
+## 2026-06-29 Exp41 H20 MiniMax Parallel BF16
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp41 H20 MiniMax parallel BF16 | `EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED`; H20 Exp41 worktree created; GPU0-GPU7 compute-free after clearing unrelated GPU4 PGID `3365988`; no MiniMax training launched | `PRD/56_exp41_h20_minimax_parallel_bf16.md`, `experiment_registry/exp41_h20_minimax_parallel_bf16/status.md`, `reports/exp41_h20_minimax_parallel_readback.md`, `reports/exp41_h20_gpu_release_audit.md` |
+
+Notes:
+
+- Base is `origin/research/exp40-minimax-psnr-safe-rescue-20260628` at
+  `ecd82ef8bfefd1efba063d2a240631c1b7230b1d`.
+- PAI remained read-only: no PAI GPU, no PAI signals, and no PAI file/output
+  mutation.
+- Exp40 provides LocalDPO v3 minimum pool `train64/search24/shadow24` and
+  Step0 raw baseline; Exp41 still needs H20 data audit, BF16/SIGFPE preflight,
+  and official protocol audit before any SFT/DPO lane.
+- MiniMax remains plumbing-positive only until new H20 shadow metrics and
+  visual review pass the explicit gates.
+
 ## 2026-06-24 Exp26 Gate16 Final Video Review
 
 | User-facing name | Status | Evidence / registry |

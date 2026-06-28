@@ -1,0 +1,39 @@
+experiment: exp41_h20_minimax_parallel_bf16
+model: MiniMax-Remover
+branch: research/exp41-h20-minimax-parallel-bf16-20260629
+base_exp: exp40_minimax_psnr_safe_rescue
+status: EXP41_H20_MINIMAX_PARALLEL_READBACK_COMPLETED
+source_modification_allowed: false
+training_authorized_after_readback: false
+pai_policy:
+  mode: read_only
+  gpu_use: false
+  signals: false
+  output_mutation: false
+h20_gpu_policy:
+  allowed: [0, 1, 2, 3, 4, 5, 6, 7]
+  gpu_reset: false
+  pkill_python: false
+  killall_python: false
+forbidden:
+  - MiniMax_official_source_modification
+  - inference_metrics_py_changes
+  - shared_trainer_changes
+  - Exp1_Exp40_history_rewrite
+  - universal_adapter_claim
+  - final_sota_claim
+  - top_conference_novelty_claim
+gates:
+  data: pending
+  bf16: pending
+  protocol: pending
+  sft: pending
+  dpo: pending
+  confirmation_500: pending
+success_targets:
+  shadow_full_psnr_delta: 0.20
+  shadow_mask_psnr_delta: 0.12
+  shadow_boundary_psnr_delta: 0.02
+  shadow_outside_psnr_delta: 0.00
+  lpips_worse_limit: 0.001
+  ewarp_worse_limit: 0.05

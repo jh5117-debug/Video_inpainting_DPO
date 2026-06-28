@@ -1,0 +1,20 @@
+branch: research/exp41-h20-minimax-parallel-bf16-20260629
+base_branch: origin/research/exp40-minimax-psnr-safe-rescue-20260628
+start_head: ecd82ef8bfefd1efba063d2a240631c1b7230b1d
+local_worktree: /home/hj/H20_Video_inpainting_DPO_exp41_minimax_h20_parallel
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp41_minimax_h20_parallel
+h20_repo_root: /home/nvme01/H20_Video_inpainting_DPO
+h20_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
+h20_minimax_weight_current: /home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current
+h20_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp41_h20_minimax_parallel_bf16
+h20_log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp41_h20_minimax_parallel_bf16
+h20_runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp41_h20_minimax_parallel_bf16
+h20_monitor_csv: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp41_h20_minimax_parallel_bf16/monitor_5min.csv
+exp40_manifests:
+  localdpo_v3_train: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_train96.jsonl
+  localdpo_v3_search: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl
+  localdpo_v3_shadow: exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_shadow32.jsonl
+reports:
+  readback: reports/exp41_h20_minimax_parallel_readback.md
+  gpu_release: reports/exp41_h20_gpu_release_audit.md
+  gpu_release_csv: reports/exp41_h20_gpu_release_audit.csv
