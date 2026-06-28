@@ -6,5 +6,7 @@ base_branch: origin/research/exp37-minimax-localdpo-badnoise-rescue-20260627
 branch: research/exp38-minimax-full-adapter-breakthrough-20260628
 reports:
   readback: reports/exp38_minimax_full_readback.md
+  failure_taxonomy: reports/exp38_minimax_failure_taxonomy.md
+  failure_taxonomy_csv: reports/exp38_minimax_failure_taxonomy.csv
+  decision_tree: reports/exp38_minimax_decision_tree.json
 prd: PRD/54_exp38_minimax_full_adapter_breakthrough.md
-

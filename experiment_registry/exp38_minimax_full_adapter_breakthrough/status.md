@@ -27,3 +27,21 @@ Report:
 
 - `reports/exp38_minimax_full_readback.md`
 
+## 2026-06-28 Failure Taxonomy
+
+Current status: `MINIMAX_FAILURE_TAXONOMY_BUILT`
+
+- Training launched: false.
+- GPU task launched: false.
+- Code/loading failure is mostly ruled out.
+- Inference ignoring adapter weights is ruled out.
+- Objective signal too weak is the strongest current explanation.
+- Bad-noise/timestep alignment, data difficulty, trainable-scope/update scale,
+  and train-vs-heldout behavior remain open.
+- Next allowed milestone: train-overfit diagnosis.
+
+Reports:
+
+- `reports/exp38_minimax_failure_taxonomy.md`
+- `reports/exp38_minimax_failure_taxonomy.csv`
+- `reports/exp38_minimax_decision_tree.json`

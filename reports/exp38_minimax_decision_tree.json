@@ -1,0 +1,54 @@
+{
+  "status": "MINIMAX_FAILURE_TAXONOMY_BUILT",
+  "training_launched": false,
+  "gpu_task_launched": false,
+  "root_decision": "MiniMax remains plumbing-positive but quality-negative",
+  "ruled_out": [
+    "checkpoint_load_failure_as_primary_cause",
+    "inference_ignores_trained_weights",
+    "total_inability_to_train",
+    "collapse_as_dominant_failure"
+  ],
+  "still_open": [
+    "official_protocol_mismatch",
+    "objective_signal_too_weak",
+    "bad_noise_timestep_alignment",
+    "data_difficulty_and_diversity",
+    "train_overfit_vs_generalization",
+    "trainable_scope_update_calibration"
+  ],
+  "decision_tree": [
+    {
+      "if": "official_protocol_mismatch_found",
+      "then": "fix_isolated_exp38_wrapper_before_training",
+      "stop": "no_dpo_rescue_until_protocol_matches_or_mismatch_is_explained"
+    },
+    {
+      "if": "new_adapter_scope_ignored_by_inference",
+      "then": "fix_loader_and_checkpoint_roundtrip",
+      "stop": "no_training_until_sensitivity_passes"
+    },
+    {
+      "if": "train_rows_do_not_visibly_improve_under_positive_control",
+      "then": "expand_scope_or_update_scale_and_redesign_objective",
+      "stop": "no_heldout_dpo_recipe"
+    },
+    {
+      "if": "train_rows_improve_but_heldout_fails",
+      "then": "treat_as_generalization_or_data_diversity_failure",
+      "stop": "do_not_claim_quality_positive"
+    },
+    {
+      "if": "badnoise_v2_not_useful",
+      "then": "remove_badnoise_as_core_recipe_component",
+      "stop": "no_badnoise_centered_rescue"
+    },
+    {
+      "if": "preregistered_10step_gate_passes",
+      "then": "unlock_conditional_30step",
+      "stop": "30step_remains_locked_otherwise"
+    }
+  ],
+  "next_milestone": "Diagnose MiniMax train versus heldout behavior"
+}
+

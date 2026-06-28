@@ -16,3 +16,12 @@ Readback imported prior MiniMax metric status:
 
 Exp38 metrics remain pending future preregistered milestones.
 
+## 2026-06-28 Failure Taxonomy
+
+No new metrics were generated. The taxonomy interprets prior metrics:
+
+- Exp30/35 failures were near-tie or negative despite strict reload.
+- Exp36 sensitivity showed nonzero output response to weight perturbation.
+- Exp36 winner-SFT lowered train loss but did not improve heldout metrics.
+- Exp37 R1 was the only mixed-positive numeric signal but remained below the
+  visual gate.

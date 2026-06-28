@@ -117,3 +117,31 @@ PAI permissions:
 
 No GPU task or training was launched by this readback milestone.
 
+## 2026-06-28 Failure Taxonomy
+
+Status: `MINIMAX_FAILURE_TAXONOMY_BUILT`.
+
+Exp38 converted the prior MiniMax failures into a decision tree. Current
+assessment:
+
+- Code/loading failure: mostly ruled out.
+- Adapter ignored by inference: ruled out by Exp36 sensitivity.
+- Trainable scope too weak: unresolved, but not the sole primary cause because
+  Exp30/35 used full transformer scope.
+- LR/update scale: partially supported.
+- Objective signal too weak: strongly supported.
+- Bad-noise/timestep alignment: unresolved.
+- Data diversity/noise and LocalDPO corruption strength: plausible.
+- Pure generalization failure: not primary yet, because train-side outputs have
+  not clearly improved either.
+- Evaluation too insensitive: possible only as a secondary factor; visible
+  review remains the promotion gate.
+
+Next action: Milestone B train-overfit diagnosis using existing checkpoints and
+pools. No new training, inference, or GPU task was launched in this milestone.
+
+Reports:
+
+- `reports/exp38_minimax_failure_taxonomy.md`
+- `reports/exp38_minimax_failure_taxonomy.csv`
+- `reports/exp38_minimax_decision_tree.json`

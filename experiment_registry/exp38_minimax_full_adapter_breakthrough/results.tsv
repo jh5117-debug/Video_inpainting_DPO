@@ -1,3 +1,3 @@
 milestone	status	notes
 readback	EXP38_READBACK_COMPLETED	Reread Exp30/35/36/37 MiniMax evidence plus VideoPainter/DiffuEraser paper evidence candidates. MiniMax remains plumbing-positive but not quality-positive; no GPU task or training launched.
-
+failure_taxonomy	MINIMAX_FAILURE_TAXONOMY_BUILT	Classified prior failures into code/load, inference sensitivity, scope, update scale, objective signal, bad-noise/timestep, data, LocalDPO corruption, generalization, and evaluation-sensitivity hypotheses. Code/load and ignored inference are mostly ruled out; objective signal is strongest current explanation; next milestone is train-overfit diagnosis.

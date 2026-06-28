@@ -3250,3 +3250,16 @@ cli4 GPU lock files still exist. Exp38 log root is writable on PAI, but
 at readback time, so future checkpoint/output milestones need a minimal Exp38
 directory permission fix or must keep diagnostics under the writable log root
 until fixed.
+
+## 2026-06-28 Exp38 MiniMax Failure Taxonomy
+
+Exp38 status: `MINIMAX_FAILURE_TAXONOMY_BUILT`. Categorized MiniMax failure
+hypotheses into code/loading, inference sensitivity, trainable scope,
+LR/update scale, objective signal, bad-noise/timestep alignment, data
+difficulty, LocalDPO corruption strength, generalization, and evaluation
+sensitivity.
+
+Current conclusion: code/loading and ignored-weight failures are mostly ruled
+out; objective signal too weak is the strongest active explanation; bad-noise,
+data strength, and train-vs-heldout behavior remain unresolved. No GPU task,
+training, 30-step, long run, RC-FPO, or protected-lane action was launched.

@@ -25,4 +25,14 @@ readback:
   pai_gpu2_to_gpu7_occupied: true
   pai_log_root_writable: true
   pai_experiment_root_writable: false
-
+milestones:
+  failure_taxonomy:
+    status: MINIMAX_FAILURE_TAXONOMY_BUILT
+    training_launched: false
+    gpu_task_launched: false
+    strongest_current_hypothesis: objective_signal_too_weak
+    ruled_out:
+      - code_loading_as_primary_cause
+      - inference_ignores_trained_weights
+      - total_inability_to_train
+    next_milestone: train_overfit_diagnosis
