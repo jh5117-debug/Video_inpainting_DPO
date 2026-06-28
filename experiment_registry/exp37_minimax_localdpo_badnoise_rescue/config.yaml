@@ -59,3 +59,46 @@ milestones:
       - R1_LocalDPO_Linear_HardNoise
       - R2_LocalDPO_Linear_SDPO_conditional
       - R3_LocalDPO_SFTWarmup_Linear
+  localdpo_badnoise_10step:
+    status: MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED
+    training_launched: true
+    inference_launched: true
+    train_rows: 32
+    heldout_rows: 16
+    linear_dpo_steps: 10
+    r3_winner_sft_warmup_steps: 5
+    utility_scale: 18.0
+    lr: 1.0e-5
+    visual_review_rows: 48
+    recipes:
+      R1:
+        name: LocalDPO-Linear-HardNoise
+        mean_delta_full_psnr: 0.20082559915485043
+        mean_delta_mask_psnr: 0.16194584415847513
+        mean_delta_boundary_psnr: -0.04975460712293833
+        mean_delta_outside_psnr: 0.02819821215723395
+        visual_better: 1
+        visual_tie: 15
+        visual_worse: 0
+      R2:
+        name: LocalDPO-Linear-SDPO
+        sdpo_lambda: 0.8379839265496272
+        mean_delta_full_psnr: -0.4727649218291956
+        mean_delta_mask_psnr: -0.18810590828659002
+        mean_delta_boundary_psnr: -0.5821701079892303
+        mean_delta_outside_psnr: -1.0971249181628817
+        visual_better: 1
+        visual_tie: 15
+        visual_worse: 0
+      R3:
+        name: LocalDPO-SFTWarmup-Linear
+        mean_delta_full_psnr: -0.5643458179945231
+        mean_delta_mask_psnr: -0.13214741854484124
+        mean_delta_boundary_psnr: -0.602426254386767
+        mean_delta_outside_psnr: -1.3741993427718293
+        visual_better: 1
+        visual_tie: 15
+        visual_worse: 0
+    thirty_step_unlocked: false
+    final_minimax_status: MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY
+    paper_claim: TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY

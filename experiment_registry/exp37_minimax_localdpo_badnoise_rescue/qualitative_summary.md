@@ -56,3 +56,24 @@ LocalDPO goal of local difficulty with outside sanity.
 No videos were generated. The qualitative gate is locked before training:
 Step10 must not be visually identical to Step0, heldout better rows must be at
 least `6/16`, and heldout worse/new-artifact rows must be at most `4/16`.
+
+## 2026-06-28 LocalDPO-BadNoise 10-Step Rescue
+
+Codex reviewed `48/48` generated heldout Step0-vs-Step10 temporal strips:
+
+| Recipe | Better | Tie / no useful gain | Worse / new artifact |
+| --- | ---: | ---: | ---: |
+| R1 | 1/16 | 15/16 | 0/16 |
+| R2 | 1/16 | 15/16 | 0/16 |
+| R3 | 1/16 | 15/16 | 0/16 |
+
+The one better case in every recipe was `REAL_ENV104_00001_001_01`, where
+Step10 suppresses a bright local residual. This isolated improvement is useful
+diagnostically but far below the `6/16` positive gate. Most rows showed only
+low-amplitude texture or tone shifts, and R2/R3 matched their negative metric
+profile by moving background/boundary appearance without visible task gain.
+
+Qualitative status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`.
+
+Paper positioning: MiniMax remains plumbing-positive and unresolved, not
+third-backbone adapter evidence.

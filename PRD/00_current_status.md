@@ -3200,3 +3200,31 @@ winner anchor at `0.05`, and outside preservation at `0.02`.
 This milestone did not launch training or inference. The next allowed step is
 to run exactly the preregistered 10-step rescue. 30-step remains locked unless
 the 10-step gate is `MINIMAX_10STEP_LOCALDPO_BADNOISE_POSITIVE`.
+
+## 2026-06-28 Exp37 MiniMax LocalDPO-BadNoise 10-Step Rescue
+
+Exp37 status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`. The three
+preregistered recipes completed on PAI GPU0 with no NaN/Inf and reference
+delta `0.0`. Codex reviewed `48/48` heldout Step0-vs-Step10 temporal strips.
+
+Heldout metric summary:
+
+- R1 `LocalDPO-Linear-HardNoise`: full/mask/boundary/outside PSNR deltas
+  `+0.200826` / `+0.161946` / `-0.049755` / `+0.028198`.
+- R2 `LocalDPO-Linear-SDPO`: full/mask/boundary/outside PSNR deltas
+  `-0.472765` / `-0.188106` / `-0.582170` / `-1.097125`.
+- R3 `LocalDPO-SFTWarmup-Linear`: full/mask/boundary/outside PSNR deltas
+  `-0.564346` / `-0.132147` / `-0.602426` / `-1.374199`.
+
+Visual review:
+
+- R1: `1/16` slightly better, `15/16` tie/no visible improvement.
+- R2: `1/16` slightly better, `15/16` tie with metric degradation.
+- R3: `1/16` slightly better, `15/16` tie with metric degradation.
+
+The single visibly better row was `REAL_ENV104_00001_001_01`, where Step10
+suppressed a bright local residual. This is below the required `6/16` heldout
+visual gate. Therefore 30-step remains locked, MiniMax remains
+`MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`, and paper language remains
+`TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`. No third-backbone-success,
+universal-adapter, or long-training claim is unlocked.

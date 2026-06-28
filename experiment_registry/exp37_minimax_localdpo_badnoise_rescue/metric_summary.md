@@ -77,3 +77,20 @@ No model metrics were produced. The preregistered numeric constants are:
 - 10-step visual gate: better `>=6/16`, worse `<=4/16`.
 - LPIPS guard: no worse than `0.001`.
 - Ewarp guard: no worse than `0.05`.
+
+## 2026-06-28 LocalDPO-BadNoise 10-Step Rescue
+
+Status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`.
+
+| Recipe | Full PSNR Delta | Mask PSNR Delta | Boundary PSNR Delta | Outside PSNR Delta | Mean Pixel Diff | Reference Delta |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| R1 LocalDPO-Linear-HardNoise | +0.200826 | +0.161946 | -0.049755 | +0.028198 | 3.664826 | 0.0 |
+| R2 LocalDPO-Linear-SDPO | -0.472765 | -0.188106 | -0.582170 | -1.097125 | 5.630061 | 0.0 |
+| R3 LocalDPO-SFTWarmup-Linear | -0.564346 | -0.132147 | -0.602426 | -1.374199 | 6.245088 | 0.0 |
+
+R2 SDPO preflight passed with mean safe lambda `0.837984`, but it did not
+produce quality-positive metrics. The only recipe with mixed metric promise was
+R1, and even R1 missed boundary PSNR while producing only one visible heldout
+improvement.
+
+30-step remains locked because the preregistered 10-step positive gate failed.

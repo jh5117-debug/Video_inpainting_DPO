@@ -1,6 +1,6 @@
 # Exp37 MiniMax LocalDPO-BadNoise Hybrid Rescue
 
-Status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`
+Status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`
 
 Scope: MiniMax-only local corruption and bad-noise objective rescue after Exp36.
 This lane must not repeat failed Exp36 recipes, must not run 30-step unless a
@@ -185,3 +185,56 @@ Reports:
 
 - `reports/exp37_minimax_objective_rescue_preregistration.md`
 - `reports/exp37_minimax_objective_rescue_preregistration.json`
+
+## 2026-06-28 LocalDPO-BadNoise 10-Step Rescue
+
+Status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`.
+
+Ran the three preregistered 10-step recipes exactly as locked:
+
+- R1 `LocalDPO-Linear-HardNoise`
+- R2 `LocalDPO-Linear-SDPO`
+- R3 `LocalDPO-SFTWarmup-Linear`
+
+Runtime output and checkpoints were written under the Exp37 NAS log root
+because the experiment output root under `experiments/dpo` was not writable by
+the current PAI user. No root permission change was attempted.
+
+Numeric heldout summary:
+
+- R1 full/mask/boundary/outside PSNR deltas:
+  `+0.200826` / `+0.161946` / `-0.049755` / `+0.028198`.
+- R2 full/mask/boundary/outside PSNR deltas:
+  `-0.472765` / `-0.188106` / `-0.582170` / `-1.097125`.
+- R3 full/mask/boundary/outside PSNR deltas:
+  `-0.564346` / `-0.132147` / `-0.602426` / `-1.374199`.
+
+Codex reviewed `48/48` heldout Step0-vs-Step10 temporal strips:
+
+- R1: `1/16` slightly better, `15/16` tie/no visible improvement.
+- R2: `1/16` slightly better, `15/16` tie with metric degradation.
+- R3: `1/16` slightly better, `15/16` tie with metric degradation.
+
+The only visibly better row in each recipe was `REAL_ENV104_00001_001_01`,
+where Step10 suppressed a bright local residual. This is below the required
+`6/16` heldout visual gate. Step10 is not byte-identical to Step0, so the
+failure is no longer a pure no-output-change failure, but the changes are not
+quality-positive.
+
+Decision:
+
+- Objective rescue status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`.
+- Final MiniMax status: `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`.
+- Paper claim: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+- 30-step remains locked.
+- No universal-adapter, third-backbone-success, or all-models-supported claim
+  is allowed.
+
+Reports:
+
+- `reports/exp37_minimax_localdpo_badnoise_10step.md`
+- `reports/exp37_minimax_localdpo_badnoise_10step_metrics.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_diagnostics.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_visual_review.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_summary.json`
+- `reports/exp37_minimax_paper_positioning.md`

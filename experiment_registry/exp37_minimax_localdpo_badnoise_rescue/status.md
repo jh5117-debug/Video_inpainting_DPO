@@ -1,6 +1,6 @@
 # Exp37 Status
 
-Current status: `MINIMAX_OBJECTIVE_RESCUE_RECIPES_PREREGISTERED`
+Current status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`
 
 ## 2026-06-28 Readback
 
@@ -113,3 +113,30 @@ Reports:
 
 - `reports/exp37_minimax_objective_rescue_preregistration.md`
 - `reports/exp37_minimax_objective_rescue_preregistration.json`
+
+## 2026-06-28 LocalDPO-BadNoise 10-Step Rescue
+
+Current status: `MINIMAX_LOCALDPO_BADNOISE_PARETO_MIXED`
+
+- Recipes run exactly as preregistered: R1, R2, R3.
+- Train rows: `32`; heldout rows: `16`.
+- Linear-DPO steps: `10`; R3 warmup steps: `5`.
+- LR: `1e-5`; utility scale: `18.0`.
+- No NaN/Inf detected.
+- Reference delta: `0.0` for all recipes.
+- Codex visual review: `48/48` heldout strips completed.
+- R1 visual: `1/16` slightly better, `15/16` tie.
+- R2 visual: `1/16` slightly better, `15/16` tie with metric degradation.
+- R3 visual: `1/16` slightly better, `15/16` tie with metric degradation.
+- Final MiniMax status: `MINIMAX_PLUMBING_POSITIVE_RECIPE_NOT_READY`.
+- Paper claim: `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY`.
+- 30-step unlocked: `false`.
+
+Reports:
+
+- `reports/exp37_minimax_localdpo_badnoise_10step.md`
+- `reports/exp37_minimax_localdpo_badnoise_10step_metrics.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_diagnostics.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_visual_review.csv`
+- `reports/exp37_minimax_localdpo_badnoise_10step_summary.json`
+- `reports/exp37_minimax_paper_positioning.md`
