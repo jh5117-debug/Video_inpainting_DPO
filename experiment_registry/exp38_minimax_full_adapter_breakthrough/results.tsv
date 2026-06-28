@@ -1,3 +1,4 @@
 milestone	status	notes
 readback	EXP38_READBACK_COMPLETED	Reread Exp30/35/36/37 MiniMax evidence plus VideoPainter/DiffuEraser paper evidence candidates. MiniMax remains plumbing-positive but not quality-positive; no GPU task or training launched.
 failure_taxonomy	MINIMAX_FAILURE_TAXONOMY_BUILT	Classified prior failures into code/load, inference sensitivity, scope, update scale, objective signal, bad-noise/timestep, data, LocalDPO corruption, generalization, and evaluation-sensitivity hypotheses. Code/load and ignored inference are mostly ruled out; objective signal is strongest current explanation; next milestone is train-overfit diagnosis.
+train_overfit	MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT	Used PAI GPU0/GPU1 for real MiniMax inference. Exp37 R1 moved outputs but mixed local gains with outside/global drift; Exp36 S1 was near no-change on train and heldout. LocalDPO v2 and bad-noise v2 are required before any rescue recipe; 30-step remains locked.

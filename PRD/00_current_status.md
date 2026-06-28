@@ -3263,3 +3263,27 @@ Current conclusion: code/loading and ignored-weight failures are mostly ruled
 out; objective signal too weak is the strongest active explanation; bad-noise,
 data strength, and train-vs-heldout behavior remain unresolved. No GPU task,
 training, 30-step, long run, RC-FPO, or protected-lane action was launched.
+
+## 2026-06-28 Exp38 MiniMax Train-Overfit Diagnosis
+
+Exp38 status: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT`.
+
+User reserved PAI GPU0/GPU1 for MiniMax. Both cards were audited empty before
+launch (`0 MiB`, `0%`, no compute PID), so no process was killed and no signal
+was sent. GPU2/GPU3/GPU4 existing jobs were not touched.
+
+Real MiniMax inference ran:
+
+- GPU0: Exp37 `R1` LocalDPO-badnoise checkpoint-10 on train32/heldout16.
+- GPU1: Exp36 `S1` winner-SFT checkpoint-10 on train32/heldout16.
+
+Outcome:
+
+- R1 moves outputs, but mixes local mask/boundary movement with outside/global
+  drift. It is not quality-positive.
+- S1 is near no-change on both train and heldout; it does not establish a
+  meaningful train overfit.
+
+Next step is LocalDPO v2 plus bad-noise v2 with stricter local restriction and
+outside preservation before any SFT/DPO rescue. 30-step, long training,
+RC-FPO, and universal-adapter language remain locked.

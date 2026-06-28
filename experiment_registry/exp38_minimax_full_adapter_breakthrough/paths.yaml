@@ -2,6 +2,8 @@ worktree: /home/hj/H20_Video_inpainting_DPO_exp38_minimax_full
 pai_runtime_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp38_minimax_full
 output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp38_minimax_full_adapter_breakthrough
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough
+train_overfit_runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/train_overfit_20260628
+train_overfit_local_report_cache: reports/exp38_train_overfit_runtime
 base_branch: origin/research/exp37-minimax-localdpo-badnoise-rescue-20260627
 branch: research/exp38-minimax-full-adapter-breakthrough-20260628
 reports:
@@ -9,4 +11,8 @@ reports:
   failure_taxonomy: reports/exp38_minimax_failure_taxonomy.md
   failure_taxonomy_csv: reports/exp38_minimax_failure_taxonomy.csv
   decision_tree: reports/exp38_minimax_decision_tree.json
+  train_overfit: reports/exp38_minimax_train_overfit_diagnosis.md
+  train_overfit_metrics: reports/exp38_minimax_train_overfit_metrics.csv
+  train_overfit_visual_review: reports/exp38_minimax_train_overfit_visual_review.csv
+  train_overfit_summary: reports/exp38_minimax_train_overfit_summary.json
 prd: PRD/54_exp38_minimax_full_adapter_breakthrough.md

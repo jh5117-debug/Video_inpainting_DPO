@@ -45,3 +45,24 @@ Reports:
 - `reports/exp38_minimax_failure_taxonomy.md`
 - `reports/exp38_minimax_failure_taxonomy.csv`
 - `reports/exp38_minimax_decision_tree.json`
+
+## 2026-06-28 Train-Overfit Diagnosis
+
+Current status: `MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT`
+
+- GPU0/GPU1 were explicitly reserved by the user and audited empty before use.
+- No GPU0/GPU1 process was killed because no compute PID existed.
+- GPU2/GPU3/GPU4 running jobs were untouched.
+- Exp37 R1 LocalDPO-badnoise checkpoint-10 was evaluated on GPU0.
+- Exp36 S1 winner-SFT checkpoint-10 was evaluated on GPU1.
+- Exp37 R1 moves outputs but introduces mixed outside/global drift; not
+  quality-positive.
+- Exp36 S1 is near no-change on both train and heldout.
+- Next milestone: LocalDPO v2 and bad-noise v2; 30-step remains locked.
+
+Reports:
+
+- `reports/exp38_minimax_train_overfit_diagnosis.md`
+- `reports/exp38_minimax_train_overfit_metrics.csv`
+- `reports/exp38_minimax_train_overfit_visual_review.csv`
+- `reports/exp38_minimax_train_overfit_summary.json`

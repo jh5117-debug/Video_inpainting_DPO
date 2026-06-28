@@ -1,0 +1,126 @@
+{
+  "aggregates": {
+    "exp36_s1_winner_sft": {
+      "heldout": {
+        "mean_delta_boundary_psnr": -0.010939469992591544,
+        "mean_delta_full_psnr": -0.010218427520994777,
+        "mean_delta_mask_psnr": -0.008293223270011918,
+        "mean_delta_outside_psnr": -0.01449947267098417,
+        "mean_pixel_diff_mean_review_frames": 0.14769954482714334,
+        "positive_delta_boundary_psnr": 5,
+        "positive_delta_full_psnr": 7,
+        "positive_delta_mask_psnr": 6,
+        "positive_delta_outside_psnr": 8,
+        "positive_pixel_diff_mean_review_frames": 16,
+        "rows": 16,
+        "visual_class_counts": {
+          "TIE_NO_VISIBLE_CHANGE": 16
+        }
+      },
+      "train": {
+        "mean_delta_boundary_psnr": -0.0016813055732741722,
+        "mean_delta_full_psnr": 0.016241516066078765,
+        "mean_delta_mask_psnr": -0.006448393180735701,
+        "mean_delta_outside_psnr": 0.024896803602180162,
+        "mean_pixel_diff_mean_review_frames": 0.11909501254558563,
+        "positive_delta_boundary_psnr": 15,
+        "positive_delta_full_psnr": 26,
+        "positive_delta_mask_psnr": 16,
+        "positive_delta_outside_psnr": 24,
+        "positive_pixel_diff_mean_review_frames": 32,
+        "rows": 32,
+        "visual_class_counts": {
+          "TIE_NO_VISIBLE_CHANGE": 32
+        }
+      }
+    },
+    "exp37_r1_localdpo_badnoise": {
+      "heldout": {
+        "mean_delta_boundary_psnr": -0.04975460712293833,
+        "mean_delta_full_psnr": 0.20082559915485043,
+        "mean_delta_mask_psnr": 0.16194584415847513,
+        "mean_delta_outside_psnr": 0.02819821215723395,
+        "mean_pixel_diff_mean_review_frames": 3.6648261745770774,
+        "positive_delta_boundary_psnr": 8,
+        "positive_delta_full_psnr": 10,
+        "positive_delta_mask_psnr": 7,
+        "positive_delta_outside_psnr": 9,
+        "positive_pixel_diff_mean_review_frames": 16,
+        "rows": 16,
+        "visual_class_counts": {
+          "LOCAL_CHANGE_WITH_OUTSIDE_OR_GLOBAL_DAMAGE": 3,
+          "SLIGHT_LOCAL_IMPROVEMENT_NOT_DECISIVE": 6,
+          "VISIBLE_CHANGE_NOT_QUALITY_POSITIVE": 7
+        }
+      },
+      "train": {
+        "mean_delta_boundary_psnr": 0.06912309225349994,
+        "mean_delta_full_psnr": -0.5862552490496452,
+        "mean_delta_mask_psnr": 0.15206195503104442,
+        "mean_delta_outside_psnr": -0.8950177796085169,
+        "mean_pixel_diff_mean_review_frames": 3.0604488799969354,
+        "positive_delta_boundary_psnr": 17,
+        "positive_delta_full_psnr": 9,
+        "positive_delta_mask_psnr": 19,
+        "positive_delta_outside_psnr": 7,
+        "positive_pixel_diff_mean_review_frames": 32,
+        "rows": 32,
+        "visual_class_counts": {
+          "LOCAL_CHANGE_WITH_OUTSIDE_OR_GLOBAL_DAMAGE": 17,
+          "SLIGHT_LOCAL_IMPROVEMENT_NOT_DECISIVE": 10,
+          "VISIBLE_CHANGE_NOT_QUALITY_POSITIVE": 5
+        }
+      }
+    }
+  },
+  "decision": "R1 changes outputs but has outside/global damage; S1 barely changes outputs. Need LocalDPO v2/bad-noise v2 with stronger local restriction and outside preservation before DPO rescue.",
+  "gpu0_job": "exp37_r1_localdpo_badnoise checkpoint-10 train32 heldout16",
+  "gpu1_job": "exp36_s1_winner_sft checkpoint-10 train32 heldout16",
+  "gpu_used": [
+    0,
+    1
+  ],
+  "runtime_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/train_overfit_20260628",
+  "signals_sent": "no",
+  "status": "MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT",
+  "summaries": {
+    "exp36_s1_winner_sft": {
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp36_minimax_objective_rescue/winner_sft_positive_control_20260627_fixed/checkpoints/S1_adamw_lr1em05/checkpoint-10",
+      "checkpoint_format": "model_state",
+      "heldout_mean_delta_boundary_psnr": -0.010939469992591544,
+      "heldout_mean_delta_full_psnr": -0.010218427520994777,
+      "heldout_mean_delta_mask_psnr": -0.008293223270011918,
+      "heldout_mean_delta_outside_psnr": -0.01449947267098417,
+      "heldout_rows": 16,
+      "label": "exp36_s1_winner_sft",
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/train_overfit_20260628/outputs/exp36_s1_winner_sft",
+      "runtime_seconds": 372.3856430053711,
+      "scope": "S1",
+      "status": "PENDING_CODEX_VISUAL_REVIEW",
+      "train_mean_delta_boundary_psnr": -0.0016813055732741722,
+      "train_mean_delta_full_psnr": 0.016241516066078765,
+      "train_mean_delta_mask_psnr": -0.006448393180735701,
+      "train_mean_delta_outside_psnr": 0.024896803602180162,
+      "train_rows": 32
+    },
+    "exp37_r1_localdpo_badnoise": {
+      "checkpoint_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp37_minimax_localdpo_badnoise_rescue/localdpo_badnoise_10step_20260628/checkpoints/R1/checkpoint-10",
+      "checkpoint_format": "hf",
+      "heldout_mean_delta_boundary_psnr": -0.04975460712293833,
+      "heldout_mean_delta_full_psnr": 0.20082559915485043,
+      "heldout_mean_delta_mask_psnr": 0.16194584415847513,
+      "heldout_mean_delta_outside_psnr": 0.02819821215723395,
+      "heldout_rows": 16,
+      "label": "exp37_r1_localdpo_badnoise",
+      "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp38_minimax_full_adapter_breakthrough/train_overfit_20260628/outputs/exp37_r1_localdpo_badnoise",
+      "runtime_seconds": 369.96652364730835,
+      "scope": "S0",
+      "status": "PENDING_CODEX_VISUAL_REVIEW",
+      "train_mean_delta_boundary_psnr": 0.06912309225349994,
+      "train_mean_delta_full_psnr": -0.5862552490496452,
+      "train_mean_delta_mask_psnr": 0.15206195503104442,
+      "train_mean_delta_outside_psnr": -0.8950177796085169,
+      "train_rows": 32
+    }
+  }
+}

@@ -1,7 +1,7 @@
 experiment: exp38_minimax_full_adapter_breakthrough
 base_experiment: exp37_minimax_localdpo_badnoise_rescue
 model: MiniMax-Remover
-status: EXP38_READBACK_COMPLETED
+status: MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT
 forbidden:
   - blind_30step
   - long_training_2000step
@@ -36,3 +36,17 @@ milestones:
       - inference_ignores_trained_weights
       - total_inability_to_train
     next_milestone: train_overfit_diagnosis
+  train_overfit:
+    status: MINIMAX_OBJECTIVE_SIGNAL_TOO_WEAK_WITH_LOCAL_DRIFT
+    gpu0_1_reserved_by_user: true
+    gpu0_1_killed_processes: 0
+    jobs:
+      - label: exp37_r1_localdpo_badnoise
+        gpu: 0
+        checkpoint: exp37 R1 LocalDPO-badnoise checkpoint-10
+        result: output_moves_with_outside_global_drift
+      - label: exp36_s1_winner_sft
+        gpu: 1
+        checkpoint: exp36 S1 winner-SFT checkpoint-10
+        result: near_no_change_train_and_heldout
+    next_milestone: localdpo_v2_badnoise_v2
