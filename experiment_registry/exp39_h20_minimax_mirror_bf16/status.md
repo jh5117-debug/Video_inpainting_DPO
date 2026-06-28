@@ -52,3 +52,15 @@ Still forbidden:
   audit; the H20 Exp39 worktree is currently absent and must be recreated
   cleanly.
 - H20 Exp39 worktree remains blocked until a clean mirror is created.
+
+## 2026-06-28 Transfer Block
+
+- Status: `H20_TRANSFER_BLOCKED_DISK_MARGIN_LT_20_PERCENT`.
+- Selected manifest-referenced data is about `2.781 GiB`, but H20
+  `/home/nvme01` has only about `10.8%` free space.
+- The task requires stopping before copy when disk margin is below `20%`.
+- No PAI-to-H20 data migration was started.
+
+Report:
+
+- `reports/exp39_h20_transfer_blocked_by_disk_margin.md`
