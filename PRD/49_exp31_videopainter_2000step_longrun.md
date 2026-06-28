@@ -76,6 +76,7 @@ right-side or stale-lock protection unless the user explicitly releases them.
 5. `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
 6. `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
 7. `VIDEOPAINTER_2000_PARETO_MIXED`
+8. `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`
 
 The 2000-step run must not start until resume policy and L0/L1 pass.
 
@@ -171,3 +172,13 @@ those metrics for a formal positive gate. The allowed paper wording is
 qualified 2000-step long-run evidence, with the prior 50-step result retained as
 micro evidence. Universal-adapter, final-SOTA, all-models-supported, and
 top-conference-novelty claims remain forbidden.
+
+Strict validation readback:
+
+- status: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`
+- report: `reports/exp31_vp_2000_strict_readback.md`
+- current finding: source/config readback supports same official base family,
+  same search/shadow rows, same 49F protocol, same seed, same mask polarity, and
+  same diagnostic comp formula for Step0/50/2000.
+- formal-positive blocker remains: official base replay identity and
+  LPIPS/Ewarp completion are still pending.

@@ -6,3 +6,4 @@ exp31_eval_step0_50_2000_launch_20260628	VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RU
 exp31_searchdev_step0_50_2000_20260628	VIDEOPAINTER_2000_SEARCHDEV_EVALUATED	search	step2000_vs_step0	5.5701	9.9747	12.0920			all32_reviewed			reports/exp31_vp_2000_searchdev_summary.md
 exp31_shadowdev_step0_50_2000_20260628	VIDEOPAINTER_2000_SHADOWDEV_EVALUATED	shadow	step2000_vs_step0	6.2632	10.8860	12.2343			all32_reviewed			reports/exp31_vp_2000_shadowdev_summary.md
 exp31_final_decision_20260628	VIDEOPAINTER_2000_PARETO_MIXED	search_shadow	step2000_vs_step0_and_step50	6.2632	10.8860	12.2343			better_vs_step0_and_step50	0	0	reports/exp31_vp_2000_final_decision.md
+exp31_strict_readback_20260628	VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING	readback	strict_base_protocol									reports/exp31_vp_2000_strict_readback.md

@@ -25,3 +25,7 @@ Quality metrics:
 LPIPS and Ewarp were not computed in this fast summary, so the formal
 `VIDEOPAINTER_2000_POSITIVE` gate is blocked even though the available metrics
 favor Step2000.
+
+Strict validation readback is complete in
+`reports/exp31_vp_2000_strict_readback.md`. LPIPS/Ewarp and replay identity
+remain pending before formal promotion.

@@ -707,5 +707,6 @@ Gate64 and DPO training were not started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp31 VideoPainter 2000-step | `VIDEOPAINTER_2000_PARETO_MIXED` | Step2000 improves over Step0 and Step50 on fixed search-dev and shadow-dev available metrics and visual review. Formal positive is blocked because LPIPS/Ewarp were not computed in this fast summary. |
+| Exp31 strict base/protocol readback | `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING` | Source/config readback supports the same official base family, locked search/shadow rows, 49F protocol, seed, mask polarity, first-frame-GT, and comp formula across Step0/50/2000. Replay identity and LPIPS/Ewarp remain required before formal positive. |
 | Exp33 EffectErase VOR-Eval | `EFFECTERASE_VOREVAL_BASELINE_WEAK_OR_FAILED` | 43/43 outputs were valid and reviewed, but only 9 usable, 17 mixed, and 17 weak baseline cases were found. Adapter status remains `EFFECTERASE_BASELINE_ONLY_FOR_NOW`. |
 | Paper evidence after Exp31/Exp33 | `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY` | Current defensible paper framing is DiffuEraser plus VideoPainter evidence. MiniMax is not a third successful adapter, and EffectErase is weak baseline evidence only. |

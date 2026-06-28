@@ -30,5 +30,7 @@ Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
 - reason: available metrics and video evidence strongly favor Step2000, but
   LPIPS and Ewarp were not computed in this fast summary, so the formal
   `VIDEOPAINTER_2000_POSITIVE` gate is not satisfied.
+- strict readback: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`.
+- strict readback report: `reports/exp31_vp_2000_strict_readback.md`.
 
 No Exp26 or Exp30 files were modified.
