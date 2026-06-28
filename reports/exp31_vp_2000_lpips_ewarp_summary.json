@@ -1,0 +1,20 @@
+{
+  "aggregate_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055/reports/exp31_vp_2000_lpips_ewarp_metrics.csv",
+  "compute_ewarp_full": false,
+  "limit_per_split": 0,
+  "metric_backend": "inference/metrics.py",
+  "ok_rows": 384,
+  "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055",
+  "paired_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055/reports/exp31_vp_2000_lpips_ewarp_paired_deltas.csv",
+  "per_video_csv": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055/reports/exp31_vp_2000_lpips_ewarp_per_video.csv",
+  "reasons": [
+    "formal LPIPS/Ewarp gate satisfied on shadow-dev comp metrics"
+  ],
+  "report_md": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055/reports/exp31_vp_2000_lpips_ewarp_metrics.md",
+  "rows": 384,
+  "run_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_eval_step0_50_2000_20260628_032700",
+  "status": "VIDEOPAINTER_2000_POSITIVE",
+  "tc_status": [
+    "TC_BACKEND_NOT_LOCAL"
+  ]
+}

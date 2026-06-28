@@ -1,7 +1,7 @@
 # Exp31 Qualitative Summary
 
 Visual review status:
-`VIDEOPAINTER_2000_VISUAL_REVIEW_COMPLETE_FORMAL_POSITIVE_BLOCKED`
+`VIDEOPAINTER_2000_VISUAL_REVIEW_COMPLETE`
 
 Reviewed material:
 
@@ -22,4 +22,5 @@ Observed pattern:
   darkening, so the result is not artifact-free.
 
 Conclusion: Step2000 is better than Step0 and Step50 on the reviewed video
-evidence, but formal positive is blocked by missing LPIPS/Ewarp metrics.
+evidence. LPIPS / mask-region Ewarp completion subsequently passed, so the
+visual review supports `VIDEOPAINTER_2000_POSITIVE` for VideoPainter only.

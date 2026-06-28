@@ -78,12 +78,13 @@ right-side or stale-lock protection unless the user explicitly releases them.
 7. `VIDEOPAINTER_2000_PARETO_MIXED`
 8. `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`
 9. `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED`
+10. `VIDEOPAINTER_2000_POSITIVE`
 
 The 2000-step run must not start until resume policy and L0/L1 pass.
 
 ## Status
 
-Current status: `VIDEOPAINTER_2000_PARETO_MIXED`.
+Current status: `VIDEOPAINTER_2000_POSITIVE`.
 
 Resume-policy decision:
 
@@ -149,7 +150,7 @@ Evaluation completion:
 
 Final decision:
 
-- final status: `VIDEOPAINTER_2000_PARETO_MIXED`
+- final status: `VIDEOPAINTER_2000_POSITIVE`
 - search-dev Step2000 vs Step0: full PSNR `+5.5701`, mask PSNR `+9.9747`,
   sampled boundary PSNR `+12.0920`, win rate `0.9688`.
 - search-dev Step2000 vs Step50: full PSNR `+6.1338`, mask PSNR `+1.8747`,
@@ -167,16 +168,17 @@ Step50 and not collapsed; Step50 has repeated outside brightness/color
 pollution that is much reduced at Step2000. A minority of Step2000 rows still
 show finite residual local texture or mild darkening.
 
-The result is deliberately not promoted to `VIDEOPAINTER_2000_POSITIVE` because
-LPIPS and Ewarp were not computed in this fast summary, and the prompt requires
-those metrics for a formal positive gate. The allowed paper wording is
-qualified 2000-step long-run evidence, with the prior 50-step result retained as
-micro evidence. Universal-adapter, final-SOTA, all-models-supported, and
-top-conference-novelty claims remain forbidden.
+The result is now promoted to `VIDEOPAINTER_2000_POSITIVE` for VideoPainter
+only because the strict official-base identity audit passed and the completed
+LPIPS / mask-region Ewarp gate favors Step2000 over both Step0 and Step50 on
+fixed search-dev and shadow-dev. The allowed paper wording is VideoPainter
+2000-step long-run positive evidence under this fixed protocol, with the prior
+50-step result retained as micro evidence. Universal-adapter, final-SOTA,
+all-models-supported, and top-conference-novelty claims remain forbidden.
 
 Strict validation readback:
 
-- status: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`
+- status: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE`
 - report: `reports/exp31_vp_2000_strict_readback.md`
 - current finding: source/config readback supports same official base family,
   same search/shadow rows, same 49F protocol, same seed, same mask polarity, and
@@ -209,4 +211,30 @@ Official base identity audit:
   mask sum `0` for every checked row.
 - no MiniMax, EffectErase adapter, shared trainer, or `inference/metrics.py`
   change was made by the audit.
-- formal-positive blocker remains: LPIPS/Ewarp completion is still pending.
+- formal-positive blocker removed by LPIPS/Ewarp completion.
+
+LPIPS/Ewarp completion:
+
+- status: `VIDEOPAINTER_2000_POSITIVE`
+- report: `reports/exp31_vp_2000_lpips_ewarp_metrics.md`
+- aggregate CSV: `reports/exp31_vp_2000_lpips_ewarp_metrics.csv`
+- per-video CSV: `reports/exp31_vp_2000_lpips_ewarp_per_video.csv`
+- paired deltas CSV: `reports/exp31_vp_2000_lpips_ewarp_paired_deltas.csv`
+- summary JSON: `reports/exp31_vp_2000_lpips_ewarp_summary.json`
+- run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055`
+- rows: `384/384` OK across search-dev and shadow-dev, Step0/50/2000,
+  raw/comp.
+- shadow-dev comp Step2000 vs Step0: full PSNR `+11.440561`, full LPIPS
+  `-0.056840`, mask LPIPS `-0.213718`, boundary PSNR `+15.242894`, mask-region
+  Ewarp `-11.171650`, probability improved `1.0000`.
+- shadow-dev comp Step2000 vs Step50: full PSNR `+2.305730`, full LPIPS
+  `-0.008813`, mask LPIPS `-0.034082`, boundary PSNR `+3.637059`, mask-region
+  Ewarp `-0.258536`, probability improved `>=0.9062`.
+- TC caveat: `TC_BACKEND_NOT_LOCAL`; no automatic model download and no proxy
+  reported as real TC.
+- Ewarp caveat: mask-region Ewarp uses the existing `inference/metrics.py`
+  backend with OpenCV DIS fallback because RAFT weights were not local on PAI.
+- Outside caveat: comp outside pixels are copied from the winner, so outside L1
+  is exactly `0.0` by construction and is not model-predicted outside
+  preservation evidence.

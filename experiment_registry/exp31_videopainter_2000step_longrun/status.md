@@ -1,6 +1,6 @@
 # Exp31 VideoPainter 2000-Step Long-Run Status
 
-Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
+Current status: `VIDEOPAINTER_2000_POSITIVE`
 
 - branch: `research/exp31-videopainter-2000step-longrun-20260627`
 - base: `origin/research/exp26-videopainter-dpo-v2`
@@ -26,11 +26,11 @@ Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
 - external status: `VIDEOPAINTER_2000_EXTERNAL_NOT_AVAILABLE`.
 - visual review: completed from all-32 evidence and crop pages for Step0,
   Step50, and Step2000 on both splits.
-- final decision: `VIDEOPAINTER_2000_PARETO_MIXED`.
-- reason: available metrics and video evidence strongly favor Step2000, but
-  LPIPS and Ewarp were not computed in this fast summary, so the formal
-  `VIDEOPAINTER_2000_POSITIVE` gate is not satisfied.
-- strict readback: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING`.
+- final decision: `VIDEOPAINTER_2000_POSITIVE`.
+- reason: strict official-base identity passed, fixed search/shadow Step0/50/2000
+  evaluation passed, full LPIPS and mask-region Ewarp completion passed, and the
+  shadow-dev comp gate favors Step2000 over both Step0 and Step50.
+- strict readback: `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE`.
 - strict readback report: `reports/exp31_vp_2000_strict_readback.md`.
 - official base identity audit: `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED`.
 - base identity report: `reports/exp31_vp_2000_base_identity_audit.md`.
@@ -38,6 +38,14 @@ Current status: `VIDEOPAINTER_2000_PARETO_MIXED`
   search-dev + 2 shadow-dev rows; replay and existing raw/comp frames matched
   exactly (`MAE=0`, `max_abs=0`, 49/49 frames), and comp formula/polarity
   recomputation was exact.
-- remaining blocker: LPIPS/Ewarp completion.
+- LPIPS/Ewarp completion: `VIDEOPAINTER_2000_POSITIVE`.
+- LPIPS/Ewarp report: `reports/exp31_vp_2000_lpips_ewarp_metrics.md`.
+- LPIPS/Ewarp run root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp31_videopainter_2000step_longrun/exp31_vp2000_lpips_ewarp_20260628_095055`.
+- metric completion caveat: TC was recorded as `TC_BACKEND_NOT_LOCAL`; no
+  automatic model download was triggered and no TC proxy is reported as real TC.
+- comp outside caveat: comp frames use winner pixels outside the mask, so outside
+  L1 is exactly `0.0` by construction and is not evidence of model-predicted
+  outside preservation.
 
 No Exp26 or Exp30 files were modified.

@@ -1,6 +1,41 @@
+## 2026-06-28 Exp31 LPIPS/Ewarp Formal Decision
+
+Status: `VIDEOPAINTER_2000_POSITIVE`
+
+Exp31 VideoPainter Step0/50/2000 evaluation is now closed for the fixed
+search-dev and fixed shadow-dev protocol. The strict official-base identity
+audit passed, and the full LPIPS / mask-region Ewarp completion evaluated
+`384/384` rows across search-dev and shadow-dev, Step0/50/2000, raw/comp.
+
+Formal shadow-dev comp evidence:
+
+- Step2000 vs Step0: full PSNR `+11.440561`, full LPIPS `-0.056840`, mask
+  LPIPS `-0.213718`, boundary PSNR `+15.242894`, mask-region Ewarp
+  `-11.171650`, probability improved `1.0000`.
+- Step2000 vs Step50: full PSNR `+2.305730`, full LPIPS `-0.008813`, mask
+  LPIPS `-0.034082`, boundary PSNR `+3.637059`, mask-region Ewarp
+  `-0.258536`, probability improved `>=0.9062`.
+
+Reports:
+
+- `reports/exp31_vp_2000_lpips_ewarp_metrics.md`
+- `reports/exp31_vp_2000_final_decision.md`
+- `reports/exp31_vp_2000_base_identity_audit.md`
+
+Caveats:
+
+- TC is `TC_BACKEND_NOT_LOCAL`; no proxy is reported as real TC.
+- Ewarp is mask-region Ewarp from the existing backend with OpenCV DIS fallback.
+- Comp outside L1 is `0.0` by construction because comp uses winner pixels
+  outside the mask; it is not model-predicted outside preservation evidence.
+- No MiniMax / Exp36, EffectErase adapter, new VideoPainter training,
+  shared trainer, or `inference/metrics.py` change was made.
+- This is VideoPainter 2000-step long-run positive evidence only; no universal
+  adapter, final SOTA, all-models-supported, or top-conference novelty claim.
+
 ## 2026-06-28 Exp31 Step0/50/2000 Evaluation Launch
 
-Status: `VIDEOPAINTER_2000_STEP0_50_2000_EVAL_RUNNING`
+Status: `VIDEOPAINTER_2000_EVALUATION_COMPLETED`
 
 Exp31 VideoPainter fresh-from-Step0 2000-step training completed on PAI before
 this evaluation milestone. The left CLI launched an evaluation-only controller
@@ -2358,8 +2393,8 @@ No third-backbone DPO training, RC-FPO, or VideoPainter retraining was launched.
 
 | Experiment | Status | Evidence | Restriction |
 | --- | --- | --- | --- |
-| Exp31 VideoPainter 2000-step long-run | `VIDEOPAINTER_2000_PARETO_MIXED` | Fresh Step0-to-2000 training completed with explicit checkpoints through Step2000. Fixed search-dev and shadow-dev Step0/50/2000 evaluation completed. Shadow Step2000 vs Step0: full PSNR `+6.2632`, mask PSNR `+10.8860`, sampled boundary PSNR `+12.2343`, win rate `1.0000`. Shadow Step2000 vs Step50: full PSNR `+6.4772`, mask PSNR `+2.0832`, sampled boundary PSNR `+3.9405`, sampled outside L1 `-10.5232`, win rate `1.0000`. All-32 evidence/crop pages were reviewed for both splits. | Available metrics and video review strongly favor Step2000, but LPIPS/Ewarp were not computed in the fast summary, so formal `VIDEOPAINTER_2000_POSITIVE` is blocked. No universal-adapter, final-SOTA, all-models-supported, or top-conference novelty claim. |
-| Exp31 paper evidence pack | `TWO_BACKBONE_PLUS_MINIMAX_PLUMBING_ONLY` | `reports/paper_evidence_status_after_exp31_exp33.md` records DiffuEraser as the main method, VideoPainter 50-step as micro evidence, VideoPainter 2000-step as qualified long-run evidence, EffectErase as weak held-out baseline only, and MiniMax as not a third successful adapter from left-CLI work. | Do not describe DiffuEraser, VideoPainter, and MiniMax as three successful adapters. |
+| Exp31 VideoPainter 2000-step long-run | `VIDEOPAINTER_2000_POSITIVE` | Fresh Step0-to-2000 training completed with explicit checkpoints through Step2000. Fixed search-dev and shadow-dev Step0/50/2000 evaluation completed. Strict official-base identity passed. LPIPS / mask-region Ewarp completion evaluated `384/384` rows. Shadow comp Step2000 vs Step50: full PSNR `+2.305730`, full LPIPS `-0.008813`, mask LPIPS `-0.034082`, boundary PSNR `+3.637059`, mask-region Ewarp `-0.258536`, probability improved `>=0.9062`. All-32 evidence/crop pages were reviewed for both splits. | VideoPainter 2000-step long-run positive under this fixed protocol only. TC is unavailable locally; comp outside L1 is constructional. No universal-adapter, final-SOTA, all-models-supported, or top-conference novelty claim. |
+| Exp31 paper evidence pack | `DIFFUERASER_PLUS_VIDEOPAINTER_POSITIVE_EFFECTERASE_BASELINE_ONLY` | Updated paper evidence will record DiffuEraser as the main method, VideoPainter Step50 as micro evidence, VideoPainter Step2000 as long-run positive evidence, EffectErase as weak held-out baseline only, and MiniMax as plumbing-only / not a third successful adapter from left-CLI work. | Do not describe DiffuEraser, VideoPainter, and MiniMax as three successful adapters. |
 
-| Exp31 VideoPainter strict validation readback | `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE_BASE_AUDIT_PENDING` | Readback confirms the Step0/50/2000 evaluation path uses the same locked search/shadow rows, 49F protocol, 720x480 resolution, seed `20260627`, mask polarity `255=inpaint`, first-frame-GT mask zeroing, and diagnostic comp formula `raw inside mask + winner outside mask`. | Official base replay is now separately passed; formal `VIDEOPAINTER_2000_POSITIVE` is still blocked until LPIPS/Ewarp completion. |
-| Exp31 VideoPainter official base identity audit | `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED` | Official base and Step0 branch weights match exactly (`5d01728c...`). Official base, Step0, Step50, and Step2000 were replayed on 2 search-dev + 2 shadow-dev rows. Official-vs-Step0, replay-vs-existing, and comp formula/polarity checks were exact (`MAE=0`, `max_abs=0`, 49/49 frames). | Removes the baseline/protocol blocker. LPIPS/Ewarp and formal paper table remain pending; no universal adapter, final-SOTA, or novelty-confirmed claim is allowed. |
+| Exp31 VideoPainter strict validation readback | `VIDEOPAINTER_2000_STRICT_READBACK_COMPLETE` | Readback confirms the Step0/50/2000 evaluation path uses the same locked search/shadow rows, 49F protocol, 720x480 resolution, seed `20260627`, mask polarity `255=inpaint`, first-frame-GT mask zeroing, and diagnostic comp formula `raw inside mask + winner outside mask`. | Official base replay and LPIPS/Ewarp completion have now passed. |
+| Exp31 VideoPainter official base identity audit | `VIDEOPAINTER_BASE_IDENTITY_AUDIT_PASSED` | Official base and Step0 branch weights match exactly (`5d01728c...`). Official base, Step0, Step50, and Step2000 were replayed on 2 search-dev + 2 shadow-dev rows. Official-vs-Step0, replay-vs-existing, and comp formula/polarity checks were exact (`MAE=0`, `max_abs=0`, 49/49 frames). | Removes the baseline/protocol blocker; no universal adapter, final-SOTA, or novelty-confirmed claim is allowed. |
