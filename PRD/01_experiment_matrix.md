@@ -1,3 +1,17 @@
+## 2026-06-29 Exp41 H20 MiniMax Official Protocol
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp41 H20 MiniMax official protocol | `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`; current Exp40/H20 Step0 protocol matches the official executable README/test protocol (`12` inference steps, `6` dilation iterations, `UniPCMultistepScheduler`, `float16`); 6-step README prose ambiguity logged as diagnostic only; no quality-positive claim | `reports/exp41_h20_minimax_official_protocol_audit.md`, `reports/exp41_h20_official_vs_current_visual_review.csv`, `experiment_registry/exp41_h20_minimax_parallel_bf16/status.md` |
+
+Notes:
+
+- Raw output was primary and hidden comp was not used.
+- Codex opened all 16 pulled protocol review sheets/temporal strips and decoded
+  all 16 side-by-side mp4s.
+- MiniMax remains protocol-ready but not quality-positive; SFT-only bad-noise
+  ladder is the next gated lane after fresh readback/GPU audit.
+
 ## 2026-06-29 Exp41 H20 MiniMax BF16 Safe
 
 | User-facing name | Status | Evidence / registry |

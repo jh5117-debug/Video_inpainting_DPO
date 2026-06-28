@@ -113,17 +113,56 @@ Reports:
 - `reports/exp41_h20_bf16_preflight_summary.json`
 - `reports/exp41_h20_bf16_preflight_rank_details.csv`
 
+## Official MiniMax Protocol Audit
+
+Status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
+
+Exp41 audited the H20 official MiniMax repo and current Exp40/H20 Step0
+baseline runner. Official README Quick Start and `test_minimax_remover.py` use
+`UniPCMultistepScheduler`, `float16`, `num_inference_steps=12`, and
+`iterations=6`; current Exp40 Step0 defaults match those executable examples.
+The README prose phrase "6 inference steps" is recorded as a documentation
+ambiguity, so Exp41 ran a 6-step probe as diagnostic evidence only.
+
+Smoke scope:
+
+- `official_readme_test`: 4 train rows and 4 search rows at 12 steps /
+  6 iterations.
+- `feature_6step_probe`: the same rows at 6 steps / 6 iterations, diagnostic
+  only.
+- Raw output primary: true.
+- Diagnostic comp used: false.
+- Training launched: false.
+
+Codex opened the pulled local contact sheets covering all `16` midframe review
+sheets and all `16` temporal strips, and decoded all `16` side-by-side mp4s.
+No mask polarity reversal, hidden comp, or winner/GT leakage into raw output was
+observed. Several rows still show baseline quality issues, including
+over-erasure, fog-like fill, terrain/shore hallucination, and masked-region dark
+artifacts.
+
+Decision: protocol identity passes. This is not a MiniMax quality-positive
+result and not third-backbone evidence.
+
+Reports:
+
+- `reports/exp41_h20_minimax_official_protocol_audit.md`
+- `reports/exp41_h20_minimax_official_protocol_audit.csv`
+- `reports/exp41_h20_official_vs_current_visual_review.csv`
+- `reports/exp41_h20_official_protocol_summary.json`
+- `reports/exp41_h20_official_protocol_video_decode_audit.csv`
+
 ## Readback Decision
 
-H20 can proceed to data/weight completeness audit and BF16/SIGFPE preflight
-before any MiniMax training.
+H20 has passed data/weight completeness, BF16/SIGFPE preflight, and official
+protocol identity. It can proceed to the gated SFT-only bad-noise ladder after a
+fresh milestone readback and GPU audit.
 
 Next required statuses:
 
 ```text
-H20_MINIMAX_DATA_READY or H20_MINIMAX_DATA_PARTIAL/BLOCKED
-H20_MINIMAX_BF16_SAFE_READY or H20_MINIMAX_FP32_ONLY_READY/BLOCKED
-H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL or MISMATCH/BLOCKED
+H20_MINIMAX_SFT_100STEP_PASS / H20_MINIMAX_SFT_300STEP_PASS / PARETO_MIXED / NEGATIVE / BLOCKED
 ```
 
-No SFT/DPO/500-step lane is authorized until those gates complete.
+No DPO or 500-step lane is authorized until the SFT ladder produces a safe
+checkpoint and passes its gate.

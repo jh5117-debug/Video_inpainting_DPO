@@ -22,3 +22,13 @@ BF16/SIGFPE preflight; no training has been launched.
 `H20_MINIMAX_BF16_SAFE_READY` passed for P0-P7, including DDP8 one-batch
 MiniMax training. This does not authorize quality claims; official protocol
 audit remains pending.
+
+## 2026-06-29 Official Protocol Gate
+
+`H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL` passed for the executable official
+README/test protocol: `UniPCMultistepScheduler`, `float16`,
+`num_inference_steps=12`, and `iterations=6`. The README prose claim of
+"6 inference steps" is recorded as a diagnostic ambiguity only.
+
+This gate does not claim MiniMax quality improvement. The next allowed lane is
+the gated SFT-only bad-noise ladder after fresh readback and H20 GPU audit.

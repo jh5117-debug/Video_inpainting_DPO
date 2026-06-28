@@ -24,3 +24,24 @@ on H20, and the Exp40 raw/source/winner/mask mp4 first-frame decode audit passed
 
 No qualitative model review was performed. This milestone validates runtime
 stability only: no SIGFPE/OOM/CUDA/Xid occurred in P0-P7.
+
+## 2026-06-29 Official Protocol Audit
+
+Codex opened the local contact sheets generated from all `16` pulled midframe
+review sheets and all `16` temporal-strip sheets, and decoded all `16`
+side-by-side mp4s with cv2.
+
+Visual/protocol counts across the official 12-step run and the diagnostic
+6-step probe:
+
+| classification | count |
+| --- | ---: |
+| PROTOCOL_VALID_BASELINE_OK | 9 |
+| PROTOCOL_VALID_QUALITY_TRADEOFF | 4 |
+| PROTOCOL_VALID_QUALITY_FAIL | 3 |
+
+No mask-polarity reversal, hidden comp, or winner/GT leakage into raw output was
+observed. MiniMax Step0 baseline still shows quality issues on several rows,
+including over-erasure/fog-like fills, terrain/shore hallucination, and dark
+masked-region artifacts. This is protocol-ready evidence only, not visual
+quality-positive evidence.

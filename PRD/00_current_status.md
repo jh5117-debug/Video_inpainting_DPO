@@ -1,3 +1,35 @@
+## 2026-06-29 Exp41 H20 MiniMax Official Protocol
+
+Exp41 advanced to:
+
+```text
+H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL
+```
+
+The H20 official MiniMax executable protocol was audited against the current
+Exp40/H20 Step0 runner. README Quick Start and `test_minimax_remover.py` use
+`UniPCMultistepScheduler`, `float16`, `num_inference_steps=12`, and
+`iterations=6`. Current Exp40 Step0 defaults match that executable protocol.
+The README prose claim of "6 inference steps" was recorded as an ambiguity and
+tested only as a diagnostic 6-step probe.
+
+Protocol smoke ran `4` train and `4` search rows for both the official
+12-step/6-iteration protocol and the 6-step diagnostic probe. Raw output was
+primary, diagnostic comp was disabled, and no training was launched. Codex
+opened the local contact sheets for all `16` midframe review sheets and all
+`16` temporal strips, and decoded all `16` side-by-side mp4s.
+
+This is a protocol gate only. MiniMax Step0 still shows baseline quality issues
+on several rows, so this milestone does not establish MiniMax as quality
+positive or third-backbone evidence.
+
+Reports:
+
+- `reports/exp41_h20_minimax_official_protocol_audit.md`
+- `reports/exp41_h20_minimax_official_protocol_audit.csv`
+- `reports/exp41_h20_official_vs_current_visual_review.csv`
+- `reports/exp41_h20_official_protocol_summary.json`
+
 ## 2026-06-29 Exp41 H20 MiniMax BF16 Safe
 
 Exp41 advanced to:

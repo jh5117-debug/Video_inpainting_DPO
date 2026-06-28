@@ -2,7 +2,7 @@ experiment: exp41_h20_minimax_parallel_bf16
 model: MiniMax-Remover
 branch: research/exp41-h20-minimax-parallel-bf16-20260629
 base_exp: exp40_minimax_psnr_safe_rescue
-status: H20_MINIMAX_BF16_SAFE_READY
+status: H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL
 source_modification_allowed: false
 training_authorized_after_readback: false
 pai_policy:
@@ -26,7 +26,7 @@ forbidden:
 gates:
   data: passed
   bf16: passed
-  protocol: pending
+  protocol: passed
   sft: pending
   dpo: pending
   confirmation_500: pending
@@ -45,3 +45,10 @@ training_authorized_after_data_gate: false
 bf16_preflight_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp41_h20_minimax_parallel_bf16/bf16_preflight_20260629_064017
 bf16_preflight_status: H20_MINIMAX_BF16_SAFE_READY
 training_authorized_after_bf16_gate: false
+
+official_protocol_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp41_h20_minimax_parallel_bf16/protocol_audit_20260629_070149
+official_protocol_status: H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL
+official_executable_num_inference_steps: 12
+official_executable_iterations: 6
+feature_6step_probe_status: DIAGNOSTIC_ONLY_NOT_ADOPTED
+training_authorized_after_protocol_gate: true

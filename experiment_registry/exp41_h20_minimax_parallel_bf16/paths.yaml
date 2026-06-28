@@ -33,3 +33,8 @@ h20_safe_exp40_manifests:
   bf16_preflight_csv: reports/exp41_h20_bf16_preflight.csv
   bf16_preflight_summary: reports/exp41_h20_bf16_preflight_summary.json
   bf16_preflight_rank_details: reports/exp41_h20_bf16_preflight_rank_details.csv
+  official_protocol_audit: reports/exp41_h20_minimax_official_protocol_audit.md
+  official_protocol_audit_csv: reports/exp41_h20_minimax_official_protocol_audit.csv
+  official_protocol_visual_review_csv: reports/exp41_h20_official_vs_current_visual_review.csv
+  official_protocol_summary: reports/exp41_h20_official_protocol_summary.json
+  official_protocol_video_decode_audit: reports/exp41_h20_official_protocol_video_decode_audit.csv

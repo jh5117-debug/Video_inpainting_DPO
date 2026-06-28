@@ -1,6 +1,35 @@
 # Exp41 Status
 
-Current status: `H20_MINIMAX_BF16_SAFE_READY`
+Current status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
+
+## 2026-06-29 Official MiniMax Protocol Audit
+
+Current status: `H20_MINIMAX_PROTOCOL_MATCHES_OFFICIAL`
+
+- H20 official MiniMax README/test executable protocol uses
+  `UniPCMultistepScheduler`, `float16`, `num_inference_steps=12`, and
+  `iterations=6`.
+- Current Exp40/H20 Step0 baseline defaults match the executable official
+  protocol.
+- README feature prose saying "6 inference steps" was audited as an ambiguity;
+  the 6-step run is diagnostic only, not the adopted current protocol.
+- Protocol smoke ran `4` train and `4` search rows for `official_readme_test`
+  and the same rows for `feature_6step_probe`.
+- Raw output was primary, diagnostic comp was disabled, and no training was
+  launched.
+- Codex opened all pulled review/temporal contact sheets and decoded all
+  `16` side-by-side mp4s. No mask polarity reversal, hidden comp, or GT leakage
+  into raw output was observed.
+- Baseline quality remains mixed/weak on several rows; this gate is not a
+  MiniMax quality-positive or third-backbone claim.
+
+Reports:
+
+- `reports/exp41_h20_minimax_official_protocol_audit.md`
+- `reports/exp41_h20_minimax_official_protocol_audit.csv`
+- `reports/exp41_h20_official_vs_current_visual_review.csv`
+- `reports/exp41_h20_official_protocol_summary.json`
+- `reports/exp41_h20_official_protocol_video_decode_audit.csv`
 
 ## 2026-06-29 Readback / GPU Release
 

@@ -1,0 +1,20 @@
+section,item,expected,observed,status,evidence,rows,full_psnr,mask_psnr,boundary_psnr,outside_psnr,outside_mae,temporal_diff_mae,num_inference_steps,iterations,dtype,runtime_seconds,full_psnr_delta,mask_psnr_delta,boundary_psnr_delta,outside_psnr_delta,outside_mae_delta,temporal_diff_mae_delta
+official_source,README executable scheduler,UniPCMultistepScheduler,UniPCMultistepScheduler,PASS,README Quick Start and test_minimax_remover.py,,,,,,,,,,,,,,,,,
+official_source,README/test executable steps,12,12,PASS,README line with num_inference_steps=12; test_minimax_remover.py uses 12,,,,,,,,,,,,,,,,,
+official_source,README/test executable iterations,6,6,PASS,README/test use iterations=6,,,,,,,,,,,,,,,,,
+official_source,feature text steps,document ambiguity recorded,README feature text says 6 inference steps,DIAGNOSTIC_ONLY,"6-step probe run, not adopted as current official executable protocol",,,,,,,,,,,,,,,,,
+official_source,pipeline code defaults,not used as executable default,pipeline defaults num_inference_steps=50 iterations=16,RECORDED_AMBIGUITY,explicit README/test args override defaults,,,,,,,,,,,,,,,,,
+current_exp40,current run_step0 default steps,12,12,PASS,exp40 run_step0_baseline.py default,,,,,,,,,,,,,,,,,
+current_exp40,current run_step0 default iterations,6,6,PASS,exp40 run_step0_baseline.py default,,,,,,,,,,,,,,,,,
+current_exp40,raw output primary,true,true,PASS,summary raw_output_primary=true; diagnostic_comp_used=false,,,,,,,,,,,,,,,,,
+current_exp40,hidden comp,false,false,PASS,diagnostic_comp_used=false,,,,,,,,,,,,,,,,,
+current_exp40,training launched,false,false,PASS,summary training_launched=false,,,,,,,,,,,,,,,,,
+mask_protocol,official mask polarity,mask >20 maps to foreground removal mask,test_minimax_remover.py masks[masks > 20] = 255; masks < 255 = 0,PASS,H20 official grep,,,,,,,,,,,,,,,,,
+mask_protocol,pipeline masked condition,images * (1-masks),images * (1-masks),PASS,pipeline_minimax_remover.py,,,,,,,,,,,,,,,,,
+visual_decode,side-by-side mp4 decode,16/16 opened,16/16 opened; 17 frames; 2048x512; 8fps,PASS,side_by_side_video_decode_audit.csv,,,,,,,,,,,,,,,,,
+metrics,official_readme_test:search4,quick smoke metrics only,,RECORDED,official_readme_test_metrics.csv,4,27.342554863383587,20.120630453784447,21.16638366416895,33.81257427769451,3.2304078165222614,1.1838854514062405,12,6,float16,127.92235827445984,,,,,,
+metrics,official_readme_test:train4,quick smoke metrics only,,RECORDED,official_readme_test_metrics.csv,4,28.01423697233139,20.634073517465186,21.408269334585654,30.82473926187308,4.555740317877602,1.7108959797769785,12,6,float16,127.92235827445984,,,,,,
+metrics,feature_6step_probe:search4,quick smoke metrics only,,RECORDED,feature_6step_probe_metrics.csv,4,27.547341382270016,20.45942900430917,20.962745664413525,33.87600427422892,3.1379514301524445,1.2598751173354685,6,6,float16,117.08079695701599,,,,,,
+metrics,feature_6step_probe:train4,quick smoke metrics only,,RECORDED,feature_6step_probe_metrics.csv,4,28.027605259906583,20.71053377462295,21.53923883247778,30.863828422776844,4.466145549626911,1.7290451154112816,6,6,float16,117.08079695701599,,,,,,
+diagnostic_delta,feature_6step_minus_official:train4,diagnostic only,6-step probe compared to 12-step executable protocol,DIAGNOSTIC_ONLY,feature_6step_probe_summary.json,,,,,,,,,,,,0.013368287575193705,0.07646025715776261,0.1309694978921243,0.0390891609037638,-0.08959476825069057,0.018149135634303093
+diagnostic_delta,feature_6step_minus_official:search4,diagnostic only,6-step probe compared to 12-step executable protocol,DIAGNOSTIC_ONLY,feature_6step_probe_summary.json,,,,,,,,,,,,0.2047865188864293,0.3387985505247251,-0.20363799975542562,0.06342999653440984,-0.0924563863698169,0.07598966592922807
