@@ -46,3 +46,10 @@ Exp46 SFT30 aggregate deltas used as forensic starting point:
 - Mean component contribution far-base/outside/mask/boundary/affected: `0.114598` / `0.630115` / `0.052052` / `0.123524` / `0.079712`
 - Outside + affected + global base contribution: `0.824424`
 - Search proxy outside + affected + global base contribution: `0.912822`
+
+## Milestone F Strict Relabel
+
+- Status: `EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`
+- Rows considered: `48`
+- Strict clean / local-only / teacher global-drift: `0/48/26`
+- Strict 32/16/16 global-SFT split possible: `False`

@@ -19,3 +19,7 @@ Movement is worse than simply learning a drifting teacher: Step30 does not get c
 ## Milestone E Qualitative Interpretation
 
 The region loss is finite and mask polarity is sane, but it is too global for pseudo-success targets that are only local-clean. The outside region dominates normalized weight mass, `far_outside` acts as a global base, and normalized affected maps can carry pseudo target drift into outside pixels. This explains why global SFT can damage full/outside appearance even without a manifest bug.
+
+## Milestone F Qualitative Interpretation
+
+Strict global pseudo-success is not available. The audited pseudo-success rows should be treated as local-only signal, not global SFT targets. This pushes next-step planning toward localized pseudo-success targets or same-source preference, not another global pseudo-success SFT run.

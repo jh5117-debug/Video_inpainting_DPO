@@ -1,6 +1,6 @@
 # Exp47 H20 MiniMax Pseudo-Success SFT Failure Forensic Audit
 
-Status: EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED
+Status: EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED
 
 Branch: `research/exp47-h20-minimax-pseudosuccess-forensic-20260629`
 Start HEAD: `94d2531a6782914e91bd4629fb477e154cfba98b`
@@ -18,7 +18,7 @@ Exp47 is an H20-only forensic audit of the Exp46 pseudo-success SFT30 failure. I
 - C pseudo-success teacher quality audit: complete (`EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED`)
 - D Step30 movement direction audit: complete (`EXP47_STEP30_MOVEMENT_AUDITED` / `SFT_LOSS_OR_TARGET_PATH_BUG`)
 - E region loss/mask/weight contribution audit: complete (`EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`)
-- F strict pseudo-success relabel proposal: pending
+- F strict pseudo-success relabel proposal: complete (`EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`)
 - G final root-cause decision: pending
 
 ## Initial Exp46 Failure Summary
@@ -81,3 +81,14 @@ Mean component contribution: far-base `0.114598`, outside increment `0.630115`, 
 Mean mask/boundary/outside area: `0.019470` / `0.022919` / `0.968317`. Mean pseudo outside L1 vs condition / V_bg: `0.016474` / `0.016277`.
 
 Conclusion: mask polarity is sane and the loss is finite, but the objective is not safely localized for pseudo-success targets with global drift. Outside receives substantial nonzero loss, `far_outside` is a global base rather than a region-specific far-outside component, and `affected` can propagate pseudo target drift outside the object. This supports `GLOBAL_SFT_SHOULD_BE_LOCALIZED` / objective-construction risk rather than a manifest bug.
+
+
+## Milestone F Strict Pseudo-Success Relabel Proposal
+
+Status: `EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`
+
+Rows considered: `48` audited search/shadow rows. Strict clean `0`, local-only `48`, teacher global-drift `26`. Strict 32/16/16 global-SFT split possible: `False`.
+
+Generated manifests: `manifests/exp47_success_clean_strict.jsonl`, `manifests/exp47_success_local_only.jsonl`, `manifests/exp47_reject_global_drift.jsonl`, and `manifests/exp47_reject_boundary_outside.jsonl`.
+
+Recommendation: `local pseudo-success target construction or same-source DPO; no global SFT`. Global pseudo-success SFT remains locked; only localized pseudo-success target construction or same-source preference can be considered.

@@ -44,3 +44,11 @@ region_loss:
   no_optimizer_step: true
   frame_space_proxy: true
   outside_plus_affected_global_base_contribution: 0.824424
+
+strict_relabel:
+  status: EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED
+  rows_considered: 48
+  strict_clean: 0
+  local_only: 48
+  strict_32_16_16_split_possible: false
+  no_training: true

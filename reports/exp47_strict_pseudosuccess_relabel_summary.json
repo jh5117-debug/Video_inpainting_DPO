@@ -1,0 +1,28 @@
+{
+  "counts": {
+    "SUCCESS_LOCAL_ONLY": 48
+  },
+  "local_only_count": 48,
+  "local_signal_enough_for_1_10_step_probe": true,
+  "manifest_paths": {
+    "reject_boundary_outside": "manifests/exp47_reject_boundary_outside.jsonl",
+    "reject_global_drift": "manifests/exp47_reject_global_drift.jsonl",
+    "success_clean_strict": "manifests/exp47_success_clean_strict.jsonl",
+    "success_local_only": "manifests/exp47_success_local_only.jsonl"
+  },
+  "recommendation": "local pseudo-success target construction or same-source DPO; no global SFT",
+  "rows": 48,
+  "split_counts": {
+    "search": {
+      "SUCCESS_LOCAL_ONLY": 24
+    },
+    "shadow": {
+      "SUCCESS_LOCAL_ONLY": 24
+    },
+    "train": {}
+  },
+  "status": "EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED",
+  "strict_32_16_16_split_possible": false,
+  "strict_clean_count": 0,
+  "teacher_global_drift_count": 26
+}

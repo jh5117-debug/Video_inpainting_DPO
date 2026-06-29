@@ -16,3 +16,6 @@ Milestone D movement: `EXP47_STEP30_MOVEMENT_AUDITED` with root signal `SFT_LOSS
 
 
 Milestone E region loss: `EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`. Outside+affected+global-base component contribution averages `0.824424` overall and `0.912822` on the search proxy. Region weighting is finite but unsafe for global-drift pseudo targets.
+
+
+Milestone F strict relabel: `EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`. Strict-clean `0`, local-only `48`, strict 32/16/16 split possible `False`. Recommendation: local pseudo-success target construction or same-source DPO; no global SFT.

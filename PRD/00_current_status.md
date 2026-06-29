@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 Strict Pseudo-Success Relabel Proposal
+
+Exp47 advanced to:
+
+```text
+EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED
+```
+
+Strict clean rows: `0`. Local-only rows: `48`. Strict 32/16/16 global-SFT split possible: `False`. Global pseudo-success SFT remains locked; localized pseudo-success or same-source preference is the only plausible next direction.
+
+Report: `reports/exp47_strict_pseudosuccess_relabel_proposal.md`
+
 ## 2026-06-30 Exp47 Region Loss Contribution Audit
 
 Exp47 advanced to:
