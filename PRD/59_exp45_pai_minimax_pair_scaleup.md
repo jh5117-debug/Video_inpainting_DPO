@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
+Status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`
 
 ## Purpose
 
@@ -193,3 +193,18 @@ session and reach at least `32/16/16` before H20 training is unlocked.
 Report:
 
 - `reports/exp45_minimax_paper_positioning.md`
+
+## 2026-06-29 HAL Environment Correction
+
+Status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`.
+
+The previous Exp45 C/D/E records were produced on `hal-9000`, where `/mnt/nas`
+and `/mnt/workspace` were unavailable. They are blocker / partial records only,
+not evidence of real PAI targeted mining or visual relabel completion.
+
+Correction report:
+
+- `reports/exp45_hal_environment_blocker_correction.md`
+
+Real C/D/E must be resumed on a PAI `dsw-*` host with the required NAS paths
+mounted.

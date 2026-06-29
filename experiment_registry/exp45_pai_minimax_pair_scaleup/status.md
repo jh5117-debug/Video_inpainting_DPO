@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
+Current status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -113,3 +113,18 @@ Reports:
 Report:
 
 - `reports/exp45_minimax_paper_positioning.md`
+
+## 2026-06-29 HAL Environment Correction
+
+- Status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`
+- Previous execution host: `hal-9000`
+- Required `/mnt/nas` available in previous session: `false`
+- New candidates mined: `0`
+- New visual relabel rows: `0`
+- Split remains: `24/8/8`
+- Formal minimum met: `false`
+- Real PAI C/D/E still required: `true`
+
+Report:
+
+- `reports/exp45_hal_environment_blocker_correction.md`

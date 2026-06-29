@@ -74,6 +74,17 @@ MINIMAX_DATA_SIGNAL_EMERGING_PAIR_YIELD_WEAK
 MiniMax is not third-adapter evidence. DiffuEraser + VideoPainter remain the
 main positive adapter evidence.
 
+Correction:
+
+```text
+EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED
+```
+
+The previous Exp45 C/D/E records were generated on `hal-9000` with no
+`/mnt/nas` or `/mnt/workspace` mount. They are partial/blocker records only:
+new candidates `0`, new visual relabel `0`, and split remains `24/8/8`.
+Real targeted mining must resume on PAI `dsw-*`.
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:
