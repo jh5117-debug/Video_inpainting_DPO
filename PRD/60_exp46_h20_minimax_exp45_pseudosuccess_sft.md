@@ -1,6 +1,6 @@
 # Exp46 H20 MiniMax Exp45 Pseudo-Success SFT Validation
 
-Status: EXP46_BF16_SAFE_READY
+Status: EXP46_STEP0_BASELINE_READY
 
 Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`
 Start HEAD: `feef1b73317bea903e0e247d077d84c740665fa4`
@@ -17,7 +17,7 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 - B mirror Exp45 required files: complete (`EXP45_H20_MIRROR_READY`)
 - C rewrite/validate manifests: complete (`EXP45_H20_MANIFESTS_READY`)
 - D BF16/environment preflight: complete (`EXP46_BF16_SAFE_READY`)
-- E Step0 baseline: pending
+- E Step0 baseline: complete (EXP46_STEP0_BASELINE_READY)
 - F pseudo-success SFT 30-step: pending
 - G pseudo-success SFT 100-step: conditional only if 30-step promising
 - H decision/paper positioning: pending
@@ -75,3 +75,29 @@ Status: `EXP46_BF16_SAFE_READY`
 - Optimizer step: `false`
 
 P0-P7 completed with finite losses/gradients where applicable. The launcher summary failed after GPU work because of shell quoting, then the report was regenerated from per-rank JSON outputs. This did not affect the preflight computation.
+
+
+## Milestone E Step0 Baseline
+
+Status: EXP46_STEP0_BASELINE_READY
+
+- Search rows: 24
+- Shadow rows: 24
+- Raw output primary: true
+- Training run: false
+- Optimizer step: false
+- GT-only SFT: not run
+- DPO: not run
+- VOR-Eval: excluded
+- Hard comp: not used
+- GPU use: H20 GPU0-GPU7 sharded evaluation
+- Interrupted preliminary single-process PID: 535866, terminated cleanly before shard evaluation
+
+Mean Step0 metrics:
+
+| split | full PSNR | mask PSNR | boundary PSNR | outside PSNR | SSIM | Ewarp |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| search | 36.518870 | 35.506194 | 28.336382 | 36.850255 | 0.990855 | 0.137264 |
+| shadow | 35.636157 | 26.977549 | 25.474265 | 36.739831 | 0.978682 | 0.066924 |
+
+Visual contact sheets for search24 and shadow24 were opened and inspected. No obvious black frames, global fogging, or outside destruction were observed in the baseline contact sheets. This does not claim quality improvement.

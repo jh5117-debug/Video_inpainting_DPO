@@ -1,3 +1,25 @@
+## 2026-06-30 Exp46 H20 Exp45 Step0 Baseline Ready
+
+Exp46 advanced to:
+
+    EXP46_STEP0_BASELINE_READY
+
+Step0 baseline evaluation completed on H20 for Exp45 pseudo-success search24 and shadow24 using raw MiniMax output as primary evidence. The run used existing Exp43 isolated evaluator with shard manifests across GPU0-GPU7. A slower single-process dry evaluation was interrupted and its owned PID 535866 was terminated cleanly before sharded evaluation; no training or optimizer step occurred.
+
+Search24 mean Step0 metrics: full PSNR 36.518870, mask PSNR 35.506194, boundary PSNR 28.336382, outside PSNR 36.850255, SSIM 0.990855, Ewarp 0.137264.
+
+Shadow24 mean Step0 metrics: full PSNR 35.636157, mask PSNR 26.977549, boundary PSNR 25.474265, outside PSNR 36.739831, SSIM 0.978682, Ewarp 0.066924.
+
+Visual review contact sheets for search24 and shadow24 were opened and inspected. No obvious black frames, global fogging, or outside destruction were observed in the baseline contact sheets. This is baseline readiness only, not a MiniMax quality-positive claim.
+
+Reports:
+
+- reports/exp46_exp45_step0_baseline.md
+- reports/exp46_exp45_step0_baseline_metrics.csv
+- reports/exp46_exp45_step0_visual_review.csv
+- reports/exp46_exp45_step0_summary.json
+- reports/exp46_step0_visual_montages/
+
 ## 2026-06-29 Exp46 H20 Pseudo-Success BF16 Preflight Ready
 
 Exp46 advanced to:

@@ -1,3 +1,14 @@
+## 2026-06-30 Exp46 H20 Exp45 Step0 Baseline
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp46 H20 MiniMax Exp45 pseudo-success Step0 baseline | EXP46_STEP0_BASELINE_READY; search24/shadow24 raw baseline metrics and contact-sheet visual review complete; no training or optimizer step | reports/exp46_exp45_step0_baseline.md, reports/exp46_exp45_step0_baseline_metrics.csv, experiment_registry/exp46_h20_minimax_pseudosuccess_sft/status.md |
+
+Notes:
+
+- This is baseline readiness only. It is not a MiniMax positive or third-backbone claim.
+- Pseudo-success SFT 30-step is the next allowed gate; GT-only SFT and DPO remain blocked.
+
 ## 2026-06-29 Exp46 H20 Pseudo-Success BF16 Preflight
 
 | User-facing name | Status | Evidence / registry |

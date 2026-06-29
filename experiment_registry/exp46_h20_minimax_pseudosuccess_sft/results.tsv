@@ -3,3 +3,4 @@ A	EXP46_READBACK_READY	exp45_split	64/24/24	Pseudo-success first; no training ye
 B	EXP45_H20_MIRROR_READY	required_paths	326	missing=0; sha_mismatch=0; files=232; dirs=94; no training.
 C	EXP45_H20_MANIFESTS_READY	pseudosuccess_split	64/24/24	failed_rows=0; scene_overlap_ok=True; mp4_fallback_rows=128; no training.
 D	EXP46_BF16_SAFE_READY	preflight_cases	P0-P7	rows=16; p7_ranks=8; optimizer_step=false; training_run=false.
+E	EXP46_STEP0_BASELINE_READY	step0_rows	48	search=24; shadow=24; visual_review=contact_sheets_inspected; training_run=false; optimizer_step=false.
