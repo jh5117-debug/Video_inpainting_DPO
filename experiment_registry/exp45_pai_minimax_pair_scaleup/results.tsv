@@ -1,0 +1,2 @@
+date	milestone	status	key_result	report
+2026-06-29	scope_correction_readback	EXP45_PAIR_SCALEUP_READBACK_COMPLETED	Read back Exp44 partial handoff state: 40 same-source pairs, 24/8/8 split, bad-noise v4 ready with 26 usable H-states; recorded previous H20-side execution as out-of-scope and committed to PAI-only handoff generation.	reports/exp45_pair_scaleup_readback.md

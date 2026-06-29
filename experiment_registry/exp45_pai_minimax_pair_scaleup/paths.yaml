@@ -1,0 +1,8 @@
+branch: research/exp45-pai-minimax-pair-scaleup-20260629
+base_branch: origin/research/exp44-pai-minimax-targeted-same-source-mining-20260629
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp45_pai_minimax_pair_scaleup
+requested_pai_exp44_source_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742
+requested_pai_log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup
+h20_mirror_target_root: H20_session_to_choose_after_filelist_handoff
+current_session_mnt_nas_available: false
+current_session_mnt_workspace_available: false

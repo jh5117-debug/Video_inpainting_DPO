@@ -1,0 +1,25 @@
+experiment: exp45_pai_minimax_pair_scaleup
+mode: pai_only_data_handoff
+no_h20_execution: true
+no_training: true
+no_optimizer_step: true
+no_dpo: true
+no_gt_only_sft: true
+no_vor_eval: true
+no_hard_comp: true
+do_not_modify:
+  - inference/metrics.py
+  - shared trainer
+  - MiniMax official repo source
+formal_minimum_split:
+  train: 32
+  search: 16
+  shadow: 16
+preferred_split:
+  train: 64
+  search: 24
+  shadow: 24
+source_exp44_split:
+  train: 24
+  search: 8
+  shadow: 8

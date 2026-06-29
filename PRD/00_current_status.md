@@ -1,3 +1,28 @@
+## 2026-06-29 Exp45 PAI MiniMax Pair Scale-Up
+
+Exp45 has started as a PAI-only correction and continuation of the Exp44
+MiniMax same-source data route:
+
+```text
+EXP45_PAIR_SCALEUP_READBACK_COMPLETED
+```
+
+Readback verified Exp44 remains partial:
+
+- same-source usable pairs: `40`
+- current Stage2 split: `24/8/8`
+- formal minimum target: `32/16/16`
+- preferred target: `64/24/24`
+- bad-noise v4: `MINIMAX_BADNOISE_V4_READY`
+- training status: `TRAINING_NOT_UNLOCKED`
+
+The previous PAI session's H20-side path validation / execution is recorded as
+out of scope. Exp45 will perform no further H20 action and will only generate
+PAI-side filelists, checksums where available, scaled data manifests, and H20
+mirror instructions. This session currently does not have `/mnt/nas` or
+`/mnt/workspace` mounted, so checksum/file-size work against absolute PAI/NAS
+artifacts is blocked unless those roots become visible.
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

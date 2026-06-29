@@ -209,6 +209,20 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 | --- | --- | --- | --- | --- | --- | --- |
 | Exp8 D3 comp region-loss DAVIS S1/S2 2000 | prepared for PAI manual launch | D3 selected-primary-comp repaired PAI manifest | partial-mask video inpainting | `L = -logσ{-0.5*10*(win_gap - 0.25*lose_gap)} + 0.05*m_w + ReLU(win_gap)`, with `m_w/m_l` as region-weighted MSE and weights mask=1.0, boundary=0.5, outside=0.05 | DAVIS four-column visualization and `tools/run_inpainting_metric_eval.py`; no VBench | Run only after PAI precheck passes; H20 remains untouched while data generation runs |
 
+## 2026-06-29 Exp45 PAI MiniMax Pair Scale-Up
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp45 PAI MiniMax pair scale-up | `EXP45_PAIR_SCALEUP_READBACK_COMPLETED`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md` |
+
+Notes:
+
+- Starts from Exp44 partial Stage2 handoff `24/8/8`.
+- Target is at least `32/16/16`, preferably `64/24/24`.
+- Previous H20-side execution is recorded as out of scope for PAI.
+- MiniMax remains data-signal/plumbing-positive only; no third-adapter-positive
+  claim is allowed.
+
 # Experiment Matrix
 
 ## 2026-06-29 Exp40 MiniMax PSNR-Safe Rescue
