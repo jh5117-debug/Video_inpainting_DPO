@@ -1,0 +1,56 @@
+{
+  "badnoise_required_count": 0,
+  "badnoise_unmatched_count": 0,
+  "branch": "research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629",
+  "dpo_allowed": false,
+  "expected_pseudosuccess_split": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "failed_rows": 0,
+  "first_allowed_training_view": "pseudosuccess",
+  "gt_only_sft_allowed_first": false,
+  "hard_comp_rows": 0,
+  "head": "095675ef6e46f8b3c0d39ade030daee28dc59deb",
+  "hostname": "instance-afs92r3e",
+  "mirror_root": "/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs",
+  "mp4_fallback_rows": 128,
+  "optimizer_step": false,
+  "rewritten_counts": {
+    "gt_distill_search": 24,
+    "gt_distill_shadow": 24,
+    "gt_distill_train": 64,
+    "preference_search": 24,
+    "preference_shadow": 24,
+    "preference_train": 64,
+    "pseudosuccess_search": 24,
+    "pseudosuccess_shadow": 24,
+    "pseudosuccess_train": 64
+  },
+  "scene_overlap": {
+    "gt_distill": {
+      "search_shadow": [],
+      "train_search": [],
+      "train_shadow": []
+    },
+    "preference": {
+      "search_shadow": [],
+      "train_search": [],
+      "train_shadow": []
+    },
+    "pseudosuccess": {
+      "search_shadow": [],
+      "train_search": [],
+      "train_shadow": []
+    }
+  },
+  "scene_overlap_ok": true,
+  "source_root": "/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests",
+  "split_count_ok": true,
+  "status": "EXP45_H20_MANIFESTS_READY",
+  "time_utc": "2026-06-29T16:35:25.770603+00:00",
+  "training_run": false,
+  "validation_rows": 336,
+  "vor_eval_rows": 0
+}

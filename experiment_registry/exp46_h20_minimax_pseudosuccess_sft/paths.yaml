@@ -7,3 +7,6 @@ data_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
 exp45_h20_pai_abs_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs
 exp45_source_branch: origin/research/exp45-pai-minimax-pair-scaleup-20260629
 exp45_source_head: d0c8430a5ba35f37415ed52d53040829ef1123d6
+pseudosuccess_train_manifest: manifests/exp45_h20_pseudosuccess_train.jsonl
+pseudosuccess_search_manifest: manifests/exp45_h20_pseudosuccess_search.jsonl
+pseudosuccess_shadow_manifest: manifests/exp45_h20_pseudosuccess_shadow.jsonl

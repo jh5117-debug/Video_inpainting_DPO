@@ -1,3 +1,3 @@
 # Qualitative Summary
 
-No Exp46 video review yet. Milestone B only validated file presence and checksums for the Exp45 handoff package. Visual review is required for Step0 and SFT30.
+No Exp46 video review yet. Milestone C validated H20-local manifests and decoded source/target media, including `128` raw mp4 fallback rows. Visual review is still required for Step0 and SFT30.

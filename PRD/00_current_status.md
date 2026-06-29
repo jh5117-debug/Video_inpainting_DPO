@@ -1,3 +1,28 @@
+## 2026-06-29 Exp46 H20 Exp45 Manifest Ready
+
+Exp46 advanced to:
+
+```text
+EXP45_H20_MANIFESTS_READY
+```
+
+H20-local Exp45 manifests were generated for pseudo-success, GT distillation,
+preference, and same-source traceability views. The first allowed training view
+remains pseudo-success only; GT-only SFT and DPO remain blocked.
+
+Validation passed with pseudo-success/GT/preference splits
+`64/24/24`,
+scene overlap `True`, failed rows `0`, VOR-Eval rows `0`,
+hard-comp rows `0`, bad-noise unmatched rows `0`. `128` rows used
+raw mp4 fallback because Exp45 candidate frame directories were empty or partial;
+all decoded successfully with 17 frames.
+
+Reports:
+
+- `reports/exp46_exp45_manifest_rewrite_validation.md`
+- `reports/exp46_exp45_manifest_rewrite_validation.csv`
+- `reports/exp46_exp45_manifest_rewrite_validation.json`
+
 ## 2026-06-29 Exp46 H20 Exp45 Mirror Ready
 
 Exp46 advanced to:

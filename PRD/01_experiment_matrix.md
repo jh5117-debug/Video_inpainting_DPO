@@ -1,3 +1,15 @@
+## 2026-06-29 Exp46 H20 Exp45 Manifest Rewrite
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp46 H20 Exp45 manifest rewrite/validation | `EXP45_H20_MANIFESTS_READY`; H20-local pseudo-success/GT/preference manifests validated at `64/24/24`, scene overlap `0`, failed rows `0`; pseudo-success remains first training view | `reports/exp46_exp45_manifest_rewrite_validation.md`, `manifests/exp45_h20_pseudosuccess_train.jsonl`, `experiment_registry/exp46_h20_minimax_pseudosuccess_sft/status.md` |
+
+Notes:
+
+- This is a manifest/data validation gate only. No training or optimizer step occurred.
+- Candidate pseudo/failure frame directories were partial in some rows, so validation used raw mp4 fallback where needed.
+- GT-only SFT and DPO remain out of scope until explicitly gated later.
+
 ## 2026-06-29 Exp46 H20 Exp45 Pseudo-Success Mirror
 
 | User-facing name | Status | Evidence / registry |

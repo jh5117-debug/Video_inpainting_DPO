@@ -2,4 +2,4 @@
 
 Registry for Exp46 H20 validation of Exp45 pseudo-success Stage2 data.
 
-Current status: `EXP45_H20_MIRROR_READY`. The Exp45 required package is mirrored to H20 and ready for manifest rewrite/validation. No training has run in Exp46 yet.
+Current status: `EXP45_H20_MANIFESTS_READY`. The Exp45 package is mirrored and H20-local manifests validate at 64/24/24. No training has run in Exp46 yet.
