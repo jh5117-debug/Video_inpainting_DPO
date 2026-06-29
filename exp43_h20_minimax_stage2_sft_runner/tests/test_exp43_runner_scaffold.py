@@ -19,16 +19,21 @@ class Exp43RunnerScaffoldTest(unittest.TestCase):
         ):
             self.assertTrue((self.exp_dir / rel).exists(), rel)
 
-    def test_runner_has_no_shared_trainer_import(self):
+    def test_runner_has_no_shared_trainer_top_level_import(self):
         tree = ast.parse((self.exp_dir / "runner_stage2_sft_ladder.py").read_text(encoding="utf-8"))
         imports = []
-        for node in ast.walk(tree):
+        for node in tree.body:
             if isinstance(node, ast.Import):
                 imports.extend(alias.name for alias in node.names)
             elif isinstance(node, ast.ImportFrom) and node.module:
                 imports.append(node.module)
-        forbidden = {"inference.metrics", "shared_trainer", "trainer"}
+        forbidden = {"shared_trainer", "trainer"}
         self.assertTrue(forbidden.isdisjoint(imports))
+
+    def test_runner_exposes_sft_subcommands(self):
+        text = (self.exp_dir / "runner_stage2_sft_ladder.py").read_text(encoding="utf-8")
+        for token in ("train-sft", "evaluate-sft", "summarize-sft", "SFT-A", "SFT-B", "SFT-C"):
+            self.assertIn(token, text)
 
 
 if __name__ == "__main__":

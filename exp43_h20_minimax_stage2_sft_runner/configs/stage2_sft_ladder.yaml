@@ -1,0 +1,64 @@
+experiment: exp43_h20_minimax_stage2_sft_runner
+mode: stage2_sft_ladder
+steps:
+  initial_gate: 30
+  second_gate: 100
+  third_gate: 300
+  forbidden_this_prompt:
+    - 1000
+    - 2000
+precision:
+  default: bf16_safe
+  vae: fp32_for_training_cache
+  inference_protocol: official_minimax_float16
+  loss_reduction: fp32
+  grad_scaler: disabled
+ddp:
+  default_world_size: 8
+  cuda_visible_devices: 0,1,2,3,4,5,6,7
+recipes:
+  SFT-A:
+    mask: 1.0
+    boundary: 1.25
+    affected: 0.75
+    outside: 0.10
+    far_outside: 0.02
+  SFT-B:
+    mask: 0.75
+    boundary: 1.50
+    affected: 0.75
+    outside: 0.20
+    far_outside: 0.03
+  SFT-C:
+    mask: 0.75
+    boundary: 1.50
+    affected: 0.75
+    outside: 0.20
+    far_outside: 0.03
+    hard_state: H1/H3_if_available
+lrs:
+  - 3e-5
+  - 1e-4
+  - 3e-4
+gates:
+  step30_to_step100:
+    split: search
+    full_psnr_delta_min: 0.08
+    mask_psnr_delta_min: 0.05
+    boundary_psnr_delta_min: -0.02
+    outside_psnr_delta_min: -0.02
+    lpips_delta_max: 0.001
+    ewarp_delta_max: 0.05
+    visual_review_required: true
+  step100_to_step300:
+    split: shadow
+    full_psnr_delta_min: 0.15
+    mask_psnr_delta_min: 0.10
+    boundary_psnr_delta_min: 0.0
+    outside_psnr_delta_min: 0.0
+    lpips_delta_max: 0.001
+    ewarp_delta_max: 0.05
+    visual_review_required: true
+claims:
+  metric_only_promotion: forbidden
+  third_adapter_evidence_requires: shadow_metric_and_visual_pass
