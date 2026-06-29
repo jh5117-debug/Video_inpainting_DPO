@@ -24,3 +24,14 @@ milestone_gates:
   stage2_train_min: 32
   stage2_search_min: 16
   stage2_shadow_min: 16
+milestone_a_result:
+  automatic_row_level_status: MINIMAX_SUCCESSFUL_REMOVAL_POOL_READY
+  codex_decision: MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK
+  reason: source_overlap_and_failure_label_purity_insufficient
+  success_rows: 52
+  failure_rows: 80
+  success_scene_groups: 18
+  failure_scene_groups: 29
+  success_failure_scene_overlap: 7
+  badnoise_v3_unlocked: false
+  stage2_data_unlocked: false

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-EXP42_STATUS = "EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED"
+EXP42_STATUS = "MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK"
 
 
 def current_status() -> str:

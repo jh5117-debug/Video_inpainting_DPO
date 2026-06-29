@@ -1,2 +1,3 @@
 date	milestone	status	key_result	report
 2026-06-29	readback	EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED	MiniMax remains plumbing-positive; Exp42 will mine successful-removal and bad-noise data before any short training.	reports/exp42_pai_minimax_data_readback.md
+2026-06-29	official_successful_removal_mining	MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK	468/468 technical-valid candidates; automatic row-level mining found 52 success and 80 medium-hard failure rows, but compact-strip review found only 18 success scene groups, 29 failure groups, 7 overlap groups, and 37/80 noisy auto-failures, so bad-noise v3/Stage2/SFT/DPO remain locked.	reports/exp42_minimax_official_successful_removal_mining.md

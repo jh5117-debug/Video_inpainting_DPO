@@ -3450,3 +3450,42 @@ Exp40-based branch and protected H20 worktrees were not touched.
 Report:
 
 - `reports/exp42_pai_minimax_data_readback.md`
+
+## 2026-06-29 Exp42 Official MiniMax Successful-Removal Mining
+
+Exp42 status: `MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK`.
+
+PAI ran official MiniMax mining with the audited executable protocol:
+`UniPCMultistepScheduler`, `float16`, `num_inference_steps=12`,
+`iterations=6`, no CFG, raw output primary. The run used GPU0 only; GPU1
+remained available, GPU2-GPU7 were untouched, no process was killed, and no
+VOR-Eval row, hard comp, SFT, DPO, or long training was used.
+
+Mining result:
+
+- sources: `117`;
+- candidates: `468`;
+- technical-valid: `468/468`;
+- automatic successful-removal candidates: `52`;
+- automatic medium-hard failure candidates: `80`.
+
+Codex opened the compact temporal evidence for all selected rows: `26` success
+pages and `40` failure pages. Real successful-removal signal exists, but the
+pool is not Stage2-ready:
+
+- success scene groups: `18`;
+- failure scene groups: `29`;
+- success/failure scene-group overlap: `7`;
+- visually noisy/borderline auto-failures: `37/80`.
+
+Decision: row-level mining is informative, but bad-noise v3, Stage2
+train/search/shadow construction, short SFT, and DPO remain locked. The next
+minimal action is targeted second-pass same-source success/failure mining with
+stricter per-video relabeling.
+
+Reports:
+
+- `reports/exp42_minimax_official_successful_removal_mining.md`
+- `reports/exp42_minimax_successful_removal_visual_review.md`
+- `reports/exp42_minimax_successful_removal_visual_review.csv`
+- `reports/exp42_minimax_successful_removal_summary.json`

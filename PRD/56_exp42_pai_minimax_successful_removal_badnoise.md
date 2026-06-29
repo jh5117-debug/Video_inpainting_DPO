@@ -88,3 +88,71 @@ Reports:
 - `reports/exp42_pai_minimax_data_readback.md`
 
 Next status target: `MINIMAX_SUCCESSFUL_REMOVAL_POOL_READY`.
+
+## 2026-06-29 Official MiniMax Successful-Removal Mining
+
+Status: `MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK`.
+
+PAI ran official MiniMax raw inference on GPU0 only; GPU1 stayed available and
+GPU2-GPU7 were untouched. No process cleanup was needed, no VOR-Eval row was
+used, no hard comp was used, no SFT/DPO/long training was launched, and the
+official MiniMax repository/source was not modified.
+
+Protocol:
+
+- Scheduler: `UniPCMultistepScheduler`
+- dtype: `float16`
+- `num_inference_steps = 12`
+- `iterations = 6`
+- CFG: none
+- raw output primary: true
+- sources: `117`
+- seeds/source: `4`
+- total candidates: `468`
+
+Automatic row-level mining found:
+
+- successful-removal candidates: `52`
+- medium-hard failure candidates: `80`
+- technical-valid: `468/468`
+- classification counts: `BOUNDARY_BAD=37`, `FOGGING_OVER_ERASURE=100`,
+  `MEDIUM_HARD_REMOVAL=80`, `OUTSIDE_BAD=112`,
+  `SUCCESSFUL_REMOVAL_CANDIDATE=52`, `TOO_CLOSE=31`, `TRIVIAL_BAD=56`
+
+Codex opened the compact temporal evidence for all selected rows:
+
+- success review pages: `26`
+- failure review pages: `40`
+- reviewed selected success rows: `52`
+- reviewed selected failure rows: `80`
+
+Human review decision:
+
+- real successful-removal signal exists under the official protocol;
+- selected success rows are clustered by seed/source: `18` success scene
+  groups for `52` rows;
+- selected failure rows are technical-valid and diagnostic, but the failure
+  labels are visually noisy: `37/80` auto-failures looked borderline-clean or
+  metric/boundary driven at compact-strip scale;
+- success/failure same-scene overlap is only `7` groups, below the `>=24`
+  usable-pair gate required for bad-noise v3.
+
+Therefore Exp42 Milestone A is informative but not training-ready. Bad-noise
+v3, Stage2 train/search/shadow construction, short SFT, and DPO-after-SFT
+remain locked. The next minimal action is targeted second-pass mining on source
+families that already produced either success or medium-hard failure, with a
+pre-registered extra seed budget and stricter per-video relabeling.
+
+Reports:
+
+- `reports/exp42_minimax_official_successful_removal_mining.md`
+- `reports/exp42_minimax_official_successful_removal_mining.csv`
+- `reports/exp42_minimax_successful_removal_visual_review.md`
+- `reports/exp42_minimax_successful_removal_visual_review.csv`
+- `reports/exp42_minimax_successful_removal_summary.json`
+
+Manifests:
+
+- `exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_all.jsonl`
+- `exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_selected.jsonl`
+- `exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_failure_candidates_selected.jsonl`

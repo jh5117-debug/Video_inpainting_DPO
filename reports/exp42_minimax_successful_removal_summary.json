@@ -1,0 +1,134 @@
+{
+  "badnoise_v3_gate": {
+    "observed_scene_overlap_pairs": 7,
+    "required_usable_pairs": 24,
+    "status": "NOT_UNLOCKED"
+  },
+  "codex_decision": "MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK",
+  "codex_decision_reason": "Row-level automatic mining passed, but selected success rows are source/seed clustered; success scene groups=18, failure scene groups=29, and success/failure overlap=7, below the >=24 usable pair gate for bad-noise v3 or Stage2 train/search/shadow construction. Failure labels are also visually noisy at compact-strip scale.",
+  "device": "cuda:0",
+  "dtype": "float16",
+  "local_compact_sheet_archive": "/home/hj/exp42_review_assets_archive/20260629_minimax_successful_removal",
+  "metrics": {
+    "boundary_psnr_max": 47.68823316246232,
+    "boundary_psnr_mean": 20.91067011672316,
+    "boundary_psnr_min": 8.333334291233998,
+    "classification_counts": {
+      "BOUNDARY_BAD": 37,
+      "FOGGING_OVER_ERASURE": 100,
+      "MEDIUM_HARD_REMOVAL": 80,
+      "OUTSIDE_BAD": 112,
+      "SUCCESSFUL_REMOVAL_CANDIDATE": 52,
+      "TOO_CLOSE": 31,
+      "TRIVIAL_BAD": 56
+    },
+    "full_psnr_max": 45.454183690320704,
+    "full_psnr_mean": 24.870347779340708,
+    "full_psnr_min": 8.886388762704525,
+    "mask_psnr_max": 46.547965346497676,
+    "mask_psnr_mean": 19.644484466951425,
+    "mask_psnr_min": 6.614226711125461,
+    "outside_mae_max": 64.5601822348202,
+    "outside_mae_mean": 9.083068564781414,
+    "outside_mae_min": 0.8418060435968286,
+    "outside_psnr_max": 46.4710007824097,
+    "outside_psnr_mean": 27.539607737402797,
+    "outside_psnr_min": 10.053822319169761,
+    "rows": 468,
+    "technical_valid": 468,
+    "temporal_diff_mae_max": 16.21006116271019,
+    "temporal_diff_mae_mean": 2.5689040758332604,
+    "temporal_diff_mae_min": 0.19007984781637788
+  },
+  "num_candidates": 468,
+  "num_failed_candidates": 0,
+  "num_failure_candidates": 80,
+  "num_sources": 117,
+  "num_successful_candidates": 52,
+  "pai_evidence_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp42_pai_minimax_successful_removal_badnoise/official_success_mining_128_retry1_20260629_101104",
+  "protocol": {
+    "cfg": "none",
+    "iterations": 6,
+    "num_inference_steps": 12,
+    "raw_output_primary": true,
+    "scheduler": "UniPCMultistepScheduler"
+  },
+  "runtime_seconds": 1605.8279218673706,
+  "seeds": [
+    20260629,
+    20260630,
+    20260631,
+    20260632
+  ],
+  "selected_failure_manifest": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_failure_candidates_selected.jsonl",
+  "selected_failure_manifest_sha256_after_review": "4a154ff67af98fc3430b37160e60c0c84cab745d1b9db3853e938b4d64d65407",
+  "selected_success_manifest": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_selected.jsonl",
+  "selected_success_manifest_sha256_after_review": "b2891cd5a8980edda48d35d86c3def1e7ccba16d95fc591ff815c32bac55ad81",
+  "source_level_counts": {
+    "failure_rows": 80,
+    "failure_samples": 29,
+    "failure_scene_groups": 29,
+    "success_failure_scene_overlap": 7,
+    "success_failure_scene_overlap_groups": [
+      "BLENDER_FOREST026",
+      "BLENDER_GRASS001",
+      "BLENDER_MOUNTAIN002",
+      "REAL_ENV059_00001",
+      "REAL_ENV068_00002",
+      "REAL_ENV097_00001",
+      "REAL_ENV105_00001"
+    ],
+    "success_rows": 52,
+    "success_samples": 18,
+    "success_scene_groups": 18
+  },
+  "source_manifests": [
+    {
+      "name": "exp40_train",
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_train96.jsonl",
+      "rows": 64,
+      "sha256": "040ba59f2df4996147670322b4f30e8ff187a78bf4376ebe28a788807324e361"
+    },
+    {
+      "name": "exp40_search",
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_search32.jsonl",
+      "rows": 24,
+      "sha256": "e52baa65960979e3266785931b1a12caca1ccae1243a1bcfa3128fd6f83ab3fc"
+    },
+    {
+      "name": "exp40_shadow",
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp40_minimax_psnr_safe_rescue/manifests/exp40_localdpo_v3_shadow32.jsonl",
+      "rows": 24,
+      "sha256": "4bc40574e9b6789045909f91098e77b7010b9aa4286d9dbd583744871fe58f8c"
+    },
+    {
+      "name": "exp30_train",
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_train32_v3.jsonl",
+      "rows": 32,
+      "sha256": "1eda205d2dc48714269f30eb390d959549387a778e6438267e6aba087ba14196"
+    },
+    {
+      "name": "exp30_heldout",
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data/exp30_vor_or_multimodel_minimax/manifests/vor_or_gate64_heldout16_v3.jsonl",
+      "rows": 16,
+      "sha256": "84c231ded930d740bf299b27c2a6b1e95d7decdb3665051371c5df90ae9f2ade"
+    }
+  ],
+  "stage2_data_gate": {
+    "required_min_search": 16,
+    "required_min_shadow": 16,
+    "required_min_train": 32,
+    "status": "NOT_UNLOCKED"
+  },
+  "status": "MINIMAX_SUCCESSFUL_REMOVAL_POOL_READY",
+  "visual_review_csv": "reports/exp42_minimax_successful_removal_visual_review.csv",
+  "visual_review_scope": {
+    "failure_compact_pages_opened": 40,
+    "full_mp4_playback": false,
+    "promotion_to_training_data": false,
+    "selected_failure_rows_reviewed_by_strip": 80,
+    "selected_success_rows_reviewed_by_strip": 52,
+    "success_compact_pages_opened": 26
+  },
+  "visual_review_status": "COMPACT_TEMPORAL_STRIP_REVIEW_COMPLETE"
+}

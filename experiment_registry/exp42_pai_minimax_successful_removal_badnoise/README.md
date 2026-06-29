@@ -7,3 +7,11 @@ SFT/DPO gates.
 
 It is intentionally separated from H20 Exp41 and previous MiniMax training
 outputs.
+
+## Current Decision
+
+`MINIMAX_SUCCESSFUL_REMOVAL_POOL_WEAK`
+
+Official PAI mining found real MiniMax successful-removal signal, but the
+selected success/failure rows are too source-clustered and label-noisy to
+unlock bad-noise v3, Stage2 train/search/shadow data, SFT, or DPO.
