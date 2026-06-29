@@ -1799,3 +1799,24 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+## 2026-06-29 Exp49 ROSE Adapter Feasibility Readback
+
+Exp49 was created to evaluate ROSE as a possible third adapter candidate after
+MiniMax remained quality-negative.
+
+Current status:
+
+```text
+EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD
+```
+
+Milestone A public readback/source audit was completed from the HAL worktree
+only. The current shell is `hal-9000`; `/mnt/nas/hj/H20_Video_inpainting_DPO`
+and `/mnt/workspace/hj/nas_hj` are not mounted. No PAI shell was verified, so no
+ROSE code/model/dataset download, environment install, inference, GPU smoke, or
+adapter micro gate was started.
+
+ROSE public assets exist and are recorded in
+`reports/exp49_rose_readback.md`. Next action is to resume from a verified PAI
+shell and start staged asset download.

@@ -600,3 +600,12 @@ weak and damages the pairwise DPO interpretation, so it is not a main method.
 ## Exp20 Status Addendum (2026-06-20)
 
 Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-step candidate is EQ_BF07 (fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean), PSNR 29.393079. It remains below TARGET_DEV_PSNR 29.523336 and has mixed perceptual/temporal tradeoffs, so status is COMPLETED_NEGATIVE for this budget and no long training / Stage2 / DAVIS50 / YouTubeVOS100 final eval was launched.
+
+## 2026-06-29 Exp49 ROSE Adapter Candidate
+
+| Experiment | Host | Status | Scope | Next |
+| --- | --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | PAI required; HAL readback only | `EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD` | ROSE public source audit and PAI download plan | Resume on verified PAI, download assets, then run env/import/inference gates |
+
+No ROSE baseline or adapter evidence is claimed. The current branch only records
+the public readback and the PAI access blocker.
