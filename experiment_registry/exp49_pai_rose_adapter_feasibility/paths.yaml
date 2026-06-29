@@ -1,0 +1,12 @@
+branch: research/exp49-pai-rose-adapter-feasibility-20260629
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp49_rose_adapter
+pai_worktree_primary: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter
+pai_worktree_fallback: /home/hj/H20_Video_inpainting_DPO_exp49_rose_adapter
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp49_pai_rose_adapter_feasibility
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp49_pai_rose_adapter_feasibility
+third_party_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE
+weights_root: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose
+dataset_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/rose_dataset
+hf_space_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE_HF_Space
+verified_pai_access: false
