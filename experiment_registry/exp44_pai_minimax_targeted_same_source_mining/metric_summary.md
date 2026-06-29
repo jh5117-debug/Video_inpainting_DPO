@@ -72,3 +72,21 @@ Same-source precheck:
 
 This unlocks Milestone D pair construction only. It does not unlock training,
 bad-noise v4, Stage2 handoff, or a MiniMax quality-positive claim.
+
+## 2026-06-29 Same-Source Pair Construction
+
+Status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`.
+
+Constructed same-source pair counts:
+
+- all pairs: `40`
+- train candidates: `24`
+- search candidates: `8`
+- shadow candidates: `8`
+- source groups with pairs: `10`
+- split group overlap: `0`
+- max pairs per group: `4`
+
+The formal minimum gate is `>=24`, so Exp44 now has enough same-source pairs
+for bad-noise v4 state construction. The target `48` was not reached, so later
+Stage2 handoff language must carry the "minimum-gate, not target-gate" caveat.

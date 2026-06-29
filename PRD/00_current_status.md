@@ -3601,3 +3601,29 @@ Reports:
 - `reports/exp44_targeted_visual_relabel.csv`
 - `reports/exp44_targeted_visual_relabel_group_yield.csv`
 - `reports/exp44_targeted_visual_relabel_summary.json`
+
+## 2026-06-29 Exp44 Same-Source Pair Gate
+
+Exp44 status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`.
+
+Constructed `40` same-source MiniMax success/failure pairs after visual
+relabeling:
+
+- train/search/shadow: `24` / `8` / `8`;
+- split scene-group overlap: `0`;
+- source groups with pairs: `10`;
+- max pairs per group: `4`;
+- DPO winner field: GT background `V_bg`;
+- pseudo-success retained only as Stage2 distillation metadata;
+- loser field: same-source MiniMax `FAILURE_MEDIUM_HARD`.
+
+The minimum gate (`>=24`) passed, but the target (`48`) was not reached. This
+unlocks bad-noise v4 construction only. It does not unlock SFT/DPO training,
+Stage2 handoff, or MiniMax quality-positive / third-backbone claims.
+
+Reports:
+
+- `reports/exp44_same_source_pair_construction.md`
+- `reports/exp44_same_source_pair_construction.csv`
+- `reports/exp44_same_source_pair_group_yield.csv`
+- `reports/exp44_same_source_pair_summary.json`

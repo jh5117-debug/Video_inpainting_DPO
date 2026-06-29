@@ -1,0 +1,128 @@
+{
+  "group_rows": [
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "BLENDER_DESERT004",
+      "split": "train",
+      "success_usable": 11
+    },
+    {
+      "failure_medium_hard": 2,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "BLENDER_FOREST026",
+      "split": "train",
+      "success_usable": 6
+    },
+    {
+      "failure_medium_hard": 4,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "BLENDER_GRASS001",
+      "split": "train",
+      "success_usable": 4
+    },
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "BLENDER_MOUNTAIN002",
+      "split": "search",
+      "success_usable": 6
+    },
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "BLENDER_SCHOOL004",
+      "split": "shadow",
+      "success_usable": 8
+    },
+    {
+      "failure_medium_hard": 3,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "REAL_ENV059_00001",
+      "split": "search",
+      "success_usable": 5
+    },
+    {
+      "failure_medium_hard": 9,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "REAL_ENV080_00003",
+      "split": "train",
+      "success_usable": 3
+    },
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "REAL_ENV097_00001",
+      "split": "shadow",
+      "success_usable": 5
+    },
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "REAL_ENV105_00002",
+      "split": "train",
+      "success_usable": 11
+    },
+    {
+      "failure_medium_hard": 1,
+      "max_pairs_per_group": 4,
+      "pairs_built": 4,
+      "scene_group": "REAL_ENV105_00004",
+      "split": "train",
+      "success_usable": 11
+    }
+  ],
+  "hard_comp_used": false,
+  "manifest_hashes": {
+    "exp44_same_source_pairs_all.jsonl": "12232df0b4ab9b642b8d7ae47ce6f576d1235d8b8f0ede048c3e8227ae4798a8",
+    "exp44_same_source_pairs_search_candidates.jsonl": "9159f1c38e653b156eacc7de964071c3b5f87d55ecb91d6ec5860a80b67aa11e",
+    "exp44_same_source_pairs_shadow_candidates.jsonl": "3654d15cd9006710068d82d52a7cb35c85b6e55b4d59a1126ad0a419a78a9111",
+    "exp44_same_source_pairs_train_candidates.jsonl": "97cda3b6923a0ec478176e621b23d9fef59b56cabc550215c75164adaded0370"
+  },
+  "max_pairs_per_group": 4,
+  "minimum_pair_gate": 24,
+  "notes": [
+    "Pairs use only same source groups.",
+    "GT background is the primary DPO winner; pseudo-success is retained only for Stage2 distillation fields.",
+    "No training, optimizer step, bad-noise mining, or Stage2 handoff is performed in this milestone."
+  ],
+  "optimizer_step": false,
+  "same_source_pair_count": 40,
+  "split_counts": {
+    "search": 8,
+    "shadow": 8,
+    "train": 24
+  },
+  "split_group_overlap_ok": true,
+  "split_groups": {
+    "search": [
+      "BLENDER_MOUNTAIN002",
+      "REAL_ENV059_00001"
+    ],
+    "shadow": [
+      "BLENDER_SCHOOL004",
+      "REAL_ENV097_00001"
+    ],
+    "train": [
+      "BLENDER_DESERT004",
+      "BLENDER_FOREST026",
+      "BLENDER_GRASS001",
+      "REAL_ENV080_00003",
+      "REAL_ENV105_00002",
+      "REAL_ENV105_00004"
+    ]
+  },
+  "status": "MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED",
+  "target_pair_count": 48,
+  "training_run": false,
+  "vor_eval_used": false
+}

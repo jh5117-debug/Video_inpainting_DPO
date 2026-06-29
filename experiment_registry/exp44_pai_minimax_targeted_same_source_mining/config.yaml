@@ -76,3 +76,22 @@ strict_visual_relabel:
   vor_eval_used: false
   hard_comp_used: false
   pair_gate_formal_construction_pending: true
+same_source_pair_construction:
+  status: MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED
+  same_source_pairs: 40
+  minimum_gate: 24
+  target_pairs: 48
+  train_pairs: 24
+  search_pairs: 8
+  shadow_pairs: 8
+  split_group_overlap_ok: true
+  max_pairs_per_group: 4
+  dpo_winner: gt_background
+  pseudo_success_role: stage2_distillation_metadata_only
+  dpo_loser: same_source_minimax_failure_medium_hard
+  training_run: false
+  optimizer_step: false
+  vor_eval_used: false
+  hard_comp_used: false
+  badnoise_v4_unlocked: true
+  sft_dpo_training_unlocked: false

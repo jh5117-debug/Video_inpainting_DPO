@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+Current status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`
 
 ## 2026-06-29 Readback
 
@@ -85,3 +85,31 @@ Reports:
 - `reports/exp44_targeted_visual_relabel_summary.json`
 
 Formal same-source pair construction remains pending Milestone D.
+
+## 2026-06-29 Same-Source Pair Construction
+
+- Status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`
+- Usable same-source pairs: `40`
+- Minimum gate: `24`
+- Target: `48`
+- Train/search/shadow: `24` / `8` / `8`
+- Split scene-group overlap: `0`
+- Source groups with pairs: `10`
+- Max pairs per group: `4`
+- DPO winner field: GT background `V_bg`
+- Pseudo-success field: retained for Stage2-style distillation metadata
+- DPO loser field: same-source MiniMax `FAILURE_MEDIUM_HARD`
+- Training run: `false`
+- Optimizer step: `false`
+- VOR-Eval used: `false`
+- Hard comp used: `false`
+
+Reports:
+
+- `reports/exp44_same_source_pair_construction.md`
+- `reports/exp44_same_source_pair_construction.csv`
+- `reports/exp44_same_source_pair_group_yield.csv`
+- `reports/exp44_same_source_pair_summary.json`
+
+The pair gate unlocks bad-noise v4 state construction only, not SFT/DPO
+training or MiniMax quality-positive claims.

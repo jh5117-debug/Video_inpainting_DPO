@@ -1,0 +1,11 @@
+scene_group,split,success_usable,failure_medium_hard,pairs_built,max_pairs_per_group
+BLENDER_DESERT004,train,11,1,4,4
+BLENDER_FOREST026,train,6,2,4,4
+BLENDER_GRASS001,train,4,4,4,4
+BLENDER_MOUNTAIN002,search,6,1,4,4
+BLENDER_SCHOOL004,shadow,8,1,4,4
+REAL_ENV059_00001,search,5,3,4,4
+REAL_ENV080_00003,train,3,9,4,4
+REAL_ENV097_00001,shadow,5,1,4,4
+REAL_ENV105_00002,train,11,1,4,4
+REAL_ENV105_00004,train,11,1,4,4

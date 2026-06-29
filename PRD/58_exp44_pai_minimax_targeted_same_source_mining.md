@@ -1,6 +1,6 @@
 # Exp44 PAI MiniMax Targeted Same-Source Mining
 
-Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+Status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`
 
 ## Purpose
 
@@ -193,3 +193,43 @@ Reports/manifests:
 
 Next status target: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED` or
 `MINIMAX_SAME_SOURCE_PAIR_YIELD_INSUFFICIENT`.
+
+## 2026-06-29 Same-Source Pair Gate Passed
+
+Status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`.
+
+Milestone D constructed clean MiniMax-native same-source success/failure pairs
+from the visually relabeled pools. Pairing is strictly within source group;
+there are no cross-source pairs.
+
+Pair construction:
+
+- total usable same-source pairs: `40`;
+- minimum gate: `24`;
+- target: `48`;
+- train/search/shadow candidate split: `24` / `8` / `8`;
+- split scene-group overlap: `0`;
+- max pairs per group: `4`;
+- source groups with pairs: `10`;
+- winner for DPO preference fields: GT background `V_bg`;
+- pseudo-success retained only as Stage2 distillation target metadata;
+- loser: same-source MiniMax raw output labeled `FAILURE_MEDIUM_HARD`.
+
+This passes the Exp44 minimum same-source pair gate and unlocks Milestone E
+bad-noise v4 state construction. It still does not unlock SFT/DPO training or
+MiniMax quality-positive language. No training, optimizer step, VOR-Eval use,
+hard comp, or H20 modification occurred.
+
+Reports/manifests:
+
+- `reports/exp44_same_source_pair_construction.md`
+- `reports/exp44_same_source_pair_construction.csv`
+- `reports/exp44_same_source_pair_group_yield.csv`
+- `reports/exp44_same_source_pair_summary.json`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_same_source_pairs_all.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_same_source_pairs_train_candidates.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_same_source_pairs_search_candidates.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_same_source_pairs_shadow_candidates.jsonl`
+
+Next status target: `MINIMAX_BADNOISE_V4_READY` or
+`MINIMAX_BADNOISE_V4_BLOCKED`.

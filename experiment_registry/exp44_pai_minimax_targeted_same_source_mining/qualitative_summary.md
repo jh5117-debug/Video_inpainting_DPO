@@ -43,3 +43,18 @@ Conservative qualitative outcome:
 The result is a cleaner source for same-source pair construction, not evidence
 that MiniMax DPO/SFT has improved model quality. No training or optimizer step
 occurred.
+
+## 2026-06-29 Same-Source Pair Construction
+
+The constructed pairs preserve the intended MiniMax-native signal:
+
+- winner for DPO is GT background, not a generated pseudo target;
+- pseudo-success is carried separately for possible Stage2 distillation;
+- loser is a visually relabeled medium-hard MiniMax raw output from the same
+  source group;
+- no cross-source matching is used;
+- train/search/shadow scene groups are disjoint.
+
+This is the first Exp44 point where the same-source minimum pair gate passes
+after human visual relabeling. It is still a data milestone, not a model-quality
+milestone.
