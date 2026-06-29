@@ -1,0 +1,12 @@
+experiment: exp47_h20_minimax_pseudosuccess_forensic
+forensic_only: true
+run_training: false
+optimizer_step: false
+run_sft100: false
+run_dpo: false
+run_gt_only_sft: false
+use_vor_eval: false
+use_hard_comp: false
+modify_shared_trainer: false
+modify_metrics: false
+modify_minimax_official_repo: false

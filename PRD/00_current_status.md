@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 H20 MiniMax Forensic Readback
+
+Exp47 advanced to:
+
+```text
+EXP47_READBACK_READY
+```
+
+Exp47 is a forensic-only follow-up to Exp46 pseudo-success SFT30 negative result. It will test teacher drift, manifest/frame alignment, region loss/mask implementation, Step30 movement direction, and whether pseudo-success should be strict-global, local-only, or abandoned for now. No training, optimizer step, DPO, GT-only SFT, or 100-step is allowed.
+
+Report: `reports/exp47_pseudosuccess_forensic_readback.md`
+
 ## 2026-06-30 Exp46 Final Decision
 
 Exp46 final status:

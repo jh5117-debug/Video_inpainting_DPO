@@ -1,0 +1,8 @@
+repo: /home/nvme01/H20_Video_inpainting_DPO
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp47_minimax_pseudosuccess_forensic
+output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp47_h20_minimax_pseudosuccess_forensic
+log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp47_h20_minimax_pseudosuccess_forensic
+runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp47_h20_minimax_pseudosuccess_forensic
+exp46_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft
+exp46_checkpoint30: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30/checkpoints/checkpoint-30
+readback_report: reports/exp47_pseudosuccess_forensic_readback.md
