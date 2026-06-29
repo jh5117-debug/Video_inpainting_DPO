@@ -1,6 +1,6 @@
 # Exp44 PAI MiniMax Targeted Same-Source Mining
 
-Status: `MINIMAX_BADNOISE_V4_READY`
+Status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`
 
 ## Purpose
 
@@ -275,3 +275,43 @@ Reports/manifests:
 
 Next status target: `MINIMAX_STAGE2_HANDOFF_READY` or
 `MINIMAX_STAGE2_HANDOFF_BLOCKED`.
+
+## 2026-06-29 Stage2-Style Dataset Handoff
+
+Status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`.
+
+Milestone F built the requested three Stage2-style dataset views from the
+same-source pair and bad-noise v4 metadata:
+
+- GT distillation: train/search/shadow = `24` / `8` / `8`;
+- pseudo-success distillation: train/search/shadow = `24` / `8` / `8`;
+- same-source preference: train/search/shadow = `24` / `8` / `8`;
+- bad-noise states matched to pairs: `40` / `40`;
+- scene overlap across train/search/shadow: `0`;
+- first H20 experiment: pseudo-success SFT `30`-step;
+- explicitly do not start with GT-only SFT.
+
+The handoff is partial and marked `TRAINING_NOT_UNLOCKED` because the split
+counts are below the requested minimum `train32/search16/shadow16`. This is a
+debug/preflight handoff, not formal training-ready evidence.
+
+Path validation caveat: the current Codex session does not have `/mnt/nas`
+mounted, so absolute NAS paths inside the manifests could not be revalidated in
+this session. H20 must verify every manifest path before running any dataloader
+or runner.
+
+No training, optimizer step, VOR-Eval use, hard comp, H20 modification, or
+MiniMax quality-positive claim occurred.
+
+Reports/manifests:
+
+- `reports/exp44_stage2_dataset_handoff.md`
+- `reports/exp44_stage2_dataset_handoff.csv`
+- `reports/exp44_stage2_dataset_handoff_summary.json`
+- `reports/exp44_h20_handoff_instructions.md`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_train.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_train.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_train.jsonl`
+
+Next status target: optional dataloader / one-batch forward smoke only if the
+partial handoff is accepted and paths are verified on a mounted NAS environment.

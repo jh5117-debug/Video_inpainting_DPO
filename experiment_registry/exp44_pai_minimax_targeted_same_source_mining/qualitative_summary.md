@@ -73,3 +73,19 @@ The bad-noise v4 records preserve the same-source MiniMax-native signal:
 This makes Exp44 ready to assemble a Stage2-style handoff package. It does not
 claim that MiniMax training has improved: no training, optimizer step,
 VOR-Eval use, hard comp, or H20 modification occurred.
+
+## 2026-06-29 Stage2-Style Dataset Handoff
+
+The Stage2 handoff separates three signals instead of mixing them:
+
+- GT distillation keeps `V_bg` as the target;
+- pseudo-success distillation uses only visually approved MiniMax
+  `SUCCESS_CLEAN` / `SUCCESS_USABLE` outputs and is the recommended first H20
+  30-step debug run;
+- same-source preference keeps GT as the default winner and same-source
+  `FAILURE_MEDIUM_HARD` output as loser, with bad-noise v4 metadata attached.
+
+This is partial because the split is only `24/8/8`, below the `32/16/16`
+minimum. H20 must verify absolute NAS paths before running because this current
+Codex session did not have `/mnt/nas` mounted. No quality-positive claim is
+made.

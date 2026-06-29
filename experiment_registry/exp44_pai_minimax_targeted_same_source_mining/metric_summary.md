@@ -110,3 +110,18 @@ Bad-noise v4 state metrics:
 The local/random ratio gate (`>=1.5`) passes. These are residual-derived proxy
 metrics for data-state selection only, not true autograd gradients and not a
 training result.
+
+## 2026-06-29 Stage2-Style Dataset Handoff
+
+Status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`.
+
+Handoff view counts:
+
+- GT distillation train/search/shadow: `24` / `8` / `8`
+- pseudo-success distillation train/search/shadow: `24` / `8` / `8`
+- same-source preference train/search/shadow: `24` / `8` / `8`
+- bad-noise states matched to pairs: `40` / `40`
+- scene-group overlap across splits: `0`
+
+Minimum requested formal split size is train/search/shadow `32` / `16` / `16`,
+so this handoff is marked `TRAINING_NOT_UNLOCKED`.

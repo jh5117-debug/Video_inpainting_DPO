@@ -116,3 +116,40 @@ badnoise_v4_state_construction:
   hard_comp_used: false
   stage2_handoff_unlocked: true
   sft_dpo_training_unlocked: false
+stage2_dataset_handoff:
+  status: MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL
+  training_status: TRAINING_NOT_UNLOCKED
+  pair_counts:
+    train: 24
+    search: 8
+    shadow: 8
+  minimum_counts:
+    train: 32
+    search: 16
+    shadow: 16
+  preferred_counts:
+    train: 64
+    search: 24
+    shadow: 24
+  gt_distillation_counts:
+    train: 24
+    search: 8
+    shadow: 8
+  pseudo_success_distillation_counts:
+    train: 24
+    search: 8
+    shadow: 8
+  same_source_preference_counts:
+    train: 24
+    search: 8
+    shadow: 8
+  badnoise_states_matched_to_pairs: 40
+  scene_group_overlap: 0
+  current_session_has_mnt_nas: false
+  first_h20_experiment: pseudo-success SFT 30-step
+  do_not_start_first: GT-only SFT
+  precision_recommendation: fp32 loss reduction; fp16/bf16 only after one-batch finite-loss preflight
+  training_run: false
+  optimizer_step: false
+  vor_eval_used: false
+  hard_comp_used: false

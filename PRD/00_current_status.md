@@ -3653,3 +3653,27 @@ Reports:
 - `reports/exp44_badnoise_v4_states.md`
 - `reports/exp44_badnoise_v4_states.csv`
 - `reports/exp44_badnoise_v4_summary.json`
+
+## 2026-06-29 Exp44 Stage2 Dataset Handoff
+
+Exp44 status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`.
+
+Built three Stage2-style handoff views:
+
+- GT distillation train/search/shadow: `24` / `8` / `8`;
+- pseudo-success distillation train/search/shadow: `24` / `8` / `8`;
+- same-source preference train/search/shadow: `24` / `8` / `8`;
+- bad-noise states matched to pairs: `40` / `40`;
+- split scene-group overlap: `0`.
+
+The handoff is marked `TRAINING_NOT_UNLOCKED` because the split is below
+`train32/search16/shadow16`. H20 instructions explicitly say to start with
+pseudo-success SFT 30-step, not GT-only SFT first. Current Codex session lacked
+`/mnt/nas`, so H20 must verify manifest paths before running.
+
+Reports:
+
+- `reports/exp44_stage2_dataset_handoff.md`
+- `reports/exp44_stage2_dataset_handoff.csv`
+- `reports/exp44_stage2_dataset_handoff_summary.json`
+- `reports/exp44_h20_handoff_instructions.md`

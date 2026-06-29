@@ -1,0 +1,154 @@
+{
+  "badnoise_states_available": 40,
+  "badnoise_states_matched_to_pairs": 40,
+  "do_not_start_first": "GT-only SFT",
+  "first_h20_experiment": "pseudo-success SFT 30-step",
+  "hard_comp_used": false,
+  "minimum_counts": {
+    "search": 16,
+    "shadow": 16,
+    "train": 32
+  },
+  "optimizer_step": false,
+  "outputs": {
+    "gt_distillation_search": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_search.jsonl",
+      "rows": 8,
+      "sha256": "4d47e4b3a4177188d24d6a04c117e5b84800a8b8565474e18181f200599dcbc0"
+    },
+    "gt_distillation_shadow": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_shadow.jsonl",
+      "rows": 8,
+      "sha256": "9aaabdaccb02225edfa138a685a1556771b54150f51512566f0e6298c145bdf0"
+    },
+    "gt_distillation_train": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_train.jsonl",
+      "rows": 24,
+      "sha256": "24a302b62a72478f4db691559047a6f481a47ce626144c27fd1d51ecb0509e12"
+    },
+    "pseudo_success_distillation_search": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_search.jsonl",
+      "rows": 8,
+      "sha256": "7fb0ab58b13928379e3d7ecd661b457a57395fa4df04b870fea7d405378715d7"
+    },
+    "pseudo_success_distillation_shadow": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_shadow.jsonl",
+      "rows": 8,
+      "sha256": "2b6371d028fcd960148208b95357ca644f1fe5c2a6b7d0021fe97f15079c0662"
+    },
+    "pseudo_success_distillation_train": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_train.jsonl",
+      "rows": 24,
+      "sha256": "e4a9d8dd7b039ee5c3296f6b78811a70202207851ec8a384a9c5fbc9bba69a21"
+    },
+    "same_source_preference_search": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_search.jsonl",
+      "rows": 8,
+      "sha256": "3e155c098832100a678afd33772e4e956cb663648561eb2bc6f864373c99d155"
+    },
+    "same_source_preference_shadow": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_shadow.jsonl",
+      "rows": 8,
+      "sha256": "68f8543cbd67ee0fc043a7f7aa5d14a1bf0c7694251381e7c98be499bf2ef990"
+    },
+    "same_source_preference_train": {
+      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_train.jsonl",
+      "rows": 24,
+      "sha256": "869bb2ab747ca013c2327957ea26736160d010f3534e1e4be9d3952d0551e374"
+    }
+  },
+  "pair_counts": {
+    "search": 8,
+    "shadow": 8,
+    "train": 24
+  },
+  "path_check_context": {
+    "current_session_has_mnt_nas": false,
+    "interpretation": "Path existence is not validated in this session because /mnt/nas is unavailable; H20 must verify paths before running."
+  },
+  "path_checks": {
+    "gt_distillation": {
+      "search": {
+        "condition_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "target_path_missing": 8
+      },
+      "shadow": {
+        "condition_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "target_path_missing": 8
+      },
+      "train": {
+        "condition_path_missing": 24,
+        "mask_path_missing": 24,
+        "rows": 24,
+        "target_path_missing": 24
+      }
+    },
+    "pseudo_success_distillation": {
+      "search": {
+        "condition_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "target_path_missing": 8
+      },
+      "shadow": {
+        "condition_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "target_path_missing": 8
+      },
+      "train": {
+        "condition_path_missing": 24,
+        "mask_path_missing": 24,
+        "rows": 24,
+        "target_path_missing": 24
+      }
+    },
+    "same_source_preference": {
+      "search": {
+        "condition_path_missing": 8,
+        "loser_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "winner_path_missing": 8
+      },
+      "shadow": {
+        "condition_path_missing": 8,
+        "loser_path_missing": 8,
+        "mask_path_missing": 8,
+        "rows": 8,
+        "winner_path_missing": 8
+      },
+      "train": {
+        "condition_path_missing": 24,
+        "loser_path_missing": 24,
+        "mask_path_missing": 24,
+        "rows": 24,
+        "winner_path_missing": 24
+      }
+    }
+  },
+  "precision_recommendation": "fp32 loss reduction; fp16/bf16 only after one-batch preflight confirms finite loss",
+  "preferred_counts": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "raw_output_primary": true,
+  "reason": "split counts are below minimum train32/search16/shadow16",
+  "scene_group_overlap": {
+    "search_shadow": [],
+    "train_search": [],
+    "train_shadow": []
+  },
+  "status": "MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL",
+  "total_pairs": 40,
+  "training_run": false,
+  "training_status": "TRAINING_NOT_UNLOCKED",
+  "training_unlocked": false,
+  "usable_state_count_ratio_ge_1p5": 28,
+  "vor_eval_used": false
+}

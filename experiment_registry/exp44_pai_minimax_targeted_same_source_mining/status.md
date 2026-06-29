@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `MINIMAX_BADNOISE_V4_READY`
+Current status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`
 
 ## 2026-06-29 Readback
 
@@ -141,3 +141,33 @@ Reports:
 The bad-noise v4 gate unlocks Stage2-style dataset handoff preparation only.
 It is not a model-quality result, and the recorded gradient proxy is not an
 autograd gradient.
+
+## 2026-06-29 Stage2-Style Dataset Handoff
+
+- Status: `MINIMAX_STAGE2_DATA_HANDOFF_PARTIAL`
+- Training status: `TRAINING_NOT_UNLOCKED`
+- Pair counts train/search/shadow: `24` / `8` / `8`
+- Minimum counts train/search/shadow: `32` / `16` / `16`
+- Preferred counts train/search/shadow: `64` / `24` / `24`
+- GT distillation rows train/search/shadow: `24` / `8` / `8`
+- Pseudo-success distillation rows train/search/shadow: `24` / `8` / `8`
+- Same-source preference rows train/search/shadow: `24` / `8` / `8`
+- Bad-noise states matched to pairs: `40` / `40`
+- Scene-group overlap train/search/shadow: `0`
+- First H20 experiment: pseudo-success SFT `30`-step
+- Do not start first: GT-only SFT
+- Current session `/mnt/nas` mounted: `false`
+- Training run: `false`
+- Optimizer step: `false`
+- VOR-Eval used: `false`
+- Hard comp used: `false`
+
+Reports:
+
+- `reports/exp44_stage2_dataset_handoff.md`
+- `reports/exp44_stage2_dataset_handoff.csv`
+- `reports/exp44_stage2_dataset_handoff_summary.json`
+- `reports/exp44_h20_handoff_instructions.md`
+
+The handoff package is useful for H20 debug/preflight planning, but it is below
+the minimum formal split size and must not be described as training-unlocked.
