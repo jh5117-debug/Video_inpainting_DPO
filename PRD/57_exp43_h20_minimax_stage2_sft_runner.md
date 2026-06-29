@@ -1,6 +1,6 @@
 # Exp43 H20 MiniMax Stage2 SFT Runner
 
-Status: `H20_EXP43_BF16_SAFE_READY`
+Status: `H20_EXP43_DATA_READY`
 
 Exp43 is an H20-only MiniMax training-system breakthrough track. It is based on
 Exp41 and is explicitly authorized to add an isolated Stage2 SFT ladder runner
@@ -124,9 +124,42 @@ Reports:
 - `reports/exp43_h20_bf16_safe_preflight.csv`
 - `reports/exp43_h20_bf16_safe_preflight_summary.json`
 
+## 2026-06-29 Data Readiness
+
+Status: `H20_EXP43_DATA_READY`
+
+Exp43 Stage2 SFT manifests were built from the H20-safe Exp41/Exp40 LocalDPO v3
+minimum pool:
+
+- Train: `64` rows, `64` scene groups, BLENDER/REAL `32/32`.
+- Search: `24` rows, `24` scene groups, BLENDER/REAL `12/12`.
+- Shadow: `24` rows, `24` scene groups, BLENDER/REAL `12/12`.
+
+Validation:
+
+- Required path failures: `0`.
+- Optional path failures: `0`.
+- Scene overlap train/search, train/shadow, search/shadow: `0/0/0`.
+- VOR-Eval rows: `0`.
+- Hard-comp rows: `0`.
+- condition/winner/mask/loser frame dirs have at least `17` frames and passed
+  first-frame decode.
+
+The full `train96/search32/shadow32` target is not available; Exp43 proceeds
+with the minimum-pool caveat.
+
+Reports and manifests:
+
+- `exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_train.jsonl`
+- `exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_search.jsonl`
+- `exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_shadow.jsonl`
+- `reports/exp43_h20_data_readiness.md`
+- `reports/exp43_h20_data_readiness.csv`
+- `reports/exp43_h20_data_manifest_validation.csv`
+- `reports/exp43_h20_data_summary.json`
+
 ## Next Gates
 
-1. Data readiness and H20 path validation.
-2. 30-step SFT gate before any 100-step run.
-3. 100-step SFT gate before any 300-step run.
-4. DPO and 500-step confirmation only if SFT gates pass.
+1. 30-step SFT gate before any 100-step run.
+2. 100-step SFT gate before any 300-step run.
+3. DPO and 500-step confirmation only if SFT gates pass.

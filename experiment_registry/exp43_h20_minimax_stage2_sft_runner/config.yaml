@@ -2,7 +2,7 @@ experiment: exp43_h20_minimax_stage2_sft_runner
 model: MiniMax-Remover
 branch: research/exp43-h20-minimax-stage2-sft-runner-20260629
 base_branch: origin/research/exp41-h20-minimax-parallel-bf16-20260629
-status: H20_EXP43_BF16_SAFE_READY
+status: H20_EXP43_DATA_READY
 source_policy:
   exp43_isolated_code_allowed: true
   modify_shared_trainer: false
@@ -23,7 +23,7 @@ gates:
   gpu_release: passed
   readback: passed
   bf16_preflight: passed
-  data: pending
+  data: passed
   sft_30: pending
   sft_100: pending
   sft_300: pending
@@ -56,3 +56,17 @@ bf16_preflight:
   no_cuda_error: true
   no_nan_inf: true
   final_compute_apps_empty: true
+data:
+  status: H20_EXP43_DATA_READY
+  train_rows: 64
+  search_rows: 24
+  shadow_rows: 24
+  full_train96_search32_shadow32_ready: false
+  scene_overlap: 0
+  required_path_failures: 0
+  optional_path_failures: 0
+  vor_eval_rows: 0
+  hard_comp_rows: 0
+  train_manifest_sha256: 7a4468b720d2ec4fadd2db31bd9855afe3d560da3d93ca9931fd68139b78561d
+  search_manifest_sha256: d001432c9be39466818a215c32afa1270c76b67dd90a3a15c4f0aac9c4fdff68
+  shadow_manifest_sha256: b47600a1e05f4eabdf708ba5a3d2e8c1216d01ccb63b090f9d54dbe6c3f50406

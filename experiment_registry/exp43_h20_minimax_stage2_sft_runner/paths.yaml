@@ -13,3 +13,11 @@ reports:
   bf16_preflight: reports/exp43_h20_bf16_safe_preflight.md
   bf16_preflight_csv: reports/exp43_h20_bf16_safe_preflight.csv
   bf16_preflight_summary: reports/exp43_h20_bf16_safe_preflight_summary.json
+  data_readiness: reports/exp43_h20_data_readiness.md
+  data_readiness_csv: reports/exp43_h20_data_readiness.csv
+  data_manifest_validation: reports/exp43_h20_data_manifest_validation.csv
+  data_summary: reports/exp43_h20_data_summary.json
+manifests:
+  train: exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_train.jsonl
+  search: exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_search.jsonl
+  shadow: exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_shadow.jsonl

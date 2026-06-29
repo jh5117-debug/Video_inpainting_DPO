@@ -2,7 +2,7 @@
 
 H20-only isolated MiniMax Stage2 SFT runner track.
 
-Current status: `H20_EXP43_BF16_SAFE_READY`.
+Current status: `H20_EXP43_DATA_READY`.
 
 PAI remains read-only. New code is limited to
 `exp43_h20_minimax_stage2_sft_runner/`.
@@ -14,3 +14,7 @@ add an isolated true 30/100/300-step Stage2 SFT ladder runner.
 BF16-safe preflight P0-P7 passed on H20, including DDP8 one-batch training and
 rank0 checkpoint reload. This is runtime-only evidence, not a MiniMax quality
 claim.
+
+Data readiness passed for the minimum H20-safe pool: `train64/search24/shadow24`
+with zero scene overlap, zero required path failures, no VOR-Eval rows, and no
+hard comp.

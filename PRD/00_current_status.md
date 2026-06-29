@@ -1,3 +1,27 @@
+## 2026-06-29 Exp43 H20 Data Readiness
+
+Exp43 advanced to:
+
+```text
+H20_EXP43_DATA_READY
+```
+
+Built Exp43 Stage2 SFT manifests from H20-safe Exp41/Exp40 LocalDPO v3 data:
+`train64/search24/shadow24`. The full target `train96/search32/shadow32` is not
+available, so later claims must carry the minimum-pool caveat.
+
+Validation results: required path failures `0`, optional path failures `0`,
+train/search/shadow scene overlap `0`, VOR-Eval rows `0`, hard-comp rows `0`.
+All condition/winner/mask/loser frame directories had at least 17 frames and
+passed first-frame decode.
+
+Reports:
+
+- `reports/exp43_h20_data_readiness.md`
+- `reports/exp43_h20_data_readiness.csv`
+- `reports/exp43_h20_data_manifest_validation.csv`
+- `reports/exp43_h20_data_summary.json`
+
 ## 2026-06-29 Exp43 H20 BF16 Safe Preflight
 
 Exp43 advanced to:

@@ -1,0 +1,4 @@
+split,rows,scene_groups,vor_eval_used_rows,hard_comp_rows,source_type,mask_bucket
+train,64,64,0,0,"{""BLENDER"": 32, ""REAL"": 32}","{""medium"": 5, ""small"": 9, ""unknown"": 50}"
+search,24,24,0,0,"{""BLENDER"": 12, ""REAL"": 12}","{""large"": 1, ""small"": 2, ""unknown"": 21}"
+shadow,24,24,0,0,"{""BLENDER"": 12, ""REAL"": 12}","{""large"": 2, ""medium"": 1, ""small"": 2, ""unknown"": 19}"

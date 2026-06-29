@@ -7,7 +7,7 @@ No Exp43 training or evaluation metric has been run yet.
 Runtime readiness only. No model-quality metric was produced.
 # Exp43 Metric Summary
 
-Current status: `H20_EXP43_BF16_SAFE_READY`.
+Current status: `H20_EXP43_DATA_READY`.
 
 No Exp43 training metrics exist yet. Readback reuses prior gates only as
 prerequisite evidence:
@@ -33,3 +33,13 @@ P0-P7 passed. Rank0 summary:
 | P7 | 0.19614098966121674 | 1.488086613488801 | 62087.76 | PASS |
 
 This unlocks data readiness and gated SFT ladder work only.
+
+## 2026-06-29 Data Readiness
+
+| split | rows | scene groups | BLENDER | REAL | required failures | VOR-Eval | hard comp |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| train | 64 | 64 | 32 | 32 | 0 | 0 | 0 |
+| search | 24 | 24 | 12 | 12 | 0 | 0 | 0 |
+| shadow | 24 | 24 | 12 | 12 | 0 | 0 | 0 |
+
+Full `train96/search32/shadow32` is not available.

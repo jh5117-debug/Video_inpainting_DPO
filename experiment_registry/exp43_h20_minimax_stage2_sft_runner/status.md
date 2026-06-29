@@ -1,6 +1,34 @@
 # Exp43 Status
 
-Current status: `H20_EXP43_BF16_SAFE_READY`
+Current status: `H20_EXP43_DATA_READY`
+
+## 2026-06-29 Data Readiness
+
+Current status: `H20_EXP43_DATA_READY`
+
+- Built Exp43 Stage2 SFT manifests:
+  - `train64`
+  - `search24`
+  - `shadow24`
+- Full `train96/search32/shadow32` target: not available.
+- Scene overlap across train/search/shadow: `0`.
+- Required path failures: `0`.
+- Optional path failures: `0`.
+- VOR-Eval rows: `0`.
+- Hard-comp rows: `0`.
+- First-frame decode passed for all required condition/winner/mask/loser frame
+  directories.
+- Source balance:
+  - Train BLENDER/REAL: `32/32`.
+  - Search BLENDER/REAL: `12/12`.
+  - Shadow BLENDER/REAL: `12/12`.
+
+Reports:
+
+- `reports/exp43_h20_data_readiness.md`
+- `reports/exp43_h20_data_readiness.csv`
+- `reports/exp43_h20_data_manifest_validation.csv`
+- `reports/exp43_h20_data_summary.json`
 
 ## 2026-06-29 BF16 Safe Preflight
 
