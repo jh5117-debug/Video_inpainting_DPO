@@ -8,3 +8,10 @@ The previous H20-side path validation attempt is treated as a scope deviation.
 This lane will only produce PAI-side data, filelists, checksums when possible,
 and H20 mirror instructions. No H20 execution, training, optimizer step, or
 MiniMax-positive claim is allowed.
+
+Milestone B produced the H20 mirror filelist without executing any H20 action.
+Because this session cannot see `/mnt/nas` or `/mnt/workspace`, the raw
+MiniMax outputs, review sheets, frame directories, source frames, masks, and
+winner frames are recorded as missing in the current session. This is a
+handoff packaging blocker only; it does not invalidate the repo-side Exp44
+manifests, whose checksums were recomputed locally.

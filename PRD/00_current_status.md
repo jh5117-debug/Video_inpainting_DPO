@@ -23,6 +23,20 @@ mirror instructions. This session currently does not have `/mnt/nas` or
 `/mnt/workspace` mounted, so checksum/file-size work against absolute PAI/NAS
 artifacts is blocked unless those roots become visible.
 
+Milestone B generated a PAI-only H20 handoff filelist:
+
+```text
+EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE
+```
+
+- Exp44 manifest rows scanned: `120`
+- absolute paths required by pseudo-success / pair / bad-noise records: `262`
+- visible in this session: `0`
+- missing in this session: `262`
+- repo-side manifests/reports checksummed: `16`
+- H20 mirror executed: `false`
+- training / optimizer step: `false`
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

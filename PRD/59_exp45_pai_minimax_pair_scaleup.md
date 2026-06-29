@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `EXP45_PAIR_SCALEUP_READBACK_COMPLETED`
+Status: `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`
 
 ## Purpose
 
@@ -93,3 +93,33 @@ Next milestone:
   manifests if source roots are available.
 - If source roots remain unavailable, write a blocked/partial handoff package
   with exact missing roots and no fabricated checksums.
+
+## 2026-06-29 Milestone B H20 Handoff Filelist
+
+Status: `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`.
+
+Generated PAI-only handoff package:
+
+- `reports/exp45_h20_required_filelist.txt`
+- `reports/exp45_h20_required_sha256.txt`
+- `reports/exp45_h20_required_filelist.csv`
+- `reports/exp45_h20_handoff_package.md`
+- `reports/exp45_h20_handoff_package.json`
+
+Filelist construction:
+
+- scanned Exp44 manifest rows: `120`
+- required absolute paths found: `262`
+- paths visible in this session: `0`
+- paths missing in this session: `262`
+- total visible file size: `0`
+- `/mnt/nas` available: `false`
+- `/mnt/workspace` available: `false`
+
+Repository-side checksums were computed for the Exp44 manifests and reports
+that are present in git. Absolute PAI/NAS raw-output artifacts were not visible
+from this session, so their SHA256 entries are explicitly marked
+`missing_in_current_session` / `NA` rather than fabricated.
+
+PAI did not execute any H20 mirror, H20 validation, H20 training, DPO, SFT, or
+optimizer step.

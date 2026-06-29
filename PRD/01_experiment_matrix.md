@@ -213,13 +213,15 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp45 PAI MiniMax pair scale-up | `EXP45_PAIR_SCALEUP_READBACK_COMPLETED`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md` |
+| Exp45 PAI MiniMax pair scale-up | `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md` |
 
 Notes:
 
 - Starts from Exp44 partial Stage2 handoff `24/8/8`.
 - Target is at least `32/16/16`, preferably `64/24/24`.
 - Previous H20-side execution is recorded as out of scope for PAI.
+- Handoff filelist found `262` absolute paths, all unavailable in the current
+  non-NAS session; repo-side manifest/report checksums were generated.
 - MiniMax remains data-signal/plumbing-positive only; no third-adapter-positive
   claim is allowed.
 

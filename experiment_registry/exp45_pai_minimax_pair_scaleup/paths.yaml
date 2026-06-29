@@ -6,3 +6,7 @@ requested_pai_log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/e
 h20_mirror_target_root: H20_session_to_choose_after_filelist_handoff
 current_session_mnt_nas_available: false
 current_session_mnt_workspace_available: false
+handoff_filelist: reports/exp45_h20_required_filelist.txt
+handoff_sha256_status: reports/exp45_h20_required_sha256.txt
+handoff_package_md: reports/exp45_h20_handoff_package.md
+handoff_package_json: reports/exp45_h20_handoff_package.json
