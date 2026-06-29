@@ -15,3 +15,7 @@ Codex inspected the four generated teacher contact pages covering all 48 search/
 ## Milestone D Qualitative Interpretation
 
 Movement is worse than simply learning a drifting teacher: Step30 does not get closer to either pseudo target or `V_bg` in sampled metrics. With manifest alignment already passed, this points toward region loss contribution, target velocity construction, or a MiniMax flow-objective mismatch for this pseudo-success SFT setup.
+
+## Milestone E Qualitative Interpretation
+
+The region loss is finite and mask polarity is sane, but it is too global for pseudo-success targets that are only local-clean. The outside region dominates normalized weight mass, `far_outside` acts as a global base, and normalized affected maps can carry pseudo target drift into outside pixels. This explains why global SFT can damage full/outside appearance even without a manifest bug.

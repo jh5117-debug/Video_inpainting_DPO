@@ -1,6 +1,6 @@
 # Exp47 H20 MiniMax Pseudo-Success SFT Failure Forensic Audit
 
-Status: EXP47_STEP30_MOVEMENT_AUDITED
+Status: EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED
 
 Branch: `research/exp47-h20-minimax-pseudosuccess-forensic-20260629`
 Start HEAD: `94d2531a6782914e91bd4629fb477e154cfba98b`
@@ -17,7 +17,7 @@ Exp47 is an H20-only forensic audit of the Exp46 pseudo-success SFT30 failure. I
 - B manifest/path/frame alignment audit: complete (`EXP47_MANIFEST_ALIGNMENT_PASS`)
 - C pseudo-success teacher quality audit: complete (`EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED`)
 - D Step30 movement direction audit: complete (`EXP47_STEP30_MOVEMENT_AUDITED` / `SFT_LOSS_OR_TARGET_PATH_BUG`)
-- E region loss/mask/weight contribution audit: pending
+- E region loss/mask/weight contribution audit: complete (`EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`)
 - F strict pseudo-success relabel proposal: pending
 - G final root-cause decision: pending
 
@@ -66,3 +66,18 @@ Rows audited: `48` search/shadow rows. Step30 closer to pseudo target: `0`. Step
 Mean Step30-to-pseudo full L1 delta vs Step0: `0.005742`. Mean Step30-to-`V_bg` full/mask/outside L1 deltas vs Step0: `0.011993` / `0.017009` / `0.012223`. Full cosine direction train-vs-teacher `0.262656`, train-vs-`V_bg` `-0.140454`, teacher-vs-`V_bg` `0.025774`.
 
 Conclusion: Step30 does not simply learn the bad pseudo teacher. It moves away from both pseudo target and `V_bg` in the sampled frame-space audit. Since Milestone B passed manifest/path/frame alignment, the next forensic focus is region-loss contribution, runner target construction, or MiniMax flow-objective mismatch rather than pure target identity.
+
+
+## Milestone E Region Loss / Mask / Contribution Audit
+
+Status: `EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`
+
+Rows audited: `16` total (`8` train-batch proxy, `8` search-batch proxy). This was a no-training, no-optimizer frame-space proxy audit plus runner-code readback. It did not run backward or update checkpoints.
+
+Runner readback: Exp46 used SFT-B weights mask `0.75`, boundary `1.50`, affected `0.75`, outside `0.20`, far_outside `0.03`. The runner formula is `far_outside` global base + outside increment + mask + boundary + affected normalized from `abs(condition - winner)`.
+
+Mean component contribution: far-base `0.114598`, outside increment `0.630115`, mask `0.052052`, boundary `0.123524`, affected `0.079712`. Outside + affected + global base contribution is `0.824424` overall and `0.912822` on the search-batch proxy.
+
+Mean mask/boundary/outside area: `0.019470` / `0.022919` / `0.968317`. Mean pseudo outside L1 vs condition / V_bg: `0.016474` / `0.016277`.
+
+Conclusion: mask polarity is sane and the loss is finite, but the objective is not safely localized for pseudo-success targets with global drift. Outside receives substantial nonzero loss, `far_outside` is a global base rather than a region-specific far-outside component, and `affected` can propagate pseudo target drift outside the object. This supports `GLOBAL_SFT_SHOULD_BE_LOCALIZED` / objective-construction risk rather than a manifest bug.

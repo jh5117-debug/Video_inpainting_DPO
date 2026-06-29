@@ -20,3 +20,7 @@ teacher_review_pages: reports/exp47_teacher_review_pages/
 step30_movement_report: reports/exp47_step30_movement_direction_audit.md
 step30_movement_csv: reports/exp47_step30_movement_direction_audit.csv
 step30_movement_summary: reports/exp47_step30_movement_direction_summary.json
+
+region_loss_report: reports/exp47_region_loss_contribution_audit.md
+region_loss_csv: reports/exp47_region_loss_contribution_audit.csv
+region_loss_summary: reports/exp47_region_loss_contribution_summary.json

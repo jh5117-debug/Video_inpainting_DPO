@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 Region Loss Contribution Audit
+
+Exp47 advanced to:
+
+```text
+EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED
+```
+
+The frame-space proxy audited `16` train/search rows. Outside + affected + global-base weight contribution averages `0.824424` overall and `0.912822` on search proxy. This confirms global drift risk in the pseudo-success SFT objective; more global SFT is not recommended without localization or stricter targets.
+
+Report: `reports/exp47_region_loss_contribution_audit.md`
+
 ## 2026-06-30 Exp47 Step30 Movement Direction Audit
 
 Exp47 advanced to:

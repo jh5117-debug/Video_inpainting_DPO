@@ -13,3 +13,6 @@ Milestone C teacher quality: `EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED`. Search/shad
 
 
 Milestone D movement: `EXP47_STEP30_MOVEMENT_AUDITED` with root signal `SFT_LOSS_OR_TARGET_PATH_BUG`. Step30 was closer to pseudo target in `0/48` rows and closer to `V_bg` in `0/48` rows. Movement therefore does not validate simple bad-teacher learning; region loss/objective/runner construction must be audited next.
+
+
+Milestone E region loss: `EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`. Outside+affected+global-base component contribution averages `0.824424` overall and `0.912822` on the search proxy. Region weighting is finite but unsafe for global-drift pseudo targets.

@@ -37,3 +37,12 @@ Exp46 SFT30 aggregate deltas used as forensic starting point:
 - Mean Step30-to-pseudo full L1 delta vs Step0: `0.005742`
 - Mean Step30-to-V_bg full/mask/outside L1 delta vs Step0: `0.011993` / `0.017009` / `0.012223`
 - Full cosine train/teacher, train/V_bg, teacher/V_bg: `0.262656` / `-0.140454` / `0.025774`
+
+## Milestone E Region Loss Contribution
+
+- Status: `EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`
+- Rows audited: `16` (`8` train proxy, `8` search proxy)
+- Mean mask/boundary/outside area: `0.019470` / `0.022919` / `0.968317`
+- Mean component contribution far-base/outside/mask/boundary/affected: `0.114598` / `0.630115` / `0.052052` / `0.123524` / `0.079712`
+- Outside + affected + global base contribution: `0.824424`
+- Search proxy outside + affected + global base contribution: `0.912822`

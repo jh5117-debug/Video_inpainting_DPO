@@ -1,0 +1,45 @@
+{
+  "far_outside_region_specific_component_used": false,
+  "means": {
+    "affected_mean": 0.028255066252313554,
+    "affected_outside_mean": 0.020098761306144297,
+    "boundary_area": 0.022918701171875,
+    "component_affected_add_normalized_contribution": 0.07971187514619862,
+    "component_boundary_add_normalized_contribution": 0.12352413568185323,
+    "component_far_outside_base_global_normalized_contribution": 0.11459772617977187,
+    "component_mask_add_normalized_contribution": 0.05205169735223198,
+    "component_outside_increment_normalized_contribution": 0.630114549076892,
+    "condition_pseudo_outside_l1": 0.01647408737335354,
+    "mask_area": 0.01947021484375,
+    "outside_area": 0.9683166503906251,
+    "outside_plus_affected_component_contribution": 0.8244241504028624,
+    "pseudo_gt_outside_l1": 0.01627717283554375,
+    "weight_max": 3.0299999713897705,
+    "weight_mean": 0.26478584576398134
+  },
+  "risk_rows": 16,
+  "role_means": {
+    "search_batch": {
+      "affected_outside_mean": 0.018632566556334496,
+      "outside_plus_affected_component_contribution": 0.9128215496156964,
+      "weight_mean": 0.23660584725439548
+    },
+    "train_batch": {
+      "affected_outside_mean": 0.0215649560559541,
+      "outside_plus_affected_component_contribution": 0.7360267511900286,
+      "weight_mean": 0.2929658442735672
+    }
+  },
+  "rows": 16,
+  "runner_formula": "weight = far_outside global base + (outside-far_outside)*outside + mask*mask + boundary*boundary + affected*normalized_abs(condition-winner)",
+  "search_rows": 8,
+  "status": "EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED",
+  "train_rows": 8,
+  "weights": {
+    "affected": 0.75,
+    "boundary": 1.5,
+    "far_outside": 0.03,
+    "mask": 0.75,
+    "outside": 0.2
+  }
+}

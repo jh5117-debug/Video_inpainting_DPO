@@ -34,3 +34,13 @@ step30_movement:
   closer_to_pseudo: 0
   closer_to_vbg: 0
   no_training: true
+
+region_loss:
+  status: EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED
+  rows_audited: 16
+  train_proxy_rows: 8
+  search_proxy_rows: 8
+  no_training: true
+  no_optimizer_step: true
+  frame_space_proxy: true
+  outside_plus_affected_global_base_contribution: 0.824424
