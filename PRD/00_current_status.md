@@ -3541,3 +3541,33 @@ New Exp44-isolated helpers:
 
 No VOR-Eval, hard comp, SFT/DPO, optimizer step, H20 action, or MiniMax
 third-backbone-positive claim was launched.
+
+## 2026-06-29 Exp44 Targeted Second-Pass MiniMax Mining
+
+Exp44 status: `MINIMAX_TARGETED_MINING_COMPLETED`.
+
+PAI GPU0/GPU1 official MiniMax raw mining completed:
+
+- candidates: `452` / `452`;
+- technical failures: `0`;
+- automatic success: `138`;
+- automatic medium-hard failure: `231`;
+- automatic boundary-bad: `31`;
+- automatic fogging/over-erasure: `25`;
+- automatic too-close: `27`;
+- automatic same-source pair capacity: `26`;
+- automatic overlap groups: `13`.
+
+The automatic count crosses the minimum candidate line (`26 >= 24`), but this
+is not a formal pair-gate pass. Strict visual relabeling is still required
+before pair construction, bad-noise v4, or Stage2 dataset handoff.
+
+No training, optimizer step, VOR-Eval use, hard comp, H20 action, or MiniMax
+third-backbone-positive claim occurred.
+
+Reports:
+
+- `reports/exp44_targeted_mining.md`
+- `reports/exp44_targeted_mining_metrics.csv`
+- `reports/exp44_targeted_mining_group_yield.csv`
+- `reports/exp44_targeted_mining_summary.json`

@@ -34,3 +34,27 @@ targeted_source_manifest:
   include_fallback: false
   candidate_budget: 452
   sha256: 5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b
+targeted_second_pass_mining:
+  status: MINIMAX_TARGETED_MINING_COMPLETED
+  output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742
+  gpu0_worker_pid: 2263394
+  gpu1_worker_pid: 2266642
+  gpu0_worker_pgid: 2263394
+  gpu1_worker_pgid: 2266642
+  candidates: 452
+  technical_failures: 0
+  auto_success: 138
+  auto_medium_hard_failure: 231
+  auto_boundary_bad: 31
+  auto_fogging_over_erasure: 25
+  auto_too_close: 27
+  auto_same_source_pair_capacity: 26
+  auto_overlap_groups: 13
+  all_manifest_sha256: fd4152b5e789b2d22ae11bd83b2cbbe69eee51347a1444d04178c810f957fbd3
+  success_manifest_sha256: b0ebd76f442425e687ed42af50ce36dcda941526dded21246d9717e03ab88e6b
+  failure_manifest_sha256: 0b01156fb2becbe9d7cf9f6086a4f3a74fd66ecf37bff31d2b54019f45389a24
+  visual_relabel_required: true
+  training_run: false
+  optimizer_step: false
+  vor_eval_used: false
+  hard_comp_used: false

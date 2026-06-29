@@ -86,3 +86,65 @@ Reports/manifests:
 - `reports/exp44_targeted_source_manifest_summary.json`
 
 GPU mining is still pending actual GPU0/GPU1 availability.
+
+## 2026-06-29 Targeted Second-Pass Mining Completed
+
+Status: `MINIMAX_TARGETED_MINING_COMPLETED`.
+
+PAI GPU0/GPU1 were released by external/manual cleanup, then Exp44 launched
+two task-parallel official MiniMax workers:
+
+- GPU0 worker PID/PGID: `2263394` / `2263394`;
+- GPU1 worker PID/PGID: `2266642` / `2266642`;
+- watcher PID: `2257670`;
+- monitor PID after live-count fix: `2279260`;
+- output root:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742`.
+
+Protocol:
+
+- `UniPCMultistepScheduler`;
+- `num_inference_steps=12`;
+- `iterations=6`;
+- `float16`;
+- no CFG;
+- raw output primary;
+- no hard comp;
+- no VOR-Eval;
+- no training;
+- no optimizer step.
+
+Mining results:
+
+- total candidates: `452` / `452`;
+- technical failed candidates: `0`;
+- automatic successful-removal candidates: `138`;
+- automatic medium-hard failure candidates: `231`;
+- automatic boundary-bad candidates: `31`;
+- automatic fogging/over-erasure candidates: `25`;
+- automatic too-close candidates: `27`;
+- automatic same-source pair capacity: `26`;
+- automatic overlap groups: `13`;
+- all-candidate manifest SHA256:
+  `fd4152b5e789b2d22ae11bd83b2cbbe69eee51347a1444d04178c810f957fbd3`;
+- auto-success manifest SHA256:
+  `b0ebd76f442425e687ed42af50ce36dcda941526dded21246d9717e03ab88e6b`;
+- auto-failure manifest SHA256:
+  `0b01156fb2becbe9d7cf9f6086a4f3a74fd66ecf37bff31d2b54019f45389a24`.
+
+Important caveat: these are automatic labels only. Exp44 has crossed the
+minimum auto-level same-source candidate line (`26 >= 24`), but the formal
+same-source pair gate is still locked until strict visual relabeling rejects
+borderline, fogging, outside-damaged, too-close, and technical-invalid rows.
+
+Reports/manifests:
+
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_candidates_all.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_success_auto.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_failure_auto.jsonl`
+- `reports/exp44_targeted_mining.md`
+- `reports/exp44_targeted_mining_metrics.csv`
+- `reports/exp44_targeted_mining_group_yield.csv`
+- `reports/exp44_targeted_mining_summary.json`
+
+Next status target: `MINIMAX_TARGETED_RELABEL_COMPLETED`.

@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `EXP44_TARGETED_SOURCE_MANIFEST_READY`
+Current status: `MINIMAX_TARGETED_MINING_COMPLETED`
 
 ## 2026-06-29 Readback
 
@@ -30,3 +30,31 @@ Reports:
 - Runner: `exp44_pai_minimax_targeted_same_source_mining/scripts/mine_targeted_candidates.py`
 
 No GPU inference or training has been launched by this preparation step.
+
+## 2026-06-29 Targeted Second-Pass Mining
+
+- Status: `MINIMAX_TARGETED_MINING_COMPLETED`
+- Output root: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742`
+- GPU0 worker PID/PGID: `2263394` / `2263394`
+- GPU1 worker PID/PGID: `2266642` / `2266642`
+- Candidates completed: `452` / `452`
+- Technical failures: `0`
+- Auto success: `138`
+- Auto medium-hard failure: `231`
+- Auto boundary-bad: `31`
+- Auto fogging/over-erasure: `25`
+- Auto too-close: `27`
+- Auto same-source pair capacity: `26`
+- Auto overlap groups: `13`
+- Training run: `false`
+- Optimizer step: `false`
+- VOR-Eval used: `false`
+- Hard comp used: `false`
+- Strict visual relabel required before pair construction: `true`
+
+Reports:
+
+- `reports/exp44_targeted_mining.md`
+- `reports/exp44_targeted_mining_metrics.csv`
+- `reports/exp44_targeted_mining_group_yield.csv`
+- `reports/exp44_targeted_mining_summary.json`

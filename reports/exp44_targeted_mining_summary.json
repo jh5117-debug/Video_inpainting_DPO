@@ -1,0 +1,70 @@
+{
+  "all_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests/exp44_targeted_candidates_all.jsonl",
+  "all_manifest_sha256": "fd4152b5e789b2d22ae11bd83b2cbbe69eee51347a1444d04178c810f957fbd3",
+  "auto_overlap_groups": 13,
+  "auto_same_source_pair_capacity": 26,
+  "classification_counts": {
+    "BOUNDARY_BAD": 31,
+    "FOGGING_OVER_ERASURE": 25,
+    "MEDIUM_HARD_REMOVAL": 231,
+    "SUCCESSFUL_REMOVAL_CANDIDATE": 138,
+    "TOO_CLOSE": 27
+  },
+  "failure_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests/exp44_targeted_failure_auto.jsonl",
+  "failure_manifest_sha256": "0b01156fb2becbe9d7cf9f6086a4f3a74fd66ecf37bff31d2b54019f45389a24",
+  "hard_comp_used": false,
+  "metrics": {
+    "boundary_psnr": {
+      "count": 452,
+      "max": 32.41752934982041,
+      "mean": 24.61156159590241,
+      "min": 16.568036985241466
+    },
+    "full_psnr": {
+      "count": 452,
+      "max": 37.164058087371444,
+      "mean": 29.195213643641775,
+      "min": 20.784471723356393
+    },
+    "mask_psnr": {
+      "count": 452,
+      "max": 32.77311419386814,
+      "mean": 23.4767547029754,
+      "min": 14.262914872798868
+    },
+    "outside_mae": {
+      "count": 452,
+      "max": 9.752957905040068,
+      "mean": 4.717091063048182,
+      "min": 1.704865069950328
+    },
+    "outside_psnr": {
+      "count": 452,
+      "max": 39.04599850885704,
+      "mean": 31.680892002537927,
+      "min": 25.355359655610958
+    },
+    "temporal_diff_mae": {
+      "count": 452,
+      "max": 5.300668567419052,
+      "mean": 1.5334915735458015,
+      "min": 0.30148712545633316
+    }
+  },
+  "num_auto_medium_hard_failure": 231,
+  "num_auto_success": 138,
+  "num_candidates": 452,
+  "status": "MINIMAX_TARGETED_MINING_COMPLETED",
+  "success_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests/exp44_targeted_success_auto.jsonl",
+  "success_manifest_sha256": "b0ebd76f442425e687ed42af50ce36dcda941526dded21246d9717e03ab88e6b",
+  "target_source_manifest": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_source_manifest.jsonl",
+  "target_source_manifest_sha256": "5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b",
+  "training_run": false,
+  "visual_relabel_required": true,
+  "vor_eval_used": false,
+  "worker_manifest_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests",
+  "worker_manifests": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests/exp44_targeted_candidates_all_worker0.jsonl",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/manifests/exp44_targeted_candidates_all_worker1.jsonl"
+  ]
+}
