@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `MINIMAX_TARGETED_MINING_COMPLETED`
+Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
 
 ## Purpose
 
@@ -170,17 +170,47 @@ Manifests:
 
 ## 2026-06-29 Milestone D Strict Visual Relabel
 
-Status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`.
+Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`.
 
-No new Exp45 candidates exist because Milestone C was blocked before MiniMax
-inference. Therefore no new review pages, temporal strips, crops, or videos
-were generated or inspected.
+Strict relabel was performed after opening all `8` generated review pages
+covering the `64` automatic success/failure candidates. The relabel pass used
+the real PAI raw outputs and temporal strips; automatic metrics were treated as
+guardrails only.
+
+Relabel summary:
+
+- total candidates relabeled: `72`
+- review pages inspected: `8`
+- accepted `SUCCESS_CLEAN`: `8`
+- accepted `SUCCESS_USABLE` including clean: `28`
+- accepted `FAILURE_MEDIUM_HARD`: `22`
+- rejected `BORDERLINE_REJECT`: `14`
+- rejected `FAILURE_FOGGING`: `2`
+- rejected `FAILURE_TOO_CLOSE`: `6`
+- same-source groups with both accepted success/failure: `4`
+- one-to-one same-source pair precheck from new rows: `8`
+- capped same-source combination precheck from new rows: `16`
+- H20 touched: `false`
+- training run: `false`
+- optimizer step: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 
 - `reports/exp45_visual_relabel.md`
 - `reports/exp45_visual_relabel.csv`
 - `reports/exp45_visual_relabel_summary.json`
+- `reports/exp45_visual_relabel_group_yield.csv`
+- `reports/exp45_visual_review_page_index.csv`
+
+Manifests:
+
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_success_clean.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_success_usable.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_failure_medium_hard.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_rejected.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_visual_relabel_all.jsonl`
 
 ## 2026-06-29 Milestone E Formal Stage2 Handoff
 

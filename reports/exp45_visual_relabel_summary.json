@@ -1,16 +1,44 @@
 {
-  "blocked_reason": "no Exp45 targeted candidates were generated because PAI/NAS roots are unavailable",
-  "failure_medium_hard": 0,
-  "h20_touched": false,
-  "hard_comp_used": false,
-  "new_candidates": 0,
-  "optimizer_step": false,
-  "review_pages_generated": 0,
-  "review_pages_inspected": 0,
-  "status": "MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES",
-  "success_clean": 0,
-  "success_usable": 0,
-  "training_run": false,
-  "visual_pass_claimed": false,
-  "vor_eval_used": false
+  "candidates_total": 72,
+  "capped_combination_pair_precheck": 16,
+  "capped_combination_pair_precheck_by_group": {
+    "BLENDER_MOUNTAIN002": 4,
+    "REAL_ENV059_00001": 4,
+    "REAL_ENV097_00001": 4,
+    "REAL_ENV105_00001": 4
+  },
+  "failure_medium_hard": 22,
+  "label_counts": {
+    "BORDERLINE_REJECT": 14,
+    "FAILURE_FOGGING": 2,
+    "FAILURE_MEDIUM_HARD": 22,
+    "FAILURE_TOO_CLOSE": 6,
+    "SUCCESS_CLEAN": 8,
+    "SUCCESS_USABLE": 20
+  },
+  "manifest_hashes": {
+    "exp44_failure_medium_hard.jsonl": "c03051ee3c2cdd891a5d220b104a39af3c823154effc8ffdbec79cd4ef6df14f",
+    "exp44_rejected_borderline.jsonl": "dc3a34073aadd02e379ceaf9d31aad8c205da0d13748dc0cc1746c7bdaf29f51",
+    "exp44_success_clean.jsonl": "fe0a5a0894254f08abf78aacfc730a703f63e2605e58680156bf4f4f3c66315c",
+    "exp44_success_usable.jsonl": "ea4e136c7b44edcd8f2dfbed3e3110e34bf5b62c1302780137cb478b9b2ff22a",
+    "exp44_targeted_visual_relabel_all.jsonl": "f29f043012dc8306d61c6654b26dc9be525a946aa706a289769bb5e1b1b26f70"
+  },
+  "notes": [
+    "All 8 selected candidate review pages were opened before relabeling.",
+    "Labels are intentionally conservative: fogging, too-close, outside damage and boundary destruction are excluded from success and medium-hard pools.",
+    "No training, optimizer step, hard comp, or VOR-Eval selection was used."
+  ],
+  "one_to_one_pair_precheck_by_group": {
+    "BLENDER_MOUNTAIN002": 2,
+    "REAL_ENV059_00001": 3,
+    "REAL_ENV097_00001": 2,
+    "REAL_ENV105_00001": 1
+  },
+  "one_to_one_same_source_pair_precheck": 8,
+  "pages_inspected": 8,
+  "same_source_groups_with_pairs": 4,
+  "selected_pages_rows": 64,
+  "status": "MINIMAX_TARGETED_RELABEL_COMPLETED",
+  "success_clean": 8,
+  "success_usable_including_clean": 28
 }

@@ -47,11 +47,19 @@ No Exp45 mining or training metrics have been produced yet.
 
 ## Strict Visual Relabel
 
-- new candidates: `0`
-- review pages inspected: `0`
-- accepted success: `0`
-- accepted failure: `0`
-- status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
+- new candidates relabeled: `72`
+- selected automatic success/failure rows reviewed: `64`
+- review pages inspected: `8`
+- accepted `SUCCESS_CLEAN`: `8`
+- accepted `SUCCESS_USABLE` including clean: `28`
+- accepted `FAILURE_MEDIUM_HARD`: `22`
+- rejected borderline: `14`
+- rejected fogging: `2`
+- rejected too-close: `6`
+- same-source groups with accepted pairs: `4`
+- one-to-one same-source pair precheck from new rows: `8`
+- capped same-source combination precheck from new rows: `16`
+- status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
 
 ## Formal Stage2 Handoff
 

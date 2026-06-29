@@ -4,7 +4,7 @@ Exp45 has started as a PAI-only correction and continuation of the Exp44
 MiniMax same-source data route:
 
 ```text
-MINIMAX_TARGETED_MINING_COMPLETED
+MINIMAX_TARGETED_RELABEL_COMPLETED
 ```
 
 Readback verified Exp44 remains partial:
@@ -97,6 +97,18 @@ targeted mining:
 
 Next Exp45 step: strict visual relabel of the PAI-generated candidates before
 building any formal Stage2 split.
+
+Exp45 strict visual relabel is now complete:
+
+- review pages inspected: `8`
+- success clean: `8`
+- success usable including clean: `28`
+- medium-hard failures: `22`
+- rejected borderline/fogging/too-close: `14/2/6`
+- training / optimizer step: `false`
+
+Next Exp45 step: construct the formal same-source train/search/shadow split
+from Exp44 + Exp45 accepted rows.
 
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 

@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `MINIMAX_TARGETED_MINING_COMPLETED`
+Current status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -76,15 +76,25 @@ Reports:
 
 ## 2026-06-29 Strict Visual Relabel
 
-- Status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
-- New candidates: `0`
-- Review pages generated: `0`
-- Review pages inspected: `0`
-- Accepted success: `0`
-- Accepted failure: `0`
+- Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+- New candidates relabeled: `72`
+- Selected auto success/failure rows reviewed: `64`
+- Review pages generated: `8`
+- Review pages inspected: `8`
+- Accepted `SUCCESS_CLEAN`: `8`
+- Accepted `SUCCESS_USABLE` including clean: `28`
+- Accepted `FAILURE_MEDIUM_HARD`: `22`
+- Rejected borderline: `14`
+- Rejected fogging: `2`
+- Rejected too-close: `6`
+- Same-source groups with accepted pairs: `4`
+- One-to-one same-source pair precheck from new rows: `8`
+- Capped same-source combination precheck from new rows: `16`
 - H20 touched by Exp45: `false`
 - Training run by Exp45: `false`
 - Optimizer step by Exp45: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 

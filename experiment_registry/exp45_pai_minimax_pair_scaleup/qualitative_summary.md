@@ -24,8 +24,13 @@ medium-hard failure candidates. This is still a pre-relabel mining result:
 Milestone D must inspect the generated visual pages before any rows become
 training-eligible.
 
-Milestone D did not perform any visual relabeling because no new Exp45
-candidates exist. This is explicitly not a visual review pass.
+Milestone D opened all eight PAI-generated review pages and applied a
+conservative relabel policy. The accepted pool keeps 28 usable successes and
+22 medium-hard failures, while rejecting too-close, fogging, and borderline
+rows. This improves label purity versus the automatic mining output, but the
+new-row same-source pair capacity is still lower than the raw auto count, so
+formal split construction must combine the new rows with the Exp44 accepted
+pool and enforce disjoint scene groups.
 
 Milestone E produced an Exp45-prefixed partial handoff so future sessions do
 not confuse Exp44 and Exp45 paths. It remains below the formal data gate and
