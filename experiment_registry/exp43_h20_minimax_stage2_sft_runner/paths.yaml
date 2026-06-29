@@ -9,3 +9,4 @@ h20_minimax_weight_current: /home/nvme01/H20_Video_inpainting_DPO/weights/minima
 reports:
   gpu_release: reports/exp43_h20_gpu_release_audit.md
   gpu_release_csv: reports/exp43_h20_gpu_release_audit.csv
+  readback: reports/exp43_h20_stage2_sft_runner_readback.md

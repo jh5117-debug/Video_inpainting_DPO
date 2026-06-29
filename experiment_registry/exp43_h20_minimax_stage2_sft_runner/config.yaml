@@ -2,7 +2,7 @@ experiment: exp43_h20_minimax_stage2_sft_runner
 model: MiniMax-Remover
 branch: research/exp43-h20-minimax-stage2-sft-runner-20260629
 base_branch: origin/research/exp41-h20-minimax-parallel-bf16-20260629
-status: H20_EXP43_GPU_RELEASE_AUDITED
+status: H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED
 source_policy:
   exp43_isolated_code_allowed: true
   modify_shared_trainer: false
@@ -21,7 +21,7 @@ h20_gpu_policy:
   killall_python: false
 gates:
   gpu_release: passed
-  readback: pending
+  readback: passed
   bf16_preflight: pending
   data: pending
   sft_30: pending
@@ -29,3 +29,14 @@ gates:
   sft_300: pending
   dpo_after_sft: pending
   confirmation_500: pending
+readback:
+  start_head: 03ce2eb5fdc476789280eaea97f2145a0aa369b5
+  exp41_blocker: existing_minimax_runners_cap_steps_at_10
+  authorized_code_dir: exp43_h20_minimax_stage2_sft_runner
+  h20_data_ready_from_exp41: true
+  h20_train_rows_available: 64
+  h20_search_rows_available: 24
+  h20_shadow_rows_available: 24
+  exp42_pai_status: EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED
+  exp42_pseudo_success_available_on_h20: false
+  vor_eval_excluded: true

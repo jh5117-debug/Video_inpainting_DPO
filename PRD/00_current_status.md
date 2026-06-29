@@ -1,3 +1,27 @@
+## 2026-06-29 Exp43 H20 Stage2 SFT Runner Readback
+
+Exp43 advanced to:
+
+```text
+H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED
+```
+
+Readback confirms that Exp41 was blocked only by runner scope: all existing
+MiniMax SFT/DPO entrypoints cap at 10 steps or less, while the requested ladder
+requires true 30/100/300-step SFT. Exp43 is now explicitly authorized to add an
+isolated runner under `exp43_h20_minimax_stage2_sft_runner/` without modifying
+shared trainers, `inference/metrics.py`, MiniMax official source, or Exp1-Exp42
+history.
+
+H20 data, weights, protocol identity, and prior BF16 P0-P7 evidence were read
+back from Exp41. Exp42 was read-only checked as PAI-side data mining and has not
+yet provided a successful-removal pseudo-success pool to H20. VOR-Eval remains
+excluded.
+
+Reports:
+
+- `reports/exp43_h20_stage2_sft_runner_readback.md`
+
 ## 2026-06-29 Exp43 H20 MiniMax Stage2 SFT Runner
 
 Exp43 started as an H20-only isolated MiniMax Stage2 SFT runner track:

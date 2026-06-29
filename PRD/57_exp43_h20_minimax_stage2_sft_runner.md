@@ -1,6 +1,6 @@
 # Exp43 H20 MiniMax Stage2 SFT Runner
 
-Status: `H20_EXP43_GPU_RELEASE_AUDITED`
+Status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
 
 Exp43 is an H20-only MiniMax training-system breakthrough track. It is based on
 Exp41 and is explicitly authorized to add an isolated Stage2 SFT ladder runner
@@ -62,10 +62,37 @@ Reports:
 - `reports/exp43_h20_gpu_release_audit.md`
 - `reports/exp43_h20_gpu_release_audit.csv`
 
+## 2026-06-29 Stage2 SFT Runner Readback
+
+Status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
+
+Readback confirms:
+
+- Exp41 reached `H20_MINIMAX_SFT_BLOCKED` because all existing MiniMax
+  SFT/DPO runners are capped at 10 steps or less.
+- This prompt authorizes a new Exp43-isolated runner only under
+  `exp43_h20_minimax_stage2_sft_runner/`.
+- H20 has the mirrored MiniMax data needed for `train64/search24/shadow24`.
+- H20 MiniMax weights resolve under
+  `/home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current`.
+- Exp41 official protocol audit passed for executable README/test settings:
+  `UniPCMultistepScheduler`, `float16`, `num_inference_steps=12`,
+  `iterations=6`, raw output primary, no hidden comp, no GT leakage, and no
+  mask reversal.
+- Exp41 BF16 P0-P7 passed, including DDP8 one-batch training, but Exp43 must
+  still run its own preflight and record resolved dtype/backend.
+- Exp42 remains PAI-side data mining and has not yet provided a pseudo-success
+  pool to H20.
+- VOR-Eval is excluded from Exp43 training, selection, and tuning.
+
+Report:
+
+- `reports/exp43_h20_stage2_sft_runner_readback.md`
+
 ## Next Gates
 
-1. Exp43 readback and H20 worktree setup.
-2. Isolated BF16-safe Stage2 SFT runner implementation.
+1. Isolated BF16-safe Stage2 SFT runner implementation.
+2. Exp43 P0-P7 BF16-safe preflight.
 3. Data readiness and H20 path validation.
 4. 30-step SFT gate before any 100-step run.
 5. 100-step SFT gate before any 300-step run.

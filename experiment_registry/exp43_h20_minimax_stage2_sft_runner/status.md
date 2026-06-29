@@ -1,6 +1,30 @@
 # Exp43 Status
 
-Current status: `H20_EXP43_GPU_RELEASE_AUDITED`
+Current status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
+
+## 2026-06-29 Stage2 SFT Runner Readback
+
+Current status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
+
+- Start HEAD: `03ce2eb5fdc476789280eaea97f2145a0aa369b5`.
+- Exp41 blocker: existing MiniMax SFT/DPO runners cap at 10 steps or less.
+- Newly authorized code scope: `exp43_h20_minimax_stage2_sft_runner/` only.
+- H20 data readback: Exp41 `H20_MINIMAX_DATA_READY`, `2242` active refs checked,
+  `0` missing, Exp40 H20-safe `train64/search24/shadow24` available.
+- H20 runtime readback: Torch `2.5.1+cu124`, CUDA `12.4`, 8 GPUs, BF16
+  supported.
+- Exp41 BF16 readback: P0-P7 passed, including DDP8 one-batch train; no SIGFPE,
+  OOM, CUDA error, NaN/Inf, or Xid.
+- Exp41 protocol readback: executable official protocol matches current runner
+  settings; raw output is primary, no hidden comp, no GT leakage, no mask
+  reversal.
+- Exp42 readback: PAI-side data mining only; no H20 pseudo-success pool
+  available yet.
+- VOR-Eval remains excluded.
+
+Reports:
+
+- `reports/exp43_h20_stage2_sft_runner_readback.md`
 
 ## 2026-06-29 H20 GPU Release Audit
 
