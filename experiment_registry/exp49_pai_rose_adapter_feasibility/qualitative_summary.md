@@ -1,5 +1,5 @@
 # Exp49 Qualitative Summary
 
-No ROSE visual evidence has been generated or reviewed yet.
+Milestone D performed no visual promotion. ROSE remains untested on VOR-OR outputs in this milestone.
 
-Milestone C only ran dependency import and CUDA smoke.
+Inference and training claims remain forbidden until the relevant gates run.

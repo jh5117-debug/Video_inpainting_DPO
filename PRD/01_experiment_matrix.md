@@ -621,3 +621,9 @@ the public readback and the PAI access blocker.
 | Experiment | Milestone | Status | Notes |
 | --- | --- | --- | --- |
 | `exp49_pai_rose_adapter_feasibility` | C env | `ROSE_ENV_PARTIAL` | Isolated Python 3.10 venv import/CUDA smoke passed after PyPI dependency retry; no inference/training; Python 3.12 lacks pip/torch on PAI. |
+
+## 2026-06-30 Exp49 Feasibility Update
+
+| Experiment | Milestone | Status | Notes |
+| --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | D adapter audit | `ROSE_TRAINING_FORWARD_BLOCKED` | Official code exposes transformer forward and LoRA utilities, but no released training loop/loss/target; no inference/training run. |

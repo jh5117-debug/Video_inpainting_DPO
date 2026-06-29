@@ -114,3 +114,11 @@ An isolated venv at `/home/hj/venvs/rose_exp49_py310` was created and used for R
 The first dependency install attempt hit a Tsinghua mirror 403 for `diffusers==0.31.0`. Retrying inside the same isolated venv through PyPI completed ROSE dependency installation; final import/CUDA smoke had zero failed checks.
 
 No inference, training, optimizer step, DPO, or H20 action was run.
+
+## Milestone D Update - 2026-06-30
+
+Status: `ROSE_TRAINING_FORWARD_BLOCKED`.
+
+Official ROSE code was audited on PAI. `inference.py` and `WanFunInpaintPipeline.__call__` are no-grad inference paths. `WanTransformer3DModel.forward()` is differentiable and `rose/utils/lora_utils.py` exposes LoRA optimizer-param and save/load helpers, but the released repository does not include an executable training script, optimizer/backward loop, explicit loss, or explicit FlowMatch target construction. ROSE is therefore not yet a proven adapter candidate; a future isolated wrapper would need zero-gap / one-step proof before any adapter claim.
+
+No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.

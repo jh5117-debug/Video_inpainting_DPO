@@ -10,3 +10,8 @@ weights_root: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose
 dataset_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/rose_dataset
 hf_space_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE_HF_Space
 verified_pai_access: false
+
+milestone_d_reports:
+  audit_md: reports/exp49_rose_code_adapter_feasibility_audit.md
+  audit_csv: reports/exp49_rose_code_adapter_feasibility_audit.csv
+  inventory_json: reports/exp49_rose_training_forward_inventory.json

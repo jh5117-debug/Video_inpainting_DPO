@@ -1,3 +1,5 @@
 # Exp49 Metric Summary
 
-Milestone C computed no inpainting metrics. Environment/import/CUDA smoke status: `ROSE_ENV_PARTIAL`.
+Milestone D computed no video metrics. It is a code and adapter-feasibility audit only.
+
+Current status: `ROSE_TRAINING_FORWARD_BLOCKED`.

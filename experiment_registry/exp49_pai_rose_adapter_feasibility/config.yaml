@@ -22,3 +22,10 @@ promotion_gate:
   - ROSE_ONE_STEP_PASS
   - ROSE_ADAPTER_10STEP_PROMISING_OR_POSITIVE
 current_blocker: PAI access not verified from HAL
+
+milestone_d:
+  status: ROSE_TRAINING_FORWARD_BLOCKED
+  rose_repo: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE/Kunbyte-AI_ROSE
+  rose_commit: 6be41c5420bf331c6d491277d5a6feaf9b3a779a
+  no_training_run: true
+  no_optimizer_step: true

@@ -1,7 +1,5 @@
 # Exp49 Status
 
-Current status: `ROSE_ENV_PARTIAL`
+Current status: `ROSE_TRAINING_FORWARD_BLOCKED`
 
-Milestone C created an isolated Python venv and ran ROSE import/CUDA smoke. Python 3.12 is present on PAI but lacks pip/torch, so the smoke used Python 3.10 with system Torch 2.6.0+cu126.
-
-No inference, training, optimizer step, DPO, or H20 action was run.
+Milestone D audited the released ROSE official code. The repo exposes a differentiable WanTransformer3DModel and LoRA save/load utilities, but no executable official training script, optimizer/backward loop, explicit loss, or explicit FlowMatch training target construction was found. No inference/training was run.

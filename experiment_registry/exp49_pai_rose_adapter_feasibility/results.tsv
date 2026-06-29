@@ -8,3 +8,4 @@ F_gate16	NOT_STARTED	Blocked until inference smoke is technically valid.
 G_one_step	NOT_STARTED	Blocked until trainable-forward feasible.
 H_10step	NOT_STARTED	Blocked until one-step passes.
 I_paper_positioning	NOT_STARTED	Requires actual ROSE results.
+D_adapter_feasibility	ROSE_TRAINING_FORWARD_BLOCKED	No official train/finetune optimizer/backward/loss script found; transformer forward and LoRA utilities present.
