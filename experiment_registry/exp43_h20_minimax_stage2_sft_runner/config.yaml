@@ -2,7 +2,7 @@ experiment: exp43_h20_minimax_stage2_sft_runner
 model: MiniMax-Remover
 branch: research/exp43-h20-minimax-stage2-sft-runner-20260629
 base_branch: origin/research/exp41-h20-minimax-parallel-bf16-20260629
-status: H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED
+status: H20_EXP43_BF16_SAFE_READY
 source_policy:
   exp43_isolated_code_allowed: true
   modify_shared_trainer: false
@@ -22,7 +22,7 @@ h20_gpu_policy:
 gates:
   gpu_release: passed
   readback: passed
-  bf16_preflight: pending
+  bf16_preflight: passed
   data: pending
   sft_30: pending
   sft_100: pending
@@ -40,3 +40,19 @@ readback:
   exp42_pai_status: EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED
   exp42_pseudo_success_available_on_h20: false
   vor_eval_excluded: true
+bf16_preflight:
+  status: H20_EXP43_BF16_SAFE_READY
+  output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp43_h20_minimax_stage2_sft_runner/bf16_preflight_20260629_094430
+  p0: PASS
+  p1: PASS
+  p2: PASS
+  p3: PASS
+  p4: PASS
+  p5: PASS
+  p6_ddp2: PASS
+  p7_ddp8: PASS
+  no_sigfpe: true
+  no_oom: true
+  no_cuda_error: true
+  no_nan_inf: true
+  final_compute_apps_empty: true

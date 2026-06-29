@@ -10,3 +10,6 @@ reports:
   gpu_release: reports/exp43_h20_gpu_release_audit.md
   gpu_release_csv: reports/exp43_h20_gpu_release_audit.csv
   readback: reports/exp43_h20_stage2_sft_runner_readback.md
+  bf16_preflight: reports/exp43_h20_bf16_safe_preflight.md
+  bf16_preflight_csv: reports/exp43_h20_bf16_safe_preflight.csv
+  bf16_preflight_summary: reports/exp43_h20_bf16_safe_preflight_summary.json

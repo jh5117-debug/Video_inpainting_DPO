@@ -1,0 +1,30 @@
+experiment: exp43_h20_minimax_stage2_sft_runner
+mode: bf16_safe_preflight
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft
+project_root: /home/nvme01/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft
+minimax_repo: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs/mnt/nas/hj/official_repos/MiniMax-Remover_28e12b4
+model_dir: /home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current
+manifest: /home/nvme01/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft/exp43_h20_minimax_stage2_sft_runner/manifests/exp43_preflight_train_h20.jsonl
+output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp43_h20_minimax_stage2_sft_runner
+reports_dir: /home/nvme01/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft/reports
+precision_policy:
+  transformer_dtype: bf16
+  vae_dtype: fp32
+  loss_dtype: fp32
+  reduction_dtype: fp32
+  grad_norm_dtype: fp32
+  grad_scaler: disabled
+  safe_attention: math_sdpa
+  flash_attention: disabled
+  xformers: disabled
+  timestep_min: 0.05
+  timestep_max: 0.95
+cases:
+  - P0
+  - P1
+  - P2
+  - P3
+  - P4
+  - P5
+  - P6
+  - P7

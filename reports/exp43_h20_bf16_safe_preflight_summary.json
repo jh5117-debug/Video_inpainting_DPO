@@ -1,0 +1,90 @@
+{
+  "bf16_supported": true,
+  "cases": [
+    {
+      "case": "P0",
+      "peak_mib_rank0": 132.0,
+      "rank0_checkpoint": "",
+      "rank0_grad_norm": 2.831369161605835,
+      "rank0_loss": 2050.82861328125,
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P1",
+      "peak_mib_rank0": 6260.286,
+      "rank0_checkpoint": "",
+      "rank0_grad_norm": "",
+      "rank0_loss": "",
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P2",
+      "peak_mib_rank0": 7274.638,
+      "rank0_checkpoint": "not_requested",
+      "rank0_grad_norm": 0.0,
+      "rank0_loss": 0.19614098966121674,
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P3",
+      "peak_mib_rank0": 59932.281,
+      "rank0_checkpoint": "not_requested",
+      "rank0_grad_norm": 3.281572142587461,
+      "rank0_loss": 0.19614098966121674,
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P4",
+      "peak_mib_rank0": 68982.773,
+      "rank0_checkpoint": "PASS",
+      "rank0_grad_norm": 3.179090593773888,
+      "rank0_loss": 0.19492636620998383,
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P5",
+      "peak_mib_rank0": 59932.281,
+      "rank0_checkpoint": "PASS",
+      "rank0_grad_norm": 3.281572142587461,
+      "rank0_loss": 0.19614098966121674,
+      "rank_count": 1,
+      "status": "PASS",
+      "world_size": 1
+    },
+    {
+      "case": "P6",
+      "peak_mib_rank0": 62087.76,
+      "rank0_checkpoint": "PASS",
+      "rank0_grad_norm": 2.1718841431594367,
+      "rank0_loss": 0.19614098966121674,
+      "rank_count": 2,
+      "status": "PASS",
+      "world_size": 2
+    },
+    {
+      "case": "P7",
+      "peak_mib_rank0": 62087.76,
+      "rank0_checkpoint": "PASS",
+      "rank0_grad_norm": 1.488086613488801,
+      "rank0_loss": 0.19614098966121674,
+      "rank_count": 8,
+      "status": "PASS",
+      "world_size": 8
+    }
+  ],
+  "cuda": "12.4",
+  "hostname": "instance-afs92r3e",
+  "output_root": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp43_h20_minimax_stage2_sft_runner/bf16_preflight_20260629_094430",
+  "status": "H20_EXP43_BF16_SAFE_READY",
+  "torch": "2.5.1+cu124"
+}

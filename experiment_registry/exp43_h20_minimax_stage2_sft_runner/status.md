@@ -1,6 +1,31 @@
 # Exp43 Status
 
-Current status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
+Current status: `H20_EXP43_BF16_SAFE_READY`
+
+## 2026-06-29 BF16 Safe Preflight
+
+Current status: `H20_EXP43_BF16_SAFE_READY`
+
+- Added Exp43-isolated BF16-safe runner, precision policy, launchers, config,
+  preflight manifest copy, and unit tests.
+- P0-P7 passed on H20.
+- P7 used DDP8 over GPU0-GPU7.
+- Rank0 checkpoint save/reload passed for P4, P5, P6, and P7.
+- Peak rank0 memory:
+  - P4 fp32 one-batch train: `68982.773` MiB.
+  - P7 DDP8 bf16 one-batch train: `62087.76` MiB.
+- Warnings observed: `expandable_segments` unsupported on this H20 platform and
+  DDP `find_unused_parameters=True` found no unused parameters. These did not
+  block finite loss/gradients or checkpoint reload.
+- No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was observed.
+- Final GPU0-GPU7 compute apps: none.
+- Quality claim: none. This is runtime stability only.
+
+Reports:
+
+- `reports/exp43_h20_bf16_safe_preflight.md`
+- `reports/exp43_h20_bf16_safe_preflight.csv`
+- `reports/exp43_h20_bf16_safe_preflight_summary.json`
 
 ## 2026-06-29 Stage2 SFT Runner Readback
 

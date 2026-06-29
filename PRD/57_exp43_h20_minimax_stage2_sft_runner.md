@@ -1,6 +1,6 @@
 # Exp43 H20 MiniMax Stage2 SFT Runner
 
-Status: `H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED`
+Status: `H20_EXP43_BF16_SAFE_READY`
 
 Exp43 is an H20-only MiniMax training-system breakthrough track. It is based on
 Exp41 and is explicitly authorized to add an isolated Stage2 SFT ladder runner
@@ -89,11 +89,44 @@ Report:
 
 - `reports/exp43_h20_stage2_sft_runner_readback.md`
 
+## 2026-06-29 BF16 Safe Preflight
+
+Status: `H20_EXP43_BF16_SAFE_READY`
+
+Added Exp43-isolated runner files:
+
+- `exp43_h20_minimax_stage2_sft_runner/precision_policy.py`
+- `exp43_h20_minimax_stage2_sft_runner/runner_stage2_sft_ladder.py`
+- `exp43_h20_minimax_stage2_sft_runner/launch_single_gpu_preflight.sh`
+- `exp43_h20_minimax_stage2_sft_runner/launch_ddp_bf16_safe.sh`
+- `exp43_h20_minimax_stage2_sft_runner/configs/bf16_safe_preflight.yaml`
+- `exp43_h20_minimax_stage2_sft_runner/manifests/exp43_preflight_train_h20.jsonl`
+- `exp43_h20_minimax_stage2_sft_runner/tests/test_*.py`
+
+P0-P7 completed on H20:
+
+- P0 torch bf16 matmul/backward: PASS.
+- P1 VAE fp32 encode/decode: PASS.
+- P2 DiT bf16 forward no grad: PASS.
+- P3 DiT bf16 forward/backward with fp32 loss: PASS.
+- P4 MiniMax fp32 one-batch SFT + checkpoint reload: PASS.
+- P5 MiniMax bf16-safe single-GPU one-batch SFT + checkpoint reload: PASS.
+- P6 MiniMax bf16-safe DDP2 one-batch SFT + rank0 checkpoint reload: PASS.
+- P7 MiniMax bf16-safe DDP8 one-batch SFT + rank0 checkpoint reload: PASS.
+
+No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was observed. Final GPU0-GPU7
+compute apps were empty. This gate permits data readiness and gated SFT ladder
+work, but it does not establish a MiniMax quality-positive claim.
+
+Reports:
+
+- `reports/exp43_h20_bf16_safe_preflight.md`
+- `reports/exp43_h20_bf16_safe_preflight.csv`
+- `reports/exp43_h20_bf16_safe_preflight_summary.json`
+
 ## Next Gates
 
-1. Isolated BF16-safe Stage2 SFT runner implementation.
-2. Exp43 P0-P7 BF16-safe preflight.
-3. Data readiness and H20 path validation.
-4. 30-step SFT gate before any 100-step run.
-5. 100-step SFT gate before any 300-step run.
-6. DPO and 500-step confirmation only if SFT gates pass.
+1. Data readiness and H20 path validation.
+2. 30-step SFT gate before any 100-step run.
+3. 100-step SFT gate before any 300-step run.
+4. DPO and 500-step confirmation only if SFT gates pass.

@@ -1,3 +1,26 @@
+## 2026-06-29 Exp43 H20 BF16 Safe Preflight
+
+Exp43 advanced to:
+
+```text
+H20_EXP43_BF16_SAFE_READY
+```
+
+The new Exp43-isolated runner under
+`exp43_h20_minimax_stage2_sft_runner/` completed P0-P7 on H20. P7 used DDP8
+with all 8 H20 GPUs and passed finite loss/gradient plus rank0 checkpoint
+save/reload. No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was observed in the
+preflight logs. Final H20 GPU0-GPU7 compute apps: none.
+
+This is runtime stability evidence only. It does not claim MiniMax quality
+improvement or third-adapter evidence. Next gate is Exp43 data split readiness.
+
+Reports:
+
+- `reports/exp43_h20_bf16_safe_preflight.md`
+- `reports/exp43_h20_bf16_safe_preflight.csv`
+- `reports/exp43_h20_bf16_safe_preflight_summary.json`
+
 ## 2026-06-29 Exp43 H20 Stage2 SFT Runner Readback
 
 Exp43 advanced to:

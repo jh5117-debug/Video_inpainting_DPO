@@ -1,3 +1,4 @@
 milestone	status	notes
 gpu_release	H20_EXP43_GPU_RELEASE_AUDITED	H20 GPU0-GPU7 have no compute apps; CUDA smoke passed; no PIDs/PGIDs killed.
 readback	H20_EXP43_STAGE2_SFT_RUNNER_READBACK_COMPLETED	Exp41 blocker is existing runner step caps; Exp43 isolated runner authorized; H20 data/weights/protocol/BF16 state read back; Exp42 remains PAI-side data mining; VOR-Eval excluded.
+bf16_preflight	H20_EXP43_BF16_SAFE_READY	P0-P7 passed on H20, including DDP8 bf16-safe one-batch train and rank0 checkpoint reload; no SIGFPE/OOM/CUDA/NaN/Inf/Xid; runtime-only, no quality claim.
