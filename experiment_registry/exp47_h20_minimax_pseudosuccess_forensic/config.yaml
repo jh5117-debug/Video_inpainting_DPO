@@ -16,3 +16,13 @@ manifest_alignment:
   rows_audited: 112
   expected_status: EXP47_MANIFEST_ALIGNMENT_PASS
   no_training: true
+
+teacher_quality:
+  status: EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED
+  rows_audited: 48
+  metric_sampling: frames_0_quarter_mid_3quarter_last_spatial_stride4
+  strict_clean: 0
+  usable_local_only: 22
+  global_drift: 26
+  review_pages_inspected: 4
+  no_training: true

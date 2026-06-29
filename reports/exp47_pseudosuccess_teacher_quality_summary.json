@@ -1,0 +1,41 @@
+{
+  "label_counts": {
+    "PSEUDO_TARGET_GLOBAL_DRIFT": 26,
+    "PSEUDO_TARGET_USABLE_LOCAL_ONLY": 22
+  },
+  "label_counts_by_split": {
+    "search": {
+      "PSEUDO_TARGET_GLOBAL_DRIFT": 18,
+      "PSEUDO_TARGET_USABLE_LOCAL_ONLY": 6
+    },
+    "shadow": {
+      "PSEUDO_TARGET_GLOBAL_DRIFT": 8,
+      "PSEUDO_TARGET_USABLE_LOCAL_ONLY": 16
+    }
+  },
+  "means": {
+    "color_hist_distance": 0.07862175835503227,
+    "global_brightness_delta_abs": 0.014740549648801485,
+    "global_contrast_delta_abs": 0.0009660512829820315,
+    "lowfreq_l1": 0.014869438135065138,
+    "mask_removal_psnr_gain": 18.313551740837372,
+    "step0_gt_full_psnr": 34.678017356166286,
+    "target_gt_boundary_psnr": 25.815866652512355,
+    "target_gt_full_psnr": 32.37020181925081,
+    "target_gt_mask_psnr": 28.258354874318854,
+    "target_gt_outside_l1": 0.01747659225172053,
+    "target_gt_outside_psnr": 32.92186226836146,
+    "temporal_flicker_delta": 0.006925728036245952
+  },
+  "review_pages": [
+    "/home/nvme01/H20_Video_inpainting_DPO_exp47_minimax_pseudosuccess_forensic/reports/exp47_teacher_review_pages/contact_pages/search_page_00.png",
+    "/home/nvme01/H20_Video_inpainting_DPO_exp47_minimax_pseudosuccess_forensic/reports/exp47_teacher_review_pages/contact_pages/search_page_01.png",
+    "/home/nvme01/H20_Video_inpainting_DPO_exp47_minimax_pseudosuccess_forensic/reports/exp47_teacher_review_pages/contact_pages/shadow_page_00.png",
+    "/home/nvme01/H20_Video_inpainting_DPO_exp47_minimax_pseudosuccess_forensic/reports/exp47_teacher_review_pages/contact_pages/shadow_page_01.png"
+  ],
+  "review_pages_inspected_by_codex": 4,
+  "review_rows_inspected_by_codex": 48,
+  "rows": 48,
+  "status": "EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED",
+  "visual_inspection_note": "Codex inspected search_page_00, search_page_01, shadow_page_00, and shadow_page_01 contact pages covering all search24/shadow24 teacher rows. Visuals show local removal signal but global/style/tone drift risk, especially mountain/search and some classroom/shadow rows."
+}

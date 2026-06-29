@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 Teacher Quality Audit
+
+Exp47 advanced to:
+
+```text
+EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED
+```
+
+Teacher audit covered `48` search/shadow pseudo-success rows. Strict clean rows: `0`; local-only rows: `22`; global-drift rows: `26`. Codex inspected all `4` contact pages. The pseudo-success teacher contains strong local removal signal but is not a clean global SFT target.
+
+Report: `reports/exp47_pseudosuccess_teacher_quality_audit.md`
+
 ## 2026-06-30 Exp47 Manifest Alignment Pass
 
 Exp47 advanced to:
