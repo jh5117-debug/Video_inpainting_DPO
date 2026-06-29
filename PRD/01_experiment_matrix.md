@@ -213,7 +213,7 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp45 PAI MiniMax pair scale-up | `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md` |
+| Exp45 PAI MiniMax pair scale-up | `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md` |
 
 Notes:
 
@@ -222,6 +222,8 @@ Notes:
 - Previous H20-side execution is recorded as out of scope for PAI.
 - Handoff filelist found `262` absolute paths, all unavailable in the current
   non-NAS session; repo-side manifest/report checksums were generated.
+- Targeted mining did not launch because the PAI/NAS source root is unavailable
+  in this session.
 - MiniMax remains data-signal/plumbing-positive only; no third-adapter-positive
   claim is allowed.
 

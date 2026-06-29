@@ -24,3 +24,10 @@ No Exp45 mining or training metrics have been produced yet.
 - visible raw/evidence bytes: `0`
 - repo-side manifests/reports checksummed: `16`
 - status: `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`
+
+## Targeted Pair Scale-Up Mining
+
+- new candidates mined: `0`
+- MiniMax inference launched: `false`
+- blocker: `/mnt/nas` and `/mnt/workspace` unavailable
+- status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`

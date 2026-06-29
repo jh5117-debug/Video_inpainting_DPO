@@ -1,0 +1,2 @@
+milestone,status,current_pairs,current_split,minimum_split,preferred_split,source_root_exists,mnt_nas_exists,mnt_workspace_exists,new_candidates,inference_launched,training_run,optimizer_step,h20_touched,blocked_reason
+targeted_pair_scaleup_mining,MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE,40,24/8/8,32/16/16,64/24/24,false,false,false,0,false,false,false,false,required PAI/NAS roots are not mounted in this session

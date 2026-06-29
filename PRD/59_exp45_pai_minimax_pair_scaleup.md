@@ -123,3 +123,24 @@ from this session, so their SHA256 entries are explicitly marked
 
 PAI did not execute any H20 mirror, H20 validation, H20 training, DPO, SFT, or
 optimizer step.
+
+## 2026-06-29 Milestone C Targeted Pair Scale-Up Mining
+
+Status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`.
+
+Milestone C did not launch MiniMax inference because the current session cannot
+access the PAI/NAS source and output roots:
+
+- `/mnt/nas`: `missing`
+- `/mnt/workspace`: `missing`
+- requested Exp44 source root: `missing`
+- requested Exp45 output root: `missing`
+
+No empty candidate manifest was fabricated. No GPU task, H20 action, training,
+DPO, optimizer step, VOR-Eval use, or hard comp occurred.
+
+Reports:
+
+- `reports/exp45_targeted_scaleup_mining.md`
+- `reports/exp45_targeted_scaleup_mining.csv`
+- `reports/exp45_targeted_scaleup_summary.json`

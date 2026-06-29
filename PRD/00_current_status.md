@@ -37,6 +37,15 @@ EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE
 - H20 mirror executed: `false`
 - training / optimizer step: `false`
 
+Milestone C targeted pair scale-up mining is blocked in this session:
+
+```text
+MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE
+```
+
+No MiniMax inference, GPU task, H20 action, training, optimizer step, VOR-Eval
+use, hard comp, or fabricated empty candidate manifest occurred.
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

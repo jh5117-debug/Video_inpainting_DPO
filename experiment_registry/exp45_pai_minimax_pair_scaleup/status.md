@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`
+Current status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -42,3 +42,23 @@ Reports:
 - `reports/exp45_h20_required_filelist.csv`
 - `reports/exp45_h20_handoff_package.md`
 - `reports/exp45_h20_handoff_package.json`
+
+## 2026-06-29 Targeted Pair Scale-Up Mining
+
+- Status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
+- Existing pair count: `40`
+- Existing split: `24/8/8`
+- Minimum split target: `32/16/16`
+- Preferred split target: `64/24/24`
+- Source root visible: `false`
+- New candidates mined: `0`
+- MiniMax inference launched: `false`
+- H20 touched by Exp45: `false`
+- Training run by Exp45: `false`
+- Optimizer step by Exp45: `false`
+
+Reports:
+
+- `reports/exp45_targeted_scaleup_mining.md`
+- `reports/exp45_targeted_scaleup_mining.csv`
+- `reports/exp45_targeted_scaleup_summary.json`

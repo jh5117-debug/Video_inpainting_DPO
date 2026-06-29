@@ -1,0 +1,33 @@
+{
+  "blocked_reason": "required PAI/NAS roots are not mounted in this session",
+  "current_pairs": 40,
+  "current_session_mnt_nas_available": false,
+  "current_session_mnt_workspace_available": false,
+  "current_split": {
+    "search": 8,
+    "shadow": 8,
+    "train": 24
+  },
+  "empty_candidate_manifest_fabricated": false,
+  "formal_minimum_split": {
+    "search": 16,
+    "shadow": 16,
+    "train": 32
+  },
+  "h20_touched": false,
+  "hard_comp_used": false,
+  "inference_launched": false,
+  "new_candidates": 0,
+  "optimizer_step": false,
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp45_pai_minimax_pair_scaleup",
+  "preferred_split": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "source_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742",
+  "source_root_exists": false,
+  "status": "MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE",
+  "training_run": false,
+  "vor_eval_used": false
+}
