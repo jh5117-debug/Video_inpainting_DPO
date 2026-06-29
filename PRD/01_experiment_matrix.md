@@ -620,4 +620,4 @@ the public readback and the PAI access blocker.
 
 | Experiment | Milestone | Status | Notes |
 | --- | --- | --- | --- |
-| `exp49_pai_rose_adapter_feasibility` | C env | `ROSE_ENV_BLOCKED` | Isolated venv import/CUDA smoke; no inference/training; Python 3.12 lacks pip/torch on PAI. |
+| `exp49_pai_rose_adapter_feasibility` | C env | `ROSE_ENV_PARTIAL` | Isolated Python 3.10 venv import/CUDA smoke passed after PyPI dependency retry; no inference/training; Python 3.12 lacks pip/torch on PAI. |

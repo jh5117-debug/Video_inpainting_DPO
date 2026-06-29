@@ -107,8 +107,10 @@ No H20 relay, GPU work, inference, training, or optimizer step was used.
 
 ## Milestone C Update - 2026-06-30
 
-Status: `ROSE_ENV_BLOCKED`.
+Status: `ROSE_ENV_PARTIAL`.
 
 An isolated venv at `/home/hj/venvs/rose_exp49_py310` was created and used for ROSE dependency/import/CUDA smoke. Python 3.12 is present on PAI but lacks pip/torch, so the smoke used Python 3.10 with system Torch 2.6.0+cu126. Reports are available at `reports/exp49_rose_env_smoke.md`, `reports/exp49_rose_env_smoke.csv`, and `reports/exp49_rose_env_smoke_summary.json`.
+
+The first dependency install attempt hit a Tsinghua mirror 403 for `diffusers==0.31.0`. Retrying inside the same isolated venv through PyPI completed ROSE dependency installation; final import/CUDA smoke had zero failed checks.
 
 No inference, training, optimizer step, DPO, or H20 action was run.
