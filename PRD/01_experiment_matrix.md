@@ -1,3 +1,14 @@
+## 2026-06-29 Exp46 H20 Pseudo-Success BF16 Preflight
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp46 H20 pseudo-success BF16 preflight | `EXP46_BF16_SAFE_READY`; runner manifests prepared at `64/24/24`; P0-P7 passed, including DDP8 P7 with `8` ranks; no optimizer step | `reports/exp46_bf16_pseudosuccess_preflight.md`, `reports/exp46_pseudosuccess_runner_manifest_prep.md`, `experiment_registry/exp46_h20_minimax_pseudosuccess_sft/status.md` |
+
+Notes:
+
+- This is runtime/data preflight only. Step0 baseline is the next gate.
+- No SFT/DPO training, GT-only SFT, or MiniMax positive claim occurred.
+
 ## 2026-06-29 Exp46 H20 Exp45 Manifest Rewrite
 
 | User-facing name | Status | Evidence / registry |

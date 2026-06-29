@@ -1,0 +1,13 @@
+{
+  "failures": 0,
+  "frame_root": "/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/exp46_pseudosuccess_target_frames",
+  "optimizer_step": false,
+  "rows": 112,
+  "split_counts": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "status": "EXP46_RUNNER_MANIFEST_READY",
+  "training_run": false
+}

@@ -1,0 +1,21 @@
+{
+  "cases": [
+    "P0",
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5",
+    "P6",
+    "P7"
+  ],
+  "failed": [],
+  "manifest": "/home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft/manifests/exp46_runner_pseudosuccess_train.jsonl",
+  "notes": "P0-P7 completed; launcher inline summary failed after GPU work due shell quoting, report regenerated from per-rank JSONs.",
+  "optimizer_step": false,
+  "output_root": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/bf16_preflight_20260630_005259",
+  "p7_rank_count": 8,
+  "rows": 16,
+  "status": "EXP46_BF16_SAFE_READY",
+  "training_run": false
+}

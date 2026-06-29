@@ -1,6 +1,6 @@
 # Exp46 H20 MiniMax Exp45 Pseudo-Success SFT Validation
 
-Status: EXP45_H20_MANIFESTS_READY
+Status: EXP46_BF16_SAFE_READY
 
 Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`
 Start HEAD: `feef1b73317bea903e0e247d077d84c740665fa4`
@@ -16,7 +16,7 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 - A readback: complete
 - B mirror Exp45 required files: complete (`EXP45_H20_MIRROR_READY`)
 - C rewrite/validate manifests: complete (`EXP45_H20_MANIFESTS_READY`)
-- D BF16/environment preflight: pending
+- D BF16/environment preflight: complete (`EXP46_BF16_SAFE_READY`)
 - E Step0 baseline: pending
 - F pseudo-success SFT 30-step: pending
 - G pseudo-success SFT 100-step: conditional only if 30-step promising
@@ -59,3 +59,19 @@ Status: `EXP45_H20_MANIFESTS_READY`
 - MP4 fallback decode rows: `128`
 
 Manifests are H20-local and preserve original PAI paths only in `pai_*` fields. This milestone did not run training or optimizer steps.
+
+
+## Milestone D BF16 Pseudo-Success Preflight
+
+Status: `EXP46_BF16_SAFE_READY`
+
+- Output root: `/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/bf16_preflight_20260630_005259`
+- Runner frame root: `/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/exp46_pseudosuccess_target_frames`
+- Runner manifests: `manifests/exp46_runner_pseudosuccess_train.jsonl`, `search`, `shadow`
+- Runner split: `64/24/24`
+- P0-P7 result rows: `16`
+- P7 rank count: `8`
+- Training run: `false`
+- Optimizer step: `false`
+
+P0-P7 completed with finite losses/gradients where applicable. The launcher summary failed after GPU work because of shell quoting, then the report was regenerated from per-rank JSON outputs. This did not affect the preflight computation.

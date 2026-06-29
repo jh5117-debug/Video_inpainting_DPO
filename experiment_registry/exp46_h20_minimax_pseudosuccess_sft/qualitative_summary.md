@@ -1,3 +1,3 @@
 # Qualitative Summary
 
-No Exp46 video review yet. Milestone C validated H20-local manifests and decoded source/target media, including `128` raw mp4 fallback rows. Visual review is still required for Step0 and SFT30.
+No Exp46 video review yet. Milestone D prepared runner manifests and ran runtime preflight only. Visual review is required for Step0 and SFT30.

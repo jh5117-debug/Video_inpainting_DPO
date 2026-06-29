@@ -1,3 +1,30 @@
+## 2026-06-29 Exp46 H20 Pseudo-Success BF16 Preflight Ready
+
+Exp46 advanced to:
+
+```text
+EXP46_BF16_SAFE_READY
+```
+
+Prepared Exp46 runner manifests by extracting/reusing pseudo-success target mp4s
+into H20-local frame directories under `/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/exp46_pseudosuccess_target_frames`. Runner split counts are
+`64/24/24` with extraction failures `0`.
+
+BF16-safe pseudo-success preflight P0-P7 completed on H20. P7 used DDP8 over
+GPU0-GPU7 and produced `8` rank results. All `16` preflight result rows
+passed with finite loss/gradients where applicable. P5 checkpoint save/reload
+was dry-run only. No optimizer step, no training run, no PAI write/GPU, and no
+quality claim occurred.
+
+Reports:
+
+- `reports/exp46_pseudosuccess_runner_manifest_prep.md`
+- `reports/exp46_pseudosuccess_runner_manifest_prep.csv`
+- `reports/exp46_pseudosuccess_runner_manifest_prep_summary.json`
+- `reports/exp46_bf16_pseudosuccess_preflight.md`
+- `reports/exp46_bf16_pseudosuccess_preflight.csv`
+- `reports/exp46_bf16_pseudosuccess_preflight_summary.json`
+
 ## 2026-06-29 Exp46 H20 Exp45 Manifest Ready
 
 Exp46 advanced to:
