@@ -53,3 +53,12 @@ Exp46 SFT30 aggregate deltas used as forensic starting point:
 - Rows considered: `48`
 - Strict clean / local-only / teacher global-drift: `0/48/26`
 - Strict 32/16/16 global-SFT split possible: `False`
+
+## Milestone G Final Decision
+
+- Final status: `EXP47_FORENSIC_DECISION_COMPLETE`
+- Root cause: `GLOBAL_SFT_SHOULD_BE_LOCALIZED`
+- Next step: `NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP`
+- Step30 closer to pseudo/V_bg: `0/0`
+- Strict clean / local-only: `0/48`
+- Outside+affected+base contribution: `0.824424`

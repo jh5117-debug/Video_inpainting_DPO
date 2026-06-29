@@ -52,3 +52,11 @@ strict_relabel:
   local_only: 48
   strict_32_16_16_split_possible: false
   no_training: true
+
+final_decision:
+  status: EXP47_FORENSIC_DECISION_COMPLETE
+  root_cause: GLOBAL_SFT_SHOULD_BE_LOCALIZED
+  next_step: NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP
+  training_run: false
+  optimizer_step: false
+  minimax_third_adapter_evidence: false

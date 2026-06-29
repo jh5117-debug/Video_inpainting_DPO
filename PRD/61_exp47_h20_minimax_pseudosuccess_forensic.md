@@ -1,6 +1,6 @@
 # Exp47 H20 MiniMax Pseudo-Success SFT Failure Forensic Audit
 
-Status: EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED
+Status: EXP47_FORENSIC_DECISION_COMPLETE
 
 Branch: `research/exp47-h20-minimax-pseudosuccess-forensic-20260629`
 Start HEAD: `94d2531a6782914e91bd4629fb477e154cfba98b`
@@ -19,7 +19,7 @@ Exp47 is an H20-only forensic audit of the Exp46 pseudo-success SFT30 failure. I
 - D Step30 movement direction audit: complete (`EXP47_STEP30_MOVEMENT_AUDITED` / `SFT_LOSS_OR_TARGET_PATH_BUG`)
 - E region loss/mask/weight contribution audit: complete (`EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`)
 - F strict pseudo-success relabel proposal: complete (`EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`)
-- G final root-cause decision: pending
+- G final root-cause decision: complete (`GLOBAL_SFT_SHOULD_BE_LOCALIZED` / `NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP`)
 
 ## Initial Exp46 Failure Summary
 
@@ -92,3 +92,11 @@ Rows considered: `48` audited search/shadow rows. Strict clean `0`, local-only `
 Generated manifests: `manifests/exp47_success_clean_strict.jsonl`, `manifests/exp47_success_local_only.jsonl`, `manifests/exp47_reject_global_drift.jsonl`, and `manifests/exp47_reject_boundary_outside.jsonl`.
 
 Recommendation: `local pseudo-success target construction or same-source DPO; no global SFT`. Global pseudo-success SFT remains locked; only localized pseudo-success target construction or same-source preference can be considered.
+
+## Milestone G Final Decision
+
+Final status: `EXP47_FORENSIC_DECISION_COMPLETE`
+Root cause: `GLOBAL_SFT_SHOULD_BE_LOCALIZED`
+Next step: `NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP`
+
+Global pseudo-success SFT is locked. The safe next action is a localized pseudo-success target/loss 1/10-step probe only. MiniMax remains not third-backbone evidence.

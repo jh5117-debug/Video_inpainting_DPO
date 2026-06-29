@@ -32,3 +32,7 @@ success_clean_strict_manifest: manifests/exp47_success_clean_strict.jsonl
 success_local_only_manifest: manifests/exp47_success_local_only.jsonl
 reject_global_drift_manifest: manifests/exp47_reject_global_drift.jsonl
 reject_boundary_outside_manifest: manifests/exp47_reject_boundary_outside.jsonl
+
+root_cause_decision_report: reports/exp47_minimax_failure_root_cause_decision.md
+next_step_plan_report: reports/exp47_minimax_next_step_plan.md
+paper_positioning_report: reports/exp47_minimax_paper_positioning.md

@@ -19,3 +19,6 @@ Milestone E region loss: `EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED`. Outsid
 
 
 Milestone F strict relabel: `EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED`. Strict-clean `0`, local-only `48`, strict 32/16/16 split possible `False`. Recommendation: local pseudo-success target construction or same-source DPO; no global SFT.
+
+
+Final decision: `GLOBAL_SFT_SHOULD_BE_LOCALIZED`. Next step: `NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP`. MiniMax remains not third-backbone evidence.

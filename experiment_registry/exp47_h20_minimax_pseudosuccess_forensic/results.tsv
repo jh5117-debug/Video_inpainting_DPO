@@ -5,3 +5,4 @@ C	EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED	clean/local/global_drift	0/22/26	Pseudo-s
 D	EXP47_STEP30_MOVEMENT_AUDITED	closer_pseudo/closer_vbg/root	0/0/SFT_LOSS_OR_TARGET_PATH_BUG	Step30 moves away from both pseudo target and V_bg; audit region loss/objective next.
 E	EXP47_REGION_LOSS_GLOBAL_DRIFT_RISK_CONFIRMED	outside_plus_affected_base/mask_boundary	0.824424/0.052052+0.123524	Outside/global/affected components dominate; objective should be localized before more SFT.
 F	EXP47_STRICT_PSEUDOSUCCESS_RELABEL_PROPOSED	strict_clean/local_only	0/48	Strict global SFT split impossible; use local target or same-source preference only.
+G	EXP47_FORENSIC_DECISION_COMPLETE	root_cause/next_step	GLOBAL_SFT_SHOULD_BE_LOCALIZED/NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP	Global pseudo-success SFT locked; localized target 1/10-step is the next repair path.

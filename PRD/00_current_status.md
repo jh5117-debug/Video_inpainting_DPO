@@ -1,3 +1,21 @@
+## 2026-06-30 Exp47 Final MiniMax Forensic Decision
+
+Exp47 completed with:
+
+```text
+EXP47_FORENSIC_DECISION_COMPLETE
+GLOBAL_SFT_SHOULD_BE_LOCALIZED
+NEXT_H20_LOCAL_PSEUDOSUCCESS_TARGET_1_10STEP
+```
+
+No training, optimizer step, DPO, GT-only SFT, or 100-step was run. Manifest/path alignment passed, teacher global-clean failed, Step30 moved closer to neither pseudo target nor V_bg, and region loss contribution confirms global drift risk. Global pseudo-success SFT remains locked. MiniMax is not third-backbone evidence.
+
+Reports:
+
+- `reports/exp47_minimax_failure_root_cause_decision.md`
+- `reports/exp47_minimax_next_step_plan.md`
+- `reports/exp47_minimax_paper_positioning.md`
+
 ## 2026-06-30 Exp47 Strict Pseudo-Success Relabel Proposal
 
 Exp47 advanced to:

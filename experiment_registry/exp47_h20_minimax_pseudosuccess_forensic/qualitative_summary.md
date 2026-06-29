@@ -23,3 +23,7 @@ The region loss is finite and mask polarity is sane, but it is too global for ps
 ## Milestone F Qualitative Interpretation
 
 Strict global pseudo-success is not available. The audited pseudo-success rows should be treated as local-only signal, not global SFT targets. This pushes next-step planning toward localized pseudo-success targets or same-source preference, not another global pseudo-success SFT run.
+
+## Milestone G Qualitative Interpretation
+
+Exp47 finds that pseudo-success is local-only rather than global-clean. The runner/objective permits global/outside contribution, and Step30 does not move toward pseudo target or V_bg. The next repair is localized pseudo-success target construction, not more global SFT. MiniMax remains not third-backbone evidence.
