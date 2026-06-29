@@ -1,0 +1,29 @@
+{
+  "bad_teacher_learned_count": 0,
+  "label_counts": {
+    "DOES_NOT_LEARN_TARGET": 48
+  },
+  "label_counts_by_split": {
+    "search": {
+      "DOES_NOT_LEARN_TARGET": 24
+    },
+    "shadow": {
+      "DOES_NOT_LEARN_TARGET": 24
+    }
+  },
+  "loss_or_path_bug_suspect_count": 48,
+  "means": {
+    "cos_teacher_gt_full": 0.025773769791528622,
+    "cos_train_gt_full": -0.14045381979910285,
+    "cos_train_teacher_full": 0.26265554695930793,
+    "step30_gt_full_l1_delta_vs_step0": 0.011993104902406534,
+    "step30_gt_mask_l1_delta_vs_step0": 0.017008950700983405,
+    "step30_gt_outside_l1_delta_vs_step0": 0.012223250232636929,
+    "step30_pseudo_full_l1_delta_vs_step0": 0.005741882331979771
+  },
+  "root_signal": "SFT_LOSS_OR_TARGET_PATH_BUG",
+  "rows": 48,
+  "status": "EXP47_STEP30_MOVEMENT_AUDITED",
+  "step30_closer_to_pseudo_count": 0,
+  "step30_closer_to_vbg_count": 0
+}

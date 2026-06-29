@@ -10,3 +10,6 @@ Next audits: teacher quality, Step30 movement direction, and region loss contrib
 
 
 Milestone C teacher quality: `EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED`. Search/shadow pseudo-success targets have strict-clean `0`, local-only `22`, and global-drift `26` rows. Codex inspected all four contact pages covering 48 rows. Teacher quality is not clean enough for full-video global SFT without localization or stricter relabel.
+
+
+Milestone D movement: `EXP47_STEP30_MOVEMENT_AUDITED` with root signal `SFT_LOSS_OR_TARGET_PATH_BUG`. Step30 was closer to pseudo target in `0/48` rows and closer to `V_bg` in `0/48` rows. Movement therefore does not validate simple bad-teacher learning; region loss/objective/runner construction must be audited next.

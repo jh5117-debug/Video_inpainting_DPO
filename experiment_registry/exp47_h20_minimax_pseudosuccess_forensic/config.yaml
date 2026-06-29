@@ -26,3 +26,11 @@ teacher_quality:
   global_drift: 26
   review_pages_inspected: 4
   no_training: true
+
+step30_movement:
+  status: EXP47_STEP30_MOVEMENT_AUDITED
+  root_signal: SFT_LOSS_OR_TARGET_PATH_BUG
+  rows_audited: 48
+  closer_to_pseudo: 0
+  closer_to_vbg: 0
+  no_training: true

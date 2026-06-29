@@ -11,3 +11,7 @@ The Exp46 negative result is not explained by obvious data-routing mistakes. The
 ## Milestone C Qualitative Interpretation
 
 Codex inspected the four generated teacher contact pages covering all 48 search/shadow rows. Pseudo-success often removes the local target, but many rows shift global tone/style/brightness versus `V_bg`. This supports the bad/global teacher and localization-risk hypotheses rather than a path bug.
+
+## Milestone D Qualitative Interpretation
+
+Movement is worse than simply learning a drifting teacher: Step30 does not get closer to either pseudo target or `V_bg` in sampled metrics. With manifest alignment already passed, this points toward region loss contribution, target velocity construction, or a MiniMax flow-objective mismatch for this pseudo-success SFT setup.

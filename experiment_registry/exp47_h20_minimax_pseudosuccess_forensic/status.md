@@ -1,6 +1,6 @@
 # Exp47 Status
 
-Status: EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED
+Status: EXP47_STEP30_MOVEMENT_AUDITED
 Branch: research/exp47-h20-minimax-pseudosuccess-forensic-20260629
 Start HEAD: 94d2531a6782914e91bd4629fb477e154cfba98b
 Base Exp46 HEAD: 94d2531a6782914e91bd4629fb477e154cfba98b
@@ -13,7 +13,7 @@ PAI touched: no
 Milestone A: EXP47_READBACK_READY
 Milestone B: EXP47_MANIFEST_ALIGNMENT_PASS
 Milestone C: EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED
-Milestone D: pending
+Milestone D: EXP47_STEP30_MOVEMENT_AUDITED / SFT_LOSS_OR_TARGET_PATH_BUG
 Milestone E: pending
 Milestone F: pending
 Milestone G: pending

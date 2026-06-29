@@ -27,3 +27,13 @@ Exp46 SFT30 aggregate deltas used as forensic starting point:
 - Mean abs brightness delta: `0.014741`
 - Mean low-frequency drift proxy: `0.014869`
 - Mean mask removal PSNR gain over condition: `18.313552`
+
+## Milestone D Step30 Movement
+
+- Status: `EXP47_STEP30_MOVEMENT_AUDITED`
+- Root signal: `SFT_LOSS_OR_TARGET_PATH_BUG`
+- Rows audited: `48`
+- Step30 closer to pseudo target / V_bg: `0/0`
+- Mean Step30-to-pseudo full L1 delta vs Step0: `0.005742`
+- Mean Step30-to-V_bg full/mask/outside L1 delta vs Step0: `0.011993` / `0.017009` / `0.012223`
+- Full cosine train/teacher, train/V_bg, teacher/V_bg: `0.262656` / `-0.140454` / `0.025774`

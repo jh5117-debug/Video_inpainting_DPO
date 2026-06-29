@@ -2,3 +2,4 @@ milestone	status	metric	value	note
 A	EXP47_READBACK_READY	exp46_failure	SFT30_NEGATIVE	Read Exp46 PRD registry reports; forensic hypotheses registered.
 B	EXP47_MANIFEST_ALIGNMENT_PASS	rows_fail_overlap	112/0/0	Active runner targets pass path/frame/mask identity audit; not an alignment bug.
 C	EXP47_TEACHER_GLOBAL_DRIFT_CONFIRMED	clean/local/global_drift	0/22/26	Pseudo-success teacher has local signal but is not clean global SFT teacher; 4 contact pages inspected.
+D	EXP47_STEP30_MOVEMENT_AUDITED	closer_pseudo/closer_vbg/root	0/0/SFT_LOSS_OR_TARGET_PATH_BUG	Step30 moves away from both pseudo target and V_bg; audit region loss/objective next.

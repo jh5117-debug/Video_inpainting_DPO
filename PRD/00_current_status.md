@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 Step30 Movement Direction Audit
+
+Exp47 advanced to:
+
+```text
+EXP47_STEP30_MOVEMENT_AUDITED
+```
+
+Root signal: `SFT_LOSS_OR_TARGET_PATH_BUG`. Step30 was closer to pseudo target in `0/48` rows and closer to `V_bg` in `0/48` rows. Sampled full L1 worsened versus both pseudo target and `V_bg`, so the failure is not simply "learned bad teacher". Region loss/objective construction is now the key forensic target.
+
+Report: `reports/exp47_step30_movement_direction_audit.md`
+
 ## 2026-06-30 Exp47 Teacher Quality Audit
 
 Exp47 advanced to:
