@@ -3673,3 +3673,10 @@ occurred.
 Next required action: mirror the Exp44 targeted mining outputs to H20, rerun
 path validation, then launch only pseudo-success SFT 30-step if target paths
 resolve.
+
+## Exp46 H20 MiniMax Exp45 Pseudo-Success SFT
+
+- Status: EXP46_READBACK_READY.
+- Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`.
+- Exp45 formal data source: `origin/research/exp45-pai-minimax-pair-scaleup-20260629` @ `d0c8430a5ba35f37415ed52d53040829ef1123d6`.
+- Current gate: mirror and manifest validation pending; no training run yet.

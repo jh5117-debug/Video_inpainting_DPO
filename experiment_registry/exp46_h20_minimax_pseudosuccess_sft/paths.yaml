@@ -1,0 +1,7 @@
+repo: /home/nvme01/H20_Video_inpainting_DPO
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft
+output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft
+log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp46_h20_minimax_pseudosuccess_sft
+runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp46_h20_minimax_pseudosuccess_sft
+data_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
+exp45_source_branch: origin/research/exp45-pai-minimax-pair-scaleup-20260629

@@ -1,0 +1,10 @@
+experiment: exp46_h20_minimax_pseudosuccess_sft
+first_training_view: pseudo_success
+sft30_steps: 30
+sft100_steps: 100
+sft100_condition: sft30_promising
+run_gt_only_sft: false
+run_dpo: false
+use_vor_eval: false
+use_hard_comp: false
+precision_policy: bf16_safe_preflight_then_fp32_fallback_if_needed
