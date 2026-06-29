@@ -1,0 +1,2 @@
+milestone	status	commit	notes
+A_readback	EXP45_READBACK_COMPLETE_ASSETS_PENDING_ENV_PENDING_GPU_BLOCKED_EXTERNAL	PENDING_COMMIT	Readback complete; GPU training blocked by external LIBERO jobs.

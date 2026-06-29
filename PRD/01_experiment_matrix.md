@@ -650,3 +650,6 @@ started.
 | Experiment | Status | Notes |
 | --- | --- | --- |
 | Exp27 Linear-DPO Frozen/EMA true-model 1/10-step | `LINEAR_TRUE_MODEL_1_10_STEP_PASSED` | One fixed real BR preference batch; 10 optimizer steps per variant. Frozen reference delta stayed `0.0`; EMA reference delta was `1.819002953296671e-08`. Technical pass only; no 50-step/O0-O5/RC-FPO started. |
+<!-- EXP45_H20_OBJECTIVE_STUDY_READBACK -->
+
+| Exp45 | H20 DiffuEraser/VideoPainter objective study | readback complete; assets/env pending; GPU blocked by external LIBERO jobs | `research/exp45-h20-diffueraser-videopainter-objective-study-20260629` | `reports/exp45_h20_objective_study_readback.md` |

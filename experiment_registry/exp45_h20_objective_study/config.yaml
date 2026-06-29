@@ -1,0 +1,15 @@
+base_branch: origin/research/exp27-paper-grounded-preference-study
+branch: research/exp45-h20-diffueraser-videopainter-objective-study-20260629
+modify_shared_trainer: false
+modify_inference_metrics: false
+modify_minimax_official_source: false
+use_pai_gpu: false
+use_vor_eval_for_training_or_selection: false
+objectives:
+  - O0_vanilla_diffusion_dpo
+  - O1_lovi_dpo_anchor
+  - O2_exact_diffusion_sdpo
+  - O3_lovi_sdpo_safeguard
+  - O4_linear_dpo_frozen
+  - O5_linear_dpo_ema
+  - O6_localdpo_style_24f_adaptation

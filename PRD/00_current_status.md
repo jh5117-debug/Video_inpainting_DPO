@@ -1893,3 +1893,8 @@ expected reference behavior: Frozen reference delta `0.0`, EMA reference delta
 
 This remains a technical model-forward/training-plumbing pass only. LocalDPO
 24F, O0-O5 objective studies, and RC-FPO remain not started.
+<!-- EXP45_H20_OBJECTIVE_STUDY_READBACK -->
+
+## Exp45 H20 Objective Study Readback - 2026-06-29T16:01:55,415804093+08:00
+
+Status: `EXP45_READBACK_COMPLETE_ASSETS_PENDING_ENV_PENDING_GPU_BLOCKED_EXTERNAL`. Exp45 uses a new isolated H20 branch/worktree based on Exp27. PAI remains read-only. All H20 GPUs are currently occupied by external root LIBERO jobs, so GPU smoke/training is blocked until they finish or the user explicitly authorizes cleanup. See `reports/exp45_h20_objective_study_readback.md`.

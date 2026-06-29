@@ -1,0 +1,5 @@
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp45_objective_study
+output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp45_h20_objective_study
+log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp45_h20_objective_study
+runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp45_h20_objective_study
+mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/exp45_objective_study
