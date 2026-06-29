@@ -1,0 +1,24 @@
+experiment: exp49_pai_rose_adapter_feasibility
+date: 2026-06-29
+asset_policy:
+  clone_official_code: true
+  download_hf_space: true
+  download_hf_model: true
+  download_wan_base_model: true
+  download_dataset_staged: true
+  commit_raw_assets_to_git: false
+training_policy:
+  max_micro_steps: 10
+  forbidden_steps: [50, 100, 300, 500, 1000, 2000]
+  optimizer_step_before_one_step_gate: false
+  use_vor_eval: false
+  hard_comp: false
+promotion_gate:
+  - ROSE_ASSETS_READY
+  - ROSE_ENV_READY
+  - ROSE_TRUE_ADAPTER_FEASIBLE
+  - ROSE_INFERENCE_SMOKE_PASS
+  - ROSE_VOR_OR_GATE16_PASS
+  - ROSE_ONE_STEP_PASS
+  - ROSE_ADAPTER_10STEP_PROMISING_OR_POSITIVE
+current_blocker: PAI access not verified from HAL
