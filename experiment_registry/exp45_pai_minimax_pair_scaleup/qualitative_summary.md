@@ -16,11 +16,13 @@ winner frames are recorded as missing in the current session. This is a
 handoff packaging blocker only; it does not invalidate the repo-side Exp44
 manifests, whose checksums were recomputed locally.
 
-Milestone C was blocked before mining. This is preferable to producing a fake
-or empty candidate set: the official MiniMax source videos, masks, target
-frames, and output root are all under unavailable `/mnt/nas` paths in the
-current session. Exp45 remains a PAI-only package/readiness lane with no
-training and no H20 execution.
+Milestone C was rerun on the true PAI host `dsw-753014-85f54df947-bkp7h` after
+the HAL environment correction. The required NAS roots were visible there, and
+official MiniMax inference produced 72 new targeted candidates across six
+locked source groups. Automatic scoring found 38 success candidates and 26
+medium-hard failure candidates. This is still a pre-relabel mining result:
+Milestone D must inspect the generated visual pages before any rows become
+training-eligible.
 
 Milestone D did not perform any visual relabeling because no new Exp45
 candidates exist. This is explicitly not a visual review pass.

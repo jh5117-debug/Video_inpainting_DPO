@@ -1,33 +1,69 @@
 {
-  "blocked_reason": "required PAI/NAS roots are not mounted in this session",
-  "current_pairs": 40,
-  "current_session_mnt_nas_available": false,
-  "current_session_mnt_workspace_available": false,
-  "current_split": {
-    "search": 8,
-    "shadow": 8,
-    "train": 24
+  "all_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp44_targeted_candidates_all.jsonl",
+  "all_manifest_sha256": "7b6d5d24ed061264a6ee33d91ce7029915e7585fbaa5f77772e81043bca3ac64",
+  "auto_overlap_groups": 5,
+  "auto_same_source_pair_capacity": 16,
+  "classification_counts": {
+    "FOGGING_OVER_ERASURE": 2,
+    "MEDIUM_HARD_REMOVAL": 26,
+    "SUCCESSFUL_REMOVAL_CANDIDATE": 38,
+    "TOO_CLOSE": 6
   },
-  "empty_candidate_manifest_fabricated": false,
-  "formal_minimum_split": {
-    "search": 16,
-    "shadow": 16,
-    "train": 32
-  },
-  "h20_touched": false,
+  "failure_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp44_targeted_failure_auto.jsonl",
+  "failure_manifest_sha256": "dd367abf5d1a8d6593a69d3fa39728ee359c26735cba01dbc326ae73b0975e50",
   "hard_comp_used": false,
-  "inference_launched": false,
-  "new_candidates": 0,
-  "optimizer_step": false,
-  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp45_pai_minimax_pair_scaleup",
-  "preferred_split": {
-    "search": 24,
-    "shadow": 24,
-    "train": 64
+  "metrics": {
+    "boundary_psnr": {
+      "count": 72,
+      "max": 28.990690883427533,
+      "mean": 24.419417233181612,
+      "min": 16.41062717097343
+    },
+    "full_psnr": {
+      "count": 72,
+      "max": 36.26390470022653,
+      "mean": 32.2837170699926,
+      "min": 26.747692765209386
+    },
+    "mask_psnr": {
+      "count": 72,
+      "max": 32.359744302624044,
+      "mean": 25.24090049769998,
+      "min": 14.300293983925187
+    },
+    "outside_mae": {
+      "count": 72,
+      "max": 8.056599448708926,
+      "mean": 4.455757780207529,
+      "min": 2.2682359919828525
+    },
+    "outside_psnr": {
+      "count": 72,
+      "max": 37.73180691546268,
+      "mean": 33.19468080671337,
+      "min": 27.709828628240484
+    },
+    "temporal_diff_mae": {
+      "count": 72,
+      "max": 3.632223665714264,
+      "mean": 1.3777661039493978,
+      "min": 0.5033391267061234
+    }
   },
-  "source_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742",
-  "source_root_exists": false,
-  "status": "MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE",
+  "num_auto_medium_hard_failure": 26,
+  "num_auto_success": 38,
+  "num_candidates": 72,
+  "status": "MINIMAX_TARGETED_MINING_COMPLETED",
+  "success_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp44_targeted_success_auto.jsonl",
+  "success_manifest_sha256": "a0ff1a9654aa81dcbfeade524a5444fb9ba39cbd41ca3bf6bdcb18a950439b06",
+  "target_source_manifest": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp45_targeted_source_manifest.jsonl",
+  "target_source_manifest_sha256": "6bb73674a2d3041c98beb7e4382796127f439d107ea9bdd6bcfcb7ee7981d032",
   "training_run": false,
-  "vor_eval_used": false
+  "visual_relabel_required": true,
+  "vor_eval_used": false,
+  "worker_manifest_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests",
+  "worker_manifests": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp44_targeted_candidates_all_worker0.jsonl",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/manifests/exp44_targeted_candidates_all_worker1.jsonl"
+  ]
 }

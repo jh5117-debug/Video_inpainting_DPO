@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`
+Status: `MINIMAX_TARGETED_MINING_COMPLETED`
 
 ## Purpose
 
@@ -126,24 +126,47 @@ optimizer step.
 
 ## 2026-06-29 Milestone C Targeted Pair Scale-Up Mining
 
-Status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`.
+Status: `MINIMAX_TARGETED_MINING_COMPLETED`.
 
-Milestone C did not launch MiniMax inference because the current session cannot
-access the PAI/NAS source and output roots:
+Real PAI execution resumed on host `dsw-753014-85f54df947-bkp7h` with the
+required `/mnt/nas` paths mounted. This supersedes the earlier HAL blocker
+record for Milestone C.
 
-- `/mnt/nas`: `missing`
-- `/mnt/workspace`: `missing`
-- requested Exp44 source root: `missing`
-- requested Exp45 output root: `missing`
+PAI run root:
 
-No empty candidate manifest was fabricated. No GPU task, H20 action, training,
-DPO, optimizer step, VOR-Eval use, or hard comp occurred.
+- `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229`
+
+Mining summary:
+
+- selected source groups: `6`
+- new candidates mined: `72`
+- automatic success candidates: `38`
+- automatic medium-hard failure candidates: `26`
+- auto too-close candidates: `6`
+- auto fogging / over-erasure candidates: `2`
+- auto overlap groups: `5`
+- auto same-source pair capacity from new candidates alone: `16`
+- MiniMax inference launched on PAI GPU0/GPU1: `true`
+- OOM/CUDA/Xid observed: `false`
+- H20 touched: `false`
+- training run: `false`
+- optimizer step: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 
 - `reports/exp45_targeted_scaleup_mining.md`
 - `reports/exp45_targeted_scaleup_mining.csv`
 - `reports/exp45_targeted_scaleup_summary.json`
+- `reports/exp45_targeted_scaleup_group_yield.csv`
+
+Manifests:
+
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_targeted_source_manifest.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_targeted_candidates_all.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_targeted_success_auto.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_targeted_failure_auto.jsonl`
 
 ## 2026-06-29 Milestone D Strict Visual Relabel
 

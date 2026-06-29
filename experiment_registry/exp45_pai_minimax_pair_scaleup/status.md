@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `EXP45_HAL_ENVIRONMENT_BLOCKER_CORRECTION_RECORDED`
+Current status: `MINIMAX_TARGETED_MINING_COMPLETED`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -45,17 +45,28 @@ Reports:
 
 ## 2026-06-29 Targeted Pair Scale-Up Mining
 
-- Status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
+- Status: `MINIMAX_TARGETED_MINING_COMPLETED`
 - Existing pair count: `40`
 - Existing split: `24/8/8`
 - Minimum split target: `32/16/16`
 - Preferred split target: `64/24/24`
-- Source root visible: `false`
-- New candidates mined: `0`
-- MiniMax inference launched: `false`
+- Real PAI host: `dsw-753014-85f54df947-bkp7h`
+- Source root visible on PAI: `true`
+- PAI run root: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229`
+- New candidates mined: `72`
+- automatic success candidates: `38`
+- automatic medium-hard failure candidates: `26`
+- automatic too-close candidates: `6`
+- automatic fogging / over-erasure candidates: `2`
+- automatic overlap groups: `5`
+- MiniMax inference launched: `true`
+- PAI GPU0/GPU1 used: `true`
+- OOM/CUDA/Xid observed: `false`
 - H20 touched by Exp45: `false`
 - Training run by Exp45: `false`
 - Optimizer step by Exp45: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 

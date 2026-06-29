@@ -1,0 +1,7 @@
+source_group,num_candidates,num_auto_success,num_auto_medium_hard_failure,auto_same_source_pair_capacity,requires_visual_relabel
+BLENDER_MOUNTAIN002,12,10,2,2,True
+BLENDER_SCHOOL004,12,6,0,0,True
+REAL_ENV059_00001,12,9,3,3,True
+REAL_ENV068_00002,12,4,8,4,True
+REAL_ENV097_00001,12,2,8,2,True
+REAL_ENV105_00001,12,7,5,5,True

@@ -4,7 +4,7 @@ Exp45 has started as a PAI-only correction and continuation of the Exp44
 MiniMax same-source data route:
 
 ```text
-EXP45_PAIR_SCALEUP_READBACK_COMPLETED
+MINIMAX_TARGETED_MINING_COMPLETED
 ```
 
 Readback verified Exp44 remains partial:
@@ -84,6 +84,19 @@ The previous Exp45 C/D/E records were generated on `hal-9000` with no
 `/mnt/nas` or `/mnt/workspace` mount. They are partial/blocker records only:
 new candidates `0`, new visual relabel `0`, and split remains `24/8/8`.
 Real targeted mining must resume on PAI `dsw-*`.
+
+Real PAI Milestone C now resumed on `dsw-753014-85f54df947-bkp7h` and completed
+targeted mining:
+
+- new official MiniMax candidates: `72`
+- automatic success candidates: `38`
+- automatic medium-hard failure candidates: `26`
+- H20 touched: `false`
+- training / optimizer step: `false`
+- VOR-Eval / hard comp: `false`
+
+Next Exp45 step: strict visual relabel of the PAI-generated candidates before
+building any formal Stage2 split.
 
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 

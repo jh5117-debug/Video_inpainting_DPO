@@ -27,10 +27,23 @@ No Exp45 mining or training metrics have been produced yet.
 
 ## Targeted Pair Scale-Up Mining
 
-- new candidates mined: `0`
-- MiniMax inference launched: `false`
-- blocker: `/mnt/nas` and `/mnt/workspace` unavailable
-- status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
+- new candidates mined: `72`
+- automatic success candidates: `38`
+- automatic medium-hard failure candidates: `26`
+- automatic too-close candidates: `6`
+- automatic fogging / over-erasure candidates: `2`
+- auto overlap groups: `5`
+- auto same-source pair capacity from new candidates alone: `16`
+- full PSNR mean / min / max: `32.283717 / 26.747693 / 36.263905`
+- mask PSNR mean / min / max: `25.240900 / 14.300294 / 32.359744`
+- boundary PSNR mean / min / max: `24.419417 / 16.410627 / 28.990691`
+- outside PSNR mean / min / max: `33.194681 / 27.709829 / 37.731807`
+- temporal diff MAE mean / min / max: `1.377766 / 0.503339 / 3.632224`
+- MiniMax inference launched on PAI: `true`
+- H20 touched: `false`
+- training / optimizer step: `false`
+- VOR-Eval / hard comp: `false`
+- status: `MINIMAX_TARGETED_MINING_COMPLETED`
 
 ## Strict Visual Relabel
 
