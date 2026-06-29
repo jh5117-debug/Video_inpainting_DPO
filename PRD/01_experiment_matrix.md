@@ -1,3 +1,17 @@
+## 2026-06-29 Exp43 H20 MiniMax Stage2 SFT Runner
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp43 H20 MiniMax isolated Stage2 SFT runner | `H20_EXP43_GPU_RELEASE_AUDITED`; branch/worktree scaffold started; H20 GPU0-GPU7 compute-free; CUDA/BF16 smoke passed; no training launched yet | `PRD/57_exp43_h20_minimax_stage2_sft_runner.md`, `experiment_registry/exp43_h20_minimax_stage2_sft_runner/status.md`, `reports/exp43_h20_gpu_release_audit.md` |
+
+Notes:
+
+- Exp43 is authorized to add isolated runner code under
+  `exp43_h20_minimax_stage2_sft_runner/`.
+- Shared trainer, `inference/metrics.py`, MiniMax official source, and
+  Exp1-Exp42 history remain frozen.
+- No universal adapter, final SOTA, or third-backbone claim is made.
+
 ## 2026-06-29 Exp41 H20 MiniMax SFT Ladder Blocked
 
 | User-facing name | Status | Evidence / registry |

@@ -1,0 +1,9 @@
+time,host,gpu,name,memory_used_mib,memory_total_mib,utilization_gpu_percent,compute_pid,compute_process,action
+2026-06-29T09:25:56+08:00,instance-afs92r3e,0,NVIDIA H20,28,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,1,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,2,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,3,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,4,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,5,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,6,NVIDIA H20,1,97871,0,,,none
+2026-06-29T09:25:56+08:00,instance-afs92r3e,7,NVIDIA H20,1,97871,0,,,none

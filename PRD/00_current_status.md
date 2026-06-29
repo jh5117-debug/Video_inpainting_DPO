@@ -1,3 +1,22 @@
+## 2026-06-29 Exp43 H20 MiniMax Stage2 SFT Runner
+
+Exp43 started as an H20-only isolated MiniMax Stage2 SFT runner track:
+
+```text
+H20_EXP43_GPU_RELEASE_AUDITED
+```
+
+It is based on `origin/research/exp41-h20-minimax-parallel-bf16-20260629` and
+uses branch `research/exp43-h20-minimax-stage2-sft-runner-20260629`.
+
+H20 GPU0-GPU7 were audited. No compute PID was present, CUDA smoke passed, BF16
+is supported, and no PIDs/PGIDs were killed. PAI remains read-only.
+
+Reports:
+
+- `reports/exp43_h20_gpu_release_audit.md`
+- `reports/exp43_h20_gpu_release_audit.csv`
+
 ## 2026-06-29 Exp41 H20 MiniMax SFT Ladder Blocked
 
 Exp41 attempted the Lane A SFT-only bad-noise ladder gate after protocol pass,

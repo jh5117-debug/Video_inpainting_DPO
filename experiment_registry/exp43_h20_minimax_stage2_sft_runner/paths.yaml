@@ -1,0 +1,11 @@
+local_worktree: /home/hj/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft
+h20_repo_root: /home/nvme01/H20_Video_inpainting_DPO
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp43_minimax_stage2_sft
+h20_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp43_h20_minimax_stage2_sft_runner
+h20_log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp43_h20_minimax_stage2_sft_runner
+h20_runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp43_h20_minimax_stage2_sft_runner
+h20_mirror_root: /home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax
+h20_minimax_weight_current: /home/nvme01/H20_Video_inpainting_DPO/weights/minimax_remover/current
+reports:
+  gpu_release: reports/exp43_h20_gpu_release_audit.md
+  gpu_release_csv: reports/exp43_h20_gpu_release_audit.csv
