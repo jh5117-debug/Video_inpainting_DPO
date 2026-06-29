@@ -1,6 +1,6 @@
 # Exp46 H20 MiniMax Exp45 Pseudo-Success SFT Validation
 
-Status: EXP46_STEP0_BASELINE_READY
+Status: EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
 
 Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`
 Start HEAD: `feef1b73317bea903e0e247d077d84c740665fa4`
@@ -18,8 +18,8 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 - C rewrite/validate manifests: complete (`EXP45_H20_MANIFESTS_READY`)
 - D BF16/environment preflight: complete (`EXP46_BF16_SAFE_READY`)
 - E Step0 baseline: complete (EXP46_STEP0_BASELINE_READY)
-- F pseudo-success SFT 30-step: pending
-- G pseudo-success SFT 100-step: conditional only if 30-step promising
+- F pseudo-success SFT 30-step: complete (`EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE`)
+- G pseudo-success SFT 100-step: not run (`EXP46_PSEUDOSUCCESS_SFT100_NOT_RUN`) because 30-step was negative
 - H decision/paper positioning: pending
 
 ## Guardrails
@@ -79,7 +79,7 @@ P0-P7 completed with finite losses/gradients where applicable. The launcher summ
 
 ## Milestone E Step0 Baseline
 
-Status: EXP46_STEP0_BASELINE_READY
+Status: EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
 
 - Search rows: 24
 - Shadow rows: 24
@@ -101,3 +101,25 @@ Mean Step0 metrics:
 | shadow | 35.636157 | 26.977549 | 25.474265 | 36.739831 | 0.978682 | 0.066924 |
 
 Visual contact sheets for search24 and shadow24 were opened and inspected. No obvious black frames, global fogging, or outside destruction were observed in the baseline contact sheets. This does not claim quality improvement.
+
+
+## Milestone F Pseudo-Success SFT 30-Step
+
+Status: `EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE`
+
+- Run: `PSEUDO-SFT-A_lr3em5_step30`
+- Recipe/LR/steps: pseudo-success `SFT-B`, `3e-5`, `30`
+- Precision/GPU: BF16-safe DDP8 on H20 GPU0-GPU7
+- Training: `TRAIN_DONE`, finite loss/grad through step30, checkpoint-30 ready
+- GT-only SFT: not run
+- DPO: not run
+- 100-step: not unlocked
+
+Mean deltas vs Step0:
+
+| split | dFull PSNR | dMask PSNR | dBoundary PSNR | dOutside PSNR | dEwarp |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| search | -4.612642 | -0.548113 | -1.591353 | -4.812891 | -0.019463 |
+| shadow | -3.366753 | -5.674479 | -3.636023 | -3.029058 | 0.021337 |
+
+Visual review found systematic global tone/outside drift and shadow mask/boundary degradation. Visual better rows: `0/48`; visual worse rows: `48/48`.

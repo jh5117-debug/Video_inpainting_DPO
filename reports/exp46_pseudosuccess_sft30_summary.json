@@ -1,0 +1,350 @@
+{
+  "by_split": {
+    "search": {
+      "delta_boundary_psnr": {
+        "max": -0.7927236650512093,
+        "mean": -1.591352839506169,
+        "min": -2.5944632229391367,
+        "win_rate": 0.0
+      },
+      "delta_ewarp": {
+        "max": -0.01896571166071226,
+        "mean": -0.01946270486996582,
+        "min": -0.019946354996136506,
+        "win_rate": 0.0
+      },
+      "delta_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "delta_full_psnr": {
+        "max": -3.5798596460026992,
+        "mean": -4.612642276338273,
+        "min": -5.198774049614141,
+        "win_rate": 0.0
+      },
+      "delta_full_ssim": {
+        "max": -0.011715591709076545,
+        "mean": -0.012066391461504025,
+        "min": -0.012467613294465885,
+        "win_rate": 0.0
+      },
+      "delta_mask_psnr": {
+        "max": 0.5921906029647168,
+        "mean": -0.5481134743334768,
+        "min": -1.9415188167248445,
+        "win_rate": 0.375
+      },
+      "delta_outside_psnr": {
+        "max": -3.932070834080534,
+        "mean": -4.812891493192985,
+        "min": -5.338959691411688,
+        "win_rate": 0.0
+      },
+      "delta_temporal_diff_mae": {
+        "max": 0.07707452028989792,
+        "mean": 0.07609826419502497,
+        "min": 0.07512297853827477,
+        "win_rate": 1.0
+      },
+      "n": 24,
+      "step0_boundary_psnr": {
+        "max": 32.29516636513637,
+        "mean": 28.33638222974277,
+        "min": 24.289338732686453,
+        "win_rate": 1.0
+      },
+      "step0_ewarp": {
+        "max": 0.13824871371070913,
+        "mean": 0.13726377102329934,
+        "min": 0.13677548508894688,
+        "win_rate": 1.0
+      },
+      "step0_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "step0_full_psnr": {
+        "max": 37.10583516455138,
+        "mean": 36.518869924387126,
+        "min": 35.330042448257586,
+        "win_rate": 1.0
+      },
+      "step0_full_ssim": {
+        "max": 0.9914876737268786,
+        "mean": 0.9908546182840667,
+        "min": 0.9901848349351897,
+        "win_rate": 1.0
+      },
+      "step0_mask_psnr": {
+        "max": 39.07235854325364,
+        "mean": 35.506194317983024,
+        "min": 30.858952005041875,
+        "win_rate": 1.0
+      },
+      "step0_outside_psnr": {
+        "max": 37.34761186702801,
+        "mean": 36.85025494339907,
+        "min": 35.9811276111389,
+        "win_rate": 1.0
+      },
+      "step0_temporal_diff_mae": {
+        "max": 0.9903549402952194,
+        "mean": 0.9821638548746705,
+        "min": 0.9761606752872467,
+        "win_rate": 1.0
+      },
+      "stepN_boundary_psnr": {
+        "max": 31.019326542291395,
+        "mean": 26.745029390236606,
+        "min": 23.496615067635243,
+        "win_rate": 1.0
+      },
+      "stepN_ewarp": {
+        "max": 0.11831223014269199,
+        "mean": 0.11780106615333352,
+        "min": 0.11711139495673706,
+        "win_rate": 1.0
+      },
+      "stepN_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "stepN_full_psnr": {
+        "max": 32.00667353950742,
+        "mean": 31.906227648048866,
+        "min": 31.750182802254887,
+        "win_rate": 1.0
+      },
+      "stepN_full_ssim": {
+        "max": 0.9795609661360778,
+        "mean": 0.9787882268225623,
+        "min": 0.9783372522326388,
+        "win_rate": 1.0
+      },
+      "stepN_mask_psnr": {
+        "max": 39.138743390805914,
+        "mean": 34.95808084364956,
+        "min": 30.221378934165234,
+        "win_rate": 1.0
+      },
+      "stepN_outside_psnr": {
+        "max": 32.11391720774991,
+        "mean": 32.03736345020608,
+        "min": 31.96713242390568,
+        "win_rate": 1.0
+      },
+      "stepN_temporal_diff_mae": {
+        "max": 1.0674294605851173,
+        "mean": 1.0582621190696955,
+        "min": 1.052647266536951,
+        "win_rate": 1.0
+      }
+    },
+    "shadow": {
+      "delta_boundary_psnr": {
+        "max": -1.271711913813018,
+        "mean": -3.6360228292902654,
+        "min": -6.049041284198417,
+        "win_rate": 0.0
+      },
+      "delta_ewarp": {
+        "max": 0.04451748168321501,
+        "mean": 0.02133663444681133,
+        "min": 0.004472199179872405,
+        "win_rate": 1.0
+      },
+      "delta_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "delta_full_psnr": {
+        "max": -1.9840026465893494,
+        "mean": -3.3667531133524826,
+        "min": -4.07011861077283,
+        "win_rate": 0.0
+      },
+      "delta_full_ssim": {
+        "max": -0.01195781715162314,
+        "mean": -0.014787530503833366,
+        "min": -0.019734915051657476,
+        "win_rate": 0.0
+      },
+      "delta_mask_psnr": {
+        "max": -1.0026371555664113,
+        "mean": -5.674478654572716,
+        "min": -9.259644785287733,
+        "win_rate": 0.0
+      },
+      "delta_outside_psnr": {
+        "max": -2.3567604083267355,
+        "mean": -3.0290583961394497,
+        "min": -3.747085425405274,
+        "win_rate": 0.0
+      },
+      "delta_temporal_diff_mae": {
+        "max": 0.3532875254750252,
+        "mean": 0.18093156651593745,
+        "min": 0.05868100933730602,
+        "win_rate": 1.0
+      },
+      "n": 24,
+      "step0_boundary_psnr": {
+        "max": 29.671890376045024,
+        "mean": 25.474265211570273,
+        "min": 22.689294794315796,
+        "win_rate": 1.0
+      },
+      "step0_ewarp": {
+        "max": 0.10813393760145118,
+        "mean": 0.06692365754190632,
+        "min": 0.03652343207249942,
+        "win_rate": 1.0
+      },
+      "step0_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "step0_full_psnr": {
+        "max": 36.55172119747905,
+        "mean": 35.63615744775783,
+        "min": 33.56875750060254,
+        "win_rate": 1.0
+      },
+      "step0_full_ssim": {
+        "max": 0.9922325318585663,
+        "mean": 0.978682288250035,
+        "min": 0.9607172582754425,
+        "win_rate": 1.0
+      },
+      "step0_mask_psnr": {
+        "max": 30.39057863192054,
+        "mean": 26.977549257627043,
+        "min": 24.145307527982943,
+        "win_rate": 1.0
+      },
+      "step0_outside_psnr": {
+        "max": 37.16673131795215,
+        "mean": 36.73983126781208,
+        "min": 35.96036802548446,
+        "win_rate": 1.0
+      },
+      "step0_temporal_diff_mae": {
+        "max": 1.4828980080783367,
+        "mean": 1.0368589981614302,
+        "min": 0.7143762912601233,
+        "win_rate": 1.0
+      },
+      "stepN_boundary_psnr": {
+        "max": 26.347680799192858,
+        "mean": 21.83824238228003,
+        "min": 16.86938982335082,
+        "win_rate": 1.0
+      },
+      "stepN_ewarp": {
+        "max": 0.15225052652567683,
+        "mean": 0.08826029198871765,
+        "min": 0.04174364119080565,
+        "win_rate": 1.0
+      },
+      "stepN_full_lpips": {
+        "max": null,
+        "mean": null,
+        "min": null,
+        "win_rate": null
+      },
+      "stepN_full_psnr": {
+        "max": 32.52392596087061,
+        "mean": 32.26940433440536,
+        "min": 31.584754854013187,
+        "win_rate": 1.0
+      },
+      "stepN_full_ssim": {
+        "max": 0.9801293019838738,
+        "mean": 0.963894757746202,
+        "min": 0.9483528513880103,
+        "win_rate": 1.0
+      },
+      "stepN_mask_psnr": {
+        "max": 26.046333014956236,
+        "mean": 21.303070603054326,
+        "min": 16.002468066835927,
+        "win_rate": 1.0
+      },
+      "stepN_outside_psnr": {
+        "max": 33.90248043519165,
+        "mean": 33.71077287167264,
+        "min": 33.34183598381122,
+        "win_rate": 1.0
+      },
+      "stepN_temporal_diff_mae": {
+        "max": 1.8320778869092464,
+        "mean": 1.2177905646773677,
+        "min": 0.7738184928894043,
+        "win_rate": 1.0
+      }
+    }
+  },
+  "gate": {
+    "blockers": [
+      "shadow full PSNR delta -3.366753 < -0.02",
+      "shadow mask PSNR delta -5.674479 is strongly negative",
+      "shadow boundary PSNR delta -3.636023 < -0.02",
+      "shadow outside PSNR delta -3.029058 < -0.02",
+      "shadow Ewarp delta 0.021337 > safe threshold direction",
+      "visual worse 24/24 on shadow contact sheet; no visual better/tie gate",
+      "systematic global tone/outside drift and boundary/mask degradation observed"
+    ],
+    "neutral_gate_pass": false,
+    "promising_gate_pass": false,
+    "sft100_unlocked": false,
+    "status": "EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE"
+  },
+  "metric_csv": "/home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft/reports/exp46_pseudosuccess_sft30_metrics.csv",
+  "metric_shards": [
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard0/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard1/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard2/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard3/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard4/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard5/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard6/eval/metrics.csv",
+    "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30_eval_shard7/eval/metrics.csv"
+  ],
+  "note": "Visual CSV contains preliminary metric-risk labels; Codex contact-sheet inspection still required before final status.",
+  "review_images": [
+    "/home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft/reports/exp46_sft30_visual_montages/exp46_sft30_search_midframe_review.jpg",
+    "/home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft/reports/exp46_sft30_visual_montages/exp46_sft30_shadow_midframe_review.jpg"
+  ],
+  "rows": 48,
+  "run_id": "PSEUDO-SFT-A_lr3em5_step30",
+  "status": "EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE",
+  "training": {
+    "checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30/checkpoints/checkpoint-30",
+    "dtype": "bf16_safe",
+    "lr": 3e-05,
+    "recipe": "SFT-B",
+    "status": "TRAIN_DONE",
+    "steps": 30
+  },
+  "visual_review": {
+    "better": 0,
+    "review_pages_inspected": 2,
+    "rows": 48,
+    "search_worse": 24,
+    "shadow_worse": 24,
+    "tie": 0,
+    "worse": 48
+  },
+  "visual_review_csv": "/home/nvme01/H20_Video_inpainting_DPO_exp46_minimax_pseudosuccess_sft/reports/exp46_pseudosuccess_sft30_visual_review.csv"
+}

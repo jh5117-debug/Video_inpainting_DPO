@@ -1,3 +1,23 @@
+## 2026-06-30 Exp46 H20 Pseudo-Success SFT30 Negative
+
+Exp46 advanced to:
+
+```text
+EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
+```
+
+Pseudo-success SFT30 completed on H20 with BF16-safe DDP8 and checkpoint-30, but raw search/shadow evaluation regressed strongly. Search full/mask/boundary/outside PSNR deltas were `-4.612642/-0.548113/-1.591353/-4.812891`. Shadow deltas were `-3.366753/-5.674479/-3.636023/-3.029058`.
+
+Codex opened search and shadow Step30 contact sheets. Search shows subtle global tone/outside drift; shadow shows visible global color/brightness drift plus mask/boundary degradation. Visual better rows were `0/48`, worse rows `48/48`. GT-only SFT and DPO were not run. SFT100 is not unlocked, and MiniMax is not third-backbone positive.
+
+Reports:
+
+- `reports/exp46_pseudosuccess_sft30.md`
+- `reports/exp46_pseudosuccess_sft30_metrics.csv`
+- `reports/exp46_pseudosuccess_sft30_visual_review.csv`
+- `reports/exp46_pseudosuccess_sft30_diagnostics.csv`
+- `reports/exp46_pseudosuccess_sft30_summary.json`
+
 ## 2026-06-30 Exp46 H20 Exp45 Step0 Baseline Ready
 
 Exp46 advanced to:

@@ -19,3 +19,10 @@ step0_baseline_metrics: reports/exp46_exp45_step0_baseline_metrics.csv
 step0_baseline_visual_review: reports/exp46_exp45_step0_visual_review.csv
 step0_baseline_summary: reports/exp46_exp45_step0_summary.json
 step0_visual_montage_dir: reports/exp46_step0_visual_montages
+sft30_checkpoint: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30/checkpoints/checkpoint-30
+sft30_metrics: reports/exp46_pseudosuccess_sft30_metrics.csv
+sft30_visual_review: reports/exp46_pseudosuccess_sft30_visual_review.csv
+sft30_diagnostics: reports/exp46_pseudosuccess_sft30_diagnostics.csv
+sft30_summary: reports/exp46_pseudosuccess_sft30_summary.json
+sft30_report: reports/exp46_pseudosuccess_sft30.md
+sft30_visual_montage_dir: reports/exp46_sft30_visual_montages
