@@ -1,0 +1,60 @@
+{
+  "status": "H20_EXP43_SFT_BLOCKED",
+  "branch": "research/exp43-h20-minimax-stage2-sft-runner-20260629",
+  "commit": "eda52a8757b2354e710bea317e0fd07130436d4c",
+  "completed_run": {
+    "run_id": "SFT-A_lr3em5_step30",
+    "recipe": "SFT-A",
+    "lr": 3e-5,
+    "steps": 30,
+    "world_size": 8,
+    "train_status": "TRAIN_DONE",
+    "peak_rank0_vram_mib": 66414.96484375,
+    "sigfpe": false,
+    "oom": false,
+    "cuda_error": false,
+    "nan_inf": false
+  },
+  "gate": {
+    "pass": false,
+    "search": {
+      "delta_full_psnr": -5.833128230661999,
+      "delta_mask_psnr": -4.674487775418862,
+      "delta_boundary_psnr": -4.700944147600658,
+      "delta_outside_psnr": -7.594088453813615,
+      "delta_ewarp": 0.6460841968352801,
+      "win_rate_full_psnr": 0.0,
+      "win_rate_mask_psnr": 0.08333333333333333
+    },
+    "shadow": {
+      "delta_full_psnr": -6.55060498000691,
+      "delta_mask_psnr": -4.223185495799285,
+      "delta_boundary_psnr": -5.373455771430662,
+      "delta_outside_psnr": -8.45318893655187,
+      "delta_ewarp": 0.5934015673112469,
+      "win_rate_full_psnr": 0.041666666666666664,
+      "win_rate_mask_psnr": 0.0
+    }
+  },
+  "lpips": {
+    "status": "LPIPS_RUNTIME_BLOCKED",
+    "initial_cause": "torchmetrics missing from H20 wan environment",
+    "runtime_local_deps_installed": true,
+    "torch_or_cuda_replaced": false,
+    "rerun_pgid": 3675531,
+    "rerun_stopped": true,
+    "metrics_remained_blocked": true
+  },
+  "resource_blocker": {
+    "external_gpu7_pid": 1250053,
+    "external_gpu7_process": "/home/nvme03/workspace/lingbot-world/.conda_envs/lingbot-world-v2/bin/python",
+    "external_process_touched": false
+  },
+  "claims": {
+    "sft_30step_pass": false,
+    "dpo_100step_pass": false,
+    "third_backbone_positive": false,
+    "universal_adapter": false,
+    "final_sota": false
+  }
+}

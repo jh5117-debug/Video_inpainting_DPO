@@ -2,7 +2,7 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp43 H20 MiniMax isolated Stage2 SFT runner | `H20_EXP43_GPU_RELEASE_AUDITED`; branch/worktree scaffold started; H20 GPU0-GPU7 compute-free; CUDA/BF16 smoke passed; no training launched yet | `PRD/57_exp43_h20_minimax_stage2_sft_runner.md`, `experiment_registry/exp43_h20_minimax_stage2_sft_runner/status.md`, `reports/exp43_h20_gpu_release_audit.md` |
+| Exp43 H20 MiniMax isolated Stage2 SFT runner | `H20_EXP43_SFT_BLOCKED`; one true 8GPU BF16-safe `SFT-A_lr3em5_step30` cell trained/evaluated, but search/shadow metrics were strongly negative; LPIPS remained runtime-blocked after local dependency repair attempt; no 100/300/DPO/500 unlocked; GPU7 external non-Exp43 process blocked further 8GPU ladder work | `PRD/57_exp43_h20_minimax_stage2_sft_runner.md`, `experiment_registry/exp43_h20_minimax_stage2_sft_runner/status.md`, `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.md` |
 
 Notes:
 
@@ -876,3 +876,4 @@ Gate64 and DPO training were not started.
 | Exp43 H20 MiniMax BF16-safe preflight | `H20_EXP43_BF16_SAFE_READY` | Added Exp43-isolated precision policy, runner, launchers, config, manifest copy, and tests. P0-P7 passed on H20, including DDP8 bf16-safe one-batch training with finite loss/gradients and rank0 checkpoint reload. Peak rank0 VRAM: P4 fp32 `68982.773` MiB, P7 DDP8 `62087.76` MiB. Runtime-only gate; no MiniMax quality claim. |
 
 | Exp43 H20 MiniMax data readiness | `H20_EXP43_DATA_READY` | Built Exp43 Stage2 SFT `train64/search24/shadow24` manifests from H20-safe Exp41/Exp40 LocalDPO v3 data. Required path failures 0, optional path failures 0, scene overlap 0, VOR-Eval rows 0, hard-comp rows 0, first-frame decode passed for condition/winner/mask/loser dirs. Full `train96/search32/shadow32` not available, so minimum-pool caveat remains. |
+| Exp43 H20 MiniMax SFT-A 30-step ladder cell | `H20_EXP43_SFT_BLOCKED` | `SFT-A_lr3em5_step30` trained with 8GPU DDP BF16-safe and completed search24/shadow24 evaluation. Search dPSNR full/mask/boundary/outside: `-5.8331/-4.6745/-4.7009/-7.5941`; shadow: `-6.5506/-4.2232/-5.3735/-8.4532`; Ewarp worsened. LPIPS remained runtime-blocked after local `torchmetrics` repair attempt. No longer-step or DPO gate unlocked. |

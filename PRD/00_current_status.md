@@ -1,3 +1,34 @@
+## 2026-06-29 Exp43 H20 Stage2 SFT-A 30-Step Blocker
+
+Exp43 advanced to:
+
+```text
+H20_EXP43_SFT_BLOCKED
+```
+
+The isolated runner completed one true 8GPU BF16-safe 30-step MiniMax SFT cell:
+`SFT-A_lr3em5_step30`. Training finished with `TRAIN_DONE`, world size `8`,
+peak rank0 VRAM `66414.96484375` MiB, and no SIGFPE/OOM/CUDA/NaN/Inf.
+
+Search24 and shadow24 evaluation completed, but the gate failed strongly:
+search full/mask/boundary/outside PSNR deltas were
+`-5.8331 / -4.6745 / -4.7009 / -7.5941`, and shadow deltas were
+`-6.5506 / -4.2232 / -5.3735 / -8.4532`. Ewarp worsened on both splits.
+
+LPIPS remains `LPIPS_RUNTIME_BLOCKED`. A runtime-local no-deps `torchmetrics`
+install succeeded, but the reuse-existing LPIPS rerun exceeded reasonable
+runtime and was stopped by terminating only the Exp43-owned PGID `3675531`.
+
+No 100-step, 300-step, DPO-after-SFT, or 500-step confirmation was unlocked.
+Remaining 30-step cells were not launched because GPU7 became occupied by an
+external non-Exp43 `lingbot-world` process, which was not touched.
+
+Reports:
+
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.md`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.csv`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.json`
+
 ## 2026-06-29 Exp43 H20 Data Readiness
 
 Exp43 advanced to:

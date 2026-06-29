@@ -1,6 +1,6 @@
 # Exp43 H20 MiniMax Stage2 SFT Runner
 
-Status: `H20_EXP43_DATA_READY`
+Status: `H20_EXP43_SFT_BLOCKED`
 
 Exp43 is an H20-only MiniMax training-system breakthrough track. It is based on
 Exp41 and is explicitly authorized to add an isolated Stage2 SFT ladder runner
@@ -163,3 +163,43 @@ Reports and manifests:
 1. 30-step SFT gate before any 100-step run.
 2. 100-step SFT gate before any 300-step run.
 3. DPO and 500-step confirmation only if SFT gates pass.
+
+## 2026-06-29 SFT-A 30-Step Ladder Cell
+
+Status: `H20_EXP43_SFT_BLOCKED`
+
+Completed one true 8GPU DDP 30-step MiniMax SFT cell:
+
+- Run: `SFT-A_lr3em5_step30`
+- Recipe/LR: `SFT-A`, `3e-5`
+- Training: `TRAIN_DONE`
+- World size: `8`
+- Precision: `bf16_safe`
+- Peak rank0 VRAM: `66414.96484375` MiB
+- SIGFPE/OOM/CUDA/NaN/Inf: none observed
+
+Search and shadow evaluation completed with `48` metric rows, but the gate
+failed strongly:
+
+- Search delta full/mask/boundary/outside PSNR:
+  `-5.8331 / -4.6745 / -4.7009 / -7.5941`
+- Shadow delta full/mask/boundary/outside PSNR:
+  `-6.5506 / -4.2232 / -5.3735 / -8.4532`
+- Search/Shadow Ewarp deltas: `+0.6461 / +0.5934`
+
+The result does not unlock 100-step SFT, 300-step SFT, DPO-after-SFT, or
+500-step confirmation.
+
+LPIPS remains blocked. The initial environment lacked `torchmetrics`; a
+runtime-local no-deps install was added under Exp43 runtime, and import smoke
+passed. A reuse-existing LPIPS rerun exceeded reasonable runtime and was
+stopped by terminating only the Exp43-owned rerun PGID `3675531`.
+
+Remaining 30-step cells were not launched because GPU7 became occupied by an
+external non-Exp43 `lingbot-world` process. That process was not touched.
+
+Reports:
+
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.md`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.csv`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.json`

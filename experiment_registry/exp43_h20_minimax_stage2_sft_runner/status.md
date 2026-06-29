@@ -1,6 +1,42 @@
 # Exp43 Status
 
-Current status: `H20_EXP43_DATA_READY`
+Current status: `H20_EXP43_SFT_BLOCKED`
+
+## 2026-06-29 SFT-A 30-Step Ladder Cell
+
+Current status: `H20_EXP43_SFT_BLOCKED`
+
+- Completed run: `SFT-A_lr3em5_step30`.
+- Training status: `TRAIN_DONE`.
+- World size: `8`.
+- Peak rank0 VRAM: `66414.96484375` MiB.
+- No SIGFPE, OOM, CUDA error, NaN/Inf, or Xid was observed during training.
+- Search24 and shadow24 evaluation completed with `48` metric rows.
+- Gate result: `FAIL`.
+- Search deltas:
+  - full PSNR `-5.833128230661999`
+  - mask PSNR `-4.674487775418862`
+  - boundary PSNR `-4.700944147600658`
+  - outside PSNR `-7.594088453813615`
+  - Ewarp `+0.6460841968352801`
+- Shadow deltas:
+  - full PSNR `-6.55060498000691`
+  - mask PSNR `-4.223185495799285`
+  - boundary PSNR `-5.373455771430662`
+  - outside PSNR `-8.45318893655187`
+  - Ewarp `+0.5934015673112469`
+- LPIPS status: `LPIPS_RUNTIME_BLOCKED`.
+- Longer SFT, DPO-after-SFT, and 500-step confirmation: not unlocked.
+- Final GPU state for Exp43: no Exp43 compute process remained.
+- External GPU7 process:
+  `/home/nvme03/workspace/lingbot-world/.conda_envs/lingbot-world-v2/bin/python`;
+  not touched.
+
+Reports:
+
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.md`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.csv`
+- `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.json`
 
 ## 2026-06-29 Data Readiness
 

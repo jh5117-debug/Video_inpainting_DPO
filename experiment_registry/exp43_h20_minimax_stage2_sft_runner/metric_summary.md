@@ -7,7 +7,22 @@ No Exp43 training or evaluation metric has been run yet.
 Runtime readiness only. No model-quality metric was produced.
 # Exp43 Metric Summary
 
-Current status: `H20_EXP43_DATA_READY`.
+Current status: `H20_EXP43_SFT_BLOCKED`.
+
+## 2026-06-29 SFT-A 30-Step Cell
+
+Run: `SFT-A_lr3em5_step30`
+
+| split | rows | dPSNR | dMask PSNR | dBoundary PSNR | dOutside PSNR | dEwarp | gate |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| search | 24 | -5.8331 | -4.6745 | -4.7009 | -7.5941 | +0.6461 | FAIL |
+| shadow | 24 | -6.5506 | -4.2232 | -5.3735 | -8.4532 | +0.5934 | FAIL |
+
+LPIPS remains `LPIPS_RUNTIME_BLOCKED`; the initial missing `torchmetrics`
+dependency was repaired in an Exp43 runtime-local dependency directory, but the
+reuse-existing LPIPS rerun exceeded reasonable runtime and was stopped.
+
+No 100-step, 300-step, DPO-after-SFT, or 500-step confirmation was unlocked.
 
 No Exp43 training metrics exist yet. Readback reuses prior gates only as
 prerequisite evidence:
