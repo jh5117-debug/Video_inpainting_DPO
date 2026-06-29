@@ -1,6 +1,6 @@
 # Exp46 H20 MiniMax Exp45 Pseudo-Success SFT Validation
 
-Status: EXP46_READBACK_READY
+Status: EXP45_H20_MIRROR_READY
 
 Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`
 Start HEAD: `feef1b73317bea903e0e247d077d84c740665fa4`
@@ -14,7 +14,7 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 ## Milestone Status
 
 - A readback: complete
-- B mirror Exp45 required files: pending
+- B mirror Exp45 required files: complete (`EXP45_H20_MIRROR_READY`)
 - C rewrite/validate manifests: pending
 - D BF16/environment preflight: pending
 - E Step0 baseline: pending
@@ -25,3 +25,19 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 ## Guardrails
 
 No PAI writes, no PAI GPU, no GT-only SFT, no DPO, no long training, no VOR-Eval, no hard comp, no shared trainer or metrics edits, no MiniMax positive claim before real shadow pass.
+
+
+## Milestone B Mirror Validation
+
+Status: `EXP45_H20_MIRROR_READY`
+
+- H20 mirror root: `/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs`
+- Exp45 source HEAD: `d0c8430a5ba35f37415ed52d53040829ef1123d6`
+- Required paths: `326`
+- Required files: `232`
+- Required directories: `94`
+- Missing paths: `0`
+- SHA mismatches: `0`
+- Required-path mirrored bytes: `359462035`
+
+The mirror was completed by H20 reading PAI/NAS through SSH agent forwarding. PAI was read-only, PAI GPUs were not used, and no training or optimizer step occurred. Manifest rewrite/validation remains the next gate.

@@ -1,3 +1,15 @@
+## 2026-06-29 Exp46 H20 Exp45 Pseudo-Success Mirror
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp46 H20 MiniMax Exp45 pseudo-success Stage2 validation | `EXP45_H20_MIRROR_READY`; Exp45 required package mirrored to H20 with `326` required paths ready, `0` missing, `0` SHA mismatches; no training launched | `PRD/60_exp46_h20_minimax_exp45_pseudosuccess_sft.md`, `experiment_registry/exp46_h20_minimax_pseudosuccess_sft/status.md`, `reports/exp46_exp45_file_mirror.md` |
+
+Notes:
+
+- This is a data mirror gate only. Manifest rewrite/validation remains pending.
+- Pseudo-success SFT remains the first allowed training path after Step0; GT-only SFT and DPO remain blocked.
+- No MiniMax third-backbone, universal adapter, or final SOTA claim is made.
+
 ## 2026-06-29 Exp43 H20 MiniMax Stage2 SFT Runner
 
 | User-facing name | Status | Evidence / registry |

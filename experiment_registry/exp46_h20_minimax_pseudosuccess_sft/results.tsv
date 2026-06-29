@@ -1,2 +1,3 @@
 milestone	status	metric	value	note
 A	EXP46_READBACK_READY	exp45_split	64/24/24	Pseudo-success first; no training yet.
+B	EXP45_H20_MIRROR_READY	required_paths	326	missing=0; sha_mismatch=0; files=232; dirs=94; no training.

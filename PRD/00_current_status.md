@@ -1,3 +1,29 @@
+## 2026-06-29 Exp46 H20 Exp45 Mirror Ready
+
+Exp46 advanced to:
+
+```text
+EXP45_H20_MIRROR_READY
+```
+
+H20 validated the mirrored PAI Exp45 formal Stage2 package at
+`/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs`. Required path validation passed for `326` paths
+(`232` files and `94` directories), with missing paths `0` and
+SHA mismatches `0`. Required-path mirrored bytes: `359462035`.
+
+Transfer note: H20 direct PAI authentication failed with resident H20 keys, so the
+completed read-only transfer used HAL SSH agent forwarding (`ssh -A`) and H20 ran
+`rsync -aRr --files-from` from PAI/NAS. No PAI write, no PAI GPU, no H20
+training, and no optimizer step occurred.
+
+Reports:
+
+- `reports/exp46_exp45_file_mirror.md`
+- `reports/exp46_exp45_file_mirror.csv`
+- `reports/exp46_exp45_file_mirror.json`
+- `reports/exp46_exp45_h20_sha256.txt`
+- `reports/exp46_exp45_missing_files.csv`
+
 ## 2026-06-29 Exp43 H20 Stage2 SFT-A 30-Step Blocker
 
 Exp43 advanced to:

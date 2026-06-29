@@ -8,3 +8,9 @@ run_dpo: false
 use_vor_eval: false
 use_hard_comp: false
 precision_policy: bf16_safe_preflight_then_fp32_fallback_if_needed
+mirror_validation_status: EXP45_H20_MIRROR_READY
+required_path_count: 326
+missing_path_count: 0
+sha_mismatch_count: 0
+training_run: false
+optimizer_step: false
