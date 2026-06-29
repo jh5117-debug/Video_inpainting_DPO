@@ -1,0 +1,10 @@
+milestone	status	notes
+A_readback	EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD	Public ROSE assets audited from HAL; PAI shell not verified; no downloads.
+B_assets	NOT_STARTED	Blocked until verified PAI access.
+C_env	NOT_STARTED	Blocked until assets and verified PAI access.
+D_feasibility	NOT_STARTED	Blocked until code assets are available.
+E_inference_smoke	NOT_STARTED	Blocked until env and weights are ready.
+F_gate16	NOT_STARTED	Blocked until inference smoke is technically valid.
+G_one_step	NOT_STARTED	Blocked until trainable-forward feasible.
+H_10step	NOT_STARTED	Blocked until one-step passes.
+I_paper_positioning	NOT_STARTED	Requires actual ROSE results.
