@@ -1,6 +1,6 @@
 # Exp46 H20 MiniMax Exp45 Pseudo-Success SFT Validation
 
-Status: EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
+Status: MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE
 
 Branch: `research/exp46-h20-minimax-exp45-pseudosuccess-sft-20260629`
 Start HEAD: `feef1b73317bea903e0e247d077d84c740665fa4`
@@ -20,7 +20,7 @@ Exp46 is an H20-only validation of the PAI Exp45 formal Stage2 handoff package. 
 - E Step0 baseline: complete (EXP46_STEP0_BASELINE_READY)
 - F pseudo-success SFT 30-step: complete (`EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE`)
 - G pseudo-success SFT 100-step: not run (`EXP46_PSEUDOSUCCESS_SFT100_NOT_RUN`) because 30-step was negative
-- H decision/paper positioning: pending
+- H decision/paper positioning: complete (`MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE` / `MINIMAX_NOT_THIRD_BACKBONE_YET`)
 
 ## Guardrails
 
@@ -79,7 +79,7 @@ P0-P7 completed with finite losses/gradients where applicable. The launcher summ
 
 ## Milestone E Step0 Baseline
 
-Status: EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
+Status: EXP46_STEP0_BASELINE_READY
 
 - Search rows: 24
 - Shadow rows: 24
@@ -123,3 +123,10 @@ Mean deltas vs Step0:
 | shadow | -3.366753 | -5.674479 | -3.636023 | -3.029058 | 0.021337 |
 
 Visual review found systematic global tone/outside drift and shadow mask/boundary degradation. Visual better rows: `0/48`; visual worse rows: `48/48`.
+
+
+## Milestone H Final Decision
+
+Status: `MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE` / `MINIMAX_NOT_THIRD_BACKBONE_YET`
+
+SFT30 was negative, so SFT100 was not run. GT-only SFT and DPO were not run. Current pseudo-success SFT targets are not safe for MiniMax because they induce global tone/outside drift and shadow mask/boundary degradation. MiniMax remains plumbing-positive/protocol-matched, but not third-backbone adapter evidence.

@@ -1,6 +1,6 @@
 # Metric Summary
 
-Status: EXP46_PSEUDOSUCCESS_SFT30_NEGATIVE
+Status: MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE
 
 Step0 baseline and Step30 use raw MiniMax output on H20 Exp45 pseudo-success search/shadow splits. LPIPS is unavailable in this evaluator path and remains null.
 

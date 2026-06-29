@@ -28,3 +28,5 @@ sft100_status: EXP46_PSEUDOSUCCESS_SFT100_NOT_RUN
 sft30_lr: 3e-5
 sft30_recipe: PSEUDO-SFT-A/SFT-B
 sft30_checkpoint: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30/checkpoints/checkpoint-30
+final_status: MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE
+third_backbone_status: MINIMAX_NOT_THIRD_BACKBONE_YET

@@ -1,3 +1,19 @@
+## 2026-06-30 Exp46 Final Decision
+
+Exp46 final status:
+
+```text
+MINIMAX_PSEUDOSUCCESS_STAGE2_NEGATIVE
+MINIMAX_NOT_THIRD_BACKBONE_YET
+```
+
+Pseudo-success SFT30 was negative, so SFT100 was not run. GT-only SFT and DPO were not run. MiniMax remains protocol-matched and plumbing-positive, but current pseudo-success targets are not a safe SFT signal: they cause global tone/outside drift and shadow mask/boundary degradation.
+
+Reports:
+
+- `reports/exp46_minimax_pseudosuccess_decision.md`
+- `reports/exp46_minimax_pseudosuccess_paper_positioning.md`
+
 ## 2026-06-30 Exp46 H20 Pseudo-Success SFT30 Negative
 
 Exp46 advanced to:

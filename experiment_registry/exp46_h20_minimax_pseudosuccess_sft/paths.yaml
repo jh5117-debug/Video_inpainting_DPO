@@ -26,3 +26,5 @@ sft30_diagnostics: reports/exp46_pseudosuccess_sft30_diagnostics.csv
 sft30_summary: reports/exp46_pseudosuccess_sft30_summary.json
 sft30_report: reports/exp46_pseudosuccess_sft30.md
 sft30_visual_montage_dir: reports/exp46_sft30_visual_montages
+decision_report: reports/exp46_minimax_pseudosuccess_decision.md
+paper_positioning_report: reports/exp46_minimax_pseudosuccess_paper_positioning.md
