@@ -615,3 +615,9 @@ the public readback and the PAI access blocker.
 | Experiment | Milestone | Status | Notes |
 | --- | --- | --- | --- |
 | `exp49_pai_rose_adapter_feasibility` | B assets | `ROSE_ASSETS_PARTIAL` | PAI direct download via hf-mirror after huggingface.co timeout; see `reports/exp49_rose_asset_download.md`; no training or inference run. |
+
+## 2026-06-30 Exp49 Environment Update
+
+| Experiment | Milestone | Status | Notes |
+| --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | C env | `ROSE_ENV_BLOCKED` | Isolated venv import/CUDA smoke; no inference/training; Python 3.12 lacks pip/torch on PAI. |

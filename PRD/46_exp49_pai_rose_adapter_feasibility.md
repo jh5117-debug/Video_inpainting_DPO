@@ -104,3 +104,11 @@ Status: `ROSE_ASSETS_PARTIAL`.
 PAI direct download was attempted for ROSE official code, HF Space, ROSE model, Wan base model, and ROSE-Dataset metadata/filelist. Direct `huggingface.co` timed out from PAI, so `hf-mirror.com` was used. Reports are available at `reports/exp49_rose_asset_download.md`, `reports/exp49_rose_asset_download.csv`, `reports/exp49_rose_asset_download_summary.json`, `reports/exp49_rose_asset_inventory.txt`, and `reports/exp49_rose_asset_sha256.txt`.
 
 No H20 relay, GPU work, inference, training, or optimizer step was used.
+
+## Milestone C Update - 2026-06-30
+
+Status: `ROSE_ENV_BLOCKED`.
+
+An isolated venv at `/home/hj/venvs/rose_exp49_py310` was created and used for ROSE dependency/import/CUDA smoke. Python 3.12 is present on PAI but lacks pip/torch, so the smoke used Python 3.10 with system Torch 2.6.0+cu126. Reports are available at `reports/exp49_rose_env_smoke.md`, `reports/exp49_rose_env_smoke.csv`, and `reports/exp49_rose_env_smoke_summary.json`.
+
+No inference, training, optimizer step, DPO, or H20 action was run.

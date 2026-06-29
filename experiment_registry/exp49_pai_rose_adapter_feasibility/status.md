@@ -1,7 +1,7 @@
 # Exp49 Status
 
-Current status: `ROSE_ASSETS_PARTIAL`
+Current status: `ROSE_ENV_PARTIAL`
 
-Milestone B attempted PAI direct download for ROSE code, HF Space, ROSE model, Wan base model, and ROSE-Dataset metadata/sample inventory. Direct HuggingFace timed out, so PAI used hf-mirror. No H20 relay, GPU work, inference, or training was used.
+Milestone C created an isolated Python venv and ran ROSE import/CUDA smoke. Python 3.12 is present on PAI but lacks pip/torch, so the smoke used Python 3.10 with system Torch 2.6.0+cu126.
 
-Next required action: run Milestone C environment/import smoke if code/model/base assets are sufficient.
+No inference, training, optimizer step, DPO, or H20 action was run.

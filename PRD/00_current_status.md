@@ -1824,3 +1824,7 @@ shell and start staged asset download.
 ## 2026-06-30 Exp49 ROSE Asset Download
 
 Exp49 Milestone B was executed on verified PAI host `dsw-753014-85f54df947-bkp7h`. Direct `huggingface.co` access timed out, so PAI direct download used `hf-mirror.com`. Status: `ROSE_ASSETS_PARTIAL`. Asset inventory, checksum report, CSV, and summary JSON were written under `reports/exp49_rose_asset_*`. No H20 relay, GPU work, inference, training, or optimizer step was used.
+
+## 2026-06-30 Exp49 ROSE Environment Smoke
+
+Exp49 Milestone C created an isolated Python environment and ran ROSE import/CUDA smoke. Status: `ROSE_ENV_BLOCKED`. Python 3.12 exists on PAI but has no pip/torch, so the smoke used Python 3.10 with system Torch 2.6.0+cu126. No inference, training, optimizer step, DPO, or H20 action was run.

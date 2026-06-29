@@ -1,0 +1,14 @@
+{
+  "generated": "2026-06-30T07:35:30,736210376+08:00",
+  "hostname": "dsw-753014-85f54df947-bkp7h",
+  "status": "ROSE_ENV_PARTIAL",
+  "env_path": "/home/hj/venvs/rose_exp49_py310",
+  "python_version": "Python 3.10.19",
+  "official_python_available": "Python 3.12.3",
+  "pip_install_rc": 0,
+  "smoke_rc": 0,
+  "fail_count": 0,
+  "failed_checks": [],
+  "torch": "2.6.0+cu126 cuda=12.6 available=True",
+  "notes": "Python 3.12 exists but has no pip/torch; isolated Python 3.10 venv uses system Torch 2.6.0+cu126."
+}
