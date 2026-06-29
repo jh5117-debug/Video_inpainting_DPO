@@ -213,7 +213,7 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp45 PAI MiniMax pair scale-up | `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md` |
+| Exp45 PAI MiniMax pair scale-up | `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md`, `reports/exp45_visual_relabel.md` |
 
 Notes:
 

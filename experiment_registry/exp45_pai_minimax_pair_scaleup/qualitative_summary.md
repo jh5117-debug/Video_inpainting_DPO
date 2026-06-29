@@ -21,3 +21,6 @@ or empty candidate set: the official MiniMax source videos, masks, target
 frames, and output root are all under unavailable `/mnt/nas` paths in the
 current session. Exp45 remains a PAI-only package/readiness lane with no
 training and no H20 execution.
+
+Milestone D did not perform any visual relabeling because no new Exp45
+candidates exist. This is explicitly not a visual review pass.

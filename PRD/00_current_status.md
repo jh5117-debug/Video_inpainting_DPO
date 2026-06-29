@@ -46,6 +46,14 @@ MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE
 No MiniMax inference, GPU task, H20 action, training, optimizer step, VOR-Eval
 use, hard comp, or fabricated empty candidate manifest occurred.
 
+Milestone D strict visual relabel is also blocked:
+
+```text
+MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES
+```
+
+No new review pages or videos exist; no visual pass was claimed.
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

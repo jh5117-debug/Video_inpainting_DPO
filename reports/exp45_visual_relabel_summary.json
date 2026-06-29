@@ -1,0 +1,16 @@
+{
+  "blocked_reason": "no Exp45 targeted candidates were generated because PAI/NAS roots are unavailable",
+  "failure_medium_hard": 0,
+  "h20_touched": false,
+  "hard_comp_used": false,
+  "new_candidates": 0,
+  "optimizer_step": false,
+  "review_pages_generated": 0,
+  "review_pages_inspected": 0,
+  "status": "MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES",
+  "success_clean": 0,
+  "success_usable": 0,
+  "training_run": false,
+  "visual_pass_claimed": false,
+  "vor_eval_used": false
+}

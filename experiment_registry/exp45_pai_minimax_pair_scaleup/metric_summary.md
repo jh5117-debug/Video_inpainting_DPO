@@ -31,3 +31,11 @@ No Exp45 mining or training metrics have been produced yet.
 - MiniMax inference launched: `false`
 - blocker: `/mnt/nas` and `/mnt/workspace` unavailable
 - status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
+
+## Strict Visual Relabel
+
+- new candidates: `0`
+- review pages inspected: `0`
+- accepted success: `0`
+- accepted failure: `0`
+- status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`

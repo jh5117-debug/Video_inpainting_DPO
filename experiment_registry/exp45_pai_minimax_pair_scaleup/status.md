@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `MINIMAX_TARGETED_SCALEUP_BLOCKED_SOURCE_ROOT_UNAVAILABLE`
+Current status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -62,3 +62,21 @@ Reports:
 - `reports/exp45_targeted_scaleup_mining.md`
 - `reports/exp45_targeted_scaleup_mining.csv`
 - `reports/exp45_targeted_scaleup_summary.json`
+
+## 2026-06-29 Strict Visual Relabel
+
+- Status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
+- New candidates: `0`
+- Review pages generated: `0`
+- Review pages inspected: `0`
+- Accepted success: `0`
+- Accepted failure: `0`
+- H20 touched by Exp45: `false`
+- Training run by Exp45: `false`
+- Optimizer step by Exp45: `false`
+
+Reports:
+
+- `reports/exp45_visual_relabel.md`
+- `reports/exp45_visual_relabel.csv`
+- `reports/exp45_visual_relabel_summary.json`

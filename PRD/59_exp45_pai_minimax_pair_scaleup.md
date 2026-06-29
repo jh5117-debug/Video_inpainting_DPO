@@ -144,3 +144,17 @@ Reports:
 - `reports/exp45_targeted_scaleup_mining.md`
 - `reports/exp45_targeted_scaleup_mining.csv`
 - `reports/exp45_targeted_scaleup_summary.json`
+
+## 2026-06-29 Milestone D Strict Visual Relabel
+
+Status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`.
+
+No new Exp45 candidates exist because Milestone C was blocked before MiniMax
+inference. Therefore no new review pages, temporal strips, crops, or videos
+were generated or inspected.
+
+Reports:
+
+- `reports/exp45_visual_relabel.md`
+- `reports/exp45_visual_relabel.csv`
+- `reports/exp45_visual_relabel_summary.json`
