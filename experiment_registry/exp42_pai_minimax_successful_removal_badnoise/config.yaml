@@ -1,0 +1,26 @@
+experiment: exp42_pai_minimax_successful_removal_badnoise
+date: 2026-06-29
+model: MiniMax-Remover
+primary_task: vor_or_successful_removal_badnoise_data_mining
+raw_output_primary: true
+diagnostic_comp_allowed: false
+vor_eval_training_selection_tuning_allowed: false
+official_protocol:
+  scheduler: UniPCMultistepScheduler
+  dtype: float16
+  num_inference_steps: 12
+  iterations: 6
+  cfg: none
+gpu_policy:
+  default_gpus: [0, 1]
+  ddp: false
+  cleanup_scope: old_minimax_exp30_35_36_37_38_40_42_user_project_processes_only
+milestone_gates:
+  successful_candidates_min: 24
+  medium_hard_failures_min: 24
+  technical_valid_min_rate: 0.95
+  badnoise_pairs_min: 24
+  badnoise_local_random_ratio_min: 1.5
+  stage2_train_min: 32
+  stage2_search_min: 16
+  stage2_shadow_min: 16

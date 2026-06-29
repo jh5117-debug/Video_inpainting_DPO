@@ -3424,3 +3424,29 @@ Decision:
 - no 300/500-step confirmation;
 - MiniMax remains plumbing-positive / recipe-not-ready, not third-backbone
   adapter evidence.
+
+## 2026-06-29 Exp42 PAI MiniMax Data Readback
+
+Exp42 status: `EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED`.
+
+New isolated branch/worktree:
+
+- branch: `research/exp42-pai-minimax-successful-removal-badnoise-20260629`
+- worktree: `/home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data`
+- base: `origin/research/exp40-minimax-psnr-safe-rescue-20260628`
+
+Exp42 is a PAI-side MiniMax data and bad-noise lane. It does not repeat
+Exp38/Exp40 recipes, does not touch H20 worktrees or H20 GPUs, and does not
+start blind long training. Readback confirmed MiniMax remains
+plumbing-positive but quality-negative after Exp30/35/36/37/38/40. The next
+step is official MiniMax successful-removal mining on VOR-Train-derived
+sources only.
+
+PAI GPU0/GPU1 were checked read-only and were both free (`0 MiB`, `0%`, no
+compute PID). No process was killed in readback. MiniMax official repo and
+weights are present on PAI/NAS. Exp41 H20 PRD/report files are not in this
+Exp40-based branch and protected H20 worktrees were not touched.
+
+Report:
+
+- `reports/exp42_pai_minimax_data_readback.md`

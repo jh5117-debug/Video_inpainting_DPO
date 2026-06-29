@@ -1,0 +1,10 @@
+branch: research/exp42-pai-minimax-successful-removal-badnoise-20260629
+base_branch: origin/research/exp40-minimax-psnr-safe-rescue-20260628
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data
+pai_code_root: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp42_pai_minimax_data
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp42_pai_minimax_successful_removal_badnoise
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp42_pai_minimax_successful_removal_badnoise
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp42_pai_minimax_successful_removal_badnoise
+pai_minimax_repo: /mnt/nas/hj/official_repos/MiniMax-Remover_28e12b4
+pai_minimax_weights: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/minimax_remover/current
+exp42_prd: PRD/56_exp42_pai_minimax_successful_removal_badnoise.md

@@ -1,0 +1,2 @@
+date	milestone	status	key_result	report
+2026-06-29	readback	EXP42_PAI_MINIMAX_DATA_READBACK_COMPLETED	MiniMax remains plumbing-positive; Exp42 will mine successful-removal and bad-noise data before any short training.	reports/exp42_pai_minimax_data_readback.md
