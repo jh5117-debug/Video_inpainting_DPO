@@ -203,3 +203,32 @@ Reports:
 - `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.md`
 - `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.csv`
 - `reports/exp43_h20_stage2_sft_ladder_runtime_blocker.json`
+
+## 2026-06-29 Exp44 Pseudo-Success Handoff Path Validation
+
+Status: `H20_EXP43_EXP44_PSEUDOSUCCESS_PREFLIGHT_BLOCKED_MISSING_TARGETS`
+
+H20 fetched Exp44 handoff metadata and checked the pseudo-success SFT manifests
+before any new training launch. The result blocks the requested pseudo-success
+30-step preflight:
+
+- Exp44 pseudo-success train/search/shadow rows: `24` / `8` / `8`;
+- condition paths: original `/mnt/nas` = `0`, H20 mirror = `24/8/8`;
+- mask paths: original `/mnt/nas` = `0`, H20 mirror = `24/8/8`;
+- pseudo-success `target_frames_dir`: original `/mnt/nas` = `0`, H20 mirror = `0`;
+- pseudo-success `target_path` mp4: original `/mnt/nas` = `0`, H20 mirror = `0`.
+
+Decision: do not start the pseudo-success 30-step preflight yet. Starting now
+would either fail during data loading or require a forbidden GT-only fallback.
+No training, optimizer step, GT-only SFT, DPO, longer run, or model update was
+started.
+
+Required next step: mirror Exp44 targeted mining outputs to the H20 mirror root,
+then rerun path validation. Only if pseudo-success target frames resolve should
+H20 launch pseudo-success SFT 30-step.
+
+Reports:
+
+- `reports/exp43_exp44_pseudosuccess_path_validation.md`
+- `reports/exp43_exp44_pseudosuccess_path_validation.csv`
+- `reports/exp43_exp44_pseudosuccess_path_validation.json`

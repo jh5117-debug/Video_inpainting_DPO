@@ -17,6 +17,9 @@ reports:
   data_readiness_csv: reports/exp43_h20_data_readiness.csv
   data_manifest_validation: reports/exp43_h20_data_manifest_validation.csv
   data_summary: reports/exp43_h20_data_summary.json
+  exp44_pseudosuccess_path_validation: reports/exp43_exp44_pseudosuccess_path_validation.md
+  exp44_pseudosuccess_path_validation_csv: reports/exp43_exp44_pseudosuccess_path_validation.csv
+  exp44_pseudosuccess_path_validation_json: reports/exp43_exp44_pseudosuccess_path_validation.json
 manifests:
   train: exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_train.jsonl
   search: exp43_h20_minimax_stage2_sft_runner/manifests/exp43_stage2_sft_search.jsonl

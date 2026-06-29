@@ -1,0 +1,53 @@
+{
+  "status": "H20_EXP43_EXP44_PSEUDOSUCCESS_PREFLIGHT_BLOCKED_MISSING_TARGETS",
+  "h20_host": "instance-afs92r3e",
+  "h20_checked_at": "2026-06-29T17:45:55+08:00",
+  "exp43_branch": "research/exp43-h20-minimax-stage2-sft-runner-20260629",
+  "exp43_head_checked_on_h20": "c603cc75d9702fbb85d38c39035359e9cd93a0f4",
+  "exp44_source_branch": "origin/research/exp44-pai-minimax-targeted-same-source-mining-20260629",
+  "requested_first_experiment": "pseudo-success SFT 30-step",
+  "forbidden_first_experiment": "GT-only SFT",
+  "h20_mirror_root": "/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs",
+  "splits": {
+    "train": {
+      "rows": 24,
+      "condition_orig_exists": 0,
+      "condition_mirror_exists": 24,
+      "mask_orig_exists": 0,
+      "mask_mirror_exists": 24,
+      "target_frames_orig_exists": 0,
+      "target_frames_mirror_exists": 0,
+      "target_mp4_orig_exists": 0,
+      "target_mp4_mirror_exists": 0
+    },
+    "search": {
+      "rows": 8,
+      "condition_orig_exists": 0,
+      "condition_mirror_exists": 8,
+      "mask_orig_exists": 0,
+      "mask_mirror_exists": 8,
+      "target_frames_orig_exists": 0,
+      "target_frames_mirror_exists": 0,
+      "target_mp4_orig_exists": 0,
+      "target_mp4_mirror_exists": 0
+    },
+    "shadow": {
+      "rows": 8,
+      "condition_orig_exists": 0,
+      "condition_mirror_exists": 8,
+      "mask_orig_exists": 0,
+      "mask_mirror_exists": 8,
+      "target_frames_orig_exists": 0,
+      "target_frames_mirror_exists": 0,
+      "target_mp4_orig_exists": 0,
+      "target_mp4_mirror_exists": 0
+    }
+  },
+  "training_started": false,
+  "optimizer_step": false,
+  "gt_only_sft_started": false,
+  "dpo_started": false,
+  "reason": "Pseudo-success target frames and mp4 outputs are missing on H20; running now would fail or require forbidden GT-only fallback.",
+  "required_source_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742",
+  "required_h20_destination": "/home/nvme01/H20_Video_inpainting_DPO/data/h20_mirror/minimax/pai_abs/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742"
+}

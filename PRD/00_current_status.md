@@ -3650,3 +3650,26 @@ Shadow Step0 baseline full/mask/boundary/outside PSNR:
 
 Codex opened `42` review pages covering all `112` baseline rows. This is a
 baseline-only milestone and does not unlock MiniMax positive or DPO claims.
+
+## 2026-06-29 Exp43 / Exp44 Pseudo-Success H20 Path Validation
+
+Exp43 status:
+`H20_EXP43_EXP44_PSEUDOSUCCESS_PREFLIGHT_BLOCKED_MISSING_TARGETS`.
+
+H20 fetched the Exp44 pseudo-success handoff manifests and checked paths before
+launching any new training:
+
+- Exp44 pseudo-success split rows: train/search/shadow = `24` / `8` / `8`;
+- condition paths in H20 mirror: `24` / `8` / `8`;
+- mask paths in H20 mirror: `24` / `8` / `8`;
+- pseudo-success target frame dirs in H20 mirror: `0` / `0` / `0`;
+- pseudo-success target mp4s in H20 mirror: `0` / `0` / `0`.
+
+The requested pseudo-success SFT 30-step preflight was not launched. Running
+now would fail data loading or require a forbidden GT-only fallback. No
+training, optimizer step, GT-only SFT, DPO, longer run, or model update
+occurred.
+
+Next required action: mirror the Exp44 targeted mining outputs to H20, rerun
+path validation, then launch only pseudo-success SFT 30-step if target paths
+resolve.

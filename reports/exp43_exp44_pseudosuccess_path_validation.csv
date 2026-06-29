@@ -1,0 +1,4 @@
+split,rows,condition_orig_exists,condition_mirror_exists,mask_orig_exists,mask_mirror_exists,target_frames_orig_exists,target_frames_mirror_exists,target_mp4_orig_exists,target_mp4_mirror_exists
+train,24,0,24,0,24,0,0,0,0
+search,8,0,8,0,8,0,0,0,0
+shadow,8,0,8,0,8,0,0,0,0

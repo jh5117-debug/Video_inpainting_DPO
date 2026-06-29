@@ -70,3 +70,32 @@ data:
   train_manifest_sha256: 7a4468b720d2ec4fadd2db31bd9855afe3d560da3d93ca9931fd68139b78561d
   search_manifest_sha256: d001432c9be39466818a215c32afa1270c76b67dd90a3a15c4f0aac9c4fdff68
   shadow_manifest_sha256: b47600a1e05f4eabdf708ba5a3d2e8c1216d01ccb63b090f9d54dbe6c3f50406
+exp44_pseudosuccess_handoff:
+  status: H20_EXP43_EXP44_PSEUDOSUCCESS_PREFLIGHT_BLOCKED_MISSING_TARGETS
+  exp44_branch: origin/research/exp44-pai-minimax-targeted-same-source-mining-20260629
+  rows:
+    train: 24
+    search: 8
+    shadow: 8
+  h20_mirror_condition_paths:
+    train: 24
+    search: 8
+    shadow: 8
+  h20_mirror_mask_paths:
+    train: 24
+    search: 8
+    shadow: 8
+  h20_mirror_pseudosuccess_target_frames:
+    train: 0
+    search: 0
+    shadow: 0
+  h20_mirror_pseudosuccess_target_mp4:
+    train: 0
+    search: 0
+    shadow: 0
+  training_started: false
+  optimizer_step: false
+  gt_only_sft_started: false
+  dpo_started: false
+  first_allowed_experiment_after_fix: pseudo-success SFT 30-step
+  forbidden_first_experiment: GT-only SFT

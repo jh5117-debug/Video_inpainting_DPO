@@ -115,6 +115,30 @@ Reports:
 
 - `reports/exp43_h20_stage2_sft_runner_readback.md`
 
+## 2026-06-29 Exp44 Pseudo-Success Handoff Path Validation
+
+Current status: `H20_EXP43_EXP44_PSEUDOSUCCESS_PREFLIGHT_BLOCKED_MISSING_TARGETS`
+
+- H20 host: `instance-afs92r3e`
+- Exp44 pseudo-success rows train/search/shadow: `24` / `8` / `8`
+- Condition paths in H20 mirror: `24` / `8` / `8`
+- Mask paths in H20 mirror: `24` / `8` / `8`
+- Pseudo-success target frames in H20 mirror: `0` / `0` / `0`
+- Pseudo-success target mp4s in H20 mirror: `0` / `0` / `0`
+- Training started: `false`
+- Optimizer step: `false`
+- GT-only SFT started: `false`
+
+The requested pseudo-success SFT 30-step preflight is blocked until the Exp44
+targeted mining outputs are mirrored to H20. GT-only SFT remains explicitly
+forbidden as the first experiment.
+
+Reports:
+
+- `reports/exp43_exp44_pseudosuccess_path_validation.md`
+- `reports/exp43_exp44_pseudosuccess_path_validation.csv`
+- `reports/exp43_exp44_pseudosuccess_path_validation.json`
+
 ## 2026-06-29 H20 GPU Release Audit
 
 - Host: `instance-afs92r3e`.

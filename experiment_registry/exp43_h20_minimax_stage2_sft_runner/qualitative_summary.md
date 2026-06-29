@@ -33,3 +33,11 @@ BF16 preflight produced no quality videos and makes no visual-quality claim.
 
 Data readiness decoded required frame directories only. It does not review new
 MiniMax trained outputs and makes no visual-quality claim.
+
+## 2026-06-29 Exp44 Pseudo-Success Path Validation
+
+No new videos were generated and no visual-quality review was performed. The
+requested pseudo-success SFT 30-step preflight was intentionally not launched
+because the pseudo-success target frames/mp4s are missing on H20. Falling back
+to GT-only SFT would violate the handoff instruction, so the correct outcome is
+a path blocker rather than a training attempt.

@@ -24,6 +24,20 @@ reuse-existing LPIPS rerun exceeded reasonable runtime and was stopped.
 
 No 100-step, 300-step, DPO-after-SFT, or 500-step confirmation was unlocked.
 
+## 2026-06-29 Exp44 Pseudo-Success Path Validation
+
+No new training metric was produced. Path validation blocks the requested
+pseudo-success 30-step preflight:
+
+| split | rows | condition mirror | mask mirror | pseudo target frames mirror | pseudo target mp4 mirror |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| train | 24 | 24 | 24 | 0 | 0 |
+| search | 8 | 8 | 8 | 0 | 0 |
+| shadow | 8 | 8 | 8 | 0 | 0 |
+
+No pseudo-success SFT, GT-only SFT, DPO, optimizer step, or model update was
+launched.
+
 No Exp43 training metrics exist yet. Readback reuses prior gates only as
 prerequisite evidence:
 
