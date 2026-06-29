@@ -1,0 +1,32 @@
+{
+  "active_target": "winner_path from exp46_runner_pseudosuccess_* manifests",
+  "checks": {
+    "active_paths_exist": 112,
+    "active_paths_h20_local": 112,
+    "active_paths_not_hal": 112,
+    "active_paths_not_pai_abs": 112,
+    "frame_count_consistent": 112,
+    "mask_polarity_ok": 112,
+    "no_hard_comp": 112,
+    "no_vor_eval": 112,
+    "resolution_consistent": 112,
+    "rgb_bgr_decode_ok": 112,
+    "source_match": 112,
+    "target_frames_match_mp4": 112,
+    "target_is_pseudo_success": 112,
+    "target_not_gt_condition": 112
+  },
+  "fail_rows": 0,
+  "original_target_frames_note": "Exp45 original target_frames_dir may be empty or partial; Exp46 active runner target was extracted from pseudo_success_mp4 into winner_path.",
+  "overlaps": {
+    "search_shadow_group_overlap": 0,
+    "search_shadow_source_overlap": 0,
+    "train_search_group_overlap": 0,
+    "train_search_source_overlap": 0,
+    "train_shadow_group_overlap": 0,
+    "train_shadow_source_overlap": 0
+  },
+  "rows": 112,
+  "status": "EXP47_MANIFEST_ALIGNMENT_PASS",
+  "worst_failures": []
+}

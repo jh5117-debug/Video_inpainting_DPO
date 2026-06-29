@@ -8,3 +8,11 @@ Exp46 SFT30 aggregate deltas used as forensic starting point:
 | --- | ---: | ---: | ---: | ---: | ---: |
 | search | -4.612642 | -0.548113 | -1.591353 | -4.812891 | -0.019463 |
 | shadow | -3.366753 | -5.674479 | -3.636023 | -3.029058 | 0.021337 |
+
+## Milestone B Manifest Alignment
+
+- Status: `EXP47_MANIFEST_ALIGNMENT_PASS`
+- Rows audited: `112`
+- Failed rows: `0`
+- Split overlap total: `0`
+- Full-pass checks: active paths exist/H20-local/not PAI/not HAL, target pseudo-success identity, target frame/mp4 match, frame count, resolution, RGB sanity, mask polarity, no VOR-Eval, no hard comp.

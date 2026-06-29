@@ -6,3 +6,7 @@ runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp47_h20_minimax_ps
 exp46_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft
 exp46_checkpoint30: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp46_h20_minimax_pseudosuccess_sft/sft_ladder/PSEUDO-SFT-A_lr3em5_step30/checkpoints/checkpoint-30
 readback_report: reports/exp47_pseudosuccess_forensic_readback.md
+
+manifest_alignment_report: reports/exp47_manifest_path_frame_alignment_audit.md
+manifest_alignment_csv: reports/exp47_manifest_path_frame_alignment_audit.csv
+manifest_alignment_summary: reports/exp47_manifest_path_frame_alignment_summary.json

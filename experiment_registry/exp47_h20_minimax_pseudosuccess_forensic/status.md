@@ -1,6 +1,6 @@
 # Exp47 Status
 
-Status: EXP47_READBACK_READY
+Status: EXP47_MANIFEST_ALIGNMENT_PASS
 Branch: research/exp47-h20-minimax-pseudosuccess-forensic-20260629
 Start HEAD: 94d2531a6782914e91bd4629fb477e154cfba98b
 Base Exp46 HEAD: 94d2531a6782914e91bd4629fb477e154cfba98b
@@ -9,3 +9,11 @@ Optimizer step: no
 DPO: no
 GT-only SFT: no
 PAI touched: no
+
+Milestone A: EXP47_READBACK_READY
+Milestone B: EXP47_MANIFEST_ALIGNMENT_PASS
+Milestone C: pending
+Milestone D: pending
+Milestone E: pending
+Milestone F: pending
+Milestone G: pending

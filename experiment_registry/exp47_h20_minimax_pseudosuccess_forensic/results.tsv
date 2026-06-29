@@ -1,2 +1,3 @@
 milestone	status	metric	value	note
 A	EXP47_READBACK_READY	exp46_failure	SFT30_NEGATIVE	Read Exp46 PRD registry reports; forensic hypotheses registered.
+B	EXP47_MANIFEST_ALIGNMENT_PASS	rows_fail_overlap	112/0/0	Active runner targets pass path/frame/mask identity audit; not an alignment bug.

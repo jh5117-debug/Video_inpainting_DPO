@@ -1,3 +1,15 @@
+## 2026-06-30 Exp47 Manifest Alignment Pass
+
+Exp47 advanced to:
+
+```text
+EXP47_MANIFEST_ALIGNMENT_PASS
+```
+
+Audited `112` Exp46 pseudo-success runner manifest rows with `0` failures and zero train/search/shadow overlap. Active targets are H20-local pseudo-success `winner_path` frame directories. Path locality, frame count/resolution, target identity, mask polarity, VOR-Eval exclusion, and hard-comp exclusion all passed. Exp46 regression is therefore not attributed to a manifest/path/frame/mask bug.
+
+Report: `reports/exp47_manifest_path_frame_alignment_audit.md`
+
 ## 2026-06-30 Exp47 H20 MiniMax Forensic Readback
 
 Exp47 advanced to:

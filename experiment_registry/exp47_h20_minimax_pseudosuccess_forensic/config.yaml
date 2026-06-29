@@ -10,3 +10,9 @@ use_hard_comp: false
 modify_shared_trainer: false
 modify_metrics: false
 modify_minimax_official_repo: false
+
+manifest_alignment:
+  active_target_field: winner_path
+  rows_audited: 112
+  expected_status: EXP47_MANIFEST_ALIGNMENT_PASS
+  no_training: true
