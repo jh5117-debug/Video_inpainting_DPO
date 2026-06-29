@@ -1,0 +1,31 @@
+experiment: exp44_pai_minimax_targeted_same_source_mining
+date: 2026-06-29
+model: MiniMax-Remover
+primary_task: targeted_same_source_success_failure_mining
+raw_output_primary: true
+hard_comp_allowed: false
+vor_eval_training_selection_tuning_allowed: false
+training_allowed_by_default: false
+optimizer_step_allowed: false
+official_protocol:
+  scheduler: UniPCMultistepScheduler
+  dtype: float16
+  num_inference_steps: 12
+  iterations: 6
+  cfg: none
+gpu_policy:
+  default_gpus: [0, 1]
+  ddp: false
+  gpu0_role: official_minimax_inference_targeted_mining
+  gpu1_role: metrics_visual_badnoise_scan
+mining_budget:
+  group_a_success_only_initial_new_candidates: 12
+  group_b_failure_only_initial_new_candidates: 12
+  group_c_overlap_initial_new_candidates: 8
+  top_priority_second_round_candidates: 12
+  absolute_max_new_candidates_per_group: 24
+  no_infinite_sampling: true
+gates:
+  same_source_pairs_min: 24
+  same_source_pairs_target: 48
+  badnoise_local_random_ratio_min: 1.5

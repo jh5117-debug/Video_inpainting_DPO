@@ -1,0 +1,2 @@
+date	milestone	status	key_result	report
+2026-06-29	readback_source_plan	EXP44_TARGETED_READBACK_COMPLETED	Locked A/B/C/D target groups from Exp42: overlap 7, success-only 11, failure-only 22, fallback 16; no GPU mining or training launched.	reports/exp44_minimax_targeted_readback.md

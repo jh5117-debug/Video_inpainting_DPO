@@ -1,0 +1,12 @@
+branch: research/exp44-pai-minimax-targeted-same-source-mining-20260629
+base_branch: origin/research/exp42-pai-minimax-successful-removal-badnoise-20260629
+hal_worktree: /home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted
+pai_code_root_requested: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp44_pai_minimax_targeted_same_source_mining
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp44_pai_minimax_targeted_same_source_mining
+exp44_prd: PRD/58_exp44_pai_minimax_targeted_same_source_mining.md
+source_group_plan_csv: reports/exp44_source_group_plan.csv
+source_group_plan_json: reports/exp44_source_group_plan.json
+exp42_success_manifest: exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_selected.jsonl
+exp42_failure_manifest: exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_failure_candidates_selected.jsonl

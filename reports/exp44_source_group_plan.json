@@ -1,0 +1,119 @@
+{
+  "budget": {
+    "absolute_max_new_candidates_per_group": 24,
+    "initial_new_candidates_per_A_or_B_group": 12,
+    "initial_new_candidates_per_C_group": 8,
+    "no_infinite_sampling": true,
+    "second_round_new_candidates_for_top_priority_one_sided_groups": 12
+  },
+  "counts": {
+    "exp42_failure_rows": 80,
+    "exp42_success_rows": 52,
+    "failure_groups": 29,
+    "failure_only_groups": 22,
+    "fallback_groups": 16,
+    "overlap_groups": 7,
+    "planned_groups_total": 56,
+    "success_groups": 18,
+    "success_only_groups": 11
+  },
+  "gates": {
+    "min_same_source_pairs": 24,
+    "target_same_source_pairs": 48
+  },
+  "generated_at": "2026-06-29T07:16:30.110961+00:00",
+  "group_sets": {
+    "failure_only": [
+      "BLENDER_FOREST013",
+      "BLENDER_FOREST015",
+      "BLENDER_FOREST021",
+      "BLENDER_FOREST030",
+      "BLENDER_FOREST049",
+      "BLENDER_GRASS002",
+      "BLENDER_MOUNTAIN007",
+      "BLENDER_MOUNTAIN011",
+      "BLENDER_RIVER004",
+      "BLENDER_RIVER012",
+      "BLENDER_STREET001",
+      "REAL_ENV045_00001",
+      "REAL_ENV046_00003",
+      "REAL_ENV067_00002",
+      "REAL_ENV080_00003",
+      "REAL_ENV086_00002",
+      "REAL_ENV099_00001",
+      "REAL_ENV103_00001",
+      "REAL_ENV103_00003",
+      "REAL_ENV104_00003",
+      "REAL_ENV105_00003",
+      "REAL_ENV144_00001"
+    ],
+    "fallback": [
+      "REAL_ENV100_00001",
+      "REAL_ENV078_00001",
+      "BLENDER_PRODUCT011",
+      "BLENDER_PRODUCT008",
+      "BLENDER_PRODUCT006",
+      "BLENDER_BEACH036",
+      "REAL_ENV155_00015",
+      "REAL_ENV104_00001",
+      "REAL_ENV103_00004",
+      "REAL_ENV103_00002",
+      "REAL_ENV096_00002",
+      "REAL_ENV095_00003",
+      "REAL_ENV091_00001",
+      "REAL_ENV089_00001",
+      "REAL_ENV087_00002",
+      "REAL_ENV087_00001"
+    ],
+    "overlap": [
+      "BLENDER_FOREST026",
+      "BLENDER_GRASS001",
+      "BLENDER_MOUNTAIN002",
+      "REAL_ENV059_00001",
+      "REAL_ENV068_00002",
+      "REAL_ENV097_00001",
+      "REAL_ENV105_00001"
+    ],
+    "success_only": [
+      "BLENDER_DESERT004",
+      "BLENDER_FOREST009",
+      "BLENDER_FOREST017",
+      "BLENDER_FOREST018",
+      "BLENDER_FOREST023",
+      "BLENDER_FOREST028",
+      "BLENDER_OFFICE002",
+      "BLENDER_SCHOOL004",
+      "REAL_ENV047_00001",
+      "REAL_ENV105_00002",
+      "REAL_ENV105_00004"
+    ]
+  },
+  "source_files": {
+    "all": {
+      "exists": true,
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_all.jsonl",
+      "sha256": "f52d6e158acd91c82d4d1122590f8b4d0c6816fed9bcf3c8a291f1ca06a7e8f4"
+    },
+    "failure": {
+      "exists": true,
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_failure_candidates_selected.jsonl",
+      "sha256": "4a154ff67af98fc3430b37160e60c0c84cab745d1b9db3853e938b4d64d65407"
+    },
+    "success": {
+      "exists": true,
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_selected.jsonl",
+      "sha256": "b2891cd5a8980edda48d35d86c3def1e7ccba16d95fc591ff815c32bac55ad81"
+    },
+    "summary": {
+      "exists": true,
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/reports/exp42_minimax_successful_removal_summary.json",
+      "sha256": "96ca08b09d09f225f504a863609a953a111d6fd6886500c745e72db046620c4f"
+    },
+    "visual_review": {
+      "exists": true,
+      "path": "/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted/reports/exp42_minimax_successful_removal_visual_review.csv",
+      "sha256": "95351aeff5ed639e0d54f9bb478d9a94f31152754ea3a41ce40dc7513b003086"
+    }
+  },
+  "status": "EXP44_SOURCE_GROUP_PLAN_LOCKED"
+}

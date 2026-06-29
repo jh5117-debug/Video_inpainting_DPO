@@ -3489,3 +3489,34 @@ Reports:
 - `reports/exp42_minimax_successful_removal_visual_review.md`
 - `reports/exp42_minimax_successful_removal_visual_review.csv`
 - `reports/exp42_minimax_successful_removal_summary.json`
+
+## 2026-06-29 Exp44 PAI MiniMax Targeted Same-Source Mining Readback
+
+Exp44 status: `EXP44_TARGETED_READBACK_COMPLETED`.
+
+New isolated PAI MiniMax data-mining branch/worktree:
+
+- branch: `research/exp44-pai-minimax-targeted-same-source-mining-20260629`
+- worktree: `/home/hj/H20_Video_inpainting_DPO_exp44_pai_minimax_targeted`
+- base: `origin/research/exp42-pai-minimax-successful-removal-badnoise-20260629`
+
+Exp44 is not a training lane. It targets the MiniMax data bottleneck left by
+Exp42: only `7` same-source success/failure overlap scene groups were found,
+below the required `>=24` usable pair gate.
+
+Readback and planning locked:
+
+- existing overlap groups: `7`;
+- success-only groups requiring failure mining: `11`;
+- failure-only groups requiring success mining: `22`;
+- fallback nearby groups: `16`;
+- total planned target groups: `56`.
+
+No GPU mining, SFT, DPO, optimizer step, H20 action, VOR-Eval use, hard comp,
+or MiniMax third-backbone-positive claim was launched by this milestone.
+
+Reports:
+
+- `reports/exp44_minimax_targeted_readback.md`
+- `reports/exp44_source_group_plan.csv`
+- `reports/exp44_source_group_plan.json`
