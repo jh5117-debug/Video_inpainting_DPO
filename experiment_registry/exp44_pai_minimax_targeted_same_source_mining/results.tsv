@@ -1,2 +1,3 @@
 date	milestone	status	key_result	report
 2026-06-29	readback_source_plan	EXP44_TARGETED_READBACK_COMPLETED	Locked A/B/C/D target groups from Exp42: overlap 7, success-only 11, failure-only 22, fallback 16; no GPU mining or training launched.	reports/exp44_minimax_targeted_readback.md
+2026-06-29	targeted_source_manifest	EXP44_TARGETED_SOURCE_MANIFEST_READY	Built A/B/C-only targeted source manifest with 40 source rows, 452 deterministic candidate seeds, 0 missing rows, SHA256 5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b; added Exp44 targeted mining runner; no GPU inference or training launched.	reports/exp44_targeted_source_manifest_summary.json

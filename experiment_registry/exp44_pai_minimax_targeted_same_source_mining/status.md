@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `EXP44_TARGETED_READBACK_COMPLETED`
+Current status: `EXP44_TARGETED_SOURCE_MANIFEST_READY`
 
 ## 2026-06-29 Readback
 
@@ -18,3 +18,15 @@ Reports:
 - `reports/exp44_minimax_targeted_readback.md`
 - `reports/exp44_source_group_plan.csv`
 - `reports/exp44_source_group_plan.json`
+
+## 2026-06-29 Targeted Source Manifest
+
+- Status: `EXP44_TARGETED_SOURCE_MANIFEST_READY`
+- Source rows: `40`
+- Candidate budget: `452`
+- Missing source rows: `0`
+- Manifest: `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_source_manifest.jsonl`
+- Manifest SHA256: `5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b`
+- Runner: `exp44_pai_minimax_targeted_same_source_mining/scripts/mine_targeted_candidates.py`
+
+No GPU inference or training has been launched by this preparation step.

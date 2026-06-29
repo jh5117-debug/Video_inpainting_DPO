@@ -29,3 +29,8 @@ gates:
   same_source_pairs_min: 24
   same_source_pairs_target: 48
   badnoise_local_random_ratio_min: 1.5
+targeted_source_manifest:
+  rows: 40
+  include_fallback: false
+  candidate_budget: 452
+  sha256: 5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b

@@ -1,0 +1,18 @@
+{
+  "bucket_counts": {
+    "A_success_only_find_failure": 11,
+    "B_failure_only_find_success": 22,
+    "C_existing_overlap_strengthen": 7
+  },
+  "candidate_budget": 452,
+  "exp42_all": "exp42_pai_minimax_successful_removal_badnoise/manifests/exp42_minimax_successful_candidates_all.jsonl",
+  "exp42_all_sha256": "f52d6e158acd91c82d4d1122590f8b4d0c6816fed9bcf3c8a291f1ca06a7e8f4",
+  "include_fallback": false,
+  "missing_rows": [],
+  "output_manifest": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_source_manifest.jsonl",
+  "output_manifest_sha256": "5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b",
+  "rows": 40,
+  "source_group_plan": "reports/exp44_source_group_plan.csv",
+  "source_group_plan_sha256": "41707a357665cca22d7388e6fd36a281bd417d6dba400d5f459ce4cd231ae464",
+  "status": "EXP44_TARGETED_SOURCE_MANIFEST_READY"
+}

@@ -3520,3 +3520,24 @@ Reports:
 - `reports/exp44_minimax_targeted_readback.md`
 - `reports/exp44_source_group_plan.csv`
 - `reports/exp44_source_group_plan.json`
+
+## 2026-06-29 Exp44 Targeted Source Manifest Ready
+
+Exp44 status: `EXP44_TARGETED_SOURCE_MANIFEST_READY`.
+
+Prepared the official MiniMax targeted mining input without launching GPU
+inference or training:
+
+- source rows: `40` A/B/C groups;
+- fallback groups included: `false`;
+- deterministic candidate seed budget: `452`;
+- missing source rows: `0`;
+- manifest SHA256: `5147839e1e2d60e0ecc9c77a438a934918605b5fa550fa58d1e3291df7be168b`.
+
+New Exp44-isolated helpers:
+
+- `exp44_pai_minimax_targeted_same_source_mining/scripts/build_targeted_mining_manifest.py`
+- `exp44_pai_minimax_targeted_same_source_mining/scripts/mine_targeted_candidates.py`
+
+No VOR-Eval, hard comp, SFT/DPO, optimizer step, H20 action, or MiniMax
+third-backbone-positive claim was launched.
