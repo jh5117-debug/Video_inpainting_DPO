@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
+Current status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -80,3 +80,24 @@ Reports:
 - `reports/exp45_visual_relabel.md`
 - `reports/exp45_visual_relabel.csv`
 - `reports/exp45_visual_relabel_summary.json`
+
+## 2026-06-29 Formal Stage2 Handoff
+
+- Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
+- Pseudo-success split: `24/8/8`
+- GT distillation split: `24/8/8`
+- Same-source preference split: `24/8/8`
+- Formal minimum split: `32/16/16`
+- Preferred split: `64/24/24`
+- Scene-group overlap: `0`
+- Training status: `TRAINING_NOT_UNLOCKED`
+- H20 touched by Exp45: `false`
+- Training run by Exp45: `false`
+- Optimizer step by Exp45: `false`
+
+Reports:
+
+- `reports/exp45_stage2_formal_handoff.md`
+- `reports/exp45_stage2_formal_handoff.csv`
+- `reports/exp45_stage2_formal_handoff_summary.json`
+- `reports/exp45_h20_handoff_instructions.md`

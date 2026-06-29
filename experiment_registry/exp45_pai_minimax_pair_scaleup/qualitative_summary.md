@@ -24,3 +24,8 @@ training and no H20 execution.
 
 Milestone D did not perform any visual relabeling because no new Exp45
 candidates exist. This is explicitly not a visual review pass.
+
+Milestone E produced an Exp45-prefixed partial handoff so future sessions do
+not confuse Exp44 and Exp45 paths. It remains below the formal data gate and
+must not unlock H20 training. A later PAI/NAS-mounted session should continue
+targeted mining before a formal training package is claimed.

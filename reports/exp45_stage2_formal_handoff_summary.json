@@ -1,0 +1,156 @@
+{
+  "current_session_mnt_nas_available": false,
+  "current_session_mnt_workspace_available": false,
+  "formal_minimum_met": false,
+  "formal_minimum_split": {
+    "search": 16,
+    "shadow": 16,
+    "train": 32
+  },
+  "h20_touched": false,
+  "hard_comp_used": false,
+  "optimizer_step": false,
+  "preferred_split": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
+  "reason": "split remains 24/8/8 because Milestone C mining was blocked before generating new candidates",
+  "scene_group_overlap": {
+    "search_shadow": [],
+    "train_search": [],
+    "train_shadow": []
+  },
+  "source": "Exp44 partial handoff copied to Exp45-prefixed manifests because no new Exp45 candidates were mined",
+  "split_counts": {
+    "search": 8,
+    "shadow": 8,
+    "train": 24
+  },
+  "status": "MINIMAX_STAGE2_FORMAL_DATA_PARTIAL",
+  "training_run": false,
+  "training_status": "TRAINING_NOT_UNLOCKED",
+  "views": {
+    "gt_distillation_search": {
+      "missing_absolute_paths_in_current_session": 24,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_search.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_MOUNTAIN002",
+        "REAL_ENV059_00001"
+      ],
+      "sha256": "4d47e4b3a4177188d24d6a04c117e5b84800a8b8565474e18181f200599dcbc0",
+      "split": "search",
+      "view": "gt_distillation"
+    },
+    "gt_distillation_shadow": {
+      "missing_absolute_paths_in_current_session": 24,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_shadow.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_SCHOOL004",
+        "REAL_ENV097_00001"
+      ],
+      "sha256": "9aaabdaccb02225edfa138a685a1556771b54150f51512566f0e6298c145bdf0",
+      "split": "shadow",
+      "view": "gt_distillation"
+    },
+    "gt_distillation_train": {
+      "missing_absolute_paths_in_current_session": 72,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_train.jsonl",
+      "rows": 24,
+      "scene_groups": [
+        "BLENDER_DESERT004",
+        "BLENDER_FOREST026",
+        "BLENDER_GRASS001",
+        "REAL_ENV080_00003",
+        "REAL_ENV105_00002",
+        "REAL_ENV105_00004"
+      ],
+      "sha256": "24a302b62a72478f4db691559047a6f481a47ce626144c27fd1d51ecb0509e12",
+      "split": "train",
+      "view": "gt_distillation"
+    },
+    "preference_search": {
+      "missing_absolute_paths_in_current_session": 24,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_search.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_MOUNTAIN002",
+        "REAL_ENV059_00001"
+      ],
+      "sha256": "3e155c098832100a678afd33772e4e956cb663648561eb2bc6f864373c99d155",
+      "split": "search",
+      "view": "preference"
+    },
+    "preference_shadow": {
+      "missing_absolute_paths_in_current_session": 24,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_shadow.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_SCHOOL004",
+        "REAL_ENV097_00001"
+      ],
+      "sha256": "68f8543cbd67ee0fc043a7f7aa5d14a1bf0c7694251381e7c98be499bf2ef990",
+      "split": "shadow",
+      "view": "preference"
+    },
+    "preference_train": {
+      "missing_absolute_paths_in_current_session": 72,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_train.jsonl",
+      "rows": 24,
+      "scene_groups": [
+        "BLENDER_DESERT004",
+        "BLENDER_FOREST026",
+        "BLENDER_GRASS001",
+        "REAL_ENV080_00003",
+        "REAL_ENV105_00002",
+        "REAL_ENV105_00004"
+      ],
+      "sha256": "869bb2ab747ca013c2327957ea26736160d010f3534e1e4be9d3952d0551e374",
+      "split": "train",
+      "view": "preference"
+    },
+    "pseudo_success_search": {
+      "missing_absolute_paths_in_current_session": 32,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_search.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_MOUNTAIN002",
+        "REAL_ENV059_00001"
+      ],
+      "sha256": "7fb0ab58b13928379e3d7ecd661b457a57395fa4df04b870fea7d405378715d7",
+      "split": "search",
+      "view": "pseudo_success"
+    },
+    "pseudo_success_shadow": {
+      "missing_absolute_paths_in_current_session": 32,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_shadow.jsonl",
+      "rows": 8,
+      "scene_groups": [
+        "BLENDER_SCHOOL004",
+        "REAL_ENV097_00001"
+      ],
+      "sha256": "2b6371d028fcd960148208b95357ca644f1fe5c2a6b7d0021fe97f15079c0662",
+      "split": "shadow",
+      "view": "pseudo_success"
+    },
+    "pseudo_success_train": {
+      "missing_absolute_paths_in_current_session": 96,
+      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_train.jsonl",
+      "rows": 24,
+      "scene_groups": [
+        "BLENDER_DESERT004",
+        "BLENDER_FOREST026",
+        "BLENDER_GRASS001",
+        "REAL_ENV080_00003",
+        "REAL_ENV105_00002",
+        "REAL_ENV105_00004"
+      ],
+      "sha256": "e4a9d8dd7b039ee5c3296f6b78811a70202207851ec8a384a9c5fbc9bba69a21",
+      "split": "train",
+      "view": "pseudo_success"
+    }
+  },
+  "vor_eval_used": false
+}

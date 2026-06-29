@@ -158,3 +158,25 @@ Reports:
 - `reports/exp45_visual_relabel.md`
 - `reports/exp45_visual_relabel.csv`
 - `reports/exp45_visual_relabel_summary.json`
+
+## 2026-06-29 Milestone E Formal Stage2 Handoff
+
+Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`.
+
+No new Exp45 pairs were available, so the largest valid split remains the
+Exp44 partial handoff copied into Exp45-prefixed manifests:
+
+- pseudo-success distillation: `24/8/8`
+- GT distillation: `24/8/8`
+- same-source preference: `24/8/8`
+- formal minimum: `32/16/16`
+- preferred target: `64/24/24`
+- scene-group overlap: `0`
+- training status: `TRAINING_NOT_UNLOCKED`
+
+Reports:
+
+- `reports/exp45_stage2_formal_handoff.md`
+- `reports/exp45_stage2_formal_handoff.csv`
+- `reports/exp45_stage2_formal_handoff_summary.json`
+- `reports/exp45_h20_handoff_instructions.md`

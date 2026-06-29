@@ -213,7 +213,7 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp45 PAI MiniMax pair scale-up | `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md`, `reports/exp45_visual_relabel.md` |
+| Exp45 PAI MiniMax pair scale-up | `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`; PAI-only correction lane, no H20 execution, no training | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md`, `reports/exp45_visual_relabel.md`, `reports/exp45_stage2_formal_handoff.md` |
 
 Notes:
 
@@ -224,6 +224,8 @@ Notes:
   non-NAS session; repo-side manifest/report checksums were generated.
 - Targeted mining did not launch because the PAI/NAS source root is unavailable
   in this session.
+- Exp45-prefixed formal handoff remains partial at `24/8/8`; training is still
+  locked.
 - MiniMax remains data-signal/plumbing-positive only; no third-adapter-positive
   claim is allowed.
 

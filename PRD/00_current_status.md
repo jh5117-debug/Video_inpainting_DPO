@@ -54,6 +54,17 @@ MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES
 
 No new review pages or videos exist; no visual pass was claimed.
 
+Milestone E produced an Exp45-prefixed partial handoff:
+
+```text
+MINIMAX_STAGE2_FORMAL_DATA_PARTIAL
+```
+
+- pseudo-success / GT / preference splits: `24/8/8`
+- formal minimum: `32/16/16`
+- scene overlap: `0`
+- training status: `TRAINING_NOT_UNLOCKED`
+
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 
 Exp40 MiniMax PSNR-safe rescue reached the LocalDPO v3 minimum data-pool gate:

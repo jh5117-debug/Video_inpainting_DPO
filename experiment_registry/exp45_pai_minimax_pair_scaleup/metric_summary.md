@@ -39,3 +39,12 @@ No Exp45 mining or training metrics have been produced yet.
 - accepted success: `0`
 - accepted failure: `0`
 - status: `MINIMAX_TARGETED_RELABEL_BLOCKED_NO_CANDIDATES`
+
+## Formal Stage2 Handoff
+
+- pseudo-success split: `24/8/8`
+- GT distillation split: `24/8/8`
+- same-source preference split: `24/8/8`
+- formal minimum met: `false`
+- scene overlap: `0`
+- status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
