@@ -3571,3 +3571,33 @@ Reports:
 - `reports/exp44_targeted_mining_metrics.csv`
 - `reports/exp44_targeted_mining_group_yield.csv`
 - `reports/exp44_targeted_mining_summary.json`
+
+## 2026-06-29 Exp44 Strict Visual Relabeling
+
+Exp44 status: `MINIMAX_TARGETED_RELABEL_COMPLETED`.
+
+Codex opened all `47/47` selected candidate review pages and conservatively
+relabeled all `452` targeted mining candidates.
+
+Final relabel counts:
+
+- `SUCCESS_CLEAN`: `33`;
+- `SUCCESS_USABLE`: `92`;
+- usable success including clean: `125`;
+- `FAILURE_MEDIUM_HARD`: `137`;
+- rejected / borderline / non-usable: `190`;
+- same-source groups with both usable success and medium-hard failure: `10`;
+- one-to-one same-source pair precheck: `18`;
+- capped same-source combination precheck: `40`.
+
+This completes label purification and unlocks only Milestone D explicit
+same-source pair construction. It does not unlock training, optimizer steps,
+bad-noise v4, Stage2 handoff, or any MiniMax quality-positive / third-backbone
+claim.
+
+Reports:
+
+- `reports/exp44_targeted_visual_relabel.md`
+- `reports/exp44_targeted_visual_relabel.csv`
+- `reports/exp44_targeted_visual_relabel_group_yield.csv`
+- `reports/exp44_targeted_visual_relabel_summary.json`

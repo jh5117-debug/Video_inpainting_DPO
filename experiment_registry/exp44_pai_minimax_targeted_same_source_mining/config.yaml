@@ -58,3 +58,21 @@ targeted_second_pass_mining:
   optimizer_step: false
   vor_eval_used: false
   hard_comp_used: false
+strict_visual_relabel:
+  status: MINIMAX_TARGETED_RELABEL_COMPLETED
+  pages_opened_by_codex: 47
+  candidates_total: 452
+  selected_page_rows_reviewed: 369
+  success_clean: 33
+  success_usable: 92
+  usable_success_including_clean: 125
+  failure_medium_hard: 137
+  rejected_nonusable: 190
+  same_source_groups_with_pairs: 10
+  one_to_one_same_source_pair_precheck: 18
+  capped_combination_pair_precheck: 40
+  training_run: false
+  optimizer_step: false
+  vor_eval_used: false
+  hard_comp_used: false
+  pair_gate_formal_construction_pending: true

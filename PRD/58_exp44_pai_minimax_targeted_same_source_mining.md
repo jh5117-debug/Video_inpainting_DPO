@@ -1,6 +1,6 @@
 # Exp44 PAI MiniMax Targeted Same-Source Mining
 
-Status: `EXP44_TARGETED_READBACK_COMPLETED`
+Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
 
 ## Purpose
 
@@ -148,3 +148,48 @@ Reports/manifests:
 - `reports/exp44_targeted_mining_summary.json`
 
 Next status target: `MINIMAX_TARGETED_RELABEL_COMPLETED`.
+
+## 2026-06-29 Strict Visual Relabeling Completed
+
+Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`.
+
+Codex opened and inspected all `47` selected candidate review pages generated
+from the targeted mining output. The relabel pass is intentionally conservative:
+fogging, over-erasure, too-close rows, boundary destruction, outside damage, and
+metric-only failures without visible usefulness were kept out of the success and
+medium-hard pools.
+
+Relabel counts:
+
+- total candidates: `452`;
+- selected page rows reviewed: `369`;
+- `SUCCESS_CLEAN`: `33`;
+- `SUCCESS_USABLE`: `92`;
+- usable success including clean: `125`;
+- `FAILURE_MEDIUM_HARD`: `137`;
+- rejected / borderline / non-usable: `190`;
+- same-source groups with both usable success and medium-hard failure: `10`;
+- one-to-one same-source pair precheck: `18`;
+- capped same-source combination precheck: `40`.
+
+Important interpretation: Milestone C completes label purification only. It
+does not unlock training and it does not claim MiniMax quality improvement.
+Milestone D must still construct explicit same-source pairs, enforce
+scene-disjoint train/search/shadow splits, and verify the formal `>=24` usable
+pair gate before bad-noise v4 or any Stage2 handoff is trusted.
+
+Reports/manifests:
+
+- `reports/exp44_targeted_visual_relabel.md`
+- `reports/exp44_targeted_visual_relabel.csv`
+- `reports/exp44_targeted_visual_relabel_group_yield.csv`
+- `reports/exp44_targeted_visual_relabel_summary.json`
+- `reports/exp44_targeted_visual_review_pages/`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_success_clean.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_success_usable.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_failure_medium_hard.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_rejected_borderline.jsonl`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_targeted_visual_relabel_all.jsonl`
+
+Next status target: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED` or
+`MINIMAX_SAME_SOURCE_PAIR_YIELD_INSUFFICIENT`.

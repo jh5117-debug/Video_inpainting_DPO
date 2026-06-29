@@ -44,3 +44,31 @@ Aggregate metric means:
 
 These labels are provisional. Formal pair construction still requires strict
 visual relabeling.
+
+## 2026-06-29 Strict Visual Relabeling
+
+Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`.
+
+Codex opened `47/47` selected review pages covering `369` auto success /
+medium-hard rows, then relabeled all `452` candidates.
+
+Final conservative label counts:
+
+- `SUCCESS_CLEAN`: `33`
+- `SUCCESS_USABLE`: `92`
+- usable success including clean: `125`
+- `FAILURE_MEDIUM_HARD`: `137`
+- `FAILURE_BOUNDARY_BAD`: `21`
+- `FAILURE_FOGGING`: `5`
+- `FAILURE_OUTSIDE_BAD`: `50`
+- `FAILURE_TOO_CLOSE`: `27`
+- `BORDERLINE_REJECT`: `87`
+
+Same-source precheck:
+
+- groups with usable success and medium-hard failure: `10`
+- one-to-one pair precheck: `18`
+- capped same-source combination precheck: `40`
+
+This unlocks Milestone D pair construction only. It does not unlock training,
+bad-noise v4, Stage2 handoff, or a MiniMax quality-positive claim.

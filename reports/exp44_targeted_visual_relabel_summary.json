@@ -1,0 +1,58 @@
+{
+  "candidates_total": 452,
+  "capped_combination_pair_precheck": 40,
+  "capped_combination_pair_precheck_by_group": {
+    "BLENDER_DESERT004": 4,
+    "BLENDER_FOREST026": 4,
+    "BLENDER_GRASS001": 4,
+    "BLENDER_MOUNTAIN002": 4,
+    "BLENDER_SCHOOL004": 4,
+    "REAL_ENV059_00001": 4,
+    "REAL_ENV080_00003": 4,
+    "REAL_ENV097_00001": 4,
+    "REAL_ENV105_00002": 4,
+    "REAL_ENV105_00004": 4
+  },
+  "failure_medium_hard": 137,
+  "label_counts": {
+    "BORDERLINE_REJECT": 87,
+    "FAILURE_BOUNDARY_BAD": 21,
+    "FAILURE_FOGGING": 5,
+    "FAILURE_MEDIUM_HARD": 137,
+    "FAILURE_OUTSIDE_BAD": 50,
+    "FAILURE_TOO_CLOSE": 27,
+    "SUCCESS_CLEAN": 33,
+    "SUCCESS_USABLE": 92
+  },
+  "manifest_hashes": {
+    "exp44_failure_medium_hard.jsonl": "1d67f7cdf6722aac1d81943d613b477616204d71d1b0af8a391e91e771189d02",
+    "exp44_rejected_borderline.jsonl": "20bc869e680e04f14493eb9dd488a8e0a6eefed93db84fcb64279b1f201e2cb8",
+    "exp44_success_clean.jsonl": "ada2ac925dcb937ae54b079789ea72ba87066dfaa66736d26a8687283fb6478d",
+    "exp44_success_usable.jsonl": "c4578ad9112661860db2a62b82a5670dc1db8597fb2ae89d3d45830f102afa13",
+    "exp44_targeted_visual_relabel_all.jsonl": "49f4d34226767e0fe2434ca5692cd8d100313706500ac0c8866700aeb0537496"
+  },
+  "notes": [
+    "All 47 selected candidate review pages were opened before relabeling.",
+    "Labels are intentionally conservative: fogging, too-close, outside damage and boundary destruction are excluded from success and medium-hard pools.",
+    "No training, optimizer step, hard comp, or VOR-Eval selection was used."
+  ],
+  "one_to_one_pair_precheck_by_group": {
+    "BLENDER_DESERT004": 1,
+    "BLENDER_FOREST026": 2,
+    "BLENDER_GRASS001": 4,
+    "BLENDER_MOUNTAIN002": 1,
+    "BLENDER_SCHOOL004": 1,
+    "REAL_ENV059_00001": 3,
+    "REAL_ENV080_00003": 3,
+    "REAL_ENV097_00001": 1,
+    "REAL_ENV105_00002": 1,
+    "REAL_ENV105_00004": 1
+  },
+  "one_to_one_same_source_pair_precheck": 18,
+  "pages_inspected": 47,
+  "same_source_groups_with_pairs": 10,
+  "selected_pages_rows": 369,
+  "status": "MINIMAX_TARGETED_RELABEL_COMPLETED",
+  "success_clean": 33,
+  "success_usable_including_clean": 125
+}

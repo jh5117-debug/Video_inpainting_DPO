@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `MINIMAX_TARGETED_MINING_COMPLETED`
+Current status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
 
 ## 2026-06-29 Readback
 
@@ -58,3 +58,30 @@ Reports:
 - `reports/exp44_targeted_mining_metrics.csv`
 - `reports/exp44_targeted_mining_group_yield.csv`
 - `reports/exp44_targeted_mining_summary.json`
+
+## 2026-06-29 Strict Visual Relabeling
+
+- Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+- Review pages opened: `47`
+- Candidates relabeled: `452`
+- Selected candidate page rows reviewed: `369`
+- SUCCESS_CLEAN: `33`
+- SUCCESS_USABLE: `92`
+- FAILURE_MEDIUM_HARD: `137`
+- Rejected / borderline / non-usable: `190`
+- Same-source groups with usable success and medium-hard failure: `10`
+- One-to-one same-source pair precheck: `18`
+- Capped same-source combination precheck: `40`
+- Training run: `false`
+- Optimizer step: `false`
+- VOR-Eval used: `false`
+- Hard comp used: `false`
+
+Reports:
+
+- `reports/exp44_targeted_visual_relabel.md`
+- `reports/exp44_targeted_visual_relabel.csv`
+- `reports/exp44_targeted_visual_relabel_group_yield.csv`
+- `reports/exp44_targeted_visual_relabel_summary.json`
+
+Formal same-source pair construction remains pending Milestone D.
