@@ -1,5 +1,5 @@
 # Exp49 Qualitative Summary
 
-No ROSE visual evidence has been generated or reviewed.
+No ROSE visual evidence has been generated or reviewed yet.
 
-Reason: PAI access is not verified from this HAL session, and no ROSE inference output exists.
+Milestone B only downloaded/audited assets and produced inventory/checksum reports.

@@ -1,7 +1,7 @@
 # Exp49 Status
 
-Current status: `EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD`
+Current status: `ROSE_ASSETS_PARTIAL`
 
-Milestone A readback/source audit was completed from the HAL worktree only. PAI execution was not verified and no asset download or GPU work was performed.
+Milestone B attempted PAI direct download for ROSE code, HF Space, ROSE model, Wan base model, and ROSE-Dataset metadata/sample inventory. Direct HuggingFace timed out, so PAI used hf-mirror. No H20 relay, GPU work, inference, or training was used.
 
-Next required action: resume from a verified PAI shell and start Milestone B asset download.
+Next required action: run Milestone C environment/import smoke if code/model/base assets are sufficient.

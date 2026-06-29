@@ -1,6 +1,6 @@
 milestone	status	notes
 A_readback	EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD	Public ROSE assets audited from HAL; PAI shell not verified; no downloads.
-B_assets	NOT_STARTED	Blocked until verified PAI access.
+B_assets	ROSE_ASSETS_PARTIAL	PAI direct asset download used hf-mirror after huggingface.co timeout; see reports/exp49_rose_asset_download.md.
 C_env	NOT_STARTED	Blocked until assets and verified PAI access.
 D_feasibility	NOT_STARTED	Blocked until code assets are available.
 E_inference_smoke	NOT_STARTED	Blocked until env and weights are ready.

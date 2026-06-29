@@ -609,3 +609,9 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 
 No ROSE baseline or adapter evidence is claimed. The current branch only records
 the public readback and the PAI access blocker.
+
+## 2026-06-30 Exp49 Asset Download Update
+
+| Experiment | Milestone | Status | Notes |
+| --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | B assets | `ROSE_ASSETS_PARTIAL` | PAI direct download via hf-mirror after huggingface.co timeout; see `reports/exp49_rose_asset_download.md`; no training or inference run. |

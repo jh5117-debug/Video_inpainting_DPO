@@ -1,5 +1,5 @@
 # Exp49 Metric Summary
 
-No ROSE metrics have been computed.
+Milestone B generated asset inventory and checksums only. No ROSE inference metrics have been computed yet.
 
-Reason: PAI access is not verified from this HAL session, and Milestone B+ did not start.
+Asset status: `ROSE_ASSETS_PARTIAL`.

@@ -1820,3 +1820,7 @@ adapter micro gate was started.
 ROSE public assets exist and are recorded in
 `reports/exp49_rose_readback.md`. Next action is to resume from a verified PAI
 shell and start staged asset download.
+
+## 2026-06-30 Exp49 ROSE Asset Download
+
+Exp49 Milestone B was executed on verified PAI host `dsw-753014-85f54df947-bkp7h`. Direct `huggingface.co` access timed out, so PAI direct download used `hf-mirror.com`. Status: `ROSE_ASSETS_PARTIAL`. Asset inventory, checksum report, CSV, and summary JSON were written under `reports/exp49_rose_asset_*`. No H20 relay, GPU work, inference, training, or optimizer step was used.

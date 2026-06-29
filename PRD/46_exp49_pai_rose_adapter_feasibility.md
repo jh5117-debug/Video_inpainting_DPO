@@ -96,3 +96,11 @@ ls -ld /mnt/nas/hj/H20_Video_inpainting_DPO /mnt/workspace/hj/nas_hj
 ```
 
 Only after that should Milestone B start staged asset download.
+
+## Milestone B Update - 2026-06-30
+
+Status: `ROSE_ASSETS_PARTIAL`.
+
+PAI direct download was attempted for ROSE official code, HF Space, ROSE model, Wan base model, and ROSE-Dataset metadata/filelist. Direct `huggingface.co` timed out from PAI, so `hf-mirror.com` was used. Reports are available at `reports/exp49_rose_asset_download.md`, `reports/exp49_rose_asset_download.csv`, `reports/exp49_rose_asset_download_summary.json`, `reports/exp49_rose_asset_inventory.txt`, and `reports/exp49_rose_asset_sha256.txt`.
+
+No H20 relay, GPU work, inference, training, or optimizer step was used.

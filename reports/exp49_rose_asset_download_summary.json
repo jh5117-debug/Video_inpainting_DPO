@@ -1,0 +1,55 @@
+{
+  "generated": "2026-06-30T07:20:09,898694933+08:00",
+  "hostname": "dsw-753014-85f54df947-bkp7h",
+  "status_rows": [
+    {
+      "asset": "code",
+      "status": "READY",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE/Kunbyte-AI_ROSE",
+      "note": "6be41c5420bf331c6d491277d5a6feaf9b3a779a"
+    },
+    {
+      "asset": "hf_space",
+      "status": "READY",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE_HF_Space/Kunbyte_ROSE",
+      "note": "0ea1fc65605d8734bd85df2c12d8198687cc4229"
+    },
+    {
+      "asset": "hf_model",
+      "status": "READY",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Kunbyte_ROSE",
+      "note": "hf mirror model download"
+    },
+    {
+      "asset": "wan_base",
+      "status": "READY",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP",
+      "note": "hf mirror base download"
+    },
+    {
+      "asset": "dataset_filelist",
+      "status": "PARTIAL",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp49_pai_rose_adapter_feasibility/rose_dataset_filelist.txt",
+      "note": "file list unavailable or timed out"
+    },
+    {
+      "asset": "dataset_metadata",
+      "status": "READY",
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/rose_dataset/Kunbyte_ROSE_Dataset",
+      "note": "README/.gitattributes staged only"
+    }
+  ],
+  "ready_assets": [
+    "code",
+    "hf_space",
+    "hf_model",
+    "wan_base",
+    "dataset_metadata"
+  ],
+  "blocked_assets": [],
+  "partial_assets": [
+    "dataset_filelist"
+  ],
+  "policy": "PAI direct download attempted; huggingface.co timed out; hf-mirror.com used; no H20 relay used",
+  "final_status": "ROSE_ASSETS_PARTIAL"
+}

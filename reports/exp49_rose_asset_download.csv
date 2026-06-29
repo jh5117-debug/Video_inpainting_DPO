@@ -1,0 +1,7 @@
+asset,status,path,note,exists,file_count,size
+code,READY,/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE/Kunbyte-AI_ROSE,6be41c5420bf331c6d491277d5a6feaf9b3a779a,True,167,150M
+hf_space,READY,/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE_HF_Space/Kunbyte_ROSE,0ea1fc65605d8734bd85df2c12d8198687cc4229,True,123,1.1M
+hf_model,READY,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Kunbyte_ROSE,hf mirror model download,True,14,3.0G
+wan_base,READY,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP,hf mirror base download,True,56,19G
+dataset_filelist,PARTIAL,/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp49_pai_rose_adapter_feasibility/rose_dataset_filelist.txt,file list unavailable or timed out,True,1,0
+dataset_metadata,READY,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/rose_dataset/Kunbyte_ROSE_Dataset,README/.gitattributes staged only,True,2,13K
