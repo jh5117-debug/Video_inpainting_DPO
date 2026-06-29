@@ -63,9 +63,15 @@ No Exp45 mining or training metrics have been produced yet.
 
 ## Formal Stage2 Handoff
 
-- pseudo-success split: `24/8/8`
-- GT distillation split: `24/8/8`
-- same-source preference split: `24/8/8`
-- formal minimum met: `false`
+- pseudo-success split: `64/24/24`
+- GT distillation split: `64/24/24`
+- same-source preference split: `64/24/24`
+- total same-source pair rows: `112`
+- formal minimum met: `true`
+- preferred split met: `true`
 - scene overlap: `0`
-- status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
+- path checks passed on PAI: `true`
+- H20 filelist required paths: `326`
+- H20 filelist missing paths: `0`
+- H20 filelist total ready bytes: `99685806`
+- status: `MINIMAX_STAGE2_FORMAL_DATA_READY`

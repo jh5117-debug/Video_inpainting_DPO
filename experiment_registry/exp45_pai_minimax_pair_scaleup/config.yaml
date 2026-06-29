@@ -23,3 +23,10 @@ source_exp44_split:
   train: 24
   search: 8
   shadow: 8
+formal_exp45_split:
+  train: 64
+  search: 24
+  shadow: 24
+first_h20_experiment: pseudo_success_sft_30_step
+do_not_start_first: gt_only_sft
+formal_data_status: MINIMAX_STAGE2_FORMAL_DATA_READY

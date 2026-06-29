@@ -32,11 +32,14 @@ new-row same-source pair capacity is still lower than the raw auto count, so
 formal split construction must combine the new rows with the Exp44 accepted
 pool and enforce disjoint scene groups.
 
-Milestone E produced an Exp45-prefixed partial handoff so future sessions do
-not confuse Exp44 and Exp45 paths. It remains below the formal data gate and
-must not unlock H20 training. A later PAI/NAS-mounted session should continue
-targeted mining before a formal training package is claimed.
+Milestone E built the formal Exp45 handoff by combining the Exp44 curated pool
+with the new Exp45 PAI relabel output. The handoff now reaches the preferred
+`64/24/24` split for pseudo-success distillation, GT distillation, and
+same-source preference rows, with zero scene overlap and all referenced paths
+visible on PAI. H20 is still untouched by this lane; the next H20 action is to
+mirror the package and run pseudo-success SFT 30-step first, not GT-only SFT.
 
-Paper positioning: MiniMax remains data-signal-emerging and plumbing-positive,
-not quality-positive. DiffuEraser and VideoPainter remain the only current
-positive adapter evidence.
+Paper positioning: MiniMax now has a curated same-source Stage2 handoff ready
+for H20 training, but it is still not quality-positive and not third-adapter
+evidence until H20 training plus shadow evaluation passes. DiffuEraser and
+VideoPainter remain the only current positive adapter evidence.

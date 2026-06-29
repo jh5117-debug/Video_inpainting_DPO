@@ -213,7 +213,7 @@ Do not run DPO Stage2, VBench for inpainting, or long D3 sweeps until this sanit
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp45 PAI MiniMax pair scale-up | `MINIMAX_TARGETED_RELABEL_COMPLETED`; 72 new PAI candidates relabeled into 28 usable successes and 22 medium-hard failures; formal split pending | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_hal_environment_blocker_correction.md`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md`, `reports/exp45_visual_relabel.md`, `reports/exp45_stage2_formal_handoff.md` |
+| Exp45 PAI MiniMax pair scale-up | `MINIMAX_STAGE2_FORMAL_DATA_READY`; formal `64/24/24` Stage2 handoff ready for H20 mirror and pseudo-success SFT preflight; no training run by PAI | `PRD/59_exp45_pai_minimax_pair_scaleup.md`, `experiment_registry/exp45_pai_minimax_pair_scaleup`, `reports/exp45_hal_environment_blocker_correction.md`, `reports/exp45_pair_scaleup_readback.md`, `reports/exp45_scope_deviation_h20_execution.md`, `reports/exp45_h20_handoff_package.md`, `reports/exp45_targeted_scaleup_mining.md`, `reports/exp45_visual_relabel.md`, `reports/exp45_stage2_formal_handoff.md` |
 
 Notes:
 

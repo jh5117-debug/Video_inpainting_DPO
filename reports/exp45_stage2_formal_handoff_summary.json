@@ -1,156 +1,242 @@
 {
-  "current_session_mnt_nas_available": false,
-  "current_session_mnt_workspace_available": false,
-  "formal_minimum_met": false,
-  "formal_minimum_split": {
+  "do_not_start_first": "GT-only SFT",
+  "failure_rows_input": 159,
+  "first_h20_experiment": "pseudo-success SFT 30-step, then 100-step only if 30-step gate passes",
+  "group_rows": [
+    {
+      "failure_medium_hard": 1,
+      "pairs_built": 11,
+      "source_group": "BLENDER_DESERT004",
+      "split": "train",
+      "success_usable": 11
+    },
+    {
+      "failure_medium_hard": 2,
+      "pairs_built": 12,
+      "source_group": "BLENDER_FOREST026",
+      "split": "train",
+      "success_usable": 6
+    },
+    {
+      "failure_medium_hard": 4,
+      "pairs_built": 16,
+      "source_group": "BLENDER_GRASS001",
+      "split": "train",
+      "success_usable": 4
+    },
+    {
+      "failure_medium_hard": 9,
+      "pairs_built": 25,
+      "source_group": "REAL_ENV080_00003",
+      "split": "train",
+      "success_usable": 3
+    },
+    {
+      "failure_medium_hard": 1,
+      "pairs_built": 0,
+      "source_group": "REAL_ENV105_00002",
+      "split": "train",
+      "success_usable": 11
+    },
+    {
+      "failure_medium_hard": 1,
+      "pairs_built": 0,
+      "source_group": "REAL_ENV105_00004",
+      "split": "train",
+      "success_usable": 11
+    },
+    {
+      "failure_medium_hard": 3,
+      "pairs_built": 24,
+      "source_group": "BLENDER_MOUNTAIN002",
+      "split": "search",
+      "success_usable": 16
+    },
+    {
+      "failure_medium_hard": 6,
+      "pairs_built": 0,
+      "source_group": "REAL_ENV059_00001",
+      "split": "search",
+      "success_usable": 14
+    },
+    {
+      "failure_medium_hard": 14,
+      "pairs_built": 0,
+      "source_group": "REAL_ENV068_00002",
+      "split": "search",
+      "success_usable": 0
+    },
+    {
+      "failure_medium_hard": 1,
+      "pairs_built": 14,
+      "source_group": "BLENDER_SCHOOL004",
+      "split": "shadow",
+      "success_usable": 14
+    },
+    {
+      "failure_medium_hard": 5,
+      "pairs_built": 10,
+      "source_group": "REAL_ENV097_00001",
+      "split": "shadow",
+      "success_usable": 7
+    },
+    {
+      "failure_medium_hard": 9,
+      "pairs_built": 0,
+      "source_group": "REAL_ENV105_00001",
+      "split": "shadow",
+      "success_usable": 1
+    }
+  ],
+  "hard_comp_used": false,
+  "manifest_hashes": {
+    "exp45_same_source_pairs_all.jsonl": "f55feee1873453286164b3e6ed6392d77ce0d98e8d6ea68e7ba84a2750ba35ad",
+    "exp45_same_source_pairs_search.jsonl": "6acafc57a62a08acd28851fb29556fbd84d2b366c95d54a591bc9ffe249902ef",
+    "exp45_same_source_pairs_shadow.jsonl": "a61035c249f8c71f92f8944ad85501ae24b0c0beffab4eb80709d453498df850",
+    "exp45_same_source_pairs_train.jsonl": "ec44c02f6786747f0ba8fb71c400b8c25a15990738b797c35e23b9991ebacde5"
+  },
+  "minimum_counts": {
     "search": 16,
     "shadow": 16,
     "train": 32
   },
-  "h20_touched": false,
-  "hard_comp_used": false,
   "optimizer_step": false,
-  "preferred_split": {
+  "outputs": {
+    "gt_distillation_search": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_gt_distill_search.jsonl",
+      "rows": 24,
+      "sha256": "b835eff87d90c968ecb05119b83bd3db7155b88ab6f945dc7def371474019bc8"
+    },
+    "gt_distillation_shadow": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_gt_distill_shadow.jsonl",
+      "rows": 24,
+      "sha256": "bc6c9ce82ddf83ac6755a024afd1810418f00335f90f011e33fe08b155929efc"
+    },
+    "gt_distillation_train": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_gt_distill_train.jsonl",
+      "rows": 64,
+      "sha256": "03ec123a9176495e81d6571dff4bf52cf0309879ab959ae3c3989051724550eb"
+    },
+    "pseudo_success_distillation_search": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_pseudosuccess_search.jsonl",
+      "rows": 24,
+      "sha256": "681b6273f1996ad89416c204b57eb73ded3506a4d12917bba4ecc0f70b20788a"
+    },
+    "pseudo_success_distillation_shadow": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_pseudosuccess_shadow.jsonl",
+      "rows": 24,
+      "sha256": "4b283439c7005ff17161c3c4f2f7197e37b3c8ff5b39b5e58c9058ddb96dae6a"
+    },
+    "pseudo_success_distillation_train": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_pseudosuccess_train.jsonl",
+      "rows": 64,
+      "sha256": "bbe892d6848edc4a33fad9917cbecd029168a42f3504202b8a80a94a434b42ab"
+    },
+    "same_source_preference_search": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_preference_search.jsonl",
+      "rows": 24,
+      "sha256": "fa99167b31d7851b892ba75778356d312058506b1dcb044f744b3fcd3801b439"
+    },
+    "same_source_preference_shadow": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_preference_shadow.jsonl",
+      "rows": 24,
+      "sha256": "b912dcd9798b2ba03f799d053cbd60e18b51edd5b2cb52913dec410148d5dfa0"
+    },
+    "same_source_preference_train": {
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/formal_manifests/exp45_stage2_preference_train.jsonl",
+      "rows": 64,
+      "sha256": "46782886337cf80a43dea450ed25e5c8507e5ed0b2888432ad03b2fcabaa64ad"
+    }
+  },
+  "path_checks": {
+    "gt_distillation": {
+      "search": {
+        "condition_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "target_path_exists": 24
+      },
+      "shadow": {
+        "condition_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "target_path_exists": 24
+      },
+      "train": {
+        "condition_path_exists": 64,
+        "mask_path_exists": 64,
+        "rows": 64,
+        "target_path_exists": 64
+      }
+    },
+    "pseudo_success_distillation": {
+      "search": {
+        "condition_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "target_path_exists": 24
+      },
+      "shadow": {
+        "condition_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "target_path_exists": 24
+      },
+      "train": {
+        "condition_path_exists": 64,
+        "mask_path_exists": 64,
+        "rows": 64,
+        "target_path_exists": 64
+      }
+    },
+    "same_source_preference": {
+      "search": {
+        "condition_path_exists": 24,
+        "loser_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "winner_path_exists": 24
+      },
+      "shadow": {
+        "condition_path_exists": 24,
+        "loser_path_exists": 24,
+        "mask_path_exists": 24,
+        "rows": 24,
+        "winner_path_exists": 24
+      },
+      "train": {
+        "condition_path_exists": 64,
+        "loser_path_exists": 64,
+        "mask_path_exists": 64,
+        "rows": 64,
+        "winner_path_exists": 64
+      }
+    }
+  },
+  "preferred_counts": {
     "search": 24,
     "shadow": 24,
     "train": 64
   },
-  "reason": "split remains 24/8/8 because Milestone C mining was blocked before generating new candidates",
+  "requested_counts": {
+    "search": 24,
+    "shadow": 24,
+    "train": 64
+  },
   "scene_group_overlap": {
     "search_shadow": [],
     "train_search": [],
     "train_shadow": []
   },
-  "source": "Exp44 partial handoff copied to Exp45-prefixed manifests because no new Exp45 candidates were mined",
   "split_counts": {
-    "search": 8,
-    "shadow": 8,
-    "train": 24
+    "search": 24,
+    "shadow": 24,
+    "train": 64
   },
-  "status": "MINIMAX_STAGE2_FORMAL_DATA_PARTIAL",
+  "status": "MINIMAX_STAGE2_FORMAL_DATA_READY",
+  "success_rows_input": 153,
+  "total_pairs": 112,
   "training_run": false,
-  "training_status": "TRAINING_NOT_UNLOCKED",
-  "views": {
-    "gt_distillation_search": {
-      "missing_absolute_paths_in_current_session": 24,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_search.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_MOUNTAIN002",
-        "REAL_ENV059_00001"
-      ],
-      "sha256": "4d47e4b3a4177188d24d6a04c117e5b84800a8b8565474e18181f200599dcbc0",
-      "split": "search",
-      "view": "gt_distillation"
-    },
-    "gt_distillation_shadow": {
-      "missing_absolute_paths_in_current_session": 24,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_shadow.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_SCHOOL004",
-        "REAL_ENV097_00001"
-      ],
-      "sha256": "9aaabdaccb02225edfa138a685a1556771b54150f51512566f0e6298c145bdf0",
-      "split": "shadow",
-      "view": "gt_distillation"
-    },
-    "gt_distillation_train": {
-      "missing_absolute_paths_in_current_session": 72,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_train.jsonl",
-      "rows": 24,
-      "scene_groups": [
-        "BLENDER_DESERT004",
-        "BLENDER_FOREST026",
-        "BLENDER_GRASS001",
-        "REAL_ENV080_00003",
-        "REAL_ENV105_00002",
-        "REAL_ENV105_00004"
-      ],
-      "sha256": "24a302b62a72478f4db691559047a6f481a47ce626144c27fd1d51ecb0509e12",
-      "split": "train",
-      "view": "gt_distillation"
-    },
-    "preference_search": {
-      "missing_absolute_paths_in_current_session": 24,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_search.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_MOUNTAIN002",
-        "REAL_ENV059_00001"
-      ],
-      "sha256": "3e155c098832100a678afd33772e4e956cb663648561eb2bc6f864373c99d155",
-      "split": "search",
-      "view": "preference"
-    },
-    "preference_shadow": {
-      "missing_absolute_paths_in_current_session": 24,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_shadow.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_SCHOOL004",
-        "REAL_ENV097_00001"
-      ],
-      "sha256": "68f8543cbd67ee0fc043a7f7aa5d14a1bf0c7694251381e7c98be499bf2ef990",
-      "split": "shadow",
-      "view": "preference"
-    },
-    "preference_train": {
-      "missing_absolute_paths_in_current_session": 72,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_train.jsonl",
-      "rows": 24,
-      "scene_groups": [
-        "BLENDER_DESERT004",
-        "BLENDER_FOREST026",
-        "BLENDER_GRASS001",
-        "REAL_ENV080_00003",
-        "REAL_ENV105_00002",
-        "REAL_ENV105_00004"
-      ],
-      "sha256": "869bb2ab747ca013c2327957ea26736160d010f3534e1e4be9d3952d0551e374",
-      "split": "train",
-      "view": "preference"
-    },
-    "pseudo_success_search": {
-      "missing_absolute_paths_in_current_session": 32,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_search.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_MOUNTAIN002",
-        "REAL_ENV059_00001"
-      ],
-      "sha256": "7fb0ab58b13928379e3d7ecd661b457a57395fa4df04b870fea7d405378715d7",
-      "split": "search",
-      "view": "pseudo_success"
-    },
-    "pseudo_success_shadow": {
-      "missing_absolute_paths_in_current_session": 32,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_shadow.jsonl",
-      "rows": 8,
-      "scene_groups": [
-        "BLENDER_SCHOOL004",
-        "REAL_ENV097_00001"
-      ],
-      "sha256": "2b6371d028fcd960148208b95357ca644f1fe5c2a6b7d0021fe97f15079c0662",
-      "split": "shadow",
-      "view": "pseudo_success"
-    },
-    "pseudo_success_train": {
-      "missing_absolute_paths_in_current_session": 96,
-      "path": "exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_train.jsonl",
-      "rows": 24,
-      "scene_groups": [
-        "BLENDER_DESERT004",
-        "BLENDER_FOREST026",
-        "BLENDER_GRASS001",
-        "REAL_ENV080_00003",
-        "REAL_ENV105_00002",
-        "REAL_ENV105_00004"
-      ],
-      "sha256": "e4a9d8dd7b039ee5c3296f6b78811a70202207851ec8a384a9c5fbc9bba69a21",
-      "split": "train",
-      "view": "pseudo_success"
-    }
-  },
+  "training_status": "TRAINING_UNLOCKED_FOR_H20_HANDOFF",
   "vor_eval_used": false
 }

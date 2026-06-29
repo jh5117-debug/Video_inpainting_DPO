@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+Status: `MINIMAX_STAGE2_FORMAL_DATA_READY`
 
 ## Purpose
 
@@ -214,25 +214,56 @@ Manifests:
 
 ## 2026-06-29 Milestone E Formal Stage2 Handoff
 
-Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`.
+Status: `MINIMAX_STAGE2_FORMAL_DATA_READY`.
 
-No new Exp45 pairs were available, so the largest valid split remains the
-Exp44 partial handoff copied into Exp45-prefixed manifests:
+Exp45 combined the Exp44 accepted pool with the real PAI Exp45 relabel output
+and reached the preferred formal handoff split.
 
-- pseudo-success distillation: `24/8/8`
-- GT distillation: `24/8/8`
-- same-source preference: `24/8/8`
+- pseudo-success distillation: `64/24/24`
+- GT distillation: `64/24/24`
+- same-source preference: `64/24/24`
 - formal minimum: `32/16/16`
 - preferred target: `64/24/24`
+- total same-source pair rows: `112`
 - scene-group overlap: `0`
-- training status: `TRAINING_NOT_UNLOCKED`
+- path checks: all condition / mask / target / winner / loser paths exist on PAI
+- H20 filelist status: `EXP45_H20_FILELIST_READY`
+- H20 filelist paths: `326`
+- H20 filelist missing paths: `0`
+- H20 mirror executed by PAI: `false`
+- training status: `TRAINING_UNLOCKED_FOR_H20_HANDOFF`
+- first H20 experiment: `pseudo-success SFT 30-step`
+- do not start first: `GT-only SFT`
+- H20 touched by Exp45: `false`
+- training run by Exp45: `false`
+- optimizer step by Exp45: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 
 - `reports/exp45_stage2_formal_handoff.md`
 - `reports/exp45_stage2_formal_handoff.csv`
 - `reports/exp45_stage2_formal_handoff_summary.json`
+- `reports/exp45_stage2_formal_group_yield.csv`
 - `reports/exp45_h20_handoff_instructions.md`
+- `reports/exp45_h20_handoff_package.md`
+- `reports/exp45_h20_handoff_package.json`
+- `reports/exp45_h20_required_filelist.txt`
+- `reports/exp45_h20_required_sha256.txt`
+- `reports/exp45_h20_required_filelist.csv`
+
+Manifest paths:
+
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_train.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_search.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_pseudosuccess_shadow.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_train.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_search.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_gt_distill_shadow.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_train.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_search.jsonl`
+- `exp45_pai_minimax_pair_scaleup/manifests/exp45_stage2_preference_shadow.jsonl`
 
 ## 2026-06-29 Milestone G Paper Positioning
 

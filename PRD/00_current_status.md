@@ -4,7 +4,7 @@ Exp45 has started as a PAI-only correction and continuation of the Exp44
 MiniMax same-source data route:
 
 ```text
-MINIMAX_TARGETED_RELABEL_COMPLETED
+MINIMAX_STAGE2_FORMAL_DATA_READY
 ```
 
 Readback verified Exp44 remains partial:
@@ -109,6 +109,19 @@ Exp45 strict visual relabel is now complete:
 
 Next Exp45 step: construct the formal same-source train/search/shadow split
 from Exp44 + Exp45 accepted rows.
+
+Exp45 formal Stage2 handoff is now ready:
+
+- pseudo-success / GT / preference split: `64/24/24`
+- total same-source pair rows: `112`
+- scene overlap: `0`
+- H20 filelist status: `EXP45_H20_FILELIST_READY`
+- missing required H20 paths: `0`
+- training / optimizer step by Exp45: `false`
+- H20 touched by Exp45: `false`
+
+Next H20 step: mirror the Exp45 package and run pseudo-success SFT 30-step
+first. Do not start GT-only SFT first.
 
 ## 2026-06-29 Exp40 MiniMax LocalDPO v3 Pool
 

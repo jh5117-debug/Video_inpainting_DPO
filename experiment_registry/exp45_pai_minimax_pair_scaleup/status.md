@@ -1,6 +1,6 @@
 # Exp45 Status
 
-Current status: `MINIMAX_TARGETED_RELABEL_COMPLETED`
+Current status: `MINIMAX_STAGE2_FORMAL_DATA_READY`
 
 ## 2026-06-29 Scope Correction And Readback
 
@@ -104,17 +104,27 @@ Reports:
 
 ## 2026-06-29 Formal Stage2 Handoff
 
-- Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
-- Pseudo-success split: `24/8/8`
-- GT distillation split: `24/8/8`
-- Same-source preference split: `24/8/8`
+- Status: `MINIMAX_STAGE2_FORMAL_DATA_READY`
+- Pseudo-success split: `64/24/24`
+- GT distillation split: `64/24/24`
+- Same-source preference split: `64/24/24`
 - Formal minimum split: `32/16/16`
 - Preferred split: `64/24/24`
+- Total same-source pair rows: `112`
 - Scene-group overlap: `0`
-- Training status: `TRAINING_NOT_UNLOCKED`
+- All PAI manifest path checks passed: `true`
+- H20 handoff filelist status: `EXP45_H20_FILELIST_READY`
+- H20 required paths: `326`
+- H20 required missing paths: `0`
+- H20 filelist total ready bytes: `99685806`
+- Training status: `TRAINING_UNLOCKED_FOR_H20_HANDOFF`
+- First H20 experiment: `pseudo-success SFT 30-step`
+- Do not start first: `GT-only SFT`
 - H20 touched by Exp45: `false`
 - Training run by Exp45: `false`
 - Optimizer step by Exp45: `false`
+- VOR-Eval used: `false`
+- hard comp used: `false`
 
 Reports:
 

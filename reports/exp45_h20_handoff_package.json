@@ -1,115 +1,19 @@
 {
-  "current_session_mnt_nas_available": false,
-  "current_session_mnt_workspace_available": false,
-  "directory_ready_count": 0,
-  "file_ready_count": 0,
-  "filelist_path": "reports/exp45_h20_required_filelist.txt",
-  "h20_target_root": "/home/hj/H20_Video_inpainting_DPO_h20_mirror/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742",
-  "local_repo_artifacts": [
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_train.jsonl",
-      "sha256": "e4a9d8dd7b039ee5c3296f6b78811a70202207851ec8a384a9c5fbc9bba69a21",
-      "size_bytes": 51963
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_search.jsonl",
-      "sha256": "7fb0ab58b13928379e3d7ecd661b457a57395fa4df04b870fea7d405378715d7",
-      "size_bytes": 17454
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_pseudo_success_shadow.jsonl",
-      "sha256": "2b6371d028fcd960148208b95357ca644f1fe5c2a6b7d0021fe97f15079c0662",
-      "size_bytes": 17364
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_train.jsonl",
-      "sha256": "24a302b62a72478f4db691559047a6f481a47ce626144c27fd1d51ecb0509e12",
-      "size_bytes": 44398
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_search.jsonl",
-      "sha256": "4d47e4b3a4177188d24d6a04c117e5b84800a8b8565474e18181f200599dcbc0",
-      "size_bytes": 14914
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_gt_distill_shadow.jsonl",
-      "sha256": "9aaabdaccb02225edfa138a685a1556771b54150f51512566f0e6298c145bdf0",
-      "size_bytes": 14840
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_train.jsonl",
-      "sha256": "869bb2ab747ca013c2327957ea26736160d010f3534e1e4be9d3952d0551e374",
-      "size_bytes": 69514
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_search.jsonl",
-      "sha256": "3e155c098832100a678afd33772e4e956cb663648561eb2bc6f864373c99d155",
-      "size_bytes": 23225
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_stage2_same_source_preference_shadow.jsonl",
-      "sha256": "68f8543cbd67ee0fc043a7f7aa5d14a1bf0c7694251381e7c98be499bf2ef990",
-      "size_bytes": 23585
-    },
-    {
-      "exists": true,
-      "path": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_badnoise_v4_states.jsonl",
-      "sha256": "89f26f2a3c2a2f8f9f09ae14d0d15d5fa38a73dccb4a345d0ee56123f09c1d62",
-      "size_bytes": 191699
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_stage2_dataset_handoff.md",
-      "sha256": "a739989b61e8774ebd6e26474e81e8912b10fd8cffa604544c9a81eb421f9996",
-      "size_bytes": 1353
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_stage2_dataset_handoff.csv",
-      "sha256": "e8add6e25e12714d5ba036cfc6d08c65f7b29c8b69a0f0acb7c1cf912f0f75ed",
-      "size_bytes": 1787
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_stage2_dataset_handoff_summary.json",
-      "sha256": "00e10134b24c4c4966f848cdc678a20a3d0c56558e706276ffa0ee8122e02860",
-      "size_bytes": 5179
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_badnoise_v4_states.md",
-      "sha256": "76e26dfa272cc0d1cccb4c0885096643f39f46cc2741f7403191584e37e3965b",
-      "size_bytes": 617
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_badnoise_v4_states.csv",
-      "sha256": "f0cfaf13ce052b4aad7f030750584a217af9cde43a5669d8370a37bcd62e1467",
-      "size_bytes": 9725
-    },
-    {
-      "exists": true,
-      "path": "reports/exp44_badnoise_v4_summary.json",
-      "sha256": "a07fe3cb98ce34a256d7a372786bba79e7c22c0d8d138b179b4da434a739d10c",
-      "size_bytes": 1138
-    }
-  ],
-  "manifest_rows_scanned": 120,
-  "missing_in_current_session": 262,
+  "csv_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/reports/exp45_h20_required_filelist.csv",
+  "directory_ready_count": 94,
+  "expected_h20_target_root": "/home/hj/H20_Video_inpainting_DPO_h20_mirror/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229",
+  "file_ready_count": 232,
+  "filelist_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/reports/exp45_h20_required_filelist.txt",
+  "first_h20_experiment": "pseudo-success SFT 30-step; do not start GT-only SFT first",
+  "manifest_rows_scanned": 560,
+  "missing_count": 0,
+  "optimizer_step": false,
   "pai_does_not_execute_h20_mirror": true,
-  "required_path_count": 262,
-  "rsync_template_for_h20_session": "rsync -aH --info=progress2 <PAI_HOST>:/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/ /home/hj/H20_Video_inpainting_DPO_h20_mirror/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742/",
-  "sha256_path": "reports/exp45_h20_required_sha256.txt",
-  "source_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp44_pai_minimax_targeted_same_source_mining/targeted_mining_20260629_161742",
-  "status": "EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE",
-  "total_ready_size_bytes": 0
+  "required_path_count": 326,
+  "rsync_template_for_h20_session": "rsync -aH --info=progress2 <PAI_HOST>:/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/ /home/hj/H20_Video_inpainting_DPO_h20_mirror/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/",
+  "sha256_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229/reports/exp45_h20_required_sha256.txt",
+  "source_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp45_pai_minimax_pair_scaleup/scaleup_mining_20260629_190229",
+  "status": "EXP45_H20_FILELIST_READY",
+  "total_ready_size_bytes": 99685806,
+  "training_run": false
 }
