@@ -1,6 +1,6 @@
 # Exp45 PAI MiniMax Pair Scale-Up And H20 Handoff Package
 
-Status: `EXP45_H20_FILELIST_PARTIAL_SOURCE_ROOT_UNAVAILABLE`
+Status: `MINIMAX_STAGE2_FORMAL_DATA_PARTIAL`
 
 ## Purpose
 
@@ -180,3 +180,16 @@ Reports:
 - `reports/exp45_stage2_formal_handoff.csv`
 - `reports/exp45_stage2_formal_handoff_summary.json`
 - `reports/exp45_h20_handoff_instructions.md`
+
+## 2026-06-29 Milestone G Paper Positioning
+
+Status: `MINIMAX_DATA_SIGNAL_EMERGING_PAIR_YIELD_WEAK`.
+
+Exp45 remains partial and does not count MiniMax as third adapter evidence.
+DiffuEraser and VideoPainter remain the main positive adapter evidence. The
+next minimal experiment is to resume PAI targeted mining from a NAS-mounted
+session and reach at least `32/16/16` before H20 training is unlocked.
+
+Report:
+
+- `reports/exp45_minimax_paper_positioning.md`

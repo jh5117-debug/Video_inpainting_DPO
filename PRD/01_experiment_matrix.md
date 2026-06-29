@@ -226,6 +226,7 @@ Notes:
   in this session.
 - Exp45-prefixed formal handoff remains partial at `24/8/8`; training is still
   locked.
+- Paper positioning: `MINIMAX_DATA_SIGNAL_EMERGING_PAIR_YIELD_WEAK`.
 - MiniMax remains data-signal/plumbing-positive only; no third-adapter-positive
   claim is allowed.
 

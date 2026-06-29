@@ -101,3 +101,15 @@ Reports:
 - `reports/exp45_stage2_formal_handoff.csv`
 - `reports/exp45_stage2_formal_handoff_summary.json`
 - `reports/exp45_h20_handoff_instructions.md`
+
+## 2026-06-29 Paper Positioning
+
+- Paper status: `MINIMAX_DATA_SIGNAL_EMERGING_PAIR_YIELD_WEAK`
+- MiniMax third adapter evidence: `false`
+- Universal adapter language allowed: `false`
+- Main positive adapter evidence remains: `DiffuEraser + VideoPainter`
+- Next action: resume targeted mining from a true PAI/NAS-mounted session
+
+Report:
+
+- `reports/exp45_minimax_paper_positioning.md`
