@@ -1,6 +1,6 @@
 # Exp44 PAI MiniMax Targeted Same-Source Mining
 
-Status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`
+Status: `MINIMAX_BADNOISE_V4_READY`
 
 ## Purpose
 
@@ -233,3 +233,45 @@ Reports/manifests:
 
 Next status target: `MINIMAX_BADNOISE_V4_READY` or
 `MINIMAX_BADNOISE_V4_BLOCKED`.
+
+## 2026-06-29 Bad-Noise v4 State Construction
+
+Status: `MINIMAX_BADNOISE_V4_READY`.
+
+Milestone E constructed MiniMax-native bad-noise v4 state records from the
+same-source pair set. The construction used CPU-side residual and gradient
+proxy metrics only; it did not run backpropagation, training, optimizer steps,
+or any model update.
+
+State construction:
+
+- total state records: `40`;
+- usable H-state records: `26`;
+- minimum usable H-state gate: `24`;
+- H1 local-failure-hard states: `20`;
+- H3 winner-safe states: `20`;
+- hard-state local/random gradient-proxy ratio mean: `2.676106`;
+- hard-state local/random gradient-proxy ratio median: `2.280567`;
+- random local/outside median: `5.144638`;
+- outside-risk median: `0.342387`;
+- manifest SHA256:
+  `89f26f2a3c2a2f8f9f09ae14d0d15d5fa38a73dccb4a345d0ee56123f09c1d62`.
+
+Interpretation:
+
+- Exp44 now has enough same-source MiniMax failure states to hand off a
+  Stage2-style SFT/DPO data package;
+- `gradient_proxy_norm` is a residual-based proxy, not a true autograd
+  gradient;
+- no training, optimizer step, VOR-Eval use, hard comp, H20 modification, or
+  MiniMax quality-positive claim occurred.
+
+Reports/manifests:
+
+- `reports/exp44_badnoise_v4_states.md`
+- `reports/exp44_badnoise_v4_states.csv`
+- `reports/exp44_badnoise_v4_summary.json`
+- `exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_badnoise_v4_states.jsonl`
+
+Next status target: `MINIMAX_STAGE2_HANDOFF_READY` or
+`MINIMAX_STAGE2_HANDOFF_BLOCKED`.

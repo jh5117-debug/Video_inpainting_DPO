@@ -1,6 +1,6 @@
 # Exp44 Status
 
-Current status: `MINIMAX_SAME_SOURCE_PAIR_GATE_PASSED`
+Current status: `MINIMAX_BADNOISE_V4_READY`
 
 ## 2026-06-29 Readback
 
@@ -113,3 +113,31 @@ Reports:
 
 The pair gate unlocks bad-noise v4 state construction only, not SFT/DPO
 training or MiniMax quality-positive claims.
+
+## 2026-06-29 Bad-Noise v4 State Construction
+
+- Status: `MINIMAX_BADNOISE_V4_READY`
+- State records: `40`
+- Usable H-state records: `26`
+- Minimum H-state gate: `24`
+- H1 local-failure-hard states: `20`
+- H3 winner-safe states: `20`
+- Hard-state local/random gradient-proxy ratio mean: `2.676106`
+- Hard-state local/random gradient-proxy ratio median: `2.280567`
+- Random local/outside median: `5.144638`
+- Outside-risk median: `0.342387`
+- Manifest SHA256: `89f26f2a3c2a2f8f9f09ae14d0d15d5fa38a73dccb4a345d0ee56123f09c1d62`
+- Training run: `false`
+- Optimizer step: `false`
+- VOR-Eval used: `false`
+- Hard comp used: `false`
+
+Reports:
+
+- `reports/exp44_badnoise_v4_states.md`
+- `reports/exp44_badnoise_v4_states.csv`
+- `reports/exp44_badnoise_v4_summary.json`
+
+The bad-noise v4 gate unlocks Stage2-style dataset handoff preparation only.
+It is not a model-quality result, and the recorded gradient proxy is not an
+autograd gradient.

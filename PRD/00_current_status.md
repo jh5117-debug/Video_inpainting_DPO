@@ -3627,3 +3627,29 @@ Reports:
 - `reports/exp44_same_source_pair_construction.csv`
 - `reports/exp44_same_source_pair_group_yield.csv`
 - `reports/exp44_same_source_pair_summary.json`
+
+## 2026-06-29 Exp44 Bad-Noise v4 State Gate
+
+Exp44 status: `MINIMAX_BADNOISE_V4_READY`.
+
+Constructed `40` MiniMax-native bad-noise state records from the same-source
+pair set:
+
+- usable H-states: `26` / `40`;
+- minimum H-state gate: `24`;
+- H1 local-failure-hard states: `20`;
+- H3 winner-safe states: `20`;
+- local/random gradient-proxy median ratio: `2.280567`;
+- manifest SHA256:
+  `89f26f2a3c2a2f8f9f09ae14d0d15d5fa38a73dccb4a345d0ee56123f09c1d62`.
+
+This unlocks Stage2-style dataset handoff preparation only. The gradient signal
+is a residual-derived proxy, not an autograd gradient. No training, optimizer
+step, VOR-Eval use, hard comp, H20 modification, or MiniMax quality-positive
+claim occurred.
+
+Reports:
+
+- `reports/exp44_badnoise_v4_states.md`
+- `reports/exp44_badnoise_v4_states.csv`
+- `reports/exp44_badnoise_v4_summary.json`

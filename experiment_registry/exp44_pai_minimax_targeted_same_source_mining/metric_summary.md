@@ -90,3 +90,23 @@ Constructed same-source pair counts:
 The formal minimum gate is `>=24`, so Exp44 now has enough same-source pairs
 for bad-noise v4 state construction. The target `48` was not reached, so later
 Stage2 handoff language must carry the "minimum-gate, not target-gate" caveat.
+
+## 2026-06-29 Bad-Noise v4 State Construction
+
+Status: `MINIMAX_BADNOISE_V4_READY`.
+
+Bad-noise v4 state metrics:
+
+- state records: `40`
+- usable H-state records: `26`
+- minimum H-state gate: `24`
+- H1 local-failure-hard states: `20`
+- H3 winner-safe states: `20`
+- hard-state local/random gradient-proxy ratio mean: `2.676106`
+- hard-state local/random gradient-proxy ratio median: `2.280567`
+- random local/outside median: `5.144638`
+- outside-risk median: `0.342387`
+
+The local/random ratio gate (`>=1.5`) passes. These are residual-derived proxy
+metrics for data-state selection only, not true autograd gradients and not a
+training result.

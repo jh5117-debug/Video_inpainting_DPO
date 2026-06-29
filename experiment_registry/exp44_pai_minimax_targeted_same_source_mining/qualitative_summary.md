@@ -58,3 +58,18 @@ The constructed pairs preserve the intended MiniMax-native signal:
 This is the first Exp44 point where the same-source minimum pair gate passes
 after human visual relabeling. It is still a data milestone, not a model-quality
 milestone.
+
+## 2026-06-29 Bad-Noise v4 State Construction
+
+The bad-noise v4 records preserve the same-source MiniMax-native signal:
+
+- condition and loser come from the same source group;
+- winner remains GT background for preference fields;
+- pseudo-success is retained separately for Stage2 distillation metadata;
+- H-state tags identify local failure hard cases and winner-safe hard cases;
+- outside-risk and winner-risk bounds are recorded before any future runner can
+  consume the data.
+
+This makes Exp44 ready to assemble a Stage2-style handoff package. It does not
+claim that MiniMax training has improved: no training, optimizer step,
+VOR-Eval use, hard comp, or H20 modification occurred.

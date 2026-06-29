@@ -1,0 +1,27 @@
+{
+  "hard_comp_used": false,
+  "hard_state_counts": {
+    "H1_local_failure_hard": 20,
+    "H3_winner_safe": 20
+  },
+  "hard_state_local_random_ratio_mean": 2.6761056747940524,
+  "hard_state_local_random_ratio_median": 2.2805665965508046,
+  "manifest": "exp44_pai_minimax_targeted_same_source_mining/manifests/exp44_badnoise_v4_states.jsonl",
+  "manifest_sha256": "89f26f2a3c2a2f8f9f09ae14d0d15d5fa38a73dccb4a345d0ee56123f09c1d62",
+  "minimum_h_state_gate": 24,
+  "notes": [
+    "Residuals and gradient_proxy_norm are CPU-side metrics proxies, not backprop gradients.",
+    "State metadata is complete enough for future runner materialization but no future runner was launched here.",
+    "No training, optimizer step, VOR-Eval use, hard comp, or H20 modification occurred."
+  ],
+  "optimizer_step": false,
+  "outside_risk_mean": 0.4569276531086807,
+  "outside_risk_median": 0.34238672219014743,
+  "random_local_outside_median": 5.1446381352641435,
+  "state_count": 40,
+  "status": "MINIMAX_BADNOISE_V4_READY",
+  "training_run": false,
+  "usable_h_state_count": 26,
+  "vor_eval_used": false,
+  "winner_risk_median": 0.003420851736293133
+}
