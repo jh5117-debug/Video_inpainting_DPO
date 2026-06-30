@@ -179,3 +179,14 @@ Reports:
 - Visual review: Codex opened raw and tuple quick sheets; technical valid, not VOR quality evidence.
 - Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
 - Next gate: F2 VOR Gate8 inference smoke.
+## Milestone F2 update - VOID_INFERENCE_SMOKE_PASS
+
+- Time: 2026-06-30T17:24:15+08:00
+- Status: `VOID_INFERENCE_SMOKE_PASS`
+- Evidence: `reports/exp50_void_official_inference_smoke.md`, `reports/exp50_void_vor_gate8_metrics.csv`, and `reports/exp50_void_vor_gate8_visual_review.csv`
+- Technical valid: 8 / 8
+- Classification counts: {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}
+- Usable or bounded loser: 6 / 8
+- Systematic outside collapse: False
+- Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
+- Next gate: G0 adapter micro-data preparation only; optimizer steps remain locked behind G1.

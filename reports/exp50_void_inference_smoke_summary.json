@@ -1,0 +1,77 @@
+{
+  "classification_counts": {
+    "MEDIUM_HARD_LOSER": 2,
+    "TOO_CLOSE": 2,
+    "VOID_OUTPUT_USABLE": 4
+  },
+  "evidence_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/evidence",
+  "ewarp_available": false,
+  "forbidden_claims": "No VOID adapter positive, no universal adapter, no final SOTA.",
+  "gate_interpretation": "PASS: 8/8 technical valid, 6/8 usable or bounded loser, no systematic outside collapse. This is an inference/data-signal pass only, not adapter evidence.",
+  "lpips_available": false,
+  "metric_summary": {
+    "affected_psnr": {
+      "max": 34.156895315064716,
+      "mean": 25.76411547064577,
+      "min": 17.22543500891363
+    },
+    "black_frame_ratio": {
+      "max": 0.06504700675843254,
+      "mean": 0.022926693870907736,
+      "min": 0.0
+    },
+    "boundary_psnr": {
+      "max": 34.12619653782492,
+      "mean": 25.84346292826725,
+      "min": 18.30705844742618
+    },
+    "effect_residual_l1": {
+      "max": 24.848684310913086,
+      "mean": 11.093753069639206,
+      "min": 3.5685017108917236
+    },
+    "mask_psnr": {
+      "max": 34.506168523169926,
+      "mean": 25.53800079343787,
+      "min": 17.62497846838687
+    },
+    "object_residual_l1": {
+      "max": 20.54033851623535,
+      "mean": 11.013087451457977,
+      "min": 3.126305103302002
+    },
+    "outside_l1": {
+      "max": 8.661800384521484,
+      "mean": 4.340200304985046,
+      "min": 2.0547373294830322
+    },
+    "outside_psnr": {
+      "max": 37.36070984909206,
+      "mean": 33.109106994425304,
+      "min": 25.9308570186346
+    },
+    "psnr": {
+      "max": 37.27497913218205,
+      "mean": 30.17491016342875,
+      "min": 19.63566176250314
+    },
+    "ssim": {
+      "max": 0.9647286015224563,
+      "mean": 0.8244041591392115,
+      "min": 0.5770671955924184
+    },
+    "temporal_flicker": {
+      "max": 8.29080867767334,
+      "mean": 2.358501950278878,
+      "min": 0.12414935231208801
+    }
+  },
+  "metrics_path": "reports/exp50_void_vor_gate8_metrics.csv",
+  "review_path": "reports/exp50_void_vor_gate8_visual_review.csv",
+  "status": "VOID_INFERENCE_SMOKE_PASS",
+  "systematic_outside_collapse": false,
+  "tc_available": false,
+  "technical_valid_count": 8,
+  "total": 8,
+  "usable_or_loser_count": 6
+}

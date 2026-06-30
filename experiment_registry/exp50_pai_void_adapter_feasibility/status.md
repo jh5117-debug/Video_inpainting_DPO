@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T16:50:03+08:00
+Last updated: 2026-06-30T17:24:15+08:00
 
-Current status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
+Current status: `VOID_INFERENCE_SMOKE_PASS`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -11,7 +11,7 @@ Current status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
 - Trainable-forward audit: `VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE`
 - VOR-to-VOID quadmask Gate8: `VOID_VOR_QUADMASK_GATE8_READY`
 - Training: not run
-- Inference: not run
+- Inference: F1 official sample pass; F2 VOR Gate8 pass.
 - VOID positive claim: not made
 
 Official inference smoke has not run yet; F0 component load smoke is now unblocked by `VOID_ENV_READY`.
@@ -45,3 +45,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Official sample inference F1: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`.
 - Sample: `lime`; raw frames 85; return code `0`.
 - Bundled ffmpeg shim used under Exp50 runtime; system env and official source unchanged.
+## Milestone F2 update - VOID_INFERENCE_SMOKE_PASS
+
+- Time: 2026-06-30T17:24:15+08:00
+- Status: `VOID_INFERENCE_SMOKE_PASS`
+- Evidence: `reports/exp50_void_official_inference_smoke.md`, `reports/exp50_void_vor_gate8_metrics.csv`, and `reports/exp50_void_vor_gate8_visual_review.csv`
+- Technical valid: 8 / 8
+- Classification counts: {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}
+- Usable or bounded loser: 6 / 8
+- Systematic outside collapse: False
+- Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
+- Next gate: G0 adapter micro-data preparation only; optimizer steps remain locked behind G1.

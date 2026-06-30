@@ -50,3 +50,15 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Sample: `lime`; return code `0`; raw frame count 85
 - Raw outputs: 1; tuple outputs: 1
 - Checkpoint load clean: True; sampling 30/30: True
+
+## F2 VOR Gate8 Inference Metrics - 2026-06-30T17:24:15+08:00
+
+- Status: `VOID_INFERENCE_SMOKE_PASS`
+- Technical valid: 8/8
+- Mean PSNR: 30.1749
+- Mean SSIM: 0.8244
+- Mean mask PSNR: 25.5380
+- Mean boundary PSNR: 25.8435
+- Mean outside PSNR: 33.1091
+- Mean outside L1: 4.3402
+- LPIPS/Ewarp/TC unavailable in this smoke; not used for promotion.

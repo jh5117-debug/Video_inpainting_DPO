@@ -19,3 +19,11 @@ No visual output was generated. F0 is metadata/config/header only and does not s
 ## F1 Official Sample Inference (2026-06-30T17:02:21+08:00)
 
 Codex inspected raw and tuple quick sheets. The official sample output is nonblank and aligned. This is technical smoke evidence only; VOID remains not positive until VOR and adapter gates pass.
+
+## F2 VOR Gate8 Visual Review - 2026-06-30T17:24:15+08:00
+
+- Status: `VOID_INFERENCE_SMOKE_PASS`
+- Classification counts: {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}
+- Codex opened all 8 Gate8 evidence sheets.
+- Visual conclusion: no systematic outside collapse; 4 outputs usable, 2 bounded medium-hard loser candidates, 2 too-close samples.
+- Scientific boundary: this is official inference smoke only and does not establish VOID as adapter evidence.

@@ -1890,3 +1890,8 @@ F0 loaded VOID/base configs, tokenizer/scheduler metadata, safetensors headers, 
 Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`.
 
 Official Pass1 inference on repo sample `lime` completed with raw and tuple MP4 outputs. A runtime-only bundled ffmpeg shim was used because system ffmpeg misses `libblas.so.3`. No training or optimizer step was run. This is technical validation only; next gate is VOR Gate8 inference smoke.
+## 2026-06-30 Exp50 VOID VOR Gate8 Inference Smoke
+
+Status: `VOID_INFERENCE_SMOKE_PASS`.
+
+Official VOID Pass1 inference completed on the VOR-Train Gate8 split. Technical valid outputs were 8/8; visual review found {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}. This is an inference/data-signal pass only, not VOID adapter evidence. No training, optimizer step, VOR-Eval, or hard comp was used. Next allowed gate is G0 micro-data preparation.

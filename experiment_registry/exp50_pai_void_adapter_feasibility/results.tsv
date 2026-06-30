@@ -19,3 +19,4 @@ C2_env_repair	VOID_ENV_PARTIAL	exact_blockers=VOID_ENV_BLOCKED_TORCH,VOID_ENV_BL
 C3_env_relay_ingest	VOID_ENV_READY	env=/home/hj/conda_envs/void_exp50_official_v2;torch=2.7.1+cu126;cuda=12.6;cuda_smoke=CUDA_BF16_BACKWARD_OK;hash_match=True;missing=0;mismatch=0;deepspeed=train_only_not_installed
 F0_component_load_smoke	VOID_COMPONENT_LOAD_PASS	pass1_keys=1024;pass2_keys=1024;base_transformer_keys=1024;full_gpu_load=false;no_inference=true;no_training=true
 F1_official_sample_inference	VOID_OFFICIAL_SAMPLE_INFERENCE_PASS	sample=lime;returncode=0;raw_frames=85;raw_outputs=1;tuple_outputs=1;no_training=true;no_optimizer=true
+F2_vor_gate8_inference	VOID_INFERENCE_SMOKE_PASS	technical_valid=8/8;usable_or_loser=6/8;counts={'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4};no_training=true;no_optimizer=true;no_vor_eval=true

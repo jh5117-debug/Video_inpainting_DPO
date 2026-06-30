@@ -697,3 +697,8 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 - Evidence: `reports/exp50_void_official_sample_inference.md`, `reports/exp50_void_official_sample_inference_summary.json`
 - Official sample `lime`, Pass1, raw frames 85.
 - Safety: inference smoke only; no training, no optimizer step, no VOR-Eval, no VOID positive claim.
+## 2026-06-30 Exp50 VOID VOR Gate8 Inference Smoke
+
+Status: `VOID_INFERENCE_SMOKE_PASS`.
+
+Official VOID Pass1 inference completed on the VOR-Train Gate8 split. Technical valid outputs were 8/8; visual review found {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}. This is an inference/data-signal pass only, not VOID adapter evidence. No training, optimizer step, VOR-Eval, or hard comp was used. Next allowed gate is G0 micro-data preparation.
