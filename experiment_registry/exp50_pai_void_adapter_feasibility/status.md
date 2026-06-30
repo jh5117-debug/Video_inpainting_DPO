@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T17:24:15+08:00
+Last updated: 2026-06-30T17:29:15+08:00
 
-Current status: `VOID_INFERENCE_SMOKE_PASS`
+Current status: `VOID_ADAPTER_MICRO_DATA_READY`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -56,3 +56,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Systematic outside collapse: False
 - Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
 - Next gate: G0 adapter micro-data preparation only; optimizer steps remain locked behind G1.
+## Milestone G0 update - VOID_ADAPTER_MICRO_DATA_READY
+
+- Time: 2026-06-30T17:29:15+08:00
+- Status: `VOID_ADAPTER_MICRO_DATA_READY`
+- Evidence: `reports/exp50_void_adapter_micro_data.md`, `reports/exp50_void_adapter_micro_data.csv`, and `reports/exp50_void_adapter_micro_data_summary.json`
+- Train/Heldout: 4 / 4
+- Loser sources: {'controlled_local_corruption': 6, 'void_pass1_raw_medium_hard': 2}
+- Scene overlap: False
+- Source: VOR-Train only; VOR-Eval excluded: True
+- Safety: no training, no optimizer step, no hard comp, no VOID positive claim.
+- Next gate: G1 trainable forward / zero-gap / one-step only; direct 10-step remains locked.

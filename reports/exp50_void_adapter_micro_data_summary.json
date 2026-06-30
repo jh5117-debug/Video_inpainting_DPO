@@ -1,0 +1,30 @@
+{
+  "frame_count_validation": "all manifest loser videos have 24 frames after alignment",
+  "hard_comp": false,
+  "heldout_count": 4,
+  "heldout_ids": [
+    "BLENDER_CON001_00742",
+    "BLENDER_CON001_00744",
+    "REAL_ENV102_00001_002_02",
+    "REAL_ENV200_00001_006_02"
+  ],
+  "loser_sources": {
+    "controlled_local_corruption": 6,
+    "void_pass1_raw_medium_hard": 2
+  },
+  "next_gate": "G1 trainable forward / zero-gap / one-step only; no direct 10-step",
+  "optimizer_step": false,
+  "scene_overlap": false,
+  "source": "VOR-Train only",
+  "status": "VOID_ADAPTER_MICRO_DATA_READY",
+  "train_count": 4,
+  "train_ids": [
+    "BLENDER_CON001_00636",
+    "BLENDER_CON001_00843",
+    "REAL_ENV219_00001_003_05",
+    "REAL_ENV259_00102_002_04"
+  ],
+  "training_run": false,
+  "void_raw_loser_alignment": "first24_resized_to_winner_resolution",
+  "vor_eval_excluded": true
+}

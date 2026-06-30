@@ -62,3 +62,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Mean outside PSNR: 33.1091
 - Mean outside L1: 4.3402
 - LPIPS/Ewarp/TC unavailable in this smoke; not used for promotion.
+
+## G0 Adapter Micro Data - 2026-06-30T17:29:15+08:00
+
+- Status: `VOID_ADAPTER_MICRO_DATA_READY`
+- Train/Heldout: 4 / 4
+- Loser sources: {'controlled_local_corruption': 6, 'void_pass1_raw_medium_hard': 2}
+- Metrics were not recomputed in G0; this is data preparation only.

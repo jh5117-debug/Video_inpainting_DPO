@@ -1895,3 +1895,8 @@ Official Pass1 inference on repo sample `lime` completed with raw and tuple MP4 
 Status: `VOID_INFERENCE_SMOKE_PASS`.
 
 Official VOID Pass1 inference completed on the VOR-Train Gate8 split. Technical valid outputs were 8/8; visual review found {'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4}. This is an inference/data-signal pass only, not VOID adapter evidence. No training, optimizer step, VOR-Eval, or hard comp was used. Next allowed gate is G0 micro-data preparation.
+## 2026-06-30 Exp50 VOID Adapter Micro Data
+
+Status: `VOID_ADAPTER_MICRO_DATA_READY`.
+
+Prepared VOR-Train-only train4/heldout4 micro data after F2 inference smoke. Losers are 2 same-model VOID raw medium-hard outputs plus 6 labeled controlled local-corruption losers. No training, optimizer step, VOR-Eval, or hard comp was used. Next gate is G1 trainable-forward / zero-gap / one-step only.

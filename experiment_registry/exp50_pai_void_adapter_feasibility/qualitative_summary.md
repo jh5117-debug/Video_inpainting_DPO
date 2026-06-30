@@ -27,3 +27,11 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Codex opened all 8 Gate8 evidence sheets.
 - Visual conclusion: no systematic outside collapse; 4 outputs usable, 2 bounded medium-hard loser candidates, 2 too-close samples.
 - Scientific boundary: this is official inference smoke only and does not establish VOID as adapter evidence.
+
+## G0 Adapter Micro Data - 2026-06-30T17:29:15+08:00
+
+- Status: `VOID_ADAPTER_MICRO_DATA_READY`
+- Split is scene-disjoint and VOR-Train-only.
+- Same-model loser rows: 2 medium-hard VOID outputs.
+- Controlled local-corruption loser rows: 6, explicitly marked as synthetic local losers and not used as hard-comp promotion.
+- No VOID adapter evidence claim is made.

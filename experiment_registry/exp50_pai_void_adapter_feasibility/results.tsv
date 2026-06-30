@@ -20,3 +20,4 @@ C3_env_relay_ingest	VOID_ENV_READY	env=/home/hj/conda_envs/void_exp50_official_v
 F0_component_load_smoke	VOID_COMPONENT_LOAD_PASS	pass1_keys=1024;pass2_keys=1024;base_transformer_keys=1024;full_gpu_load=false;no_inference=true;no_training=true
 F1_official_sample_inference	VOID_OFFICIAL_SAMPLE_INFERENCE_PASS	sample=lime;returncode=0;raw_frames=85;raw_outputs=1;tuple_outputs=1;no_training=true;no_optimizer=true
 F2_vor_gate8_inference	VOID_INFERENCE_SMOKE_PASS	technical_valid=8/8;usable_or_loser=6/8;counts={'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4};no_training=true;no_optimizer=true;no_vor_eval=true
+G0_adapter_micro_data	VOID_ADAPTER_MICRO_DATA_READY	train=4;heldout=4;loser_sources={'controlled_local_corruption': 6, 'void_pass1_raw_medium_hard': 2};no_training=true;no_optimizer=true;no_vor_eval=true
