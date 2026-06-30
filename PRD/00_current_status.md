@@ -1938,3 +1938,7 @@ Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`.
 VOID official inference is usable on VOR-Train Gate8 (`VOID_INFERENCE_SMOKE_PASS`, technical valid 8/8). The isolated VOID-native wrapper reached `VOID_SFT_FORWARD_PARITY_EXPLAINED`, `VOID_PREFERENCE_FORWARD_PASS`, and `VOID_ZERO_GAP_PASS` without modifying official VOID source, shared trainer, or `inference/metrics.py`.
 
 H4 one-step is `VOID_ONE_STEP_PARETO_MIXED`, not PASS. Exact blocker: `VOID_ONE_STEP_VIDEO_HELDOUT_EVIDENCE_MISSING`. H5 10-step was not run. VOID remains not third adapter evidence. Next minimal experiment: H4b one-step video heldout evidence using the saved step1 adapter; only then consider 10-step.
+
+## Exp50 H4b-0 One-Step Evidence Readback - 2026-07-01T00:05:40+08:00
+
+Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`. One-step adapter checkpoint `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt` and train4/heldout4 manifests are identified. Target parameterization remains `v_prediction` and trainable subset `proj_out`. 10-step remains locked until heldout video evidence upgrades one-step to PASS.

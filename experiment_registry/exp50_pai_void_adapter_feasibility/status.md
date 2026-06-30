@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T23:30:58+08:00
+Last updated: 2026-07-01T00:05:40+08:00
 
-Current status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+Current status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -151,3 +151,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - 10-step: not run, locked because one-step did not reach `VOID_ONE_STEP_PASS`.
 - Scientific boundary: VOID remains not third adapter evidence.
 - Next minimal experiment: H4b one-step video heldout evidence gate only.
+
+## Milestone H4b-0 update - VOID_ONE_STEP_EVIDENCE_READBACK_DONE
+
+- Time: 2026-07-01T00:05:40+08:00
+- Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
+- Evidence: `reports/exp50_void_one_step_video_evidence_readback.md`
+- One-step adapter checkpoint: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt`
+- Train/Heldout manifests: `manifests/exp50_void_adapter_train4.jsonl` / `manifests/exp50_void_adapter_heldout4.jsonl`
+- Target parameterization / trainable subset: `v_prediction` / `proj_out`
+- 10-step remains locked until H4b one-step video evidence passes.
+- Safety: no inference, no optimizer step, no VOR-Eval, no hard comp.

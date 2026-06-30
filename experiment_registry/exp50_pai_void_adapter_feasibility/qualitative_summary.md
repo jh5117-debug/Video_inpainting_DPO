@@ -79,3 +79,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Qualitative interpretation: VOID remains a strong inference baseline / loser-generator candidate and a preference-wrapper engineering candidate.
 - No new video evidence was generated in H6.
 - One-step lacks heldout video visual review, so 10-step remains locked and no adapter-positive claim is made.
+
+
+## H4b-0 One-Step Evidence Readback - 2026-07-01T00:05:40+08:00
+
+- Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
+- No visual output generated. H4b must generate and inspect heldout4 Step0/Step1 evidence before 10-step can unlock.

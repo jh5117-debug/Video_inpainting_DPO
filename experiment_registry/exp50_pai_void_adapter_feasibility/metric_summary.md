@@ -120,3 +120,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Zero-gap: `VOID_ZERO_GAP_PASS`; winner/loser gaps 0.0 / 0.0; DPO 0.6931471824645996
 - One-step: `VOID_ONE_STEP_PARETO_MIXED`; param delta 0.005055009387433529; heldout forward finite True; video metrics not generated
 - 10-step: not run
+
+
+## H4b-0 One-Step Evidence Readback - 2026-07-01T00:05:40+08:00
+
+- Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
+- One-step checkpoint exists for later audit: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt`
+- No new metrics; readback only.
