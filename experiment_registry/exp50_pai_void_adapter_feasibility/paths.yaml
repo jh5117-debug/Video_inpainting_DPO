@@ -9,3 +9,4 @@ weights_root: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/void
 data_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void
 primary_worktree_writable: false
 nas_asset_roots_writable_by_hj: false
+void_repo_path: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model

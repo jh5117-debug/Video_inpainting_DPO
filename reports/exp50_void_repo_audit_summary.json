@@ -1,0 +1,11 @@
+{
+  "blocked_error": "",
+  "branch": "main",
+  "clone_log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/b1_void_repo_clone_20260630_103727.log",
+  "commit": "e3914f8f551dd4b880661991fd6b28cd1699a97a",
+  "license_hash": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+  "readme_hash": "628796eee0db520f3589a5c80ef6d889871185a8be18e8304db7b71f8918b4b9",
+  "repo_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model",
+  "requirements_hash": "bafb9e980bf49f8a8b4ce6765f8714a591bb58305ab28461ac17c2bb1dbe478f",
+  "status": "VOID_REPO_READY"
+}

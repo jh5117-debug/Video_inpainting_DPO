@@ -1,7 +1,7 @@
 # Exp50 Status
 
-Current status: `VOID_ASSET_PERMISSION_RECOVERED`.
+Current status: `VOID_REPO_READY`.
 
-Milestone B0 verified the user-provided minimal permission recovery using `hj` identity. All six requested EXP50 directories were checked for read/write/execute access and write-probe behavior. Codex did not run chmod/chown or a root permission script.
+Milestone B1 cloned and audited the official VOID repository if available. No official source modification was performed.
 
-Next: resume Milestone B1 official VOID repo download/audit.
+Next: Milestone B2 weight download/audit for `netflix/void-model` and `alibaba-pai/CogVideoX-Fun-V1.5-5b-InP`.

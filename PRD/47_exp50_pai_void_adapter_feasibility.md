@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_ASSET_PERMISSION_RECOVERED`
+Status: `VOID_REPO_READY`
 
 ## Objective
 
@@ -68,3 +68,17 @@ Reports:
 
 - `reports/exp50_void_permission_recovery.md`
 - `reports/exp50_void_permission_recovery.csv`
+
+
+## Milestone B1 Update - 2026-06-30
+
+Status: `VOID_REPO_READY`.
+
+The official VOID repository was cloned/audited at `/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model`. Reports:
+
+- `reports/exp50_void_repo_audit.md`
+- `reports/exp50_void_repo_audit.csv`
+- `reports/exp50_void_repo_audit_summary.json`
+- `reports/exp50_void_repo_inventory.txt`
+
+No official VOID source was modified.

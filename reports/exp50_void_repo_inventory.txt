@@ -1,0 +1,147 @@
+DIR  VLM-MASK-REASONER/
+DIR  assets/
+DIR  config/
+DIR  data_generation/
+DIR  datasets/
+DIR  inference/
+DIR  sample/
+DIR  scripts/
+DIR  videox_fun/
+FILE LICENSE 11357 bytes
+FILE README.md 21066 bytes
+FILE notebook.ipynb 10893 bytes
+FILE requirements.txt 1062 bytes
+FILE VLM-MASK-REASONER/README.md 4029 bytes
+FILE VLM-MASK-REASONER/edit_quadmask.py 32272 bytes
+FILE VLM-MASK-REASONER/point_selector_gui.py 23676 bytes
+FILE VLM-MASK-REASONER/run_pipeline.sh 2862 bytes
+FILE VLM-MASK-REASONER/stage1_sam2_segmentation.py 15862 bytes
+FILE VLM-MASK-REASONER/stage2_vlm_analysis.py 38231 bytes
+FILE VLM-MASK-REASONER/stage2_vlm_analysis_cf.py 38576 bytes
+FILE VLM-MASK-REASONER/stage3a_generate_grey_masks.py 14871 bytes
+FILE VLM-MASK-REASONER/stage3a_generate_grey_masks_v2.py 19876 bytes
+FILE VLM-MASK-REASONER/stage3b_trajectory_gui.py 15825 bytes
+FILE VLM-MASK-REASONER/stage4_combine_masks.py 7600 bytes
+FILE VLM-MASK-REASONER/test_gemini_video.py 2962 bytes
+FILE assets/hi.txt 1 bytes
+FILE assets/teaser-with-name.mp4 9211638 bytes
+FILE assets/void-logo-web.png 880043 bytes
+FILE config/default_cogvideox.py 3338 bytes
+FILE config/default_omnimatte.py 2852 bytes
+FILE config/quadmask_cogvideox.py 3351 bytes
+FILE config/zero_stage2_config.json 374 bytes
+DIR  data_generation/human_model/
+DIR  data_generation/scripts/
+FILE data_generation/README.md 9694 bytes
+FILE data_generation/apply_physics_config.py 2460 bytes
+FILE data_generation/blender_utils.py 25059 bytes
+FILE data_generation/convert_all_scenarios_for_characters.py 7152 bytes
+FILE data_generation/convert_masks_to_grid_hybrid.py 13202 bytes
+FILE data_generation/convert_split_remy_sophie.sh 6790 bytes
+FILE data_generation/convert_trimask_to_quadmask.py 10706 bytes
+FILE data_generation/generate_physics_config.py 3674 bytes
+FILE data_generation/generate_review_frames.py 7286 bytes
+FILE data_generation/generate_review_frames_direct.py 5771 bytes
+FILE data_generation/kubric_variable_objects.py 29619 bytes
+FILE data_generation/object_texture_mapping.py 14357 bytes
+FILE data_generation/physics_config.json 187164 bytes
+FILE data_generation/physics_review_ui.py 9505 bytes
+FILE data_generation/render_paired_videos_blender_quadmask.py 93899 bytes
+FILE data_generation/requirements.txt 150 bytes
+FILE data_generation/human_model/__init__.py 0 bytes
+FILE data_generation/human_model/bone_names.py 1728 bytes
+FILE data_generation/human_model/human_model.py 16211 bytes
+FILE data_generation/human_model/human_model_mixamo_bone_yup.json 12289385 bytes
+FILE data_generation/human_model/human_model_mixamo_bone_zup.json 12292356 bytes
+FILE data_generation/human_model/human_model_up_bone_yup.json 11656904 bytes
+FILE data_generation/human_model/human_model_up_bone_zup.json 11656011 bytes
+FILE data_generation/scripts/blender_helper.py 6342 bytes
+FILE data_generation/scripts/clear_human_scale.py 7671 bytes
+FILE data_generation/scripts/extract_pk_data.py 5185 bytes
+FILE data_generation/scripts/transfer_human_model.py 8934 bytes
+FILE datasets/void_train_data.json 3490334 bytes
+DIR  inference/cogvideox_fun/
+FILE inference/pass_2_refine.sh 2654 bytes
+FILE inference/cogvideox_fun/inference_with_pass1_warped_noise.py 17828 bytes
+FILE inference/cogvideox_fun/make_warped_noise.py 4740 bytes
+FILE inference/cogvideox_fun/predict_v2v.py 13523 bytes
+DIR  sample/BigBen/
+DIR  sample/ducky-float/
+DIR  sample/lime/
+DIR  sample/moving_ball/
+DIR  sample/pillow/
+DIR  sample/spinner/
+DIR  sample/trampoline/
+FILE sample/BigBen/input_video.mp4 215854 bytes
+FILE sample/BigBen/prompt.json 61 bytes
+FILE sample/BigBen/trimask_quadmask.mp4 48225 bytes
+FILE sample/ducky-float/first_frame.jpg 141325 bytes
+FILE sample/ducky-float/input_video.mp4 1327905 bytes
+FILE sample/ducky-float/prompt.json 55 bytes
+FILE sample/ducky-float/segmentation_info.json 2320 bytes
+FILE sample/ducky-float/trimask_quadmask.mp4 366065 bytes
+FILE sample/lime/first_frame.jpg 894122 bytes
+FILE sample/lime/input_video.mp4 3892459 bytes
+FILE sample/lime/prompt.json 41 bytes
+FILE sample/lime/quadmask_0.mp4 1907329 bytes
+FILE sample/lime/segmentation_info.json 2516 bytes
+FILE sample/moving_ball/first_frame.jpg 652643 bytes
+FILE sample/moving_ball/input_video.mp4 2014662 bytes
+FILE sample/moving_ball/prompt.json 42 bytes
+FILE sample/moving_ball/quadmask_0.mp4 2485881 bytes
+FILE sample/pillow/input_video.mp4 2960087 bytes
+FILE sample/pillow/prompt.json 47 bytes
+FILE sample/pillow/quadmask_0.mp4 2596617 bytes
+FILE sample/pillow/segmentation_info.json 1037 bytes
+FILE sample/spinner/input_video.mp4 4652019 bytes
+FILE sample/spinner/prompt.json 42 bytes
+FILE sample/spinner/trimask_quadmask.mp4 1745346 bytes
+DIR  sample/trampoline/masks_output/
+FILE sample/trampoline/input_video.mp4 3690934 bytes
+FILE sample/trampoline/prompt.json 204 bytes
+FILE sample/trampoline/trimask_quadmask.mp4 2714264 bytes
+DIR  scripts/cogvideox_fun/
+FILE scripts/cogvideox_fun/train.py 92920 bytes
+FILE scripts/cogvideox_fun/train_void.sh 1632 bytes
+FILE scripts/cogvideox_fun/train_void_warped_noise.sh 1800 bytes
+FILE scripts/cogvideox_fun/train_warped_noise.py 102899 bytes
+DIR  videox_fun/api/
+DIR  videox_fun/data/
+DIR  videox_fun/dist/
+DIR  videox_fun/models/
+DIR  videox_fun/pipeline/
+DIR  videox_fun/reward/
+DIR  videox_fun/ui/
+DIR  videox_fun/utils/
+FILE videox_fun/__init__.py 0 bytes
+FILE videox_fun/api/api.py 7725 bytes
+FILE videox_fun/api/api_multi_nodes.py 9772 bytes
+FILE videox_fun/data/bucket_sampler.py 17876 bytes
+FILE videox_fun/data/dataset_image.py 2340 bytes
+FILE videox_fun/data/dataset_image_video.py 47023 bytes
+FILE videox_fun/data/dataset_image_video_warped.py 48429 bytes
+FILE videox_fun/data/dataset_video.py 9831 bytes
+FILE videox_fun/dist/__init__.py 1910 bytes
+FILE videox_fun/dist/cogvideox_xfuser.py 4807 bytes
+FILE videox_fun/dist/wan_xfuser.py 3874 bytes
+FILE videox_fun/models/__init__.py 184 bytes
+FILE videox_fun/models/cache_utils.py 3299 bytes
+FILE videox_fun/models/cogvideox_transformer3d.py 40083 bytes
+FILE videox_fun/models/cogvideox_vae.py 69872 bytes
+FILE videox_fun/pipeline/__init__.py 129 bytes
+FILE videox_fun/pipeline/pipeline_cogvideox_fun.py 40327 bytes
+FILE videox_fun/pipeline/pipeline_cogvideox_fun_inpaint.py 59917 bytes
+FILE videox_fun/pipeline/pipeline_wan_fun.py 24560 bytes
+DIR  videox_fun/reward/MPS/
+DIR  videox_fun/reward/aesthetic_predictor_v2_5/
+FILE videox_fun/reward/improved_aesthetic_predictor.py 1638 bytes
+FILE videox_fun/reward/reward_fn.py 17481 bytes
+FILE videox_fun/ui/cogvideox_fun_ui.py 35170 bytes
+FILE videox_fun/ui/ui.py 15298 bytes
+FILE videox_fun/ui/wan_fun_ui.py 34048 bytes
+FILE videox_fun/utils/__init__.py 0 bytes
+FILE videox_fun/utils/discrete_sampler.py 2018 bytes
+FILE videox_fun/utils/fp8_optimization.py 2171 bytes
+FILE videox_fun/utils/lora_utils.py 19242 bytes
+FILE videox_fun/utils/optical_flow_utils.py 30373 bytes
+FILE videox_fun/utils/utils.py 25519 bytes
