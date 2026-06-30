@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_REPO_READY`
+Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`
 
 ## Objective
 
@@ -82,3 +82,18 @@ The official VOID repository was cloned/audited at `/mnt/nas/hj/H20_Video_inpain
 - `reports/exp50_void_repo_inventory.txt`
 
 No official VOID source was modified.
+
+
+## Milestone B2 Update - 2026-06-30
+
+Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`.
+
+Official HuggingFace downloads were attempted for `netflix/void-model` Pass1/Pass2 and `alibaba-pai/CogVideoX-Fun-V1.5-5b-InP`. Both failed from PAI with `httpx.ConnectError: [Errno 101] Network is unreachable`. No fallback, mirror, or fabricated asset was used. Env smoke, trainable-forward audit, quadmask Gate8, and inference smoke remain blocked until the exact weights/base model are available.
+
+Reports:
+
+- `reports/exp50_void_weight_download.md`
+- `reports/exp50_void_weight_download.csv`
+- `reports/exp50_void_weight_inventory.txt`
+- `reports/exp50_void_weight_sha256.txt`
+- `reports/exp50_void_asset_download_summary.json`

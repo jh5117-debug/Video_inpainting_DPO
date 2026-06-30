@@ -1,15 +1,17 @@
 {
-  "branch": "research/exp50-pai-void-adapter-feasibility-20260630",
-  "download_attempted": false,
-  "head": "8696dc711c6924b989ce27a9792474d1b94a3f3f",
+  "base_model_log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/b2_base_official_hf_probe_20260630_104444.log",
+  "base_model_target": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP",
+  "download_attempted": true,
+  "downloaded_file_count": 0,
+  "fallback_used": false,
   "missing_assets": [
-    "Netflix/void-model repo",
     "void_pass1.safetensors",
     "void_pass2.safetensors",
-    "CogVideoX-Fun-V1.5-5b-InP",
-    "sample data"
+    "CogVideoX-Fun-V1.5-5b-InP base model"
   ],
-  "next_unblock": "create/chown the requested VOID asset/output directories for hj, or provide an approved fallback root",
-  "reason": "Requested NAS asset/output roots are not writable by user hj; sudo requires a password and root SSH is unavailable.",
-  "status": "VOID_ASSETS_BLOCKED"
+  "next_unblock": "Restore official HF network access from PAI or provide an approved non-fallback transfer method/source for the exact HF assets.",
+  "reason": "Official HuggingFace endpoint is unreachable from PAI: httpx.ConnectError [Errno 101] Network is unreachable.",
+  "status": "VOID_WEIGHT_DOWNLOAD_BLOCKED",
+  "void_model_log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/b2_void_official_hf_download_20260630_104210.log",
+  "void_model_target": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model"
 }

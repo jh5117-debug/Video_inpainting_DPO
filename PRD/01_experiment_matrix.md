@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Weight Download Blocked
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp50 VOID weight download | `VOID_WEIGHT_DOWNLOAD_BLOCKED`; official HF network unreachable, no fallback used | `reports/exp50_void_weight_download.md`, `reports/exp50_void_asset_download_summary.json` |
+
+
 ## 2026-06-30 Exp50 VOID Permission Recovery
 
 | User-facing name | Status | Evidence / registry |

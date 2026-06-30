@@ -1,0 +1,3 @@
+repo,target,attempt,status,log,error
+netflix/void-model,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model,hf download void_pass1.safetensors void_pass2.safetensors,NETWORK_BLOCKED,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/b2_void_official_hf_download_20260630_104210.log,httpx.ConnectError [Errno 101] Network is unreachable
+alibaba-pai/CogVideoX-Fun-V1.5-5b-InP,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP,hf download --dry-run,NETWORK_BLOCKED,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/b2_base_official_hf_probe_20260630_104444.log,httpx.ConnectError [Errno 101] Network is unreachable / DryRunError

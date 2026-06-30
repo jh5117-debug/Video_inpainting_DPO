@@ -2,6 +2,7 @@ milestone	status	notes
 A_readback	EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT	Public VOID sources audited; no downloads; PAI fallback worktree active; NAS asset roots need ownership correction or approved fallback.
 B0_permission_recovery	VOID_ASSET_PERMISSION_RECOVERED	Verified 6/6 EXP50 directories with hj read/write/execute/write_probe; no chmod/chown run.
 B1_repo	VOID_REPO_READY	repo_path=/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model; commit=e3914f8f551dd4b880661991fd6b28cd1699a97a; no_official_source_modification=true
+B2_weights	VOID_WEIGHT_DOWNLOAD_BLOCKED	Official HF endpoint network unreachable for netflix/void-model and alibaba-pai/CogVideoX-Fun-V1.5-5b-InP; no fallback used.
 B_assets	VOID_ASSETS_BLOCKED	No download attempted because /third_party, /weights, /data/external, and /experiments/dpo targets are not writable by hj; sudo/root unavailable.
 C_env	NOT_STARTED	Blocked until assets/code available.
 D_trainable_forward	NOT_STARTED	Blocked until code/assets available.

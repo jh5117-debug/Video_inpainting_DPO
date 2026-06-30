@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Weight Download Blocked
+
+Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`.
+
+Official HF downloads for `netflix/void-model` and `alibaba-pai/CogVideoX-Fun-V1.5-5b-InP` failed from PAI with `httpx.ConnectError: [Errno 101] Network is unreachable`. No fallback or mirror was used. Exp50 remains blocked before env/model/inference gates until exact assets are available.
+
+
 ## 2026-06-30 Exp50 VOID Permission Recovery
 
 Status: `VOID_ASSET_PERMISSION_RECOVERED`.

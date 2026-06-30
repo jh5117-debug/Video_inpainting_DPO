@@ -79,3 +79,10 @@ sudo: a password is required
 SUDO_NOT_AVAILABLE
 
 ```
+
+
+## B2 Weight Download Update
+
+Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`.
+
+After permission recovery and official repo clone, Codex attempted official HuggingFace downloads for `netflix/void-model` and `alibaba-pai/CogVideoX-Fun-V1.5-5b-InP`. Both failed with `httpx.ConnectError: [Errno 101] Network is unreachable`. No fallback was used and no weights were downloaded.
