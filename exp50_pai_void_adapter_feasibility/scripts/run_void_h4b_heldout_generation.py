@@ -16,19 +16,20 @@ import numpy as np
 import torch
 from safetensors.torch import load_file, save_file
 
-ROOT = Path('/home/hj/H20_Video_inpainting_DPO_exp50_void_adapter_feasibility')
-ENV_PY = Path('/home/hj/conda_envs/void_exp50_official_v2/bin/python')
-VOID_REPO = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model')
-BASE = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP')
-VOID_WEIGHTS = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model')
+ROOT = Path(os.environ.get('EXP50_ROOT', '/home/hj/H20_Video_inpainting_DPO_exp50_void_adapter_feasibility'))
+ENV_PY = Path(os.environ.get('EXP50_ENV_PY', '/home/hj/conda_envs/void_exp50_official_v2/bin/python'))
+ASSET_ROOT = Path(os.environ.get('EXP50_ASSET_ROOT', '/mnt/nas/hj/H20_Video_inpainting_DPO'))
+VOID_REPO = Path(os.environ.get('EXP50_VOID_REPO', str(ASSET_ROOT / 'third_party/VOID/Netflix_void-model')))
+BASE = Path(os.environ.get('EXP50_BASE_MODEL', str(ASSET_ROOT / 'weights/void/CogVideoX-Fun-V1.5-5b-InP')))
+VOID_WEIGHTS = Path(os.environ.get('EXP50_VOID_WEIGHTS', str(ASSET_ROOT / 'weights/void/netflix_void-model')))
 STEP0_CKPT = VOID_WEIGHTS / 'void_pass1.safetensors'
-ADAPTER = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt')
-MANIFEST = ROOT / 'manifests/exp50_void_adapter_heldout4.jsonl'
-DATA_VIEW = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/vor_gate8_quadmask_official_prompt_view')
-F2_STEP0 = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1')
-OUT = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2')
+ADAPTER = Path(os.environ.get('EXP50_ADAPTER', str(ASSET_ROOT / 'experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt')))
+MANIFEST = Path(os.environ.get('EXP50_HELDOUT_MANIFEST', str(ROOT / 'manifests/exp50_void_adapter_heldout4.jsonl')))
+DATA_VIEW = Path(os.environ.get('EXP50_DATA_VIEW', str(ASSET_ROOT / 'experiments/dpo/exp50_pai_void_adapter_feasibility/vor_gate8_quadmask_official_prompt_view')))
+F2_STEP0 = Path(os.environ.get('EXP50_F2_STEP0', str(ASSET_ROOT / 'experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1')))
+OUT = Path(os.environ.get('EXP50_H4B_OUT', str(ASSET_ROOT / 'logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2')))
 REPORTS = ROOT / 'reports'
-RUNTIME = Path('/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp50_pai_void_adapter_feasibility')
+RUNTIME = Path(os.environ.get('EXP50_RUNTIME', str(ASSET_ROOT / 'runtime/exp50_pai_void_adapter_feasibility')))
 FFMPEG_DIR = RUNTIME / 'ffmpeg_bin'
 SH_TZ = timezone(timedelta(hours=8))
 
@@ -234,8 +235,10 @@ def main() -> None:
     heldout = [r['sample_id'] for r in rows]
     start = now()
     step1_ckpt = make_step1_checkpoint()
-    # Split heldout4 over requested GPU0/1.
-    groups = [(0, heldout[:2]), (1, heldout[2:])]
+    gpu_ids = [int(x) for x in os.environ.get('EXP50_H4B_GPUS', '0,1').split(',') if x.strip()]
+    if not gpu_ids:
+        raise ValueError('EXP50_H4B_GPUS must contain at least one GPU id')
+    groups = [(gpu, heldout[i::len(gpu_ids)]) for i, gpu in enumerate(gpu_ids)]
     runs = [run_group(gpu, seqs, step1_ckpt) for gpu, seqs in groups]
     ok = all(r['returncode'] == 0 for r in runs)
     records = []
