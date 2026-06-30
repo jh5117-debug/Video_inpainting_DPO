@@ -1863,3 +1863,12 @@ quality result.
 - VOR-Eval excluded: True
 - Safety: no training, no inference, no hard comp, no VOID positive claim.
 - Next gate: official inference smoke remains blocked until environment status is `VOID_ENV_READY`; current C status is `VOID_ENV_PARTIAL`.
+
+<!-- EXP50_C2_ENV_REPAIR -->
+
+### Exp50 C2 VOID Environment Repair - 2026-06-30T15:25:36+08:00
+
+- Status: `VOID_ENV_PARTIAL`.
+- Exact blockers: `VOID_ENV_BLOCKED_TORCH`, `VOID_ENV_BLOCKED_DEEPSPEED`.
+- `VOID_ENV_READY` not reached; F0/F1/F2/G gates not run.
+- Safety: no inference, no training, no optimizer step, no VOID official source modification.

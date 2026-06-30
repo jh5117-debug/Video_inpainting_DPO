@@ -1,0 +1,11 @@
+check,status,detail
+old_partial_env_import_smoke,PASS,"previous smoke imported 44 modules and CUDA small backward passed, but versions drifted"
+official_requirements_full,BLOCKED,full install hung in deepspeed metadata/build until manually stopped
+requirements_without_deepspeed,BLOCKED,matplotlib dependency resolution failed: fonttools>=4.22.0 unavailable
+fonttools_direct_probe,BLOCKED,direct PyPI fonttools probe did not return promptly and was stopped
+core_official_pins,BLOCKED,torch==2.7.1 821MB wheel timed out repeatedly; only about 3MB observed after several minutes
+deepspeed_train_only,BLOCKED,"pip attempted to pull torch 2.12/CUDA13 when deepspeed was installed separately, so it was stopped to avoid off-protocol env drift"
+official_repo_source_modified,PASS,no
+base_env_modified,PASS,no
+full_5b_model_load,PASS,no
+inference_or_training,PASS,"no inference, no training, no optimizer step"

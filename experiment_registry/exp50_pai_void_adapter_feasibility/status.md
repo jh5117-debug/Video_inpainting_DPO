@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T14:40:28.047764+08:00
+Last updated: 2026-06-30T15:25:36+08:00
 
-Current status: `VOID_VOR_QUADMASK_GATE8_READY`
+Current status: `VOID_ENV_PARTIAL`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -15,3 +15,9 @@ Current status: `VOID_VOR_QUADMASK_GATE8_READY`
 - VOID positive claim: not made
 
 Official inference smoke is not run because Milestone C is `VOID_ENV_PARTIAL`, not `VOID_ENV_READY`.
+
+## Environment repair C2
+
+
+- Environment repair C2: `VOID_ENV_PARTIAL`; exact blockers: `VOID_ENV_BLOCKED_TORCH, VOID_ENV_BLOCKED_DEEPSPEED`.
+- F0/F1/F2/G gates: not run because `VOID_ENV_READY` was not reached.

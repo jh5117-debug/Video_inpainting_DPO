@@ -22,3 +22,7 @@ VOR-to-VOID Gate8:
 - Small / medium / large: 3 / 3 / 2
 - Scene overlap: False
 - VOR-Eval excluded: True
+
+## C2 Environment Repair (2026-06-30T15:25:36+08:00)
+
+No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOID_ENV_BLOCKED_TORCH` and `VOID_ENV_BLOCKED_DEEPSPEED`.

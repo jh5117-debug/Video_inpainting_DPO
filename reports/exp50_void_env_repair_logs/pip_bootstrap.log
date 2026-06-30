@@ -1,0 +1,22 @@
+Requirement already satisfied: pip in /home/hj/conda_envs/void_exp50_official/lib/python3.10/site-packages (23.0.1)
+Collecting pip
+  Using cached pip-26.1.2-py3-none-any.whl (1.8 MB)
+Requirement already satisfied: setuptools in /home/hj/conda_envs/void_exp50_official/lib/python3.10/site-packages (79.0.1)
+Collecting setuptools
+  Using cached setuptools-82.0.1-py3-none-any.whl (1.0 MB)
+Collecting wheel
+  Using cached wheel-0.47.0-py3-none-any.whl (32 kB)
+Collecting packaging>=24.0
+  WARNING: Retrying (Retry(total=4, connect=None, read=None, redirect=None, status=None)) after connection broken by 'ReadTimeoutError("HTTPSConnectionPool(host='files.pythonhosted.org', port=443): Read timed out. (read timeout=15)")': /packages/df/b2/87e62e8c3e2f4b32e5fe99e0b86d576da1312593b39f47d8ceef365e95ed/packaging-26.2-py3-none-any.whl
+  Downloading packaging-26.2-py3-none-any.whl (100 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100.2/100.2 kB 44.1 kB/s eta 0:00:00
+Installing collected packages: setuptools, pip, packaging, wheel
+  Attempting uninstall: setuptools
+    Found existing installation: setuptools 79.0.1
+    Uninstalling setuptools-79.0.1:
+      Successfully uninstalled setuptools-79.0.1
+  Attempting uninstall: pip
+    Found existing installation: pip 23.0.1
+    Uninstalling pip-23.0.1:
+      Successfully uninstalled pip-23.0.1
+Successfully installed packaging-26.2 pip-26.1.2 setuptools-82.0.1 wheel-0.47.0

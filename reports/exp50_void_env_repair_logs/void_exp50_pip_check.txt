@@ -1,0 +1,5 @@
+romatch 0.1.2 requires h5py, which is not installed.
+romatch 0.1.2 requires opencv-python, which is not installed.
+romatch 0.1.2 requires poselib, which is not installed.
+romatch 0.1.2 requires wandb, which is not installed.
+decord 0.6.0 is not supported on this platform

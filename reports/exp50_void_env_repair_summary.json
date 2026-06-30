@@ -1,0 +1,30 @@
+{
+  "core_pins_rc": "143",
+  "deepspeed_trainonly_rc": "143",
+  "exact_blockers": [
+    "VOID_ENV_BLOCKED_TORCH",
+    "VOID_ENV_BLOCKED_DEEPSPEED"
+  ],
+  "f0_component_load_allowed": false,
+  "f1_official_sample_inference_allowed": false,
+  "f2_vor_gate8_inference_allowed": false,
+  "fonttools_direct_rc": "missing",
+  "full_requirements_rc": "missing",
+  "g_zero_gap_one_step_allowed": false,
+  "no_base_env_modification": true,
+  "no_inference": true,
+  "no_official_repo_source_modification": true,
+  "no_optimizer_step": true,
+  "no_training": true,
+  "official_env_pip_status": "ok",
+  "official_repair_env": "/home/hj/conda_envs/void_exp50_official",
+  "old_env": "/home/hj/conda_envs/void_exp50",
+  "old_env_pip_status": "ok",
+  "requirements_no_deepspeed_rc": "1",
+  "secondary_blockers": [
+    "fonttools unavailable or unreachable, blocking literal full matplotlib dependency resolution"
+  ],
+  "status": "VOID_ENV_PARTIAL",
+  "timestamp": "2026-06-30T15:25:36+08:00",
+  "void_env_ready": false
+}
