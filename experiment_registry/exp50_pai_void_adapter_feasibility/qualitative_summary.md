@@ -91,3 +91,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 
 - Status: `VOID_ONE_STEP_CHECKPOINT_READY`
 - The one-step adapter artifact is present and matches the `proj_out` trainable subset. No visual evidence generated yet.
+
+
+## H4b-2 One-Step Heldout Generation - 2026-07-01T00:09:39+08:00
+
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
+- No visual evidence generated. H4b remains blocked by GPU availability; no 10-step unlock.

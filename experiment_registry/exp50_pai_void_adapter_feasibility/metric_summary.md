@@ -136,3 +136,9 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - SHA256: `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`
 - Adapter keys: ['proj_out.bias', 'proj_out.weight']
 - No video metrics; checkpoint audit only.
+
+
+## H4b-2 One-Step Heldout Generation - 2026-07-01T00:09:39+08:00
+
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
+- No Step0/Step1 video metrics generated because all PAI GPUs were occupied.

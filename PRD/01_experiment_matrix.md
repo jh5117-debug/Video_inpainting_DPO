@@ -753,3 +753,7 @@ Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`. One-step adapter checkpoint `/mn
 ## Exp50 H4b-1 One-Step Checkpoint Audit - 2026-07-01T00:08:01+08:00
 
 Status: `VOID_ONE_STEP_CHECKPOINT_READY`. Adapter checkpoint `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt` exists, SHA256 `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`, and adapter keys match `proj_out.weight` / `proj_out.bias`. H4 strict reload was already OK. H4b-2 video generation waits for a free PAI GPU; no unrelated GPU process was killed.
+
+## Exp50 H4b-2 One-Step Heldout Generation - 2026-07-01T00:09:39+08:00
+
+Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`. Heldout4 Step0/Step1 video generation was not launched because all 8 PAI GPUs were occupied by unrelated root jobs. No process was killed. H4b-3 and H5 remain locked.

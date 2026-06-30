@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T00:08:01+08:00
+Last updated: 2026-07-01T00:09:39+08:00
 
-Current status: `VOID_ONE_STEP_CHECKPOINT_READY`
+Current status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -173,3 +173,13 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Adapter keys: ['proj_out.bias', 'proj_out.weight']
 - Strict reload evidence: H4 `reload_ok=True`, missing=[], unexpected=[].
 - Current GPU load: occupied by unrelated root jobs; no kill attempted. H4b-2 video generation requires a free GPU.
+
+## Milestone H4b-2 update - VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED
+
+- Time: 2026-07-01T00:09:39+08:00
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
+- Evidence: `reports/exp50_void_one_step_heldout_generation.md`, `reports/exp50_void_one_step_heldout_generation.csv`, `reports/exp50_void_one_step_heldout_generation_summary.json`
+- Blocker: `NO_FREE_PAI_GPU_ALL_8_OCCUPIED_BY_UNRELATED_ROOT_JOBS`
+- Videos generated: 0 Step0 / 0 Step1.
+- 10-step remains locked; H4b-3 metrics/visual review not run.
+- Safety: no inference, no optimizer step, no VOR-Eval, no hard comp, no process killed.
