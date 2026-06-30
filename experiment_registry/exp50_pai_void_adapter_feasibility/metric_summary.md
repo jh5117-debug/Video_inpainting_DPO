@@ -97,3 +97,9 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Loser policy/reference loss: 0.08385218679904938 / 0.08385218679904938
 - DPO loss: 0.6931471824645996
 - Grad norm: 0.011950799647202132
+
+## H3 Zero-Gap V2 - 2026-06-30T23:17:43+08:00
+
+- Status: `VOID_ZERO_GAP_PASS`
+- Winner/loser gaps: 0.0 / 0.0
+- DPO loss: 0.6931471824645996; expected log(2): 0.6931471805599453

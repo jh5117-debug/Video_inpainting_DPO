@@ -59,3 +59,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_PREFERENCE_FORWARD_PASS`
 - No visual output was generated; this is a preference-forward loss/gradient gate.
 - No adapter evidence claim is made.
+
+## H3 Zero-Gap V2 - 2026-06-30T23:17:43+08:00
+
+- Status: `VOID_ZERO_GAP_PASS`
+- No visual output was generated; zero-gap is a loss/gradient consistency gate.
+- No adapter evidence claim is made.

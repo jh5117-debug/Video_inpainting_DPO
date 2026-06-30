@@ -1,0 +1,2 @@
+sample_id,status,winner_gap,loser_gap,dpo_loss,expected_log2,same_noise,same_timestep,reference_grad_zero,policy_grad_finite
+BLENDER_CON001_00636,VOID_ZERO_GAP_PASS,0.0,0.0,0.6931471824645996,0.6931471805599453,True,True,True,True

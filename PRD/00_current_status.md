@@ -1920,3 +1920,8 @@ The isolated wrapper loaded VOID pass1 and reproduced the official SFT forward t
 Status: `VOID_PREFERENCE_FORWARD_PASS`.
 
 The isolated wrapper ran policy/reference winner-loser preference forward with identical VOID pass1 clones, same noise/timestep, and frozen reference. DPO loss 0.6931471824645996 with finite policy gradient and reference grad zero. No optimizer step was run.
+## 2026-06-30 Exp50 VOID Zero-Gap V2
+
+Status: `VOID_ZERO_GAP_PASS`.
+
+Zero-gap passed using the H2 identical policy/reference preference-forward evidence: winner/loser gaps were zero, DPO loss was log(2), reference grad was zero, and policy grad was finite. No optimizer step was run.

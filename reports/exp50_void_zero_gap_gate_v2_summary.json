@@ -1,0 +1,21 @@
+{
+  "dpo_loss": 0.6931471824645996,
+  "expected_log2": 0.6931471805599453,
+  "hard_comp_used": false,
+  "loser_gap": 0.0,
+  "loser_policy_loss": 0.08385218679904938,
+  "loser_reference_loss": 0.08385218679904938,
+  "optimizer_step": false,
+  "policy_grad_finite": true,
+  "reference_grad_zero": true,
+  "same_noise": true,
+  "same_timestep": true,
+  "sample_id": "BLENDER_CON001_00636",
+  "source_run": "reports/exp50_void_preference_forward_summary.json",
+  "status": "VOID_ZERO_GAP_PASS",
+  "training_run": false,
+  "vor_eval_used": false,
+  "winner_gap": 0.0,
+  "winner_policy_loss": 0.0640571117401123,
+  "winner_reference_loss": 0.0640571117401123
+}

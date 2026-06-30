@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T23:15:48+08:00
+Last updated: 2026-06-30T23:17:43+08:00
 
-Current status: `VOID_PREFERENCE_FORWARD_PASS`
+Current status: `VOID_ZERO_GAP_PASS`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -112,4 +112,13 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Loser policy/reference loss: 0.08385218679904938 / 0.08385218679904938.
 - DPO loss: 0.6931471824645996; preference margin: 0.0.
 - Grad finite/reference grad zero: True / True.
+- Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.
+## Milestone H3 update - VOID_ZERO_GAP_PASS
+
+- Time: 2026-06-30T23:17:43+08:00
+- Status: `VOID_ZERO_GAP_PASS`
+- Evidence: `reports/exp50_void_zero_gap_gate_v2.md`, `reports/exp50_void_zero_gap_gate_v2.csv`, `reports/exp50_void_zero_gap_gate_v2_summary.json`
+- Winner/loser gaps: 0.0 / 0.0.
+- DPO loss: 0.6931471824645996 vs log(2) 0.6931471805599453.
+- Reference grad zero / policy grad finite: True / True.
 - Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.

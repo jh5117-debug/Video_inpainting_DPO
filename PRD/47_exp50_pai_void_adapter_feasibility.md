@@ -247,3 +247,12 @@ Reports:
 - DPO loss: 0.6931471824645996; preference margin: 0.0.
 - Grad finite/reference grad zero: True / True.
 - Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.
+## Milestone H3 update - VOID_ZERO_GAP_PASS
+
+- Time: 2026-06-30T23:17:43+08:00
+- Status: `VOID_ZERO_GAP_PASS`
+- Evidence: `reports/exp50_void_zero_gap_gate_v2.md`, `reports/exp50_void_zero_gap_gate_v2.csv`, `reports/exp50_void_zero_gap_gate_v2_summary.json`
+- Winner/loser gaps: 0.0 / 0.0.
+- DPO loss: 0.6931471824645996 vs log(2) 0.6931471805599453.
+- Reference grad zero / policy grad finite: True / True.
+- Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.
