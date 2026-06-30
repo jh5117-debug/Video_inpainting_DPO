@@ -1832,3 +1832,7 @@ Exp49 Milestone C created an isolated Python environment and ran ROSE import/CUD
 ## 2026-06-30 Exp49 ROSE Adapter Feasibility Audit
 
 Exp49 Milestone D audited official ROSE code on PAI. Status: `ROSE_TRAINING_FORWARD_BLOCKED`. The released code has inference, dataset loaders, a differentiable WanTransformer3DModel, and LoRA utilities, but no executable official training script, optimizer/backward loop, explicit loss, or explicit FlowMatch training target construction was found. No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.
+
+## 2026-06-30 Exp49 ROSE Python 3.12 Environment Remediation
+
+Exp49 created `/home/hj/venvs/rose_exp49_py312` using `virtualenv` because system `python3.12` lacks `ensurepip`. PyTorch 2.6.0, torchvision 0.21.0, and ROSE requirements were installed into that isolated env. Import/CUDA smoke status: `ROSE_ENV_READY`. No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.

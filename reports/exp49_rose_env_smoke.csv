@@ -1,38 +1,39 @@
 check,status,note
-python_version,PASS,"3.10.19 (main, Nov 28 2025, 15:21:53) [GCC 13.2.0]"
-import:PIL,PASS,11.3.0
+python_version,PASS,"3.12.3 (main, Nov  6 2025, 13:44:16) [GCC 13.3.0]"
+import:PIL,PASS,12.2.0
 import:einops,PASS,0.8.2
-import:safetensors,PASS,0.7.0
+import:safetensors,PASS,0.8.0
 import:timm,PASS,1.0.27
 import:tomesd,PASS,
 import:torchdiffeq,PASS,0.2.5
 import:torchsde,PASS,0.2.6
 import:decord,PASS,0.6.0
 import:datasets,PASS,5.0.0
-import:numpy,PASS,2.1.2
-import:skimage,PASS,0.25.2
+import:numpy,PASS,2.5.0
+import:skimage,PASS,0.26.0
 import:cv2,PASS,4.13.0
-import:omegaconf,PASS,2.3.0
+import:omegaconf,PASS,2.3.1
 import:sentencepiece,PASS,0.2.1
 import:albumentations,PASS,2.0.8
 import:imageio,PASS,2.37.3
 import:bs4,PASS,4.15.0
 import:ftfy,PASS,6.3.1
 import:func_timeout,PASS,4.3.5
-import:accelerate,PASS,1.13.0
+import:accelerate,PASS,1.14.0
 import:diffusers,PASS,0.31.0
 import:transformers,PASS,4.46.2
-torch,PASS,2.6.0+cu126 cuda=12.6 available=True
-rose_import:rose.models,PASS,
-rose_import:rose.models.wan_transformer3d,PASS,
-rose_import:rose.models.wan_vae,PASS,
-rose_import:rose.models.wan_text_encoder,PASS,
-rose_import:rose.models.wan_image_encoder,PASS,
-rose_import:rose.models.diff_mask_predictor,PASS,
-rose_import:rose.pipeline.pipeline_wan_fun_inpaint,PASS,
-rose_import:rose.utils.utils,PASS,
-rose_import:rose.data.dataset_image_video,PASS,
-rose_import:inference,PASS,
+torch,PASS,2.6.0+cu124 cuda=12.4 available=True
+cuda_matmul_gpu0,PASS,mean=1.132464
+import:rose.models,PASS,
+import:rose.models.wan_transformer3d,PASS,
+import:rose.models.wan_vae,PASS,
+import:rose.models.wan_text_encoder,PASS,
+import:rose.models.wan_image_encoder,PASS,
+import:rose.models.diff_mask_predictor,PASS,
+import:rose.pipeline.pipeline_wan_fun_inpaint,PASS,
+import:rose.utils.utils,PASS,
+import:rose.data.dataset_image_video,PASS,
+import:inference,PASS,
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Kunbyte_ROSE/config.json,PASS,454
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Kunbyte_ROSE/diffusion_pytorch_model.safetensors,PASS,3128957992
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP/config.json,PASS,249
@@ -43,4 +44,3 @@ path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP/model
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP/models_clip_open-clip-xlm-roberta-large-vit-huge-14.pth,PASS,4772359047
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP/google/umt5-xxl/tokenizer.json,PASS,16837417
 path:/mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP/xlm-roberta-large/tokenizer.json,PASS,17082660
-cuda_matmul_gpu0,PASS,mean=-0.042270

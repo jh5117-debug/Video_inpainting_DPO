@@ -627,3 +627,9 @@ the public readback and the PAI access blocker.
 | Experiment | Milestone | Status | Notes |
 | --- | --- | --- | --- |
 | `exp49_pai_rose_adapter_feasibility` | D adapter audit | `ROSE_TRAINING_FORWARD_BLOCKED` | Official code exposes transformer forward and LoRA utilities, but no released training loop/loss/target; no inference/training run. |
+
+## 2026-06-30 Exp49 Py312 Env Update
+
+| Experiment | Milestone | Status | Notes |
+| --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | C env py312 remediation | `ROSE_ENV_READY` | Python 3.12 virtualenv plus torch 2.6.0 and ROSE requirements import/CUDA smoke; no inference/training. |

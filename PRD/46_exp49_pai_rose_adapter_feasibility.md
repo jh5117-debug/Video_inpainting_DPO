@@ -122,3 +122,11 @@ Status: `ROSE_TRAINING_FORWARD_BLOCKED`.
 Official ROSE code was audited on PAI. `inference.py` and `WanFunInpaintPipeline.__call__` are no-grad inference paths. `WanTransformer3DModel.forward()` is differentiable and `rose/utils/lora_utils.py` exposes LoRA optimizer-param and save/load helpers, but the released repository does not include an executable training script, optimizer/backward loop, explicit loss, or explicit FlowMatch target construction. ROSE is therefore not yet a proven adapter candidate; a future isolated wrapper would need zero-gap / one-step proof before any adapter claim.
 
 No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.
+
+## Milestone C2 Update - 2026-06-30
+
+Status: `ROSE_ENV_READY`.
+
+The earlier Python 3.10 env was replaced for gate purposes by `/home/hj/venvs/rose_exp49_py312`. System `python3.12` lacks `ensurepip`, so `virtualenv` from the isolated py310 env was used to seed pip without modifying system Python. PyTorch 2.6.0, torchvision 0.21.0, and ROSE requirements were installed in the py312 venv; import/CUDA smoke had `0` failed checks.
+
+No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.
