@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`
+Status: `VOID_ENV_READY`
 
 ## Objective
 
@@ -142,3 +142,16 @@ Reports:
 - Exact blockers: `VOID_ENV_BLOCKED_TORCH`, `VOID_ENV_BLOCKED_DEEPSPEED`.
 - `VOID_ENV_READY` not reached; F0/F1/F2/G gates not run.
 - Safety: no inference, no training, no optimizer step, no VOID official source modification.
+
+## Milestone C3 update - VOID_ENV_READY
+
+- Time: 2026-06-30T16:44:02+08:00
+- Status: `VOID_ENV_READY`
+- Evidence: `reports/exp50_void_env_relay_ingest.md`
+- Env: `/home/hj/conda_envs/void_exp50_official_v2`
+- Torch: `2.7.1+cu126`; CUDA runtime `12.6`; bf16 supported `True`
+- CUDA tiny smoke: `CUDA_BF16_BACKWARD_OK` on GPU `0`; max allocation 67146240 bytes.
+- Wheelhouse transfer: `VOID_ENV_WHEELHOUSE_TRANSFER_VERIFIED`; hash match True; missing 0; mismatches 0.
+- Deepspeed caveat: `DEEPSPEED_TRAIN_ONLY_NOT_INSTALLED_NO_DEPS_SDIST_AVAILABLE`; intentionally not installed to avoid wrong torch/CUDA drift.
+- Safety: no training, no inference, no optimizer step, no PAI base env modification, no VOID official source modification, no VOID positive claim.
+- Next gate: F0 component load smoke.

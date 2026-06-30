@@ -1,0 +1,40 @@
+key,value
+status,VOID_ENV_READY
+env_path,/home/hj/conda_envs/void_exp50_official_v2
+wheelhouse_status,VOID_ENV_WHEELHOUSE_READY
+wheelhouse_file_count,145
+wheelhouse_size,3.3G
+torch_wheel,torch-2.7.1+cu126-cp310-cp310-manylinux_2_28_x86_64.whl
+torchvision_wheel,torchvision-0.22.1+cu126-cp310-cp310-manylinux_2_28_x86_64.whl
+deepspeed_status,DEEPSPEED_TRAIN_ONLY_NOT_INSTALLED_NO_DEPS_SDIST_AVAILABLE
+transfer_status,VOID_ENV_WHEELHOUSE_TRANSFER_VERIFIED
+transfer_hash_match,True
+transfer_missing_count,0
+transfer_mismatch_count,0
+torch,2.7.1+cu126
+torch_cuda,12.6
+cuda_available,True
+bf16_supported,True
+import_fail_count,0
+relay_reports,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/env_wheelhouse/reports
+relay_sha,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/env_wheelhouse/sha256
+import_diffusers,IMPORT_OK 0.33.1
+import_transformers,IMPORT_OK 4.57.1
+import_accelerate,IMPORT_OK 1.12.0
+import_safetensors,IMPORT_OK 0.6.2
+import_numpy,IMPORT_OK 1.26.4
+import_cv2,IMPORT_OK 4.10.0
+import_imageio,IMPORT_OK 2.37.0
+import_decord,IMPORT_OK 0.6.0
+import_einops,IMPORT_OK 0.8.0
+import_omegaconf,IMPORT_OK 2.3.0
+import_pydantic,IMPORT_OK 2.13.4
+import_matplotlib,IMPORT_OK 3.10.6
+import_fontTools,IMPORT_OK 4.63.0
+import_huggingface_hub,IMPORT_OK 0.36.2
+import_av,IMPORT_OK 17.1.0
+import_moviepy,IMPORT_OK 2.1.2
+cuda_tiny_smoke_status,CUDA_BF16_BACKWARD_OK
+cuda_tiny_smoke_gpu,0
+cuda_tiny_smoke_grad_finite,True
+cuda_tiny_smoke_max_memory_allocated,67146240

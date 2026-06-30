@@ -16,3 +16,4 @@ C_env_smoke	VOID_ENV_PARTIAL	imports_pass=44;imports_fail=0;cuda_fail=0;pin_warn
 D_trainable_forward_audit	VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE	policy=CogVideoXTransformer3DModel;loss=MSE_noise_or_velocity;quadmask=0/63/127/255;dpo_out_of_box=no
 E_vor_quadmask_gate8	VOID_VOR_QUADMASK_GATE8_READY	gate8=8;real=4;blender=4;scene_overlap=False;vor_eval=no
 C2_env_repair	VOID_ENV_PARTIAL	exact_blockers=VOID_ENV_BLOCKED_TORCH,VOID_ENV_BLOCKED_DEEPSPEED;no_inference=true;no_training=true
+C3_env_relay_ingest	VOID_ENV_READY	env=/home/hj/conda_envs/void_exp50_official_v2;torch=2.7.1+cu126;cuda=12.6;cuda_smoke=CUDA_BF16_BACKWARD_OK;hash_match=True;missing=0;mismatch=0;deepspeed=train_only_not_installed

@@ -1,0 +1,53 @@
+{
+  "bf16_supported": true,
+  "cuda_available": true,
+  "cuda_tiny_smoke": {
+    "gpu": "0",
+    "gpu_visible": "0",
+    "grad_finite": true,
+    "loss": 0.8243304491043091,
+    "max_memory_allocated": 67146240,
+    "status": "CUDA_BF16_BACKWARD_OK"
+  },
+  "deepspeed_status": "DEEPSPEED_TRAIN_ONLY_NOT_INSTALLED_NO_DEPS_SDIST_AVAILABLE",
+  "env_path": "/home/hj/conda_envs/void_exp50_official_v2",
+  "gpu_rows_before_smoke": [
+    {
+      "index": "0",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1,
+      "utilization_pct": 0
+    },
+    {
+      "index": "1",
+      "memory_total_mib": 143771,
+      "memory_used_mib": 1,
+      "utilization_pct": 0
+    }
+  ],
+  "import_fail_count": 0,
+  "python": "3.10.19 (main, Nov 28 2025, 15:21:53) [GCC 13.2.0]",
+  "relay_reports": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/env_wheelhouse/reports",
+  "relay_sha": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/env_wheelhouse/sha256",
+  "safety": {
+    "deepspeed_installed": false,
+    "inference_run": false,
+    "optimizer_step": false,
+    "pai_base_env_modified": false,
+    "training_run": false,
+    "void_source_modified": false
+  },
+  "status": "VOID_ENV_READY",
+  "timestamp": "2026-06-30T16:44:02+08:00",
+  "torch": "2.7.1+cu126",
+  "torch_cuda": "12.6",
+  "torch_wheel": "torch-2.7.1+cu126-cp310-cp310-manylinux_2_28_x86_64.whl",
+  "torchvision_wheel": "torchvision-0.22.1+cu126-cp310-cp310-manylinux_2_28_x86_64.whl",
+  "transfer_hash_match": true,
+  "transfer_mismatch_count": 0,
+  "transfer_missing_count": 0,
+  "transfer_status": "VOID_ENV_WHEELHOUSE_TRANSFER_VERIFIED",
+  "wheelhouse_file_count": 145,
+  "wheelhouse_size": "3.3G",
+  "wheelhouse_status": "VOID_ENV_WHEELHOUSE_READY"
+}

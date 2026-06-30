@@ -675,3 +675,11 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 - Exact blockers: `VOID_ENV_BLOCKED_TORCH`, `VOID_ENV_BLOCKED_DEEPSPEED`.
 - `VOID_ENV_READY` not reached; F0/F1/F2/G gates not run.
 - Safety: no inference, no training, no optimizer step, no VOID official source modification.
+
+## Exp50 C3 env relay matrix update - VOID_ENV_READY
+
+- Status: `VOID_ENV_READY`
+- Evidence: `reports/exp50_void_env_relay_ingest.md`, `reports/exp50_void_env_relay_ingest_summary.json`
+- Env: `/home/hj/conda_envs/void_exp50_official_v2`; torch `2.7.1+cu126`; CUDA `12.6`.
+- Safety: no training, no inference, no optimizer step, no VOID positive claim.
+- Next gate: F0 component load smoke.

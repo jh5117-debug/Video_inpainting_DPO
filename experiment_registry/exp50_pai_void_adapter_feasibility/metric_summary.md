@@ -1,6 +1,6 @@
 # Exp50 Metric Summary
 
-Last updated: 2026-06-30T14:40:28.047764+08:00
+Last updated: 2026-06-30T16:44:02+08:00
 
 No training or inference metrics yet.
 
@@ -26,3 +26,12 @@ VOR-to-VOID Gate8:
 ## C2 Environment Repair (2026-06-30T15:25:36+08:00)
 
 No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOID_ENV_BLOCKED_TORCH` and `VOID_ENV_BLOCKED_DEEPSPEED`.
+
+## C3 Environment Relay Ingest (2026-06-30T16:44:02+08:00)
+
+- Status: `VOID_ENV_READY`
+- Wheelhouse files: 145 (3.3G)
+- Transfer hash match: True; missing 0; mismatches 0
+- Env torch: `2.7.1+cu126`; CUDA runtime `12.6`
+- Import failures: 0
+- CUDA bf16 tiny smoke: `PENDING_NO_FREE_GPU`; max allocation 67146240 bytes

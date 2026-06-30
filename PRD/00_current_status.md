@@ -1872,3 +1872,9 @@ quality result.
 - Exact blockers: `VOID_ENV_BLOCKED_TORCH`, `VOID_ENV_BLOCKED_DEEPSPEED`.
 - `VOID_ENV_READY` not reached; F0/F1/F2/G gates not run.
 - Safety: no inference, no training, no optimizer step, no VOID official source modification.
+
+## 2026-06-30 Exp50 VOID Env Relay Ingest
+
+Status: `VOID_ENV_READY`.
+
+HAL/H20 wheelhouse relay was ingested into the PAI Exp50 branch. The isolated PAI env `/home/hj/conda_envs/void_exp50_official_v2` now imports the required VOID/CogVideoX stack with torch `2.7.1+cu126` and CUDA runtime `12.6`. CUDA bf16 tiny smoke passed on GPU `None`. No training or inference was run. Next gate is F0 component load smoke.
