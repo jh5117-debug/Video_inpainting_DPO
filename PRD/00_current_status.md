@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Asset Download Blocked
+
+Status: `VOID_ASSETS_BLOCKED`.
+
+Milestone B pre-download checks found that the requested VOID asset/output roots under `/mnt/nas/hj/H20_Video_inpainting_DPO` are not writable by `hj`; passwordless sudo and root SSH are unavailable. No assets were downloaded to avoid unapproved fallback writes. Exp50 is blocked until directory ownership is corrected or a fallback root is approved.
+
+
 ## 2026-06-30 Exp50 VOID Adapter Feasibility Readback
 
 Status: `EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT`.

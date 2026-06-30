@@ -1,9 +1,7 @@
 # Exp50 Status
 
-Current status: `EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT`.
+Current status: `VOID_ASSETS_BLOCKED`.
 
-Milestone A read back project status and public VOID sources. No VOID code/model/base download was performed before the readback commit.
+Milestone A completed and was pushed. Milestone B pre-download checks found that requested NAS asset/output roots are not writable by user `hj`. No downloads were attempted, and no assets were written to fallback or ROSE-owned directories.
 
-VOID is prioritized over ROSE because public sources expose data generation and training scripts. ROSE is paused after Exp49 because it is baseline/loser-generator useful but training-forward blocked.
-
-Blocker before Milestone B: requested NAS asset/output roots are not all writable by user `hj`; directory ownership needs correction or an approved fallback before downloads.
+Unblock requirement: create/chown the requested EXP50 VOID directories for `hj`, or approve an alternate asset/output root.

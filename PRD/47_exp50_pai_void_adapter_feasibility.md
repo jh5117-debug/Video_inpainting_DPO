@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT`
+Status: `VOID_ASSETS_BLOCKED`
 
 ## Objective
 
@@ -47,3 +47,12 @@ Key result: VOID has stronger adapter feasibility than ROSE because its public r
 ## Permission Caveat
 
 At readback, `hj` can write logs/runtime but cannot create asset/output directories under several requested NAS roots. Milestone B must first resolve directory ownership or use an explicitly approved fallback.
+
+
+## Milestone B Update - 2026-06-30
+
+Status: `VOID_ASSETS_BLOCKED`.
+
+Pre-download disk and permission checks were run. No VOID official repo, Pass1/Pass2 weights, CogVideoX-Fun base model, or sample data was downloaded because the required NAS target roots are not writable by `hj`, and neither passwordless sudo nor root SSH is available from this session. The blocked target roots are `/third_party/VOID`, `/weights/void`, `/data/external/void`, and `/experiments/dpo/exp50_pai_void_adapter_feasibility` under `/mnt/nas/hj/H20_Video_inpainting_DPO`.
+
+The task is blocked until those directories are created/chowned for `hj`, or an explicit alternate asset/output root is approved.

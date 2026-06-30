@@ -1,0 +1,6 @@
+path,purpose,status
+/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID,official VOID repo target,blocked_parent_not_writable
+/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model,VOID pass1/pass2 target,blocked_parent_not_writable
+/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP,CogVideoX-Fun base target,blocked_parent_not_writable
+/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void,VOID sample/data target,blocked_parent_not_writable
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility,Exp50 output root,blocked_parent_not_writable

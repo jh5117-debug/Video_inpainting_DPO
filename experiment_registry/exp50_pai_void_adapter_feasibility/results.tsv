@@ -1,6 +1,6 @@
 milestone	status	notes
 A_readback	EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT	Public VOID sources audited; no downloads; PAI fallback worktree active; NAS asset roots need ownership correction or approved fallback.
-B_assets	NOT_STARTED	Blocked until A commit and NAS write target is available.
+B_assets	VOID_ASSETS_BLOCKED	No download attempted because /third_party, /weights, /data/external, and /experiments/dpo targets are not writable by hj; sudo/root unavailable.
 C_env	NOT_STARTED	Blocked until assets/code available.
 D_trainable_forward	NOT_STARTED	Blocked until code/assets available.
 E_quadmask	NOT_STARTED	Blocked until code path established.

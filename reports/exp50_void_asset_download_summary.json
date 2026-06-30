@@ -1,0 +1,15 @@
+{
+  "branch": "research/exp50-pai-void-adapter-feasibility-20260630",
+  "download_attempted": false,
+  "head": "8696dc711c6924b989ce27a9792474d1b94a3f3f",
+  "missing_assets": [
+    "Netflix/void-model repo",
+    "void_pass1.safetensors",
+    "void_pass2.safetensors",
+    "CogVideoX-Fun-V1.5-5b-InP",
+    "sample data"
+  ],
+  "next_unblock": "create/chown the requested VOID asset/output directories for hj, or provide an approved fallback root",
+  "reason": "Requested NAS asset/output roots are not writable by user hj; sudo requires a password and root SSH is unavailable.",
+  "status": "VOID_ASSETS_BLOCKED"
+}

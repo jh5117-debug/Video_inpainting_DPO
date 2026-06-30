@@ -1,0 +1,1 @@
+VOID_ASSETS_BLOCKED: no files downloaded, no sha256 inventory.

@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Asset Download Blocked
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp50 PAI VOID asset download | `VOID_ASSETS_BLOCKED`; no downloads attempted | `reports/exp50_void_asset_download.md`, `reports/exp50_void_asset_download_summary.json`, `experiment_registry/exp50_pai_void_adapter_feasibility/status.md` |
+
+
 ## 2026-06-30 Exp50 VOID Adapter Feasibility
 
 | User-facing name | Status | Evidence / registry |

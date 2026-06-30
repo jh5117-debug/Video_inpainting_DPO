@@ -19,4 +19,4 @@ promotion_gate:
   - VOID_ZERO_GAP_PASS
   - VOID_ONE_STEP_PASS
   - VOID_ADAPTER_10STEP_PROMISING_OR_POSITIVE
-current_blocker: NAS asset/output roots are not writable by hj
+current_blocker: VOID_ASSETS_BLOCKED because requested NAS asset/output roots are not writable by hj
