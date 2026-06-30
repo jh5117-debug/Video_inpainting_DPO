@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T23:17:43+08:00
+Last updated: 2026-06-30T23:24:57+08:00
 
-Current status: `VOID_ZERO_GAP_PASS`
+Current status: `VOID_ONE_STEP_PARETO_MIXED`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -122,3 +122,19 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - DPO loss: 0.6931471824645996 vs log(2) 0.6931471805599453.
 - Reference grad zero / policy grad finite: True / True.
 - Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.
+## Milestone H4 update - VOID_ONE_STEP_PARETO_MIXED
+
+- Time: 2026-06-30T23:24:57+08:00
+- Status: `VOID_ONE_STEP_PARETO_MIXED`
+- Evidence: `reports/exp50_void_one_step_gate_v2.md`, `reports/exp50_void_one_step_diagnostics_v2.csv`, `reports/exp50_void_one_step_visual_review_v2.csv`, `reports/exp50_void_one_step_summary_v2.json`
+- Optimizer: AdamW lr=1e-05 weight_decay=0.0 grad_clip=1.0.
+- Optimizer steps: 1.
+- Loss before step: 0.6931471824645996.
+- Grad finite / norm: True / 0.011962890625.
+- Param delta positive / max norm: True / 0.005055009387433529.
+- Reload ok: True.
+- Heldout forward finite: True.
+- Step1 vs Step0 L1: 0.019980037584900856.
+- Video inference generated: False.
+- Gate note: H5 10-step remains locked because H4 is not `VOID_ONE_STEP_PASS`.
+- Safety: exactly one optimizer step; no long training, no VOR-Eval, no hard comp, no VOID positive claim.

@@ -1925,3 +1925,8 @@ The isolated wrapper ran policy/reference winner-loser preference forward with i
 Status: `VOID_ZERO_GAP_PASS`.
 
 Zero-gap passed using the H2 identical policy/reference preference-forward evidence: winner/loser gaps were zero, DPO loss was log(2), reference grad was zero, and policy grad was finite. No optimizer step was run.
+## 2026-06-30 Exp50 VOID One-Step V2
+
+Status: `VOID_ONE_STEP_PARETO_MIXED`.
+
+One AdamW step ran on the `proj_out` micro subset. Param delta was positive, adapter-only reload passed, and heldout forward was finite. The gate is not marked PASS because no video-level heldout visual/metric evidence was generated; 10-step remains locked.

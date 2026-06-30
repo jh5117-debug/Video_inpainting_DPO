@@ -1,0 +1,2 @@
+sample_id,heldout_sample_id,status,loss_before_step,grad_norm_before_clip,param_delta_positive,max_param_delta_norm,reload_ok,heldout_forward_finite,step1_vs_step0_l1,video_inference_generated
+BLENDER_CON001_00636,BLENDER_CON001_00742,VOID_ONE_STEP_PARETO_MIXED,0.6931471824645996,0.011962890625,True,0.005055009387433529,True,True,0.019980037584900856,False

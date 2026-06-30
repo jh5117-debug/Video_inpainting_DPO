@@ -26,3 +26,4 @@ H0_preference_wrapper_readback	VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED	offici
 H1_sft_forward_parity	VOID_SFT_FORWARD_PARITY_EXPLAINED	sample=BLENDER_CON001_00636;prediction_type=v_prediction;loss=0.035282157361507416;finite=True;frames=13;training=false;optimizer=false
 H2_preference_forward	VOID_PREFERENCE_FORWARD_PASS	winner_policy=0.0640571117401123;loser_policy=0.08385218679904938;dpo=0.6931471824645996;same_noise=True;same_timestep=True;grad_finite=True;reference_grad_zero=True;optimizer=false
 H3_zero_gap_v2	VOID_ZERO_GAP_PASS	winner_gap=0.0;loser_gap=0.0;dpo=0.6931471824645996;log2=0.6931471805599453;reference_grad_zero=True;policy_grad_finite=True;optimizer=false
+H4_one_step_v2	VOID_ONE_STEP_PARETO_MIXED	optimizer=AdamW;lr=1e-05;param_delta=0.005055009387433529;reload_ok=True;heldout_forward_finite=True;video_inference=False;10step_unlocked=false

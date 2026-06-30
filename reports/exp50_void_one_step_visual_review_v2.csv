@@ -1,0 +1,2 @@
+sample_id,visual_status,output_path,notes
+BLENDER_CON001_00742,NOT_GENERATED_FORWARD_ONLY,,One-step generated finite model noise prediction only; no video decode/inference visual artifact was produced.
