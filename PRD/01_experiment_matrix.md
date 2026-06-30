@@ -683,3 +683,10 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 - Env: `/home/hj/conda_envs/void_exp50_official_v2`; torch `2.7.1+cu126`; CUDA `12.6`.
 - Safety: no training, no inference, no optimizer step, no VOID positive claim.
 - Next gate: F0 component load smoke.
+
+## Exp50 F0 component load matrix update - VOID_COMPONENT_LOAD_PASS
+
+- Status: `VOID_COMPONENT_LOAD_PASS`
+- Evidence: `reports/exp50_void_component_load_smoke.md`, `reports/exp50_void_component_load_smoke_summary.json`
+- Pass1/pass2 safetensors headers loaded; base transformer/VAE/text encoder headers loaded.
+- Safety: no inference, no training, no optimizer step, no full GPU 5B load, no VOID positive claim.

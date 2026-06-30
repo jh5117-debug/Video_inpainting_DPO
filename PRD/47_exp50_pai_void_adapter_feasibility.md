@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_ENV_READY`
+Status: `VOID_COMPONENT_LOAD_PASS`
 
 ## Objective
 
@@ -155,3 +155,15 @@ Reports:
 - Deepspeed caveat: `DEEPSPEED_TRAIN_ONLY_NOT_INSTALLED_NO_DEPS_SDIST_AVAILABLE`; intentionally not installed to avoid wrong torch/CUDA drift.
 - Safety: no training, no inference, no optimizer step, no PAI base env modification, no VOID official source modification, no VOID positive claim.
 - Next gate: F0 component load smoke.
+
+## Milestone F0 update - VOID_COMPONENT_LOAD_PASS
+
+- Time: 2026-06-30T16:50:03+08:00
+- Status: `VOID_COMPONENT_LOAD_PASS`
+- Evidence: `reports/exp50_void_component_load_smoke.md`
+- Config/tokenizer/scheduler metadata loaded without full inference.
+- Pass1 header: `HEADER_OK`; keys 1024.
+- Pass2 header: `HEADER_OK`; keys 1024.
+- Base transformer header: `HEADER_OK`; keys 1024.
+- Full GPU model load: not attempted in F0; no inference/training/optimizer step.
+- Next gate: F1 official sample inference if sample data exists; otherwise F2 Gate8 inference under the documented sample-not-provided rule.

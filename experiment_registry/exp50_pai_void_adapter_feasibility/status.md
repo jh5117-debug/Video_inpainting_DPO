@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T16:44:02+08:00
+Last updated: 2026-06-30T16:50:03+08:00
 
-Current status: `VOID_ENV_READY`
+Current status: `VOID_COMPONENT_LOAD_PASS`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -29,3 +29,11 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Env: `/home/hj/conda_envs/void_exp50_official_v2`; torch `2.7.1+cu126`; CUDA runtime `12.6`.
 - CUDA tiny smoke: `CUDA_BF16_BACKWARD_OK` on GPU `0`.
 - F0 component load smoke: next.
+
+- Component load smoke: `VOID_COMPONENT_LOAD_PASS`
+
+## Component load smoke F0
+
+- Component load smoke F0: `VOID_COMPONENT_LOAD_PASS`.
+- Pass1/pass2 checkpoint headers and base model component headers loaded.
+- Full GPU model load: not attempted; no inference/training.

@@ -1878,3 +1878,9 @@ quality result.
 Status: `VOID_ENV_READY`.
 
 HAL/H20 wheelhouse relay was ingested into the PAI Exp50 branch. The isolated PAI env `/home/hj/conda_envs/void_exp50_official_v2` now imports the required VOID/CogVideoX stack with torch `2.7.1+cu126` and CUDA runtime `12.6`. CUDA bf16 tiny smoke passed on GPU `None`. No training or inference was run. Next gate is F0 component load smoke.
+
+## 2026-06-30 Exp50 VOID Component Load Smoke
+
+Status: `VOID_COMPONENT_LOAD_PASS`.
+
+F0 loaded VOID/base configs, tokenizer/scheduler metadata, safetensors headers, and meta-device skeletons where supported. No full 5B GPU load, inference, training, or optimizer step was run. Next gate is official sample inference if sample data exists; otherwise VOR Gate8 pass1 inference may proceed under the sample-not-provided rule.

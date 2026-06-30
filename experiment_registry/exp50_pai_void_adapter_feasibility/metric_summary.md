@@ -35,3 +35,11 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Env torch: `2.7.1+cu126`; CUDA runtime `12.6`
 - Import failures: 0
 - CUDA bf16 tiny smoke: `PENDING_NO_FREE_GPU`; max allocation 67146240 bytes
+
+## F0 Component Load Smoke (2026-06-30T16:50:03+08:00)
+
+- Status: `VOID_COMPONENT_LOAD_PASS`
+- Pass1 keys: 1024; Pass2 keys: 1024
+- Base transformer keys: 1024; Base VAE keys: 436
+- Total asset disk bytes: 43385161698
+- Full GPU model load: not attempted

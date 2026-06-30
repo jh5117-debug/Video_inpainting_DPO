@@ -1,0 +1,2022 @@
+{
+  "base": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP",
+  "checks": [
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass1.safetensors",
+      "name": "void_pass1",
+      "size_bytes": 11143042384,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass2.safetensors",
+      "name": "void_pass2",
+      "size_bytes": 11143042384,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/model_index.json",
+      "name": "base_model_index",
+      "size_bytes": 411,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/configuration.json",
+      "name": "base_configuration",
+      "size_bytes": 56,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/transformer/config.json",
+      "name": "transformer_config",
+      "size_bytes": 887,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/transformer/diffusion_pytorch_model.safetensors",
+      "name": "transformer_weights",
+      "size_bytes": 11142305104,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/vae/config.json",
+      "name": "vae_config",
+      "size_bytes": 839,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/vae/diffusion_pytorch_model.safetensors",
+      "name": "vae_weights",
+      "size_bytes": 431221142,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/config.json",
+      "name": "text_encoder_config",
+      "size_bytes": 782,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model.safetensors.index.json",
+      "name": "text_encoder_index",
+      "size_bytes": 19885,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/tokenizer/spiece.model",
+      "name": "tokenizer_model",
+      "size_bytes": 791656,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/scheduler/scheduler_config.json",
+      "name": "scheduler_config",
+      "size_bytes": 482,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model/config/quadmask_cogvideox.py",
+      "name": "quadmask_config",
+      "size_bytes": 3351,
+      "status": "EXISTS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/model_index.json",
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "scheduler",
+        "text_encoder",
+        "tokenizer",
+        "transformer",
+        "vae"
+      ],
+      "name": "base_model_index_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/configuration.json",
+      "keys": [
+        "framework",
+        "task"
+      ],
+      "name": "base_configuration_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/transformer/config.json",
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "activation_fn",
+        "add_noise_in_inpaint_model",
+        "attention_bias",
+        "attention_head_dim",
+        "dropout",
+        "flip_sin_to_cos",
+        "freq_shift",
+        "in_channels",
+        "max_text_seq_length",
+        "norm_elementwise_affine",
+        "norm_eps",
+        "num_attention_heads",
+        "num_layers",
+        "out_channels",
+        "patch_bias",
+        "patch_size",
+        "patch_size_t",
+        "sample_frames",
+        "sample_height",
+        "sample_width",
+        "spatial_interpolation_scale",
+        "temporal_compression_ratio",
+        "temporal_interpolation_scale",
+        "text_embed_dim",
+        "time_embed_dim",
+        "timestep_activation_fn",
+        "use_learned_positional_embeddings",
+        "use_rotary_positional_embeddings"
+      ],
+      "name": "transformer_config_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/vae/config.json",
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "act_fn",
+        "block_out_channels",
+        "down_block_types",
+        "force_upcast",
+        "in_channels",
+        "latent_channels",
+        "latents_mean",
+        "latents_std",
+        "layers_per_block",
+        "norm_eps",
+        "norm_num_groups",
+        "out_channels",
+        "sample_height",
+        "sample_width",
+        "scaling_factor",
+        "shift_factor",
+        "temporal_compression_ratio",
+        "up_block_types",
+        "use_post_quant_conv",
+        "use_quant_conv"
+      ],
+      "name": "vae_config_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/config.json",
+      "keys": [
+        "_name_or_path",
+        "architectures",
+        "classifier_dropout",
+        "d_ff",
+        "d_kv",
+        "d_model",
+        "decoder_start_token_id",
+        "dense_act_fn",
+        "dropout_rate",
+        "eos_token_id",
+        "feed_forward_proj",
+        "initializer_factor",
+        "is_encoder_decoder",
+        "is_gated_act",
+        "layer_norm_epsilon",
+        "model_type",
+        "num_decoder_layers",
+        "num_heads",
+        "num_layers",
+        "output_past",
+        "pad_token_id",
+        "relative_attention_max_distance",
+        "relative_attention_num_buckets",
+        "tie_word_embeddings",
+        "torch_dtype",
+        "transformers_version",
+        "use_cache",
+        "vocab_size"
+      ],
+      "name": "text_encoder_config_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model.safetensors.index.json",
+      "keys": [
+        "metadata",
+        "weight_map"
+      ],
+      "name": "text_encoder_index_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/scheduler/scheduler_config.json",
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "beta_end",
+        "beta_schedule",
+        "beta_start",
+        "clip_sample",
+        "clip_sample_range",
+        "num_train_timesteps",
+        "prediction_type",
+        "rescale_betas_zero_snr",
+        "sample_max_value",
+        "set_alpha_to_one",
+        "snr_shift_scale",
+        "steps_offset",
+        "timestep_spacing",
+        "trained_betas"
+      ],
+      "name": "scheduler_config_json_load",
+      "status": "PASS"
+    },
+    {
+      "detail": "loaded",
+      "gpu_memory_mode": "model_cpu_offload_and_qfloat8",
+      "max_video_length": 197,
+      "name": "quadmask_config_get_config",
+      "sample_size": "384x672",
+      "status": "PASS",
+      "temporal_window_size": 85,
+      "use_quadmask": true,
+      "use_vae_mask": true
+    },
+    {
+      "detail": "T5Tokenizer.from_pretrained",
+      "name": "tokenizer_config_load",
+      "status": "PASS",
+      "vocab_size": 32000
+    },
+    {
+      "class_name": "CogVideoXDDIMScheduler",
+      "detail": "CogVideoXDDIMScheduler.from_pretrained",
+      "name": "scheduler_config_load_cog_ddim",
+      "status": "PASS"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass1.safetensors",
+      "estimated_tensor_bytes": 11142925568,
+      "key_count": 1024,
+      "name": "void_pass1_safetensors_header",
+      "size_bytes": 11143042384,
+      "status": "HEADER_OK"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass2.safetensors",
+      "estimated_tensor_bytes": 11142925568,
+      "key_count": 1024,
+      "name": "void_pass2_safetensors_header",
+      "size_bytes": 11143042384,
+      "status": "HEADER_OK"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/transformer/diffusion_pytorch_model.safetensors",
+      "estimated_tensor_bytes": 11142188288,
+      "key_count": 1024,
+      "name": "base_transformer_safetensors_header",
+      "size_bytes": 11142305104,
+      "status": "HEADER_OK"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/vae/diffusion_pytorch_model.safetensors",
+      "estimated_tensor_bytes": 431167814,
+      "key_count": 436,
+      "name": "base_vae_safetensors_header",
+      "size_bytes": 431221142,
+      "status": "HEADER_OK"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model-00001-of-00002.safetensors",
+      "estimated_tensor_bytes": 4994568192,
+      "key_count": 113,
+      "name": "text_encoder_00001_safetensors_header",
+      "size_bytes": 4994582224,
+      "status": "HEADER_OK"
+    },
+    {
+      "detail": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model-00002-of-00002.safetensors",
+      "estimated_tensor_bytes": 4530053120,
+      "key_count": 106,
+      "name": "text_encoder_00002_safetensors_header",
+      "size_bytes": 4530066360,
+      "status": "HEADER_OK"
+    },
+    {
+      "class_name": "CogVideoXTransformer3DModel",
+      "detail": "accelerate.init_empty_weights",
+      "in_channels": 33,
+      "name": "transformer_meta_init",
+      "num_layers": 42,
+      "sample_height": 384,
+      "sample_width": 680,
+      "status": "PASS"
+    },
+    {
+      "class_name": "AutoencoderKLCogVideoX",
+      "detail": "accelerate.init_empty_weights",
+      "latent_channels": 16,
+      "name": "vae_meta_init",
+      "status": "PASS",
+      "temporal_compression_ratio": 4
+    }
+  ],
+  "json_summaries": {
+    "base_configuration": {
+      "keys": [
+        "framework",
+        "task"
+      ]
+    },
+    "base_model_index": {
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "scheduler",
+        "text_encoder",
+        "tokenizer",
+        "transformer",
+        "vae"
+      ]
+    },
+    "scheduler_config": {
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "beta_end",
+        "beta_schedule",
+        "beta_start",
+        "clip_sample",
+        "clip_sample_range",
+        "num_train_timesteps",
+        "prediction_type",
+        "rescale_betas_zero_snr",
+        "sample_max_value",
+        "set_alpha_to_one",
+        "snr_shift_scale",
+        "steps_offset",
+        "timestep_spacing",
+        "trained_betas"
+      ]
+    },
+    "text_encoder_config": {
+      "keys": [
+        "_name_or_path",
+        "architectures",
+        "classifier_dropout",
+        "d_ff",
+        "d_kv",
+        "d_model",
+        "decoder_start_token_id",
+        "dense_act_fn",
+        "dropout_rate",
+        "eos_token_id",
+        "feed_forward_proj",
+        "initializer_factor",
+        "is_encoder_decoder",
+        "is_gated_act",
+        "layer_norm_epsilon",
+        "model_type",
+        "num_decoder_layers",
+        "num_heads",
+        "num_layers",
+        "output_past",
+        "pad_token_id",
+        "relative_attention_max_distance",
+        "relative_attention_num_buckets",
+        "tie_word_embeddings",
+        "torch_dtype",
+        "transformers_version",
+        "use_cache",
+        "vocab_size"
+      ]
+    },
+    "text_encoder_index": {
+      "keys": [
+        "metadata",
+        "weight_map"
+      ]
+    },
+    "transformer_config": {
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "activation_fn",
+        "add_noise_in_inpaint_model",
+        "attention_bias",
+        "attention_head_dim",
+        "dropout",
+        "flip_sin_to_cos",
+        "freq_shift",
+        "in_channels",
+        "max_text_seq_length",
+        "norm_elementwise_affine",
+        "norm_eps",
+        "num_attention_heads",
+        "num_layers",
+        "out_channels",
+        "patch_bias",
+        "patch_size",
+        "patch_size_t",
+        "sample_frames",
+        "sample_height",
+        "sample_width",
+        "spatial_interpolation_scale",
+        "temporal_compression_ratio",
+        "temporal_interpolation_scale",
+        "text_embed_dim",
+        "time_embed_dim",
+        "timestep_activation_fn",
+        "use_learned_positional_embeddings",
+        "use_rotary_positional_embeddings"
+      ]
+    },
+    "vae_config": {
+      "keys": [
+        "_class_name",
+        "_diffusers_version",
+        "act_fn",
+        "block_out_channels",
+        "down_block_types",
+        "force_upcast",
+        "in_channels",
+        "latent_channels",
+        "latents_mean",
+        "latents_std",
+        "layers_per_block",
+        "norm_eps",
+        "norm_num_groups",
+        "out_channels",
+        "sample_height",
+        "sample_width",
+        "scaling_factor",
+        "shift_factor",
+        "temporal_compression_ratio",
+        "up_block_types",
+        "use_post_quant_conv",
+        "use_quant_conv"
+      ]
+    }
+  },
+  "memory_estimate": {
+    "base_weight_disk_bytes": 21098174830,
+    "full_gpu_load_attempted": false,
+    "full_gpu_load_reason": "skipped; F0 is no-inference lightweight metadata smoke and full 5B load is not required before F1",
+    "total_asset_disk_bytes": 43385161698,
+    "void_pass_weight_disk_bytes": 22286084768
+  },
+  "meta_init": {
+    "transformer": {
+      "class_name": "CogVideoXTransformer3DModel",
+      "in_channels": 33,
+      "num_layers": 42,
+      "sample_height": 384,
+      "sample_width": 680,
+      "status": "PASS"
+    },
+    "vae": {
+      "class_name": "AutoencoderKLCogVideoX",
+      "latent_channels": 16,
+      "status": "PASS",
+      "temporal_compression_ratio": 4
+    }
+  },
+  "repo": "/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model",
+  "safe_reports": {
+    "base_transformer": {
+      "estimated_tensor_bytes": 11142188288,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "norm_final.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_final.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.bias",
+          "shape": [
+            6144
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.weight",
+          "shape": [
+            6144,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.weight",
+          "shape": [
+            3072,
+            264
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.weight",
+          "shape": [
+            3072,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.bias",
+          "shape": [
+            128
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.weight",
+          "shape": [
+            128,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.weight",
+          "shape": [
+            512,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.weight",
+          "shape": [
+            512,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        }
+      ],
+      "key_count": 1024,
+      "patch_embed.proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          3072,
+          264
+        ]
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/transformer/diffusion_pytorch_model.safetensors",
+      "prefix_counts_top": [
+        [
+          "transformer_blocks.0",
+          24
+        ],
+        [
+          "transformer_blocks.1",
+          24
+        ],
+        [
+          "transformer_blocks.10",
+          24
+        ],
+        [
+          "transformer_blocks.11",
+          24
+        ],
+        [
+          "transformer_blocks.12",
+          24
+        ],
+        [
+          "transformer_blocks.13",
+          24
+        ],
+        [
+          "transformer_blocks.14",
+          24
+        ],
+        [
+          "transformer_blocks.15",
+          24
+        ],
+        [
+          "transformer_blocks.16",
+          24
+        ],
+        [
+          "transformer_blocks.17",
+          24
+        ],
+        [
+          "transformer_blocks.18",
+          24
+        ],
+        [
+          "transformer_blocks.19",
+          24
+        ],
+        [
+          "transformer_blocks.2",
+          24
+        ],
+        [
+          "transformer_blocks.20",
+          24
+        ],
+        [
+          "transformer_blocks.21",
+          24
+        ],
+        [
+          "transformer_blocks.22",
+          24
+        ],
+        [
+          "transformer_blocks.23",
+          24
+        ],
+        [
+          "transformer_blocks.24",
+          24
+        ],
+        [
+          "transformer_blocks.25",
+          24
+        ],
+        [
+          "transformer_blocks.26",
+          24
+        ]
+      ],
+      "proj_out.weight": {
+        "dtype": "BF16",
+        "shape": [
+          128,
+          3072
+        ]
+      },
+      "size_bytes": 11142305104,
+      "status": "HEADER_OK"
+    },
+    "base_vae": {
+      "estimated_tensor_bytes": 431167814,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "decoder.conv_in.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.conv_in.conv.weight",
+          "shape": [
+            512,
+            16,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.conv_out.conv.bias",
+          "shape": [
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.conv_out.conv.weight",
+          "shape": [
+            3,
+            128,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.conv1.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.conv1.conv.weight",
+          "shape": [
+            512,
+            512,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.conv2.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.conv2.conv.weight",
+          "shape": [
+            512,
+            512,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.conv_b.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.conv_b.conv.weight",
+          "shape": [
+            512,
+            16,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.conv_y.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.conv_y.conv.weight",
+          "shape": [
+            512,
+            16,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.norm_layer.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm1.norm_layer.weight",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.conv_b.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.conv_b.conv.weight",
+          "shape": [
+            512,
+            16,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.conv_y.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.conv_y.conv.weight",
+          "shape": [
+            512,
+            16,
+            1,
+            1,
+            1
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.norm_layer.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.0.norm2.norm_layer.weight",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.1.conv1.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.1.conv1.conv.weight",
+          "shape": [
+            512,
+            512,
+            3,
+            3,
+            3
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.1.conv2.conv.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "decoder.mid_block.resnets.1.conv2.conv.weight",
+          "shape": [
+            512,
+            512,
+            3,
+            3,
+            3
+          ]
+        }
+      ],
+      "key_count": 436,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/vae/diffusion_pytorch_model.safetensors",
+      "prefix_counts_top": [
+        [
+          "decoder.up_blocks",
+          266
+        ],
+        [
+          "encoder.down_blocks",
+          106
+        ],
+        [
+          "decoder.mid_block",
+          32
+        ],
+        [
+          "encoder.mid_block",
+          16
+        ],
+        [
+          "decoder.norm_out",
+          6
+        ],
+        [
+          "decoder.conv_in",
+          2
+        ],
+        [
+          "decoder.conv_out",
+          2
+        ],
+        [
+          "encoder.conv_in",
+          2
+        ],
+        [
+          "encoder.conv_out",
+          2
+        ],
+        [
+          "encoder.norm_out",
+          2
+        ]
+      ],
+      "size_bytes": 431221142,
+      "status": "HEADER_OK"
+    },
+    "text_encoder_00001": {
+      "estimated_tensor_bytes": 4994568192,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.SelfAttention.k.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.SelfAttention.q.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.SelfAttention.relative_attention_bias.weight",
+          "shape": [
+            32,
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.SelfAttention.v.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.1.DenseReluDense.wi_0.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.1.DenseReluDense.wi_1.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.1.DenseReluDense.wo.weight",
+          "shape": [
+            4096,
+            10240
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.0.layer.1.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.0.SelfAttention.k.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.0.SelfAttention.q.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.0.SelfAttention.v.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.1.DenseReluDense.wi_0.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.1.DenseReluDense.wi_1.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.1.DenseReluDense.wo.weight",
+          "shape": [
+            4096,
+            10240
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.1.layer.1.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.10.layer.0.SelfAttention.k.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.10.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.10.layer.0.SelfAttention.q.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.10.layer.0.SelfAttention.v.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.10.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        }
+      ],
+      "key_count": 113,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model-00001-of-00002.safetensors",
+      "prefix_counts_top": [
+        [
+          "encoder.block",
+          112
+        ],
+        [
+          "shared.weight",
+          1
+        ]
+      ],
+      "size_bytes": 4994582224,
+      "status": "HEADER_OK"
+    },
+    "text_encoder_00002": {
+      "estimated_tensor_bytes": 4530053120,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.1.DenseReluDense.wi_0.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.1.DenseReluDense.wi_1.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.1.DenseReluDense.wo.weight",
+          "shape": [
+            4096,
+            10240
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.12.layer.1.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.0.SelfAttention.k.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.0.SelfAttention.q.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.0.SelfAttention.v.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.1.DenseReluDense.wi_0.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.1.DenseReluDense.wi_1.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.1.DenseReluDense.wo.weight",
+          "shape": [
+            4096,
+            10240
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.13.layer.1.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.0.SelfAttention.k.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.0.SelfAttention.o.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.0.SelfAttention.q.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.0.SelfAttention.v.weight",
+          "shape": [
+            4096,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.0.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.1.DenseReluDense.wi_0.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.1.DenseReluDense.wi_1.weight",
+          "shape": [
+            10240,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.1.DenseReluDense.wo.weight",
+          "shape": [
+            4096,
+            10240
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "encoder.block.14.layer.1.layer_norm.weight",
+          "shape": [
+            4096
+          ]
+        }
+      ],
+      "key_count": 106,
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP/text_encoder/model-00002-of-00002.safetensors",
+      "prefix_counts_top": [
+        [
+          "encoder.block",
+          105
+        ],
+        [
+          "encoder.final_layer_norm",
+          1
+        ]
+      ],
+      "size_bytes": 4530066360,
+      "status": "HEADER_OK"
+    },
+    "void_pass1": {
+      "estimated_tensor_bytes": 11142925568,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "norm_final.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_final.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.bias",
+          "shape": [
+            6144
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.weight",
+          "shape": [
+            6144,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.weight",
+          "shape": [
+            3072,
+            384
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.weight",
+          "shape": [
+            3072,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.bias",
+          "shape": [
+            128
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.weight",
+          "shape": [
+            128,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.weight",
+          "shape": [
+            512,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.weight",
+          "shape": [
+            512,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        }
+      ],
+      "key_count": 1024,
+      "patch_embed.proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          3072,
+          384
+        ]
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass1.safetensors",
+      "prefix_counts_top": [
+        [
+          "transformer_blocks.0",
+          24
+        ],
+        [
+          "transformer_blocks.1",
+          24
+        ],
+        [
+          "transformer_blocks.10",
+          24
+        ],
+        [
+          "transformer_blocks.11",
+          24
+        ],
+        [
+          "transformer_blocks.12",
+          24
+        ],
+        [
+          "transformer_blocks.13",
+          24
+        ],
+        [
+          "transformer_blocks.14",
+          24
+        ],
+        [
+          "transformer_blocks.15",
+          24
+        ],
+        [
+          "transformer_blocks.16",
+          24
+        ],
+        [
+          "transformer_blocks.17",
+          24
+        ],
+        [
+          "transformer_blocks.18",
+          24
+        ],
+        [
+          "transformer_blocks.19",
+          24
+        ],
+        [
+          "transformer_blocks.2",
+          24
+        ],
+        [
+          "transformer_blocks.20",
+          24
+        ],
+        [
+          "transformer_blocks.21",
+          24
+        ],
+        [
+          "transformer_blocks.22",
+          24
+        ],
+        [
+          "transformer_blocks.23",
+          24
+        ],
+        [
+          "transformer_blocks.24",
+          24
+        ],
+        [
+          "transformer_blocks.25",
+          24
+        ],
+        [
+          "transformer_blocks.26",
+          24
+        ]
+      ],
+      "proj_out.weight": {
+        "dtype": "BF16",
+        "shape": [
+          128,
+          3072
+        ]
+      },
+      "size_bytes": 11143042384,
+      "status": "HEADER_OK"
+    },
+    "void_pass2": {
+      "estimated_tensor_bytes": 11142925568,
+      "exists": true,
+      "first_keys": [
+        {
+          "dtype": "BF16",
+          "key": "norm_final.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_final.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.bias",
+          "shape": [
+            6144
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.linear.weight",
+          "shape": [
+            6144,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "norm_out.norm.weight",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.proj.weight",
+          "shape": [
+            3072,
+            384
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "patch_embed.text_proj.weight",
+          "shape": [
+            3072,
+            4096
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.bias",
+          "shape": [
+            128
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "proj_out.weight",
+          "shape": [
+            128,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_1.weight",
+          "shape": [
+            512,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.bias",
+          "shape": [
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "time_embedding.linear_2.weight",
+          "shape": [
+            512,
+            512
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_k.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.bias",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.norm_q.weight",
+          "shape": [
+            64
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_k.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.bias",
+          "shape": [
+            3072
+          ]
+        },
+        {
+          "dtype": "BF16",
+          "key": "transformer_blocks.0.attn1.to_out.0.weight",
+          "shape": [
+            3072,
+            3072
+          ]
+        }
+      ],
+      "key_count": 1024,
+      "patch_embed.proj.weight": {
+        "dtype": "BF16",
+        "shape": [
+          3072,
+          384
+        ]
+      },
+      "path": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass2.safetensors",
+      "prefix_counts_top": [
+        [
+          "transformer_blocks.0",
+          24
+        ],
+        [
+          "transformer_blocks.1",
+          24
+        ],
+        [
+          "transformer_blocks.10",
+          24
+        ],
+        [
+          "transformer_blocks.11",
+          24
+        ],
+        [
+          "transformer_blocks.12",
+          24
+        ],
+        [
+          "transformer_blocks.13",
+          24
+        ],
+        [
+          "transformer_blocks.14",
+          24
+        ],
+        [
+          "transformer_blocks.15",
+          24
+        ],
+        [
+          "transformer_blocks.16",
+          24
+        ],
+        [
+          "transformer_blocks.17",
+          24
+        ],
+        [
+          "transformer_blocks.18",
+          24
+        ],
+        [
+          "transformer_blocks.19",
+          24
+        ],
+        [
+          "transformer_blocks.2",
+          24
+        ],
+        [
+          "transformer_blocks.20",
+          24
+        ],
+        [
+          "transformer_blocks.21",
+          24
+        ],
+        [
+          "transformer_blocks.22",
+          24
+        ],
+        [
+          "transformer_blocks.23",
+          24
+        ],
+        [
+          "transformer_blocks.24",
+          24
+        ],
+        [
+          "transformer_blocks.25",
+          24
+        ],
+        [
+          "transformer_blocks.26",
+          24
+        ]
+      ],
+      "proj_out.weight": {
+        "dtype": "BF16",
+        "shape": [
+          128,
+          3072
+        ]
+      },
+      "size_bytes": 11143042384,
+      "status": "HEADER_OK"
+    }
+  },
+  "safety": {
+    "full_model_gpu_load": false,
+    "hard_comp_used": false,
+    "inference_run": false,
+    "optimizer_step": false,
+    "training_run": false,
+    "void_source_modified": false,
+    "vor_eval_used": false
+  },
+  "status": "VOID_COMPONENT_LOAD_PASS",
+  "timestamp": "2026-06-30T16:50:03+08:00",
+  "void_weights": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model"
+}
