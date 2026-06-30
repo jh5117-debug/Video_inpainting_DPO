@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T01:04:09+08:00
+Last updated: 2026-07-01T01:07:56+08:00
 
-Current status: `VOID_ONE_STEP_PARETO_MIXED`
+Current status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -213,3 +213,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Mean full/outside/mask PSNR delta: -0.025049 / 0.028255 / -0.513424
 - Better/tie/worse: 0/2/2; no collapse: True; 10-step unlocked: False.
 - Safety: no VOR-Eval, no hard comp, no training, no optimizer step.
+
+## Milestone H6 final update - VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED
+
+- Time: 2026-07-01T01:07:56+08:00
+- Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
+- Evidence: `reports/exp50_void_one_step_evidence_decision.md`, `reports/exp50_void_paper_positioning_v2.md`, `reports/exp50_void_next_steps_v2.md`
+- H4b generation: `VOID_ONE_STEP_HELDOUT_GENERATION_READY` with Step0/Step1 outputs 4 / 4.
+- H4b metrics/review: `VOID_ONE_STEP_PARETO_MIXED`; mean full/outside/mask PSNR delta -0.025049 / 0.028255 / -0.513424.
+- Visual better/tie/worse: 0 / 2 / 2.
+- H5 10-step: `VOID_ADAPTER_10STEP_NOT_RUN` because one-step did not pass.
+- VOID role: baseline / loser generator / adapter engineering candidate, not third adapter evidence.

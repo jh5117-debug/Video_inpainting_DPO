@@ -117,3 +117,10 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_ONE_STEP_PARETO_MIXED`
 - Evidence sheets generated for 4/4 heldout samples; Codex visual opening follows this report.
 - No collapse by metrics.
+
+
+## H6 Final One-Step Evidence - 2026-07-01T01:07:56+08:00
+
+- Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
+- Codex opened all 4 temporal evidence sheets. Visual result: 0 better / 2 tie / 2 worse.
+- No collapse, but no pass; VOID remains not third adapter evidence.

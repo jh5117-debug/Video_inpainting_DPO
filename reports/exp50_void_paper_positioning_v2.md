@@ -1,19 +1,19 @@
 # Exp50 VOID Paper Positioning V2
 
-Time: 2026-07-01T00:11:20+08:00
+Time: 2026-07-01T01:07:56+08:00
 
-Positioning status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+Positioning status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
 
-VOID remains a technically validated PAI inference baseline and a candidate loser generator for VOR-OR. It also has an isolated preference-forward wrapper with SFT parity explained, preference forward passed, and zero-gap passed.
+VOID remains a technically validated VOR-OR inference baseline and candidate loser generator. It also has an isolated preference-forward wrapper that passes SFT parity, preference forward, and zero-gap.
 
-Do not claim VOID as third adapter evidence. The H4 one-step checkpoint is valid, but H4b could not generate video-level heldout evidence because all PAI GPUs were occupied by unrelated root jobs. H5 10-step was not run.
+The one-step heldout video evidence is mixed. Two heldout samples were visual ties and two were worse/mixed by metrics or review. Mean full PSNR delta was -0.025049, which fails the `>= -0.02` one-step PASS threshold. H5 10-step was not run.
 
 Allowed wording:
 
-- VOID is usable for official VOR-OR inference smoke on PAI.
-- VOID can provide baseline outputs and some bounded loser candidates.
-- VOID has passed engineering gates through preference forward and zero-gap.
-- VOID still needs heldout video evidence for one-step before any 10-step micro-gate claim.
+- VOID is usable for VOR-OR inference smoke on PAI.
+- VOID can provide baseline outputs and bounded loser candidates.
+- VOID preference-forward engineering is feasible.
+- VOID one-step video evidence is mixed and does not unlock 10-step.
 
 Forbidden wording:
 

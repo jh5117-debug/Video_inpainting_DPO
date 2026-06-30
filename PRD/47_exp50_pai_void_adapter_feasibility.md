@@ -304,3 +304,7 @@ Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`. Generated heldout4 Step0/Step1
 ## Exp50 H4b-3 One-Step Heldout Metrics - 2026-07-01T01:04:09+08:00
 
 Status: `VOID_ONE_STEP_PARETO_MIXED`. Step1 vs Step0 heldout4 metrics computed. Mean full PSNR delta -0.025049, outside PSNR delta 0.028255, mask PSNR delta -0.513424. Better/tie/worse 0/2/2. 10-step unlocked: False.
+
+## Exp50 H6 Final One-Step Evidence - 2026-07-01T01:07:56+08:00
+
+Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`. H4b generated Step0/Step1 heldout4 evidence and reviewed all 4 sheets. One-step video evidence is `VOID_ONE_STEP_PARETO_MIXED`, with mean full PSNR delta -0.025049 and visual better/tie/worse 0/2/2. H5 10-step was not run. VOID remains baseline / loser generator / adapter engineering candidate, not third adapter evidence.

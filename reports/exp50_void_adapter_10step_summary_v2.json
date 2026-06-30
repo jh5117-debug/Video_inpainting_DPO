@@ -1,0 +1,9 @@
+{
+  "hard_comp_used": false,
+  "optimizer_steps": 0,
+  "reason": "H4b one-step video evidence status was VOID_ONE_STEP_PARETO_MIXED, not VOID_ONE_STEP_PASS",
+  "status": "VOID_ADAPTER_10STEP_NOT_RUN",
+  "time": "2026-07-01T01:07:56+08:00",
+  "training_run": false,
+  "vor_eval_used": false
+}

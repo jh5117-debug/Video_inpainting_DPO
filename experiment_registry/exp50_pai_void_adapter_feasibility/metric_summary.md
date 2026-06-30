@@ -167,3 +167,11 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Mean mask PSNR delta: -0.513424
 - Mean affected PSNR delta: -0.224311
 - Better/tie/worse: 0/2/2
+
+
+## H6 Final One-Step Evidence - 2026-07-01T01:07:56+08:00
+
+- Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
+- One-step video evidence: `VOID_ONE_STEP_PARETO_MIXED`
+- Mean full/outside/mask PSNR delta: -0.025049 / 0.028255 / -0.513424
+- 10-step: not run

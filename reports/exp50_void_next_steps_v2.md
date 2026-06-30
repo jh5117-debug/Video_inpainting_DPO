@@ -1,25 +1,19 @@
 # Exp50 VOID Next Steps V2
 
-Time: 2026-07-01T00:11:20+08:00
+Time: 2026-07-01T01:07:56+08:00
 
-Next minimal action: resume H4b-2 when one PAI GPU is genuinely free.
+Recommended next action: do not run H5 from the current one-step checkpoint.
 
-## Resume Procedure
+## Why
 
-1. Re-check `nvidia-smi` and `nvidia-smi pmon`.
-2. If at least one GPU is free, run heldout4 Step0/Step1 video generation using the existing adapter checkpoint `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt`.
-3. Compute heldout4 Step1 - Step0 metrics and inspect all evidence sheets.
-4. Upgrade one-step only if the H4b decision rule passes.
-5. Run 10-step only after `VOID_ONE_STEP_PASS`.
+H4b one-step video evidence is `VOID_ONE_STEP_PARETO_MIXED` rather than `VOID_ONE_STEP_PASS`. The conservative 10-step gate remains locked.
 
-## Do Not Do Yet
+## Minimal VOID Continuation, If Any
 
-- Do not run 10-step while H4b is blocked.
-- Do not run 30/50/100/300/500 steps.
-- Do not install deepspeed.
-- Do not use VOR-Eval.
-- Do not use hard comp.
+- Investigate whether `proj_out` is too narrow or whether the region weights over-emphasize synthetic/local losers.
+- Try a new one-step-only gate with a different tiny trainable subset or safer LR only after writing a new pre-registered plan.
+- Keep VOR-Eval excluded.
 
-## If GPU Remains Blocked
+## Alternative
 
-Keep VOID positioned as baseline / loser generator / adapter engineering candidate, not as third adapter evidence.
+Resume ROSE feasibility as a separate third-model track. VOID should remain baseline / loser generator / adapter engineering candidate until a future one-step video gate passes.
