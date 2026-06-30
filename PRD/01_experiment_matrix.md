@@ -633,3 +633,9 @@ the public readback and the PAI access blocker.
 | Experiment | Milestone | Status | Notes |
 | --- | --- | --- | --- |
 | `exp49_pai_rose_adapter_feasibility` | C env py312 remediation | `ROSE_ENV_READY` | Python 3.12 virtualenv plus torch 2.6.0 and ROSE requirements import/CUDA smoke; no inference/training. |
+
+## 2026-06-30 Exp49 ROSE Inference Smoke
+
+| Experiment | Milestone | Status | Notes |
+| --- | --- | --- | --- |
+| `exp49_pai_rose_adapter_feasibility` | E official inference smoke | `ROSE_INFERENCE_SMOKE_PASS` | Official demo plus six VOR-Train rows generated `6/6` decodable outputs on PAI GPU0; no training. |

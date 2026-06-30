@@ -1836,3 +1836,9 @@ Exp49 Milestone D audited official ROSE code on PAI. Status: `ROSE_TRAINING_FORW
 ## 2026-06-30 Exp49 ROSE Python 3.12 Environment Remediation
 
 Exp49 created `/home/hj/venvs/rose_exp49_py312` using `virtualenv` because system `python3.12` lacks `ensurepip`. PyTorch 2.6.0, torchvision 0.21.0, and ROSE requirements were installed into that isolated env. Import/CUDA smoke status: `ROSE_ENV_READY`. No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.
+
+## 2026-06-30 Exp49 ROSE Official Inference Smoke
+
+Status: `ROSE_INFERENCE_SMOKE_PASS`.
+
+ROSE official `inference.py` ran on PAI GPU0 for one official demo sample and six VOR-Train smoke rows. It produced `6/6` technically valid VOR outputs. The reduced-size probe failed at transformer `seq_len` because official `inference.py` does not pass reduced height/width into the pipeline; default 480x720 inference passed. No training, optimizer step, H20 action, VOR-Eval use, hard comp, or official source modification was performed.

@@ -1,0 +1,37 @@
+{
+  "generated": "2026-06-30T08:45:38.057346+08:00",
+  "hostname": "dsw-753014-85f54df947-bkp7h",
+  "branch": "research/exp49-pai-rose-adapter-feasibility-20260629",
+  "commit": "1420a17bf67b3d6377470cb57e139b7a167e4792",
+  "status": "ROSE_INFERENCE_SMOKE_PASS",
+  "e1_demo_output": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/official_demo_smoke_default_20260630_083542/example-1.mp4",
+  "e1_demo_meta": {
+    "exists": true,
+    "decode_ok": true,
+    "frame_count": 17,
+    "width": 720,
+    "height": 480,
+    "fps": 12.0,
+    "bytes": 70460
+  },
+  "e1_first_attempt": {
+    "status": "blocked_expected_shape_mismatch",
+    "log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp49_pai_rose_adapter_feasibility/milestone_e_official_demo_20260630_082754.log",
+    "note": "A reduced 256x384 attempt reached transformer forward but failed seq_len assertion because official inference.py does not pass height/width through to the pipeline; default 480x720 run passed."
+  },
+  "e2_vor_output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/vor_or_smoke6_20260630_083835",
+  "e2_outputs": 6,
+  "technical_valid": 6,
+  "total_vor_rows": 6,
+  "demo_log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp49_pai_rose_adapter_feasibility/milestone_e_official_demo_default_20260630_083542.log",
+  "vor_log": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp49_pai_rose_adapter_feasibility/milestone_e_vor_or_smoke6_20260630_083835.log",
+  "metrics_csv": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/reports/exp49_rose_vor_or_smoke_metrics.csv",
+  "visual_review_csv": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/reports/exp49_rose_vor_or_smoke_visual_review.csv",
+  "manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/manifests/exp49_rose_vor_or_smoke6_manifest.jsonl",
+  "visual_counts": {
+    "MEDIUM_HARD_ELIGIBLE": 2,
+    "ROSE_OUTPUT_USABLE": 2,
+    "SIDE_EFFECT_LEFT": 2
+  },
+  "note": "Codex inspected all six start/mid/end evidence sheets and representative temporal strips."
+}

@@ -130,3 +130,11 @@ Status: `ROSE_ENV_READY`.
 The earlier Python 3.10 env was replaced for gate purposes by `/home/hj/venvs/rose_exp49_py312`. System `python3.12` lacks `ensurepip`, so `virtualenv` from the isolated py310 env was used to seed pip without modifying system Python. PyTorch 2.6.0, torchvision 0.21.0, and ROSE requirements were installed in the py312 venv; import/CUDA smoke had `0` failed checks.
 
 No inference, training, optimizer step, checkpoint update, VOR-Eval use, H20 action, or official ROSE source modification was performed.
+
+## Milestone E Update - 2026-06-30
+
+Status: `ROSE_INFERENCE_SMOKE_PASS`.
+
+Official ROSE `inference.py` loaded the downloaded Wan2.1-Fun base and Kunbyte/ROSE transformer weights via isolated runtime symlinks. E1 default-size demo produced a decodable mp4. E2 VOR-Train smoke6 produced `6/6` decodable outputs. A reduced 256x384 probe is recorded as blocked because official `inference.py` does not pass reduced `height/width` into the pipeline, causing a transformer sequence-length assertion; official default 480x720 passed without modifying official source.
+
+No training, optimizer step, checkpoint update, VOR-Eval use, H20 action, hard comp, shared trainer change, metrics code change, or official ROSE source modification was performed.
