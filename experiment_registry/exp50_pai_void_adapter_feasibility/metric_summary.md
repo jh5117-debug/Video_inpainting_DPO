@@ -142,3 +142,11 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 
 - Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
 - No Step0/Step1 video metrics generated because all PAI GPUs were occupied.
+
+
+## H6-v2 One-Step Evidence Decision - 2026-07-01T00:11:20+08:00
+
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- H4b generation: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
+- Step0/Step1 metrics: not computed because videos were not generated.
+- 10-step: not run.

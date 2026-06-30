@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T00:09:39+08:00
+Last updated: 2026-07-01T00:11:20+08:00
 
-Current status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
+Current status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -183,3 +183,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Videos generated: 0 Step0 / 0 Step1.
 - 10-step remains locked; H4b-3 metrics/visual review not run.
 - Safety: no inference, no optimizer step, no VOR-Eval, no hard comp, no process killed.
+
+## Milestone H6-v2 update - VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING
+
+- Time: 2026-07-01T00:11:20+08:00
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- Evidence: `reports/exp50_void_one_step_evidence_decision.md`, `reports/exp50_void_paper_positioning_v2.md`, `reports/exp50_void_next_steps_v2.md`
+- One-step checkpoint: `VOID_ONE_STEP_CHECKPOINT_READY` with SHA256 `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`.
+- Heldout video evidence: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`; blocker `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED_NO_FREE_PAI_GPU`.
+- H4b-3 metrics/visual review: not run because generation was blocked.
+- H5 10-step: not run, still locked.
+- VOID role: baseline / loser generator / adapter engineering candidate, not third adapter evidence.

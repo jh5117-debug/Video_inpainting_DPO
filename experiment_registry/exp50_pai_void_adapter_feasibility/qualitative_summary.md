@@ -97,3 +97,10 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 
 - Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
 - No visual evidence generated. H4b remains blocked by GPU availability; no 10-step unlock.
+
+
+## H6-v2 One-Step Evidence Decision - 2026-07-01T00:11:20+08:00
+
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- No visual review was possible because H4b video generation was blocked by unavailable GPUs.
+- VOID remains baseline / loser generator / adapter engineering candidate, not third adapter evidence.

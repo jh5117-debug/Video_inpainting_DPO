@@ -757,3 +757,7 @@ Status: `VOID_ONE_STEP_CHECKPOINT_READY`. Adapter checkpoint `/mnt/nas/hj/H20_Vi
 ## Exp50 H4b-2 One-Step Heldout Generation - 2026-07-01T00:09:39+08:00
 
 Status: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`. Heldout4 Step0/Step1 video generation was not launched because all 8 PAI GPUs were occupied by unrelated root jobs. No process was killed. H4b-3 and H5 remain locked.
+
+## Exp50 H6-v2 One-Step Evidence Outcome - 2026-07-01T00:11:20+08:00
+
+Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`. The one-step adapter checkpoint is ready, but heldout4 video evidence generation is `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED` due to no free PAI GPU. H4b-3 metrics/visual review and H5 10-step were not run. VOID remains baseline / loser generator / adapter engineering candidate, not third adapter evidence.
