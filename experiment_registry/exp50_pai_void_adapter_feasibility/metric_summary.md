@@ -111,3 +111,12 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Grad norm: 0.011962890625
 - Max param delta norm: 0.005055009387433529
 - Step1 vs Step0 L1: 0.019980037584900856
+
+
+## H6 Preference Wrapper Decision - 2026-06-30T23:30:58+08:00
+
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- Preference forward: `VOID_PREFERENCE_FORWARD_PASS`; DPO loss 0.6931471824645996; grad norm 0.011950799647202132
+- Zero-gap: `VOID_ZERO_GAP_PASS`; winner/loser gaps 0.0 / 0.0; DPO 0.6931471824645996
+- One-step: `VOID_ONE_STEP_PARETO_MIXED`; param delta 0.005055009387433529; heldout forward finite True; video metrics not generated
+- 10-step: not run

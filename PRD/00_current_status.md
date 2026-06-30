@@ -1930,3 +1930,11 @@ Zero-gap passed using the H2 identical policy/reference preference-forward evide
 Status: `VOID_ONE_STEP_PARETO_MIXED`.
 
 One AdamW step ran on the `proj_out` micro subset. Param delta was positive, adapter-only reload passed, and heldout forward was finite. The gate is not marked PASS because no video-level heldout visual/metric evidence was generated; 10-step remains locked.
+
+## Exp50 VOID Preference-Wrapper Outcome - 2026-06-30T23:30:58+08:00
+
+Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`.
+
+VOID official inference is usable on VOR-Train Gate8 (`VOID_INFERENCE_SMOKE_PASS`, technical valid 8/8). The isolated VOID-native wrapper reached `VOID_SFT_FORWARD_PARITY_EXPLAINED`, `VOID_PREFERENCE_FORWARD_PASS`, and `VOID_ZERO_GAP_PASS` without modifying official VOID source, shared trainer, or `inference/metrics.py`.
+
+H4 one-step is `VOID_ONE_STEP_PARETO_MIXED`, not PASS. Exact blocker: `VOID_ONE_STEP_VIDEO_HELDOUT_EVIDENCE_MISSING`. H5 10-step was not run. VOID remains not third adapter evidence. Next minimal experiment: H4b one-step video heldout evidence using the saved step1 adapter; only then consider 10-step.

@@ -71,3 +71,11 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_ONE_STEP_PARETO_MIXED`
 - No video visual evidence was generated; one-step produced finite model forward diagnostics only.
 - 10-step remains locked and no VOID adapter evidence claim is made.
+
+
+## H6 Preference Wrapper Decision - 2026-06-30T23:30:58+08:00
+
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- Qualitative interpretation: VOID remains a strong inference baseline / loser-generator candidate and a preference-wrapper engineering candidate.
+- No new video evidence was generated in H6.
+- One-step lacks heldout video visual review, so 10-step remains locked and no adapter-positive claim is made.

@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-06-30T23:24:57+08:00
+Last updated: 2026-06-30T23:30:58+08:00
 
-Current status: `VOID_ONE_STEP_PARETO_MIXED`
+Current status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -138,3 +138,16 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Video inference generated: False.
 - Gate note: H5 10-step remains locked because H4 is not `VOID_ONE_STEP_PASS`.
 - Safety: exactly one optimizer step; no long training, no VOR-Eval, no hard comp, no VOID positive claim.
+
+## Milestone H6 update - VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING
+
+- Time: 2026-06-30T23:30:58+08:00
+- Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+- Evidence: `reports/exp50_void_preference_wrapper_decision.md`, `reports/exp50_void_paper_positioning.md`, and `reports/exp50_void_next_steps.md`
+- VOID inference role: official PAI inference baseline and bounded loser-generator candidate.
+- Preference forward: `VOID_PREFERENCE_FORWARD_PASS`.
+- Zero-gap: `VOID_ZERO_GAP_PASS`.
+- One-step: `VOID_ONE_STEP_PARETO_MIXED`; exact blocker `VOID_ONE_STEP_VIDEO_HELDOUT_EVIDENCE_MISSING`.
+- 10-step: not run, locked because one-step did not reach `VOID_ONE_STEP_PASS`.
+- Scientific boundary: VOID remains not third adapter evidence.
+- Next minimal experiment: H4b one-step video heldout evidence gate only.
