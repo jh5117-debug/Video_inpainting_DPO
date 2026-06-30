@@ -1,0 +1,11 @@
+check,status,detail
+g0_train4_manifest,PASS,"4 train rows, VOR-Train only"
+g0_heldout4_manifest,PASS,"4 heldout rows, VOR-Train only"
+official_training_view,PASS,runtime view created with mask.mp4 symlink to quadmask_0.mp4
+official_bucket_dataset_load,PASS,ImageVideoDataset enable_bucket=True loaded train4; shapes aligned per item
+nonbucket_dataset_load,WARN,non-bucket tiny path produced mask width mismatch; official shell uses enable_bucket
+official_train_script_interface,BLOCKED,SFT MSE target only; no reference/winner/loser preference forward
+deepspeed,TRAIN_ONLY_NOT_INSTALLED,not installed to avoid wrong torch/CUDA drift
+zero_gap,NOT_RUN_BLOCKED,VOID_TRAINABLE_FORWARD_BLOCKED_PREFERENCE_WRAPPER_REQUIRED
+one_step,NOT_RUN_BLOCKED,VOID_TRAINABLE_FORWARD_BLOCKED_PREFERENCE_WRAPPER_REQUIRED
+optimizer_step,NO,no optimizer step run

@@ -201,3 +201,13 @@ Reports:
 - Source: VOR-Train only; VOR-Eval excluded: True
 - Safety: no training, no optimizer step, no hard comp, no VOID positive claim.
 - Next gate: G1 trainable forward / zero-gap / one-step only; direct 10-step remains locked.
+## Milestone G1 update - VOID_TRAINABLE_FORWARD_BLOCKED
+
+- Time: 2026-06-30T17:37:17+08:00
+- Status: `VOID_TRAINABLE_FORWARD_BLOCKED`
+- Exact blocker: `VOID_TRAINABLE_FORWARD_BLOCKED_PREFERENCE_WRAPPER_REQUIRED`
+- Dataset view: official bucket `ImageVideoDataset` loads train4 successfully.
+- Zero-gap: not run; official VOID script lacks required reference/winner-loser preference forward.
+- One-step: not run; running SFT one-step would be off-protocol for this gate.
+- Deepspeed: intentionally not installed; official 8-process shell path remains blocked pending controlled install.
+- Safety: no training, no backward, no optimizer step, no 10-step, no VOID positive claim.

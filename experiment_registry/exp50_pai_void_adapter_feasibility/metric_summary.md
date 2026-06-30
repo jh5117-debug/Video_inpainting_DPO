@@ -69,3 +69,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Train/Heldout: 4 / 4
 - Loser sources: {'controlled_local_corruption': 6, 'void_pass1_raw_medium_hard': 2}
 - Metrics were not recomputed in G0; this is data preparation only.
+
+## G1 Zero-Gap / One-Step - 2026-06-30T17:37:17+08:00
+
+- Status: `VOID_TRAINABLE_FORWARD_BLOCKED`
+- Dataset load: PASS in official bucket mode.
+- Zero-gap metrics: not run, blocked before model preference forward.
+- One-step metrics: not run, blocked before optimizer.

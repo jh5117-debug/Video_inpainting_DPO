@@ -707,3 +707,8 @@ Official VOID Pass1 inference completed on the VOR-Train Gate8 split. Technical 
 Status: `VOID_ADAPTER_MICRO_DATA_READY`.
 
 Prepared VOR-Train-only train4/heldout4 micro data after F2 inference smoke. Losers are 2 same-model VOID raw medium-hard outputs plus 6 labeled controlled local-corruption losers. No training, optimizer step, VOR-Eval, or hard comp was used. Next gate is G1 trainable-forward / zero-gap / one-step only.
+## 2026-06-30 Exp50 VOID G1 Gate
+
+Status: `VOID_TRAINABLE_FORWARD_BLOCKED`.
+
+Official bucket dataset loading for train4 passed, but zero-gap/one-step are blocked because official VOID training exposes an SFT MSE path, not the required policy/reference winner-loser preference forward. Deepspeed remains intentionally uninstalled. No training, backward, optimizer step, or 10-step was run.

@@ -35,3 +35,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Same-model loser rows: 2 medium-hard VOID outputs.
 - Controlled local-corruption loser rows: 6, explicitly marked as synthetic local losers and not used as hard-comp promotion.
 - No VOID adapter evidence claim is made.
+
+## G1 Zero-Gap / One-Step - 2026-06-30T17:37:17+08:00
+
+- Status: `VOID_TRAINABLE_FORWARD_BLOCKED`
+- Visual outputs: none, because no one-step output was generated.
+- Interpretation: VOID is currently validated as official inference and data-signal source on Gate8, not as a proven adapter training path.
