@@ -1,0 +1,11 @@
+branch: research/exp50-pai-void-adapter-feasibility-20260630
+pai_worktree_primary: /mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp50_void_adapter
+pai_worktree_active: /home/hj/H20_Video_inpainting_DPO_exp50_void_adapter
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp50_pai_void_adapter_feasibility
+third_party_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID
+weights_root: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/void
+data_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void
+primary_worktree_writable: false
+nas_asset_roots_writable_by_hj: false

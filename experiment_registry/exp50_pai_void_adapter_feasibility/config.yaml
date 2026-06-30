@@ -1,0 +1,22 @@
+experiment: exp50_pai_void_adapter_feasibility
+date: 2026-06-30
+base_branch: origin/main
+training_policy:
+  use_vor_eval: false
+  hard_comp: false
+  max_micro_steps_without_one_step: 0
+  max_steps_after_one_step: 10
+  forbidden_steps: [50, 100, 300, 500, 1000, 2000]
+official_source_policy:
+  modify_void_repo: false
+  wrappers_only_under_exp50: true
+promotion_gate:
+  - VOID_ASSETS_READY_OR_PARTIAL_PASS1
+  - VOID_ENV_READY
+  - VOID_TRUE_ADAPTER_FEASIBLE_OR_HEAVY_BUT_POSSIBLE
+  - VOID_VOR_QUADMASK_GATE8_READY
+  - VOID_INFERENCE_SMOKE_PASS_OR_WEAK_TECHNICAL_VALID
+  - VOID_ZERO_GAP_PASS
+  - VOID_ONE_STEP_PASS
+  - VOID_ADAPTER_10STEP_PROMISING_OR_POSITIVE
+current_blocker: NAS asset/output roots are not writable by hj

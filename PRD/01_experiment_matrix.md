@@ -1,3 +1,12 @@
+## 2026-06-30 Exp50 VOID Adapter Feasibility
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp50 PAI VOID adapter feasibility | `EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT`; no downloads/training yet | `experiment_registry/exp50_pai_void_adapter_feasibility`, `PRD/47_exp50_pai_void_adapter_feasibility.md`, `reports/exp50_void_readback.md`, `reports/exp50_void_public_source_audit.md` |
+
+VOID is prioritized over ROSE because public training/data-generation scripts exist. Next gate is asset download only after readback commit and NAS write-target resolution.
+
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |

@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Adapter Feasibility Readback
+
+Status: `EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT`.
+
+ROSE is paused. VOID is now the preferred third-adapter candidate because public sources expose code, Pass1/Pass2 checkpoints, data-generation code, quadmask format, and training scripts. No VOID downloads, inference, training, or optimizer steps were run in Milestone A. PAI active worktree uses `/home/hj/H20_Video_inpainting_DPO_exp50_void_adapter` because the requested NAS-linked worktree and asset roots are not writable by `hj` yet.
+
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

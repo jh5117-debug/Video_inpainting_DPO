@@ -1,0 +1,49 @@
+{
+  "branch": "research/exp50-pai-void-adapter-feasibility-20260630",
+  "nas_asset_dirs_writable_by_hj": false,
+  "no_download_before_commit": true,
+  "pai_host": "dsw-753014-85f54df947-bkp7h",
+  "primary_worktree_writable": false,
+  "promotion_gate": [
+    "assets/env",
+    "trainable-forward audit",
+    "VOR quadmask Gate8",
+    "official inference Gate8/Gate16",
+    "zero-gap/one-step",
+    "10-step only if one-step passes"
+  ],
+  "rose_paused": true,
+  "start_head": "34844d75aba585542b311098417f67c7274f6434",
+  "status": "EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT",
+  "void_sources": [
+    {
+      "exp50_use": "Clone/audit in Milestone B/D; do not modify official source.",
+      "facts": "Repo exposes folders VLM-MASK-REASONER, config, data_generation, datasets, inference, sample, scripts/cogvideox_fun, videox_fun, requirements.txt. README lists train_void.sh and train_void_warped_noise.sh.",
+      "license_or_status": "Apache-2.0; ECCV 2026 accepted",
+      "source": "Official GitHub",
+      "url": "https://github.com/Netflix/void-model"
+    },
+    {
+      "exp50_use": "Motivates interaction-aware difference from plain VOR-OR.",
+      "facts": "VOID targets Video Object and Interaction Deletion: physically plausible counterfactuals where removed objects can alter downstream interactions; training data from Kubric and HUMOTO.",
+      "license_or_status": "ECCV 2026 project page",
+      "source": "Official project page",
+      "url": "https://void-model.github.io/"
+    },
+    {
+      "exp50_use": "Download Pass1/Pass2 in Milestone B; pass paths to inference.",
+      "facts": "Files include void_pass1.safetensors required and void_pass2.safetensors optional; built on CogVideoX-Fun-V1.5-5b-InP; default resolution 384x672, max frames 197; requires 40GB+ VRAM for notebook.",
+      "license_or_status": "apache-2.0",
+      "source": "HuggingFace model card",
+      "url": "https://huggingface.co/netflix/void-model"
+    },
+    {
+      "exp50_use": "Download base model under weights/void/CogVideoX-Fun-V1.5-5b-InP.",
+      "facts": "Base inpainting model storage listed around 20GB; CogVideoX-Fun supports training DiT / LoRA in its own framework.",
+      "license_or_status": "HF license shown as other; CogVideoX-Fun V1.5 5B InP",
+      "source": "Base model card",
+      "url": "https://huggingface.co/alibaba-pai/CogVideoX-Fun-V1.5-5b-InP"
+    }
+  ],
+  "worktree": "/home/hj/H20_Video_inpainting_DPO_exp50_void_adapter"
+}
