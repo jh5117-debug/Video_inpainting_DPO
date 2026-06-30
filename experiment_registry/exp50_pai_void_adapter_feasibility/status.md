@@ -2,7 +2,7 @@
 
 Last updated: 2026-06-30T16:50:03+08:00
 
-Current status: `VOID_COMPONENT_LOAD_PASS`
+Current status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -37,3 +37,11 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Component load smoke F0: `VOID_COMPONENT_LOAD_PASS`.
 - Pass1/pass2 checkpoint headers and base model component headers loaded.
 - Full GPU model load: not attempted; no inference/training.
+
+- Official sample inference: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
+
+## Official sample inference F1
+
+- Official sample inference F1: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`.
+- Sample: `lime`; raw frames 85; return code `0`.
+- Bundled ffmpeg shim used under Exp50 runtime; system env and official source unchanged.

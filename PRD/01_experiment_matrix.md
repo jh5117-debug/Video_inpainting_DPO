@@ -690,3 +690,10 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 - Evidence: `reports/exp50_void_component_load_smoke.md`, `reports/exp50_void_component_load_smoke_summary.json`
 - Pass1/pass2 safetensors headers loaded; base transformer/VAE/text encoder headers loaded.
 - Safety: no inference, no training, no optimizer step, no full GPU 5B load, no VOID positive claim.
+
+## Exp50 F1 official sample matrix update - VOID_OFFICIAL_SAMPLE_INFERENCE_PASS
+
+- Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
+- Evidence: `reports/exp50_void_official_sample_inference.md`, `reports/exp50_void_official_sample_inference_summary.json`
+- Official sample `lime`, Pass1, raw frames 85.
+- Safety: inference smoke only; no training, no optimizer step, no VOR-Eval, no VOID positive claim.

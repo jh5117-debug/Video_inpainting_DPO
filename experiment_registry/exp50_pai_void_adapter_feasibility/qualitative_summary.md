@@ -15,3 +15,7 @@ No visual output was generated. The isolated PAI VOID env is now `VOID_ENV_READY
 ## F0 Component Load Smoke (2026-06-30T16:50:03+08:00)
 
 No visual output was generated. F0 is metadata/config/header only and does not support any quality claim. VOID remains not positive.
+
+## F1 Official Sample Inference (2026-06-30T17:02:21+08:00)
+
+Codex inspected raw and tuple quick sheets. The official sample output is nonblank and aligned. This is technical smoke evidence only; VOID remains not positive until VOR and adapter gates pass.

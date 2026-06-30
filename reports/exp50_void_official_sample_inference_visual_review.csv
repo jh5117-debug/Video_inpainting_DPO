@@ -1,0 +1,2 @@
+sample,raw_output,tuple_output,frames,technical_valid,visual_notes
+lime,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/lime-fg=-1-0001.mp4,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/lime-fg=-1-0001_tuple.mp4,85,True,"Codex inspected raw and tuple quick sheets. Output is nonblank/aligned; official sample smoke is technical validation, not VOR quality evidence."

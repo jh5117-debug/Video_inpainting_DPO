@@ -1884,3 +1884,9 @@ HAL/H20 wheelhouse relay was ingested into the PAI Exp50 branch. The isolated PA
 Status: `VOID_COMPONENT_LOAD_PASS`.
 
 F0 loaded VOID/base configs, tokenizer/scheduler metadata, safetensors headers, and meta-device skeletons where supported. No full 5B GPU load, inference, training, or optimizer step was run. Next gate is official sample inference if sample data exists; otherwise VOR Gate8 pass1 inference may proceed under the sample-not-provided rule.
+
+## 2026-06-30 Exp50 VOID Official Sample Inference
+
+Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`.
+
+Official Pass1 inference on repo sample `lime` completed with raw and tuple MP4 outputs. A runtime-only bundled ffmpeg shim was used because system ffmpeg misses `libblas.so.3`. No training or optimizer step was run. This is technical validation only; next gate is VOR Gate8 inference smoke.

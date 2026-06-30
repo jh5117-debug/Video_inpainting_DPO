@@ -43,3 +43,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Base transformer keys: 1024; Base VAE keys: 436
 - Total asset disk bytes: 43385161698
 - Full GPU model load: not attempted
+
+## F1 Official Sample Inference (2026-06-30T17:02:21+08:00)
+
+- Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
+- Sample: `lime`; return code `0`; raw frame count 85
+- Raw outputs: 1; tuple outputs: 1
+- Checkpoint load clean: True; sampling 30/30: True

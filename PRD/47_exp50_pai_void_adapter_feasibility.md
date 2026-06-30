@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_COMPONENT_LOAD_PASS`
+Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
 
 ## Objective
 
@@ -167,3 +167,15 @@ Reports:
 - Base transformer header: `HEADER_OK`; keys 1024.
 - Full GPU model load: not attempted in F0; no inference/training/optimizer step.
 - Next gate: F1 official sample inference if sample data exists; otherwise F2 Gate8 inference under the documented sample-not-provided rule.
+
+## Milestone F1 update - VOID_OFFICIAL_SAMPLE_INFERENCE_PASS
+
+- Time: 2026-06-30T17:02:21+08:00
+- Status: `VOID_OFFICIAL_SAMPLE_INFERENCE_PASS`
+- Evidence: `reports/exp50_void_official_sample_inference.md`
+- Official sample: `lime`; Pass1 only; raw frames 85.
+- Output: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/lime-fg=-1-0001.mp4`
+- Runtime fix: used Exp50 runtime bundled-ffmpeg symlink because system `/usr/bin/ffmpeg` lacks `libblas.so.3`; no system or official-source modification.
+- Visual review: Codex opened raw and tuple quick sheets; technical valid, not VOR quality evidence.
+- Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
+- Next gate: F2 VOR Gate8 inference smoke.

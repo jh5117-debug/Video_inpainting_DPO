@@ -1,0 +1,35 @@
+{
+  "checkpoint_load": true,
+  "ffmpeg_runtime": "ffmpeg_symlink=/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp50_pai_void_adapter_feasibility/ffmpeg_bin/ffmpeg\nffmpeg_target=/home/hj/conda_envs/void_exp50_official_v2/lib/python3.10/site-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2\n/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp50_pai_void_adapter_feasibility/ffmpeg_bin/ffmpeg\nffmpeg version 7.0.2-static https://johnvansickle.com/ffmpeg/  Copyright (c) 2000-2024 the FFmpeg developers\n",
+  "log_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/f1_official_sample_lime.log",
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime",
+  "quick_tuple_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/quick_tuple_sheet.png",
+  "quick_visual_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/quick_visual_sheet.png",
+  "raw_frame_count": 85,
+  "raw_outputs": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/lime-fg=-1-0001.mp4"
+  ],
+  "returncode": "0",
+  "safety": {
+    "hard_comp_used": false,
+    "optimizer_step": false,
+    "training_run": false,
+    "void_positive_claim": false,
+    "vor_eval_used": false
+  },
+  "sample": "lime",
+  "sampling_steps_seen": true,
+  "status": "VOID_OFFICIAL_SAMPLE_INFERENCE_PASS",
+  "timestamp": "2026-06-30T17:02:21+08:00",
+  "tuple_outputs": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f1_official_sample_lime/lime-fg=-1-0001_tuple.mp4"
+  ],
+  "visual_review": {
+    "aligned_tuple": true,
+    "nonblank": true,
+    "notes": "Codex inspected raw and tuple quick sheets. Output is nonblank/aligned; official sample smoke is technical validation, not VOR quality evidence.",
+    "opened_quick_visual_sheet": true,
+    "opened_tuple_sheet": true,
+    "technical_valid": true
+  }
+}
