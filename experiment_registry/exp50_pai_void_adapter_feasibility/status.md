@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T00:05:40+08:00
+Last updated: 2026-07-01T00:08:01+08:00
 
-Current status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
+Current status: `VOID_ONE_STEP_CHECKPOINT_READY`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -162,3 +162,14 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Target parameterization / trainable subset: `v_prediction` / `proj_out`
 - 10-step remains locked until H4b one-step video evidence passes.
 - Safety: no inference, no optimizer step, no VOR-Eval, no hard comp.
+
+## Milestone H4b-1 update - VOID_ONE_STEP_CHECKPOINT_READY
+
+- Time: 2026-07-01T00:08:01+08:00
+- Status: `VOID_ONE_STEP_CHECKPOINT_READY`
+- Evidence: `reports/exp50_void_one_step_checkpoint_audit.md`, `reports/exp50_void_one_step_checkpoint_audit.csv`, `reports/exp50_void_one_step_checkpoint_audit_summary.json`
+- Adapter checkpoint: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt`
+- SHA256: `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`
+- Adapter keys: ['proj_out.bias', 'proj_out.weight']
+- Strict reload evidence: H4 `reload_ok=True`, missing=[], unexpected=[].
+- Current GPU load: occupied by unrelated root jobs; no kill attempted. H4b-2 video generation requires a free GPU.

@@ -85,3 +85,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 
 - Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
 - No visual output generated. H4b must generate and inspect heldout4 Step0/Step1 evidence before 10-step can unlock.
+
+
+## H4b-1 One-Step Checkpoint Audit - 2026-07-01T00:08:01+08:00
+
+- Status: `VOID_ONE_STEP_CHECKPOINT_READY`
+- The one-step adapter artifact is present and matches the `proj_out` trainable subset. No visual evidence generated yet.

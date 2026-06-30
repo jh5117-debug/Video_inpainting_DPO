@@ -127,3 +127,12 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`
 - One-step checkpoint exists for later audit: `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt`
 - No new metrics; readback only.
+
+
+## H4b-1 One-Step Checkpoint Audit - 2026-07-01T00:08:01+08:00
+
+- Status: `VOID_ONE_STEP_CHECKPOINT_READY`
+- Checkpoint bytes: 788893
+- SHA256: `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`
+- Adapter keys: ['proj_out.bias', 'proj_out.weight']
+- No video metrics; checkpoint audit only.

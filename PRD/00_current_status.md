@@ -1942,3 +1942,7 @@ H4 one-step is `VOID_ONE_STEP_PARETO_MIXED`, not PASS. Exact blocker: `VOID_ONE_
 ## Exp50 H4b-0 One-Step Evidence Readback - 2026-07-01T00:05:40+08:00
 
 Status: `VOID_ONE_STEP_EVIDENCE_READBACK_DONE`. One-step adapter checkpoint `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt` and train4/heldout4 manifests are identified. Target parameterization remains `v_prediction` and trainable subset `proj_out`. 10-step remains locked until heldout video evidence upgrades one-step to PASS.
+
+## Exp50 H4b-1 One-Step Checkpoint Audit - 2026-07-01T00:08:01+08:00
+
+Status: `VOID_ONE_STEP_CHECKPOINT_READY`. Adapter checkpoint `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/one_step_v2/adapter_proj_out_step1.pt` exists, SHA256 `849326121699e51673990df7bef52c578245812ad934a88bbe6f2acf93b972d5`, and adapter keys match `proj_out.weight` / `proj_out.bias`. H4 strict reload was already OK. H4b-2 video generation waits for a free PAI GPU; no unrelated GPU process was killed.
