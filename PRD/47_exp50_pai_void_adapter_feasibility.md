@@ -115,3 +115,11 @@ Reports:
 - CUDA smoke: no failures; small matmul/backward finite.
 - Caveat: exact official pins are not matched; heavyweight CUDA packages were not reinstalled.
 - Safety: no training, no inference, no full 5B model load, no VOID positive claim.
+
+## Milestone D update - VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE
+
+- Time: 2026-06-30T14:24:40.037508+08:00
+- Status: `VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE`
+- Evidence: `reports/exp50_void_trainable_forward_audit.md`
+- Finding: official trainable forward exists, but default training is heavy transformer fine-tuning, not out-of-box LoVI-DPO.
+- Safety: no training, no inference, no official source modification, no VOID positive claim.

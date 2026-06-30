@@ -1,0 +1,26 @@
+{
+  "dpo_out_of_box": false,
+  "key_files": [
+    "scripts/cogvideox_fun/train_void.sh",
+    "scripts/cogvideox_fun/train_void_warped_noise.sh",
+    "scripts/cogvideox_fun/train.py",
+    "scripts/cogvideox_fun/train_warped_noise.py",
+    "inference/cogvideox_fun/predict_v2v.py",
+    "inference/cogvideox_fun/inference_with_pass1_warped_noise.py",
+    "datasets/void_train_data.json",
+    "config/quadmask_cogvideox.py",
+    "videox_fun/data/dataset_image_video.py",
+    "videox_fun/data/dataset_image_video_warped.py",
+    "data_generation/convert_trimask_to_quadmask.py"
+  ],
+  "lightweight_adapter_out_of_box": false,
+  "not_inference_only": true,
+  "official_default_heavy_full_transformer": true,
+  "official_repo_read_only": true,
+  "one_step_possible": true,
+  "policy_model": "CogVideoXTransformer3DModel loaded from the CogVideoX-Fun transformer subfolder; VOID pass checkpoints are transformer safetensors.",
+  "save_reload_possible": true,
+  "status": "VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE",
+  "timestamp": "2026-06-30T14:24:40.007276+08:00",
+  "training_forward_available": true
+}

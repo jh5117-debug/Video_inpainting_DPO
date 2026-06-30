@@ -13,3 +13,4 @@ H_10step	NOT_STARTED	Blocked until one-step passes.
 I_positioning	NOT_STARTED	Requires later gates.
 B3_weight_relay_ingest	VOID_WEIGHTS_READY	void_files=12;base_files=40;sha_match=yes;missing=0;mismatch=0
 C_env_smoke	VOID_ENV_PARTIAL	imports_pass=44;imports_fail=0;cuda_fail=0;pin_warnings=8
+D_trainable_forward_audit	VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE	policy=CogVideoXTransformer3DModel;loss=MSE_noise_or_velocity;quadmask=0/63/127/255;dpo_out_of_box=no
