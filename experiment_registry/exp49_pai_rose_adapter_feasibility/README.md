@@ -2,12 +2,18 @@
 
 This registry tracks ROSE as a possible third adapter candidate.
 
-Current role: blocked readback. Public assets were audited, but PAI access is not available from this HAL session.
+Current role: `ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED`.
 
-Do not interpret this registry as ROSE baseline or adapter evidence until PAI asset download, environment setup, inference, and gated micro-training audits are completed.
+ROSE official inference is runnable on PAI and Gate16 passed as a VOR-Train baseline/loser-generator screen. Gate16 produced `16/16` decodable rows, with visual labels `ROSE_OUTPUT_USABLE=9`, `MEDIUM_HARD_ELIGIBLE=5`, `SIDE_EFFECT_LEFT=2`, and `TRIVIAL_BAD=0`.
 
-## Milestone D
+Do not interpret this registry as ROSE adapter evidence. Milestone D found no released official train/finetune optimizer/backward/loss/target script. One-step and 10-step adapter gates remain locked.
 
-Status: `ROSE_TRAINING_FORWARD_BLOCKED`.
+## Key Reports
 
-Official ROSE code exposes a differentiable WanTransformer3DModel and LoRA utilities, but released code does not expose a complete training loop/loss/target. See `reports/exp49_rose_code_adapter_feasibility_audit.md`.
+- `reports/exp49_rose_asset_download.md`
+- `reports/exp49_rose_env_smoke.md`
+- `reports/exp49_rose_code_adapter_feasibility_audit.md`
+- `reports/exp49_rose_official_inference_smoke.md`
+- `reports/exp49_rose_vor_or_gate16.md`
+- `reports/exp49_rose_feasibility_outcome.md`
+- `reports/exp49_rose_paper_positioning.md`

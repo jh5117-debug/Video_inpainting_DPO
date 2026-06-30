@@ -1,3 +1,10 @@
+## 2026-06-30 Exp49 ROSE Gate16 Feasibility Outcome
+
+Status: `ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED`.
+
+ROSE official inference passed Gate16 on PAI VOR-Train: `16/16` technical-valid, `ROSE_OUTPUT_USABLE=9`, `MEDIUM_HARD_ELIGIBLE=5`, `SIDE_EFFECT_LEFT=2`, `TRIVIAL_BAD=0` after visual review. This supports ROSE as a baseline/loser-generator candidate only. Adapter training remains blocked because released official code lacks a train/finetune loss/target/optimizer path. No training or optimizer step was run. ROSE is not third-backbone evidence.
+
+
 ## 2026-06-18 Exp19b Exploratory 2000 DAVIS50
 
 Current best remains:

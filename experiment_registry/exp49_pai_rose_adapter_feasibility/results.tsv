@@ -4,10 +4,11 @@ B_assets	ROSE_ASSETS_PARTIAL	PAI direct asset download used hf-mirror after hugg
 C_env	ROSE_ENV_PARTIAL	Isolated Python 3.10 venv import/CUDA smoke; Python 3.12 unavailable for torch/pip.
 D_feasibility	NOT_STARTED	Blocked until code assets are available.
 E_inference_smoke	NOT_STARTED	Blocked until env and weights are ready.
-F_gate16	NOT_STARTED	Blocked until inference smoke is technically valid.
 G_one_step	NOT_STARTED	Blocked until trainable-forward feasible.
 H_10step	NOT_STARTED	Blocked until one-step passes.
 I_paper_positioning	NOT_STARTED	Requires actual ROSE results.
 D_adapter_feasibility	ROSE_TRAINING_FORWARD_BLOCKED	No official train/finetune optimizer/backward/loss script found; transformer forward and LoRA utilities present.
 C_env_py312	ROSE_ENV_READY	Python 3.12 virtualenv import/CUDA smoke passed with torch 2.6.0 and ROSE requirements.
 E_inference_smoke	ROSE_INFERENCE_SMOKE_PASS	Official demo plus six VOR-Train rows; technical valid 6/6; no training.
+F_gate16	ROSE_VOR_OR_GATE16_PASS	technical_valid=16/16; usable=9; medium_hard=5; side_effect=2; trivial=0; useful_or_loser=14; no_training=true
+I_final_positioning	ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED	ROSE is baseline/loser-generator useful but not adapter-positive; one-step/10-step gates locked by missing official train objective.

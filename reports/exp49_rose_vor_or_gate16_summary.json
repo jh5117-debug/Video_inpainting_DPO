@@ -1,0 +1,22 @@
+{
+  "evidence_dir": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/reports/exp49_rose_vor_or_gate16_evidence",
+  "hard_comp_used": false,
+  "label_counts": {
+    "MEDIUM_HARD_ELIGIBLE": 5,
+    "ROSE_OUTPUT_USABLE": 9,
+    "SIDE_EFFECT_LEFT": 2
+  },
+  "manifest": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/manifests/exp49_rose_vor_or_gate16_manifest.jsonl",
+  "metrics_csv": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/reports/exp49_rose_vor_or_gate16_metrics.csv",
+  "optimizer_step": false,
+  "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/vor_or_gate16_20260630_085042",
+  "outside_collapse_or_drift": 0,
+  "status": "ROSE_VOR_OR_GATE16_PASS",
+  "technical_valid": 16,
+  "total": 16,
+  "training_run": false,
+  "trivial_bad": 0,
+  "useful_or_loser_eligible": 14,
+  "visual_review_csv": "/mnt/workspace/hj/nas_hj/H20_Video_inpainting_DPO_exp49_rose_adapter/reports/exp49_rose_vor_or_gate16_visual_review.csv",
+  "vor_eval_used": false
+}

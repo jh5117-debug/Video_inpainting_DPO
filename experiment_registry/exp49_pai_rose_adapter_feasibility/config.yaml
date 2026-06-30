@@ -1,5 +1,5 @@
 experiment: exp49_pai_rose_adapter_feasibility
-date: 2026-06-29
+date: 2026-06-30
 asset_policy:
   clone_official_code: true
   download_hf_space: true
@@ -21,11 +21,29 @@ promotion_gate:
   - ROSE_VOR_OR_GATE16_PASS
   - ROSE_ONE_STEP_PASS
   - ROSE_ADAPTER_10STEP_PROMISING_OR_POSITIVE
-current_blocker: PAI access not verified from HAL
-
+current_blocker: released ROSE official repo lacks executable training loop/loss/target construction
+milestone_c_py312:
+  status: ROSE_ENV_READY
+  venv: /home/hj/venvs/rose_exp49_py312
 milestone_d:
   status: ROSE_TRAINING_FORWARD_BLOCKED
   rose_repo: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE/Kunbyte-AI_ROSE
   rose_commit: 6be41c5420bf331c6d491277d5a6feaf9b3a779a
   no_training_run: true
   no_optimizer_step: true
+milestone_e:
+  status: ROSE_INFERENCE_SMOKE_PASS
+  technical_valid_smoke6: 6
+milestone_f:
+  status: ROSE_VOR_OR_GATE16_PASS
+  technical_valid: 16
+  total: 16
+  rose_output_usable: 9
+  medium_hard_eligible: 5
+  side_effect_left: 2
+  trivial_bad: 0
+  useful_or_loser_eligible: 14
+  output_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/vor_or_gate16_20260630_085042
+final:
+  adapter_positive: false
+  third_backbone_evidence: false

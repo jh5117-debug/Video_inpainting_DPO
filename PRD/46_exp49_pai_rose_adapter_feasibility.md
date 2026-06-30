@@ -4,7 +4,7 @@ Date: 2026-06-29
 
 Branch: `research/exp49-pai-rose-adapter-feasibility-20260629`
 
-Status: `EXP49_PAI_ACCESS_BLOCKED_BEFORE_DOWNLOAD`
+Status: `ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED`
 
 ## Objective
 
@@ -138,3 +138,20 @@ Status: `ROSE_INFERENCE_SMOKE_PASS`.
 Official ROSE `inference.py` loaded the downloaded Wan2.1-Fun base and Kunbyte/ROSE transformer weights via isolated runtime symlinks. E1 default-size demo produced a decodable mp4. E2 VOR-Train smoke6 produced `6/6` decodable outputs. A reduced 256x384 probe is recorded as blocked because official `inference.py` does not pass reduced `height/width` into the pipeline, causing a transformer sequence-length assertion; official default 480x720 passed without modifying official source.
 
 No training, optimizer step, checkpoint update, VOR-Eval use, H20 action, hard comp, shared trainer change, metrics code change, or official ROSE source modification was performed.
+
+
+## Milestone F Update - 2026-06-30
+
+Status: `ROSE_VOR_OR_GATE16_PASS`.
+
+Official ROSE inference ran on 16 VOR-Train rows on PAI GPU0 using the default official 480x720 path. Outputs were written under `/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/vor_or_gate16_20260630_085042`. Technical validity was `16/16`. Codex inspected all 16 review sheets plus temporal strips for representative high-motion/high-flicker rows. Final visual labels were `ROSE_OUTPUT_USABLE=9`, `MEDIUM_HARD_ELIGIBLE=5`, `SIDE_EFFECT_LEFT=2`, `TRIVIAL_BAD=0`. Useful baseline or loser-eligible rows were `14/16`, with no systematic outside collapse.
+
+No H20 action, training, optimizer step, VOR-Eval, hard comp, shared trainer edit, `inference/metrics.py` edit, or official ROSE source edit was performed.
+
+## Final Positioning Update - 2026-06-30
+
+Status: `ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED`.
+
+ROSE official inference is useful as a baseline and same-domain loser-generator candidate. It is not adapter-positive evidence. Milestone D remains the blocker: released ROSE code does not expose an executable official training loop, optimizer/backward path, explicit loss, or explicit FlowMatch target construction. One-step and 10-step adapter gates remain locked until an isolated wrapper/target reconstruction design passes zero-gap and one-step proof.
+
+Paper-safe wording: DiffuEraser + VideoPainter remain the positive adapter evidence. ROSE is a promising baseline/loser-generator candidate only; it is not a third positive adapter/backbone.

@@ -1,0 +1,20 @@
+{
+  "adapter_positive": false,
+  "gate16_status": "ROSE_VOR_OR_GATE16_PASS",
+  "h20_touched": false,
+  "hard_comp_used": false,
+  "medium_hard_eligible": 5,
+  "next_step": "isolated ROSE wrapper/target reconstruction zero-gap one-step proof, or use ROSE as baseline/loser generator only",
+  "optimizer_step": false,
+  "outside_collapse_or_drift": 0,
+  "rose_output_usable": 9,
+  "side_effect_left": 2,
+  "status": "ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED",
+  "technical_valid": 16,
+  "third_backbone_evidence": false,
+  "total": 16,
+  "training_run": false,
+  "trivial_bad": 0,
+  "useful_or_loser_eligible": 14,
+  "vor_eval_used": false
+}

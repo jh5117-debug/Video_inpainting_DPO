@@ -9,9 +9,19 @@ third_party_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE
 weights_root: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose
 dataset_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/rose_dataset
 hf_space_root: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE_HF_Space
-verified_pai_access: false
-
+verified_pai_access: true
+rose_official_repo: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/ROSE/Kunbyte-AI_ROSE
+rose_hf_model: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Kunbyte_ROSE
+wan_base_model: /mnt/nas/hj/H20_Video_inpainting_DPO/weights/rose/Wan2.1-Fun-1.3B-InP
+gate16_output_dir: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp49_pai_rose_adapter_feasibility/vor_or_gate16_20260630_085042
+gate16_manifest: manifests/exp49_rose_vor_or_gate16_manifest.jsonl
+gate16_evidence_dir: reports/exp49_rose_vor_or_gate16_evidence
 milestone_d_reports:
   audit_md: reports/exp49_rose_code_adapter_feasibility_audit.md
   audit_csv: reports/exp49_rose_code_adapter_feasibility_audit.csv
   inventory_json: reports/exp49_rose_training_forward_inventory.json
+milestone_f_reports:
+  gate16_md: reports/exp49_rose_vor_or_gate16.md
+  gate16_metrics: reports/exp49_rose_vor_or_gate16_metrics.csv
+  gate16_visual_review: reports/exp49_rose_vor_or_gate16_visual_review.csv
+  gate16_summary: reports/exp49_rose_vor_or_gate16_summary.json

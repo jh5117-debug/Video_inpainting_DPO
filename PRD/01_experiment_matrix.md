@@ -1,3 +1,12 @@
+## 2026-06-30 Exp49 ROSE Adapter Feasibility
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp49 PAI ROSE adapter feasibility | `ROSE_BASELINE_READY__ROSE_LOSER_GENERATOR_USEFUL__ROSE_TRAINING_FORWARD_BLOCKED`; no adapter-positive claim | `experiment_registry/exp49_pai_rose_adapter_feasibility`, `PRD/46_exp49_pai_rose_adapter_feasibility.md`, `reports/exp49_rose_feasibility_outcome.md`, `reports/exp49_rose_vor_or_gate16.md` |
+
+Gate16: `16/16` decodable VOR-Train outputs; visual labels `usable=9`, `medium_hard=5`, `side_effect=2`, `trivial=0`. Training forward remains blocked; no one-step/10-step adapter gate was run.
+
+
 ## 2026-06-19 Exp20/21/22 Autoresearch Setup
 
 | User-facing name | Status | Evidence / registry |
