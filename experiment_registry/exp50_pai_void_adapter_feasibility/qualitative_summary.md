@@ -41,3 +41,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_TRAINABLE_FORWARD_BLOCKED`
 - Visual outputs: none, because no one-step output was generated.
 - Interpretation: VOID is currently validated as official inference and data-signal source on Gate8, not as a proven adapter training path.
+
+## H0 Preference-Wrapper Readback - 2026-06-30T22:59:39+08:00
+
+- Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`
+- VOID role remains baseline / loser-generator candidate.
+- No adapter evidence claim is made.

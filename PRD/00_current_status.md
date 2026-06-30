@@ -1905,3 +1905,8 @@ Prepared VOR-Train-only train4/heldout4 micro data after F2 inference smoke. Los
 Status: `VOID_TRAINABLE_FORWARD_BLOCKED`.
 
 Official bucket dataset loading for train4 passed, but zero-gap/one-step are blocked because official VOID training exposes an SFT MSE path, not the required policy/reference winner-loser preference forward. Deepspeed remains intentionally uninstalled. No training, backward, optimizer step, or 10-step was run.
+## 2026-06-30 Exp50 VOID Preference-Wrapper Readback
+
+Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`.
+
+H0 confirmed that official VOID training is SFT MSE and does not directly implement policy/reference winner-loser preference forward. VOID remains a PAI inference baseline / loser-generator candidate. The next gate is an isolated Exp50 wrapper; deepspeed remains uninstalled.

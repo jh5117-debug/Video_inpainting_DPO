@@ -76,3 +76,9 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Dataset load: PASS in official bucket mode.
 - Zero-gap metrics: not run, blocked before model preference forward.
 - One-step metrics: not run, blocked before optimizer.
+
+## H0 Preference-Wrapper Readback - 2026-06-30T22:59:39+08:00
+
+- Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`
+- Metrics: not applicable; readback only.
+- Target parameterization: scheduler `epsilon` or `v_prediction`, read at runtime by wrapper.

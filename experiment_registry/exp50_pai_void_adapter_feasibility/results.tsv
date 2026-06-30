@@ -22,3 +22,4 @@ F1_official_sample_inference	VOID_OFFICIAL_SAMPLE_INFERENCE_PASS	sample=lime;ret
 F2_vor_gate8_inference	VOID_INFERENCE_SMOKE_PASS	technical_valid=8/8;usable_or_loser=6/8;counts={'MEDIUM_HARD_LOSER': 2, 'TOO_CLOSE': 2, 'VOID_OUTPUT_USABLE': 4};no_training=true;no_optimizer=true;no_vor_eval=true
 G0_adapter_micro_data	VOID_ADAPTER_MICRO_DATA_READY	train=4;heldout=4;loser_sources={'controlled_local_corruption': 6, 'void_pass1_raw_medium_hard': 2};no_training=true;no_optimizer=true;no_vor_eval=true
 G1_zero_gap_one_step	VOID_TRAINABLE_FORWARD_BLOCKED	exact_blocker=VOID_TRAINABLE_FORWARD_BLOCKED_PREFERENCE_WRAPPER_REQUIRED;dataset_bucket_load=pass;zero_gap=not_run;one_step=not_run;optimizer=false;training=false
+H0_preference_wrapper_readback	VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED	official_train=sft_mse;target=epsilon_or_v_prediction_from_scheduler;wrapper_required=true;deepspeed=not_installed;training=false;optimizer=false

@@ -211,3 +211,13 @@ Reports:
 - One-step: not run; running SFT one-step would be off-protocol for this gate.
 - Deepspeed: intentionally not installed; official 8-process shell path remains blocked pending controlled install.
 - Safety: no training, no backward, no optimizer step, no 10-step, no VOID positive claim.
+## Milestone H0 update - VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED
+
+- Time: 2026-06-30T22:59:39+08:00
+- Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`
+- Evidence: `reports/exp50_void_preference_wrapper_readback.md` and `reports/exp50_void_preference_wrapper_blocker.md`
+- Finding: official VOID `train.py` is SFT MSE over scheduler noise/velocity targets, not a policy/reference winner-loser DPO forward.
+- Single-process wrapper: allowed and preferred before any deepspeed install.
+- Deepspeed: still intentionally uninstalled; only a controlled wheelhouse install is allowed if single-process proves impossible.
+- VOID role: baseline / loser-generator candidate, not adapter evidence.
+- Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
