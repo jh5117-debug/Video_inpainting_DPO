@@ -1,0 +1,50 @@
+{
+  "device": "cuda:0",
+  "dtype": "torch.bfloat16",
+  "frames": 13,
+  "hard_comp_used": false,
+  "height": 384,
+  "inpaint_shape": [
+    1,
+    4,
+    32,
+    48,
+    84
+  ],
+  "latent_shape": [
+    1,
+    4,
+    16,
+    48,
+    84
+  ],
+  "loss_finite": true,
+  "missing_keys_count": 0,
+  "noise_pred_shape": [
+    1,
+    4,
+    16,
+    48,
+    84
+  ],
+  "official_equivalence": "Code mirrors train.py VAE encode, inpaint_latents, scheduler add_noise, epsilon/v_prediction target, transformer forward, and MSE loss. Direct train.py helper is not callable without entering its training loop/Accelerator side effects.",
+  "optimizer_step": false,
+  "prediction_type": "v_prediction",
+  "requested_frames": 17,
+  "sample_id": "BLENDER_CON001_00636",
+  "seed": 1234,
+  "sft_loss": 0.035282157361507416,
+  "status": "VOID_SFT_FORWARD_PARITY_EXPLAINED",
+  "target_shape": [
+    1,
+    4,
+    16,
+    48,
+    84
+  ],
+  "timestep": 500,
+  "training_run": false,
+  "unexpected_keys_count": 0,
+  "vor_eval_used": false,
+  "width": 672
+}

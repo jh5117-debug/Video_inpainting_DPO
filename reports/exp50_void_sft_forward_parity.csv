@@ -1,0 +1,2 @@
+sample_id,status,prediction_type,sft_loss,loss_finite,latent_shape,inpaint_shape,noise_pred_shape,missing_keys_count,unexpected_keys_count
+BLENDER_CON001_00636,VOID_SFT_FORWARD_PARITY_EXPLAINED,v_prediction,0.035282157361507416,True,"[1, 4, 16, 48, 84]","[1, 4, 32, 48, 84]","[1, 4, 16, 48, 84]",0,0

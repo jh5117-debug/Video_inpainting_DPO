@@ -1910,3 +1910,8 @@ Official bucket dataset loading for train4 passed, but zero-gap/one-step are blo
 Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`.
 
 H0 confirmed that official VOID training is SFT MSE and does not directly implement policy/reference winner-loser preference forward. VOID remains a PAI inference baseline / loser-generator candidate. The next gate is an isolated Exp50 wrapper; deepspeed remains uninstalled.
+## 2026-06-30 Exp50 VOID SFT Forward Parity
+
+Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`.
+
+The isolated wrapper loaded VOID pass1 and reproduced the official SFT forward target construction on one train4 row. Scheduler target parameterization is `v_prediction`; finite loss 0.035282157361507416. No backward or optimizer step was run.

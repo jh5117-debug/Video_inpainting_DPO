@@ -221,3 +221,15 @@ Reports:
 - Deepspeed: still intentionally uninstalled; only a controlled wheelhouse install is allowed if single-process proves impossible.
 - VOID role: baseline / loser-generator candidate, not adapter evidence.
 - Safety: no training, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
+## Milestone H1 update - VOID_SFT_FORWARD_PARITY_EXPLAINED
+
+- Time: 2026-06-30T23:08:07+08:00
+- Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`
+- Evidence: `reports/exp50_void_sft_forward_parity.md`, `reports/exp50_void_sft_forward_parity.csv`, `reports/exp50_void_sft_forward_parity_summary.json`
+- Wrapper code: `exp50_pai_void_adapter_feasibility/void_preference_wrapper/void_sft_wrapper.py`
+- Script: `exp50_pai_void_adapter_feasibility/scripts/run_void_sft_parity.py`
+- Sample: `BLENDER_CON001_00636`; requested frames 17 -> effective frames 13 after official patch-size truncation.
+- Target parameterization: `v_prediction`.
+- SFT loss: 0.035282157361507416; finite: True.
+- Missing/unexpected keys: 0 / 0.
+- Safety: no training, no backward, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.

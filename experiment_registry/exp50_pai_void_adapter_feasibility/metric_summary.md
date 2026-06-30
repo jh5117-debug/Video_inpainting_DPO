@@ -82,3 +82,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`
 - Metrics: not applicable; readback only.
 - Target parameterization: scheduler `epsilon` or `v_prediction`, read at runtime by wrapper.
+
+## H1 SFT Forward Parity - 2026-06-30T23:08:07+08:00
+
+- Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`
+- SFT loss: 0.035282157361507416
+- Target parameterization: `v_prediction`
+- Shapes: latent [1, 4, 16, 48, 84]; inpaint [1, 4, 32, 48, 84]

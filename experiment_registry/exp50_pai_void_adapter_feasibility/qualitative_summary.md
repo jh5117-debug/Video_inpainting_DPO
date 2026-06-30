@@ -47,3 +47,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_PREFERENCE_WRAPPER_REQUIRED_CONFIRMED`
 - VOID role remains baseline / loser-generator candidate.
 - No adapter evidence claim is made.
+
+## H1 SFT Forward Parity - 2026-06-30T23:08:07+08:00
+
+- Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`
+- No visual output was generated; this is a forward/loss parity gate.
+- No adapter evidence claim is made.
