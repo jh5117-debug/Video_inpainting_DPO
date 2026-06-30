@@ -638,3 +638,13 @@ Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-s
 - Evidence: `reports/exp50_void_weight_relay_ingest.md`
 - Relay SHA match: yes, 52 / 52 files, missing 0, mismatch 0.
 - Safety: no training, no inference, no GPU, no VOID positive claim.
+
+## Exp50 env matrix update - VOID_ENV_PARTIAL
+
+- Time: 2026-06-30T14:20:58.202107+08:00
+- Status: `VOID_ENV_PARTIAL`
+- Evidence: `reports/exp50_void_env_smoke.md`
+- Imports: 44 pass, 0 fail.
+- CUDA smoke: no failures; small matmul/backward finite.
+- Caveat: exact official pins are not matched; heavyweight CUDA packages were not reinstalled.
+- Safety: no training, no inference, no full 5B model load, no VOID positive claim.

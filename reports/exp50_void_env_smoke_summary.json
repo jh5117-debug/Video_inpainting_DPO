@@ -1,0 +1,67 @@
+{
+  "cuda_fail_count": 0,
+  "env_path": "/home/hj/conda_envs/void_exp50",
+  "failed_cuda": [],
+  "failed_imports": [],
+  "import_fail_count": 0,
+  "import_pass_count": 44,
+  "no_full_model_load": true,
+  "no_inference": true,
+  "no_training": true,
+  "python": "3.10.19 (main, Nov 28 2025, 15:21:53) [GCC 13.2.0]",
+  "python_executable": "/home/hj/conda_envs/void_exp50/bin/python",
+  "status": "VOID_ENV_PARTIAL",
+  "sys_path_repo_appended_not_prepended": true,
+  "using_system_site_packages": true,
+  "version_pin_issue_count": 8,
+  "version_pin_issues": [
+    {
+      "detail": "expected=2.7.1; got=2.6.0+cu126",
+      "kind": "version_pin",
+      "name": "torch",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=0.22.1; got=0.21.0+cu126",
+      "kind": "version_pin",
+      "name": "torchvision",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=0.33.1; got=0.37.1",
+      "kind": "version_pin",
+      "name": "diffusers",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=1.12.0; got=1.13.0",
+      "kind": "version_pin",
+      "name": "accelerate",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=4.57.1; got=5.5.4",
+      "kind": "version_pin",
+      "name": "transformers",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=0.6.2; got=0.7.0",
+      "kind": "version_pin",
+      "name": "safetensors",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=0.17.6; got=0.18.9",
+      "kind": "version_pin",
+      "name": "deepspeed",
+      "status": "WARN"
+    },
+    {
+      "detail": "expected=1.26.4; got=2.1.2",
+      "kind": "version_pin",
+      "name": "numpy",
+      "status": "WARN"
+    }
+  ]
+}

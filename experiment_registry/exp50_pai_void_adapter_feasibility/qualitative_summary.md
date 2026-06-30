@@ -1,5 +1,5 @@
 # Exp50 Qualitative Summary
 
-Last updated: 2026-06-30T14:04:06.075339+08:00
+Last updated: 2026-06-30T14:20:58.202107+08:00
 
-No visual quality claim yet. Official VOID and CogVideoX-Fun assets are present on PAI and verified. VOID remains feasibility-only until environment, data adapter, inference smoke, and micro gates complete.
+No visual quality claim yet. Official assets are verified. Environment smoke is `VOID_ENV_PARTIAL`: imports and CUDA smoke pass, but exact official pins are not matched on this PAI base image. VOID remains feasibility-only; no inference/training evidence exists yet.

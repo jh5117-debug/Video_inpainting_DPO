@@ -1,0 +1,59 @@
+kind,name,status,detail
+import,torch,PASS,2.6.0+cu126
+import,torchvision,PASS,0.21.0+cu126
+import,diffusers,PASS,0.37.1
+import,transformers,PASS,5.5.4
+import,accelerate,PASS,1.13.0
+import,deepspeed,PASS,0.18.9
+import,safetensors,PASS,0.7.0
+import,peft,PASS,0.19.1
+import,torchdiffeq,PASS,0.2.5
+import,torchsde,PASS,0.2.6
+import,came_pytorch,PASS,ok
+import,cv2,PASS,4.13.0
+import,skimage,PASS,0.25.2
+import,imageio,PASS,2.37.3
+import,decord,PASS,0.6.0
+import,kornia,PASS,0.8.2
+import,albumentations,PASS,2.0.8
+import,timm,PASS,1.0.27
+import,tomesd,PASS,ok
+import,numpy,PASS,2.1.2
+import,scipy,PASS,1.15.3
+import,sklearn,PASS,1.7.2
+import,datasets,PASS,4.0.0
+import,einops,PASS,0.8.2
+import,omegaconf,PASS,2.3.0
+import,ml_collections,PASS,1.1.0
+import,absl,PASS,2.4.0
+import,loguru,PASS,0.7.3
+import,tqdm,PASS,4.67.3
+import,matplotlib,PASS,3.10.9
+import,sentencepiece,PASS,0.2.1
+import,ftfy,PASS,6.3.1
+import,bs4,PASS,4.13.5
+import,func_timeout,PASS,4.3.5
+import,requests,PASS,2.32.5
+import,packaging,PASS,26.0
+import,diffusers.AutoencoderKLCogVideoX,PASS,ok
+import,diffusers.CogVideoXDPMScheduler,PASS,ok
+import,diffusers.CogVideoXPipeline,PASS,ok
+import,videox_fun,PASS,ok
+import,videox_fun.models,PASS,ok
+import,videox_fun.data,PASS,ok
+import,videox_fun.utils,PASS,ok
+import,videox_fun.pipeline.pipeline_cogvideox_fun_inpaint,PASS,ok
+config_import,config/quadmask_cogvideox.py,PASS,ok
+config_import,config/default_cogvideox.py,PASS,ok
+cuda,torch.cuda.is_available,PASS,True
+cuda,torch.cuda.device_count,PASS,8
+cuda,bf16_support,PASS,True
+cuda,small_matmul_backward,PASS,loss=59.136169
+version_pin,torch,WARN,expected=2.7.1; got=2.6.0+cu126
+version_pin,torchvision,WARN,expected=0.22.1; got=0.21.0+cu126
+version_pin,diffusers,WARN,expected=0.33.1; got=0.37.1
+version_pin,accelerate,WARN,expected=1.12.0; got=1.13.0
+version_pin,transformers,WARN,expected=4.57.1; got=5.5.4
+version_pin,safetensors,WARN,expected=0.6.2; got=0.7.0
+version_pin,deepspeed,WARN,expected=0.17.6; got=0.18.9
+version_pin,numpy,WARN,expected=1.26.4; got=2.1.2
