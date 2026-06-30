@@ -124,6 +124,20 @@ def run_group(gpu: int, seqs: list[str], step1: Path) -> dict:
     return {'gpu': gpu, 'seqs': seqs, 'returncode': proc.returncode, 'log': str(log), 'save_path': str(save_path), 'runtime_sec': time.time() - t0}
 
 
+def find_step1_output(sample_id: str, gpu_ids: list[int]) -> Path | None:
+    candidates: list[Path] = []
+    search_dirs = [OUT / f'step1_gpu{gpu}' for gpu in gpu_ids]
+    search_dirs.extend(sorted(OUT.glob('step1_gpu*')))
+    seen: set[Path] = set()
+    for save_dir in search_dirs:
+        if save_dir in seen:
+            continue
+        seen.add(save_dir)
+        candidates.extend(save_dir.glob(f'{sample_id}-fg=-1-*.mp4'))
+    candidates = [p for p in candidates if p.exists() and not p.name.endswith('_tuple.mp4')]
+    return sorted(candidates)[0] if candidates else None
+
+
 def decode_frames(path: Path, max_frames: int | None = None) -> list[np.ndarray]:
     cap = cv2.VideoCapture(str(path))
     frames = []
@@ -239,7 +253,22 @@ def main() -> None:
     if not gpu_ids:
         raise ValueError('EXP50_H4B_GPUS must contain at least one GPU id')
     groups = [(gpu, heldout[i::len(gpu_ids)]) for i, gpu in enumerate(gpu_ids)]
-    runs = [run_group(gpu, seqs, step1_ckpt) for gpu, seqs in groups]
+    skip_inference = os.environ.get('EXP50_H4B_SKIP_INFERENCE', '0') == '1'
+    if skip_inference:
+        runs = [
+            {
+                'gpu': gpu,
+                'seqs': seqs,
+                'returncode': 0,
+                'log': str(OUT / f'gpu{gpu}_runtime_log.txt'),
+                'save_path': str(OUT / f'step1_gpu{gpu}'),
+                'runtime_sec': 0.0,
+                'skipped_existing_outputs': True,
+            }
+            for gpu, seqs in groups
+        ]
+    else:
+        runs = [run_group(gpu, seqs, step1_ckpt) for gpu, seqs in groups]
     ok = all(r['returncode'] == 0 for r in runs)
     records = []
     for row in rows:
@@ -247,9 +276,7 @@ def main() -> None:
         sample_dir = OUT / 'evidence' / sid
         sample_dir.mkdir(parents=True, exist_ok=True)
         step0 = F2_STEP0 / f'{sid}-fg=-1-0001.mp4'
-        step1_candidates = list((OUT / 'step1_gpu0').glob(f'{sid}-fg=-1-*.mp4')) + list((OUT / 'step1_gpu1').glob(f'{sid}-fg=-1-*.mp4'))
-        step1_candidates = [p for p in step1_candidates if not p.name.endswith('_tuple.mp4')]
-        step1 = sorted(step1_candidates)[0] if step1_candidates else None
+        step1 = find_step1_output(sid, gpu_ids)
         rec = {'sample_id': sid, 'step0_raw': str(step0), 'step1_raw': str(step1) if step1 else '', 'status': 'missing_step1'}
         if step0.exists() and step1 and step1.exists():
             ev = make_evidence(row, step0, step1, sample_dir)
@@ -260,7 +287,8 @@ def main() -> None:
         'status': status,
         'start': start,
         'end': now(),
-        'gpus_requested': [0,1],
+        'gpus_requested': gpu_ids,
+        'skip_inference': skip_inference,
         'root_processes_killed': [],
         'step1_checkpoint': str(step1_ckpt),
         'step1_checkpoint_sha256': sha256(step1_ckpt),
