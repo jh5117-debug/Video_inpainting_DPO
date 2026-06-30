@@ -1827,3 +1827,11 @@ Both fresh Exp11 and candidate completed Stage1 2000 + Stage2 2000 and wrote
 `last_weights`. No Exp23 `Phy` process remained after completion. DAVIS50
 evaluation has not run yet, so this is a training-completion milestone, not a
 quality result.
+
+## Exp50 update - VOID_WEIGHTS_READY
+
+- Time: 2026-06-30T14:04:06.075339+08:00
+- Status: `VOID_WEIGHTS_READY`
+- Evidence: `reports/exp50_void_weight_relay_ingest.md`
+- Relay SHA match: yes, 52 / 52 files, missing 0, mismatch 0.
+- Safety: no training, no inference, no GPU, no VOID positive claim.

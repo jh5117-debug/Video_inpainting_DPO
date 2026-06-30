@@ -630,3 +630,11 @@ weak and damages the pairwise DPO interpretation, so it is not a main method.
 ## Exp20 Status Addendum (2026-06-20)
 
 Exp20 fast search + equal-step budget completed. Best current locked-dev/equal-step candidate is EQ_BF07 (fixed_image_px radius 28, boundary weight 5.0, legacy_global_weighted_mean), PSNR 29.393079. It remains below TARGET_DEV_PSNR 29.523336 and has mixed perceptual/temporal tradeoffs, so status is COMPLETED_NEGATIVE for this budget and no long training / Stage2 / DAVIS50 / YouTubeVOS100 final eval was launched.
+
+## Exp50 matrix update - VOID_WEIGHTS_READY
+
+- Time: 2026-06-30T14:04:06.075339+08:00
+- Status: `VOID_WEIGHTS_READY`
+- Evidence: `reports/exp50_void_weight_relay_ingest.md`
+- Relay SHA match: yes, 52 / 52 files, missing 0, mismatch 0.
+- Safety: no training, no inference, no GPU, no VOID positive claim.

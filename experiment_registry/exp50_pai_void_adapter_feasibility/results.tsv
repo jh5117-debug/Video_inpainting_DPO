@@ -11,3 +11,4 @@ F_inference	NOT_STARTED	Blocked until assets/env/quadmask ready.
 G_one_step	NOT_STARTED	Blocked until training-forward feasible and inference technical valid.
 H_10step	NOT_STARTED	Blocked until one-step passes.
 I_positioning	NOT_STARTED	Requires later gates.
+B3_weight_relay_ingest	VOID_WEIGHTS_READY	void_files=12;base_files=40;sha_match=yes;missing=0;mismatch=0

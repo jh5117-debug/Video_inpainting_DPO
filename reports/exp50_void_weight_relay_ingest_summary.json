@@ -1,0 +1,30 @@
+{
+  "base_file_count": 40,
+  "base_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP",
+  "checks": {
+    "base_files_40": true,
+    "base_text_encoder_1_exists": true,
+    "base_text_encoder_2_exists": true,
+    "base_transformer_exists": true,
+    "base_vae_exists": true,
+    "hash_match": true,
+    "mismatch_files_0": true,
+    "missing_files_0": true,
+    "pai_sha_exists": true,
+    "relay_sha_exists": true,
+    "void_files_12": true,
+    "void_pass1_exists": true,
+    "void_pass2_exists": true
+  },
+  "extra_count": 0,
+  "mismatch_count": 0,
+  "missing_count": 0,
+  "pai_sha_count": 52,
+  "relay_reports": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/relay_reports",
+  "relay_sha": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/relay_sha256",
+  "source_sha_count": 52,
+  "status": "VOID_WEIGHTS_READY",
+  "timestamp": "2026-06-30T14:04:06.040714+08:00",
+  "void_file_count": 12,
+  "void_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model"
+}
