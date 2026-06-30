@@ -4,7 +4,7 @@ Date: 2026-06-30
 
 Branch: `research/exp50-pai-void-adapter-feasibility-20260630`
 
-Status: `VOID_ASSETS_BLOCKED`
+Status: `VOID_ASSET_PERMISSION_RECOVERED`
 
 ## Objective
 
@@ -56,3 +56,15 @@ Status: `VOID_ASSETS_BLOCKED`.
 Pre-download disk and permission checks were run. No VOID official repo, Pass1/Pass2 weights, CogVideoX-Fun base model, or sample data was downloaded because the required NAS target roots are not writable by `hj`, and neither passwordless sudo nor root SSH is available from this session. The blocked target roots are `/third_party/VOID`, `/weights/void`, `/data/external/void`, and `/experiments/dpo/exp50_pai_void_adapter_feasibility` under `/mnt/nas/hj/H20_Video_inpainting_DPO`.
 
 The task is blocked until those directories are created/chowned for `hj`, or an explicit alternate asset/output root is approved.
+
+
+## Milestone B0 Update - 2026-06-30
+
+Status: `VOID_ASSET_PERMISSION_RECOVERED`.
+
+Using `hj` identity, Codex verified read/write/execute access and write-probe behavior for all six EXP50 directories after the user-provided root-side minimal permission fix. Codex did not run chmod/chown or any root permission script.
+
+Reports:
+
+- `reports/exp50_void_permission_recovery.md`
+- `reports/exp50_void_permission_recovery.csv`

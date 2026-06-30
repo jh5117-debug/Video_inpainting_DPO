@@ -1,7 +1,7 @@
 # Exp50 Status
 
-Current status: `VOID_ASSETS_BLOCKED`.
+Current status: `VOID_ASSET_PERMISSION_RECOVERED`.
 
-Milestone A completed and was pushed. Milestone B pre-download checks found that requested NAS asset/output roots are not writable by user `hj`. No downloads were attempted, and no assets were written to fallback or ROSE-owned directories.
+Milestone B0 verified the user-provided minimal permission recovery using `hj` identity. All six requested EXP50 directories were checked for read/write/execute access and write-probe behavior. Codex did not run chmod/chown or a root permission script.
 
-Unblock requirement: create/chown the requested EXP50 VOID directories for `hj`, or approve an alternate asset/output root.
+Next: resume Milestone B1 official VOID repo download/audit.

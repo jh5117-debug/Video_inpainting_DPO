@@ -1,3 +1,3 @@
 # Exp50 Metric Summary
 
-No VOID metrics yet. Asset download is blocked before inference/training by NAS permissions.
+No VOID inference/training metrics yet. B0 permission recovery passed.

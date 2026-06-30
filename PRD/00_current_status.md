@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Permission Recovery
+
+Status: `VOID_ASSET_PERMISSION_RECOVERED`.
+
+The user-provided root-side minimal permission fix was verified from PAI as `hj`. All six EXP50 directories passed read/write/execute/write-probe checks. No chmod/chown/root script was run by Codex. Exp50 can resume Milestone B1 official VOID repo download/audit.
+
+
 ## 2026-06-30 Exp50 VOID Asset Download Blocked
 
 Status: `VOID_ASSETS_BLOCKED`.

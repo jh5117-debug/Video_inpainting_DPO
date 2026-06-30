@@ -1,0 +1,7 @@
+path,exists,owner,group,mode,setgid,read,write,execute,write_probe,probe_error,stat
+/mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"
+/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"
+/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"
+/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp50_pai_void_adapter_feasibility,True,hj,hj,2770,True,True,True,True,True,,"hj,hj,2770,drwxrws---"

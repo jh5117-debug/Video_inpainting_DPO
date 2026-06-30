@@ -1,5 +1,6 @@
 milestone	status	notes
 A_readback	EXP50_VOID_READBACK_COMPLETED_WITH_NAS_PERMISSION_CAVEAT	Public VOID sources audited; no downloads; PAI fallback worktree active; NAS asset roots need ownership correction or approved fallback.
+B0_permission_recovery	VOID_ASSET_PERMISSION_RECOVERED	Verified 6/6 EXP50 directories with hj read/write/execute/write_probe; no chmod/chown run.
 B_assets	VOID_ASSETS_BLOCKED	No download attempted because /third_party, /weights, /data/external, and /experiments/dpo targets are not writable by hj; sudo/root unavailable.
 C_env	NOT_STARTED	Blocked until assets/code available.
 D_trainable_forward	NOT_STARTED	Blocked until code/assets available.

@@ -1,3 +1,10 @@
+## 2026-06-30 Exp50 VOID Permission Recovery
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp50 VOID permission recovery | `VOID_ASSET_PERMISSION_RECOVERED` | `reports/exp50_void_permission_recovery.md`, `reports/exp50_void_permission_recovery.csv` |
+
+
 ## 2026-06-30 Exp50 VOID Asset Download Blocked
 
 | User-facing name | Status | Evidence / registry |
