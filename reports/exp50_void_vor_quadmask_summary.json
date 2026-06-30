@@ -1,0 +1,13 @@
+{
+  "blender_count": 4,
+  "gate_count": 8,
+  "large_count": 2,
+  "manifest": "manifests/exp50_void_vor_gate8.jsonl",
+  "medium_count": 3,
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/vor_gate8_quadmask",
+  "real_count": 4,
+  "scene_overlap": false,
+  "small_count": 3,
+  "status": "VOID_VOR_QUADMASK_GATE8_READY",
+  "vor_eval_excluded": true
+}

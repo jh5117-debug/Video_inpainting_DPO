@@ -31,3 +31,13 @@ No asset download or training has been run. VOID public sources indicate stronge
 - Evidence: `reports/exp50_void_trainable_forward_audit.md`
 - Finding: official trainable forward exists, but default training is heavy transformer fine-tuning, not out-of-box LoVI-DPO.
 - Safety: no training, no inference, no official source modification, no VOID positive claim.
+
+## Milestone E update - VOID_VOR_QUADMASK_GATE8_READY
+
+- Time: 2026-06-30T14:40:28.047764+08:00
+- Status: `VOID_VOR_QUADMASK_GATE8_READY`
+- Evidence: `reports/exp50_void_vor_quadmask_adapter.md` and `reports/exp50_void_vor_quadmask_visual_review.csv`
+- Gate8: 8 rows, REAL/BLENDER 4/4, scene overlap False.
+- VOR-Eval excluded: True
+- Safety: no training, no inference, no hard comp, no VOID positive claim.
+- Next gate: official inference smoke remains blocked until environment status is `VOID_ENV_READY`; current C status is `VOID_ENV_PARTIAL`.

@@ -14,3 +14,4 @@ I_positioning	NOT_STARTED	Requires later gates.
 B3_weight_relay_ingest	VOID_WEIGHTS_READY	void_files=12;base_files=40;sha_match=yes;missing=0;mismatch=0
 C_env_smoke	VOID_ENV_PARTIAL	imports_pass=44;imports_fail=0;cuda_fail=0;pin_warnings=8
 D_trainable_forward_audit	VOID_TRAINING_FORWARD_HEAVY_BUT_POSSIBLE	policy=CogVideoXTransformer3DModel;loss=MSE_noise_or_velocity;quadmask=0/63/127/255;dpo_out_of_box=no
+E_vor_quadmask_gate8	VOID_VOR_QUADMASK_GATE8_READY	gate8=8;real=4;blender=4;scene_overlap=False;vor_eval=no
