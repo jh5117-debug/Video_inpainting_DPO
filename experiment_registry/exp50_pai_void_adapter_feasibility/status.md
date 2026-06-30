@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T00:11:20+08:00
+Last updated: 2026-07-01T01:00:46+08:00
 
-Current status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
+Current status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -194,3 +194,13 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - H4b-3 metrics/visual review: not run because generation was blocked.
 - H5 10-step: not run, still locked.
 - VOID role: baseline / loser generator / adapter engineering candidate, not third adapter evidence.
+
+## Milestone H4b-2 resumed update - VOID_ONE_STEP_HELDOUT_GENERATION_READY
+
+- Time: 2026-07-01T01:00:46+08:00
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
+- Evidence: `reports/exp50_void_one_step_heldout_generation.md`, `reports/exp50_void_one_step_heldout_generation.csv`, `reports/exp50_void_one_step_heldout_generation_summary.json`
+- Step0 outputs: 4; Step1 outputs: 4.
+- Requested GPUs: [0, 1]; root processes killed: [].
+- Step1 checkpoint: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/checkpoints/void_pass1_step1_proj_out.safetensors` SHA256 `d57efd25280baae896b8e4d396df3233cf1ac6411cb9f0d7cccdea5fd4dc4515`.
+- Safety: no VOR-Eval, no hard comp, no training, no optimizer step in H4b-2.

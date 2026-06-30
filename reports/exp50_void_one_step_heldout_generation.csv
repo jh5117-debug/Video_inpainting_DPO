@@ -1,10 +1,5 @@
-gpu_uuid,pid,process_name,used_memory
-gpu_uuid,pid,process_name,used_gpu_memory [MiB]
-GPU-7cedde47-8262-3c10-db77-391593905338,3402146,python3,108856 MiB
-GPU-a9dcf6af-e793-ded7-c64a-891771e40593,3402299,python3,108856 MiB
-GPU-ef47f046-9fe1-b684-4ebc-dc6d46dc9c6e,3402636,python3,108856 MiB
-GPU-a88f918c-7219-01d3-4bf7-a0e620944f4c,3402849,python3,108856 MiB
-GPU-d8bebc2a-d412-b0df-f18c-b75429ca58af,3403316,python3,108856 MiB
-GPU-6a2c1b3b-7ea4-6208-8edd-f4887f4455f8,3403653,python3,108856 MiB
-GPU-0ff31ebd-f82b-78bb-a2bb-749df3cd071f,3403997,python3,108856 MiB
-GPU-8293d9ad-c574-0628-a8af-d3f54d0c4d60,3404340,python3,108856 MiB
+sample_id,status,step0_raw,step1_raw,frame_count,resolution,decode_status,evidence_dir
+BLENDER_CON001_00742,generated,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00742-fg=-1-0001.mp4,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/step1_gpu0/BLENDER_CON001_00742-fg=-1-0001.mp4,24,672x384,ok,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/BLENDER_CON001_00742
+BLENDER_CON001_00744,generated,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00744-fg=-1-0001.mp4,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/step1_gpu0/BLENDER_CON001_00744-fg=-1-0001.mp4,24,672x384,ok,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/BLENDER_CON001_00744
+REAL_ENV102_00001_002_02,generated,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/step1_gpu1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4,24,672x384,ok,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/REAL_ENV102_00001_002_02
+REAL_ENV200_00001_006_02,generated,/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/step1_gpu1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4,24,672x384,ok,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/REAL_ENV200_00001_006_02

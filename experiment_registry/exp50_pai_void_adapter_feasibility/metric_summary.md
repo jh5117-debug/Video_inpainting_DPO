@@ -150,3 +150,10 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - H4b generation: `VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED`
 - Step0/Step1 metrics: not computed because videos were not generated.
 - 10-step: not run.
+
+
+## H4b-2 Resumed Heldout Generation - 2026-07-01T01:00:46+08:00
+
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
+- Step0/Step1 outputs: 4 / 4
+- Metrics not yet computed; H4b-3 next.

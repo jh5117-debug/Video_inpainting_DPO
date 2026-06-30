@@ -104,3 +104,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`
 - No visual review was possible because H4b video generation was blocked by unavailable GPUs.
 - VOID remains baseline / loser generator / adapter engineering candidate, not third adapter evidence.
+
+
+## H4b-2 Resumed Heldout Generation - 2026-07-01T01:00:46+08:00
+
+- Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
+- Heldout4 evidence files were generated for all samples. Visual review remains pending for H4b-3.
