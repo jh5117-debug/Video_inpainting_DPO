@@ -89,3 +89,11 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - SFT loss: 0.035282157361507416
 - Target parameterization: `v_prediction`
 - Shapes: latent [1, 4, 16, 48, 84]; inpaint [1, 4, 32, 48, 84]
+
+## H2 Preference Forward - 2026-06-30T23:15:48+08:00
+
+- Status: `VOID_PREFERENCE_FORWARD_PASS`
+- Winner policy/reference loss: 0.0640571117401123 / 0.0640571117401123
+- Loser policy/reference loss: 0.08385218679904938 / 0.08385218679904938
+- DPO loss: 0.6931471824645996
+- Grad norm: 0.011950799647202132

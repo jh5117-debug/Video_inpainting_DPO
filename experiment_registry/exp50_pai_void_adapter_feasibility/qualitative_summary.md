@@ -53,3 +53,9 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`
 - No visual output was generated; this is a forward/loss parity gate.
 - No adapter evidence claim is made.
+
+## H2 Preference Forward - 2026-06-30T23:15:48+08:00
+
+- Status: `VOID_PREFERENCE_FORWARD_PASS`
+- No visual output was generated; this is a preference-forward loss/gradient gate.
+- No adapter evidence claim is made.

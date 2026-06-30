@@ -722,3 +722,8 @@ H0 confirmed that official VOID training is SFT MSE and does not directly implem
 Status: `VOID_SFT_FORWARD_PARITY_EXPLAINED`.
 
 The isolated wrapper loaded VOID pass1 and reproduced the official SFT forward target construction on one train4 row. Scheduler target parameterization is `v_prediction`; finite loss 0.035282157361507416. No backward or optimizer step was run.
+## 2026-06-30 Exp50 VOID Preference Forward
+
+Status: `VOID_PREFERENCE_FORWARD_PASS`.
+
+The isolated wrapper ran policy/reference winner-loser preference forward with identical VOID pass1 clones, same noise/timestep, and frozen reference. DPO loss 0.6931471824645996 with finite policy gradient and reference grad zero. No optimizer step was run.

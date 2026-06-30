@@ -1,0 +1,42 @@
+{
+  "device": "cuda:0",
+  "dpo_loss": 0.6931471824645996,
+  "dtype": "torch.bfloat16",
+  "frames": 13,
+  "grad_finite": true,
+  "grad_norm": 0.011950799647202132,
+  "grad_tensors": 2,
+  "hard_comp_used": false,
+  "height": 384,
+  "loser_gap": 0.0,
+  "loser_policy_loss": 0.08385218679904938,
+  "loser_reference_loss": 0.08385218679904938,
+  "optimizer_step": false,
+  "parameter_summary": {
+    "total_parameters": 5571462784,
+    "trainable_names_head": [
+      "proj_out.weight",
+      "proj_out.bias"
+    ],
+    "trainable_parameters": 393344
+  },
+  "policy_missing_keys": 0,
+  "policy_unexpected_keys": 0,
+  "prediction_type": "v_prediction",
+  "preference_margin": 0.0,
+  "reference_grad_zero": true,
+  "reference_missing_keys": 0,
+  "reference_unexpected_keys": 0,
+  "requested_frames": 17,
+  "same_noise": true,
+  "same_timestep": true,
+  "sample_id": "BLENDER_CON001_00636",
+  "status": "VOID_PREFERENCE_FORWARD_PASS",
+  "trainable_filter": "proj_out",
+  "training_run": false,
+  "vor_eval_used": false,
+  "width": 672,
+  "winner_gap": 0.0,
+  "winner_policy_loss": 0.0640571117401123,
+  "winner_reference_loss": 0.0640571117401123
+}

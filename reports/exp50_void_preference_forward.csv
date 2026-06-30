@@ -1,0 +1,2 @@
+sample_id,status,prediction_type,same_noise,same_timestep,winner_policy_loss,winner_reference_loss,loser_policy_loss,loser_reference_loss,winner_gap,loser_gap,preference_margin,dpo_loss,grad_finite,reference_grad_zero,grad_norm,trainable_filter
+BLENDER_CON001_00636,VOID_PREFERENCE_FORWARD_PASS,v_prediction,True,True,0.0640571117401123,0.0640571117401123,0.08385218679904938,0.08385218679904938,0.0,0.0,0.0,0.6931471824645996,True,True,0.011950799647202132,proj_out

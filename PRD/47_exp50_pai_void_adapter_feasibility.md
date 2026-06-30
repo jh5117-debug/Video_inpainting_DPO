@@ -233,3 +233,17 @@ Reports:
 - SFT loss: 0.035282157361507416; finite: True.
 - Missing/unexpected keys: 0 / 0.
 - Safety: no training, no backward, no optimizer step, no VOR-Eval, no hard comp, no VOID positive claim.
+## Milestone H2 update - VOID_PREFERENCE_FORWARD_PASS
+
+- Time: 2026-06-30T23:15:48+08:00
+- Status: `VOID_PREFERENCE_FORWARD_PASS`
+- Evidence: `reports/exp50_void_preference_forward.md`, `reports/exp50_void_preference_forward.csv`, `reports/exp50_void_preference_forward_summary.json`
+- Policy/reference: identical VOID pass1 clones; reference frozen.
+- Trainable subset: `proj_out`; trainable params 393344 / 5571462784.
+- Target parameterization: `v_prediction`.
+- Same noise/timestep: True / True.
+- Winner policy/reference loss: 0.0640571117401123 / 0.0640571117401123.
+- Loser policy/reference loss: 0.08385218679904938 / 0.08385218679904938.
+- DPO loss: 0.6931471824645996; preference margin: 0.0.
+- Grad finite/reference grad zero: True / True.
+- Safety: no optimizer step, no training loop, no VOR-Eval, no hard comp, no VOID positive claim.

@@ -245,3 +245,80 @@ def sft_forward_loss(components: Dict[str, Any], pack: Dict[str, Any], height: i
         "target_shape": tuple(pack["target"].shape),
         "finite": bool(torch.isfinite(loss).item()),
     }
+
+
+def load_transformer_clone(paths: VoidPaths, device: torch.device, dtype: torch.dtype, trainable_filter: Optional[str] = None, gradient_checkpointing: bool = False):
+    add_void_repo(paths.repo)
+    from videox_fun.models import CogVideoXTransformer3DModel
+    model = CogVideoXTransformer3DModel.from_pretrained(str(paths.base_model), subfolder="transformer", use_vae_mask=True).to(device=device, dtype=dtype)
+    state = load_file(str(paths.transformer_path), device="cpu")
+    missing, unexpected = model.load_state_dict(state, strict=False)
+    if gradient_checkpointing:
+        try:
+            if hasattr(model, "enable_gradient_checkpointing"):
+                model.enable_gradient_checkpointing()
+            elif hasattr(model, "gradient_checkpointing_enable"):
+                model.gradient_checkpointing_enable()
+        except TypeError:
+            for module in model.modules():
+                if hasattr(module, "gradient_checkpointing"):
+                    module.gradient_checkpointing = True
+    if trainable_filter is None:
+        model.requires_grad_(False)
+    else:
+        model.requires_grad_(False)
+        for name, param in model.named_parameters():
+            if trainable_filter in name:
+                param.requires_grad_(True)
+    return model, list(missing), list(unexpected)
+
+
+def trainable_parameter_summary(model: Any) -> Dict[str, Any]:
+    total = 0
+    trainable = 0
+    trainable_names = []
+    for name, param in model.named_parameters():
+        n = param.numel()
+        total += n
+        if param.requires_grad:
+            trainable += n
+            if len(trainable_names) < 20:
+                trainable_names.append(name)
+    return {"total_parameters": total, "trainable_parameters": trainable, "trainable_names_head": trainable_names}
+
+
+def forward_noise_pred(model: Any, components: Dict[str, Any], pack: Dict[str, Any], height: int = 384, width: int = 672) -> torch.Tensor:
+    image_rotary_emb = rotary_embeddings(model, components["vae"], height, width, pack["latents"].shape[1], pack["latents"].device)
+    return model(
+        hidden_states=pack["noisy_latents"],
+        encoder_hidden_states=pack["prompt_embeds"].to(pack["latents"].device),
+        timestep=pack["timesteps"],
+        image_rotary_emb=image_rotary_emb,
+        return_dict=False,
+        inpaint_latents=pack["inpaint_latents"],
+    )[0]
+
+
+def latent_region_weights(row: Dict[str, Any], frames: int, size: Tuple[int, int], latent_shape: Iterable[int], device: torch.device, dtype: torch.dtype) -> torch.Tensor:
+    arr = _read_video_rgb(row["quadmask_0_path"], frames, size, nearest=True)[..., 0]
+    q = torch.from_numpy(arr.astype(np.float32)).to(device=device)
+    obj = (q <= 31).float()
+    affected = ((q > 31) & (q <= 191)).float()
+    outside = (q > 191).float()
+    boundary_frames = []
+    kernel = np.ones((9, 9), np.uint8)
+    for fr in obj.detach().cpu().numpy().astype(np.uint8):
+        dil = cv2.dilate(fr, kernel, iterations=1)
+        ero = cv2.erode(fr, kernel, iterations=1)
+        boundary_frames.append(np.clip(dil - ero, 0, 1))
+    boundary = torch.from_numpy(np.stack(boundary_frames).astype(np.float32)).to(device=device)
+    weight = obj * 1.0 + affected * 0.75 + boundary * 0.75 + outside * 0.05
+    weight = weight.clamp_min(0.05).unsqueeze(0).unsqueeze(0).to(dtype=dtype)
+    _, latent_f, _, latent_h, latent_w = tuple(latent_shape)
+    weight = F.interpolate(weight, size=(latent_f, latent_h, latent_w), mode="trilinear", align_corners=False)
+    weight = rearrange(weight, "b c f h w -> b f c h w")
+    return weight
+
+
+def weighted_mse(pred: torch.Tensor, target: torch.Tensor, weight: torch.Tensor) -> torch.Tensor:
+    return ((pred.float() - target.float()) ** 2 * weight.float()).sum() / (weight.float().sum() * pred.shape[2]).clamp_min(1.0)
