@@ -1958,3 +1958,7 @@ Status: `VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING`. The one-step adapter 
 ## Exp50 H4b-2 Resumed Heldout Generation - 2026-07-01T01:00:46+08:00
 
 Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`. Generated heldout4 Step0/Step1 evidence using requested GPU0/GPU1 without killing root processes. Step0 outputs 4, Step1 outputs 4. H4b-3 metrics and visual review are next; 10-step remains locked until one-step PASS.
+
+## Exp50 H4b-3 One-Step Heldout Metrics - 2026-07-01T01:04:09+08:00
+
+Status: `VOID_ONE_STEP_PARETO_MIXED`. Step1 vs Step0 heldout4 metrics computed. Mean full PSNR delta -0.025049, outside PSNR delta 0.028255, mask PSNR delta -0.513424. Better/tie/worse 0/2/2. 10-step unlocked: False.

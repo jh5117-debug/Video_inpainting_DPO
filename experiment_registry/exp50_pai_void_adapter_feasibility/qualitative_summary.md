@@ -110,3 +110,10 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 
 - Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
 - Heldout4 evidence files were generated for all samples. Visual review remains pending for H4b-3.
+
+
+## H4b-3 One-Step Heldout Review - 2026-07-01T01:04:09+08:00
+
+- Status: `VOID_ONE_STEP_PARETO_MIXED`
+- Evidence sheets generated for 4/4 heldout samples; Codex visual opening follows this report.
+- No collapse by metrics.

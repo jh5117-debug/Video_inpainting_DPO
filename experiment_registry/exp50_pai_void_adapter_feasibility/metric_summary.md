@@ -157,3 +157,13 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
 - Step0/Step1 outputs: 4 / 4
 - Metrics not yet computed; H4b-3 next.
+
+
+## H4b-3 One-Step Heldout Metrics - 2026-07-01T01:04:09+08:00
+
+- Status: `VOID_ONE_STEP_PARETO_MIXED`
+- Mean full PSNR delta: -0.025049
+- Mean outside PSNR delta: 0.028255
+- Mean mask PSNR delta: -0.513424
+- Mean affected PSNR delta: -0.224311
+- Better/tie/worse: 0/2/2

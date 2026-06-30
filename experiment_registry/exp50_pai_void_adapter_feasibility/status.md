@@ -1,8 +1,8 @@
 # Exp50 PAI VOID Adapter Feasibility Status
 
-Last updated: 2026-07-01T01:00:46+08:00
+Last updated: 2026-07-01T01:04:09+08:00
 
-Current status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
+Current status: `VOID_ONE_STEP_PARETO_MIXED`
 
 - Permission recovery: `VOID_ASSET_PERMISSION_RECOVERED`
 - Official repo: `VOID_REPO_READY`
@@ -204,3 +204,12 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Requested GPUs: [0, 1]; root processes killed: [].
 - Step1 checkpoint: `/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/checkpoints/void_pass1_step1_proj_out.safetensors` SHA256 `d57efd25280baae896b8e4d396df3233cf1ac6411cb9f0d7cccdea5fd4dc4515`.
 - Safety: no VOR-Eval, no hard comp, no training, no optimizer step in H4b-2.
+
+## Milestone H4b-3 update - VOID_ONE_STEP_PARETO_MIXED
+
+- Time: 2026-07-01T01:04:09+08:00
+- Status: `VOID_ONE_STEP_PARETO_MIXED`
+- Evidence: `reports/exp50_void_one_step_heldout_metrics_v2.md`, `reports/exp50_void_one_step_heldout_metrics_v2.csv`, `reports/exp50_void_one_step_visual_review_v2.csv`, `reports/exp50_void_one_step_heldout_summary_v2.json`
+- Mean full/outside/mask PSNR delta: -0.025049 / 0.028255 / -0.513424
+- Better/tie/worse: 0/2/2; no collapse: True; 10-step unlocked: False.
+- Safety: no VOR-Eval, no hard comp, no training, no optimizer step.
