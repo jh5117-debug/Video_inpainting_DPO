@@ -56,6 +56,7 @@ def cache_paths(cache_root: Path, variant: str, split: str) -> list[Path]:
 
 
 def read_quad(path: str | Path, frames: int, width: int, height: int) -> np.ndarray:
+    path = resolve_path(path)
     cap = cv2.VideoCapture(str(path))
     got: list[np.ndarray] = []
     while len(got) < frames:
@@ -70,6 +71,23 @@ def read_quad(path: str | Path, frames: int, width: int, height: int) -> np.ndar
     while len(got) < frames:
         got.append(got[-1].copy())
     return np.stack(got[:frames], axis=0)
+
+
+def resolve_path(path: str | Path) -> Path:
+    path = Path(path)
+    if path.exists():
+        return path
+    raw = str(path)
+    h20_root = "/home/nvme01/H20_Video_inpainting_DPO"
+    if raw.startswith(h20_root + "/experiments/dpo/exp51_void_loser_dominant_rescue/quadmask_ablation/"):
+        candidate = Path("/home/hj/exp57_void_adaptive_transition_pai_cache/quadmask_ablation") / raw.split("/quadmask_ablation/", 1)[1]
+        if candidate.exists():
+            return candidate
+    if raw.startswith(h20_root + "/"):
+        candidate = Path("/mnt/nas/hj/H20_Video_inpainting_DPO") / raw[len(h20_root) + 1 :]
+        if candidate.exists():
+            return candidate
+    return path
 
 
 def resize_latent_weight(weight: torch.Tensor, latent_shape: tuple[int, ...], dtype: torch.dtype) -> torch.Tensor:
