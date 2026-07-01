@@ -31,6 +31,11 @@ OUT = Path(os.environ.get('EXP50_H4B_OUT', str(ASSET_ROOT / 'logs/autoresearch/e
 REPORTS = ROOT / 'reports'
 RUNTIME = Path(os.environ.get('EXP50_RUNTIME', str(ASSET_ROOT / 'runtime/exp50_pai_void_adapter_feasibility')))
 FFMPEG_DIR = RUNTIME / 'ffmpeg_bin'
+REPORT_PREFIX = os.environ.get('EXP50_H4B_REPORT_PREFIX', 'exp50_void_one_step_heldout_generation')
+RUN_LABEL = os.environ.get('EXP50_H4B_RUN_LABEL', 'One-Step')
+STEP_LABEL = os.environ.get('EXP50_H4B_STEP_LABEL', 'Step1')
+READY_STATUS = os.environ.get('EXP50_H4B_READY_STATUS', 'VOID_ONE_STEP_HELDOUT_GENERATION_READY')
+BLOCKED_STATUS = os.environ.get('EXP50_H4B_BLOCKED_STATUS', 'VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED')
 SH_TZ = timezone(timedelta(hours=8))
 
 
@@ -282,7 +287,7 @@ def main() -> None:
             ev = make_evidence(row, step0, step1, sample_dir)
             rec.update(ev); rec['status'] = 'generated'; rec['evidence_dir'] = str(sample_dir)
         records.append(rec)
-    status = 'VOID_ONE_STEP_HELDOUT_GENERATION_READY' if ok and all(r['status']=='generated' for r in records) else 'VOID_ONE_STEP_HELDOUT_GENERATION_BLOCKED'
+    status = READY_STATUS if ok and all(r['status']=='generated' for r in records) else BLOCKED_STATUS
     summary = {
         'status': status,
         'start': start,
@@ -306,21 +311,21 @@ def main() -> None:
         'optimizer_step': False,
         'gpu_after': gpu_snapshot().strip().splitlines(),
     }
-    (REPORTS / 'exp50_void_one_step_heldout_generation_summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
-    with (REPORTS / 'exp50_void_one_step_heldout_generation.csv').open('w', newline='') as f:
+    (REPORTS / f'{REPORT_PREFIX}_summary.json').write_text(json.dumps(summary, indent=2, sort_keys=True) + '\n')
+    with (REPORTS / f'{REPORT_PREFIX}.csv').open('w', newline='') as f:
         fields=['sample_id','status','step0_raw','step1_raw','frame_count','resolution','decode_status','evidence_dir']
         w=csv.DictWriter(f, fieldnames=fields); w.writeheader();
         for r in records: w.writerow({k:r.get(k,'') for k in fields})
-    md = ['# Exp50 VOID One-Step Heldout Generation', '', f'Time: {now()}', '', f'Status: `{status}`', '', '## Protocol', '', '- Used existing F2 Step0 official pass1 outputs.', '- Created Step1 checkpoint by replacing only `proj_out.weight` and `proj_out.bias` from the one-step adapter into a temporary pass1 safetensors checkpoint.', '- Ran official `inference/cogvideox_fun/predict_v2v.py` on heldout4, split over GPU0/GPU1.', '- No VOR-Eval, no hard comp, no training, no optimizer step.', '', '## Runs', '']
+    md = [f'# Exp50 VOID {RUN_LABEL} Heldout Generation', '', f'Time: {now()}', '', f'Status: `{status}`', '', '## Protocol', '', '- Used existing F2 Step0 official pass1 outputs.', f'- Created {STEP_LABEL} checkpoint by replacing only `proj_out.weight` and `proj_out.bias` from the adapter into a temporary pass1 safetensors checkpoint.', '- Ran official `inference/cogvideox_fun/predict_v2v.py` on heldout4, split over requested free GPUs.', '- No VOR-Eval, no hard comp, no training, no optimizer step in this generation step.', '', '## Runs', '']
     for r in runs:
         md.append(f"- GPU{r['gpu']}: seqs={r['seqs']} returncode={r['returncode']} log=`{r['log']}`")
     md += ['', '## Outputs', '']
     for r in records:
         md.append(f"- {r['sample_id']}: {r['status']} frames={r.get('frame_count','')} resolution={r.get('resolution','')} evidence=`{r.get('evidence_dir','')}`")
-    md += ['', '## Safety', '', 'No root process was killed. Existing root GPU processes were left untouched; generation used available free memory on GPU0/GPU1.']
-    (REPORTS / 'exp50_void_one_step_heldout_generation.md').write_text('\n'.join(md) + '\n')
+    md += ['', '## Safety', '', 'No root process was killed. Existing root GPU processes were left untouched; generation used requested free GPU memory.']
+    (REPORTS / f'{REPORT_PREFIX}.md').write_text('\n'.join(md) + '\n')
     print(status)
-    if status != 'VOID_ONE_STEP_HELDOUT_GENERATION_READY':
+    if status != READY_STATUS:
         raise SystemExit(2)
 
 

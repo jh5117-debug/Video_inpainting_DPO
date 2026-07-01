@@ -1,0 +1,100 @@
+{
+  "adapter_checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/checkpoints/adapter_proj_out_step10.pt",
+  "adapter_sha256": "56604d50041d659db9831e520bae93f65b814e7d56b092e056dc7b0f592e68ff",
+  "end": "2026-07-01T08:10:51+08:00",
+  "gpu_after": [
+    "index, memory.used [MiB], memory.free [MiB], memory.total [MiB], utilization.gpu [%]",
+    "0, 40309 MiB, 57059 MiB, 97871 MiB, 100 %",
+    "1, 28822 MiB, 68547 MiB, 97871 MiB, 1 %",
+    "2, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "3, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "4, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "5, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "6, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "7, 1 MiB, 97367 MiB, 97871 MiB, 0 %"
+  ],
+  "gpus_requested": [
+    2,
+    3
+  ],
+  "hard_comp_used": false,
+  "optimizer_step": false,
+  "output_root": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence",
+  "records": [
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/evidence/BLENDER_CON001_00742",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00742",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00742-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu2/BLENDER_CON001_00742-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/evidence/BLENDER_CON001_00744",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00744",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00744-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu3/BLENDER_CON001_00744-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/evidence/REAL_ENV102_00001_002_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV102_00001_002_02",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu2/REAL_ENV102_00001_002_02-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/evidence/REAL_ENV200_00001_006_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV200_00001_006_02",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu3/REAL_ENV200_00001_006_02-fg=-1-0001.mp4"
+    }
+  ],
+  "root_processes_killed": [],
+  "runs": [
+    {
+      "gpu": 2,
+      "log": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/gpu2_runtime_log.txt",
+      "returncode": 0,
+      "runtime_sec": 916.7454941272736,
+      "save_path": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu2",
+      "seqs": [
+        "BLENDER_CON001_00742",
+        "REAL_ENV102_00001_002_02"
+      ]
+    },
+    {
+      "gpu": 3,
+      "log": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/gpu3_runtime_log.txt",
+      "returncode": 0,
+      "runtime_sec": 878.9177052974701,
+      "save_path": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/step1_gpu3",
+      "seqs": [
+        "BLENDER_CON001_00744",
+        "REAL_ENV200_00001_006_02"
+      ]
+    }
+  ],
+  "skip_inference": false,
+  "start": "2026-07-01T07:37:44+08:00",
+  "status": "VOID_ADAPTER_10STEP_GENERATION_READY",
+  "step0_outputs": 4,
+  "step1_checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/adapter_10step_h20_cache/heldout_evidence/checkpoints/void_pass1_step1_proj_out.safetensors",
+  "step1_checkpoint_sha256": "f2d01d0f0fd4971356dcb27d3f0ee13991acb0c2b1b64ef5804715741d6287e1",
+  "step1_outputs": 4,
+  "training_run": false,
+  "videos_generated": true,
+  "vor_eval_used": false
+}

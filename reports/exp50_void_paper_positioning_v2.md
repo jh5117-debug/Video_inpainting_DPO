@@ -1,22 +1,17 @@
 # Exp50 VOID Paper Positioning V2
 
-Time: 2026-07-01T01:07:56+08:00
+Status: `VOID_ADAPTER_10STEP_NEGATIVE`
 
-Positioning status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
+VOID is usable as a VOR-OR inference baseline and can provide same-model loser candidates for future preference data construction. Exp50 also shows that a VOID-native preference wrapper can run finite forward, zero-gap, one-step, and a bounded 10-step micro gate without modifying the official VOID source.
 
-VOID remains a technically validated VOR-OR inference baseline and candidate loser generator. It also has an isolated preference-forward wrapper that passes SFT parity, preference forward, and zero-gap.
+However, the 10-step micro gate is negative on heldout4. Therefore VOID is not third-backbone adapter evidence, not a universal adapter result, and not a final SOTA claim.
 
-The one-step heldout video evidence is mixed. Two heldout samples were visual ties and two were worse/mixed by metrics or review. Mean full PSNR delta was -0.025049, which fails the `>= -0.02` one-step PASS threshold. H5 10-step was not run.
+Allowed statement:
 
-Allowed wording:
+- VOID is an audited baseline / loser-generator candidate with a technically working preference-forward wrapper.
 
-- VOID is usable for VOR-OR inference smoke on PAI.
-- VOID can provide baseline outputs and bounded loser candidates.
-- VOID preference-forward engineering is feasible.
-- VOID one-step video evidence is mixed and does not unlock 10-step.
+Not allowed:
 
-Forbidden wording:
-
-- Do not claim a universal adapter.
-- Do not claim final SOTA.
-- Do not count VOID as third adapter evidence.
+- VOID third-backbone positive.
+- Universal adapter.
+- Final SOTA.

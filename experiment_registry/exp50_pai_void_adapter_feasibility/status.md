@@ -224,3 +224,17 @@ Official inference smoke has not run yet; F0 component load smoke is now unblock
 - Visual better/tie/worse: 0 / 2 / 2.
 - H5 10-step: `VOID_ADAPTER_10STEP_NOT_RUN` because one-step did not pass.
 - VOID role: baseline / loser generator / adapter engineering candidate, not third adapter evidence.
+
+## Milestone H4b/H5 H20 final update - VOID_ADAPTER_10STEP_NEGATIVE
+
+- Time: 2026-07-01T08:30:44+08:00
+- H4b status: `VOID_ONE_STEP_PASS`
+- H4b evidence: `reports/exp50_void_one_step_heldout_metrics_v2.md`, `reports/exp50_void_one_step_visual_review_v2.csv`, `reports/exp50_void_one_step_heldout_summary_v2.json`
+- H4b mean full/outside/mask PSNR delta: NA / NA / NA
+- H4b visual better/tie/worse: 0 / 3 / 1
+- H5 status: `VOID_ADAPTER_10STEP_NEGATIVE`
+- H5 evidence: `reports/exp50_void_adapter_10step_v2.md`, `reports/exp50_void_adapter_10step_metrics_v2.csv`, `reports/exp50_void_adapter_10step_visual_review_v2.csv`, `reports/exp50_void_adapter_10step_summary_v2.json`
+- H5 mean full/outside/mask PSNR delta: -0.0009652339261512211 / 0.043421852091388935 / -0.22987799889405647
+- H5 visual better/tie/worse: 0 / 3 / 1
+- Safety: no VOR-Eval, no hard comp, exactly 10 optimizer steps for H5, no 30/50/100/300/500-step run.
+- Conclusion: VOID baseline / loser generator ready; VOID is not third adapter evidence.

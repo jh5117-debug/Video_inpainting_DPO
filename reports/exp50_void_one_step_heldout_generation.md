@@ -1,6 +1,6 @@
 # Exp50 VOID One-Step Heldout Generation
 
-Time: 2026-07-01T00:59:58+08:00
+Time: 2026-07-01T06:48:36+08:00
 
 Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
 
@@ -13,15 +13,15 @@ Status: `VOID_ONE_STEP_HELDOUT_GENERATION_READY`
 
 ## Runs
 
-- GPU0: seqs=['BLENDER_CON001_00742', 'BLENDER_CON001_00744'] returncode=0 log=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/gpu0_runtime_log.txt`
-- GPU1: seqs=['REAL_ENV102_00001_002_02', 'REAL_ENV200_00001_006_02'] returncode=0 log=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/gpu1_runtime_log.txt`
+- GPU2: seqs=['BLENDER_CON001_00742', 'REAL_ENV102_00001_002_02'] returncode=0 log=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/gpu2_runtime_log.txt`
+- GPU3: seqs=['BLENDER_CON001_00744', 'REAL_ENV200_00001_006_02'] returncode=0 log=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/gpu3_runtime_log.txt`
 
 ## Outputs
 
-- BLENDER_CON001_00742: generated frames=24 resolution=672x384 evidence=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/BLENDER_CON001_00742`
-- BLENDER_CON001_00744: generated frames=24 resolution=672x384 evidence=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/BLENDER_CON001_00744`
-- REAL_ENV102_00001_002_02: generated frames=24 resolution=672x384 evidence=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/REAL_ENV102_00001_002_02`
-- REAL_ENV200_00001_006_02: generated frames=24 resolution=672x384 evidence=`/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_v2/evidence/REAL_ENV200_00001_006_02`
+- BLENDER_CON001_00742: generated frames=24 resolution=672x384 evidence=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/evidence/BLENDER_CON001_00742`
+- BLENDER_CON001_00744: generated frames=24 resolution=672x384 evidence=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/evidence/BLENDER_CON001_00744`
+- REAL_ENV102_00001_002_02: generated frames=24 resolution=672x384 evidence=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/evidence/REAL_ENV102_00001_002_02`
+- REAL_ENV200_00001_006_02: generated frames=24 resolution=672x384 evidence=`/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility/one_step_heldout_evidence_h20_retry7/evidence/REAL_ENV200_00001_006_02`
 
 ## Safety
 

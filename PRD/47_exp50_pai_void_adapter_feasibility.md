@@ -308,3 +308,7 @@ Status: `VOID_ONE_STEP_PARETO_MIXED`. Step1 vs Step0 heldout4 metrics computed. 
 ## Exp50 H6 Final One-Step Evidence - 2026-07-01T01:07:56+08:00
 
 Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`. H4b generated Step0/Step1 heldout4 evidence and reviewed all 4 sheets. One-step video evidence is `VOID_ONE_STEP_PARETO_MIXED`, with mean full PSNR delta -0.025049 and visual better/tie/worse 0/2/2. H5 10-step was not run. VOID remains baseline / loser generator / adapter engineering candidate, not third adapter evidence.
+
+## Exp50 H20 H4b/H5 Final Evidence - 2026-07-01T08:30:44+08:00
+
+Status: `VOID_ADAPTER_10STEP_NEGATIVE`. H20 generated heldout4 Step0/Step1 evidence from the one-step adapter, reviewed all four evidence sheets, upgraded H4b to `VOID_ONE_STEP_PASS`, then ran the conditional 10-step micro gate. 10-step completed with finite outputs and no collapse, but did not meet promising/positive criteria. VOID remains a VOR-OR inference baseline and loser-generator candidate, not third adapter evidence.

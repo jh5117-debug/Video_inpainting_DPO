@@ -35,3 +35,4 @@ H6v2_one_step_evidence_decision	VOID_TRUE_ADAPTER_FEASIBLE_NEEDS_MICRO_TRAINING	
 H4b2_heldout_generation_resumed	VOID_ONE_STEP_HELDOUT_GENERATION_READY	step0=4;step1=4;gpus=[0, 1];root_killed=0;script=run_void_h4b_heldout_generation.py
 H4b3_metrics_visual	VOID_ONE_STEP_PARETO_MIXED	d_full=-0.025049;d_out=0.028255;d_mask=-0.513424;better_tie_worse=0/2/2;10step_unlocked=False
 H6_final_one_step_evidence	VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED	one_step=VOID_ONE_STEP_PARETO_MIXED;d_full=-0.025049;visual=0/2/2;10step=not_run;third_adapter_evidence=false
+H20_H4b_H5_final	VOID_ADAPTER_10STEP_NEGATIVE	one_step=VOID_ONE_STEP_PASS;one_d_full=NA;one_visual=0/3/1;ten_step=VOID_ADAPTER_10STEP_NEGATIVE;ten_d_full=-0.0009652339261512211;ten_d_mask=-0.22987799889405647;ten_d_aff=0.01934061651387431;ten_visual=0/3/1;third_adapter_evidence=false

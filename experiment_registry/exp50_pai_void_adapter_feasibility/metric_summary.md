@@ -175,3 +175,17 @@ No inference metrics were produced. `VOID_ENV_READY` was not reached due to `VOI
 - One-step video evidence: `VOID_ONE_STEP_PARETO_MIXED`
 - Mean full/outside/mask PSNR delta: -0.025049 / 0.028255 / -0.513424
 - 10-step: not run
+
+## H20 H4b/H5 Final Metrics - 2026-07-01T08:30:44+08:00
+
+- H4b status: `VOID_ONE_STEP_PASS`
+- H4b mean full PSNR delta: NA
+- H4b mean outside PSNR delta: NA
+- H4b mean mask PSNR delta: NA
+- H5 status: `VOID_ADAPTER_10STEP_NEGATIVE`
+- H5 mean full PSNR delta: -0.0009652339261512211
+- H5 mean SSIM delta: -0.00234073665851095
+- H5 mean mask PSNR delta: -0.22987799889405647
+- H5 mean affected PSNR delta: 0.01934061651387431
+- H5 mean boundary PSNR delta: -0.06303431007626781
+- H5 mean outside PSNR delta: 0.043421852091388935

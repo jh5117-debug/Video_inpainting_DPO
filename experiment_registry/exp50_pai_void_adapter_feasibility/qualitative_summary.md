@@ -124,3 +124,10 @@ Codex inspected raw and tuple quick sheets. The official sample output is nonbla
 - Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`
 - Codex opened all 4 temporal evidence sheets. Visual result: 0 better / 2 tie / 2 worse.
 - No collapse, but no pass; VOID remains not third adapter evidence.
+
+## H20 H4b/H5 Final Visual Review - 2026-07-01T08:30:44+08:00
+
+- H4b one-step evidence: Codex opened all heldout4 evidence sheets; status `VOID_ONE_STEP_PASS`.
+- H5 10-step evidence: Codex opened all heldout4 temporal/object/outside/diff evidence sheets; visual better/tie/worse 0 / 3 / 1.
+- No collapse, no systematic outside damage, and no systematic tone drift were observed.
+- 10-step still fails the positive gate because local/effect metric gains are insufficient and heldout visual improvement is not clear.
