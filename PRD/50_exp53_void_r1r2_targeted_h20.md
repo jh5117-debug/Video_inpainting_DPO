@@ -42,3 +42,7 @@ Mean heldout deltas:
 | R2_Q2_T500_S0 | -0.007600 | +0.933518 | -0.223775 | -0.171283 | -0.065547 | +0.053105 | 0 better / 2 tie / 2 worse |
 
 Decision: no one-step PASS; do not run 10-step locally. R1_Q2_T500_S0 is the best H20 candidate but remains mixed because overlap/affected/boundary regressions persist.
+
+## Exp53B Milestone D - 2026-07-02T01:02:00+08:00
+
+Status: `EXP53B_ONESTEP_MIXED_ONLY`. Final handoff complete. `R1_Q2_T500_S0` is ranked first, `R2_Q2_T500_S0` second, and neither unlocks local 10-step. Exp55 should aggregate with Exp54 before any further micro-gate decision.

@@ -19,3 +19,5 @@ Visual counts:
 - `R2_Q2_T500_S0`: 0 better / 2 tie / 2 worse.
 
 Decision: R1_Q2_T500_S0 is the best H20 candidate, but it is not a one-step PASS. Exp55 should not run 10-step from Exp53B alone.
+
+Final handoff: `EXP53B_ONESTEP_MIXED_ONLY`. Exp55 should aggregate this with Exp54 before deciding whether any 10-step micro validation is justified.

@@ -6,3 +6,4 @@ D	wave2_decision	EXP53_WAVE2_NOT_RUN	No PASS or MIXED-safe cell from Wave1.
 E	final_handoff	EXP53_H20_BLOCKED	No H20 candidate for 10-step; hand off to Exp55 as blocked evidence.
 A2	exp53b_readback	EXP53B_READY_FOR_CORE_CELLS	GPU/cache audit for Q2/T500 core recovery.
 C2	exp53b_core_onestep	EXP53B_CORE_ONESTEP_MIXED	R1_Q2_T500 and R2_Q2_T500 produced checkpoints/reloads/heldout4 videos; both mixed-only, no 10-step.
+D2	exp53b_final_handoff	EXP53B_ONESTEP_MIXED_ONLY	R1_Q2_T500 ranked best H20 candidate; no one-step PASS and no local 10-step unlock.

@@ -17,3 +17,8 @@ Status: `EXP53B_CORE_ONESTEP_MIXED`.
 | R2_Q2_T500_S0 | -0.007600 | +0.933518 | -0.223775 | -0.171283 | -0.065547 | +0.053105 | -0.000106 |
 
 R1_Q2_T500_S0 improved full/object/outside but missed the one-step PASS gate because overlap, affected, and boundary regions regressed. R2_Q2_T500_S0 worsened local spill more strongly. LPIPS/Ewarp were not available in this isolated audit.
+
+Final handoff ranking:
+
+1. `R1_Q2_T500_S0` - best H20 candidate, mixed-only.
+2. `R2_Q2_T500_S0` - weaker due local spill and higher loser contribution.
