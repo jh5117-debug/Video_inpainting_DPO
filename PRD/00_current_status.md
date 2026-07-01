@@ -1992,3 +1992,4 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 - 2026-07-01 Exp51 final: VOID remains baseline/loser generator and adapter-engineering candidate; loser-dominant mechanism confirmed; rescue one-step grid blocked before checkpoint; no 10-step rescue; no third adapter evidence.
 
 - 2026-07-01 Exp52 started on H20: all GPU audit ready (`EXP52_ALL_GPU_READY`), no stale project GPU PIDs killed.
+- 2026-07-01 Exp52 Milestone B: slow-forward profile/cache completed with `VOID_CACHE_PARITY_EXPLAINED`; 32 Q0/Q1/Q2/Q3 cache rows ready.

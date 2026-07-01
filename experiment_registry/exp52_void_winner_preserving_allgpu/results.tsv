@@ -1,2 +1,3 @@
 milestone	name	status	notes
 A	readback_gpu_audit	EXP52_ALL_GPU_READY	8 H20 GPUs free; no stale project GPU process killed
+B	slow_forward_cache	VOID_CACHE_PARITY_EXPLAINED	32 cache rows; policy tensor losses exact; scalar reference-loss bf16 downcast explained

@@ -1,0 +1,48 @@
+{
+  "cache_rows": 32,
+  "cache_splits": [
+    "heldout4",
+    "train4"
+  ],
+  "cache_variants": [
+    "q0_current",
+    "q1_object_only",
+    "q2_strict_affected",
+    "q3_broad_affected"
+  ],
+  "created": "2026-07-01T04:53:18+00:00",
+  "device": "cuda:0",
+  "dtype": "torch.bfloat16",
+  "frames": 13,
+  "gpu_query_final": "index, memory.used [MiB], memory.total [MiB], utilization.gpu [%]\n0, 29565 MiB, 97871 MiB, 0 %\n1, 1 MiB, 97871 MiB, 0 %\n2, 1 MiB, 97871 MiB, 0 %\n3, 1 MiB, 97871 MiB, 0 %\n4, 1 MiB, 97871 MiB, 0 %\n5, 1 MiB, 97871 MiB, 0 %\n6, 1 MiB, 97871 MiB, 0 %\n7, 25046 MiB, 97871 MiB, 16 %",
+  "hard_comp_used": false,
+  "optimizer_step": false,
+  "parity_explanation": "Cached multi-dimensional policy tensors matched uncached row0 exactly for winner_policy_loss and loser_policy_loss. The remaining max diff came from the initial parity helper downcasting cached 0-dim reference-loss scalars to bf16 during device transfer. The Exp52 cache helper was fixed to keep scalar losses in float32 while still casting model tensors to bf16.",
+  "parity_max_abs_diff": 0.00022968649864196777,
+  "policy_missing_keys": 0,
+  "policy_unexpected_keys": 0,
+  "profile": {
+    "checkpoint_save_path": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/cache/profile_row0_adapter_state_no_step.pt",
+    "frames": 13,
+    "grad_finite": true,
+    "grad_norm_before_clip": 0.01611328125,
+    "loser_gap": 0.0,
+    "loser_reference_loss": 0.09228052198886871,
+    "optimizer_step": false,
+    "peak_vram_allocated_gib": 26.374939918518066,
+    "peak_vram_reserved_gib": 27.578125,
+    "prediction_type": "v_prediction",
+    "preference_margin": 0.0,
+    "profile_loss": 0.6961396336555481,
+    "same_noise": true,
+    "same_timestep": true,
+    "sample_id": "BLENDER_CON001_00636",
+    "seed": 1234,
+    "timestep": 500,
+    "winner_gap": 0.0,
+    "winner_reference_loss": 0.07053755223751068
+  },
+  "runtime_sec": 657.1029406636953,
+  "status": "VOID_CACHE_PARITY_EXPLAINED",
+  "vor_eval_used": false
+}

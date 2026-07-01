@@ -13,3 +13,9 @@ Forbidden: VOR-Eval for training/filtering/tuning, hard comp, long training, off
 Status: `EXP52_ALL_GPU_READY`
 
 H20 GPU0-7 are free and no stale Exp50/51/52 GPU processes were killed. Exp52 will not run long training before cache and row0 smoke gates pass.
+
+## Milestone B - Slow-Forward Forensic And Cache
+
+Status: `VOID_CACHE_PARITY_EXPLAINED`
+
+Generated 32 train4/heldout4 Q0-Q1-Q2-Q3 cache rows. The original parity failure was a helper precision issue on scalar reference losses, not a cache tensor mismatch.
