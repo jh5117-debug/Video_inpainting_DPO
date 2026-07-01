@@ -51,7 +51,7 @@ Fixed loser suppression alone is insufficient. VOID needs an adaptive transition
 | --- | --- | --- |
 | A | `EXP57_READBACK_DONE` | Reconfirm Exp55/Exp56 mixed-only failure pattern. |
 | B | `EXP57_ADAPTIVE_TRANSITION_LOSS_READY` | Implemented `void_adaptive_transition_safe_dpo_v0` primitives and unit tests. |
-| C | pending | Run zero-gap / adaptive forward sanity. |
+| C | `EXP57_ADAPTIVE_ZERO_GAP_PASS` | H20 Q2/T500 zero-gap passed; no optimizer step. |
 | H20-D/E | pending | Run H20 one-step cells only and hand off. |
 | PAI-D/E | pending | Run PAI one-step cells only after core branch exists. |
 
