@@ -2023,3 +2023,7 @@ Status: `EXP54_SDPO_LINEAR_ONESTEP_MIXED`. R3/R4 Q2 T500 mixed; no 10-step unloc
 ## Exp54 Milestone D - 2026-07-01T16:44:56+08:00
 
 Status: `EXP54_WAVE2_MIXED_NO_WAVE3`. PAI R3/R4 Q1/Q2 one-step cells all mixed; no local 10-step unlock.
+
+## Exp54 Milestone E - 2026-07-01T16:46:18+08:00
+
+Final status: `EXP54_PAI_ONESTEP_MIXED_ONLY`. PAI lane finished with mixed-only candidates; no 10-step unlock.

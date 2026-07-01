@@ -13,3 +13,7 @@ Codex opened R3/R4 heldout contact sheets. Both cells avoid collapse and outside
 ## Milestone D - 2026-07-01T16:44:56+08:00
 
 Q1 object-only did not resolve local object/overlap/boundary damage. Wave3 T300 was not run.
+
+## Milestone E - 2026-07-01T16:46:18+08:00
+
+Exp54 produced no one-step PASS. R4_Q2 is the best mixed diagnostic but remains unsafe locally. No third evidence.

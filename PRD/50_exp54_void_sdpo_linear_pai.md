@@ -21,3 +21,7 @@ Status: `EXP54_SDPO_LINEAR_ONESTEP_MIXED`. R3/R4 Q2 T500 one-step cells complete
 ## Milestone D - 2026-07-01T16:44:56+08:00
 
 Status: `EXP54_WAVE2_MIXED_NO_WAVE3`. Wave2 ran R3/R4 Q1 T500; both mixed. Wave3 not run.
+
+## Milestone E - 2026-07-01T16:46:18+08:00
+
+Final status: `EXP54_PAI_ONESTEP_MIXED_ONLY`. Best PAI mixed diagnostic: `R4_Q2_T500_S0`. 10-step not unlocked locally.

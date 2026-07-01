@@ -17,3 +17,7 @@ R4_Q2_T500 mean deltas: full 0.07416340506914754, object -0.38115804781979534, o
 ## Milestone D - 2026-07-01T16:44:56+08:00
 
 Status: `EXP54_WAVE2_MIXED_NO_WAVE3`. Wave2 Q1 T500 remained mixed; see `reports/exp54_wave2_metrics.csv`.
+
+## Milestone E - 2026-07-01T16:46:18+08:00
+
+Final status: `EXP54_PAI_ONESTEP_MIXED_ONLY`. Best mixed diagnostic: `R4_Q2_T500_S0`. See `reports/exp54_pai_candidate_ranking.csv`.

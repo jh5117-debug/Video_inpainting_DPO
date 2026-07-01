@@ -816,3 +816,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp54 | VOID SDPO Linear PAI | Milestone C | `EXP54_SDPO_LINEAR_ONESTEP_MIXED` | R3/R4 Q2 T500 mixed; contact sheets opened; no PASS. |
 
 | Exp54 | VOID SDPO Linear PAI | Milestone D | `EXP54_WAVE2_MIXED_NO_WAVE3` | Wave2 Q1 T500 mixed; Wave3 not run. |
+
+| Exp54 | VOID SDPO Linear PAI | Final | `EXP54_PAI_ONESTEP_MIXED_ONLY` | Best mixed diagnostic R4_Q2_T500_S0; no PASS; 10-step waits for Exp55. |
