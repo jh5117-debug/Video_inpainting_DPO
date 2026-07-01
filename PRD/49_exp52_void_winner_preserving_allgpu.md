@@ -19,3 +19,9 @@ H20 GPU0-7 are free and no stale Exp50/51/52 GPU processes were killed. Exp52 wi
 Status: `VOID_CACHE_PARITY_EXPLAINED`
 
 Generated 32 train4/heldout4 Q0-Q1-Q2-Q3 cache rows. The original parity failure was a helper precision issue on scalar reference losses, not a cache tensor mismatch.
+
+## Milestone C - R1 Row0 Smoke
+
+Status: `VOID_R1_ROW0_SMOKE_PASS`
+
+R1 row0 produced checkpoint `/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/r1_row0_smoke/checkpoints/r1_q0_t500_proj_out_row0_step1.pt`; strict reload and forward were finite. Winner gap post was positive and loser contribution ratio was 0.0143.

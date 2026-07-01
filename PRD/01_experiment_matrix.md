@@ -800,3 +800,4 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone A | `EXP52_ALL_GPU_READY` | H20 GPU0-7 free; starts from Exp51 loser-dominant rescue state. |
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone B | `VOID_CACHE_PARITY_EXPLAINED` | Cold load dominates; cached policy tensors parity exact, scalar bf16 parity issue explained. |
+| Exp52 | VOID winner-preserving all-GPU rescue | Milestone C | `VOID_R1_ROW0_SMOKE_PASS` | Row0 R1 checkpoint/reload passed; unlocks preregistered all-GPU one-step grid. |
