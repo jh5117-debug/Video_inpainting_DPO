@@ -1,0 +1,12 @@
+{
+  "hard_comp": false,
+  "long_training": false,
+  "next_minimal_experiment": "If continuing Exp52, generate full Step0/Step1 evidence for R1_Q2 and one targeted Q1/Q2/T300 cell before any 10-step.",
+  "no_vor_eval": true,
+  "reason": "R1_Q0 video gate is mixed with affected/overlap regression; other cells lack full Step0/Step1 video evidence and cannot count as pass; S1 LoRA not justified.",
+  "scope_escalation_run": false,
+  "status": "EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS",
+  "ten_step_unlocked": false,
+  "wave1_status": "VOID_RESCUE_ONESTEP_MIXED",
+  "wave2_run": false
+}

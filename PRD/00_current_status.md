@@ -1999,3 +1999,7 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 ## Exp52 Milestone E Wave1 One-Step Rescue Grid - 2026-07-01T14:53:24+08:00
 
 Status: `VOID_RESCUE_ONESTEP_MIXED`. Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked. VOID remains not third adapter evidence.
+
+## Exp52 Milestone F Wave2 / Scope Decision - 2026-07-01T14:55:45+08:00
+
+Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. 10-step remains locked; VOID is not third adapter evidence.

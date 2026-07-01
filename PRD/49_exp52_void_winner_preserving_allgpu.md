@@ -39,3 +39,7 @@ Status: `VOID_RESCUE_ONESTEP_MIXED`
 Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked.
 
 Decision: do not run 10-step from this result. R1_Q0 reduced loser dominance but did not deliver affected-region-safe visual improvement. Wave2 or a narrower Q2/Q1 diagnostic can be considered later, but Exp52 does not promote VOID to adapter evidence.
+
+## Milestone F Wave2 / Scope Decision - 2026-07-01T14:55:45+08:00
+
+Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. Wave2, LoRA escalation, and 10-step are not run because the only full video-evaluated Wave1 cell is mixed, not PASS.

@@ -1,0 +1,2 @@
+decision_time,wave1_status,full_video_evaluated_cells,forward_ready_cells,forward_mixed_cells,wave2_decision,scope_escalation_decision,ten_step_decision,reason
+2026-07-01T14:55:45+08:00,VOID_RESCUE_ONESTEP_MIXED,R1_Q0_T500_S0,"R1_Q0_T500_S0,R1_Q2_T500_S0","R2_Q0_T500_S0,R2_Q2_T500_S0,R3_Q0_T500_S0,R3_Q2_T500_S0,R4_Q0_T500_S0",defer,do_not_escalate_lora,locked,R1_Q0 video gate is mixed with affected/overlap regression; other cells lack full Step0/Step1 video evidence and cannot count as pass; S1 LoRA not justified.

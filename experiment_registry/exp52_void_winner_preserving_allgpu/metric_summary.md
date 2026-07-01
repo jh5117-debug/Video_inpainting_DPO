@@ -35,3 +35,7 @@ Status: `VOID_RESCUE_ONESTEP_MIXED`
 - SSIM delta: -0.00011039303058779648
 - visual: 0 better / 3 tie / 1 worse
 - decision: 10-step not unlocked because affected/overlap regressed and visual evidence is not positive.
+
+## Milestone F Wave2 Scope Decision - 2026-07-01T14:55:45+08:00
+
+Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. No additional metrics were generated; 10-step remains locked.
