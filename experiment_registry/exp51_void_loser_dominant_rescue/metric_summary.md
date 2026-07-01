@@ -9,3 +9,10 @@ Milestone A status: `VOID_LOSER_DOMINANT_CONFIRMED`. Mean Exp50 10-step deltas: 
 - 10-step overlap delta PSNR: -0.423390
 - 10-step object_core delta PSNR: -0.569839
 - 10-step outside_background delta PSNR: 0.029117
+
+## Milestone C - SFT Parity
+
+- Target parameterization: `v_prediction`
+- SFT loss: official mean MSE mirrored by wrapper
+- Strict helper parity: blocked by official Accelerator loop encapsulation
+- Status: `VOID_SFT_PARITY_EXPLAINED_ONLY`

@@ -21,3 +21,9 @@ No VOR-Eval, no hard comp, no long training, no universal adapter, and no final 
 ## Exp51 Milestone B Quadmask Metrics - 2026-07-01T10:51:36+08:00
 
 Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 10-step local damage despite outside safety: affected_union delta PSNR -0.241561, overlap delta -0.423390, object_core delta -0.569839, outside_background delta 0.029117. Future rescue should prioritize object/object-core and affected boundary preservation while clipping loser gradients.
+
+## Milestone C - Official SFT Parity Hard Audit
+
+Status: `VOID_SFT_PARITY_EXPLAINED_ONLY`
+
+The wrapper mirrors official target construction (`v_prediction` via scheduler velocity), inpaint conditioning, transformer forward, and mean MSE. Exact helper comparison remains unavailable because official `train.py` keeps the logic inside the Accelerator training loop.

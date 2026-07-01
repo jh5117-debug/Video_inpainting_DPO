@@ -1,0 +1,85 @@
+{
+  "checks": [
+    {
+      "check": "official_data_tuple",
+      "notes": "Official video_mask_tuple returns target_video as pixel_values, input_video as input_condition, quantized quadmask as mask, and text. Wrapper maps condition_path to condition, winner_path to target_video, and quadmask_0_path to dataset_mask.",
+      "official_reference": "videox_fun/data/dataset_image_video.py:595-760",
+      "result": "EXPLAINED_MATCH",
+      "wrapper_reference": "exp50_pai_void_adapter_feasibility/void_preference_wrapper/void_sft_wrapper.py:146-158"
+    },
+    {
+      "check": "quadmask_quantization",
+      "notes": "Both quantize to four values 0/63/127/255 using the same threshold bands, with wrapper operating after decoding/resizing.",
+      "official_reference": "dataset_image_video.py:666-672",
+      "result": "EXPLAINED_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:63-81"
+    },
+    {
+      "check": "mask_flip_semantics",
+      "notes": "Official dataset flips mask_video with 255-mask_video and train loop flips again with mask=1-mask before VAE mask encoding. Wrapper decodes the stored quadmask and applies train_loop_mask=1-dataset_mask before VAE mask encoding, matching the train-loop-facing semantics.",
+      "official_reference": "dataset_image_video.py:630 plus train.py:1626-1653",
+      "result": "EXPLAINED_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:150-155"
+    },
+    {
+      "check": "vae_target_latents",
+      "notes": "Both rearrange video tensors to B,C,F,H,W, sample from VAE encode, multiply by vae.config.scaling_factor, and rearrange latents to B,F,C,H,W.",
+      "official_reference": "train.py:1606-1625,1668",
+      "result": "EXPLAINED_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:122-128,153,159"
+    },
+    {
+      "check": "inpaint_latents",
+      "notes": "Both encode mask and condition/reference video through VAE and concatenate them before scaling/rearrange. Wrapper uses condition_latents directly and does not model t2v_flag random dropout or add_noise_to_reference_video branch; Exp50 official config path uses VOID pass1 inpaint with use_vae_mask.",
+      "official_reference": "train.py:1649-1666",
+      "result": "EXPLAINED_MATCH_WITH_MINOR_SIMPLIFICATION",
+      "wrapper_reference": "void_sft_wrapper.py:154-158"
+    },
+    {
+      "check": "noise_and_timestep",
+      "notes": "Official samples random noise and idx_sampling timesteps. Wrapper fixes seed and timestep for deterministic zero-gap/preference diagnostics, then calls scheduler.add_noise identically.",
+      "official_reference": "train.py:1701-1707,1763",
+      "result": "EXPLAINED_MATCH_CONTROLLED",
+      "wrapper_reference": "void_sft_wrapper.py:162-165"
+    },
+    {
+      "check": "target_parameterization",
+      "notes": "Both use noise for epsilon and scheduler.get_velocity(latents, noise, timesteps) for v_prediction. Loaded scheduler reports v_prediction in Exp50/Exp51.",
+      "official_reference": "train.py:1763-1769",
+      "result": "STRICT_LOGIC_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:166-172"
+    },
+    {
+      "check": "transformer_forward",
+      "notes": "Both pass noisy latents, prompt embeddings, timesteps, rotary embeddings, return_dict=False, and inpaint_latents into CogVideoXTransformer3DModel.",
+      "official_reference": "train.py:1771-1779",
+      "result": "EXPLAINED_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:226-241,290-299"
+    },
+    {
+      "check": "sft_loss_reduction",
+      "notes": "Both compute F.mse_loss(noise_pred.float(), target.float(), reduction='mean') for SFT parity.",
+      "official_reference": "train.py:1781",
+      "result": "STRICT_LOGIC_MATCH",
+      "wrapper_reference": "void_sft_wrapper.py:241"
+    },
+    {
+      "check": "deepspeed_role",
+      "notes": "Official deepspeed is used by accelerate launcher/training-state orchestration. The core forward path does not require deepspeed for a one-batch single-process diagnostic.",
+      "official_reference": "train_void.sh:15,47 and train.py:685,750-827",
+      "result": "SINGLE_PROCESS_FORWARD_FAITHFUL",
+      "wrapper_reference": "Exp50 single-process wrapper scripts"
+    }
+  ],
+  "deepspeed_required_for_forward": false,
+  "exact_helper_blocker": "Official train.py embeds target construction inside the Accelerator training loop and does not expose a pure helper without launcher/optimizer side effects.",
+  "exact_official_helper_callable": false,
+  "hard_comp_used": false,
+  "official_source_modified": false,
+  "optimizer_step": false,
+  "single_process_forward_faithful": true,
+  "status": "VOID_SFT_PARITY_EXPLAINED_ONLY",
+  "target_parameterization": "v_prediction",
+  "training_run": false,
+  "vor_eval_used": false
+}

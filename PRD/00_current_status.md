@@ -1978,3 +1978,5 @@ Status: `VOID_LOSER_DOMINANT_CONFIRMED`. Exp51 branch starts from Exp50 HEAD `3a
 ## Exp51 Milestone B Quadmask Metrics - 2026-07-01T10:51:36+08:00
 
 Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 10-step local damage despite outside safety: affected_union delta PSNR -0.241561, overlap delta -0.423390, object_core delta -0.569839, outside_background delta 0.029117. Future rescue should prioritize object/object-core and affected boundary preservation while clipping loser gradients.
+
+- 2026-07-01 Exp51 Milestone C: VOID official SFT parity hard audit completed as `VOID_SFT_PARITY_EXPLAINED_ONLY`; v_prediction target/loss mapping is line-level consistent, exact helper parity is blocked by official Accelerator loop encapsulation.
