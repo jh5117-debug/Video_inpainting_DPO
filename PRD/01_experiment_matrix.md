@@ -802,3 +802,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone B | `VOID_CACHE_PARITY_EXPLAINED` | Cold load dominates; cached policy tensors parity exact, scalar bf16 parity issue explained. |
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone C | `VOID_R1_ROW0_SMOKE_PASS` | Row0 R1 checkpoint/reload passed; unlocks preregistered all-GPU one-step grid. |
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone D | `EXP52_RESCUE_GRID_PREREGISTERED` | Wave1 R1/R2/R3/R4 on Q0/Q2 T500 S0; Wave2 conditional. |
+
+| Exp52 | VOID winner-preserving all-GPU rescue | Milestone E | `VOID_RESCUE_ONESTEP_MIXED` | Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked. |

@@ -1,0 +1,5 @@
+sample_id,visual_class,object_removed,effect_removed,outside_damage,boundary_damage,tone_shift,collapse,reason
+BLENDER_CON001_00742,tie,tie_or_slight_better,mixed_affected_worse,false,false,false,false,"Step1 is visually close to Step0; object/core is slightly cleaner by metric, but affected/overlap texture regresses."
+BLENDER_CON001_00744,worse,tie,mixed_affected_worse,minor_metric_regression,false,false,false,"Small full/outside regression and affected degradation; no collapse, but not safe enough for PASS."
+REAL_ENV102_00001_002_02,tie,tie,mixed_affected_worse,false,false,false,false,Outside improves and visual appearance remains stable; affected/object metrics are mixed.
+REAL_ENV200_00001_006_02,tie,better_metric,tie,minor_metric_regression,false,false,false,"Object and boundary improve strongly; full/outside slightly regress, with no visible collapse."

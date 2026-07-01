@@ -1,0 +1,61 @@
+{
+  "contact_sheet": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/wave1_video/R1_Q0_T500_S0/R1_Q0_T500_S0_all_heldout_contact_sheet.jpg",
+  "decision": "10-step not unlocked because affected/overlap metrics regress and visual evidence is not positive.",
+  "forward_mixed_cells": [
+    "R2_Q0_T500_S0",
+    "R2_Q2_T500_S0",
+    "R3_Q0_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q0_T500_S0"
+  ],
+  "forward_ready_cells": [
+    "R1_Q0_T500_S0",
+    "R1_Q2_T500_S0"
+  ],
+  "hard_comp": false,
+  "long_training": false,
+  "means": {
+    "affected_l1_delta": 0.0005065075432260837,
+    "affected_psnr_delta": -0.11865014078788594,
+    "affected_union_l1_delta": 0.00026696218022455916,
+    "affected_union_psnr_delta": -0.11432922107159271,
+    "boundary_l1_delta": -0.0007909445945794404,
+    "boundary_psnr_delta": 0.1608491675666972,
+    "full_l1_delta": -9.34129542050255e-05,
+    "full_psnr_delta": 0.01562676520194195,
+    "object_l1_delta": -0.0038824942409216114,
+    "object_psnr_delta": 1.025830221887892,
+    "outside_l1_delta": -0.00012708325327063586,
+    "outside_psnr_delta": 0.04482370447721884,
+    "overlap_l1_delta": 0.0006064638243212066,
+    "overlap_psnr_delta": -0.11671521679298635,
+    "ssim_delta": -0.00011039303058779648,
+    "ssim_step0": 0.9882716385991115,
+    "ssim_step1": 0.9881612455685236,
+    "step0_step1_l1": 0.009048108409236495
+  },
+  "no_vor_eval": true,
+  "skipped_cells": [
+    "R4_Q2_T500_S0"
+  ],
+  "status": "VOID_RESCUE_ONESTEP_MIXED",
+  "video_evaluated_cells": [
+    "R1_Q0_T500_S0"
+  ],
+  "video_opened_by_codex": true,
+  "visual_counts": {
+    "better": 0,
+    "tie": 3,
+    "worse": 1
+  },
+  "wave1_preregistered_cells": [
+    "R1_Q0_T500_S0",
+    "R1_Q2_T500_S0",
+    "R2_Q0_T500_S0",
+    "R2_Q2_T500_S0",
+    "R3_Q0_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q0_T500_S0",
+    "R4_Q2_T500_S0"
+  ]
+}

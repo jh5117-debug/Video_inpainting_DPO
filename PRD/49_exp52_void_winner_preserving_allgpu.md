@@ -31,3 +31,11 @@ R1 row0 produced checkpoint `/home/nvme01/H20_Video_inpainting_DPO/experiments/d
 Status: `EXP52_RESCUE_GRID_PREREGISTERED`
 
 Wave 1 preregisters R1/R2/R3/R4 on Q0/Q2 at T500 with S0 proj_out. Wave 2 is conditional. GPU7 is only used if free at execution audit.
+
+## Milestone E Wave1 One-Step Rescue Grid - 2026-07-01T14:53:24+08:00
+
+Status: `VOID_RESCUE_ONESTEP_MIXED`
+
+Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked.
+
+Decision: do not run 10-step from this result. R1_Q0 reduced loser dominance but did not deliver affected-region-safe visual improvement. Wave2 or a narrower Q2/Q1 diagnostic can be considered later, but Exp52 does not promote VOID to adapter evidence.

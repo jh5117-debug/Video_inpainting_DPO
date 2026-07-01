@@ -18,3 +18,20 @@ Milestone C R1 row0:
 - grad finite: True
 - reload ok: True
 - peak reserved VRAM: 20.053 GiB
+
+## Milestone E Wave1 One-Step Grid - 2026-07-01T14:53:24+08:00
+
+Status: `VOID_RESCUE_ONESTEP_MIXED`
+
+- forward checkpoints: 7/8 preregistered cells
+- skipped: `R4_Q2_T500_S0` because GPU7 had an unrelated external process
+- video-evaluated cell: `R1_Q0_T500_S0`
+- full PSNR delta: 0.01562676520194195
+- object PSNR delta: 1.025830221887892
+- overlap PSNR delta: -0.11671521679298635
+- affected PSNR delta: -0.11865014078788594
+- boundary PSNR delta: 0.1608491675666972
+- outside PSNR delta: 0.04482370447721884
+- SSIM delta: -0.00011039303058779648
+- visual: 0 better / 3 tie / 1 worse
+- decision: 10-step not unlocked because affected/overlap regressed and visual evidence is not positive.
