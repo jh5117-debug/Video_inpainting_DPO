@@ -17,3 +17,7 @@ Status: `EXP54_SDPO_LINEAR_PREREGISTERED`. R3/R4 Wave1 preregistered. Large arti
 ## Milestone C - 2026-07-01T16:26:39+08:00
 
 Status: `EXP54_SDPO_LINEAR_ONESTEP_MIXED`. R3/R4 Q2 T500 one-step cells completed checkpoint, strict reload, generation, metrics, and visual review. Both are mixed; no PASS.
+
+## Milestone D - 2026-07-01T16:44:56+08:00
+
+Status: `EXP54_WAVE2_MIXED_NO_WAVE3`. Wave2 ran R3/R4 Q1 T500; both mixed. Wave3 not run.

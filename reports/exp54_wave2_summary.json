@@ -1,0 +1,67 @@
+{
+  "cells": {
+    "R3_Q1_T500_S0": {
+      "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/wave2_video/R3_Q1_T500_S0/R3_Q1_T500_S0_heldout_contact_sheet.jpg",
+      "generation_summary": "/home/hj/H20_Video_inpainting_DPO_exp54_void_sdpo_linear_pai/reports/exp54_R3_Q1_T500_S0_heldout_generation_summary.json",
+      "means": {
+        "affected_l1_delta": -0.0005765027017332631,
+        "affected_psnr_delta": -0.07465429558942738,
+        "affected_union_l1_delta": 0.00040280255295025835,
+        "affected_union_psnr_delta": -0.2571190277686286,
+        "boundary_l1_delta": 0.00023838906781747937,
+        "boundary_psnr_delta": -0.05622012605315074,
+        "full_l1_delta": -0.00010631200469409267,
+        "full_psnr_delta": -0.017273154354025877,
+        "object_l1_delta": 0.0007571709672144302,
+        "object_psnr_delta": -0.30527698189528696,
+        "outside_l1_delta": -0.00014522617372373682,
+        "outside_psnr_delta": 0.08250752400917971,
+        "overlap_l1_delta": 0.0009679268405307093,
+        "overlap_psnr_delta": -0.36354834205761843,
+        "ssim_delta": -0.0001035702585096554,
+        "step0_step1_l1": 0.008790267073588136
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 1,
+        "worse": 3
+      }
+    },
+    "R4_Q1_T500_S0": {
+      "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/wave2_video/R4_Q1_T500_S0/R4_Q1_T500_S0_heldout_contact_sheet.jpg",
+      "generation_summary": "/home/hj/H20_Video_inpainting_DPO_exp54_void_sdpo_linear_pai/reports/exp54_R4_Q1_T500_S0_heldout_generation_summary.json",
+      "means": {
+        "affected_l1_delta": -0.0005584169023980703,
+        "affected_psnr_delta": -0.1723907602591872,
+        "affected_union_l1_delta": 0.0004957201017532506,
+        "affected_union_psnr_delta": -0.36610172642915106,
+        "boundary_l1_delta": 0.00026970632219066194,
+        "boundary_psnr_delta": -0.10596472907034382,
+        "full_l1_delta": -0.00010379515394257901,
+        "full_psnr_delta": -0.039454750862677024,
+        "object_l1_delta": 0.002045630166927971,
+        "object_psnr_delta": -0.510154423430393,
+        "outside_l1_delta": -0.00015129596188974762,
+        "outside_psnr_delta": 0.08912279067734197,
+        "overlap_l1_delta": 0.0011176646706492948,
+        "overlap_psnr_delta": -0.4883679421389342,
+        "ssim_delta": -0.00010942390015963865,
+        "step0_step1_l1": 0.00879097208477712
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    }
+  },
+  "contact_sheets_opened_by_codex": true,
+  "hard_comp": false,
+  "no_vor_eval": true,
+  "status": "EXP54_WAVE2_MIXED",
+  "ten_step": "not_run",
+  "wave3_decision": "not run: Q1/Q2 T500 remained mixed with object/overlap/boundary damage; not promising enough for optional T300.",
+  "wave3_run": false
+}
