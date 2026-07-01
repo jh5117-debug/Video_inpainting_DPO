@@ -1,0 +1,90 @@
+{
+  "adapter_checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_forward/ATS_NODPO_Q2_T500_S0/checkpoints/ATS_NODPO_Q2_T500_S0_adapter_step1.pt",
+  "adapter_sha256": "d0ebc88438244aea95e73df703e10e14a7e9925464c99d49fcea8082051b5f37",
+  "end": "2026-07-02T06:46:44+08:00",
+  "gpu_after": [
+    "index, memory.used [MiB], memory.free [MiB], memory.total [MiB], utilization.gpu [%]",
+    "0, 28 MiB, 97340 MiB, 97871 MiB, 0 %",
+    "1, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "2, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "3, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "4, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "5, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "6, 1 MiB, 97367 MiB, 97871 MiB, 0 %",
+    "7, 35804 MiB, 61565 MiB, 97871 MiB, 0 %"
+  ],
+  "gpus_requested": [
+    3
+  ],
+  "hard_comp_used": false,
+  "optimizer_step": false,
+  "output_root": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0",
+  "records": [
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/evidence/BLENDER_CON001_00742",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00742",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00742-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/step1_gpu3/BLENDER_CON001_00742-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/evidence/BLENDER_CON001_00744",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00744",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00744-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/step1_gpu3/BLENDER_CON001_00744-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/evidence/REAL_ENV102_00001_002_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV102_00001_002_02",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/step1_gpu3/REAL_ENV102_00001_002_02-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/evidence/REAL_ENV200_00001_006_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV200_00001_006_02",
+      "status": "generated",
+      "step0_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/step1_gpu3/REAL_ENV200_00001_006_02-fg=-1-0001.mp4"
+    }
+  ],
+  "root_processes_killed": [],
+  "runs": [
+    {
+      "gpu": 3,
+      "log": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/gpu3_runtime_log.txt",
+      "returncode": 0,
+      "runtime_sec": 1415.9216594696045,
+      "save_path": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/step1_gpu3",
+      "seqs": [
+        "BLENDER_CON001_00742",
+        "BLENDER_CON001_00744",
+        "REAL_ENV102_00001_002_02",
+        "REAL_ENV200_00001_006_02"
+      ]
+    }
+  ],
+  "skip_inference": false,
+  "start": "2026-07-02T06:20:05+08:00",
+  "status": "EXP57_H20_HELDOUT_GENERATION_READY",
+  "step0_outputs": 4,
+  "step1_checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_video/ATS_NODPO_Q2_T500_S0/checkpoints/void_pass1_step1_proj_out.safetensors",
+  "step1_checkpoint_sha256": "0ffe5506af4135508d2ce668a55f249c71d67ef68cca5581e368d5e371b83400",
+  "step1_outputs": 4,
+  "training_run": false,
+  "videos_generated": true,
+  "vor_eval_used": false
+}
