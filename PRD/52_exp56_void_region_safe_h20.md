@@ -31,3 +31,7 @@ Results:
 - `R5_HALF_Q2_T500_S0`: full PSNR +0.012121, object +0.667133, overlap -0.139584, affected -0.113662, boundary -0.069402, outside +0.047722, visual 0 better / 2 tie / 2 worse.
 
 Decision: no one-step PASS. 10-step remains locked until a later cross-lane aggregator finds a PASS candidate.
+
+Final H20 handoff status: `EXP56_H20_ONESTEP_MIXED_ONLY`.
+
+Best H20 candidate: `R5_Q2_T500_S0`. It should be considered by Exp57 only as mixed diagnostic evidence, not as a 10-step unlock.

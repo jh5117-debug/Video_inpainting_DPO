@@ -1,0 +1,3 @@
+rank,cell,status,full_psnr_delta,object_psnr_delta,overlap_psnr_delta,affected_psnr_delta,boundary_psnr_delta,outside_psnr_delta,loser_contribution_ratio,visual_better,visual_tie,visual_worse,aggregator_consideration
+1,R5_Q2_T500_S0,MIXED,0.013859,0.956095,-0.153271,-0.084209,-0.047360,0.047483,0.000000,0,2,2,mixed_diagnostic_only
+2,R5_HALF_Q2_T500_S0,MIXED,0.012121,0.667133,-0.139584,-0.113662,-0.069402,0.047722,0.000000,0,2,2,mixed_diagnostic_only
