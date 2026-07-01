@@ -2053,3 +2053,9 @@ Exp55 aggregated Exp53B H20 and Exp54 PAI one-step evidence without training or 
 Status: `EXP56_H20_GPU_READY`.
 
 Exp56-H20 starts from Exp55 mixed-only decision. It will run only R5 object-only / region-preserving one-step cells on Q2/T500 using H20 GPU0-3 if free. No 10-step, no old R1/R2/R3/R4 recipe, no VOR-Eval, and no third-backbone claim are allowed.
+
+## 2026-07-02 Exp56-H20 R5 One-Step
+
+Status: `EXP56_H20_R5_ONESTEP_MIXED`.
+
+Both H20 R5 cells produced one-step checkpoints, strict reloads, heldout4 videos, metrics, and contact-sheet visual review. R5 reduced loser contribution to 0 and preserved outside, but overlap / affected / boundary remained below the stricter Exp56 safety gate. No one-step PASS and no 10-step.

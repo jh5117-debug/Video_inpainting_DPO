@@ -1,0 +1,85 @@
+{
+  "best_cell": "R5_Q2_T500_S0",
+  "cells": {
+    "R5_HALF_Q2_T500_S0": {
+      "contact_sheet": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp56_void_region_safe_h20/r5_video/R5_HALF_Q2_T500_S0/R5_HALF_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "diagnostics": {
+        "loser_contribution_ratio": 0.0,
+        "loser_gap": 5.273148417472839e-06,
+        "preference_margin": -1.0138377547264099e-05,
+        "winner_gap": -1.0138377547264099e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.11366171214505005,
+        "boundary_psnr_delta": -0.06940214938292844,
+        "full_psnr_delta": 0.01212122521549297,
+        "object_psnr_delta": 0.6671326798769899,
+        "outside_l1_delta": -0.00012895234006767356,
+        "outside_psnr_delta": 0.04772202561944194,
+        "overlap_psnr_delta": -0.1395840022990802,
+        "ssim_delta": -0.00010722389642728314,
+        "step0_step1_l1": 0.009000147067126818,
+        "temporal_flicker_delta": 3.317493642300716e-05,
+        "tone_drift": -9.523272974488171e-06
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 2,
+        "worse": 2
+      }
+    },
+    "R5_Q2_T500_S0": {
+      "contact_sheet": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp56_void_region_safe_h20/r5_video/R5_Q2_T500_S0/R5_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "diagnostics": {
+        "loser_contribution_ratio": 0.0,
+        "loser_gap": 4.697591066360474e-06,
+        "preference_margin": 1.0574236512184143e-05,
+        "winner_gap": 1.0574236512184143e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.08420920699362,
+        "boundary_psnr_delta": -0.04736038257972108,
+        "full_psnr_delta": 0.013859232208042194,
+        "object_psnr_delta": 0.9560950880903105,
+        "outside_l1_delta": -0.00012708046900418825,
+        "outside_psnr_delta": 0.047483086402266395,
+        "overlap_psnr_delta": -0.15327123612323934,
+        "ssim_delta": -0.00011568266614156442,
+        "step0_step1_l1": 0.009022317521157674,
+        "temporal_flicker_delta": 6.11183774668938e-05,
+        "tone_drift": 9.10472721253288e-06
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 2,
+        "worse": 2
+      }
+    }
+  },
+  "exp52_r1_q0_baseline_means": {
+    "affected_psnr_delta": -0.11865014078788594,
+    "boundary_psnr_delta": 0.1608491675666972,
+    "full_psnr_delta": 0.01562676520194195,
+    "object_psnr_delta": 1.025830221887892,
+    "outside_psnr_delta": 0.04482370447721884,
+    "overlap_psnr_delta": -0.11671521679298635,
+    "ssim_delta": -0.00011039303058779648
+  },
+  "exp56_pass_gate": {
+    "affected_psnr_delta_min": -0.03,
+    "boundary_psnr_delta_min": -0.03,
+    "full_psnr_delta_min": -0.02,
+    "loser_contribution_ratio_max": 0.25,
+    "object_psnr_delta_min": -0.1,
+    "outside_psnr_delta_min": -0.02,
+    "overlap_psnr_delta_min": -0.03
+  },
+  "hard_comp": false,
+  "no_vor_eval": true,
+  "status": "EXP56_H20_R5_ONESTEP_MIXED",
+  "step1_videos_per_cell": 4,
+  "ten_step_run": false,
+  "visual_evidence_open_required": true
+}

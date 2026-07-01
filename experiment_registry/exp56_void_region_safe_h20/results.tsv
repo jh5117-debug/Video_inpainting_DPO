@@ -1,3 +1,4 @@
 milestone	status	summary
 A	EXP56_H20_GPU_READY	H20 GPU0-3 available; no stale project process killed.
 B	EXP56_H20_R5_PREREGISTERED	R5_Q2_T500_S0 and R5_HALF_Q2_T500_S0 locked before execution.
+C	EXP56_H20_R5_ONESTEP_MIXED	R5 and R5_HALF completed; loser contribution 0, outside safe, object improves, but overlap/affected/boundary regress beyond gate.

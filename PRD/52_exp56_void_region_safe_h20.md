@@ -22,3 +22,12 @@ Exp55 showed that object/mask and outside can improve while overlap / affected /
 Milestone A status: `EXP56_H20_GPU_READY`.
 
 GPU0-3 are available on H20 for this lane. GPU0 has only the expected Xorg graphics allocation; GPU1-3 have no compute process. No stale project process was killed.
+
+Milestone C status: `EXP56_H20_R5_ONESTEP_MIXED`.
+
+Results:
+
+- `R5_Q2_T500_S0`: full PSNR +0.013859, object +0.956095, overlap -0.153271, affected -0.084209, boundary -0.047360, outside +0.047483, visual 0 better / 2 tie / 2 worse.
+- `R5_HALF_Q2_T500_S0`: full PSNR +0.012121, object +0.667133, overlap -0.139584, affected -0.113662, boundary -0.069402, outside +0.047722, visual 0 better / 2 tie / 2 worse.
+
+Decision: no one-step PASS. 10-step remains locked until a later cross-lane aggregator finds a PASS candidate.
