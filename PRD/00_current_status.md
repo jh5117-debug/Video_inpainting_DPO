@@ -2047,3 +2047,8 @@ Decision: no one-step PASS, no Exp53B 10-step. R1_Q2_T500_S0 is the best H20 can
 Status: `EXP55_NO_10STEP_MIXED_ONLY`.
 
 Exp55 aggregated Exp53B H20 and Exp54 PAI one-step evidence without training or 10-step execution. Top ranking is `R1_Q2_T500_S0` from H20, followed by `R2_Q2_T500_S0`; the best PAI diagnostic remains `R4_Q2_T500_S0`. No candidate satisfies the original one-step PASS gate. The shared failure pattern is object/mask improvement with outside preservation, but overlap / affected / boundary regression and mixed visual review. VOID remains a VOR-OR baseline / loser-generator / adapter-engineering candidate, not third adapter evidence.
+# Exp57 VOID Adaptive Transition-Safe DPO
+
+Status: `EXP57_READBACK_DONE`
+
+Exp57 starts from the Exp55 mixed-only aggregator and Exp56-H20 R5 result. Loser dominance is no longer the only blocker: Exp56-H20 removed loser contribution but still regressed overlap, affected, and boundary regions. The active blocker is `TRANSITION_REGION_DAMAGE_UNDER_OBJECT_LOCAL_UPDATE`. No 10-step is allowed.

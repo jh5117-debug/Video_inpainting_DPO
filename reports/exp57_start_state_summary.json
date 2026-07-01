@@ -1,0 +1,12 @@
+{
+  "status": "EXP57_READBACK_DONE",
+  "base_branch": "origin/research/exp55-void-crosslane-aggregator-20260701",
+  "exp55_status": "EXP55_NO_10STEP_MIXED_ONLY",
+  "exp56_h20_status": "EXP56_H20_ONESTEP_MIXED_ONLY",
+  "active_blocker": "TRANSITION_REGION_DAMAGE_UNDER_OBJECT_LOCAL_UPDATE",
+  "r5_removed_loser_dominance": true,
+  "transition_regions_regressed_after_r5": true,
+  "ten_step_allowed": false,
+  "void_role": "baseline / loser generator / adapter-engineering candidate",
+  "third_backbone_evidence": false
+}

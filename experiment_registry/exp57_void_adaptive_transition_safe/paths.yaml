@@ -1,0 +1,11 @@
+branch: research/exp57-void-adaptive-transition-core-20260701
+h20_core_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp57_void_adaptive_transition_core
+h20_lane_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp57_void_adaptive_transition_h20
+pai_lane_worktree: /home/hj/H20_Video_inpainting_DPO_exp57_void_adaptive_transition_pai
+output_root_h20: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20
+log_root_h20: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp57_void_adaptive_transition_h20
+runtime_root_h20: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp57_void_adaptive_transition_h20
+output_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_pai
+log_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp57_void_adaptive_transition_pai
+runtime_root_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp57_void_adaptive_transition_pai
+cache_root_h20: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/cache/tensor_cache

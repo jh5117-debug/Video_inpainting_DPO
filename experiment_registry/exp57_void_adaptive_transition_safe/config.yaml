@@ -1,0 +1,27 @@
+experiment: exp57_void_adaptive_transition_safe
+loss_mode: void_adaptive_transition_safe_dpo_v0
+quadmask_variant: q2_strict_affected
+timestep: 500
+train_split: train4
+heldout_split: heldout4
+trainable_scope: proj_out
+optimizer: AdamW
+one_step_only: true
+ten_step_allowed: false
+vor_eval_used: false
+hard_comp_used: false
+regions:
+  - object
+  - overlap
+  - affected
+  - boundary
+  - outside
+safety:
+  lambda_max_default: 0.25
+  backtracking_scales:
+    - 1.0
+    - 0.5
+    - 0.25
+    - 0.125
+    - 0.0625
+  transition_delta_max_default: 0.00002
