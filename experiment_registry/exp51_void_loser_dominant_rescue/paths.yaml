@@ -1,0 +1,5 @@
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp51_void_rescue
+asset_root: /home/nvme01/H20_Video_inpainting_DPO
+output_root_h20: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp51_void_loser_dominant_rescue
+log_root_h20: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp51_void_loser_dominant_rescue
+base_exp50_log_root_h20: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp50_pai_void_adapter_feasibility

@@ -1,0 +1,9 @@
+branch: research/exp51-void-loser-dominant-rescue-20260701
+base_exp50_head: 3aa65c53b2bd53e69e7a2d9528d9127a21849d66
+void_env: /home/nvme01/conda_envs/void_exp50_official_v2
+prediction_type: v_prediction
+forbidden:
+  - VOR-Eval
+  - hard_comp
+  - long_training
+  - VOID official source edits

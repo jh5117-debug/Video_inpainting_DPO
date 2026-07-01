@@ -1970,3 +1970,7 @@ Status: `VOID_ONE_STEP_VIDEO_EVIDENCE_MIXED`. H4b generated Step0/Step1 heldout4
 ## Exp50 H20 H4b/H5 Final Evidence - 2026-07-01T08:30:44+08:00
 
 Status: `VOID_ADAPTER_10STEP_NEGATIVE`. H20 generated heldout4 Step0/Step1 evidence from the one-step adapter, reviewed all four evidence sheets, upgraded H4b to `VOID_ONE_STEP_PASS`, then ran the conditional 10-step micro gate. 10-step completed with finite outputs and no collapse, but did not meet promising/positive criteria. VOID remains a VOR-OR inference baseline and loser-generator candidate, not third adapter evidence.
+
+## Exp51 VOID Loser-Dominant Rescue - 2026-07-01T10:33:01+08:00
+
+Status: `VOID_LOSER_DOMINANT_CONFIRMED`. Exp51 branch starts from Exp50 HEAD `3aa65c53b2bd53e69e7a2d9528d9127a21849d66`. Milestone A confirms Exp50 vanilla 10-step margin was loser-dominant: final winner_gap=0.000072602, loser_gap=-0.000992976, loser margin share=93.19%. Continue with winner-preserving/local rescue; do not scale vanilla recipe.
