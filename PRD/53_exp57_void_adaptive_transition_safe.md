@@ -53,7 +53,25 @@ Fixed loser suppression alone is insufficient. VOID needs an adaptive transition
 | B | `EXP57_ADAPTIVE_TRANSITION_LOSS_READY` | Implemented `void_adaptive_transition_safe_dpo_v0` primitives and unit tests. |
 | C | `EXP57_ADAPTIVE_ZERO_GAP_PASS` | H20 Q2/T500 zero-gap passed; no optimizer step. |
 | H20-D/E | pending | Run H20 one-step cells only and hand off. |
-| PAI-D/E | pending | Run PAI one-step cells only after core branch exists. |
+| PAI-D/E | `EXP57_PAI_ONESTEP_NEGATIVE` | PAI one-step cells completed with checkpoints, heldout4 videos, metrics, and visual review. Best diagnostic was `ATS_SDPO_Q2_T500_S0`, but both cells failed the PASS gate. No 10-step. |
+
+## PAI Lane Result
+
+PAI ran `ATS_SDPO_Q2_T500_S0` and `ATS_LINEAR_Q2_T500_S0`.
+
+Both cells produced checkpoints, heldout4 Step0/Step1 videos, quadmask-aware metrics, diagnostics, and visual evidence. Codex reviewed the overview evidence sheets for both cells.
+
+No PAI cell reached one-step PASS. `ATS_SDPO_Q2_T500_S0` was the best diagnostic cell, but still had:
+
+- full PSNR: `+0.039160`
+- object PSNR: `-0.337918`
+- overlap PSNR: `-0.255698`
+- affected PSNR: `+0.108109`
+- boundary PSNR: `-0.049336`
+- outside PSNR: `+0.075966`
+- visual: `0 better / 0 tie / 4 worse`
+
+PAI used local output root `/home/hj/exp57_void_adaptive_transition_pai_outputs` because the requested NAS experiment output parent was not writable by `hj`. This did not change source data, weights, or objective code.
 
 ## Scientific Position
 

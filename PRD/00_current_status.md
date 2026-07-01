@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp57 PAI Adaptive Transition-Safe One-Step
+
+Status: `EXP57_PAI_ONESTEP_NEGATIVE`.
+
+PAI completed two Q2/T500/S0 adaptive transition-safe one-step cells: ATS_SDPO and ATS_LINEAR. Both produced checkpoints, heldout4 Step0/Step1 videos, metrics, diagnostics, and visual evidence. Best diagnostic is `ATS_SDPO_Q2_T500_S0`, but visual review was 0 better / 0 tie / 4 worse and no cell reached one-step PASS. 10-step remains locked. VOID remains baseline / loser generator / adapter-engineering candidate, not third-backbone evidence.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.
