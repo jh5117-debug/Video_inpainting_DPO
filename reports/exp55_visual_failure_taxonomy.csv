@@ -1,0 +1,7 @@
+lane,cell,affected_overlap_regression_visible,boundary_artifact_visible,collapse,outside_damage,tone_drift,visual_worse
+H20,R1_Q2_T500_S0,True,True,False,True,False,2
+H20,R2_Q2_T500_S0,True,True,False,True,False,2
+PAI,R4_Q2_T500_S0,True,True,False,True,False,4
+PAI,R3_Q1_T500_S0,True,True,False,True,False,3
+PAI,R3_Q2_T500_S0,True,True,False,False,False,4
+PAI,R4_Q1_T500_S0,True,True,False,True,False,4

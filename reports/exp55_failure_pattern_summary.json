@@ -1,0 +1,40 @@
+{
+  "affected_regressors": [
+    "R1_Q2_T500_S0",
+    "R2_Q2_T500_S0",
+    "R3_Q1_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q1_T500_S0"
+  ],
+  "boundary_regressors": [
+    "R1_Q2_T500_S0",
+    "R2_Q2_T500_S0",
+    "R4_Q2_T500_S0",
+    "R3_Q1_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q1_T500_S0"
+  ],
+  "cache_runtime_blocker_fixed": true,
+  "common_failure": "object/outside move is safe enough, but overlap/affected/boundary local transition regions regress and visual review remains mixed/unsafe.",
+  "object_improvers": [
+    "R1_Q2_T500_S0",
+    "R2_Q2_T500_S0"
+  ],
+  "outside_safe_or_improved": [
+    "R1_Q2_T500_S0",
+    "R2_Q2_T500_S0",
+    "R4_Q2_T500_S0",
+    "R3_Q1_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q1_T500_S0"
+  ],
+  "overlap_regressors": [
+    "R1_Q2_T500_S0",
+    "R2_Q2_T500_S0",
+    "R4_Q2_T500_S0",
+    "R3_Q1_T500_S0",
+    "R3_Q2_T500_S0",
+    "R4_Q1_T500_S0"
+  ],
+  "status": "EXP55_FAILURE_PATTERN_IDENTIFIED"
+}
