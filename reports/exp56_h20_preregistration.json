@@ -1,0 +1,22 @@
+{
+  "cells": [
+    {
+      "cell": "R5_Q2_T500_S0",
+      "lr": 0.00001,
+      "recipe": "R5_ObjectOnly_RegionPreserve"
+    },
+    {
+      "cell": "R5_HALF_Q2_T500_S0",
+      "lr": 0.000005,
+      "recipe": "R5_ObjectOnly_RegionPreserve_HALF"
+    }
+  ],
+  "hard_comp_used": false,
+  "quadmask_variant": "q2_strict_affected",
+  "scope": "proj_out",
+  "status": "EXP56_H20_R5_PREREGISTERED",
+  "steps": 1,
+  "ten_step_allowed": false,
+  "timestep": 500,
+  "vor_eval_used": false
+}
