@@ -1,3 +1,3 @@
 # Exp53 Qualitative Summary
 
-No video evidence has been generated yet. Visual review is required for any promotion.
+No heldout visual evidence was produced because the only launched Wave1 cell did not create a checkpoint.

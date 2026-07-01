@@ -1,0 +1,2 @@
+cell,gpu,status,pid,pgid,runtime_sec,checkpoint_exists,log_path,gpu_state_after,oom,cuda_error,nan_inf,termination
+R2_Q2_T500_S0,2,BLOCKED_SLOW_FORWARD_NO_CHECKPOINT,3523070,3522917,603,True,/home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp53_void_r1r2_targeted_h20/wave1_forward/R2_Q2_T500_S0.log,"0, 24629, 97871, 0 | 1, 1, 97871, 0 | 2, 1, 97871, 0 | 3, 25086, 97871, 7 | 4, 25086, 97871, 16 | 5, 25086, 97871, 7 | 6, 90648, 97871, 100 | 7, 1, 97871, 0 | ",false,false,false,TERM own Exp53 process group after bounded no-checkpoint runtime

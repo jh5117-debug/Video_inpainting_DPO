@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp53 H20 R1/R2 Wave1
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp53 H20 VOID R1/R2 Wave1 | `EXP53_R1R2_ONESTEP_BLOCKED` | `reports/exp53_r1r2_onestep.md`, `experiment_registry/exp53_void_r1r2_targeted_h20` |
+
 ## 2026-07-01 Exp53 H20 R1/R2 Targeted One-Step
 
 | User-facing name | Status | Evidence / registry |

@@ -1,4 +1,8 @@
 
+## 2026-07-01 Exp53 H20 R1/R2 Wave1 Blocked
+
+Status: `EXP53_R1R2_ONESTEP_BLOCKED`. H20 Wave1 did not produce checkpoint/video evidence; no 10-step.
+
 ## 2026-07-01 Exp53 H20 R1/R2 Preregistration
 
 Status: `EXP53_R1R2_PREREGISTERED`. H20 lane is preregistered for one-step R1/R2 targeted cells. No 10-step or third-backbone claim.

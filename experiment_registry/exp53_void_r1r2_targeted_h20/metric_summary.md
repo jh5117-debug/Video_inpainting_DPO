@@ -1,3 +1,3 @@
 # Exp53 Metric Summary
 
-Milestone B only: no one-step metrics yet. Metrics will be full + quadmask-aware after Wave1.
+Status: `EXP53_R1R2_ONESTEP_BLOCKED`. No Step1 videos or metric deltas were produced.

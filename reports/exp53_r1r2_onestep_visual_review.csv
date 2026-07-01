@@ -1,0 +1,2 @@
+cell,sample_id,visual_class,evidence_opened,reason
+R2_Q2_T500_S0,heldout4,NOT_AVAILABLE,false,No checkpoint or Step1 videos were produced before slow-forward termination.

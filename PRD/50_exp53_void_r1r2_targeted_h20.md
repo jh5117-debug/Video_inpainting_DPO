@@ -13,3 +13,7 @@ Status: `EXP53_GPU_BLOCKED`. Readback and GPU audit completed. H20 lane only: R1
 ## Milestone B - 2026-07-01T08:53:57+00:00
 
 Status: `EXP53_R1R2_PREREGISTERED`. Wave1 cells locked for R1/R2 on H20 GPU0-3; 10-step remains locked for Exp55 aggregation. Current GPU status: `EXP53_H20_PARTIAL_GPU_READY`.
+
+## Milestone C - 2026-07-01T09:07:39+00:00
+
+Status: `EXP53_R1R2_ONESTEP_BLOCKED`. R2_Q2_T500_S0 was attempted on GPU2 but produced no checkpoint after 10m03s; GPU0/GPU3 were occupied by unrelated processes and T300 cache was unavailable. No 10-step.

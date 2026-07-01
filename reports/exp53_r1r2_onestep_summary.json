@@ -1,0 +1,21 @@
+{
+  "checkpoint_exists": true,
+  "gpu_state_after": "0, 24629, 97871, 0\n1, 1, 97871, 0\n2, 1, 97871, 0\n3, 25086, 97871, 7\n4, 25086, 97871, 16\n5, 25086, 97871, 7\n6, 90648, 97871, 100\n7, 1, 97871, 0\n",
+  "hard_comp": false,
+  "log_excerpt": "\nLoading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]\nLoading checkpoint shards:  50%|\u2588\u2588\u2588\u2588\u2588     | 1/2 [00:01<00:01,  1.56s/it]\nLoading checkpoint shards: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2/2 [00:02<00:00,  1.17s/it]\nLoading checkpoint shards: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 2/2 [00:02<00:00,  1.23s/it]\n",
+  "no_vor_eval": true,
+  "reason": "Slow forward/no checkpoint on the only valid free T500 cell; other cells skipped due occupied GPUs or invalid T300 cache.",
+  "skipped_cells": [
+    "R1_Q2_T500_S0",
+    "R1_Q2_T300_S0",
+    "R1_Q1_T500_S0"
+  ],
+  "started_cells": [
+    "R2_Q2_T500_S0"
+  ],
+  "status": "EXP53_R1R2_ONESTEP_BLOCKED",
+  "ten_step": false,
+  "timestamp": "2026-07-01T09:07:39+00:00",
+  "visual_evidence_generated": false,
+  "visual_evidence_opened": false
+}
