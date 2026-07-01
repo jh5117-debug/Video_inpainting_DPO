@@ -25,3 +25,9 @@ Generated 32 train4/heldout4 Q0-Q1-Q2-Q3 cache rows. The original parity failure
 Status: `VOID_R1_ROW0_SMOKE_PASS`
 
 R1 row0 produced checkpoint `/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/r1_row0_smoke/checkpoints/r1_q0_t500_proj_out_row0_step1.pt`; strict reload and forward were finite. Winner gap post was positive and loser contribution ratio was 0.0143.
+
+## Milestone D - All-GPU One-Step Rescue Preregistration
+
+Status: `EXP52_RESCUE_GRID_PREREGISTERED`
+
+Wave 1 preregisters R1/R2/R3/R4 on Q0/Q2 at T500 with S0 proj_out. Wave 2 is conditional. GPU7 is only used if free at execution audit.

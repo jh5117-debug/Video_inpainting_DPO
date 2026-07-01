@@ -1,0 +1,165 @@
+{
+  "gpu_policy": {
+    "current_note": "D readback saw GPU0-6 free and GPU7 occupied by an unrelated external process; E must re-audit before launch.",
+    "ddp": false,
+    "stagger_model_load_sec": 60,
+    "task_level_parallelism": true,
+    "unknown_process_policy": "do_not_kill_unknown_unrelated_processes"
+  },
+  "one_step_pass_criteria": {
+    "boundary_psnr_delta_min": -0.05,
+    "ewarp_max_worse": 0.05,
+    "full_psnr_delta_min": -0.02,
+    "loser_contribution_ratio_max": 0.5,
+    "lpips_max_worse": 0.001,
+    "object_mask_psnr_delta_min": -0.1,
+    "outside_psnr_delta_min": -0.02,
+    "visual_better_tie_min": "3/4",
+    "visual_worse_max": "1/4",
+    "winner_gap": ">=0 or winner absolute loss not worse"
+  },
+  "preconditions": {
+    "cache": "VOID_CACHE_PARITY_EXPLAINED",
+    "no_hard_comp": true,
+    "no_long_training": true,
+    "no_vor_eval": true,
+    "row0": "VOID_R1_ROW0_SMOKE_PASS"
+  },
+  "s1_lora_escalation": "Only if S0 is stable but weak, no collapse, loser dominance controlled, and mask/boundary still weak.",
+  "status": "EXP52_RESCUE_GRID_PREREGISTERED",
+  "ten_step_unlock": "Only if at least one one-step recipe passes.",
+  "wave1": [
+    {
+      "cell": "R1_Q0_T500_S0",
+      "gpu": 0,
+      "quadmask": "Q0_current",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R1_Q2_T500_S0",
+      "gpu": 1,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R2_Q0_T500_S0",
+      "gpu": 2,
+      "quadmask": "Q0_current",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R2_Q2_T500_S0",
+      "gpu": 3,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R3_Q0_T500_S0",
+      "gpu": 4,
+      "quadmask": "Q0_current",
+      "recipe": "R3_SDPO_Safe",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R3_Q2_T500_S0",
+      "gpu": 5,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R3_SDPO_Safe",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R4_Q0_T500_S0",
+      "gpu": 6,
+      "quadmask": "Q0_current",
+      "recipe": "R4_LinearDPO_vPrediction",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R4_Q2_T500_S0",
+      "execution_note": "Run only if GPU7 is free at Milestone E audit; current readback saw unrelated external process.",
+      "gpu": 7,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R4_LinearDPO_vPrediction",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    }
+  ],
+  "wave2": [
+    {
+      "cell": "R1_Q1_T500_S0",
+      "gpu": 0,
+      "quadmask": "Q1_object_only",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R2_Q1_T500_S0",
+      "gpu": 1,
+      "quadmask": "Q1_object_only",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R3_Q1_T500_S0",
+      "gpu": 2,
+      "quadmask": "Q1_object_only",
+      "recipe": "R3_SDPO_Safe",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R4_Q1_T500_S0",
+      "gpu": 3,
+      "quadmask": "Q1_object_only",
+      "recipe": "R4_LinearDPO_vPrediction",
+      "scope": "S0_proj_out",
+      "timestep": 500
+    },
+    {
+      "cell": "R1_Q2_T300_S0",
+      "gpu": 4,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 300
+    },
+    {
+      "cell": "R2_Q2_T300_S0",
+      "gpu": 5,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 300
+    },
+    {
+      "cell": "R3_Q2_T300_S0",
+      "gpu": 6,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R3_SDPO_Safe",
+      "scope": "S0_proj_out",
+      "timestep": 300
+    },
+    {
+      "cell": "R4_Q2_T300_S0",
+      "execution_note": "Run only if GPU7 is free at execution audit.",
+      "gpu": 7,
+      "quadmask": "Q2_strict_affected",
+      "recipe": "R4_LinearDPO_vPrediction",
+      "scope": "S0_proj_out",
+      "timestep": 300
+    }
+  ]
+}

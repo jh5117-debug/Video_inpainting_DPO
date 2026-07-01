@@ -2,3 +2,4 @@ milestone	name	status	notes
 A	readback_gpu_audit	EXP52_ALL_GPU_READY	8 H20 GPUs free; no stale project GPU process killed
 B	slow_forward_cache	VOID_CACHE_PARITY_EXPLAINED	32 cache rows; policy tensor losses exact; scalar reference-loss bf16 downcast explained
 C	R1_row0_smoke	VOID_R1_ROW0_SMOKE_PASS	runtime=632.97s; winner_gap_post=0.0001377984881401062; loser_ratio=0.014258294488620784; checkpoint=/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/r1_row0_smoke/checkpoints/r1_q0_t500_proj_out_row0_step1.pt
+D	rescue_preregistration	EXP52_RESCUE_GRID_PREREGISTERED	Wave1 R1/R2/R3/R4 Q0/Q2 T500 S0; Wave2 conditional; GPU7 re-audit required

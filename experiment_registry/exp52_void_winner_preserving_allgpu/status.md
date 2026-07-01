@@ -1,7 +1,8 @@
 # Exp52 Status
 
-Current status: `VOID_R1_ROW0_SMOKE_PASS`
+Current status: `EXP52_RESCUE_GRID_PREREGISTERED`
 
 Milestone A completed: readback and all-GPU audit.
-Milestone B completed: slow-forward profile/cache with `VOID_CACHE_PARITY_EXPLAINED`.
-Milestone C completed: R1 row0 checkpoint/reload smoke passed.
+Milestone B completed: cache/profile with `VOID_CACHE_PARITY_EXPLAINED`.
+Milestone C completed: R1 row0 smoke passed.
+Milestone D completed: all-GPU one-step rescue grid preregistered.

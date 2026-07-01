@@ -1994,3 +1994,4 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 - 2026-07-01 Exp52 started on H20: all GPU audit ready (`EXP52_ALL_GPU_READY`), no stale project GPU PIDs killed.
 - 2026-07-01 Exp52 Milestone B: slow-forward profile/cache completed with `VOID_CACHE_PARITY_EXPLAINED`; 32 Q0/Q1/Q2/Q3 cache rows ready.
 - 2026-07-01 Exp52 Milestone C: R1 row0 smoke passed (`VOID_R1_ROW0_SMOKE_PASS`), checkpoint/reload finite with loser contribution ratio 0.0143.
+- 2026-07-01 Exp52 Milestone D: all-GPU one-step rescue grid preregistered (`EXP52_RESCUE_GRID_PREREGISTERED`); GPU7 requires re-audit before execution.
