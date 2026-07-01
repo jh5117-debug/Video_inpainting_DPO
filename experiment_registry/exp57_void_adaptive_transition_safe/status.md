@@ -1,5 +1,5 @@
 # Exp57 VOID Adaptive Transition-Safe Status
 
-Current status: `EXP57_READBACK_DONE`
+Current status: `EXP57_ADAPTIVE_TRANSITION_LOSS_READY`
 
-Exp57 reconfirms that the active blocker is `TRANSITION_REGION_DAMAGE_UNDER_OBJECT_LOCAL_UPDATE`. Exp56-H20 removed loser dominance but still regressed overlap, affected, and boundary regions. The next step is an isolated VOID-only adaptive transition-safe loss.
+Exp57 reconfirms that the active blocker is `TRANSITION_REGION_DAMAGE_UNDER_OBJECT_LOCAL_UPDATE`. The isolated VOID-only adaptive transition-safe loss mode is implemented and unit-test covered. The next step is zero-gap / adaptive forward sanity.

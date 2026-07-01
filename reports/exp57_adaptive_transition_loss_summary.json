@@ -1,0 +1,19 @@
+{
+  "status": "EXP57_ADAPTIVE_TRANSITION_LOSS_READY",
+  "loss_mode": "void_adaptive_transition_safe_dpo_v0",
+  "isolated_code_dir": "exp57_void_adaptive_transition_safe",
+  "void_official_source_modified": false,
+  "inference_metrics_modified": false,
+  "shared_trainer_modified": false,
+  "diffueraser_videopainter_defaults_modified": false,
+  "ten_step_run": false,
+  "unit_tests": [
+    "loser lambda conflict",
+    "loser lambda aligned",
+    "transition preservation",
+    "backtracking scale reduction",
+    "backtracking rejection",
+    "zero-gap log2",
+    "outside no loser DPO"
+  ]
+}
