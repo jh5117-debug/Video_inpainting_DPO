@@ -9,3 +9,7 @@ R1 winner-preserving local DPO controlled the vanilla loser-dominant failure dir
 ## Milestone F Qualitative Decision - 2026-07-01T14:55:45+08:00
 
 Wave2 and LoRA escalation were deferred. R1_Q0 suggests winner-preserving local DPO is safer than vanilla DPO, but affected-region damage remains the blocker.
+
+## Milestone I Final Qualitative Decision - 2026-07-01T14:57:55+08:00
+
+VOID remains baseline/loser generator and adapter-engineering candidate. The exact blocker is affected/overlap regression under one-step rescue evidence; no third adapter evidence.

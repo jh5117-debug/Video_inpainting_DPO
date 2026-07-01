@@ -43,3 +43,7 @@ Decision: do not run 10-step from this result. R1_Q0 reduced loser dominance but
 ## Milestone F Wave2 / Scope Decision - 2026-07-01T14:55:45+08:00
 
 Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. Wave2, LoRA escalation, and 10-step are not run because the only full video-evaluated Wave1 cell is mixed, not PASS.
+
+## Milestone I Final Decision - 2026-07-01T14:57:55+08:00
+
+Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. R1 winner-preserving local DPO reduced loser-dominant behavior but did not produce one-step PASS; 10-step and data expansion were not run. VOID is not third adapter evidence.

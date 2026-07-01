@@ -39,3 +39,7 @@ Status: `VOID_RESCUE_ONESTEP_MIXED`
 ## Milestone F Wave2 Scope Decision - 2026-07-01T14:55:45+08:00
 
 Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. No additional metrics were generated; 10-step remains locked.
+
+## Milestone I Final Metric Decision - 2026-07-01T14:57:55+08:00
+
+Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. R1_Q0 deltas: full 0.01562676520194195, object 1.025830221887892, affected -0.11865014078788594, boundary 0.1608491675666972, outside 0.04482370447721884. 10-step not run.

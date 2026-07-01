@@ -2003,3 +2003,7 @@ Status: `VOID_RESCUE_ONESTEP_MIXED`. Wave1: 7/8 one-step checkpoints produced; R
 ## Exp52 Milestone F Wave2 / Scope Decision - 2026-07-01T14:55:45+08:00
 
 Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. 10-step remains locked; VOID is not third adapter evidence.
+
+## Exp52 Milestone I Final Decision - 2026-07-01T14:57:55+08:00
+
+Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. VOID remains VOR-OR baseline / same-model loser generator / adapter-engineering candidate, not third adapter evidence.

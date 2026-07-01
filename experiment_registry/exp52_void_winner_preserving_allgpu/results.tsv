@@ -5,3 +5,4 @@ C	R1_row0_smoke	VOID_R1_ROW0_SMOKE_PASS	runtime=632.97s; winner_gap_post=0.00013
 D	rescue_preregistration	EXP52_RESCUE_GRID_PREREGISTERED	Wave1 R1/R2/R3/R4 Q0/Q2 T500 S0; Wave2 conditional; GPU7 re-audit required
 E	rescue_onestep_grid	VOID_RESCUE_ONESTEP_MIXED	Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked.
 F	wave2_scope_decision	EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS	Wave2/LoRA/10-step deferred; R1_Q0 mixed with affected/overlap regression.
+I	final_decision	VOID_ADAPTER_ENGINEERING_CANDIDATE	R1 reduced loser dominance but one-step evidence was mixed; 10-step not run; VOID not third evidence.

@@ -806,3 +806,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone E | `VOID_RESCUE_ONESTEP_MIXED` | Wave1: 7/8 one-step checkpoints produced; R4_Q2 skipped due unrelated GPU7 process. R1_Q0 video-evaluated: full 0.015627, object 1.025830, affected -0.118650, boundary 0.160849, outside 0.044824; visual 0 better / 3 tie / 1 worse; 10-step locked. |
 
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone F | `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS` | Wave2/LoRA/10-step deferred; R1_Q0 full evidence mixed. |
+
+| Exp52 | VOID winner-preserving all-GPU rescue | Final | `VOID_ADAPTER_ENGINEERING_CANDIDATE` | R1 reduced loser dominance but heldout evidence was mixed; 10-step not run; not third evidence. |
