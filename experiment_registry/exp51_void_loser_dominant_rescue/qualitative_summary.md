@@ -21,3 +21,7 @@ VOID-native Kubric diagnostic cannot currently separate VOR mismatch from object
 ## Milestone F
 
 The rescue plan explicitly targets the Exp50 loser-dominant mechanism and forbids promoting VOID without heldout video evidence.
+
+## Milestone G
+
+No visual evidence was generated for rescue recipes. VOID remains baseline/loser-generator plus adapter-engineering candidate, not third evidence.

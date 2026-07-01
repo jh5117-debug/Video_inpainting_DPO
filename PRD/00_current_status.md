@@ -1986,3 +1986,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 - 2026-07-01 Exp51 Milestone E: VOID-native Kubric diagnostic is `VOID_NATIVE_KUBRIC_BLOCKED`; Kubric/PyBullet/Blender/HUMOTO assets are absent, no fake data generated.
 
 - 2026-07-01 Exp51 Milestone F: rescue recipes preregistered (`VOID_RESCUE_RECIPES_PREREGISTERED`); no training run before preregistration.
+
+- 2026-07-01 Exp51 Milestone G: one-step rescue grid is `VOID_RESCUE_ONESTEP_BLOCKED`; R1-R4 did not reach checkpoint/report within the bounded micro window, process terminated, 10-step remains locked.

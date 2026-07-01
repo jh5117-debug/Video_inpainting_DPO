@@ -1,0 +1,24 @@
+{
+  "attempt_pid": 3425290,
+  "attempt_runtime_before_term_sec": 633,
+  "attempted_recipes": [
+    "R1_WinnerPreserve_LocalDPO",
+    "R2_WinnerPreserve_LoserClip",
+    "R3_SDPO_Safe",
+    "R4_LinearDPO_vPrediction"
+  ],
+  "checkpoint_files_created": 0,
+  "exact_blocker": "VOID_RESCUE_ONESTEP_BLOCKED_SLOW_FORWARD_NO_CHECKPOINT",
+  "gpu": 0,
+  "gpu_memory_seen_mb": 19925,
+  "hard_comp_used": false,
+  "long_training": false,
+  "next_recommendation": "Run a narrower R1-only row0 smoke or refactor to reuse Exp50 10-step cache path per recipe before reattempting train4 heldout video evidence.",
+  "optimizer_step_verified": false,
+  "reason": "The train4 x R1-R4 one-step grid did not create any checkpoint/report after more than 10 minutes and was terminated to respect the no-long/finite micro-gate boundary.",
+  "reports_created_by_runner": 0,
+  "status": "VOID_RESCUE_ONESTEP_BLOCKED",
+  "video_evidence_generated": false,
+  "visual_review_complete": false,
+  "vor_eval_used": false
+}

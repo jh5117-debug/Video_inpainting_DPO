@@ -31,3 +31,9 @@ Blocked before data generation by missing Kubric/PyBullet/Blender/HUMOTO assets.
 Status: `VOID_RESCUE_RECIPES_PREREGISTERED`
 
 Winner-preserving/local/loser-clipped rescue recipes are locked before training.
+
+## Milestone G
+
+Status: `VOID_RESCUE_ONESTEP_BLOCKED`
+
+Exact blocker: `VOID_RESCUE_ONESTEP_BLOCKED_SLOW_FORWARD_NO_CHECKPOINT`. No recipe pass/fail conclusion; 10-step locked.

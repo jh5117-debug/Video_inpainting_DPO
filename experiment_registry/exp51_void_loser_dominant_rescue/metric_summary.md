@@ -31,3 +31,7 @@ No metrics: native data generation blocked before videos exist. Blockers: Kubric
 ## Milestone F - Preregistration
 
 No metrics by design. Gates fixed: one-step first, 10-step only if one-step passes.
+
+## Milestone G - Rescue One-Step
+
+No metrics: R1-R4 runner blocked before checkpoint/video evidence. 10-step not run.

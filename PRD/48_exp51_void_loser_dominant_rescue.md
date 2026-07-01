@@ -45,3 +45,9 @@ H20 lacks Kubric, PyBullet, Blender, HUMOTO, and Blender texture assets. Public 
 Status: `VOID_RESCUE_RECIPES_PREREGISTERED`
 
 R1/R2/R3/R4 are preregistered for one-step safety. R5 LoRA is gated and not default. No training was run before this preregistration commit.
+
+## Milestone G - One-Step Rescue Grid
+
+Status: `VOID_RESCUE_ONESTEP_BLOCKED`
+
+R1-R4 train4 grid was attempted on H20 GPU0 but produced no checkpoint/report after a bounded micro window and was terminated. This is a runtime/runner blocker, not a recipe-negative result. H 10-step remains locked.
