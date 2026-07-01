@@ -797,3 +797,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp51 | VOID loser-dominant rescue | Milestone G | `VOID_RESCUE_ONESTEP_BLOCKED` | R1-R4 grid blocked before checkpoint; no heldout videos; 10-step not unlocked. |
 
 | Exp51 | VOID loser-dominant rescue | Final | `VOID_ADAPTER_ENGINEERING_CANDIDATE` | Loser-dominant failure confirmed; rescue grid blocked before checkpoint; VOID remains baseline/loser generator, not third evidence. |
+
+| Exp52 | VOID winner-preserving all-GPU rescue | Milestone A | `EXP52_ALL_GPU_READY` | H20 GPU0-7 free; starts from Exp51 loser-dominant rescue state. |

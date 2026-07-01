@@ -1,0 +1,9 @@
+worktree: /home/nvme01/H20_Video_inpainting_DPO_exp52_void_allgpu_rescue
+asset_root: /home/nvme01/H20_Video_inpainting_DPO
+output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu
+log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp52_void_winner_preserving_allgpu
+runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp52_void_winner_preserving_allgpu
+env_python: /home/nvme01/conda_envs/void_exp50_official_v2/bin/python
+void_repo: /home/nvme01/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model
+void_weights: /home/nvme01/H20_Video_inpainting_DPO/weights/void/netflix_void-model
+base_model: /home/nvme01/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP

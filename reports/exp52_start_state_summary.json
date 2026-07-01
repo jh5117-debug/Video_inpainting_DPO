@@ -1,0 +1,33 @@
+{
+  "branch": "research/exp52-void-winner-preserving-allgpu-20260701",
+  "exp50_vanilla_10step": {
+    "affected_psnr_delta": 0.019341,
+    "boundary_psnr_delta": -0.063034,
+    "full_psnr_delta": -0.000965,
+    "mask_psnr_delta": -0.229878,
+    "outside_psnr_delta": 0.043422,
+    "status": "VOID_ADAPTER_10STEP_NEGATIVE",
+    "visual": "0 better / 3 tie / 1 worse"
+  },
+  "exp51": {
+    "exact_blocker": "VOID_RESCUE_ONESTEP_BLOCKED_SLOW_FORWARD_NO_CHECKPOINT",
+    "loser_dominant": "VOID_LOSER_DOMINANT_CONFIRMED",
+    "quadmask_metrics": "VOID_QUADMASK_METRICS_READY",
+    "rescue_onestep": "VOID_RESCUE_ONESTEP_BLOCKED"
+  },
+  "free_gpus": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "gpu_count": 8,
+  "h20_host": "instance-afs92r3e",
+  "stale_pids_killed": [],
+  "start_head": "c9e0c3de994263743d4734890115fd06a913b9df",
+  "status": "EXP52_ALL_GPU_READY"
+}

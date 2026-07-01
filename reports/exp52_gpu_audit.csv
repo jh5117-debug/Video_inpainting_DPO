@@ -1,0 +1,9 @@
+gpu,name,memory_used_mib,memory_total_mib,utilization_gpu_pct,compute_apps,availability,action
+0,NVIDIA H20,28,97871,0,,free,none
+1,NVIDIA H20,1,97871,0,,free,none
+2,NVIDIA H20,1,97871,0,,free,none
+3,NVIDIA H20,1,97871,0,,free,none
+4,NVIDIA H20,1,97871,0,,free,none
+5,NVIDIA H20,1,97871,0,,free,none
+6,NVIDIA H20,1,97871,0,,free,none
+7,NVIDIA H20,1,97871,0,,free,none

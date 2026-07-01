@@ -1,0 +1,17 @@
+branch: research/exp52-void-winner-preserving-allgpu-20260701
+base_branch: origin/research/exp51-void-loser-dominant-rescue-20260701
+trainable_scope_initial: proj_out
+primary_recipes:
+  - R1_WinnerPreserve_LocalDPO
+  - R2_WinnerPreserve_LoserClip
+  - R3_SDPO_Safe
+  - R4_LinearDPO_vPrediction
+quadmask_variants_primary:
+  - Q0_current
+  - Q1_object_only
+  - Q2_strict_affected
+forbidden:
+  - VOR-Eval
+  - hard_comp
+  - long_training
+  - official_source_edits
