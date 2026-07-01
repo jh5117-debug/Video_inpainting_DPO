@@ -1,0 +1,12 @@
+{
+  "best_h20": "R1_Q2_T500_S0",
+  "best_overall": "R1_Q2_T500_S0",
+  "best_pai": "R4_Q2_T500_S0",
+  "one_step_pass_exists": false,
+  "status": "EXP55_NO_10STEP_MIXED_ONLY",
+  "ten_step_allowed": false,
+  "ten_step_run": false,
+  "third_backbone_evidence": false,
+  "training_run": false,
+  "void_role": "baseline / loser generator / adapter-engineering candidate"
+}

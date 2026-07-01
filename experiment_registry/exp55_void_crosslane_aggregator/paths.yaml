@@ -1,0 +1,8 @@
+branch: research/exp55-void-crosslane-aggregator-20260701
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp53_void_r1r2_h20
+exp53b_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp53_void_r1r2_targeted_h20
+exp53b_log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp53_void_r1r2_targeted_h20
+reports:
+  ranking: reports/exp55_candidate_ranking.csv
+  decision: reports/exp55_10step_gate_decision.md
+  final_handoff: reports/exp55_final_handoff.md

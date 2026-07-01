@@ -1,0 +1,11 @@
+experiment: exp55_void_crosslane_aggregator
+training_run: false
+ten_step_run: false
+new_grid_run: false
+vor_eval_used: false
+hard_comp_used: false
+candidate_sources:
+  - exp53b_h20
+  - exp54_pai
+pass_gate: original_one_step_gate
+final_status: EXP55_NO_10STEP_MIXED_ONLY

@@ -2041,3 +2041,9 @@ H20 recovered the two core Q2/T500 cells only:
 - `R2_Q2_T500_S0`: checkpoint/reload/video evidence produced; mean full PSNR -0.007600, object +0.933518, overlap -0.223775, affected -0.171283, boundary -0.065547, outside +0.053105; visual 0 better / 2 tie / 2 worse.
 
 Decision: no one-step PASS, no Exp53B 10-step. R1_Q2_T500_S0 is the best H20 candidate but only mixed. VOID remains a baseline / loser-generator / adapter-engineering candidate, not third adapter evidence.
+
+## 2026-07-01 Exp55 VOID Cross-Lane Aggregator
+
+Status: `EXP55_NO_10STEP_MIXED_ONLY`.
+
+Exp55 aggregated Exp53B H20 and Exp54 PAI one-step evidence without training or 10-step execution. Top ranking is `R1_Q2_T500_S0` from H20, followed by `R2_Q2_T500_S0`; the best PAI diagnostic remains `R4_Q2_T500_S0`. No candidate satisfies the original one-step PASS gate. The shared failure pattern is object/mask improvement with outside preservation, but overlap / affected / boundary regression and mixed visual review. VOID remains a VOR-OR baseline / loser-generator / adapter-engineering candidate, not third adapter evidence.

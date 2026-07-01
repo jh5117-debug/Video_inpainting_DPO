@@ -1,0 +1,5 @@
+milestone	status	summary
+A	EXP55_READY_FOR_AGGREGATION	Exp53B and Exp54 committed reports available; Exp54 raw PAI evidence missing on H20 but not required for summary-level aggregation.
+B	EXP55_CANDIDATES_AGGREGATED	Six one-step candidates aggregated and ranked.
+C	EXP55_FAILURE_PATTERN_IDENTIFIED	Object/mask improvements are paired with overlap, affected, and boundary regression.
+D	EXP55_NO_10STEP_MIXED_ONLY	No candidate satisfies original one-step PASS gate; 10-step is not allowed.
