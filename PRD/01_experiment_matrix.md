@@ -840,3 +840,4 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp52 | VOID winner-preserving all-GPU rescue | Final | `VOID_ADAPTER_ENGINEERING_CANDIDATE` | R1 reduced loser dominance but heldout evidence was mixed; 10-step not run; not third evidence. |
 
 | Exp53 | VOID targeted one-step | Milestone A | `EXP53_GPU_BLOCKED` | H20 lane only: R1/R2 on GPU0-3. |
+| Exp53B | VOID R1/R2 core recovery | Milestone C | `EXP53B_CORE_ONESTEP_MIXED` | H20 recovered R1_Q2_T500 and R2_Q2_T500 checkpoints/reloads/videos. R1 is best but mixed: full +0.020812, object +0.803855, overlap -0.127050, affected -0.069499, boundary -0.052405, outside +0.049764; visual 0 better / 2 tie / 2 worse. No 10-step. |

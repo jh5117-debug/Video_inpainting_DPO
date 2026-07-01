@@ -2031,3 +2031,13 @@ Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. VOID remains VOR-OR baseline
 ## Exp53 Milestone A - 2026-07-01T15:59:54+08:00
 
 Status: `EXP53_GPU_BLOCKED`. H20 lane only: R1/R2 on GPU0-3.
+## 2026-07-02 Exp53B VOID R1/R2 Core Recovery
+
+Status: `EXP53B_CORE_ONESTEP_MIXED`.
+
+H20 recovered the two core Q2/T500 cells only:
+
+- `R1_Q2_T500_S0`: checkpoint/reload/video evidence produced; mean full PSNR +0.020812, object +0.803855, overlap -0.127050, affected -0.069499, boundary -0.052405, outside +0.049764; visual 0 better / 2 tie / 2 worse.
+- `R2_Q2_T500_S0`: checkpoint/reload/video evidence produced; mean full PSNR -0.007600, object +0.933518, overlap -0.223775, affected -0.171283, boundary -0.065547, outside +0.053105; visual 0 better / 2 tie / 2 worse.
+
+Decision: no one-step PASS, no Exp53B 10-step. VOID remains a baseline / loser-generator / adapter-engineering candidate, not third adapter evidence.

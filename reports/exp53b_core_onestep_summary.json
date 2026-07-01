@@ -1,0 +1,76 @@
+{
+  "best_cell": "R1_Q2_T500_S0",
+  "cells": {
+    "R1_Q2_T500_S0": {
+      "contact_sheet": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp53_void_r1r2_targeted_h20/core_video/R1_Q2_T500_S0/R1_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "diagnostics": {
+        "loser_contribution_ratio": 0.5613908332904777,
+        "loser_gap": -2.5274232029914856e-05,
+        "preference_margin": 7.153861224651337e-05,
+        "winner_gap": 4.626438021659851e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.06949854520529275,
+        "boundary_psnr_delta": -0.05240463358895919,
+        "full_psnr_delta": 0.02081223207621896,
+        "object_psnr_delta": 0.803854686736039,
+        "outside_l1_delta": -0.0001310504740104075,
+        "outside_psnr_delta": 0.04976362553945268,
+        "overlap_psnr_delta": -0.1270503959026188,
+        "ssim_delta": -0.00010047742725396991,
+        "step0_step1_l1": 0.009036335803102702,
+        "temporal_flicker_delta": 7.587877845925621e-05,
+        "tone_drift": -0.00013250999812347195
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 2,
+        "worse": 2
+      }
+    },
+    "R2_Q2_T500_S0": {
+      "contact_sheet": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp53_void_r1r2_targeted_h20/core_video/R2_Q2_T500_S0/R2_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "diagnostics": {
+        "loser_contribution_ratio": 0.6031826009994159,
+        "loser_gap": -5.8688223361968994e-05,
+        "preference_margin": 0.00010345596820116043,
+        "winner_gap": 4.476774483919144e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.1712832439061751,
+        "boundary_psnr_delta": -0.06554693612772855,
+        "full_psnr_delta": -0.007600166252343499,
+        "object_psnr_delta": 0.933518103563789,
+        "outside_l1_delta": -0.0001363825479832781,
+        "outside_psnr_delta": 0.053105031619166354,
+        "overlap_psnr_delta": -0.2237754506799705,
+        "ssim_delta": -0.00010554648054578175,
+        "step0_step1_l1": 0.009032208506444778,
+        "temporal_flicker_delta": 9.713747579592982e-05,
+        "tone_drift": 1.7553485339900064e-05
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 2,
+        "worse": 2
+      }
+    }
+  },
+  "exp52_r1_q0_baseline_means": {
+    "affected_psnr_delta": -0.11865014078788594,
+    "boundary_psnr_delta": 0.1608491675666972,
+    "full_psnr_delta": 0.01562676520194195,
+    "object_psnr_delta": 1.025830221887892,
+    "outside_psnr_delta": 0.04482370447721884,
+    "overlap_psnr_delta": -0.11671521679298635,
+    "ssim_delta": -0.00011039303058779648
+  },
+  "hard_comp": false,
+  "no_vor_eval": true,
+  "status": "EXP53B_CORE_ONESTEP_MIXED",
+  "step1_videos_per_cell": 4,
+  "ten_step_run": false,
+  "visual_evidence_open_required": true
+}
