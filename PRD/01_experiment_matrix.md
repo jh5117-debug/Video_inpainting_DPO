@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp53B H20 Core Recovery
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp53B H20 VOID R1/R2 core recovery | `EXP53B_READY_FOR_CORE_CELLS` | `reports/exp53b_core_recovery_readback.md`, `reports/exp53b_gpu_cache_summary.json` |
+
 ## 2026-07-01 Exp53 H20 Final
 
 | User-facing name | Status | Evidence / registry |

@@ -25,3 +25,7 @@ Status: `EXP53_WAVE2_NOT_RUN`. No Wave1 PASS/MIXED-safe cell existed; Wave2 and 
 ## Milestone E - 2026-07-01T09:10:46+00:00
 
 Status: `EXP53_H20_BLOCKED`. Final handoff complete. No PASS/MIXED candidate and no 10-step.
+
+## Exp53B Milestone A - 2026-07-01T15:20:19+00:00
+
+Status: `EXP53B_READY_FOR_CORE_CELLS`. GPU/cache audit complete for R1_Q2_T500_S0 and R2_Q2_T500_S0 only.

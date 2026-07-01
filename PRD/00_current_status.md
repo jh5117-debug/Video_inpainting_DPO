@@ -1,4 +1,8 @@
 
+## 2026-07-01 Exp53B Core Recovery Readback
+
+Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.
+
 ## 2026-07-01 Exp53 H20 Final Handoff
 
 Status: `EXP53_H20_BLOCKED`. No one-step candidate; no 10-step; no third-backbone claim.

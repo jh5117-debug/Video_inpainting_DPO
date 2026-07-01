@@ -1,0 +1,146 @@
+{
+  "branch": "research/exp53-void-r1r2-targeted-h20-20260701",
+  "cache_ok": true,
+  "cache_root": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/cache/tensor_cache/q2_strict_affected",
+  "cache_rows": [
+    {
+      "detail": "{\"split\": \"train4\", \"sample_id\": \"BLENDER_CON001_00636\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "00_BLENDER_CON001_00636.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"train4\", \"sample_id\": \"BLENDER_CON001_00843\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "01_BLENDER_CON001_00843.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"train4\", \"sample_id\": \"REAL_ENV219_00001_003_05\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "02_REAL_ENV219_00001_003_05.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"train4\", \"sample_id\": \"REAL_ENV259_00102_002_04\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "03_REAL_ENV259_00102_002_04.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"heldout4\", \"sample_id\": \"BLENDER_CON001_00742\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "00_BLENDER_CON001_00742.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"heldout4\", \"sample_id\": \"BLENDER_CON001_00744\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "01_BLENDER_CON001_00744.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"heldout4\", \"sample_id\": \"REAL_ENV102_00001_002_02\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "02_REAL_ENV102_00001_002_02.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    },
+    {
+      "detail": "{\"split\": \"heldout4\", \"sample_id\": \"REAL_ENV200_00001_006_02\", \"timestep\": 500, \"same_timestep\": true, \"same_noise\": true, \"missing\": [], \"pack_missing\": []}",
+      "gpu": "",
+      "memory_total_mib": "",
+      "memory_used_mib": "",
+      "name": "03_REAL_ENV200_00001_006_02.pt",
+      "status": "ok",
+      "type": "cache",
+      "util_percent": ""
+    }
+  ],
+  "compute_apps_raw": "/home/ubuntu/.profile: line 29: /home/nvme02/GR00T/GR00T-WholeBodyControl/.tools/uv/env: No such file or directory\n/home/ubuntu/.profile: line 31: /home/nvme02/GR00T/PRM/.tools/uv/env: No such file or directory\n",
+  "free_gpus_gpu0_3": [
+    "0",
+    "1",
+    "2",
+    "3"
+  ],
+  "git_fetch_all_prune": "attempted earlier; H20 GitHub fetch timed out and was interrupted; branch HEAD was previously remote-verified at 9f9d99f9a",
+  "gpu_rows": [
+    {
+      "detail": "",
+      "gpu": "0",
+      "memory_total_mib": 97871,
+      "memory_used_mib": 28,
+      "name": "NVIDIA H20",
+      "status": "free_xorg_only",
+      "type": "gpu",
+      "util_percent": 0
+    },
+    {
+      "detail": "",
+      "gpu": "1",
+      "memory_total_mib": 97871,
+      "memory_used_mib": 1,
+      "name": "NVIDIA H20",
+      "status": "free",
+      "type": "gpu",
+      "util_percent": 0
+    },
+    {
+      "detail": "",
+      "gpu": "2",
+      "memory_total_mib": 97871,
+      "memory_used_mib": 1,
+      "name": "NVIDIA H20",
+      "status": "free",
+      "type": "gpu",
+      "util_percent": 0
+    },
+    {
+      "detail": "",
+      "gpu": "3",
+      "memory_total_mib": 97871,
+      "memory_used_mib": 1,
+      "name": "NVIDIA H20",
+      "status": "free",
+      "type": "gpu",
+      "util_percent": 0
+    }
+  ],
+  "hard_comp": false,
+  "head": "9f9d99f9a998671edec519bc4506a6ac57146f54",
+  "no_vor_eval": true,
+  "project_processes_raw": "/home/ubuntu/.profile: line 29: /home/nvme02/GR00T/GR00T-WholeBodyControl/.tools/uv/env: No such file or directory\n/home/ubuntu/.profile: line 31: /home/nvme02/GR00T/PRM/.tools/uv/env: No such file or directory\nubuntu    389559  389554  389559  389559       05:41 Ss   bash -c hostname; date -Ins; cd /home/nvme01/H20_Video_inpainting_DPO_exp53_void_r1r2_h20 && git fetch --all --prune || true && git branch --show-current && git rev-parse HEAD && git status --short && git log -8 --oneline && git diff --stat && git diff --check\nubuntu    791937  789329  791937  791937       00:08 Ss   bash -c cd /home/nvme01/H20_Video_inpainting_DPO_exp53_void_r1r2_h20 && python3 /tmp/exp53b_audit.py && git diff --check && git status --short && git diff --stat\nubuntu    792007  791937  791937  791937       00:08 Sl   python3 /tmp/exp53b_audit.py\n",
+  "q2_t500_heldout4_count": 4,
+  "q2_t500_train4_count": 4,
+  "status": "EXP53B_READY_FOR_CORE_CELLS",
+  "ten_step": false,
+  "timestamp": "2026-07-01T15:20:19+00:00"
+}

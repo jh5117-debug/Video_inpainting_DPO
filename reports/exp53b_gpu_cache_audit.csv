@@ -1,0 +1,13 @@
+type,gpu,name,memory_used_mib,memory_total_mib,util_percent,status,detail
+gpu,0,NVIDIA H20,28,97871,0,free_xorg_only,
+gpu,1,NVIDIA H20,1,97871,0,free,
+gpu,2,NVIDIA H20,1,97871,0,free,
+gpu,3,NVIDIA H20,1,97871,0,free,
+cache,,00_BLENDER_CON001_00636.pt,,,,ok,"{""split"": ""train4"", ""sample_id"": ""BLENDER_CON001_00636"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,01_BLENDER_CON001_00843.pt,,,,ok,"{""split"": ""train4"", ""sample_id"": ""BLENDER_CON001_00843"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,02_REAL_ENV219_00001_003_05.pt,,,,ok,"{""split"": ""train4"", ""sample_id"": ""REAL_ENV219_00001_003_05"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,03_REAL_ENV259_00102_002_04.pt,,,,ok,"{""split"": ""train4"", ""sample_id"": ""REAL_ENV259_00102_002_04"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,00_BLENDER_CON001_00742.pt,,,,ok,"{""split"": ""heldout4"", ""sample_id"": ""BLENDER_CON001_00742"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,01_BLENDER_CON001_00744.pt,,,,ok,"{""split"": ""heldout4"", ""sample_id"": ""BLENDER_CON001_00744"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,02_REAL_ENV102_00001_002_02.pt,,,,ok,"{""split"": ""heldout4"", ""sample_id"": ""REAL_ENV102_00001_002_02"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"
+cache,,03_REAL_ENV200_00001_006_02.pt,,,,ok,"{""split"": ""heldout4"", ""sample_id"": ""REAL_ENV200_00001_006_02"", ""timestep"": 500, ""same_timestep"": true, ""same_noise"": true, ""missing"": [], ""pack_missing"": []}"

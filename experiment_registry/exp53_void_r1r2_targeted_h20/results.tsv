@@ -4,3 +4,4 @@ B	preregister_r1r2_cells	EXP53_R1R2_PREREGISTERED	Wave1 R1/R2 cells locked; no 1
 C	run_wave1_onestep	EXP53_R1R2_ONESTEP_BLOCKED	R2_Q2_T500_S0 slow-forward/no-checkpoint; other cells skipped safely.
 D	wave2_decision	EXP53_WAVE2_NOT_RUN	No PASS or MIXED-safe cell from Wave1.
 E	final_handoff	EXP53_H20_BLOCKED	No H20 candidate for 10-step; hand off to Exp55 as blocked evidence.
+A2	exp53b_readback	EXP53B_READY_FOR_CORE_CELLS	GPU/cache audit for Q2/T500 core recovery.

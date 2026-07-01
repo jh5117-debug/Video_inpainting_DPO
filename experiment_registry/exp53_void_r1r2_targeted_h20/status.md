@@ -1,5 +1,5 @@
 # Exp53 Status
 
-Current status: `EXP53_H20_BLOCKED`
+Current status: `EXP53B_READY_FOR_CORE_CELLS`
 
-Final handoff complete. No H20 PASS/MIXED candidate; no local 10-step unlocked.
+Exp53B readback completed. Core cells are R1_Q2_T500_S0 and R2_Q2_T500_S0 only.
