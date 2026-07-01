@@ -1,4 +1,6 @@
-branch: research/exp53-void-r1r2-targeted-h20-20260701
-base: origin/research/exp52-void-winner-preserving-allgpu-20260701
-allowed_gpus: [0, 1, 2, 3]
-one_step_only: true
+recipes: [R1_WinnerPreserve_LocalDPO, R2_WinnerPreserve_LoserClip]
+quadmasks: [q1_object_only, q2_strict_affected]
+timesteps: [300, 500]
+scope: S0_proj_out
+optimizer_steps: 1
+run_10step: false

@@ -1,3 +1,9 @@
+
+## 2026-07-01 Exp53 H20 R1/R2 Targeted One-Step
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp53 H20 VOID R1/R2 targeted one-step | `EXP53_R1R2_PREREGISTERED` | `reports/exp53_r1r2_preregistration.md`, `experiment_registry/exp53_void_r1r2_targeted_h20` |
 ## 2026-06-30 Exp50 VOID Weight Download Blocked
 
 | User-facing name | Status | Evidence / registry |

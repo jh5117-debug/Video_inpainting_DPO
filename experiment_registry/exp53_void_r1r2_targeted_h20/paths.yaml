@@ -2,3 +2,4 @@ worktree: /home/nvme01/H20_Video_inpainting_DPO_exp53_void_r1r2_h20
 output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp53_void_r1r2_targeted_h20
 log_root: /home/nvme01/H20_Video_inpainting_DPO/logs/autoresearch/exp53_void_r1r2_targeted_h20
 runtime_root: /home/nvme01/H20_Video_inpainting_DPO/runtime/exp53_void_r1r2_targeted_h20
+cache_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp52_void_winner_preserving_allgpu/cache/tensor_cache

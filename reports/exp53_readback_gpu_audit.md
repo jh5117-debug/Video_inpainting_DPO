@@ -1,51 +1,41 @@
-# Exp53 H20 VOID R1/R2 Targeted One-Step Rescue Readback + GPU Audit
+# Exp53 H20 R1/R2 Readback And GPU Audit
 
-Status: `EXP53_GPU_BLOCKED`
+Status: `EXP53_H20_PARTIAL_GPU_READY`
 
+Timestamp: `2026-07-01T08:53:57+00:00`
 Branch: `research/exp53-void-r1r2-targeted-h20-20260701`
-HEAD: `a46edb656948799754789f73860a29bf1a469a0c`
-Created: `2026-07-01T15:59:54+08:00`
+Base: `origin/research/exp52-void-winner-preserving-allgpu-20260701`
 
-H20 lane only: R1/R2 on GPU0-3.
+## Readback
 
-## Source-of-truth readback
+Exp50/Exp51/Exp52 established that VOID official inference works, same-model loser generation is available, preference forward and zero-gap passed, and vanilla 10-step LoVI-DPO was negative because the margin was loser-dominant. Exp52 reduced loser dominance in R1 row0 smoke and produced mixed R1_Q0 evidence. Exp53 targets Q1/Q2 and T300/T500 for R1/R2 only.
 
-- Exp52 final status: VOID adapter-engineering candidate, not third-backbone evidence.
-- Exp52 R1_Q0_T500_S0 was mixed: full/object/boundary/outside improved, affected/overlap regressed.
-- 10-step remains locked until Exp55 aggregator sees a one-step PASS.
+## Current H20 GPU0-3 Audit
 
-## GPU audit
+| GPU | Used MiB | Total MiB | Util % | Status |
+| --- | ---: | ---: | ---: | --- |
+| 0 | 9911 | 97871 | 0 | `occupied_or_unknown` |
+| 1 | 1 | 97871 | 0 | `free` |
+| 2 | 1 | 97871 | 0 | `free` |
+| 3 | 9884 | 97871 | 0 | `occupied_or_unknown` |
 
-- GPU0: 26671 MiB used, util 0%, `occupied_or_unknown`
-- GPU1: 26644 MiB used, util 2%, `occupied_or_unknown`
-- GPU2: 26644 MiB used, util 1%, `occupied_or_unknown`
-- GPU3: 26644 MiB used, util 0%, `occupied_or_unknown`
-
-## Required command excerpts
+Compute apps snapshot:
 
 ```text
-git fetch rc=124
-TIMEOUT after 60s
-Fetching origin
-
+GPU-53e27608-e06c-4088-85fd-81412f1f451d, 2870269, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 9874
+GPU-0b7c9457-c09b-532c-07aa-fe3ee306411d, 2944336, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 9874
+GPU-18eab895-41e6-3062-a5df-b104db5e2cd0, 2945149, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 9874
+GPU-c15fc8f0-9d89-86bb-701d-38f848f9366e, 2949403, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 9874
+GPU-ca37d462-7bfc-213b-e46e-bef520750458, 491274, /home/nvme03/workspace/lingbot-world/.conda_envs/lingbot-world-v2/bin/python, 90638
 ```
 
-## File read status
+No unknown process was terminated. No GPU reset, pkill python, or killall python was used.
 
-- `PRD/00_current_status.md`: present
-- `PRD/01_experiment_matrix.md`: present
-- `PRD/47_exp50_pai_void_adapter_feasibility.md`: present
-- `PRD/48_exp51_void_loser_dominant_rescue.md`: present
-- `PRD/49_exp52_void_winner_preserving_allgpu.md`: present
-- `experiment_registry/exp50_pai_void_adapter_feasibility/status.md`: present
-- `experiment_registry/exp51_void_loser_dominant_rescue/status.md`: present
-- `experiment_registry/exp52_void_winner_preserving_allgpu/status.md`: present
-- `reports/exp51_void_loser_dominant_forensic.md`: present
-- `reports/exp51_void_quadmask_metrics.md`: present
-- `reports/exp51_void_quadmask_ablation_data.md`: present
-- `reports/exp52_cache_summary.json`: present
-- `reports/exp52_r1_row0_smoke.md`: present
-- `reports/exp52_rescue_onestep.md`: present
-- `reports/exp52_rescue_onestep_summary.json`: present
-- `reports/exp52_void_rescue_decision.md`: present
-- `reports/exp52_void_next_steps.md`: present
+## Answers
+
+1. Exp50 vanilla 10-step failed because the preference margin grew mainly by degrading the loser branch while heldout video metrics did not improve.
+2. Exp51 confirmed loser-dominant behavior and quadmask-local object/boundary damage.
+3. Exp52 rescue grid was limited by slow forward and only reached mixed R1_Q0 evidence, though cache and row0 smoke proved the path can run.
+4. Current available GPUs for Exp53 are GPU0-3 status: `EXP53_H20_PARTIAL_GPU_READY`.
+5. Exp53 differs by targeting R1/R2 on Q1/Q2 and T300/T500, using cached inputs and one-step only.
+6. No long training is allowed; 10-step waits for Exp55 cross-server aggregation.

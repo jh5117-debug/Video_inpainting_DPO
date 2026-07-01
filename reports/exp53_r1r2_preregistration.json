@@ -1,0 +1,89 @@
+{
+  "conditional_wave2": [
+    {
+      "cell": "R2_Q1_T500_S0",
+      "gpu": 0,
+      "quadmask": "q1_object_only",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 500,
+      "wave": "H20-2"
+    },
+    {
+      "cell": "R2_Q2_T300_S0",
+      "gpu": 1,
+      "quadmask": "q2_strict_affected",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 300,
+      "wave": "H20-2"
+    },
+    {
+      "cell": "R1_Q1_T300_S0",
+      "gpu": 2,
+      "quadmask": "q1_object_only",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 300,
+      "wave": "H20-2"
+    },
+    {
+      "cell": "R2_Q1_T300_S0",
+      "gpu": 3,
+      "quadmask": "q1_object_only",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 300,
+      "wave": "H20-2"
+    }
+  ],
+  "rules": {
+    "hard_comp": false,
+    "one_step_only": true,
+    "strict_reload": true,
+    "ten_step": false,
+    "train4_heldout4": true,
+    "visual_review_required": true,
+    "vor_eval": false
+  },
+  "status": "EXP53_R1R2_PREREGISTERED",
+  "timestamp": "2026-07-01T08:53:57+00:00",
+  "wave1": [
+    {
+      "cell": "R1_Q2_T500_S0",
+      "gpu": 0,
+      "quadmask": "q2_strict_affected",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 500,
+      "wave": "H20-1"
+    },
+    {
+      "cell": "R1_Q2_T300_S0",
+      "gpu": 1,
+      "quadmask": "q2_strict_affected",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 300,
+      "wave": "H20-1"
+    },
+    {
+      "cell": "R2_Q2_T500_S0",
+      "gpu": 2,
+      "quadmask": "q2_strict_affected",
+      "recipe": "R2_WinnerPreserve_LoserClip",
+      "scope": "S0_proj_out",
+      "timestep": 500,
+      "wave": "H20-1"
+    },
+    {
+      "cell": "R1_Q1_T500_S0",
+      "gpu": 3,
+      "quadmask": "q1_object_only",
+      "recipe": "R1_WinnerPreserve_LocalDPO",
+      "scope": "S0_proj_out",
+      "timestep": 500,
+      "wave": "H20-1"
+    }
+  ]
+}

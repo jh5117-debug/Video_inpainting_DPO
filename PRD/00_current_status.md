@@ -1,3 +1,7 @@
+
+## 2026-07-01 Exp53 H20 R1/R2 Preregistration
+
+Status: `EXP53_R1R2_PREREGISTERED`. H20 lane is preregistered for one-step R1/R2 targeted cells. No 10-step or third-backbone claim.
 ## 2026-06-30 Exp50 VOID Weight Download Blocked
 
 Status: `VOID_WEIGHT_DOWNLOAD_BLOCKED`.

@@ -1,3 +1,3 @@
 # Exp53 Metric Summary
 
-Milestone A GPU ready count: 0/4.
+Milestone B only: no one-step metrics yet. Metrics will be full + quadmask-aware after Wave1.

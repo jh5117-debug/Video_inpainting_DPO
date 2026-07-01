@@ -1,3 +1,3 @@
-# Exp53 H20 VOID R1/R2 Targeted One-Step Rescue
+# Exp53 VOID R1/R2 Targeted H20
 
-H20 lane only: R1/R2 on GPU0-3.
+H20 lane for one-step R1/R2 targeted rescue. No 10-step is run in this lane.

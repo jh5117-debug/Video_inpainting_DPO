@@ -9,3 +9,7 @@ Boundaries: one-step only, no VOR-Eval, no hard comp, no 10-step, no third-backb
 ## Milestone A - 2026-07-01T15:59:54+08:00
 
 Status: `EXP53_GPU_BLOCKED`. Readback and GPU audit completed. H20 lane only: R1/R2 on GPU0-3.
+
+## Milestone B - 2026-07-01T08:53:57+00:00
+
+Status: `EXP53_R1R2_PREREGISTERED`. Wave1 cells locked for R1/R2 on H20 GPU0-3; 10-step remains locked for Exp55 aggregation. Current GPU status: `EXP53_H20_PARTIAL_GPU_READY`.
