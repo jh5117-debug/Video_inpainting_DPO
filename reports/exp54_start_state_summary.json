@@ -1,0 +1,54 @@
+{
+  "active_compute_rows": [],
+  "allowed_gpus": [
+    0,
+    1
+  ],
+  "branch": "research/exp54-void-sdpo-linear-pai-20260701",
+  "created": "2026-07-01T15:53:57+08:00",
+  "experiment": "Exp54",
+  "file_status": {
+    "PRD/00_current_status.md": "present",
+    "PRD/01_experiment_matrix.md": "present",
+    "PRD/47_exp50_pai_void_adapter_feasibility.md": "present",
+    "PRD/48_exp51_void_loser_dominant_rescue.md": "present",
+    "PRD/49_exp52_void_winner_preserving_allgpu.md": "present",
+    "experiment_registry/exp50_pai_void_adapter_feasibility/status.md": "present",
+    "experiment_registry/exp51_void_loser_dominant_rescue/status.md": "present",
+    "experiment_registry/exp52_void_winner_preserving_allgpu/status.md": "present",
+    "reports/exp51_void_loser_dominant_forensic.md": "present",
+    "reports/exp51_void_quadmask_ablation_data.md": "present",
+    "reports/exp51_void_quadmask_metrics.md": "present",
+    "reports/exp52_cache_summary.json": "present",
+    "reports/exp52_r1_row0_smoke.md": "present",
+    "reports/exp52_rescue_onestep.md": "present",
+    "reports/exp52_rescue_onestep_summary.json": "present",
+    "reports/exp52_void_next_steps.md": "present",
+    "reports/exp52_void_rescue_decision.md": "present"
+  },
+  "gpu_rows": [
+    {
+      "gpu": "0",
+      "memory_total_mib": "143771",
+      "memory_used_mib": "0",
+      "name": "NVIDIA L20X",
+      "status": "ready",
+      "utilization_gpu_pct": "0"
+    },
+    {
+      "gpu": "1",
+      "memory_total_mib": "143771",
+      "memory_used_mib": "0",
+      "name": "NVIDIA L20X",
+      "status": "ready",
+      "utilization_gpu_pct": "0"
+    }
+  ],
+  "hard_comp": false,
+  "head": "a46edb656948799754789f73860a29bf1a469a0c",
+  "lane_note": "PAI lane only: R3/R4 on GPU0-1.",
+  "no_vor_eval": true,
+  "ready_gpu_count": 2,
+  "status": "EXP54_PAI_GPU0_1_READY",
+  "ten_step": "not_allowed_in_lane"
+}

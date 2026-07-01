@@ -2007,3 +2007,7 @@ Status: `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS`. 10-step remains locked; VOID is 
 ## Exp52 Milestone I Final Decision - 2026-07-01T14:57:55+08:00
 
 Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. VOID remains VOR-OR baseline / same-model loser generator / adapter-engineering candidate, not third adapter evidence.
+
+## Exp54 Milestone A - 2026-07-01T15:53:57+08:00
+
+Status: `EXP54_PAI_GPU0_1_READY`. PAI lane only: R3/R4 on GPU0-1.

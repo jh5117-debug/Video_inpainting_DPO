@@ -1,0 +1,3 @@
+gpu,name,memory_used_mib,memory_total_mib,utilization_gpu_pct,status
+0,NVIDIA L20X,0,143771,0,ready
+1,NVIDIA L20X,0,143771,0,ready

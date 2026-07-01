@@ -808,3 +808,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp52 | VOID winner-preserving all-GPU rescue | Milestone F | `EXP52_WAVE2_DEFERRED_NO_ONESTEP_PASS` | Wave2/LoRA/10-step deferred; R1_Q0 full evidence mixed. |
 
 | Exp52 | VOID winner-preserving all-GPU rescue | Final | `VOID_ADAPTER_ENGINEERING_CANDIDATE` | R1 reduced loser dominance but heldout evidence was mixed; 10-step not run; not third evidence. |
+
+| Exp54 | VOID targeted one-step | Milestone A | `EXP54_PAI_GPU0_1_READY` | PAI lane only: R3/R4 on GPU0-1. |
