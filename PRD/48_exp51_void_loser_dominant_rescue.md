@@ -39,3 +39,9 @@ Built four quadmask variants for existing VOR-Train train4/heldout4 rows. All 8 
 Status: `VOID_NATIVE_KUBRIC_BLOCKED`
 
 H20 lacks Kubric, PyBullet, Blender, HUMOTO, and Blender texture assets. Public GCS manifests are reachable but insufficient. No fake VOID-native data was created.
+
+## Milestone F - Rescue Recipe Preregistration
+
+Status: `VOID_RESCUE_RECIPES_PREREGISTERED`
+
+R1/R2/R3/R4 are preregistered for one-step safety. R5 LoRA is gated and not default. No training was run before this preregistration commit.

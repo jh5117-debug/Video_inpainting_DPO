@@ -27,3 +27,7 @@ Milestone A status: `VOID_LOSER_DOMINANT_CONFIRMED`. Mean Exp50 10-step deltas: 
 ## Milestone E - Native Kubric
 
 No metrics: native data generation blocked before videos exist. Blockers: Kubric/PyBullet/Blender/HUMOTO assets.
+
+## Milestone F - Preregistration
+
+No metrics by design. Gates fixed: one-step first, 10-step only if one-step passes.

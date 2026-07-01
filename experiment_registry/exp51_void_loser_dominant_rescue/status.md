@@ -25,3 +25,9 @@ Q0/Q1/Q2/Q3 manifests generated from VOR-Train train4/heldout4 only. All visual 
 Status: `VOID_NATIVE_KUBRIC_BLOCKED`
 
 Blocked before data generation by missing Kubric/PyBullet/Blender/HUMOTO assets. No fake native data generated.
+
+## Milestone F
+
+Status: `VOID_RESCUE_RECIPES_PREREGISTERED`
+
+Winner-preserving/local/loser-clipped rescue recipes are locked before training.

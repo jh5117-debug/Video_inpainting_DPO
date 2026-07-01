@@ -4,3 +4,4 @@ B_quadmask_metrics	VOID_QUADMASK_METRICS_READY	affected_union_delta=-0.241560962
 C	official_sft_parity_hard_audit	VOID_SFT_PARITY_EXPLAINED_ONLY	v_prediction mapping and mean MSE match; exact helper parity blocked by official Accelerator loop
 D	vor_quadmask_ablation_data	VOID_QUADMASK_ABLATION_READY	Q0/Q1/Q2/Q3 generated for 8 VOR-Train rows; all visual sheets opened
 E	void_native_kubric_diagnostic	VOID_NATIVE_KUBRIC_BLOCKED	missing Kubric/PyBullet/Blender/HUMOTO assets; no fake data
+F	rescue_preregistration	VOID_RESCUE_RECIPES_PREREGISTERED	R1/R2/R3/R4 one-step grid locked; no training before preregistration

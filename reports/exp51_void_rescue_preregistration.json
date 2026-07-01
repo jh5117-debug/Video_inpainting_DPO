@@ -1,0 +1,97 @@
+{
+  "data_order": [
+    "VOR train4/heldout4 Q0 current first",
+    "optional best recipe repeat on Q1/Q2/Q3"
+  ],
+  "one_step_gate": {
+    "forbid": [
+      "collapse",
+      "tone_drift",
+      "boundary_destruction"
+    ],
+    "full_psnr_min_delta": -0.02,
+    "outside_psnr_min_delta": -0.02,
+    "visual_better_tie_min": "3/4",
+    "visual_worse_max": "1/4"
+  },
+  "recipes": {
+    "R0_current_baseline_replay": {
+      "purpose": "Exp50 vanilla LoVI-DPO replay for reproducibility only; do not re-run unless existing output is insufficient.",
+      "rerun_default": false,
+      "steps": 10,
+      "trainable_subset": "proj_out"
+    },
+    "R1_WinnerPreserve_LocalDPO": {
+      "boundary_preservation": 0.05,
+      "loser_gap_clip_tau": null,
+      "loser_grad_scale": 0.0,
+      "outside_preservation": 0.1,
+      "regions": [
+        "object",
+        "affected"
+      ],
+      "trainable_subset": "proj_out",
+      "winner_anchor": 0.05
+    },
+    "R2_WinnerPreserve_LoserClip": {
+      "boundary_preservation": 0.05,
+      "loser_gap_clip_tau": 0.0005,
+      "loser_grad_scale": 0.1,
+      "outside_preservation": 0.1,
+      "regions": [
+        "object",
+        "affected",
+        "boundary"
+      ],
+      "trainable_subset": "proj_out",
+      "winner_anchor": 0.05
+    },
+    "R3_SDPO_Safe": {
+      "loser_branch_scaled_by_safe_lambda": true,
+      "regions": [
+        "object",
+        "affected",
+        "boundary"
+      ],
+      "safe_lambda": 0.1,
+      "trainable_subset": "proj_out",
+      "winner_gradient_preserved": true
+    },
+    "R4_LinearDPO_vPrediction": {
+      "ema_reference": "optional only after frozen pass",
+      "reference": "frozen first",
+      "trainable_subset": "proj_out",
+      "utility": "linear v_prediction diagnostic"
+    },
+    "R5_LocalDPO_LastBlock_LoRA": {
+      "condition": "Only if R1-R4 all fail one-step and GPU/memory safe.",
+      "lora_rank": 4,
+      "modules": "last 2 transformer blocks attention out_proj or qkv/o",
+      "requires_new_zero_gap": true,
+      "run_default": false
+    }
+  },
+  "safety": {
+    "hard_comp": false,
+    "long_training": false,
+    "official_source_modification": false,
+    "steps_allowed": [
+      "one-step first",
+      "10-step only after one-step pass"
+    ],
+    "vor_eval": false
+  },
+  "status": "VOID_RESCUE_RECIPES_PREREGISTERED",
+  "ten_step_gate": {
+    "ewarp_max_worse": 0.05,
+    "forbid": [
+      "systematic_outside_damage",
+      "collapse"
+    ],
+    "full_psnr_min_delta": -0.02,
+    "local_metrics_improve_min": 2,
+    "lpips_max_worse": 0.001,
+    "visual_better_tie_min": "75%",
+    "visual_worse_max": "25%"
+  }
+}

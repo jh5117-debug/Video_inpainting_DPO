@@ -17,3 +17,7 @@ Visual review confirms Q1 and Q2 are plausible rescue-data variants. Q3 is broad
 ## Milestone E
 
 VOID-native Kubric diagnostic cannot currently separate VOR mismatch from objective mismatch because official native data generation is environment/asset blocked.
+
+## Milestone F
+
+The rescue plan explicitly targets the Exp50 loser-dominant mechanism and forbids promoting VOID without heldout video evidence.
