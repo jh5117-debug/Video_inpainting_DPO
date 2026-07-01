@@ -2047,3 +2047,9 @@ Decision: no one-step PASS, no Exp53B 10-step. R1_Q2_T500_S0 is the best H20 can
 Status: `EXP55_NO_10STEP_MIXED_ONLY`.
 
 Exp55 aggregated Exp53B H20 and Exp54 PAI one-step evidence without training or 10-step execution. Top ranking is `R1_Q2_T500_S0` from H20, followed by `R2_Q2_T500_S0`; the best PAI diagnostic remains `R4_Q2_T500_S0`. No candidate satisfies the original one-step PASS gate. The shared failure pattern is object/mask improvement with outside preservation, but overlap / affected / boundary regression and mixed visual review. VOID remains a VOR-OR baseline / loser-generator / adapter-engineering candidate, not third adapter evidence.
+
+## 2026-07-02 Exp56-H20 VOID Region-Safe Repair
+
+Status: `EXP56_H20_GPU_READY`.
+
+Exp56-H20 starts from Exp55 mixed-only decision. It will run only R5 object-only / region-preserving one-step cells on Q2/T500 using H20 GPU0-3 if free. No 10-step, no old R1/R2/R3/R4 recipe, no VOR-Eval, and no third-backbone claim are allowed.

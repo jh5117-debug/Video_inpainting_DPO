@@ -1,0 +1,6 @@
+branch: research/exp56-void-region-safe-h20-20260701
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp56_void_region_safe_h20
+output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp56_void_region_safe_h20
+h20_output_root: /home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp56_void_region_safe_h20
+log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp56_void_region_safe_h20
+runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp56_void_region_safe_h20

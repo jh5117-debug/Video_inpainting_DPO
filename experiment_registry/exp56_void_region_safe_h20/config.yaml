@@ -1,0 +1,13 @@
+experiment: exp56_void_region_safe_h20
+lane: h20
+base_branch: origin/research/exp55-void-crosslane-aggregator-20260701
+cells:
+  - R5_Q2_T500_S0
+  - R5_HALF_Q2_T500_S0
+quadmask_variant: q2_strict_affected
+timestep: 500
+scope: proj_out
+steps: 1
+ten_step_allowed: false
+vor_eval_used: false
+hard_comp_used: false

@@ -1,0 +1,6 @@
+gpu,index_name,memory_used_mib,memory_total_mib,utilization_gpu,compute_process,decision
+0,NVIDIA H20,28,97871,0,Xorg graphics 17MiB only,usable
+1,NVIDIA H20,1,97871,0,none,usable
+2,NVIDIA H20,1,97871,0,none,usable
+3,NVIDIA H20,1,97871,0,none,usable
+4,NVIDIA H20,892,97871,0,unrelated lingbot-world python outside lane,not_used

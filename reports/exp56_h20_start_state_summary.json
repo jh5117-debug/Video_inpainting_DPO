@@ -1,0 +1,11 @@
+{
+  "base_head": "7a85048d57a6e562a1bf768d83394aa1a39f2375",
+  "branch": "research/exp56-void-region-safe-h20-20260701",
+  "gpu0_3_available": true,
+  "killed_pids": [],
+  "machine": "instance-afs92r3e",
+  "status": "EXP56_H20_GPU_READY",
+  "ten_step_allowed": false,
+  "training_run": false,
+  "vor_eval_used": false
+}
