@@ -9,3 +9,7 @@ The Exp50 10-step run is not a global collapse; outside/background is preserved 
 ## Milestone C
 
 The Exp50 wrapper remains scientifically usable for micro diagnostics: it follows official VOID target/loss semantics without modifying official source. This does not claim adapter success.
+
+## Milestone D
+
+Visual review confirms Q1 and Q2 are plausible rescue-data variants. Q3 is broader and may expose VOR-derived affected-map spill, especially on REAL rows.

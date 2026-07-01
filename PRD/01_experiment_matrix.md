@@ -787,3 +787,5 @@ Status: `VOID_LOSER_DOMINANT_CONFIRMED`. Exp51 branch starts from Exp50 HEAD `3a
 Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 10-step local damage despite outside safety: affected_union delta PSNR -0.241561, overlap delta -0.423390, object_core delta -0.569839, outside_background delta 0.029117. Future rescue should prioritize object/object-core and affected boundary preservation while clipping loser gradients.
 
 | Exp51 | VOID loser-dominant rescue | Milestone C | `VOID_SFT_PARITY_EXPLAINED_ONLY` | Official SFT target/loss mapping audited; single-process forward is faithful, deepspeed not required for diagnostic forward. |
+
+| Exp51 | VOID loser-dominant rescue | Milestone D | `VOID_QUADMASK_ABLATION_READY` | Built Q0 current, Q1 object-only, Q2 strict affected, Q3 broad affected manifests for VOR-Train train4/heldout4. |

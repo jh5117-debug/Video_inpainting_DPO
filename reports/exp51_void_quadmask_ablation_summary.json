@@ -1,0 +1,24 @@
+{
+  "audit_rows": 32,
+  "hard_comp": false,
+  "manifest_paths": {
+    "q0_current": "manifests/exp51_void_quadmask_ablation_q0_current.jsonl",
+    "q1_object_only": "manifests/exp51_void_quadmask_ablation_q1_object_only.jsonl",
+    "q2_strict_affected": "manifests/exp51_void_quadmask_ablation_q2_strict_affected.jsonl",
+    "q3_broad_affected": "manifests/exp51_void_quadmask_ablation_q3_broad_affected.jsonl"
+  },
+  "no_vor_eval": true,
+  "rows_total": 8,
+  "status": "VOID_QUADMASK_ABLATION_READY",
+  "variants": {
+    "q0_current": "Current Exp50 quadmask copied as-is.",
+    "q1_object_only": "Object and overlap become object=0; all other pixels become background=255.",
+    "q2_strict_affected": "Object preserved; affected region rebuilt from high-threshold abs(V_obj - V_bg).",
+    "q3_broad_affected": "Object preserved; affected region rebuilt from lower-threshold abs(V_obj - V_bg)."
+  },
+  "visual_review": {
+    "montage_opened": "/tmp/exp51_quadmask_ablation_montage.jpg",
+    "notes": "All 8 evidence sheets were opened as a montage. Q1 is clean object-only; Q2 is the best conservative affected candidate; Q3 is useful diagnostic broad affected but riskier on REAL texture/lighting spill.",
+    "sheets_opened_by_codex": 8
+  }
+}

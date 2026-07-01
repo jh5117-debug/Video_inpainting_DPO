@@ -27,3 +27,9 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 Status: `VOID_SFT_PARITY_EXPLAINED_ONLY`
 
 The wrapper mirrors official target construction (`v_prediction` via scheduler velocity), inpaint conditioning, transformer forward, and mean MSE. Exact helper comparison remains unavailable because official `train.py` keeps the logic inside the Accelerator training loop.
+
+## Milestone D - VOR Quadmask Ablation Data
+
+Status: `VOID_QUADMASK_ABLATION_READY`
+
+Built four quadmask variants for existing VOR-Train train4/heldout4 rows. All 8 visual sheets were opened. Q1 is clean object-only; Q2 is conservative affected; Q3 is broader and riskier on REAL texture/lighting spill.

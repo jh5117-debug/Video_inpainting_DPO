@@ -13,3 +13,9 @@ Quadmask-aware metrics are ready. 10-step outside/background remains safe, but a
 Status: `VOID_SFT_PARITY_EXPLAINED_ONLY`
 
 Line-level SFT parity mapping completed. Deepspeed is not required for single-process forward diagnostics.
+
+## Milestone D
+
+Status: `VOID_QUADMASK_ABLATION_READY`
+
+Q0/Q1/Q2/Q3 manifests generated from VOR-Train train4/heldout4 only. All visual sheets opened.
