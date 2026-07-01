@@ -52,8 +52,26 @@ Fixed loser suppression alone is insufficient. VOID needs an adaptive transition
 | A | `EXP57_READBACK_DONE` | Reconfirm Exp55/Exp56 mixed-only failure pattern. |
 | B | `EXP57_ADAPTIVE_TRANSITION_LOSS_READY` | Implemented `void_adaptive_transition_safe_dpo_v0` primitives and unit tests. |
 | C | `EXP57_ADAPTIVE_ZERO_GAP_PASS` | H20 Q2/T500 zero-gap passed; no optimizer step. |
-| H20-D/E | pending | Run H20 one-step cells only and hand off. |
+| H20-D/E | `EXP57_H20_ONESTEP_NEGATIVE` | H20 one-step cells completed with checkpoints, strict reloads, videos, metrics, and visual review. Best diagnostic was `ATS_STRICT_Q2_T500_S0`, but all cells failed the one-step PASS gate. No 10-step. |
 | PAI-D/E | pending | Run PAI one-step cells only after core branch exists. |
+
+## H20 Lane Result
+
+H20 ran `ATS0_Q2_T500_S0`, `ATS_STRICT_Q2_T500_S0`, `ATS_HALFLR_Q2_T500_S0`, and `ATS_NODPO_Q2_T500_S0`.
+
+All four cells produced checkpoints, strict reloads, heldout4 Step0/Step1 videos, quadmask-aware metrics, diagnostics, and visual evidence. Codex reviewed the overview evidence sheets for all four cells.
+
+No H20 cell reached one-step PASS. `ATS_STRICT_Q2_T500_S0` was the best diagnostic cell, but still had mean deltas:
+
+- full PSNR: `-0.094041`
+- object PSNR: `-0.473428`
+- overlap PSNR: `-0.581142`
+- affected PSNR: `-0.146322`
+- boundary PSNR: `-0.081617`
+- outside PSNR: `-0.005963`
+- visual: `1 better / 0 tie / 3 worse`
+
+Backtracking selected scale `1.0` for all cells and rejected no update. This means train4 finite-difference safety did not predict heldout transition damage.
 
 ## Scientific Position
 

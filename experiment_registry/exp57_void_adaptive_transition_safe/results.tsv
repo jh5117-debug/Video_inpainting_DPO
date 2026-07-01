@@ -2,3 +2,5 @@ milestone	status	summary
 A	EXP57_READBACK_DONE	Exp55 mixed-only and Exp56-H20 transition-region regression reconfirmed.
 B	EXP57_ADAPTIVE_TRANSITION_LOSS_READY	Isolated VOID-only adaptive safe-lambda, transition safety, and backtracking primitives implemented.
 C	EXP57_ADAPTIVE_ZERO_GAP_PASS	H20 Q2/T500 adaptive zero-gap passed; DPO loss near log(2), margin zero, safe lambda computed, no optimizer step.
+H20-D	EXP57_H20_ADAPTIVE_ONESTEP_MIXED	H20 generated one-step checkpoints/videos/metrics for ATS0, ATS_STRICT, ATS_HALFLR, and ATS_NODPO; all cell-level outcomes were NEGATIVE.
+H20-E	EXP57_H20_ONESTEP_NEGATIVE	Best H20 diagnostic is ATS_STRICT_Q2_T500_S0, but no H20 cell passed one-step; no 10-step.

@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp57 H20 Adaptive Transition-Safe One-Step
+
+Status: `EXP57_H20_ONESTEP_NEGATIVE`.
+
+H20 completed four Q2/T500/S0 adaptive transition-safe one-step cells: ATS0, ATS_STRICT, ATS_HALFLR, and ATS_NODPO. All produced checkpoints, strict reloads, heldout4 Step0/Step1 videos, metrics, diagnostics, and visual evidence. Best diagnostic is `ATS_STRICT_Q2_T500_S0`, but it still regressed full/object/overlap/affected/boundary metrics and visual review was 1 better / 0 tie / 3 worse. No cell reached one-step PASS, so 10-step remains locked. VOID remains baseline / loser generator / adapter-engineering candidate, not third-backbone evidence.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

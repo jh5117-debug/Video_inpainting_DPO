@@ -1,0 +1,5 @@
+rank,cell,status,full_psnr_delta,object_psnr_delta,overlap_psnr_delta,affected_psnr_delta,boundary_psnr_delta,outside_psnr_delta,visual_better,visual_tie,visual_worse,selected_scale,lambda_loser_global,loser_contribution_ratio,checkpoint_exists,ten_step_unlocked,notes
+1,ATS_STRICT_Q2_T500_S0,NEGATIVE,-0.094041,-0.473428,-0.581142,-0.146322,-0.081617,-0.005963,1,0,3,1.0,0.018770,0.530192,true,false,best H20 diagnostic but fails PASS gate
+2,ATS_NODPO_Q2_T500_S0,NEGATIVE,-0.094423,-0.786377,-0.563998,-0.233663,-0.123053,-0.001418,0,0,4,1.0,0.0,0.0,true,false,no loser DPO still damages transition regions
+3,ATS_HALFLR_Q2_T500_S0,NEGATIVE,-0.104624,-0.773073,-0.707366,-0.160285,-0.150837,-0.002763,0,0,4,1.0,0.018770,0.823812,true,false,half LR did not protect transition regions
+4,ATS0_Q2_T500_S0,NEGATIVE,-0.113495,-0.598885,-0.593289,-0.213889,-0.124392,-0.007378,1,0,3,1.0,0.046926,0.529946,true,false,default adaptive setting fails heldout gate
