@@ -23,3 +23,7 @@ Milestone A status: `VOID_LOSER_DOMINANT_CONFIRMED`. Mean Exp50 10-step deltas: 
 - Rows: 8 per variant
 - Visual sheets opened: 8/8
 - Preferred diagnostic priority: Q1/Q2 before Q3
+
+## Milestone E - Native Kubric
+
+No metrics: native data generation blocked before videos exist. Blockers: Kubric/PyBullet/Blender/HUMOTO assets.

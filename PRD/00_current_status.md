@@ -1982,3 +1982,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 - 2026-07-01 Exp51 Milestone C: VOID official SFT parity hard audit completed as `VOID_SFT_PARITY_EXPLAINED_ONLY`; v_prediction target/loss mapping is line-level consistent, exact helper parity is blocked by official Accelerator loop encapsulation.
 
 - 2026-07-01 Exp51 Milestone D: VOR-Train quadmask ablation data built for Q0/Q1/Q2/Q3 across train4/heldout4; all 8 visual sheets opened; status `VOID_QUADMASK_ABLATION_READY`.
+
+- 2026-07-01 Exp51 Milestone E: VOID-native Kubric diagnostic is `VOID_NATIVE_KUBRIC_BLOCKED`; Kubric/PyBullet/Blender/HUMOTO assets are absent, no fake data generated.

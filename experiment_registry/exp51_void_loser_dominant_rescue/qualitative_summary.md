@@ -13,3 +13,7 @@ The Exp50 wrapper remains scientifically usable for micro diagnostics: it follow
 ## Milestone D
 
 Visual review confirms Q1 and Q2 are plausible rescue-data variants. Q3 is broader and may expose VOR-derived affected-map spill, especially on REAL rows.
+
+## Milestone E
+
+VOID-native Kubric diagnostic cannot currently separate VOR mismatch from objective mismatch because official native data generation is environment/asset blocked.

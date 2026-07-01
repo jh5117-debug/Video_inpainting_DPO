@@ -1,0 +1,19 @@
+{
+  "blender_available": false,
+  "exact_blockers": [
+    "KUBRIC_ENV_BLOCKED",
+    "KUBRIC_RUNTIME_BLOCKED",
+    "KUBRIC_ASSET_BLOCKED"
+  ],
+  "fake_data_created": false,
+  "gcs_asset_manifest_reachable": true,
+  "humoto_available": false,
+  "inference_run": false,
+  "kubric_import": false,
+  "manifest_created": false,
+  "probe": "HOST instance-afs92r3e\nPYTHON /usr/bin/python3\nIMPORT_FAIL kubric ModuleNotFoundError(\"No module named 'kubric'\")\nIMPORT_FAIL pybullet ModuleNotFoundError(\"No module named 'pybullet'\")\nIMPORT_OK imageio 2.37.0\nIMPORT_OK imageio_ffmpeg 0.6.0\nBLENDER_PATH None\nBLENDER_FAIL FileNotFoundError(2, 'No such file or directory')\nHUMOTO_DIR exists False\nBLENDER_TEXTURE_DIR exists False\nHTTP_OK KuBasic 200\nHTTP_OK GSO 200\n",
+  "pybullet_import": false,
+  "status": "VOID_NATIVE_KUBRIC_BLOCKED",
+  "training_run": false,
+  "vor_eval_used": false
+}

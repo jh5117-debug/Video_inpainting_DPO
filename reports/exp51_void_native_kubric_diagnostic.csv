@@ -1,0 +1,8 @@
+check,result,status,notes
+host,instance-afs92r3e,PASS,Probe ran on H20.
+kubric_import,ModuleNotFoundError,BLOCKED,Kubric is not installed in the available Exp50 VOID env.
+pybullet_import,ModuleNotFoundError,BLOCKED,PyBullet is required by official kubric_variable_objects.py.
+blender_binary,missing,BLOCKED,No blender executable on PATH; official HUMOTO and Kubric rendering require Blender.
+humoto_assets,missing,BLOCKED,HUMOTO is license-gated/manual per official README and is not present.
+blender_textures,missing,BLOCKED,Official HUMOTO renderer texture dirs are not present.
+gcs_asset_manifests,KuBasic/GSO reachable,PASS,"Network can reach public GCS manifests, but renderer/env blockers remain."

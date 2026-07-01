@@ -3,3 +3,4 @@ A_loser_dominant_forensic	VOID_LOSER_DOMINANT_CONFIRMED	margin_end=0.00106557831
 B_quadmask_metrics	VOID_QUADMASK_METRICS_READY	affected_union_delta=-0.24156096290167284;object_core_delta=-0.5698388864715138;outside_delta=0.029117390014207878;boundary_delta=-0.19240164982932662
 C	official_sft_parity_hard_audit	VOID_SFT_PARITY_EXPLAINED_ONLY	v_prediction mapping and mean MSE match; exact helper parity blocked by official Accelerator loop
 D	vor_quadmask_ablation_data	VOID_QUADMASK_ABLATION_READY	Q0/Q1/Q2/Q3 generated for 8 VOR-Train rows; all visual sheets opened
+E	void_native_kubric_diagnostic	VOID_NATIVE_KUBRIC_BLOCKED	missing Kubric/PyBullet/Blender/HUMOTO assets; no fake data

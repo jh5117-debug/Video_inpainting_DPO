@@ -33,3 +33,9 @@ The wrapper mirrors official target construction (`v_prediction` via scheduler v
 Status: `VOID_QUADMASK_ABLATION_READY`
 
 Built four quadmask variants for existing VOR-Train train4/heldout4 rows. All 8 visual sheets were opened. Q1 is clean object-only; Q2 is conservative affected; Q3 is broader and riskier on REAL texture/lighting spill.
+
+## Milestone E - VOID-Native Kubric Diagnostic
+
+Status: `VOID_NATIVE_KUBRIC_BLOCKED`
+
+H20 lacks Kubric, PyBullet, Blender, HUMOTO, and Blender texture assets. Public GCS manifests are reachable but insufficient. No fake VOID-native data was created.

@@ -19,3 +19,9 @@ Line-level SFT parity mapping completed. Deepspeed is not required for single-pr
 Status: `VOID_QUADMASK_ABLATION_READY`
 
 Q0/Q1/Q2/Q3 manifests generated from VOR-Train train4/heldout4 only. All visual sheets opened.
+
+## Milestone E
+
+Status: `VOID_NATIVE_KUBRIC_BLOCKED`
+
+Blocked before data generation by missing Kubric/PyBullet/Blender/HUMOTO assets. No fake native data generated.

@@ -789,3 +789,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp51 | VOID loser-dominant rescue | Milestone C | `VOID_SFT_PARITY_EXPLAINED_ONLY` | Official SFT target/loss mapping audited; single-process forward is faithful, deepspeed not required for diagnostic forward. |
 
 | Exp51 | VOID loser-dominant rescue | Milestone D | `VOID_QUADMASK_ABLATION_READY` | Built Q0 current, Q1 object-only, Q2 strict affected, Q3 broad affected manifests for VOR-Train train4/heldout4. |
+
+| Exp51 | VOID loser-dominant rescue | Milestone E | `VOID_NATIVE_KUBRIC_BLOCKED` | Official Kubric path blocked by missing Kubric/PyBullet/Blender and HUMOTO/assets; no fake data. |
