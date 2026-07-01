@@ -1,0 +1,5 @@
+gpu,name,memory_used_mib,memory_total_mib,utilization_gpu_pct,status
+0,NVIDIA H20,26671,97871,0,occupied_or_unknown
+1,NVIDIA H20,26644,97871,2,occupied_or_unknown
+2,NVIDIA H20,26644,97871,1,occupied_or_unknown
+3,NVIDIA H20,26644,97871,0,occupied_or_unknown

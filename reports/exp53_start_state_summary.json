@@ -1,0 +1,81 @@
+{
+  "active_compute_rows": [
+    "GPU-53e27608-e06c-4088-85fd-81412f1f451d, 2273957, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-a799bf88-f766-89c7-3edb-5ece7dd513e6, 2322124, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-86044016-7665-effd-e318-ec67c4e61190, 2274238, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-0b7c9457-c09b-532c-07aa-fe3ee306411d, 2273797, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-18eab895-41e6-3062-a5df-b104db5e2cd0, 2287457, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-c15fc8f0-9d89-86bb-701d-38f848f9366e, 2297162, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB",
+    "GPU-ca37d462-7bfc-213b-e46e-bef520750458, 2428958, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 24552 MiB",
+    "GPU-40d1090a-9ef2-98c0-7f6d-48c83ab04348, 2302610, /home/nvme03/SZQ-WAM/miniconda3/envs/fastwam/bin/python, 26624 MiB"
+  ],
+  "allowed_gpus": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "branch": "research/exp53-void-r1r2-targeted-h20-20260701",
+  "created": "2026-07-01T15:59:54+08:00",
+  "experiment": "Exp53",
+  "file_status": {
+    "PRD/00_current_status.md": "present",
+    "PRD/01_experiment_matrix.md": "present",
+    "PRD/47_exp50_pai_void_adapter_feasibility.md": "present",
+    "PRD/48_exp51_void_loser_dominant_rescue.md": "present",
+    "PRD/49_exp52_void_winner_preserving_allgpu.md": "present",
+    "experiment_registry/exp50_pai_void_adapter_feasibility/status.md": "present",
+    "experiment_registry/exp51_void_loser_dominant_rescue/status.md": "present",
+    "experiment_registry/exp52_void_winner_preserving_allgpu/status.md": "present",
+    "reports/exp51_void_loser_dominant_forensic.md": "present",
+    "reports/exp51_void_quadmask_ablation_data.md": "present",
+    "reports/exp51_void_quadmask_metrics.md": "present",
+    "reports/exp52_cache_summary.json": "present",
+    "reports/exp52_r1_row0_smoke.md": "present",
+    "reports/exp52_rescue_onestep.md": "present",
+    "reports/exp52_rescue_onestep_summary.json": "present",
+    "reports/exp52_void_next_steps.md": "present",
+    "reports/exp52_void_rescue_decision.md": "present"
+  },
+  "gpu_rows": [
+    {
+      "gpu": "0",
+      "memory_total_mib": "97871",
+      "memory_used_mib": "26671",
+      "name": "NVIDIA H20",
+      "status": "occupied_or_unknown",
+      "utilization_gpu_pct": "0"
+    },
+    {
+      "gpu": "1",
+      "memory_total_mib": "97871",
+      "memory_used_mib": "26644",
+      "name": "NVIDIA H20",
+      "status": "occupied_or_unknown",
+      "utilization_gpu_pct": "2"
+    },
+    {
+      "gpu": "2",
+      "memory_total_mib": "97871",
+      "memory_used_mib": "26644",
+      "name": "NVIDIA H20",
+      "status": "occupied_or_unknown",
+      "utilization_gpu_pct": "1"
+    },
+    {
+      "gpu": "3",
+      "memory_total_mib": "97871",
+      "memory_used_mib": "26644",
+      "name": "NVIDIA H20",
+      "status": "occupied_or_unknown",
+      "utilization_gpu_pct": "0"
+    }
+  ],
+  "hard_comp": false,
+  "head": "a46edb656948799754789f73860a29bf1a469a0c",
+  "lane_note": "H20 lane only: R1/R2 on GPU0-3.",
+  "no_vor_eval": true,
+  "ready_gpu_count": 0,
+  "status": "EXP53_GPU_BLOCKED",
+  "ten_step": "not_allowed_in_lane"
+}
