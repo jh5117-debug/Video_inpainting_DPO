@@ -1,0 +1,145 @@
+{
+  "best_cell": "ATS_STRICT_Q2_T500_S0",
+  "cells": {
+    "ATS0_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_forward/ATS0_Q2_T500_S0/checkpoints/ATS0_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.04692554678451062,
+        "loser_contribution_ratio": 0.5299456180835008,
+        "max_param_delta_norm": 0.005661578383296728,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 669.0853445082903,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": 9.360164403915405e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.21388915993118474,
+        "boundary_psnr_delta": -0.12439151843479657,
+        "full_psnr_delta": -0.11349536343525735,
+        "object_psnr_delta": -0.5988851505127588,
+        "outside_l1_delta": -2.6201033809532433e-05,
+        "outside_psnr_delta": -0.007378336883800962,
+        "overlap_psnr_delta": -0.5932891259368915,
+        "ssim_delta": -0.00013794197354016768,
+        "step0_step1_l1": 0.009010485257022083,
+        "temporal_flicker_delta": 1.0389289973713713e-05,
+        "tone_drift": -0.0001398356144860147
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 1,
+        "tie": 0,
+        "worse": 3
+      }
+    },
+    "ATS_HALFLR_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_forward/ATS_HALFLR_Q2_T500_S0/checkpoints/ATS_HALFLR_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.01877021871380425,
+        "loser_contribution_ratio": 0.823812217824864,
+        "max_param_delta_norm": 0.0026317995507270098,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 670.9944649524987,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": -5.5149941090348875e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.16028515603120042,
+        "boundary_psnr_delta": -0.15083682801767218,
+        "full_psnr_delta": -0.10462429192005285,
+        "object_psnr_delta": -0.7730725610887177,
+        "outside_l1_delta": -3.245102319245508e-05,
+        "outside_psnr_delta": -0.002763230240495851,
+        "overlap_psnr_delta": -0.7073659121220413,
+        "ssim_delta": -0.00014831692563138654,
+        "step0_step1_l1": 0.00900656942879626,
+        "temporal_flicker_delta": 2.8073530262665063e-05,
+        "tone_drift": -5.215126736515406e-05
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    },
+    "ATS_NODPO_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_forward/ATS_NODPO_Q2_T500_S0/checkpoints/ATS_NODPO_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.0,
+        "loser_contribution_ratio": 0.0,
+        "max_param_delta_norm": 0.00566121144220233,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 717.1842433586717,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": 0.0
+      },
+      "means": {
+        "affected_psnr_delta": -0.2336633457413404,
+        "boundary_psnr_delta": -0.12305312908254962,
+        "full_psnr_delta": -0.09442309914042823,
+        "object_psnr_delta": -0.7863773958129094,
+        "outside_l1_delta": -2.9002820762495055e-05,
+        "outside_psnr_delta": -0.0014182090614793808,
+        "overlap_psnr_delta": -0.5639978387834459,
+        "ssim_delta": -0.0001395002358970665,
+        "step0_step1_l1": 0.00900726789647403,
+        "temporal_flicker_delta": 3.267681542796626e-05,
+        "tone_drift": -1.745624130088043e-05
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    },
+    "ATS_STRICT_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/nvme01/H20_Video_inpainting_DPO/experiments/dpo/exp57_void_adaptive_transition_h20/adaptive_forward/ATS_STRICT_Q2_T500_S0/checkpoints/ATS_STRICT_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.01877021871380425,
+        "loser_contribution_ratio": 0.5301923349336045,
+        "max_param_delta_norm": 0.00566148804500699,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 670.1610249821097,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": 7.956176705192775e-05
+      },
+      "means": {
+        "affected_psnr_delta": -0.1463215678596077,
+        "boundary_psnr_delta": -0.0816169851734605,
+        "full_psnr_delta": -0.0940410087959167,
+        "object_psnr_delta": -0.47342779337691976,
+        "outside_l1_delta": -2.1654996089636412e-05,
+        "outside_psnr_delta": -0.005963320529144944,
+        "overlap_psnr_delta": -0.5811415277335978,
+        "ssim_delta": -0.00012779361952716672,
+        "step0_step1_l1": 0.008995627785528388,
+        "temporal_flicker_delta": 2.6328813439012433e-05,
+        "tone_drift": -2.7637261904173485e-05
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 1,
+        "tie": 0,
+        "worse": 3
+      }
+    }
+  },
+  "hard_comp_used": false,
+  "status": "EXP57_H20_ADAPTIVE_ONESTEP_MIXED",
+  "ten_step_run": false,
+  "vor_eval_used": false
+}
