@@ -1,5 +1,5 @@
 # Exp53 Status
 
-Current status: `EXP53_R1R2_ONESTEP_BLOCKED`
+Current status: `EXP53_WAVE2_NOT_RUN`
 
-Milestone C attempted the only valid free T500 Wave1 cell and hit slow-forward/no-checkpoint. No visual evidence or 10-step was produced.
+Milestone D completed: Wave2 not run because Wave1 had no PASS or MIXED-safe candidate.

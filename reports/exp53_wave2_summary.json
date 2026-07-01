@@ -1,0 +1,9 @@
+{
+  "hard_comp": false,
+  "no_vor_eval": true,
+  "reason": "Wave1 produced no PASS and no MIXED-safe cell; only attempted valid T500 cell was slow-forward/no-checkpoint.",
+  "status": "EXP53_WAVE2_NOT_RUN",
+  "ten_step_unlocked": false,
+  "timestamp": "2026-07-01T09:09:15+00:00",
+  "wave2_run": false
+}

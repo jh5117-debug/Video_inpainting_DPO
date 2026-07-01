@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp53 H20 Wave2 Decision
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp53 H20 VOID Wave2 | `EXP53_WAVE2_NOT_RUN` | `reports/exp53_wave2_decision.md` |
+
 ## 2026-07-01 Exp53 H20 R1/R2 Wave1
 
 | User-facing name | Status | Evidence / registry |

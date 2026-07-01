@@ -1,4 +1,8 @@
 
+## 2026-07-01 Exp53 H20 Wave2 Not Run
+
+Status: `EXP53_WAVE2_NOT_RUN`. No PASS/MIXED-safe Wave1 cell; no 10-step.
+
 ## 2026-07-01 Exp53 H20 R1/R2 Wave1 Blocked
 
 Status: `EXP53_R1R2_ONESTEP_BLOCKED`. H20 Wave1 did not produce checkpoint/video evidence; no 10-step.

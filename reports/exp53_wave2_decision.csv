@@ -1,0 +1,4 @@
+condition,value,decision
+Wave1 PASS count,0,Do not run 10-step or Wave2 expansion.
+Wave1 MIXED-safe count,0,Do not run targeted Wave2.
+Wave1 blocker,SLOW_FORWARD_NO_CHECKPOINT + occupied GPUs + missing T300 cache,Stop H20 lane and hand off blocker.
