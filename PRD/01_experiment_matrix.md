@@ -781,3 +781,7 @@ Status: `VOID_ADAPTER_10STEP_NEGATIVE`. H20 generated heldout4 Step0/Step1 evide
 ## Exp51 VOID Loser-Dominant Rescue - 2026-07-01T10:33:01+08:00
 
 Status: `VOID_LOSER_DOMINANT_CONFIRMED`. Exp51 branch starts from Exp50 HEAD `3aa65c53b2bd53e69e7a2d9528d9127a21849d66`. Milestone A confirms Exp50 vanilla 10-step margin was loser-dominant: final winner_gap=0.000072602, loser_gap=-0.000992976, loser margin share=93.19%. Continue with winner-preserving/local rescue; do not scale vanilla recipe.
+
+## Exp51 Milestone B Quadmask Metrics - 2026-07-01T10:51:36+08:00
+
+Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 10-step local damage despite outside safety: affected_union delta PSNR -0.241561, overlap delta -0.423390, object_core delta -0.569839, outside_background delta 0.029117. Future rescue should prioritize object/object-core and affected boundary preservation while clipping loser gradients.

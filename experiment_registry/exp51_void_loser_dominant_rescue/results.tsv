@@ -1,2 +1,3 @@
 milestone	status	details
 A_loser_dominant_forensic	VOID_LOSER_DOMINANT_CONFIRMED	margin_end=0.0010655783116817474;loser_share=0.9318659343655935;winner_gap=7.260218262672424e-05;loser_gap=-0.0009929761290550232;mask_delta=-0.22987799889405647;boundary_delta=-0.06303431007626781;outside_delta=0.043421852091388935
+B_quadmask_metrics	VOID_QUADMASK_METRICS_READY	affected_union_delta=-0.24156096290167284;object_core_delta=-0.5698388864715138;outside_delta=0.029117390014207878;boundary_delta=-0.19240164982932662

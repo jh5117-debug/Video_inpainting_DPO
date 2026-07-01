@@ -1,0 +1,177 @@
+{
+  "status": "VOID_QUADMASK_METRICS_READY",
+  "summary": {
+    "one_step": {
+      "affected_boundary": {
+        "mean_area_frac": 0.2762011573428199,
+        "mean_delta_l1": 0.08940058946609497,
+        "mean_delta_psnr": -0.09731141867633486,
+        "mean_step0_stepn_l1": 3.209781587123871,
+        "n": 4
+      },
+      "affected_only_value127": {
+        "mean_area_frac": 0.08473161162522734,
+        "mean_delta_l1": 0.09722459316253662,
+        "mean_delta_psnr": -0.12076509092178789,
+        "mean_step0_stepn_l1": 3.625597298145294,
+        "n": 4
+      },
+      "affected_union_63_127": {
+        "mean_area_frac": 0.1123477996341766,
+        "mean_delta_l1": 0.04889881610870361,
+        "mean_delta_psnr": -0.10377045375260874,
+        "mean_step0_stepn_l1": 3.4080669283866882,
+        "n": 4
+      },
+      "far_outside": {
+        "mean_area_frac": 0.6677415635850695,
+        "mean_delta_l1": -0.05316773056983948,
+        "mean_delta_psnr": 0.06381682775955255,
+        "mean_step0_stepn_l1": 1.3095773458480835,
+        "n": 4
+      },
+      "full_frame": {
+        "mean_area_frac": 1.0,
+        "mean_delta_l1": -0.028684258460998535,
+        "mean_delta_psnr": 0.02047564802851287,
+        "mean_step0_stepn_l1": 2.31069815158844,
+        "n": 4
+      },
+      "local_union_0_63_127": {
+        "mean_area_frac": 0.11557358030288938,
+        "mean_delta_l1": 0.02822178602218628,
+        "mean_delta_psnr": -0.049313248541857035,
+        "mean_step0_stepn_l1": 3.438903510570526,
+        "n": 4
+      },
+      "object_boundary": {
+        "mean_area_frac": 0.015292132342303241,
+        "mean_delta_l1": -0.28354406356811523,
+        "mean_delta_psnr": 0.19885654000324848,
+        "mean_step0_stepn_l1": 4.524670481681824,
+        "n": 4
+      },
+      "object_core": {
+        "mean_area_frac": 0.0004025817548156415,
+        "mean_delta_l1": -0.03493654727935791,
+        "mean_delta_psnr": -0.21803136542448698,
+        "mean_step0_stepn_l1": 3.7138655185699463,
+        "n": 4
+      },
+      "object_value0": {
+        "mean_area_frac": 0.0032257806687127975,
+        "mean_delta_l1": -0.6723426580429077,
+        "mean_delta_psnr": 0.7829919844775945,
+        "mean_step0_stepn_l1": 4.372028738260269,
+        "n": 4
+      },
+      "outside_background_255": {
+        "mean_area_frac": 0.8844264196971106,
+        "mean_delta_l1": -0.034887075424194336,
+        "mean_delta_psnr": 0.04669480736639908,
+        "mean_step0_stepn_l1": 2.1802074015140533,
+        "n": 4
+      },
+      "outside_near_boundary": {
+        "mean_area_frac": 0.2166848561120412,
+        "mean_delta_l1": 0.06485527753829956,
+        "mean_delta_psnr": -0.10210850984818709,
+        "mean_step0_stepn_l1": 2.9112603068351746,
+        "n": 4
+      },
+      "overlap_value63": {
+        "mean_area_frac": 0.027616188008949237,
+        "mean_delta_l1": 0.17192858457565308,
+        "mean_delta_psnr": -0.1467325284648462,
+        "mean_step0_stepn_l1": 4.64833790063858,
+        "n": 4
+      }
+    },
+    "ten_step": {
+      "affected_boundary": {
+        "mean_area_frac": 0.2762011573428199,
+        "mean_delta_l1": 0.1550644040107727,
+        "mean_delta_psnr": -0.19014363668407253,
+        "mean_step0_stepn_l1": 3.2809264063835144,
+        "n": 4
+      },
+      "affected_only_value127": {
+        "mean_area_frac": 0.08473161162522734,
+        "mean_delta_l1": 0.12418925762176514,
+        "mean_delta_psnr": -0.11388291473638645,
+        "mean_step0_stepn_l1": 3.7185847759246826,
+        "n": 4
+      },
+      "affected_union_63_127": {
+        "mean_area_frac": 0.1123477996341766,
+        "mean_delta_l1": 0.16012060642242432,
+        "mean_delta_psnr": -0.2667806920933522,
+        "mean_step0_stepn_l1": 3.5215739011764526,
+        "n": 4
+      },
+      "far_outside": {
+        "mean_area_frac": 0.6677415635850695,
+        "mean_delta_l1": -0.06499549746513367,
+        "mean_delta_psnr": 0.15155627092388002,
+        "mean_step0_stepn_l1": 1.389533281326294,
+        "n": 4
+      },
+      "full_frame": {
+        "mean_area_frac": 1.0,
+        "mean_delta_l1": 0.007405757904052734,
+        "mean_delta_psnr": -0.057788644047112925,
+        "mean_step0_stepn_l1": 2.395351082086563,
+        "n": 4
+      },
+      "local_union_0_63_127": {
+        "mean_area_frac": 0.11557358030288938,
+        "mean_delta_l1": 0.14158129692077637,
+        "mean_delta_psnr": -0.20388685207208201,
+        "mean_step0_stepn_l1": 3.5549123287200928,
+        "n": 4
+      },
+      "object_boundary": {
+        "mean_area_frac": 0.015292132342303241,
+        "mean_delta_l1": -0.1780145764350891,
+        "mean_delta_psnr": 0.04530030435267918,
+        "mean_step0_stepn_l1": 4.580240070819855,
+        "n": 4
+      },
+      "object_core": {
+        "mean_area_frac": 0.0004025817548156415,
+        "mean_delta_l1": 0.4578458070755005,
+        "mean_delta_psnr": -0.8162080831759209,
+        "mean_step0_stepn_l1": 3.83660888671875,
+        "n": 4
+      },
+      "object_value0": {
+        "mean_area_frac": 0.0032257806687127975,
+        "mean_delta_l1": -0.6829811334609985,
+        "mean_delta_psnr": 0.8137950899959243,
+        "mean_step0_stepn_l1": 4.398294985294342,
+        "n": 4
+      },
+      "outside_background_255": {
+        "mean_area_frac": 0.8844264196971106,
+        "mean_delta_l1": -0.004670143127441406,
+        "mean_delta_psnr": -0.01128548601425372,
+        "mean_step0_stepn_l1": 2.2615468204021454,
+        "n": 4
+      },
+      "outside_near_boundary": {
+        "mean_area_frac": 0.2166848561120412,
+        "mean_delta_l1": 0.09663987159729004,
+        "mean_delta_psnr": -0.14623485662509506,
+        "mean_step0_stepn_l1": 2.9712307453155518,
+        "n": 4
+      },
+      "overlap_value63": {
+        "mean_area_frac": 0.027616188008949237,
+        "mean_delta_l1": 0.2709117531776428,
+        "mean_delta_psnr": -0.3292395087754203,
+        "mean_step0_stepn_l1": 4.739433467388153,
+        "n": 4
+      }
+    }
+  }
+}
