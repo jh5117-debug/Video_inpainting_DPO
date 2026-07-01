@@ -1,3 +1,3 @@
 # Exp53 Metric Summary
 
-Status: `EXP53_R1R2_ONESTEP_BLOCKED`. No Step1 videos or metric deltas were produced.
+Status: `EXP53_H20_BLOCKED`. No Step1 metric deltas were produced because no checkpoint/video evidence was generated.

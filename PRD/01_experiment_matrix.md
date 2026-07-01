@@ -1,4 +1,10 @@
 
+## 2026-07-01 Exp53 H20 Final
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp53 H20 VOID R1/R2 final handoff | `EXP53_H20_BLOCKED` | `reports/exp53_h20_final_handoff.md`, `reports/exp53_h20_candidate_ranking.csv` |
+
 ## 2026-07-01 Exp53 H20 Wave2 Decision
 
 | User-facing name | Status | Evidence / registry |

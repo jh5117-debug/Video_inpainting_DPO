@@ -1,5 +1,5 @@
 # Exp53 Status
 
-Current status: `EXP53_WAVE2_NOT_RUN`
+Current status: `EXP53_H20_BLOCKED`
 
-Milestone D completed: Wave2 not run because Wave1 had no PASS or MIXED-safe candidate.
+Final handoff complete. No H20 PASS/MIXED candidate; no local 10-step unlocked.

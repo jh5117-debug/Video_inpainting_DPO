@@ -1,0 +1,5 @@
+rank,cell,recipe,quadmask,timestep,status,candidate_for_exp55,reason
+1,R2_Q2_T500_S0,R2_WinnerPreserve_LoserClip,q2_strict_affected,500,BLOCKED_SLOW_FORWARD_NO_CHECKPOINT,no,No checkpoint or heldout evidence after bounded run.
+,R1_Q2_T500_S0,R1_WinnerPreserve_LocalDPO,q2_strict_affected,500,SKIPPED_GPU_OCCUPIED,no,GPU0 occupied by unrelated process at launch.
+,R1_Q2_T300_S0,R1_WinnerPreserve_LocalDPO,q2_strict_affected,300,SKIPPED_CACHE_TIMESTEP_INVALID,no,T300 cache unavailable; T500 cache was not reused as fake T300.
+,R1_Q1_T500_S0,R1_WinnerPreserve_LocalDPO,q1_object_only,500,SKIPPED_GPU_OCCUPIED,no,GPU3 occupied by unrelated process at launch.
