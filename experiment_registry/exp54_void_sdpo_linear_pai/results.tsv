@@ -1,3 +1,4 @@
 milestone	name	status	notes
 A	readback_gpu_audit	EXP54_PAI_GPU0_1_READY	PAI lane only: R3/R4 on GPU0-1.
 B	preregistration	EXP54_SDPO_LINEAR_PREREGISTERED	R3/R4 Wave1 Q2 T500 preregistered; runtime output fallback; cache_files=32
+C	sdpo_linear_onestep	EXP54_SDPO_LINEAR_ONESTEP_MIXED	R3/R4 Q2 T500 mixed; contact sheets opened; no 10-step unlock.

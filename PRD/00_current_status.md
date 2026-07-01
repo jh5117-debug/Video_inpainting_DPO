@@ -2015,3 +2015,7 @@ Status: `EXP54_PAI_GPU0_1_READY`. PAI lane only: R3/R4 on GPU0-1.
 ## Exp54 Milestone B - 2026-07-01T16:06:22+08:00
 
 Status: `EXP54_SDPO_LINEAR_PREREGISTERED`. R3/R4 Wave1 preregistered; output root uses runtime fallback due permission.
+
+## Exp54 Milestone C - 2026-07-01T16:26:39+08:00
+
+Status: `EXP54_SDPO_LINEAR_ONESTEP_MIXED`. R3/R4 Q2 T500 mixed; no 10-step unlock.

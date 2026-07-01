@@ -1,0 +1,66 @@
+{
+  "cells": {
+    "R3_Q2_T500_S0": {
+      "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/wave1_video/R3_Q2_T500_S0/R3_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "generation_summary": "/home/hj/H20_Video_inpainting_DPO_exp54_void_sdpo_linear_pai/reports/exp54_R3_Q2_T500_S0_heldout_generation_summary.json",
+      "means": {
+        "affected_l1_delta": -0.0005228826000044755,
+        "affected_psnr_delta": -0.1379682013473298,
+        "affected_union_l1_delta": 0.0003452906482076905,
+        "affected_union_psnr_delta": -0.2779851173672041,
+        "boundary_l1_delta": 0.0002922780113294712,
+        "boundary_psnr_delta": -0.09953764966347833,
+        "full_l1_delta": -0.0001244124820611119,
+        "full_psnr_delta": -0.015165371143335271,
+        "object_l1_delta": 0.0017333124512030431,
+        "object_psnr_delta": -0.44249164141021247,
+        "outside_l1_delta": -0.00016592184935385924,
+        "outside_psnr_delta": 0.09277226113504344,
+        "overlap_l1_delta": 0.0008846685329141728,
+        "overlap_psnr_delta": -0.406249220744197,
+        "ssim_delta": -9.377134522620123e-05,
+        "step0_step1_l1": 0.008802863740129396
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    },
+    "R4_Q2_T500_S0": {
+      "contact_sheet": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/wave1_video/R4_Q2_T500_S0/R4_Q2_T500_S0_heldout_contact_sheet.jpg",
+      "generation_summary": "/home/hj/H20_Video_inpainting_DPO_exp54_void_sdpo_linear_pai/reports/exp54_R4_Q2_T500_S0_heldout_generation_summary.json",
+      "means": {
+        "affected_l1_delta": -0.0007489857380278426,
+        "affected_psnr_delta": 0.10638174315973004,
+        "affected_union_l1_delta": 0.0002059155958704659,
+        "affected_union_psnr_delta": -0.050192011266311454,
+        "boundary_l1_delta": 0.0002507470198906958,
+        "boundary_psnr_delta": -0.0680473432056381,
+        "full_l1_delta": -0.000144567971195404,
+        "full_psnr_delta": 0.07416340506914754,
+        "object_l1_delta": 0.0016637858061585562,
+        "object_psnr_delta": -0.38115804781979534,
+        "outside_l1_delta": -0.00016343055176548573,
+        "outside_psnr_delta": 0.09715011172990895,
+        "overlap_l1_delta": 0.0009223209829845778,
+        "overlap_psnr_delta": -0.23941022113375787,
+        "ssim_delta": -2.50274854477206e-05,
+        "step0_step1_l1": 0.008761706771717098
+      },
+      "status": "MIXED",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    }
+  },
+  "contact_sheets_opened_by_codex": true,
+  "hard_comp": false,
+  "manual_visual_review": "R3 and R4 contact sheets opened. No collapse or systematic outside damage, but object/overlap/boundary local quality remains worse; no PASS.",
+  "no_vor_eval": true,
+  "status": "EXP54_SDPO_LINEAR_ONESTEP_MIXED",
+  "ten_step": "not_run"
+}

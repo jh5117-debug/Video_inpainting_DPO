@@ -13,3 +13,7 @@ Status: `EXP54_PAI_GPU0_1_READY`. Readback and GPU audit completed. PAI lane onl
 ## Milestone B - 2026-07-01T16:06:22+08:00
 
 Status: `EXP54_SDPO_LINEAR_PREREGISTERED`. R3/R4 Wave1 preregistered. Large artifacts use runtime fallback because requested experiments/dpo output root is not writable.
+
+## Milestone C - 2026-07-01T16:26:39+08:00
+
+Status: `EXP54_SDPO_LINEAR_ONESTEP_MIXED`. R3/R4 Q2 T500 one-step cells completed checkpoint, strict reload, generation, metrics, and visual review. Both are mixed; no PASS.

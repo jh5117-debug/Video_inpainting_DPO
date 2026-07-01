@@ -812,3 +812,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 | Exp54 | VOID targeted one-step | Milestone A | `EXP54_PAI_GPU0_1_READY` | PAI lane only: R3/R4 on GPU0-1. |
 
 | Exp54 | VOID SDPO Linear PAI | Milestone B | `EXP54_SDPO_LINEAR_PREREGISTERED` | R3/R4 Q2 T500 preregistered; runtime output fallback due permission. |
+
+| Exp54 | VOID SDPO Linear PAI | Milestone C | `EXP54_SDPO_LINEAR_ONESTEP_MIXED` | R3/R4 Q2 T500 mixed; contact sheets opened; no PASS. |
