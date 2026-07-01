@@ -1,0 +1,70 @@
+{
+  "actual_output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs",
+  "cache_files": 32,
+  "cache_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/cache/tensor_cache",
+  "conditional_cells": [
+    {
+      "cell": "R3_Q1_T500_S0",
+      "condition": "only if Wave1 has no PASS but at least one mixed-safe cell",
+      "gpu": 0,
+      "recipe": "R3_SDPO_Safe",
+      "timestep": 500,
+      "variant": "q1_object_only",
+      "wave": "PAI-2"
+    },
+    {
+      "cell": "R4_Q1_T500_S0",
+      "condition": "only if Wave1 has no PASS but at least one mixed-safe cell",
+      "gpu": 1,
+      "recipe": "R4_LinearDPO_vPrediction",
+      "timestep": 500,
+      "variant": "q1_object_only",
+      "wave": "PAI-2"
+    },
+    {
+      "cell": "R3_Q2_T300_S0",
+      "condition": "optional only if T500 is promising but affected/overlap still regresses",
+      "gpu": 0,
+      "recipe": "R3_SDPO_Safe",
+      "timestep": 300,
+      "variant": "q2_strict_affected",
+      "wave": "PAI-3"
+    },
+    {
+      "cell": "R4_Q2_T300_S0",
+      "condition": "optional only if T500 is promising but affected/overlap still regresses",
+      "gpu": 1,
+      "recipe": "R4_LinearDPO_vPrediction",
+      "timestep": 300,
+      "variant": "q2_strict_affected",
+      "wave": "PAI-3"
+    }
+  ],
+  "created": "2026-07-01T16:06:22+08:00",
+  "hard_comp": false,
+  "no_vor_eval": true,
+  "one_step_only": true,
+  "output_root_permission_note": "OUTPUT_ROOT_PERMISSION_FALLBACK_RUNTIME",
+  "requested_output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp54_void_sdpo_linear_pai",
+  "requested_output_root_writable": false,
+  "status": "EXP54_SDPO_LINEAR_PREREGISTERED",
+  "ten_step": "not_allowed_in_lane",
+  "wave1_cells": [
+    {
+      "cell": "R3_Q2_T500_S0",
+      "gpu": 0,
+      "recipe": "R3_SDPO_Safe",
+      "timestep": 500,
+      "variant": "q2_strict_affected",
+      "wave": "PAI-1"
+    },
+    {
+      "cell": "R4_Q2_T500_S0",
+      "gpu": 1,
+      "recipe": "R4_LinearDPO_vPrediction",
+      "timestep": 500,
+      "variant": "q2_strict_affected",
+      "wave": "PAI-1"
+    }
+  ]
+}

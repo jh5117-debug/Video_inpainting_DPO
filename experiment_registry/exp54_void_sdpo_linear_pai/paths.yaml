@@ -1,4 +1,6 @@
 worktree: /home/hj/H20_Video_inpainting_DPO_exp54_void_sdpo_linear_pai
-output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp54_void_sdpo_linear_pai
+requested_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp54_void_sdpo_linear_pai
+actual_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs
+cache_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai/outputs/cache/tensor_cache
 log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp54_void_sdpo_linear_pai
 runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp54_void_sdpo_linear_pai

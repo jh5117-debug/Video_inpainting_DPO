@@ -2011,3 +2011,7 @@ Final status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`. VOID remains VOR-OR baseline
 ## Exp54 Milestone A - 2026-07-01T15:53:57+08:00
 
 Status: `EXP54_PAI_GPU0_1_READY`. PAI lane only: R3/R4 on GPU0-1.
+
+## Exp54 Milestone B - 2026-07-01T16:06:22+08:00
+
+Status: `EXP54_SDPO_LINEAR_PREREGISTERED`. R3/R4 Wave1 preregistered; output root uses runtime fallback due permission.
