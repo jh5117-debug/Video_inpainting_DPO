@@ -12,7 +12,7 @@ import numpy as np
 
 ROOT = Path("/home/hj/H20_Video_inpainting_DPO_exp57_void_adaptive_transition_pai")
 ASSET = Path("/mnt/nas/hj/H20_Video_inpainting_DPO")
-OUT_ROOT = ASSET / "experiments/dpo/exp57_void_adaptive_transition_pai"
+OUT_ROOT = Path("/home/hj/exp57_void_adaptive_transition_pai_outputs")
 VIDEO_ROOT = OUT_ROOT / "adaptive_video"
 FORWARD_ROOT = OUT_ROOT / "adaptive_forward"
 REPORTS = ROOT / "reports"
