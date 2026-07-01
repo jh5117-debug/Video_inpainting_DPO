@@ -35,3 +35,10 @@ No metrics by design. Gates fixed: one-step first, 10-step only if one-step pass
 ## Milestone G - Rescue One-Step
 
 No metrics: R1-R4 runner blocked before checkpoint/video evidence. 10-step not run.
+
+## Final Metrics Summary
+
+- Exp50 one-step: safe/pass from prior evidence
+- Exp50 10-step: negative, loser-dominant
+- Exp51 quadmask metrics: local object/affected/boundary damage highlighted
+- Exp51 rescue one-step: blocked before checkpoint, no metrics

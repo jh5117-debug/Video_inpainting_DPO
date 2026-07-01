@@ -37,3 +37,9 @@ Winner-preserving/local/loser-clipped rescue recipes are locked before training.
 Status: `VOID_RESCUE_ONESTEP_BLOCKED`
 
 Exact blocker: `VOID_RESCUE_ONESTEP_BLOCKED_SLOW_FORWARD_NO_CHECKPOINT`. No recipe pass/fail conclusion; 10-step locked.
+
+## Final
+
+Status: `VOID_ADAPTER_ENGINEERING_CANDIDATE`
+
+Secondary status: `VOID_BASELINE_AND_LOSER_GENERATOR_READY`. Not third adapter evidence.

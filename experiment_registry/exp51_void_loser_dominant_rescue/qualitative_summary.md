@@ -25,3 +25,7 @@ The rescue plan explicitly targets the Exp50 loser-dominant mechanism and forbid
 ## Milestone G
 
 No visual evidence was generated for rescue recipes. VOID remains baseline/loser-generator plus adapter-engineering candidate, not third evidence.
+
+## Final Qualitative Summary
+
+VOID remains a credible inference baseline and loser generator, but not adapter evidence. The next useful move is a much narrower R1-only smoke, or resuming ROSE for third-model search.

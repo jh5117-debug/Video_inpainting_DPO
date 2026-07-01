@@ -1,0 +1,31 @@
+{
+  "answers": {
+    "10_continue_rose_stop": "Continue VOID only as a narrow engineering candidate with R1-only row0 smoke or Q1/Q2 ablation; in parallel, ROSE can be resumed if third-model search must continue. Do not run long VOID training.",
+    "1_was_exp50_negative_loser_dominant": "Yes. Exp51 forensic confirmed margin growth was dominated by the loser branch: final winner_gap was small while loser_gap was much more negative, so vanilla DPO improved the objective mainly by degrading the loser.",
+    "2_did_winner_preserving_fix": "Not proven. Recipes were preregistered, but the R1-R4 one-step grid blocked before checkpoint/video evidence.",
+    "3_did_local_only_help": "Not evaluated; R1 LocalDPO blocked before checkpoint.",
+    "4_did_linear_dpo_help": "Not evaluated; R4 blocked before checkpoint.",
+    "5_did_sdpo_safe_help": "Not evaluated; R3 blocked before checkpoint.",
+    "6_is_proj_out_sufficient": "Still inconclusive. Exp50 proj_out passed zero-gap and one-step, but vanilla 10-step was negative and Exp51 rescue grid did not complete.",
+    "7_is_vor_quadmask_blocker": "Suspected but not proven. Quadmask audit showed local object/affected/boundary damage and Q3 broad affected spill on REAL rows; Q1/Q2 are better diagnostics.",
+    "8_did_void_native_kubric_help": "Blocked. Missing Kubric/PyBullet/Blender/HUMOTO assets prevented native data generation.",
+    "9_is_void_third_adapter_evidence": "No. VOID is not third adapter evidence."
+  },
+  "fetch_note": "Milestone J start attempted git fetch on H20 but hit transient GnuTLS recv error; previous push had remote/local HEAD verified and final push uses bundle relay.",
+  "final_statuses": [
+    "VOID_BASELINE_AND_LOSER_GENERATOR_READY",
+    "VOID_ADAPTER_ENGINEERING_CANDIDATE"
+  ],
+  "loser_dominant_confirmed": true,
+  "native_kubric": "VOID_NATIVE_KUBRIC_BLOCKED",
+  "not_status": [
+    "VOID_RESCUE_10STEP_PROMISING",
+    "VOID_RESCUE_10STEP_POSITIVE",
+    "VOID_THIRD_BACKBONE_MICRO_POSITIVE"
+  ],
+  "quadmask_ablation": "VOID_QUADMASK_ABLATION_READY",
+  "quadmask_metrics_ready": true,
+  "rescue_10step": "NOT_RUN_LOCKED",
+  "rescue_onestep": "VOID_RESCUE_ONESTEP_BLOCKED",
+  "sft_parity": "VOID_SFT_PARITY_EXPLAINED_ONLY"
+}

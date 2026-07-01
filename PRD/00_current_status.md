@@ -1988,3 +1988,5 @@ Status: `VOID_QUADMASK_METRICS_READY`. First-8-frame quadmask-aware audit shows 
 - 2026-07-01 Exp51 Milestone F: rescue recipes preregistered (`VOID_RESCUE_RECIPES_PREREGISTERED`); no training run before preregistration.
 
 - 2026-07-01 Exp51 Milestone G: one-step rescue grid is `VOID_RESCUE_ONESTEP_BLOCKED`; R1-R4 did not reach checkpoint/report within the bounded micro window, process terminated, 10-step remains locked.
+
+- 2026-07-01 Exp51 final: VOID remains baseline/loser generator and adapter-engineering candidate; loser-dominant mechanism confirmed; rescue one-step grid blocked before checkpoint; no 10-step rescue; no third adapter evidence.
