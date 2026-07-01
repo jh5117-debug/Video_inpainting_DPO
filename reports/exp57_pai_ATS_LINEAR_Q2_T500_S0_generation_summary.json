@@ -1,0 +1,117 @@
+{
+  "adapter_checkpoint": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_forward/ATS_LINEAR_Q2_T500_S0/checkpoints/ATS_LINEAR_Q2_T500_S0_adapter_step1.pt",
+  "adapter_sha256": "db614740e0ee793b3b12465e7ff0c4c194e67530d7df31e620bc22c39f402d53",
+  "end": "2026-07-02T07:23:19+08:00",
+  "gpu_after": [
+    "____  ______        __",
+    "|  _ \\/ ___\\ \\      / /",
+    "| | | \\___ \\\\ \\ /\\ / / ",
+    "| |_| |___) |\\ V  V /  ",
+    "|____/|____/  \\_/\\_/   ",
+    "                       ",
+    "",
+    "Welcome to PAI DSW!",
+    "",
+    "Mounted datasets: (mount_path is where you could access dataset in dsw instance, files in mount_path will not be committed in image)",
+    "\u256d\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256e",
+    "\u2502 type   \u2502 name                     \u2502 mount_path                   \u2502 dataset_info                               \u2502 commit_to_image   \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 BMCPFS \u2502 csgo-datasets            \u2502 /mnt/data/csgo-datasets/     \u2502 cpfs-01000vwrt8a6usy68r6wu:/csgo-datasets/ \u2502 no                \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 BMCPFS \u2502 workspace                \u2502 /mnt/workspace               \u2502 cpfs-01000vwrt8a6usy68r6wu:/pku/           \u2502 no                \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 BMCPFS \u2502 pku-workspace            \u2502 /mnt/data/pku/               \u2502 cpfs-01000vwrt8a6usy68r6wu:/pku/           \u2502 no                \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 OSS    \u2502 csgo-datasets-oss        \u2502 /mnt/data/csgo-datasets-oss/ \u2502 oss://dataset-csgo-sample-02/shared/       \u2502 no                \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 NAS    \u2502 pku-workspace-nas        \u2502 /mnt/nas/                    \u2502 0329tx2wi8okhqz07m9:/                      \u2502 no                \u2502",
+    "\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524",
+    "\u2502 BMCPFS \u2502 csgo-datasets-fullsubset \u2502 /mnt/data/csgo-datasets-     \u2502 cpfs-01000vwrt8a6usy68r6wu:/csgo-datasets- \u2502 no                \u2502",
+    "\u2502        \u2502                          \u2502 fullsubset/                  \u2502 fullsubset/                                \u2502                   \u2502",
+    "\u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u256f",
+    "",
+    "index, memory.used [MiB], memory.free [MiB], memory.total [MiB], utilization.gpu [%]",
+    "0, 1 MiB, 143156 MiB, 143771 MiB, 0 %",
+    "1, 1 MiB, 143156 MiB, 143771 MiB, 0 %",
+    "2, 2568 MiB, 140589 MiB, 143771 MiB, 0 %",
+    "3, 1932 MiB, 141225 MiB, 143771 MiB, 0 %",
+    "4, 2556 MiB, 140601 MiB, 143771 MiB, 0 %",
+    "5, 2612 MiB, 140545 MiB, 143771 MiB, 0 %",
+    "6, 1937 MiB, 141220 MiB, 143771 MiB, 2 %",
+    "7, 1936 MiB, 141221 MiB, 143771 MiB, 0 %"
+  ],
+  "gpus_requested": [
+    1
+  ],
+  "hard_comp_used": false,
+  "optimizer_step": false,
+  "output_root": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0",
+  "records": [
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/evidence/BLENDER_CON001_00742",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00742",
+      "status": "generated",
+      "step0_raw": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00742-fg=-1-0001.mp4",
+      "step1_raw": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/step1_gpu1/BLENDER_CON001_00742-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/evidence/BLENDER_CON001_00744",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "BLENDER_CON001_00744",
+      "status": "generated",
+      "step0_raw": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/BLENDER_CON001_00744-fg=-1-0001.mp4",
+      "step1_raw": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/step1_gpu1/BLENDER_CON001_00744-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/evidence/REAL_ENV102_00001_002_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV102_00001_002_02",
+      "status": "generated",
+      "step0_raw": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/step1_gpu1/REAL_ENV102_00001_002_02-fg=-1-0001.mp4"
+    },
+    {
+      "decode_status": "ok",
+      "evidence_dir": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/evidence/REAL_ENV200_00001_006_02",
+      "frame_count": 24,
+      "resolution": "672x384",
+      "sample_id": "REAL_ENV200_00001_006_02",
+      "status": "generated",
+      "step0_raw": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp50_pai_void_adapter_feasibility/f2_vor_gate8_pass1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4",
+      "step1_raw": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/step1_gpu1/REAL_ENV200_00001_006_02-fg=-1-0001.mp4"
+    }
+  ],
+  "root_processes_killed": [],
+  "runs": [
+    {
+      "gpu": 1,
+      "log": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/gpu1_runtime_log.txt",
+      "returncode": 0,
+      "runtime_sec": 119.87504315376282,
+      "save_path": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/step1_gpu1",
+      "seqs": [
+        "BLENDER_CON001_00742",
+        "BLENDER_CON001_00744",
+        "REAL_ENV102_00001_002_02",
+        "REAL_ENV200_00001_006_02"
+      ]
+    }
+  ],
+  "skip_inference": false,
+  "start": "2026-07-02T07:21:04+08:00",
+  "status": "EXP57_PAI_HELDOUT_GENERATION_READY",
+  "step0_outputs": 4,
+  "step1_checkpoint": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_video/ATS_LINEAR_Q2_T500_S0/checkpoints/void_pass1_step1_proj_out.safetensors",
+  "step1_checkpoint_sha256": "0c14ff516d73ed0b1b97a57737ece1579f925df8376c9c78749a027493681783",
+  "step1_outputs": 4,
+  "training_run": false,
+  "videos_generated": true,
+  "vor_eval_used": false
+}

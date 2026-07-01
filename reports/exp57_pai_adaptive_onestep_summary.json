@@ -1,0 +1,77 @@
+{
+  "best_cell": "ATS_SDPO_Q2_T500_S0",
+  "cells": {
+    "ATS_LINEAR_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_forward/ATS_LINEAR_Q2_T500_S0/checkpoints/ATS_LINEAR_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.01877021871380425,
+        "loser_contribution_ratio": 0.4826328548246828,
+        "max_param_delta_norm": 0.005662671290338039,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 186.55905279400758,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": 9.06623881746782e-05
+      },
+      "means": {
+        "affected_psnr_delta": 0.053642719491231894,
+        "boundary_psnr_delta": -0.08552098837024324,
+        "full_psnr_delta": 0.03588914350756234,
+        "object_psnr_delta": -0.003580361694684342,
+        "outside_l1_delta": -0.00016668773605488154,
+        "outside_psnr_delta": 0.09960166197098363,
+        "overlap_psnr_delta": -0.3954690227802198,
+        "ssim_delta": -5.4684978455454836e-05,
+        "step0_step1_l1": 0.008820945055049378,
+        "temporal_flicker_delta": 3.186151337539067e-05,
+        "tone_drift": -1.186298322863866e-05
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    },
+    "ATS_SDPO_Q2_T500_S0": {
+      "forward": {
+        "checkpoint": "/home/hj/exp57_void_adaptive_transition_pai_outputs/adaptive_forward/ATS_SDPO_Q2_T500_S0/checkpoints/ATS_SDPO_Q2_T500_S0_adapter_step1.pt",
+        "checkpoint_exists": true,
+        "lambda_loser_global": 0.04692554678451062,
+        "loser_contribution_ratio": 0.5299456180835008,
+        "max_param_delta_norm": 0.005661578383296728,
+        "peak_vram_allocated_gib": 19.98512363433838,
+        "runtime_sec": 186.32355848397128,
+        "selected_scale": 1.0,
+        "transition_safe_pass": true,
+        "update_rejected": false,
+        "winner_gap": 9.360164403915405e-05
+      },
+      "means": {
+        "affected_psnr_delta": 0.10810910881316804,
+        "boundary_psnr_delta": -0.04933607322012268,
+        "full_psnr_delta": 0.03915994205117013,
+        "object_psnr_delta": -0.33791823145140754,
+        "outside_l1_delta": -0.000128638193321724,
+        "outside_psnr_delta": 0.07596616942587797,
+        "overlap_psnr_delta": -0.2556978672718744,
+        "ssim_delta": -5.569207752784133e-05,
+        "step0_step1_l1": 0.008777230805814423,
+        "temporal_flicker_delta": 2.8730676406311283e-05,
+        "tone_drift": -5.3891013423033765e-05
+      },
+      "status": "NEGATIVE",
+      "visual_counts": {
+        "better": 0,
+        "tie": 0,
+        "worse": 4
+      }
+    }
+  },
+  "hard_comp_used": false,
+  "status": "EXP57_PAI_ADAPTIVE_ONESTEP_MIXED",
+  "ten_step_run": false,
+  "vor_eval_used": false
+}
