@@ -1,0 +1,14 @@
+{
+  "best_h20": "R1_Q2_T500_S0",
+  "best_overall": "R1_Q2_T500_S0",
+  "best_pai": "R4_Q2_T500_S0",
+  "candidate_count": 6,
+  "hard_comp": false,
+  "mixed_unsafe_count": 6,
+  "negative_count": 0,
+  "no_vor_eval": true,
+  "pass_count": 0,
+  "status": "EXP55_CANDIDATES_AGGREGATED",
+  "ten_step_run": false,
+  "training_run": false
+}
