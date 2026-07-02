@@ -11,6 +11,8 @@ Milestone C status: `EXP59_KUBRIC_INPUTS_READY`. Eight official input folders we
 
 Milestone D status: `VOID_KUBRIC_OFFICIAL_INFERENCE_PASS`. Official VOID pass1 ran on all 8 Kubric samples using PAI GPU0. The first attempt exposed a system ffmpeg `libblas.so.3` blocker; a run-local `imageio-ffmpeg` shim fixed decode without base-env changes. Final outputs include 8 raw mp4, 8 tuple mp4, and 8 evidence packs. No training, one-step, or 10-step was run.
 
+Milestone E status: `VOID_KUBRIC_INFERENCE_REVIEW_WEAK`. Metrics and visual review completed on all 8 official outputs. Mean native-space metrics: full PSNR `30.152555`, SSIM `0.919492`, object PSNR `28.337691`, overlap PSNR `16.673219`, affected PSNR `17.527094`, boundary PSNR `22.267098`, outside PSNR `34.210532`. Visual review opened all 8 contact sheets: outputs are technically valid and outside/background is stable in 8/8, but all rows remain `target_hit=false`; 2/8 are medium-hard loser diagnostics, 2/8 too-close/weak diagnostics, and 6/8 show transition residual/damage. No training, one-step, or 10-step was run.
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.

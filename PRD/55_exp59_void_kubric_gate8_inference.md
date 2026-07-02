@@ -12,7 +12,7 @@ Exp59 tests the newly generated Exp58B VOID-native Kubric Gate8 data with offici
 
 ## Current Gate
 
-Current status: `VOID_KUBRIC_OFFICIAL_INFERENCE_PASS`
+Current status: `VOID_KUBRIC_INFERENCE_REVIEW_WEAK`
 
 The Exp58B Gate8 manifest exists and contains 8 valid native Kubric rows. PAI decoded all 8 `rgb_full`, `rgb_removed`, and quadmask videos as 24-frame, 128x128, 8 fps clips with quadmask values `0|63|127|255`. The data is weak for adapter training because all metadata rows report `target_hit=false`, but it is sufficient for official inference diagnostics.
 
@@ -20,7 +20,9 @@ Milestone B confirmed that official pass1 inference can proceed through the norm
 
 Milestone C materialized all 8 official input folders. The configured experiment output root under `/experiments/dpo` is not writable on PAI, so Exp59 will use the writable `/logs/autoresearch` and `/runtime` roots for official outputs while recording the fallback.
 
-Milestone D completed official VOID pass1 inference on 8/8 Kubric samples. The controlled runtime fix used a run-local `imageio-ffmpeg` binary after the first attempt failed on system `/usr/bin/ffmpeg` missing `libblas.so.3`. The final run produced 8 raw outputs, 8 tuple outputs, and 8 evidence packs. Metrics and visual review are pending Milestone E.
+Milestone D completed official VOID pass1 inference on 8/8 Kubric samples. The controlled runtime fix used a run-local `imageio-ffmpeg` binary after the first attempt failed on system `/usr/bin/ffmpeg` missing `libblas.so.3`. The final run produced 8 raw outputs, 8 tuple outputs, and 8 evidence packs.
+
+Milestone E completed native-space metrics and visual review. Metrics compare the first 24 output frames after downscaling the official `384x672` output to native `128x128` against `rgb_removed`. Mean metrics: full PSNR `30.152555`, SSIM `0.919492`, object PSNR `28.337691`, overlap PSNR `16.673219`, affected PSNR `17.527094`, boundary PSNR `22.267098`, and outside PSNR `34.210532`. Codex opened all 8 review contact sheets. All outputs are technically valid and outside/background is stable, but all rows remain `target_hit=false`; only 2/8 are medium-hard loser diagnostics, 2/8 are too-close/weak, and 6/8 show transition residual/damage. This is a useful official-inference diagnostic, not adapter evidence.
 
 ## Scope
 
