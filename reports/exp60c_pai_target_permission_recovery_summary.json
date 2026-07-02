@@ -1,0 +1,11 @@
+{
+  "status": "EXP60C_PAI_TARGET_PERMISSION_RECOVERED",
+  "time": "2026-07-02T16:09:17",
+  "dirs_checked": 5,
+  "all_exist": true,
+  "all_read": true,
+  "all_write": true,
+  "all_execute": true,
+  "all_write_probe": true,
+  "root_permission_script_run_by_codex": false
+}

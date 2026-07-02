@@ -2346,3 +2346,20 @@ approved.
 No mask generation, loser generation, inference, DPO, training, GPU job, full
 VPData download, or VPData validation claim was made. Next action is fixing PAI
 NAS write permission and rerunning transfer/verification only.
+
+## 2026-07-02 Exp60C PAI Target Permission Recovery
+
+- Status: `EXP60C_PAI_TARGET_PERMISSION_RECOVERED`
+- Verified PAI/NAS target dirs:
+  - `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b`
+  - `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset`
+  - `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/reports`
+  - `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/sha256`
+  - `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/manifests`
+- Owner/group/mode: `hj:hj`, `0770`
+- All dirs passed read/write/execute and write_probe checks for user `hj`.
+- Codex did not run root permission scripts, `chmod`, or `chown`.
+
+Next allowed action is transfer from H20 to PAI/NAS and PAI-side verification
+only. No mask generation, loser generation, DPO, training, or GPU use is
+authorized.

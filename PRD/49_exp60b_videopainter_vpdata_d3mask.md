@@ -33,7 +33,8 @@ Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
 `EXP60B_HAL_VPDATA_SUBSET_BLOCKED` /
 `EXP60B_TRANSFER_BLOCKED` /
 `EXP60C_H20_VPDATA_SUBSET_READY` /
-`EXP60C_TRANSFER_BLOCKED`
+`EXP60C_TRANSFER_BLOCKED` /
+`EXP60C_PAI_TARGET_PERMISSION_RECOVERED`
 
 Milestone A completed from the HAL Codex session:
 
@@ -68,18 +69,20 @@ Milestone A completed from the HAL Codex session:
   OpenCV decode pass after targeted repair of 6 incomplete historical MP4s.
 - PAI transfer remains blocked because `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`
   is not writable by `hj`.
+- Root-side permission fix has now been applied and Codex verified the Exp60C
+  PAI/NAS target dirs are writable by `hj`. Transfer and PAI verification may
+  proceed; mask/loser/training remain forbidden.
 
 ## Required Next Gate
 
 Before any D3 mask generation:
 
-1. Fix PAI/NAS write permission for
-   `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`.
-2. Transfer the already verified H20 subset to PAI/NAS.
-3. Verify 1,100/1,100 files on PAI/NAS with sha256 and decode checks.
-3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
+1. Transfer the already verified H20 subset to PAI/NAS.
+2. Verify 1,100/1,100 files on PAI/NAS with sha256 and decode checks.
+3. Generate PAI path manifests.
+4. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
    a full data checkout.
-4. Do not run official `VPData_download.py` unmodified, because it iterates all
+5. Do not run official `VPData_download.py` unmodified, because it iterates all
    Pexels rows.
-5. Do not generate D3 masks, losers, or DPO data until the PAI/NAS data root is
+6. Do not generate D3 masks, losers, or DPO data until the PAI/NAS data root is
    complete and PAI manifests are generated.

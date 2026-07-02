@@ -13,4 +13,5 @@ Download-gate counts:
 - H20 final raw videos: 1,100
 - H20 final SHA256 rows: 1,100
 - H20 final OpenCV decode pass: 1,100/1,100
-- Complete PAI-ready SHA256 set: blocked by PAI/NAS transfer permission
+- PAI target permission: recovered
+- Complete PAI-ready SHA256 set: pending transfer and verification
