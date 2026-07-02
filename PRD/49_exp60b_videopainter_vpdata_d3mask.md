@@ -27,7 +27,8 @@ is reduced by a larger VPData subset with D3-style masks.
 
 Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
 `EXP60B_VPDATA_SUBSET_PLAN_READY` /
-`EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK`
+`EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK` /
+`EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED`
 
 Milestone A completed from the HAL Codex session:
 
@@ -47,13 +48,15 @@ Milestone A completed from the HAL Codex session:
 - H20 official metadata download is blocked by outbound network:
   `urllib.error.URLError: [Errno 101] Network is unreachable`.
 - PAI also cannot reach Hugging Face from the urllib probe.
+- Continuation result: H20 hf-mirror unblocked metadata and downloaded
+  1,089/1,100 Pexels raw videos. The remaining 11 failed at source URL level
+  and require clash proxy fallback.
 
 ## Required Next Gate
 
 Before any data download:
 
-1. Enable H20 outbound HTTPS, authorize HAL-first subset download, or provide
-   an internal mirror.
+1. Run H20 clash proxy fallback with resume for the remaining failed URLs.
 2. Implement a file-level and row-level subset downloader that downloads only
    train1000/test100 selected rows.
 3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
