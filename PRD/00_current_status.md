@@ -2367,6 +2367,7 @@ authorized.
 ## 2026-07-02 Exp60C PAI VPData Subset Transfer
 
 - Status: `EXP60C_PAI_VPDATA_SUBSET_READY`
+- Final decision: `VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`
 - H20 source:
   `/home/nvme01/H20_Video_inpainting_DPO/data/external/vpdata_exp60b_h20_staging/raw_subset`
 - PAI/NAS target:

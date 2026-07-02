@@ -9,3 +9,4 @@ G_exp60c_h20_subset	EXP60C_H20_VPDATA_SUBSET_READY	H20 final subset has train100
 H_exp60c_pai_transfer	EXP60C_TRANSFER_BLOCKED	PAI/NAS target /mnt/nas/hj/H20_Video_inpainting_DPO/data/external is not writable by hj
 I_exp60c_permission_recovery	EXP60C_PAI_TARGET_PERMISSION_RECOVERED	All PAI/NAS target dirs for vpdata_exp60b are hj:hj mode 0770 and passed write_probe; no chmod/chown run by Codex
 J_exp60c_pai_transfer	EXP60C_PAI_VPDATA_SUBSET_READY	Transferred repaired train1000/test100 subset to PAI/NAS; 1100 MP4s, 1100/1100 SHA256 match, 1100/1100 OpenCV decode pass, no train/test overlap, no duplicate IDs/URLs/paths, and PAI manifests have no H20/HAL paths
+K_exp60c_final_decision	VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI	Raw VPData train1000/test100 subset is ready for separately gated PAI D3 mask generation; no masks, losers, inference, DPO, training, GPU use, full VPData, or validation claim

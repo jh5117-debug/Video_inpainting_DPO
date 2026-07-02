@@ -19,6 +19,7 @@ Status:
 - `EXP60C_TRANSFER_BLOCKED`
 - `EXP60C_PAI_TARGET_PERMISSION_RECOVERED`
 - `EXP60C_PAI_VPDATA_SUBSET_READY`
+- `VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`
 
 Current continuation: H20 hf-mirror download completed partially: 1,089/1,100
 raw videos downloaded, 11 Pexels raw URLs failed. H20 clash proxy fallback was
@@ -44,3 +45,6 @@ pass, no train/test overlap, no duplicate source IDs/URLs/paths, and PAI
 manifests with no H20/HAL path leakage. No mask generation, loser generation,
 inference, DPO, training, GPU use, or full VPData download ran. Next separately
 gated milestone is PAI D3 mask generation only.
+
+Final raw-data decision: `VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`. This is not
+VPData validation, not a DPO result, and not a VideoPainter positive claim.

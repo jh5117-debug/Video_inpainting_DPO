@@ -35,7 +35,8 @@ Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
 `EXP60C_H20_VPDATA_SUBSET_READY` /
 `EXP60C_TRANSFER_BLOCKED` /
 `EXP60C_PAI_TARGET_PERMISSION_RECOVERED` /
-`EXP60C_PAI_VPDATA_SUBSET_READY`
+`EXP60C_PAI_VPDATA_SUBSET_READY` /
+`VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`
 
 Milestone A completed from the HAL Codex session:
 
@@ -77,6 +78,9 @@ Milestone A completed from the HAL Codex session:
   now has 1,100 raw MP4s, 1,100/1,100 SHA256 match, 1,100/1,100 OpenCV decode
   pass, no train/test source or URL overlap, no duplicate IDs/URLs/paths, and
   PAI path manifests with no H20/HAL local path leakage.
+- Final raw-data decision: `VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`. The next
+  allowed milestone is PAI D3 mask generation only; no loser generation or DPO
+  is authorized by this decision.
 
 ## Required Next Gate
 

@@ -1,22 +1,20 @@
 # Exp60C Next Steps After Download
 
-Status: `EXP60C_WAITING_FOR_PAI_NAS_PERMISSION`
+Status: `VIDEOPAINTER_VPDATA_SUBSET_READY_ON_PAI`
 
-The H20 subset is complete and verified, but PAI/NAS transfer is blocked.
+The repaired raw VPData subset is now complete on PAI/NAS and verified. The next exact milestone should be a separate PAI D3 mask generation gate using the PAI manifests only.
 
-Next minimal step:
+## Next Exact Milestone
 
-1. Fix PAI write permission for:
-   `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`
-2. Rerun only the PAI transfer and verification milestone:
-   - rsync H20 `raw_subset` to PAI/NAS
-   - copy manifests / reports / sha256
-   - verify train1000/test100 file counts
-   - verify sha256 match
-   - run PAI no-GPU decode check
-   - generate PAI path manifests
-3. Only after `EXP60C_PAI_VPDATA_SUBSET_READY`, start a separate D3 mask
-   generation milestone.
+1. Read `manifests/exp60c_vpdata_train1000_sources_pai.jsonl` and `manifests/exp60c_vpdata_test100_sources_pai.jsonl`.
+2. Generate D3/partial-mask-style masks for train1000 only, with test100 held out.
+3. Verify mask decode/count/area distribution and train/test separation.
+4. Do not generate VideoPainter losers in the mask milestone unless separately authorized.
+5. Do not train or run DPO until mask generation passes and a loser-generation gate is preregistered.
 
-Do not run mask generation, loser generation, inference, DPO, or training while
-the PAI/NAS data root is missing.
+## Restrictions Still Active
+
+- Do not use test100 for training, pair selection, threshold setting, or checkpoint selection.
+- Do not download full VPData.
+- Do not run VideoPainter loser generation, inference, DPO, or training in the next mask-only gate.
+- Do not claim VPData validation, DPO positive, universal adapter, or final SOTA.
