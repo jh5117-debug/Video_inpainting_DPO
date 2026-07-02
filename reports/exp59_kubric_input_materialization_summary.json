@@ -1,0 +1,19 @@
+{
+  "all_frame_count_match": true,
+  "all_mask_values_preserved": true,
+  "all_no_vor_path": true,
+  "input_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp59_void_kubric_gate8_inference/official_inputs",
+  "log_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference",
+  "output_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp59_void_kubric_gate8_inference",
+  "root_status": {
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp59_void_kubric_gate8_inference": "not_writable:PermissionError(13, 'Permission denied')",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference": "writable",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp59_void_kubric_gate8_inference": "writable",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp59_void_kubric_gate8_inference/official_inputs": "writable"
+  },
+  "runtime_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp59_void_kubric_gate8_inference",
+  "sample_count": 8,
+  "status": "EXP59_KUBRIC_INPUTS_READY",
+  "target_hit_false": 8,
+  "target_hit_true": 0
+}

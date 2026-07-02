@@ -12,11 +12,13 @@ Exp59 tests the newly generated Exp58B VOID-native Kubric Gate8 data with offici
 
 ## Current Gate
 
-Current status: `EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY`
+Current status: `EXP59_KUBRIC_INPUTS_READY`
 
 The Exp58B Gate8 manifest exists and contains 8 valid native Kubric rows. PAI decoded all 8 `rgb_full`, `rgb_removed`, and quadmask videos as 24-frame, 128x128, 8 fps clips with quadmask values `0|63|127|255`. The data is weak for adapter training because all metadata rows report `target_hit=false`, but it is sufficient for official inference diagnostics.
 
 Milestone B confirmed that official pass1 inference can proceed through the normal `predict_v2v.py` preprocessing path. The 128x128 inputs will be resized to the official `384x672` sample size and padded to the 85-frame temporal window. This is acceptable for diagnostic inference but must be recorded when computing metrics against the native 128x128 `rgb_removed` ground truth.
+
+Milestone C materialized all 8 official input folders. The configured experiment output root under `/experiments/dpo` is not writable on PAI, so Exp59 will use the writable `/logs/autoresearch` and `/runtime` roots for official outputs while recording the fallback.
 
 ## Scope
 

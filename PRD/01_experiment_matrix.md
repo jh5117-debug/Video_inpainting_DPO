@@ -3,7 +3,7 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp59 VOID Kubric Gate8 official inference diagnostic | `EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY` | `PRD/55_exp59_void_kubric_gate8_inference.md`, `experiment_registry/exp59_void_kubric_gate8_inference`, `reports/exp59_official_inference_protocol_audit.md` |
+| Exp59 VOID Kubric Gate8 official inference diagnostic | `EXP59_KUBRIC_INPUTS_READY` | `PRD/55_exp59_void_kubric_gate8_inference.md`, `experiment_registry/exp59_void_kubric_gate8_inference`, `reports/exp59_kubric_input_materialization.md` |
 
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 

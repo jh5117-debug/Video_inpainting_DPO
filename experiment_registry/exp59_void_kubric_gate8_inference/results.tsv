@@ -12,3 +12,6 @@ official_protocol_status	EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY
 official_sample_size	384x672
 official_temporal_window_size	85
 official_script_steps	30
+materialized_inputs	8
+materialization_status	EXP59_KUBRIC_INPUTS_READY
+experiments_dpo_output_root_writable	false

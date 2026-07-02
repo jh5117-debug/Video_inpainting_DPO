@@ -7,6 +7,8 @@ Exp59 starts from Exp58B's generated VOID-native Kubric Gate8. PAI decoded all 8
 
 Milestone B status: `EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY`. Official VOID pass1 accepts the 128x128 Kubric inputs through its normal resize preprocessing to `384x672` and temporal padding to the 85-frame window; metrics must record this resolution/frame-count caveat.
 
+Milestone C status: `EXP59_KUBRIC_INPUTS_READY`. Eight official input folders were materialized under the writable PAI/NAS runtime root. The requested `/experiments/dpo/exp59...` output root is not writable by `hj`, so official inference outputs will use the writable log/runtime fallback.
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.
