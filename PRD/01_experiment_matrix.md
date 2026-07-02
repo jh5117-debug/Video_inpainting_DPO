@@ -3,7 +3,7 @@
 
 | User-facing name | Status | Evidence / registry |
 | --- | --- | --- |
-| Exp59 VOID Kubric Gate8 official inference diagnostic | `VOID_TARGET_HIT_WEAK_NATIVE_DATA_INCONCLUSIVE` | `PRD/55_exp59_void_kubric_gate8_inference.md`, `experiment_registry/exp59_void_kubric_gate8_inference`, `reports/exp59_vor_vs_kubric_diagnostic.md` |
+| Exp59 VOID Kubric Gate8 official inference diagnostic | `VOID_TARGET_HIT_WEAK_REGENERATE_DATA` | `PRD/55_exp59_void_kubric_gate8_inference.md`, `experiment_registry/exp59_void_kubric_gate8_inference`, `reports/exp59_final_decision.md` |
 
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 

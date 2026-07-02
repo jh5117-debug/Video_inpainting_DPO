@@ -15,6 +15,8 @@ Milestone E status: `VOID_KUBRIC_INFERENCE_REVIEW_WEAK`. Metrics and visual revi
 
 Milestone F status: `VOID_TARGET_HIT_WEAK_NATIVE_DATA_INCONCLUSIVE`. Compared Exp59 Kubric-native official inference against Exp50 VOR-derived Gate8. Both are 8/8 technical valid and outside-safe, but Kubric Gate8 does not reduce transition-region damage: overlap PSNR `16.673219`, affected PSNR `17.527094`, boundary PSNR `22.267098`, with 6/8 transition residual/damage in visual review. Kubric provides fewer usable/bounded loser candidates than VOR under this target-hit-false diagnostic. Data mismatch remains suspected but unconfirmed; regenerate Kubric Gate8 with `target_hit=true` and preferably larger/official-compatible resolution before any Kubric one-step.
 
+Final Exp59 status: `VOID_TARGET_HIT_WEAK_REGENERATE_DATA`. Official VOID inference on Kubric Gate8 is usable and technically valid, but the current native data is not ready for adapter training. Do not run one-step or 10-step from this Gate8. Next minimal experiment is target-hit-positive Kubric Gate8 regeneration and repeat official inference review.
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.

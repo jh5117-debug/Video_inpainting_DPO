@@ -46,3 +46,9 @@ vor_mean_outside_psnr	33.109107
 vor_usable_or_bounded_loser	6
 kubric_native_ready_for_one_step	false
 recommended_next_step	regenerate_target_hit_true_kubric_gate8
+final_status	VOID_TARGET_HIT_WEAK_REGENERATE_DATA
+official_inference_usable_on_kubric	true
+native_data_ready_for_adapter	false
+one_step_allowed	false
+ten_step_allowed	false
+third_backbone_evidence	false
