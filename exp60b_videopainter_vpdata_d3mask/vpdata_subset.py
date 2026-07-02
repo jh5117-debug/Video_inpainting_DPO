@@ -20,6 +20,7 @@ import argparse
 import csv
 import hashlib
 import json
+import os
 import random
 import re
 import subprocess
@@ -31,7 +32,15 @@ from pathlib import Path
 from typing import Iterable
 
 
-HF_BASE = "https://huggingface.co/datasets/TencentARC/VPData/resolve/main"
+os.environ.setdefault("HF_ENDPOINT", "https://hf-mirror.com")
+
+
+def hf_base() -> str:
+    endpoint = os.environ.get("HF_ENDPOINT", "https://huggingface.co").rstrip("/")
+    return f"{endpoint}/datasets/TencentARC/VPData/resolve/main"
+
+
+HF_BASE = hf_base()
 TRAIN_CSV = f"{HF_BASE}/pexels_videovo_train_dataset.csv"
 VAL_CSV = f"{HF_BASE}/pexels_videovo_val_dataset.csv"
 TEST_CSV = f"{HF_BASE}/pexels_videovo_test_dataset.csv"
@@ -259,20 +268,31 @@ def download_url(url: str, dest: Path, retries: int = 3) -> None:
     tmp = dest.with_suffix(dest.suffix + ".part")
     for attempt in range(1, retries + 1):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": "exp60b-vpdata-subset/1.0"})
-            with urllib.request.urlopen(req, timeout=120) as r, tmp.open("wb") as f:
-                while True:
-                    chunk = r.read(1024 * 1024)
-                    if not chunk:
-                        break
-                    f.write(chunk)
+            headers = {"User-Agent": "Mozilla/5.0 exp60b-vpdata-subset/1.0"}
+            mode = "wb"
+            start = tmp.stat().st_size if tmp.exists() else 0
+            if start > 0:
+                headers["Range"] = f"bytes={start}-"
+                mode = "ab"
+            req = urllib.request.Request(url, headers=headers)
+            with urllib.request.urlopen(req, timeout=120) as r:
+                if start > 0 and getattr(r, "status", None) != 206:
+                    # Server ignored Range; restart cleanly instead of corrupting.
+                    mode = "wb"
+                with tmp.open(mode) as f:
+                    while True:
+                        chunk = r.read(1024 * 1024)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+            if tmp.stat().st_size <= 0:
+                raise RuntimeError("download produced an empty file")
             tmp.replace(dest)
             return
         except Exception:
             if attempt >= retries:
                 raise
             time.sleep(5 * attempt)
-
 
 def materialize(rows: list[SourceRow], *, download: bool, max_downloads: int) -> list[dict]:
     out: list[dict] = []
@@ -316,6 +336,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--test_split", choices=["test", "val"], default="test")
     parser.add_argument("--download", action="store_true")
     parser.add_argument("--max_downloads", type=int, default=1100)
+    parser.add_argument("--report_prefix", default="exp60b_vpdata_subset")
     return parser
 
 
@@ -369,6 +390,7 @@ def main() -> int:
     summary = {
         "status": "EXP60B_H20_VPDATA_SUBSET_READY" if args.download else "EXP60B_VPDATA_SUBSET_PLAN_READY",
         "download": bool(args.download),
+        "hf_endpoint": os.environ.get("HF_ENDPOINT"),
         "source_filter": args.source_filter,
         "seed": args.seed,
         "train_manifest": str(train_manifest),
@@ -382,8 +404,13 @@ def main() -> int:
         "native_masks": "audit-only planned shard references; not downloaded by default",
         "full_vpdata_downloaded": False,
     }
-    (reports_dir / "exp60b_vpdata_subset_plan_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
-    with (reports_dir / "exp60b_vpdata_subset_plan.csv").open("w", encoding="utf-8", newline="") as f:
+    summary_name = f"{args.report_prefix}_{'download' if args.download else 'plan'}_summary.json"
+    csv_name = f"{args.report_prefix}_{'download' if args.download else 'plan'}.csv"
+    (reports_dir / summary_name).write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    # Preserve the original plan filenames used by the first Exp60B milestone.
+    if not args.download and args.report_prefix == "exp60b_vpdata_subset":
+        (reports_dir / "exp60b_vpdata_subset_plan_summary.json").write_text(json.dumps(summary, indent=2), encoding="utf-8")
+    with (reports_dir / csv_name).open("w", encoding="utf-8", newline="") as f:
         fieldnames = [
             "split",
             "vpdata_id",
@@ -405,6 +432,23 @@ def main() -> int:
         writer.writeheader()
         for row in train_out + test_out:
             writer.writerow({k: row.get(k) for k in fieldnames})
+    if not args.download and args.report_prefix == "exp60b_vpdata_subset":
+        # Keep the original plan CSV path stable for already-written reports.
+        src = reports_dir / csv_name
+        dst = reports_dir / "exp60b_vpdata_subset_plan.csv"
+        if src != dst:
+            dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+    failed = [
+        row for row in train_out + test_out
+        if row.get("source_url") and row.get("download_status") not in {"DOWNLOADED", "PLANNED"}
+    ]
+    with (reports_dir / f"{args.report_prefix}_failed_urls.txt").open("w", encoding="utf-8") as f:
+        for row in failed:
+            f.write(f"{row.get('split')}\t{row.get('vpdata_id')}\t{row.get('download_status')}\t{row.get('source_url')}\n")
+    with (reports_dir / f"{args.report_prefix}_sha256.txt").open("w", encoding="utf-8") as f:
+        for row in train_out + test_out:
+            if row.get("sha256"):
+                f.write(f"{row['sha256']}  {row['planned_video_path']}\n")
     print(json.dumps(summary, indent=2))
     return 0
 
