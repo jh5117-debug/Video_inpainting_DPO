@@ -1,0 +1,40 @@
+{
+  "status": "EXP58B_BLENDER_BPY_READY",
+  "machine": "PAI",
+  "hostname": "dsw-753014-85f54df947-bkp7h",
+  "tools_root": "/home/hj/tools/void_kubric_exp58b",
+  "env_root": "/home/hj/conda_envs/void_kubric_exp58b",
+  "blender": {
+    "version": "3.6.23",
+    "executable": "/home/hj/tools/void_kubric_exp58b/blender-3.6.23-linux-x64/blender",
+    "tarball_sha256": "0e9a18af4d0060b825e9617e24a775f759e0f9f67271c062f3d53a539030af00",
+    "embedded_python": "3.10.13",
+    "bpy_import": true
+  },
+  "user_shared_libraries": {
+    "libSM": true,
+    "libICE": true,
+    "libice6_deb_sha256": "ad1edb5303574fee154e487947177e5bd15363aa71b92f78f5a2a7145fdb81c5",
+    "libsm6_deb_sha256": "1d27ebc381b499075a28c504be4d7d424c63b6866354736ac7f8d25813860cdf"
+  },
+  "blender_python_bridge": {
+    "tensorflow": "2.15.1",
+    "tensorflow_datasets": "4.2.0",
+    "tfds_readwritepath": true,
+    "kubric_source": "/home/hj/tools/void_kubric_exp58b/kubric_src/kubric/__init__.py",
+    "asset_source_from_manifest": true,
+    "pybullet_class": true,
+    "kubric_blender_renderer_class": true
+  },
+  "safety": {
+    "training_run": false,
+    "void_inference_run": false,
+    "preference_forward_run": false,
+    "one_step_run": false,
+    "ten_step_run": false,
+    "base_env_modified": false,
+    "void_source_modified": false,
+    "shared_trainer_modified": false
+  },
+  "next": "Milestone D official script invocation audit"
+}

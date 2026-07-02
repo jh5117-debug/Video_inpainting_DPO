@@ -19,3 +19,7 @@ Exp58B readback confirmed the exact renderer blocker and storage layout. PAI dat
 Milestone B status: `EXP58B_KUBRIC_PYTHON_ENV_READY`.
 
 The Python env `/home/hj/conda_envs/void_kubric_exp58b` now imports TensorFlow, TFDS 4.2.0, official Google Research Kubric source, `AssetSource.from_manifest`, PyBullet, image/video libraries, and OpenEXR/Imath. Blender/`bpy` remains pending for Milestone C. No render, inference, training, one-step, or 10-step has run.
+
+Milestone C status: `EXP58B_BLENDER_BPY_READY`.
+
+Official Blender 3.6.23 now runs headless from `/home/hj/tools/void_kubric_exp58b` with user-extracted `libSM/libICE` libraries. Blender Python imports `bpy` and can bridge the Exp58B env to import TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`. No render, VOID inference, training, one-step, or 10-step has run.

@@ -126,3 +126,19 @@ Caveats:
 
 - `kubric.renderer.Blender` remains blocked by missing `bpy`; this is Milestone C.
 - `AssetSource.from_manifest` does not accept HTTPS manifest URLs, while `gs://` access via TensorFlow GCS metadata requests hangs on PAI. Milestone D should use local downloaded manifest JSON files if Blender/`bpy` is fixed.
+
+Milestone C status: `EXP58B_BLENDER_BPY_READY`.
+
+The renderer side was recovered with official Blender 3.6.23 under `/home/hj/tools/void_kubric_exp58b`. The preferred NAS tools root remains unwritable by `hj`, so this is an isolated `/home/hj` tools fallback rather than a system install. Blender required `libSM.so.6` and `libICE.so.6`; Exp58B downloaded the Ubuntu Noble `libsm6` and `libice6` deb packages and extracted them under the tools root, using `LD_LIBRARY_PATH` only for this Blender invocation.
+
+Validated smoke:
+
+- Blender headless launch: pass.
+- `bpy` import: pass.
+- Blender embedded Python: `3.10.13`.
+- TensorFlow bridge from `/home/hj/conda_envs/void_kubric_exp58b`: `2.15.1`.
+- TFDS bridge: `4.2.0` with `ReadWritePath`.
+- Official source Kubric bridge: pass, including `AssetSource.from_manifest`.
+- `kubric.simulator.PyBullet` and `kubric.renderer.Blender`: pass.
+
+No Kubric render, VOID inference, preference forward, one-step, or 10-step was run. Milestone D must audit the exact official script invocation before Gate1.

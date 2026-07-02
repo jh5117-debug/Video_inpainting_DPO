@@ -12,6 +12,14 @@ Kubric environment smoke:
 - Renderer blocked: `bpy` missing and no `blender` executable found.
 - GCS default manifests: KuBasic, GSO, and HDRI Haven reachable.
 
+Exp58B renderer smoke:
+
+- Blender version: 3.6.23.
+- Blender embedded Python: 3.10.13.
+- User-shared libraries: `libSM.so.6` and `libICE.so.6` extracted under `/home/hj/tools/void_kubric_exp58b/user_libs`.
+- Blender Python import OK: `bpy`, TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`.
+- No render metrics yet; Gate1 has not run.
+
 Readback metrics:
 
 - Exp57 H20 best diagnostic `ATS_STRICT_Q2_T500_S0`: full -0.094041, object -0.473428, overlap -0.581142, affected -0.146322, boundary -0.081617, outside -0.005963.

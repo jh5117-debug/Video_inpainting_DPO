@@ -1,0 +1,24 @@
+check,status,detail
+machine,pass,PAI dsw-753014-85f54df947-bkp7h
+tools_root,pass,/home/hj/tools/void_kubric_exp58b
+env_root,pass,/home/hj/conda_envs/void_kubric_exp58b
+blender_download,pass,blender-3.6.23-linux-x64.tar.xz
+blender_sha256,pass,0e9a18af4d0060b825e9617e24a775f759e0f9f67271c062f3d53a539030af00
+blender_executable,pass,/home/hj/tools/void_kubric_exp58b/blender-3.6.23-linux-x64/blender
+libSM,pass,user-extracted libsm6 deb under tools root
+libICE,pass,user-extracted libice6 deb under tools root
+headless_launch,pass,Blender 3.6.23
+bpy_import,pass,bpy.app.version_string 3.6.23
+embedded_python,pass,3.10.13
+env_bridge,pass,site-packages and kubric source added to Blender Python sys.path
+tensorflow_import,pass,2.15.1
+tfds_import,pass,4.2.0 with ReadWritePath
+kubric_source_import,pass,/home/hj/tools/void_kubric_exp58b/kubric_src/kubric/__init__.py
+AssetSource.from_manifest,pass,present
+PyBullet_class_import,pass,kubric.simulator.PyBullet
+Blender_renderer_class_import,pass,kubric.renderer.Blender
+symlink_route,warning,avoid symlink because it can break Blender $ORIGIN/lib resolution
+void_inference,not_run,forbidden in Exp58B
+training,not_run,forbidden in Exp58B
+one_step,not_run,forbidden in Exp58B
+ten_step,not_run,forbidden in Exp58B

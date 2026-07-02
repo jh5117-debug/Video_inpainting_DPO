@@ -29,6 +29,12 @@ Status: `EXP58B_KUBRIC_PYTHON_ENV_READY`.
 
 Built a HAL wheelhouse and installed a fresh PAI env at `/home/hj/conda_envs/void_kubric_exp58b`. PyPI Kubric was replaced by official Google Research Kubric source `61f2422c84bab75006df33c6989e0b483db3ccfe` because the PyPI wheel lacked `AssetSource.from_manifest`. TensorFlow 2.15.1, TFDS 4.2.0, PyBullet, image stack, OpenEXR, and Imath import. Blender/`bpy` remains pending; no render or training was run.
 
+## 2026-07-02 Exp58B Blender / bpy Smoke
+
+Status: `EXP58B_BLENDER_BPY_READY`.
+
+Installed official Blender 3.6.23 into the isolated PAI tools fallback `/home/hj/tools/void_kubric_exp58b` without modifying system Blender. Blender initially needed `libSM.so.6` and `libICE.so.6`; those Ubuntu packages were downloaded and extracted under the tools root, then loaded via `LD_LIBRARY_PATH`. Headless Blender imports `bpy`, uses embedded Python 3.10.13, and can bridge the Exp58B env to import TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`. No render, inference, training, one-step, or 10-step was run.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.
