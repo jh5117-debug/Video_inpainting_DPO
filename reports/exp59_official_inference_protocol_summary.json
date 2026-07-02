@@ -1,0 +1,25 @@
+{
+  "128x128_acceptance": "accepted through official preprocessing: input and mask are read then resized with F.interpolate to config.data.sample_size",
+  "base_model": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP",
+  "dtype": "torch.bfloat16",
+  "frame_count": "Kubric source has 24 frames; official max_video_length=197 and temporal_window_size=85; loader temporal_padding pads short clips to 85 frames",
+  "gpu_availability": "PAI GPU0-7 were idle at protocol audit time, each NVIDIA L20X with 143771 MiB total VRAM",
+  "gpu_memory_mode": "model_cpu_offload_and_qfloat8",
+  "input_format": "data_rootdir/sequence/input_video.mp4 + quadmask_0.mp4 + prompt.json {\"bg\": ...}",
+  "mask_values": "quadmask values 0 object, 63 overlap, 127 affected, 255 background; script quantizes and inverts internally for model mask tensor",
+  "num_inference_steps": "script call currently hard-codes num_inference_steps=30 despite config field default 50",
+  "official_script": "inference/cogvideox_fun/predict_v2v.py",
+  "pass1_checkpoint": "/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass1.safetensors",
+  "prompt_format": "prompt.json with single bg key describing remaining scene, not object removal",
+  "protocol_resolution": "official default sample_size=384x672; use this for pass1 unless memory blocker appears",
+  "resolution_caveat": "source Kubric videos are 128x128; official output is 384x672. Metrics should compare at common resolution and record resize direction.",
+  "safety": {
+    "official_source_modified": false,
+    "one_step_run": false,
+    "ten_step_run": false,
+    "training_run": false
+  },
+  "scheduler": "DDIM_Origin",
+  "seed": "42",
+  "status": "EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY"
+}

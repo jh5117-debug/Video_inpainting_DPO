@@ -1,0 +1,18 @@
+field,value,evidence
+official_script,inference/cogvideox_fun/predict_v2v.py,README Pass 1 command; script main
+input_format,"data_rootdir/sequence/input_video.mp4 + quadmask_0.mp4 + prompt.json {""bg"": ...}",README Input Format; get_video_mask_input
+128x128_acceptance,accepted through official preprocessing: input and mask are read then resized with F.interpolate to config.data.sample_size,videox_fun/utils/utils.py get_video_mask_input lines around F.interpolate
+protocol_resolution,official default sample_size=384x672; use this for pass1 unless memory blocker appears,config/quadmask_cogvideox.py; README key config options
+resolution_caveat,source Kubric videos are 128x128; official output is 384x672. Metrics should compare at common resolution and record resize direction.,Exp59 Gate8 audit; official config
+frame_count,Kubric source has 24 frames; official max_video_length=197 and temporal_window_size=85; loader temporal_padding pads short clips to 85 frames,utils.temporal_padding; config
+prompt_format,"prompt.json with single bg key describing remaining scene, not object removal",README Input Format
+mask_values,"quadmask values 0 object, 63 overlap, 127 affected, 255 background; script quantizes and inverts internally for model mask tensor",README quadmask table; get_video_mask_input quadmask branch
+pass1_checkpoint,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/netflix_void-model/void_pass1.safetensors,weights listing; README Models
+base_model,/mnt/nas/hj/H20_Video_inpainting_DPO/weights/void/CogVideoX-Fun-V1.5-5b-InP,weights listing; README setup
+dtype,torch.bfloat16,config.system.weight_dtype
+scheduler,DDIM_Origin,config.video_model.sampler_name
+num_inference_steps,script call currently hard-codes num_inference_steps=30 despite config field default 50,predict_v2v.py run_inference pipeline call
+seed,42,config.system.seed
+gpu_memory_mode,model_cpu_offload_and_qfloat8,config.system.gpu_memory_mode
+gpu_availability,"PAI GPU0-7 were idle at protocol audit time, each NVIDIA L20X with 143771 MiB total VRAM",nvidia-smi protocol audit
+status,EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY,protocol audit

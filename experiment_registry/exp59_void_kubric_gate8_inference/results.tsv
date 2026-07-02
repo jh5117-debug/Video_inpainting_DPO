@@ -8,3 +8,7 @@ quadmask_values	0|63|127|255
 target_hit_true	0
 target_hit_false	8
 status	EXP59_GATE8_INPUT_WEAK
+official_protocol_status	EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY
+official_sample_size	384x672
+official_temporal_window_size	85
+official_script_steps	30

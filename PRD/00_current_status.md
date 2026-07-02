@@ -5,6 +5,8 @@ Status: `EXP59_GATE8_INPUT_WEAK`.
 
 Exp59 starts from Exp58B's generated VOID-native Kubric Gate8. PAI decoded all 8 rows successfully: 24 frames, 128x128, 8 fps, quadmask values `0|63|127|255`, and no VOR paths mixed in. All rows have `target_hit=false`, so the data is sufficient for official VOID inference diagnostics but weak for adapter training. No training, preference forward, zero-gap, one-step, or 10-step has been run.
 
+Milestone B status: `EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY`. Official VOID pass1 accepts the 128x128 Kubric inputs through its normal resize preprocessing to `384x672` and temporal padding to the 85-frame window; metrics must record this resolution/frame-count caveat.
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.
