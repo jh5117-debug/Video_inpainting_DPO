@@ -5,7 +5,8 @@
     "EXP60B_PAI_GPU_READY",
     "EXP60B_H20_READY_VIA_PAI_RELAY",
     "EXP60B_VPDATA_SUBSET_PLAN_READY",
-    "EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK"
+    "EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK",
+    "EXP60B_H20_HF_MIRROR_READY"
   ],
   "branch": "research/exp60b-videopainter-vpdata-d3mask-pai-20260702",
   "start_head": "568a7dfb48bcdfce893176a1dd48c653414a13a8",
@@ -24,7 +25,7 @@
     "hostname": "instance-afs92r3e",
     "home_nvme01_available": "1.2T",
     "download_attempted": true,
-    "blocker": "H20 outbound HTTPS to Hugging Face failed with Network is unreachable"
+    "blocker": null
   },
   "pai": {
     "host": "hj@47.103.26.60",
@@ -41,5 +42,5 @@
     "train_test_overlap_count": 0,
     "downloaded": 0
   },
-  "next_required_action": "Enable H20 outbound HTTPS, authorize HAL-first download, or provide an internal mirror; do not clone full VPData."
+  "next_required_action": "Attempt guarded H20 download through hf-mirror, then enable H20 clash proxy only if needed; do not clone full VPData."
 }

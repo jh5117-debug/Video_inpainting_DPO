@@ -1,0 +1,35 @@
+{
+  "status": "EXP60B_H20_HF_MIRROR_READY",
+  "branch": "research/exp60b-videopainter-vpdata-d3mask-pai-20260702",
+  "start_head": "d668a7c07ffd9ce9d61e13307934886c1f3b3db9",
+  "h20": {
+    "route": "HAL -> PAI hj@47.103.26.60 -> H20 ubuntu@27.190.15.128",
+    "hostname": "instance-afs92r3e",
+    "home_nvme01_available": "1.2T",
+    "storage_ready": true,
+    "python3": "3.10.6",
+    "python_command_available": false
+  },
+  "network": {
+    "hf_mirror": "HTTP 200",
+    "huggingface_direct": "Network is unreachable",
+    "pexels_homepage": "HTTP 403",
+    "clash_sh_exists": true,
+    "clash_start_exists": true
+  },
+  "manifest": {
+    "train_rows": 1000,
+    "test_rows": 100,
+    "train_test_overlap": 0,
+    "downloaded_before_continuation": 0
+  },
+  "safety": {
+    "training_run": false,
+    "inference_run": false,
+    "loser_generation_run": false,
+    "gpu_used": false,
+    "full_vpdata_downloaded": false,
+    "token_printed": false
+  }
+}
+

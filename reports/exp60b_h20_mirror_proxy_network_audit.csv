@@ -1,0 +1,11 @@
+timestamp,host,check,status,detail
+2026-07-02T18:39:36+08:00,instance-afs92r3e,route,ready,"HAL to PAI to H20 relay succeeded"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,storage,ready,"/home/nvme01 3.4T total, 1.2T available, 66% used"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,python3,ready,"Python 3.10.6"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,python,missing,"python command not found; wrapper uses python3"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,hf_mirror,ready,"https://hf-mirror.com returned HTTP 200"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,huggingface_direct,blocked,"https://huggingface.co returned Network is unreachable"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,pexels_homepage,weak,"https://www.pexels.com returned HTTP 403"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,clash_sh,available,"/home/nvme01/clash-for-linux/clash.sh exists"
+2026-07-02T18:39:36+08:00,instance-afs92r3e,clash_start,available,"/home/nvme01/clash-for-linux/start.sh exists"
+

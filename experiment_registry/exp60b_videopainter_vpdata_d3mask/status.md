@@ -8,8 +8,9 @@ Status:
 - `EXP60B_H20_READY_VIA_PAI_RELAY`
 - `EXP60B_VPDATA_SUBSET_PLAN_READY`
 - `EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK`
+- `EXP60B_H20_HF_MIRROR_READY`
 
-Blocked next step: H20/PAI outbound network cannot reach Hugging Face for the
-official VPData metadata/raw download path. Enable H20 egress, authorize a
-HAL-first download route, or provide an internal mirror. Full VPData
-clone/download remains forbidden.
+Current continuation: H20 can reach `https://hf-mirror.com`; direct
+`huggingface.co` remains blocked. Next step is a guarded HF-mirror download
+attempt, then clash fallback only if needed. Full VPData clone/download remains
+forbidden.
