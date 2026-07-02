@@ -8,3 +8,4 @@ E	VOID_KUBRIC_ONESTEP_BLOCKED	Kubric preference forward / zero-gap / one-step no
 F	VOID_NATIVE_DATA_BLOCKED	VOR-vs-Kubric comparison not computed because Kubric-native data is unavailable.
 G	VOID_NATIVE_KUBRIC_BLOCKED	Final decision: data-mismatch hypothesis remains untested; blocker is TensorFlow-compatible Kubric plus Blender/bpy environment.
 Exp58B-A	EXP58B_READBACK_DONE	Confirmed direct bpy import in official Kubric script, missing TensorFlow/Kubric import, missing Blender/bpy, and PAI /home fallback requirement for tools/env.
+Exp58B-B	EXP58B_KUBRIC_PYTHON_ENV_READY	Fresh PAI env imports TensorFlow 2.15.1, TFDS 4.2.0, official Kubric source with AssetSource.from_manifest, PyBullet, image stack, and OpenEXR; Blender/bpy remains pending.

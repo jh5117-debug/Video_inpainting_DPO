@@ -15,3 +15,7 @@ Final gate: blocked until a controlled TensorFlow-compatible Kubric environment 
 Current Exp58B status: `EXP58B_READBACK_DONE`.
 
 Exp58B readback confirmed the exact renderer blocker and storage layout. PAI data/log/runtime roots are writable, while the preferred NAS tools/env roots are not writable by `hj`; isolated fallback roots under `/home/hj` are required for env/tools recovery. No training, inference, one-step, or 10-step has run.
+
+Milestone B status: `EXP58B_KUBRIC_PYTHON_ENV_READY`.
+
+The Python env `/home/hj/conda_envs/void_kubric_exp58b` now imports TensorFlow, TFDS 4.2.0, official Google Research Kubric source, `AssetSource.from_manifest`, PyBullet, image/video libraries, and OpenEXR/Imath. Blender/`bpy` remains pending for Milestone C. No render, inference, training, one-step, or 10-step has run.

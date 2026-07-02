@@ -105,3 +105,24 @@ Storage update:
 - Exp58B must use `/home/hj/conda_envs/void_kubric_exp58b` and `/home/hj/tools/void_kubric_exp58b` as isolated fallbacks if continuing.
 
 Candidate Python route: Python 3.10 isolated env with `tensorflow-cpu` and Kubric 0.1.1, plus a controlled Blender/`bpy` bridge. Because TensorFlow wheels are sensitive to NumPy/Protobuf versions, Exp58B should use a fresh env rather than mutate the previous minimal env.
+
+Milestone B status: `EXP58B_KUBRIC_PYTHON_ENV_READY`.
+
+The Python side was recovered in a fresh env at `/home/hj/conda_envs/void_kubric_exp58b` using a HAL-built wheelhouse relayed to PAI runtime storage. PyPI `kubric==0.1.1` was insufficient because it lacks `AssetSource.from_manifest`; Exp58B therefore installed the official Google Research Kubric source checkout (`61f2422c84bab75006df33c6989e0b483db3ccfe`) into the isolated env without modifying VOID official source.
+
+Working imports:
+
+- `tensorflow==2.15.1`
+- `tensorflow_datasets==4.2.0` with `ReadWritePath`
+- official source Kubric with `AssetSource.from_manifest`
+- `kubric.simulator.PyBullet`
+- `pybullet`
+- `imageio`
+- `opencv-python-headless`
+- `numpy==1.26.4`
+- `OpenEXR` / `Imath`
+
+Caveats:
+
+- `kubric.renderer.Blender` remains blocked by missing `bpy`; this is Milestone C.
+- `AssetSource.from_manifest` does not accept HTTPS manifest URLs, while `gs://` access via TensorFlow GCS metadata requests hangs on PAI. Milestone D should use local downloaded manifest JSON files if Blender/`bpy` is fixed.

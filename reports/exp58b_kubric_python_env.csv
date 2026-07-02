@@ -1,0 +1,24 @@
+check,status,detail
+env_path,pass,/home/hj/conda_envs/void_kubric_exp58b
+wheelhouse_sha256,pass,94 files match on PAI
+tensorflow,pass,2.15.1
+tensorflow_datasets,pass,4.2.0 with ReadWritePath
+tensorflow_metadata,pass,1.14.0
+protobuf,pass,3.20.3
+numpy,pass,1.26.4
+kubric_source,pass,Google Research source commit 61f2422c84bab75006df33c6989e0b483db3ccfe
+AssetSource.from_manifest,pass,present in source Kubric
+PyBullet_import,pass,kubric.simulator.PyBullet imports
+pybullet_import,pass,ok
+imageio_import,pass,2.37.3
+opencv_import,pass,4.11.0
+OpenEXR_import,pass,3.4.13
+Imath_import,pass,0.0.2
+HTTP_manifest_access,pass,KuBasic/GSO/HDRI Haven HTTP 200
+AssetSource_https_manifest,blocked,KeyError('https://')
+AssetSource_gs_manifest,blocked,TensorFlow GCS metadata request hangs on PAI
+kubric_renderer_blender,blocked,missing bpy; defer to Milestone C
+training_run,not_run,forbidden in Exp58B
+void_inference_run,not_run,forbidden in Exp58B
+one_step_run,not_run,forbidden in Exp58B
+ten_step_run,not_run,forbidden in Exp58B
