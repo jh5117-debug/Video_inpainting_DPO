@@ -142,3 +142,15 @@ Validated smoke:
 - `kubric.simulator.PyBullet` and `kubric.renderer.Blender`: pass.
 
 No Kubric render, VOID inference, preference forward, one-step, or 10-step was run. Milestone D must audit the exact official script invocation before Gate1.
+
+Milestone D status: `EXP58B_KUBRIC_INVOCATION_READY`.
+
+Directly running `blender -b --python kubric_variable_objects.py -- ...` causes the script parser to see Blender's own CLI arguments. Exp58B added an isolated launcher at `exp58_void_native_data_diagnostic/exp58b_kubric_env_recovery/blender_void_kubric_launcher.py` that leaves the official VOID script unchanged, injects the Kubric/TensorFlow env into Blender Python, replaces `sys.argv`, and executes the script with `runpy`.
+
+The three public official manifest JSON files were cached in NAS runtime storage and load locally:
+
+- KuBasic: 15 assets.
+- GSO: 1033 assets.
+- HDRI Haven: 509 assets.
+
+A no-render `--num_pairs 0` dry-run through Blender Python completed successfully, creating only the dry-run output directory. Gate1 should use the same launcher, local manifests, `--num_pairs 1`, and a low-resolution `--fast` smoke. If per-asset GCS tarball fetching fails during Gate1, mark that exact blocker; do not fake data.

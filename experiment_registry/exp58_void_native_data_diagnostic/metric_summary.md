@@ -20,6 +20,13 @@ Exp58B renderer smoke:
 - Blender Python import OK: `bpy`, TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`.
 - No render metrics yet; Gate1 has not run.
 
+Exp58B invocation audit:
+
+- Local official manifests: KuBasic 15 assets, GSO 1033 assets, HDRI Haven 509 assets.
+- Blender Python dry-run: `--num_pairs 0`, pass.
+- Output path convention: `job_dir/out_prefix/00000` for real samples.
+- No native-data video metrics yet.
+
 Readback metrics:
 
 - Exp57 H20 best diagnostic `ATS_STRICT_Q2_T500_S0`: full -0.094041, object -0.473428, overlap -0.581142, affected -0.146322, boundary -0.081617, outside -0.005963.

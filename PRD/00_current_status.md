@@ -35,6 +35,12 @@ Status: `EXP58B_BLENDER_BPY_READY`.
 
 Installed official Blender 3.6.23 into the isolated PAI tools fallback `/home/hj/tools/void_kubric_exp58b` without modifying system Blender. Blender initially needed `libSM.so.6` and `libICE.so.6`; those Ubuntu packages were downloaded and extracted under the tools root, then loaded via `LD_LIBRARY_PATH`. Headless Blender imports `bpy`, uses embedded Python 3.10.13, and can bridge the Exp58B env to import TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`. No render, inference, training, one-step, or 10-step was run.
 
+## 2026-07-02 Exp58B Kubric Invocation Audit
+
+Status: `EXP58B_KUBRIC_INVOCATION_READY`.
+
+Audited the official `kubric_variable_objects.py` invocation. Direct `blender -b --python script.py -- ...` is unsafe because the script parser consumes Blender's own CLI args. Added an Exp58-only launcher that bridges the isolated env and replaces `sys.argv` before running the official script unmodified. Local official manifest JSONs were cached under NAS runtime and load correctly. A no-render `--num_pairs 0` dry-run completed through Blender Python and created only the dry-run output directory. Gate1 render smoke is now the next step; no render or training has run yet.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

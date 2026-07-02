@@ -23,3 +23,7 @@ The Python env `/home/hj/conda_envs/void_kubric_exp58b` now imports TensorFlow, 
 Milestone C status: `EXP58B_BLENDER_BPY_READY`.
 
 Official Blender 3.6.23 now runs headless from `/home/hj/tools/void_kubric_exp58b` with user-extracted `libSM/libICE` libraries. Blender Python imports `bpy` and can bridge the Exp58B env to import TensorFlow 2.15.1, TFDS 4.2.0, official source Kubric, `PyBullet`, and `kubric.renderer.Blender`. No render, VOID inference, training, one-step, or 10-step has run.
+
+Milestone D status: `EXP58B_KUBRIC_INVOCATION_READY`.
+
+An Exp58-only launcher now runs the unmodified official Kubric script under Blender Python with corrected `sys.argv`. Local official manifest JSONs load from NAS runtime storage, and a `--num_pairs 0` dry-run completed without rendering. Gate1 render smoke is next. No VOID inference, training, one-step, or 10-step has run.
