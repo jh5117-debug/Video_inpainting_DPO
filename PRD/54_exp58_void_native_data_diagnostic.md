@@ -49,11 +49,11 @@ Current audit:
 | A | `EXP58_READBACK_DONE` | Data mismatch and storage readback completed. |
 | Storage | `EXP58_STORAGE_PAI_NAS_PREFERRED` | PAI/NAS preferred; requested PAI experiment output root is not writable by `hj`. |
 | B | `VOID_KUBRIC_ENV_BLOCKED` | PAI direct pip install stalled on `pybullet`; HAL wheelhouse relay succeeded, but `import kubric` still requires TensorFlow and official VOID Kubric generation requires missing Blender/`bpy`. |
-| C | locked | Cannot generate official Kubric Gate8 without a working Kubric + Blender/`bpy` environment. |
-| D | locked | No Kubric Gate8 exists. |
-| E | locked | No Kubric native data exists. |
-| F | locked | VOR-vs-Kubric comparison cannot be computed until native data exists. |
-| G | pending | Final decision will record native-data blocker and no 10-step. |
+| C | `VOID_NATIVE_KUBRIC_GATE8_BLOCKED` | Cannot generate official Kubric Gate8 without a working Kubric + Blender/`bpy` environment. |
+| D | `VOID_KUBRIC_INFERENCE_BLOCKED` | No Kubric Gate8 exists. |
+| E | `VOID_KUBRIC_ONESTEP_BLOCKED` | No Kubric native data exists. |
+| F | `VOID_NATIVE_DATA_BLOCKED` | VOR-vs-Kubric comparison cannot be computed until native data exists. |
+| G | `VOID_NATIVE_KUBRIC_BLOCKED` | Final decision: data-mismatch hypothesis remains untested because official native data generation is environment-blocked. |
 
 ## Scientific Position
 
@@ -75,3 +75,11 @@ The generator is still blocked:
 - No `blender` executable was found on PAI.
 
 Because the official VOID Kubric script imports `bpy` directly and uses `kubric.renderer.Blender`, Exp58 cannot generate valid VOID-native Kubric data in the current environment. No fake data was created.
+
+## Final Decision
+
+Status: `VOID_NATIVE_KUBRIC_BLOCKED`.
+
+Exp58 confirmed that the official Kubric data path is the right native-data diagnostic target, but it did not produce native data. The blocker is exact and reproducible: the isolated PAI environment cannot import Kubric without TensorFlow, and the official renderer cannot run without Blender/`bpy`. The official public GCS assets are reachable, so this is not an asset-network blocker.
+
+No Kubric Gate8, official Kubric inference, Kubric one-step, VOR-vs-Kubric quantitative comparison, training, or 10-step was run. VOID remains a VOR-OR inference baseline, same-model loser generator, and adapter-engineering candidate, not third-backbone evidence.

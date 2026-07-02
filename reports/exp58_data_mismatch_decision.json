@@ -1,0 +1,8 @@
+{
+  "status": "VOID_NATIVE_DATA_BLOCKED",
+  "data_mismatch_confirmed": false,
+  "data_mismatch_suspected": true,
+  "wrapper_objective_blocker_confirmed_on_native_data": false,
+  "reason": "Official Kubric-native data could not be generated because Kubric import requires TensorFlow and the renderer requires Blender/bpy.",
+  "next_required_action": "Provide a controlled Kubric environment with TensorFlow-compatible kubric import plus Blender/bpy, then rerun Gate8 generation only."
+}

@@ -1,0 +1,8 @@
+{
+  "status": "VOID_KUBRIC_ONESTEP_BLOCKED",
+  "reason": "No Kubric native data exists.",
+  "preference_forward_run": false,
+  "zero_gap_run": false,
+  "one_step_run": false,
+  "ten_step_run": false
+}

@@ -1,0 +1,6 @@
+{
+  "status": "VOID_NATIVE_KUBRIC_GATE8_BLOCKED",
+  "reason": "VOID_KUBRIC_ENV_BLOCKED_TENSORFLOW_AND_BLENDER_BPY_MISSING",
+  "generated_sequences": 0,
+  "fake_data_created": false
+}

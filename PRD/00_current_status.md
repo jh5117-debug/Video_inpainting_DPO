@@ -11,6 +11,12 @@ Status: `VOID_KUBRIC_ENV_BLOCKED`.
 
 PAI direct pip install stalled on the `pybullet` wheel, so HAL relayed a 44-file Kubric wheelhouse to PAI runtime storage with SHA256 match. Offline install into `/home/hj/conda_envs/void_kubric_exp58` succeeded for the minimal packages, and the official GCS manifests are reachable. The generator remains blocked because `import kubric` requires TensorFlow and the official VOID Kubric renderer requires missing Blender/`bpy`. No Kubric data, inference, training, or 10-step was run.
 
+## 2026-07-02 Exp58 Final Decision
+
+Status: `VOID_NATIVE_KUBRIC_BLOCKED`.
+
+Exp58 did not generate Kubric Gate8 because the official data-generation environment is blocked by missing TensorFlow-compatible Kubric import and missing Blender/`bpy`. The VOR-vs-Kubric data mismatch hypothesis remains plausible but untested. VOID remains a baseline / loser-generator / adapter-engineering candidate, not third-backbone evidence.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

@@ -1,0 +1,2 @@
+sample_id,status,reason
+ALL,blocked,Milestone B failed: TensorFlow-compatible Kubric import and Blender/bpy are unavailable.

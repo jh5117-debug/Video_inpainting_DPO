@@ -1,6 +1,6 @@
 # Exp58 VOID Native Data Diagnostic Status
 
-Current status: `VOID_KUBRIC_ENV_BLOCKED`
+Current status: `VOID_NATIVE_KUBRIC_BLOCKED`
 
 Storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`
 
@@ -8,4 +8,4 @@ Milestone A completed readback of Exp50-Exp57 and official VOID data-generation 
 
 Milestone B attempted the isolated Kubric environment smoke on PAI. Direct PAI pip stalled on `pybullet`, but a HAL wheelhouse relay succeeded and offline install completed. The environment remains blocked because `import kubric` requires TensorFlow and official VOID Kubric generation also requires Blender/`bpy`, neither of which is available in the isolated environment or PAI system path.
 
-Next gate: blocked until a controlled Blender/`bpy` + TensorFlow-compatible Kubric environment is provided.
+Final gate: blocked until a controlled TensorFlow-compatible Kubric environment and Blender/`bpy` renderer are available. No Kubric data, official Kubric inference, Kubric one-step, or 10-step was run.

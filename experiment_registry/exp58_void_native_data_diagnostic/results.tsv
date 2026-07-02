@@ -2,3 +2,8 @@ milestone	status	summary
 A	EXP58_READBACK_DONE	Exp50-Exp57 readback and official VOID data-generation audit completed.
 Storage	EXP58_STORAGE_PAI_NAS_PREFERRED	PAI/NAS preferred for large data; requested PAI experiments output root is not writable by hj, but logs/runtime and PAI local home are writable.
 B	VOID_KUBRIC_ENV_BLOCKED	HAL wheelhouse relay and offline minimal install succeeded, but Kubric import requires TensorFlow and official VOID Kubric generation requires missing Blender/bpy.
+C	VOID_NATIVE_KUBRIC_GATE8_BLOCKED	Official Kubric Gate8 generation not run because B did not pass.
+D	VOID_KUBRIC_INFERENCE_BLOCKED	Official VOID inference on Kubric not run because no Kubric Gate8 exists.
+E	VOID_KUBRIC_ONESTEP_BLOCKED	Kubric preference forward / zero-gap / one-step not run because no native data exists.
+F	VOID_NATIVE_DATA_BLOCKED	VOR-vs-Kubric comparison not computed because Kubric-native data is unavailable.
+G	VOID_NATIVE_KUBRIC_BLOCKED	Final decision: data-mismatch hypothesis remains untested; blocker is TensorFlow-compatible Kubric plus Blender/bpy environment.

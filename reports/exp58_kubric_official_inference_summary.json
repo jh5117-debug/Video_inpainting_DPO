@@ -1,0 +1,7 @@
+{
+  "status": "VOID_KUBRIC_INFERENCE_BLOCKED",
+  "reason": "No Kubric Gate8 data exists because official Kubric generation is environment-blocked.",
+  "inference_run": false,
+  "gpu_used": false,
+  "outputs": 0
+}
