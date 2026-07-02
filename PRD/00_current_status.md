@@ -2290,3 +2290,30 @@ Pexels-only train1000/test100 plan is ready; no raw video has been downloaded
 yet. H20/PAI outbound network probes cannot reach Hugging Face, so raw subset
 download is blocked unless H20 egress is enabled, HAL-first download is
 authorized, or an internal mirror is provided.
+
+## 2026-07-02 Exp60B VPData Download Continuation
+
+- Branch: `research/exp60b-videopainter-vpdata-d3mask-pai-20260702`
+- Status:
+  - `EXP60B_H20_HF_MIRROR_READY`
+  - `EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED`
+  - `EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY`
+  - `EXP60B_HAL_VPDATA_SUBSET_BLOCKED`
+  - `EXP60B_TRANSFER_BLOCKED`
+- H20 hf-mirror result: 1,089 / 1,100 locked Pexels raw videos downloaded.
+- H20 clash proxy result: 1,089 / 1,100; the same 11 Pexels raw URLs remained
+  HTTP 403.
+- HAL fallback result: 11 / 11 missing URLs probed; 0 reachable, 11 HTTP 403.
+- PAI transfer: not run as ready, because the exact train1000/test100 data root
+  is incomplete.
+- Reports:
+  - `reports/exp60b_h20_vpdata_subset_download_hfmirror.md`
+  - `reports/exp60b_h20_vpdata_subset_download_proxy.md`
+  - `reports/exp60b_hal_vpdata_subset_download.md`
+  - `reports/exp60b_vpdata_download_unblock_decision.md`
+  - `reports/exp60b_next_steps_after_download.md`
+
+No full VPData download, GPU job, mask generation, loser generation, inference,
+or training was run. Exp60B remains blocked until the 11 locked Pexels raw URL
+failures are resolved or a separately preregistered replacement-row plan is
+approved.

@@ -1,0 +1,11 @@
+{
+  "status": "EXP60B_TRANSFER_BLOCKED",
+  "transfer_ran": false,
+  "pai_target": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset",
+  "h20_downloaded": 1089,
+  "h20_failed": 11,
+  "hal_missing_url_probe_ok": 0,
+  "hal_missing_url_probe_failed": 11,
+  "pai_manifest_generated": false,
+  "reason": "Exact locked train1000/test100 subset is incomplete because 11 Pexels raw URLs return HTTP 403 on H20 mirror/proxy and HAL."
+}

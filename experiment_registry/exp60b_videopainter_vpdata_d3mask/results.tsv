@@ -1,3 +1,6 @@
 milestone	status	notes
 A_readback	EXP60B_READBACK_DONE	VPData public; PAI GPU0/1 ready; H20 connectivity blocked from HAL
-
+B_h20_hfmirror	EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED	HF mirror unblocked metadata and downloaded 1089/1100 locked Pexels videos; 11 Pexels raw URLs returned HTTP 403
+C_h20_proxy	EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY	H20 clash proxy fallback remained at 1089/1100 with the same 11 Pexels raw URL failures
+D_hal_fallback	EXP60B_HAL_VPDATA_SUBSET_BLOCKED	HAL missing-URL probe tested 11/11 blocked URLs and all returned HTTP 403
+E_pai_transfer	EXP60B_TRANSFER_BLOCKED	PAI ready transfer not run because exact locked train1000/test100 subset is incomplete

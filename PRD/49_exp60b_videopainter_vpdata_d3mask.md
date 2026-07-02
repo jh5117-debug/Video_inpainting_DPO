@@ -28,7 +28,10 @@ is reduced by a larger VPData subset with D3-style masks.
 Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
 `EXP60B_VPDATA_SUBSET_PLAN_READY` /
 `EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK` /
-`EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED`
+`EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED` /
+`EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY` /
+`EXP60B_HAL_VPDATA_SUBSET_BLOCKED` /
+`EXP60B_TRANSFER_BLOCKED`
 
 Milestone A completed from the HAL Codex session:
 
@@ -50,16 +53,23 @@ Milestone A completed from the HAL Codex session:
 - PAI also cannot reach Hugging Face from the urllib probe.
 - Continuation result: H20 hf-mirror unblocked metadata and downloaded
   1,089/1,100 Pexels raw videos. The remaining 11 failed at source URL level
-  and require clash proxy fallback.
+  and required clash proxy fallback.
+- H20 clash proxy fallback remained at 1,089/1,100 with the same 11 HTTP 403
+  Pexels raw URL failures.
+- HAL fallback probed the 11 missing URLs directly and also received HTTP 403
+  for all 11.
+- The exact train1000/test100 subset is incomplete; PAI ready transfer and PAI
+  manifests are blocked.
 
 ## Required Next Gate
 
-Before any data download:
+Before any D3 mask generation:
 
-1. Run H20 clash proxy fallback with resume for the remaining failed URLs.
-2. Implement a file-level and row-level subset downloader that downloads only
-   train1000/test100 selected rows.
+1. Resolve the 11 locked Pexels raw URL failures, or open a new preregistered
+   replan to replace exactly those blocked rows.
+2. Verify 1,100/1,100 files on PAI/NAS with sha256 and decode checks.
 3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
    a full data checkout.
 4. Do not run official `VPData_download.py` unmodified, because it iterates all
    Pexels rows.
+5. Do not generate D3 masks, losers, or DPO data from the partial 1,089-row set.
