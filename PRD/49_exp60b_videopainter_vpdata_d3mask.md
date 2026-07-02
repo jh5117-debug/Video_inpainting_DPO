@@ -31,7 +31,9 @@ Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
 `EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED` /
 `EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY` /
 `EXP60B_HAL_VPDATA_SUBSET_BLOCKED` /
-`EXP60B_TRANSFER_BLOCKED`
+`EXP60B_TRANSFER_BLOCKED` /
+`EXP60C_H20_VPDATA_SUBSET_READY` /
+`EXP60C_TRANSFER_BLOCKED`
 
 Milestone A completed from the HAL Codex session:
 
@@ -60,16 +62,24 @@ Milestone A completed from the HAL Codex session:
   for all 11.
 - The exact train1000/test100 subset is incomplete; PAI ready transfer and PAI
   manifests are blocked.
+- Exp60C deterministically replaced the 11 blocked URLs with same-split
+  Pexels-only candidates and downloaded 11/11 replacements on H20.
+- H20 final subset now has train1000/test100, 1,100 sha256 rows, and 1,100/1,100
+  OpenCV decode pass after targeted repair of 6 incomplete historical MP4s.
+- PAI transfer remains blocked because `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`
+  is not writable by `hj`.
 
 ## Required Next Gate
 
 Before any D3 mask generation:
 
-1. Resolve the 11 locked Pexels raw URL failures, or open a new preregistered
-   replan to replace exactly those blocked rows.
-2. Verify 1,100/1,100 files on PAI/NAS with sha256 and decode checks.
+1. Fix PAI/NAS write permission for
+   `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`.
+2. Transfer the already verified H20 subset to PAI/NAS.
+3. Verify 1,100/1,100 files on PAI/NAS with sha256 and decode checks.
 3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
    a full data checkout.
 4. Do not run official `VPData_download.py` unmodified, because it iterates all
    Pexels rows.
-5. Do not generate D3 masks, losers, or DPO data from the partial 1,089-row set.
+5. Do not generate D3 masks, losers, or DPO data until the PAI/NAS data root is
+   complete and PAI manifests are generated.

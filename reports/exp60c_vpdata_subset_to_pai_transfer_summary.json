@@ -1,0 +1,12 @@
+{
+  "status": "EXP60C_TRANSFER_BLOCKED",
+  "transfer_started": false,
+  "source_h20_status": "EXP60C_H20_VPDATA_SUBSET_READY",
+  "source_video_count": 1100,
+  "source_sha256_rows": 1100,
+  "source_decode_ok": 1100,
+  "target_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset",
+  "target_parent_writable": false,
+  "blocker": "PAI user hj cannot create target under /mnt/nas/hj/H20_Video_inpainting_DPO/data/external because NAS path is root-owned and not writable.",
+  "pai_manifest_generated": false
+}

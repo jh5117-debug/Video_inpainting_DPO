@@ -4,3 +4,6 @@ B_h20_hfmirror	EXP60B_H20_PEXELS_RAW_PROXY_REQUIRED	HF mirror unblocked metadata
 C_h20_proxy	EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY	H20 clash proxy fallback remained at 1089/1100 with the same 11 Pexels raw URL failures
 D_hal_fallback	EXP60B_HAL_VPDATA_SUBSET_BLOCKED	HAL missing-URL probe tested 11/11 blocked URLs and all returned HTTP 403
 E_pai_transfer	EXP60B_TRANSFER_BLOCKED	PAI ready transfer not run because exact locked train1000/test100 subset is incomplete
+F_exp60c_replacements	EXP60C_REPLACEMENT_DOWNLOAD_READY	Deterministic same-split Pexels-only replacements downloaded 11/11 rows with 0 failed attempts
+G_exp60c_h20_subset	EXP60C_H20_VPDATA_SUBSET_READY	H20 final subset has train1000/test100, 1100 sha256 rows, and 1100/1100 OpenCV decode pass after targeted repair of 6 incomplete MP4s
+H_exp60c_pai_transfer	EXP60C_TRANSFER_BLOCKED	PAI/NAS target /mnt/nas/hj/H20_Video_inpainting_DPO/data/external is not writable by hj

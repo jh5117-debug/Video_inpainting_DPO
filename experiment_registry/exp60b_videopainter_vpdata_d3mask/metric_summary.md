@@ -9,4 +9,8 @@ Download-gate counts:
 - H20 hf-mirror downloaded: 1,089
 - H20 proxy downloaded: 1,089
 - HAL missing URL probe: 0/11 reachable
-- Complete PAI-ready SHA256 set: no
+- Exp60C replacements downloaded: 11/11
+- H20 final raw videos: 1,100
+- H20 final SHA256 rows: 1,100
+- H20 final OpenCV decode pass: 1,100/1,100
+- Complete PAI-ready SHA256 set: blocked by PAI/NAS transfer permission

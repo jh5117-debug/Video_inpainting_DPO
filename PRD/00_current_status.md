@@ -2317,3 +2317,32 @@ No full VPData download, GPU job, mask generation, loser generation, inference,
 or training was run. Exp60B remains blocked until the 11 locked Pexels raw URL
 failures are resolved or a separately preregistered replacement-row plan is
 approved.
+
+## 2026-07-02 Exp60C VPData Failed-URL Replacement
+
+- Branch: `research/exp60b-videopainter-vpdata-d3mask-pai-20260702`
+- Status:
+  - `EXP60C_FAILED_ROWS_AUDITED`
+  - `EXP60C_REPLACEMENT_PLAN_READY`
+  - `EXP60C_REPLACEMENT_DOWNLOAD_READY`
+  - `EXP60C_H20_VPDATA_SUBSET_READY`
+  - `EXP60C_TRANSFER_BLOCKED`
+- Original failed rows: `11`
+  - train: `9`
+  - test: `2`
+- Replacement policy: deterministic seed `20260702`, same split, Pexels-only,
+  no overlap with existing successful rows, failed rows, duplicate URLs, or
+  cross-split source IDs.
+- Replacement download: `11 / 11` succeeded, `0` failed attempts.
+- H20 final subset:
+  - train: `1000`
+  - test: `100`
+  - total: `1100`
+  - sha256 rows: `1100`
+  - OpenCV decode after targeted repair: `1100 / 1100`
+- PAI/NAS transfer: blocked because `hj` cannot write under
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external`.
+
+No mask generation, loser generation, inference, DPO, training, GPU job, full
+VPData download, or VPData validation claim was made. Next action is fixing PAI
+NAS write permission and rerunning transfer/verification only.
