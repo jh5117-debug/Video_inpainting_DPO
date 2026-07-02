@@ -77,8 +77,19 @@ class SourceRow:
     license_note: str = "TencentARC/VPData row; Pexels raw video URL where source_kind=pexels"
 
 
-def open_text_url(url: str):
-    return urllib.request.urlopen(url, timeout=120)
+def open_text_url(url: str, retries: int = 3):
+    headers = {"User-Agent": "Mozilla/5.0 exp60b-vpdata-subset/1.0"}
+    last_exc: Exception | None = None
+    for attempt in range(1, retries + 1):
+        try:
+            req = urllib.request.Request(url, headers=headers)
+            return urllib.request.urlopen(req, timeout=120)
+        except Exception as exc:
+            last_exc = exc
+            if attempt >= retries:
+                raise
+            time.sleep(5 * attempt)
+    raise RuntimeError(f"unreachable retry state for {url}: {last_exc}")
 
 
 def classify_path(path: str) -> tuple[str, int | None, str]:
