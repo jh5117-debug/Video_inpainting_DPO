@@ -57,5 +57,13 @@
     "status": "EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY",
     "full_vpdata_downloaded": false
   },
-  "next_required_action": "Run HAL fallback for the same locked train1000/test100 plan; do not clone full VPData."
+  "hal_fallback": {
+    "status": "EXP60B_HAL_VPDATA_SUBSET_BLOCKED",
+    "action": "missing-url range probe",
+    "tested_missing_urls": 11,
+    "reachable": 0,
+    "failed": 11,
+    "full_vpdata_downloaded": false
+  },
+  "next_required_action": "Resolve or replan the 11 locked Pexels raw URL failures before PAI data-ready transfer; do not clone full VPData."
 }

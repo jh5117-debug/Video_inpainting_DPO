@@ -1,0 +1,9 @@
+{
+  "status": "EXP60B_HAL_VPDATA_SUBSET_BLOCKED",
+  "probe_only": true,
+  "tested_missing_urls": 11,
+  "ok": 0,
+  "failed": 11,
+  "reason": "All H20-missing Pexels raw URLs returned HTTP 403 from HAL range probe as well.",
+  "full_vpdata_downloaded": false
+}
