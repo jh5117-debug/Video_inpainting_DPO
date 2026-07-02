@@ -27,6 +27,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Iterable
@@ -305,35 +306,54 @@ def download_url(url: str, dest: Path, retries: int = 3) -> None:
                 raise
             time.sleep(5 * attempt)
 
-def materialize(rows: list[SourceRow], *, download: bool, max_downloads: int) -> list[dict]:
-    out: list[dict] = []
-    downloaded = 0
-    for row in rows:
-        data = asdict(row)
-        path = Path(row.planned_video_path)
-        if download and row.source_kind != "pexels":
-            data["download_status"] = "SKIPPED_NON_ROW_LEVEL_SOURCE"
-        elif download and row.source_url:
-            if downloaded >= max_downloads:
-                data["download_status"] = "SKIPPED_MAX_DOWNLOADS_REACHED"
-            else:
-                try:
-                    if not path.exists():
-                        download_url(row.source_url, path)
-                    data["file_size_bytes"] = path.stat().st_size
-                    data["sha256"] = sha256_file(path)
-                    status, frames, resolution, duration = ffprobe(path)
-                    data["decode_status"] = status
-                    data["frame_count"] = frames
-                    data["resolution"] = resolution
-                    data["duration_sec"] = duration
-                    data["download_status"] = "DOWNLOADED"
-                    downloaded += 1
-                except Exception as exc:
-                    data["download_status"] = f"DOWNLOAD_FAILED:{type(exc).__name__}:{exc}"
-        out.append(data)
-    return out
+def materialize_one(row: SourceRow, *, download: bool, allow_download: bool) -> dict:
+    data = asdict(row)
+    path = Path(row.planned_video_path)
+    if download and row.source_kind != "pexels":
+        data["download_status"] = "SKIPPED_NON_ROW_LEVEL_SOURCE"
+    elif download and row.source_url:
+        if not allow_download:
+            data["download_status"] = "SKIPPED_MAX_DOWNLOADS_REACHED"
+        else:
+            try:
+                if not path.exists():
+                    download_url(row.source_url, path)
+                data["file_size_bytes"] = path.stat().st_size
+                data["sha256"] = sha256_file(path)
+                status, frames, resolution, duration = ffprobe(path)
+                data["decode_status"] = status
+                data["frame_count"] = frames
+                data["resolution"] = resolution
+                data["duration_sec"] = duration
+                data["download_status"] = "DOWNLOADED"
+            except Exception as exc:
+                data["download_status"] = f"DOWNLOAD_FAILED:{type(exc).__name__}:{exc}"
+    return data
 
+
+def materialize(rows: list[SourceRow], *, download: bool, max_downloads: int, workers: int) -> list[dict]:
+    if not download or workers <= 1:
+        out: list[dict] = []
+        submitted = 0
+        for row in rows:
+            allow = row.source_url is not None and submitted < max_downloads
+            if allow:
+                submitted += 1
+            out.append(materialize_one(row, download=download, allow_download=allow))
+        return out
+
+    out: list[dict | None] = [None] * len(rows)
+    submitted = 0
+    futures = {}
+    with ThreadPoolExecutor(max_workers=max(1, workers)) as executor:
+        for idx, row in enumerate(rows):
+            allow = row.source_url is not None and submitted < max_downloads
+            if allow:
+                submitted += 1
+            futures[executor.submit(materialize_one, row, download=download, allow_download=allow)] = idx
+        for fut in as_completed(futures):
+            out[futures[fut]] = fut.result()
+    return [x for x in out if x is not None]
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=__doc__)
@@ -347,6 +367,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--test_split", choices=["test", "val"], default="test")
     parser.add_argument("--download", action="store_true")
     parser.add_argument("--max_downloads", type=int, default=1100)
+    parser.add_argument("--workers", type=int, default=4)
     parser.add_argument("--report_prefix", default="exp60b_vpdata_subset")
     return parser
 
@@ -388,9 +409,9 @@ def main() -> int:
         raise SystemExit(f"[guard] train/test source_video_id overlap: {overlap[:10]}")
 
     max_downloads = min(args.max_downloads, args.max_train + args.max_test)
-    train_out = materialize(train_rows, download=args.download, max_downloads=max_downloads)
+    train_out = materialize(train_rows, download=args.download, max_downloads=max_downloads, workers=args.workers)
     remaining = max(0, max_downloads - sum(1 for r in train_out if r.get("download_status") == "DOWNLOADED"))
-    test_out = materialize(test_rows, download=args.download, max_downloads=remaining)
+    test_out = materialize(test_rows, download=args.download, max_downloads=remaining, workers=args.workers)
 
     suffix = "h20" if "/home/nvme01" in str(output_root) else "pai"
     train_manifest = manifest_dir / f"exp60b_vpdata_train{args.max_train}_sources_{suffix}.jsonl"
@@ -416,6 +437,7 @@ def main() -> int:
         "status": status,
         "download": bool(args.download),
         "hf_endpoint": os.environ.get("HF_ENDPOINT"),
+        "workers": int(args.workers),
         "source_filter": args.source_filter,
         "seed": args.seed,
         "train_manifest": str(train_manifest),
