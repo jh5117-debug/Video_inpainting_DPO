@@ -1,0 +1,5 @@
+source,available_now,requires,produces,fit_for_exp58,blocker_or_note
+VOR-derived train4/heldout4,yes,VOR-Train only,rgb_full/rgb_removed/quadmask/prompt,comparison baseline,Known transition-region regression on one-step
+VOID HUMOTO,no,HUMOTO license/download plus Mixamo FBX plus Blender,rgb_full/rgb_removed/mask/metadata,no,HUMOTO and Mixamo assets absent
+VOID Kubric,unknown,Kubric/PyBullet/Blender/bpy/GCS assets,rgb_full/rgb_removed_objects_invisible/rgb_altered_physics/mask/metadata,primary target,Needs isolated env and asset reachability smoke
+VOID released metadata,yes,rendered training_data folders absent,datasets/void_train_data.json only,readback only,6383 metadata rows but no rendered videos in repo checkout

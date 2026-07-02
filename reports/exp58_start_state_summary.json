@@ -1,0 +1,8 @@
+{
+  "status": "EXP58_READBACK_DONE",
+  "branch": "research/exp58-void-native-data-diagnostic-20260702",
+  "base_head": "83e1bc7a5e5da231251d9c74f33a2ec49c8319f4",
+  "prior_conclusion": "VOID remains baseline / loser-generator / adapter-engineering candidate; no one-step PASS; no 10-step unlocked.",
+  "current_hypothesis": "VOR-derived quadmask/data semantics may mismatch VOID-native counterfactual data.",
+  "next_gate": "isolated Kubric environment smoke"
+}

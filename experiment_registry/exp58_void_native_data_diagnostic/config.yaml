@@ -1,0 +1,15 @@
+experiment: exp58_void_native_data_diagnostic
+native_data_source: official_void_kubric
+gate_size: 8
+one_step_only: true
+ten_step_allowed: false
+vor_eval_used: false
+hard_comp_used: false
+official_source_modified: false
+shared_trainer_modified: false
+metrics_py_modified: false
+storage_policy:
+  prefer_pai_nas: true
+  h20_large_staging_allowed: false
+  h20_low_space_hard_stop_free_gb: 300
+  h20_low_space_hard_stop_free_percent: 20

@@ -1,4 +1,10 @@
 
+## 2026-07-02 Exp58 VOID Native Data Diagnostic
+
+Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.
+
+Exp58 starts from Exp57 core to test whether VOID's remaining failure is a VOR-to-VOID data mismatch. Official VOID docs confirm HUMOTO and Kubric counterfactual generation paths; HUMOTO remains blocked by manual HUMOTO/Mixamo/Blender assets, while Kubric may be feasible if isolated Kubric/PyBullet/Blender/GCS smoke passes. No training, no 10-step, no VOR-Eval, no hard comp, and no third-backbone claim.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

@@ -1,4 +1,10 @@
 
+## 2026-07-02 Exp58 VOID Native Data Diagnostic
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp58 VOID native data diagnostic | `EXP58_READBACK_DONE`; storage `EXP58_STORAGE_PAI_NAS_PREFERRED` | `PRD/54_exp58_void_native_data_diagnostic.md`, `experiment_registry/exp58_void_native_data_diagnostic`, `reports/exp58_readback_data_mismatch_audit.md` |
+
 ## 2026-07-01 Exp53B H20 Core Recovery
 
 | User-facing name | Status | Evidence / registry |

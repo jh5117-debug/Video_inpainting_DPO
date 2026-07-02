@@ -1,0 +1,11 @@
+branch: research/exp58-void-native-data-diagnostic-20260702
+base_branch: origin/research/exp57-void-adaptive-transition-core-20260701
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp58_void_native_data
+pai_worktree: /home/hj/H20_Video_inpainting_DPO_exp58_void_native_data
+requested_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp58_void_native_data_diagnostic
+requested_log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp58_void_native_data_diagnostic
+requested_runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp58_void_native_data_diagnostic
+pai_local_fallback_output_root: /home/hj/exp58_void_native_data_diagnostic_outputs
+void_repo_pai: /mnt/nas/hj/H20_Video_inpainting_DPO/third_party/VOID/Netflix_void-model
+kubric_env_pai: /home/hj/conda_envs/void_kubric_exp58
+kubric_env_h20: /home/nvme01/conda_envs/void_kubric_exp58

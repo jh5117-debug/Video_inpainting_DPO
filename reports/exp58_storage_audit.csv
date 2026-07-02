@@ -1,0 +1,7 @@
+machine,path,total,used,available,use_percent,write_status,note
+HAL,/home,1.8T,1.4T,238G,86%,not_used_for_outputs,control host only
+PAI,/home,5.3T,57G,5.0T,2%,WRITE_OK,preferred local fallback if NAS output parent blocked
+PAI,/mnt/nas,10P,11T,10P,1%,PARTIAL_WRITE,logs/runtime writable; experiments/dpo parent not writable for new Exp58 dir
+PAI,/mnt/workspace,70T,69T,1.9T,98%,avoid,too full for new data
+H20,/home,341G,107G,234G,32%,not_for_large_outputs,system home
+H20,/home/nvme01,3.4T,2.3T,1.2T,66%,tiny_scratch_only,above 300G and 20 percent free

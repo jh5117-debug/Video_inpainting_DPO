@@ -1,0 +1,12 @@
+{
+  "status": "EXP58_STORAGE_PAI_NAS_PREFERRED",
+  "hal_free_gb_approx": 238,
+  "pai_home_free": "5.0T",
+  "pai_nas_mounted": true,
+  "pai_requested_output_root_writable": false,
+  "pai_log_root_writable": true,
+  "pai_runtime_root_writable": true,
+  "h20_nvme01_free": "1.2T",
+  "h20_low_space": false,
+  "decision": "Prefer PAI/NAS; use PAI local fallback for generated data if requested NAS experiments output root remains unwritable. Do not persist large Exp58 artifacts on H20 local."
+}
