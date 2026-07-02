@@ -1,0 +1,51 @@
+{
+  "eligible55_all_49_frames": true,
+  "eligible55_blender_count": 4,
+  "eligible55_real_count": 51,
+  "eligible_count": 55,
+  "eligible_hard_plausible": 18,
+  "eligible_medium_hard": 37,
+  "formal_valid_count": 64,
+  "gate64_blender_count": 8,
+  "gate64_real_count": 56,
+  "gate64_source_count": 64,
+  "generated": "2026-07-02T06:51:14",
+  "paper_recommended_wording": "VideoPainter is a controlled low-data cross-pipeline validation using a balanced primary32 set selected from a Gate64 self-loser pool. It is not a large-scale VideoPainter training dataset.",
+  "primary32_all_49_frames": true,
+  "primary32_area_bucket_counts": {
+    "large": 8,
+    "medium": 16,
+    "small": 8
+  },
+  "primary32_blender_count": 4,
+  "primary32_count": 32,
+  "primary32_final_loser_is_comp_all_rows": true,
+  "primary32_hard_plausible": 16,
+  "primary32_mask_profile_counts": {
+    "edge_touch_freeform": 3,
+    "ellipse_circle_subset": 3,
+    "irregular_freeform": 8,
+    "object_like_polygon": 8,
+    "soft_blob": 5,
+    "thin_structure_freeform": 5
+  },
+  "primary32_medium_hard": 16,
+  "primary32_motion_bucket_counts": {
+    "high": 8,
+    "low": 8,
+    "medium": 16
+  },
+  "primary32_raw_comp_paths_recorded": true,
+  "primary32_real_count": 28,
+  "rejected_count": 9,
+  "rejected_too_close": 1,
+  "rejected_trivial_bad": 8,
+  "reserve_count": 23,
+  "search_dev_count": 32,
+  "search_shadow_used_for_selection": false,
+  "shadow_dev_count": 32,
+  "status": "VIDEOPAINTER_DATA_CONSTRUCTION_AUDITED",
+  "step_results_used_for_selection": false,
+  "technical_invalid_count": 0,
+  "train_source_count": 128
+}

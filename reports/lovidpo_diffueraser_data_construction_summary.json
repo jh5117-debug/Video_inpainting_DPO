@@ -1,0 +1,34 @@
+{
+  "all_rows_canonical_num_frames": 16,
+  "all_rows_status_ok": true,
+  "comp_loser_recorded": true,
+  "defect_bucket_counts": {
+    "balanced_hard": 788,
+    "texture_or_structure_shift": 2242,
+    "too_bad": 1,
+    "too_good": 296
+  },
+  "final_train_pairs_confirmed": 3327,
+  "generated": "2026-07-02T06:51:14",
+  "generation_model": "diffueraser",
+  "generation_source": "diffueraser_only",
+  "main_eval_splits": [
+    "DAVIS50",
+    "YouTubeVOS100"
+  ],
+  "mask_id_distribution": {
+    "mask_000": 812,
+    "mask_001": 837,
+    "mask_002": 847,
+    "mask_003": 831
+  },
+  "mask_k": 4,
+  "mask_policy": "videodpo_partialmask_policy_v1_medium_hard_k4",
+  "raw_loser_recorded": true,
+  "reference_checkpoint": "DiffuEraser SFT-48000",
+  "selected_manifest_one_row_per_source_video_id": true,
+  "selected_manifest_unique_source_video_id_count": 3327,
+  "source_dataset": "YouTube-VOS / D3 partial-mask",
+  "status": "DIFFUERASER_DATA_CONSTRUCTION_AUDITED",
+  "training_loser": "comp_loser"
+}

@@ -1,0 +1,20 @@
+{
+  "apparent_size": "40M",
+  "diffueraser_assets": [
+    "selected_8",
+    "final_20",
+    "davis50_side_by_side",
+    "teacher_question1_report"
+  ],
+  "file_count_following_symlinks": 767,
+  "generated": "2026-07-02T06:51:14",
+  "inference_run": false,
+  "missing_assets": [],
+  "mp4_count": 122,
+  "original_outputs_deleted": false,
+  "status": "LOVIDPO_VISUAL_EVIDENCE_HAL_PACK_READY",
+  "symlink_count": 18,
+  "target": "/home/hj/LoVI_DPO_visual_evidence_for_advisor_20260702",
+  "training_run": false,
+  "videopainter_selected_mp4_count": 12
+}
