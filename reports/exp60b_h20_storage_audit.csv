@@ -1,0 +1,5 @@
+timestamp,host,check,status,detail
+2026-07-02T17:48:28+08:00,hal-9000,ssh_h20_alias,blocked,"ssh h20 failed: Temporary failure in name resolution"
+2026-07-02T17:48:28+08:00,hal-9000,h20_storage,not_checked,"No H20 route recovered from HAL; no download attempted"
+2026-07-02T17:48:28+08:00,hal-9000,h20_download,blocked,"Exp60B requires H20 download, but current session cannot reach H20"
+

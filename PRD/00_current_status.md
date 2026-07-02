@@ -2262,3 +2262,26 @@ confirmed and blocks any universal-adapter or final-SOTA claim.
   cannot be used as primary on-policy VOR loser evidence.
 
 No third-backbone DPO training, RC-FPO, or VideoPainter retraining was launched.
+
+## 2026-07-02 Exp60B VideoPainter VPData D3-Mask Readback
+
+- Branch: `research/exp60b-videopainter-vpdata-d3mask-pai-20260702`
+- PRD: `PRD/49_exp60b_videopainter_vpdata_d3mask.md`
+- Registry: `experiment_registry/exp60b_videopainter_vpdata_d3mask/`
+- Reports:
+  - `reports/exp60b_vpdata_readback.md`
+  - `reports/exp60b_vpdata_availability_audit.md`
+  - `reports/exp60b_h20_storage_audit.csv`
+  - `reports/exp60b_pai_storage_gpu_audit.csv`
+  - `reports/exp60b_start_state_summary.json`
+- Status:
+  - `EXP60B_READBACK_DONE`
+  - `EXP60B_VPDATA_AVAILABLE`
+  - `EXP60B_PAI_GPU_READY`
+  - `EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY`
+
+VPData is public on Hugging Face, but full clone/download is forbidden for
+Exp60B because the dataset is about 1.87 TB. The next step must be a selective
+train1000/test100 downloader. PAI GPU0/GPU1 were idle during the probe; H20
+download cannot start from this HAL session until the real H20 SSH route is
+recovered.

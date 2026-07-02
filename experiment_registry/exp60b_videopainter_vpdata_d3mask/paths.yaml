@@ -1,0 +1,9 @@
+worktree_hal: /home/hj/H20_Video_inpainting_DPO_exp60b_vp_vpdata_d3mask
+h20_worktree: /home/nvme01/H20_Video_inpainting_DPO_exp60b_vp_vpdata_transfer
+pai_worktree: /home/hj/H20_Video_inpainting_DPO_exp60b_vp_vpdata_d3mask
+pai_data_root: /mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b
+pai_output_root: /mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp60b_videopainter_vpdata_d3mask
+pai_log_root: /mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp60b_videopainter_vpdata_d3mask
+pai_runtime_root: /mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp60b_videopainter_vpdata_d3mask
+h20_staging_root: /home/nvme01/H20_Video_inpainting_DPO/data/external/vpdata_exp60b_h20_staging
+

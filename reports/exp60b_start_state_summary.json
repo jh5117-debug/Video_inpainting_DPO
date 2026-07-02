@@ -1,0 +1,33 @@
+{
+  "status": [
+    "EXP60B_READBACK_DONE",
+    "EXP60B_VPDATA_AVAILABLE",
+    "EXP60B_PAI_GPU_READY",
+    "EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY"
+  ],
+  "branch": "research/exp60b-videopainter-vpdata-d3mask-pai-20260702",
+  "start_head": "568a7dfb48bcdfce893176a1dd48c653414a13a8",
+  "current_session_host": "hal-9000",
+  "vpdata": {
+    "source": "TencentARC/VPData",
+    "public_page_reachable": true,
+    "reported_rows": 392077,
+    "reported_total_size": "1.87 TB",
+    "full_download_allowed": false,
+    "selective_download_required": true
+  },
+  "h20": {
+    "reachable_from_current_session": false,
+    "download_attempted": false,
+    "blocker": "No H20 SSH route recovered from HAL; ssh h20 fails DNS resolution"
+  },
+  "pai": {
+    "host": "hj@47.103.26.60",
+    "hostname": "dsw-753014-85f54df947-bkp7h",
+    "gpu0_ready": true,
+    "gpu1_ready": true,
+    "nas_preferred": true
+  },
+  "next_required_action": "Recover H20 route or authorize PAI/NAS-first selective VPData subset download; do not clone full VPData."
+}
+

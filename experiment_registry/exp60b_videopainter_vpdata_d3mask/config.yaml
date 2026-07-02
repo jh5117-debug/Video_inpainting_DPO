@@ -1,0 +1,19 @@
+experiment: exp60b_videopainter_vpdata_d3mask
+base_branch: origin/research/exp26-videopainter-dpo-v2
+branch: research/exp60b-videopainter-vpdata-d3mask-pai-20260702
+vpdata_source: TencentARC/VPData
+train_subset_target: 1000
+test_subset_target: 100
+mask_policy_source: DiffuEraser D3 partial-mask K4
+train_masks_per_video: 4
+test_masks_per_video: 1
+training_gates:
+  - 50_step_first
+  - 100_step_conditional
+forbidden:
+  - full_vpdata_download
+  - videopainter_mixed_br_mask
+  - 2000_step
+  - final_sota
+  - universal_adapter
+

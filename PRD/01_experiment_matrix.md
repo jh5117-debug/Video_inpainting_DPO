@@ -671,6 +671,7 @@ Gate64 and DPO training were not started.
 | Exp26 VideoPainter primary-32 10-step | `TRAINING_PASS` | 10-step DPO micro gate passed on search-dev with dense temporal evidence review. Step10 comp vs step0: PSNR +0.977252, SSIM +0.032641, LPIPS -0.004499, Ewarp -1.301457, mask PSNR +0.975192, boundary PSNR +5.082206; no global collapse or systematic new visual artifact found in 32/32 dense evidence/crop sheets. Conditional 50-step gate is allowed; RC-FPO and long training remain not started. |
 
 | Exp26 VideoPainter primary-32 50-step | `VIDEOPAINTER_ADAPTER_POSITIVE` / `TRAINING_PASS` | 50-step DPO micro gate passed on locked search-dev: step50 comp vs step0 PSNR +4.816168, SSIM +0.087883, LPIPS -0.044059, Ewarp -7.055122, strict mask PSNR +4.942246, boundary PSNR +12.111889; PSNR bootstrap probability(delta>0)=1.0. Manual temporal/crop review covered 32/32 rows with no gate-blocking systematic artifact. This remains search-dev micro evidence only, not `SCIENTIFIC_POSITIVE`; RC-FPO and 100-step+ training are still not started. |
+| Exp60B VideoPainter VPData D3-mask scaleup | `EXP60B_READBACK_DONE` / `EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY` | New VPData-subset branch created from Exp26. VPData is public and selectively downloadable in principle, but full clone/download is forbidden. PAI GPU0/GPU1 are ready; H20 route is not available from HAL, so train1000/test100 download has not started. |
 ## 2026-06-26 Exp26 Shadow-Dev Confirmation
 
 | Experiment | Status | Evidence | Next Restriction |
