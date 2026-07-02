@@ -1,0 +1,14 @@
+{
+  "status": "EXP60C_REPLACEMENT_PLAN_READY",
+  "seed": 20260702,
+  "failed_rows": 11,
+  "failed_train": 9,
+  "failed_test": 2,
+  "backups_per_failed": 5,
+  "replacement_candidates": 55,
+  "repaired_train_count": 1000,
+  "repaired_test_count": 100,
+  "train_test_overlap_count": 0,
+  "source_filter": "pexels_only",
+  "full_vpdata_downloaded": false
+}
