@@ -1,4 +1,10 @@
 
+## 2026-07-02 Exp59 VOID Kubric Gate8 Inference
+
+| User-facing name | Status | Evidence / registry |
+| --- | --- | --- |
+| Exp59 VOID Kubric Gate8 official inference diagnostic | `EXP59_GATE8_INPUT_WEAK` | `PRD/55_exp59_void_kubric_gate8_inference.md`, `experiment_registry/exp59_void_kubric_gate8_inference`, `reports/exp59_readback_kubric_gate8_inference.md` |
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 | User-facing name | Status | Evidence / registry |

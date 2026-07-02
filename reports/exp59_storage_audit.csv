@@ -1,0 +1,8 @@
+path,df,df_error,du
+/home,84830878f2f8c4e11f997b32d4e29036e51c6f9757c0a1bf051e79f401c7f7ad-rootfs  5.3T   62G  5.0T   2% /,,
+/mnt/nas/hj,172.28.48.25:/   10P   11T   10P   1% /mnt/nas,,
+/mnt/workspace,rund:1FDr4OBr:cpfs-01000vwrt8a6usy68r6wu-000001.cn-shanghai.cpfs.aliyuncs.com:/pku/   70T   69T  1.9T  98% /mnt/workspace,,
+/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/gate8,,,617K
+/mnt/nas/hj/H20_Video_inpainting_DPO/experiments/dpo/exp59_void_kubric_gate8_inference,,,missing
+/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference,,,missing
+/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp59_void_kubric_gate8_inference,,,missing

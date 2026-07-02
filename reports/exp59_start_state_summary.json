@@ -1,0 +1,21 @@
+{
+  "all_paths_exist": true,
+  "decode_pass_count": 8,
+  "fps_values": [
+    8.0
+  ],
+  "frame_count_values": [
+    24
+  ],
+  "quadmask_all_required_values": true,
+  "quadmask_values": [
+    "0|63|127|255"
+  ],
+  "resolution_values": [
+    "128x128"
+  ],
+  "sample_count": 8,
+  "status": "EXP59_GATE8_INPUT_WEAK",
+  "target_hit_false_count": 8,
+  "target_hit_true_count": 0
+}
