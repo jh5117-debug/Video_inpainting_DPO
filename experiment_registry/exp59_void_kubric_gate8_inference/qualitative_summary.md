@@ -12,3 +12,5 @@ Qualitative result:
 - transition residual/damage: 6/8
 
 The native data is valid for official inference diagnostics and same-model loser-generation smoke. It is not adapter evidence and is not ready for one-step training because all rows carry the `target_hit=false` caveat and transition-region residuals remain common.
+
+Against Exp50 VOR-derived Gate8, Kubric-native Gate8 is not stronger as a usable-loser pool: VOR had 6/8 usable or bounded-loser outputs, while this Kubric Gate8 has only 2/8 medium-hard loser diagnostics and 2/8 too-close/weak diagnostics. Data mismatch remains suspected but unconfirmed because the native data target quality is weak.

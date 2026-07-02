@@ -26,3 +26,16 @@ Mean metrics:
 - tone drift: `0.009077`
 
 LPIPS, Ewarp, and TC are `NA` in this no-training diagnostic path.
+
+VOR-vs-Kubric comparison:
+
+- VOR Gate8 mean full PSNR: `30.174910`
+- Kubric Gate8 mean full PSNR: `30.152555`
+- VOR Gate8 mean affected PSNR: `25.764115`
+- Kubric Gate8 mean affected PSNR: `17.527094`
+- VOR Gate8 mean boundary PSNR: `25.843463`
+- Kubric Gate8 mean boundary PSNR: `22.267098`
+- VOR Gate8 mean outside PSNR: `33.109107`
+- Kubric Gate8 mean outside PSNR: `34.210532`
+
+This target-hit-false Kubric Gate8 does not show reduced transition-region damage.

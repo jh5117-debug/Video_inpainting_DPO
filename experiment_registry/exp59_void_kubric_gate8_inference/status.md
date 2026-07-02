@@ -1,6 +1,6 @@
 # Exp59 VOID Kubric Gate8 Inference Status
 
-Current status: `VOID_KUBRIC_INFERENCE_REVIEW_WEAK`
+Current status: `VOID_TARGET_HIT_WEAK_NATIVE_DATA_INCONCLUSIVE`
 
 Milestone A read back Exp58B Kubric Gate8 and audited the native inputs on PAI. The manifest has 8 rows, all required files exist, all videos decode, all clips are 24 frames at 128x128 and 8 fps, and every quadmask contains `0|63|127|255`.
 
@@ -15,3 +15,5 @@ Milestone C materialized 8 official input folders under the writable PAI/NAS run
 Milestone D ran official VOID pass1 inference on exactly 8 Kubric Gate8 samples. The first attempt exposed a system `/usr/bin/ffmpeg` missing-`libblas.so.3` blocker; a controlled run-local `imageio-ffmpeg` shim fixed decode without modifying the base environment. Final outputs: 8/8 raw pass1 mp4, 8/8 tuple mp4, and 8/8 evidence packs.
 
 Milestone E computed native-space metrics and completed visual review. All 8 outputs are technically valid. Mean full PSNR is `30.152555`, mean SSIM is `0.919492`, mean outside PSNR is `34.210532`, and outside/background is visually stable in 8/8. However, all 8 rows are still `target_hit=false`; visual review classifies 2/8 as medium-hard loser diagnostics, 2/8 as too-close/weak diagnostics, and 6/8 with transition residual/damage. No adapter-data promotion is allowed.
+
+Milestone F compared VOR-derived and Kubric-native diagnostics. Kubric-native official inference is technically usable but does not reduce transition-region damage in this target-hit-false Gate8 and does not produce a stronger usable-loser pool than Exp50 VOR Gate8. Data mismatch remains suspected, not confirmed.

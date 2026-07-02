@@ -1,0 +1,32 @@
+{
+  "data_mismatch_confirmed": false,
+  "data_mismatch_suspected": true,
+  "kubric_mean_affected_psnr": 17.52709375,
+  "kubric_mean_boundary_psnr": 22.267098125,
+  "kubric_mean_full_psnr": 30.152554875,
+  "kubric_mean_object_psnr": 28.33769125,
+  "kubric_mean_outside_psnr": 34.21053175,
+  "kubric_mean_overlap_psnr": 16.673218625,
+  "kubric_mean_ssim": 0.919492375,
+  "kubric_official_inference_usable": true,
+  "kubric_target_hit_false": "8/8",
+  "kubric_technical_valid": "8/8",
+  "kubric_visual_classification_counts": {
+    "KUBRIC_MEDIUM_HARD_LOSER": 2,
+    "KUBRIC_TARGET_HIT_WEAK": 8,
+    "KUBRIC_TOO_CLOSE": 2,
+    "KUBRIC_TRANSITION_DAMAGE": 6
+  },
+  "native_data_ready_for_adapter": false,
+  "one_step_run": false,
+  "recommended_next_step": "Regenerate Kubric Gate8 at target_hit=true and preferably official/larger resolution before Kubric one-step.",
+  "status": "VOID_TARGET_HIT_WEAK_NATIVE_DATA_INCONCLUSIVE",
+  "ten_step_run": false,
+  "vor_technical_valid": "8/8",
+  "vor_usable_or_bounded_loser": "6/8",
+  "vor_visual_classification_counts": {
+    "MEDIUM_HARD_LOSER": 2,
+    "TOO_CLOSE": 2,
+    "VOID_OUTPUT_USABLE": 4
+  }
+}
