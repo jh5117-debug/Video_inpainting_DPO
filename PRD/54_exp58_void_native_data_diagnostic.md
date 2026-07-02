@@ -83,3 +83,25 @@ Status: `VOID_NATIVE_KUBRIC_BLOCKED`.
 Exp58 confirmed that the official Kubric data path is the right native-data diagnostic target, but it did not produce native data. The blocker is exact and reproducible: the isolated PAI environment cannot import Kubric without TensorFlow, and the official renderer cannot run without Blender/`bpy`. The official public GCS assets are reachable, so this is not an asset-network blocker.
 
 No Kubric Gate8, official Kubric inference, Kubric one-step, VOR-vs-Kubric quantitative comparison, training, or 10-step was run. VOID remains a VOR-OR inference baseline, same-model loser generator, and adapter-engineering candidate, not third-backbone evidence.
+
+## Exp58B Environment Recovery
+
+Exp58B continues on the same branch and targets only Kubric renderer recovery. It does not run VOID inference, preference forward, zero-gap, one-step, 10-step, or loss tuning.
+
+Milestone A status: `EXP58B_READBACK_DONE`; storage status: `EXP58B_STORAGE_READY`.
+
+Confirmed blocker:
+
+- `kubric_variable_objects.py` is invoked as a normal Python script, but it imports `bpy` at top level.
+- The same process must also import `kubric`, `PyBullet`, and `kubric.renderer.Blender`.
+- Existing PAI minimal env has `pybullet`, `imageio`, `cv2`, `numpy`, and GCS imports, but `kubric` fails because TensorFlow is missing.
+- PAI has no system `blender` executable and no `bpy` module.
+
+Storage update:
+
+- PAI data/log/runtime roots for Exp58B are writable.
+- PAI NAS tools root `/mnt/nas/hj/H20_Video_inpainting_DPO/tools/void_kubric_exp58b` is not writable by `hj`.
+- PAI NAS env root `/mnt/nas/hj/conda_envs/void_kubric_exp58b` is not writable by `hj`.
+- Exp58B must use `/home/hj/conda_envs/void_kubric_exp58b` and `/home/hj/tools/void_kubric_exp58b` as isolated fallbacks if continuing.
+
+Candidate Python route: Python 3.10 isolated env with `tensorflow-cpu` and Kubric 0.1.1, plus a controlled Blender/`bpy` bridge. Because TensorFlow wheels are sensitive to NumPy/Protobuf versions, Exp58B should use a fresh env rather than mutate the previous minimal env.

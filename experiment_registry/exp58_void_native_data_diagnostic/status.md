@@ -9,3 +9,9 @@ Milestone A completed readback of Exp50-Exp57 and official VOID data-generation 
 Milestone B attempted the isolated Kubric environment smoke on PAI. Direct PAI pip stalled on `pybullet`, but a HAL wheelhouse relay succeeded and offline install completed. The environment remains blocked because `import kubric` requires TensorFlow and official VOID Kubric generation also requires Blender/`bpy`, neither of which is available in the isolated environment or PAI system path.
 
 Final gate: blocked until a controlled TensorFlow-compatible Kubric environment and Blender/`bpy` renderer are available. No Kubric data, official Kubric inference, Kubric one-step, or 10-step was run.
+
+## Exp58B
+
+Current Exp58B status: `EXP58B_READBACK_DONE`.
+
+Exp58B readback confirmed the exact renderer blocker and storage layout. PAI data/log/runtime roots are writable, while the preferred NAS tools/env roots are not writable by `hj`; isolated fallback roots under `/home/hj` are required for env/tools recovery. No training, inference, one-step, or 10-step has run.

@@ -1,0 +1,27 @@
+{
+  "status": "EXP58B_READBACK_DONE",
+  "storage_status": "EXP58B_STORAGE_READY",
+  "branch": "research/exp58-void-native-data-diagnostic-20260702",
+  "start_head": "80500de98864e5bee204f364865d53f379c0093b",
+  "prior_status": "VOID_NATIVE_KUBRIC_BLOCKED",
+  "failed_imports": [
+    "kubric",
+    "kubric.simulator.PyBullet",
+    "kubric.renderer.Blender",
+    "bpy"
+  ],
+  "blender_executable_found": false,
+  "official_script_imports_bpy_directly": true,
+  "official_script_uses_kubric_renderer_blender": true,
+  "pai_data_root_writable": true,
+  "pai_log_root_writable": true,
+  "pai_runtime_root_writable": true,
+  "pai_nas_tools_root_writable": false,
+  "pai_nas_env_root_writable": false,
+  "env_fallback": "/home/hj/conda_envs/void_kubric_exp58b",
+  "tools_fallback": "/home/hj/tools/void_kubric_exp58b",
+  "no_inference": true,
+  "no_training": true,
+  "no_one_step": true,
+  "no_ten_step": true
+}

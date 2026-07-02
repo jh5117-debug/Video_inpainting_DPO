@@ -17,6 +17,12 @@ Status: `VOID_NATIVE_KUBRIC_BLOCKED`.
 
 Exp58 did not generate Kubric Gate8 because the official data-generation environment is blocked by missing TensorFlow-compatible Kubric import and missing Blender/`bpy`. The VOR-vs-Kubric data mismatch hypothesis remains plausible but untested. VOID remains a baseline / loser-generator / adapter-engineering candidate, not third-backbone evidence.
 
+## 2026-07-02 Exp58B Kubric Env Recovery Readback
+
+Status: `EXP58B_READBACK_DONE`; storage status: `EXP58B_STORAGE_READY`.
+
+Exp58B confirmed the official Kubric script is a normal Python script with top-level `import bpy`, plus `kubric`, `PyBullet`, and `kubric.renderer.Blender`. PAI data/log/runtime roots are writable, but the requested NAS tools/env roots are not writable by `hj`, so any controlled TensorFlow/Kubric and Blender recovery must use isolated `/home/hj` fallback roots while keeping generated data on NAS data/log/runtime roots. No inference, training, one-step, or 10-step was run.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

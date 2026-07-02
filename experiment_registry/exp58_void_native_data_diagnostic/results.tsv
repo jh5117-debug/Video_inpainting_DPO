@@ -7,3 +7,4 @@ D	VOID_KUBRIC_INFERENCE_BLOCKED	Official VOID inference on Kubric not run becaus
 E	VOID_KUBRIC_ONESTEP_BLOCKED	Kubric preference forward / zero-gap / one-step not run because no native data exists.
 F	VOID_NATIVE_DATA_BLOCKED	VOR-vs-Kubric comparison not computed because Kubric-native data is unavailable.
 G	VOID_NATIVE_KUBRIC_BLOCKED	Final decision: data-mismatch hypothesis remains untested; blocker is TensorFlow-compatible Kubric plus Blender/bpy environment.
+Exp58B-A	EXP58B_READBACK_DONE	Confirmed direct bpy import in official Kubric script, missing TensorFlow/Kubric import, missing Blender/bpy, and PAI /home fallback requirement for tools/env.

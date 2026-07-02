@@ -1,0 +1,9 @@
+machine,path,role,writable,size_or_df,status
+PAI,/home,local_home,"yes","5.3T total / 5.0T free",EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj,H20_NAS,"yes","10P total / 10P free at mount",EXP58B_STORAGE_READY
+PAI,/mnt/workspace,workspace,"avoid","70T total / 1.9T free / 98% used",EXP58B_STORAGE_WARN_AVOID_WORKSPACE
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/tools/void_kubric_exp58b,preferred_tools_root,no,not writable by hj,EXP58B_TOOLS_ROOT_HOME_FALLBACK_REQUIRED
+PAI,/mnt/nas/hj/conda_envs/void_kubric_exp58b,preferred_env_root,no,not writable by hj,EXP58B_ENV_ROOT_HOME_FALLBACK_REQUIRED
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b,data_output_root,yes,empty,EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp58_void_native_data_diagnostic/exp58b_kubric_env,log_root,yes,empty,EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp58_void_native_data_diagnostic/exp58b_kubric_env,runtime_root,yes,empty,EXP58B_STORAGE_READY
