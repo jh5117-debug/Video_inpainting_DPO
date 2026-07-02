@@ -1,0 +1,12 @@
+check,value,expected,status
+train_count,1000,1000,PASS
+test_count,100,100,PASS
+total_manifest_rows,1100,1100,PASS
+total_mp4_count,1100,1100,PASS
+decode_ok,1100,1100,PASS
+train_test_source_video_id_overlap,0,0,PASS
+train_test_url_overlap,0,0,PASS
+duplicate_source_video_id_total,0,0,PASS
+duplicate_source_url_total,0,0,PASS
+duplicate_planned_video_path_total,0,0,PASS
+local_path_violation_count,0,0,PASS

@@ -1,11 +1,21 @@
-field,value
-status,EXP60C_TRANSFER_BLOCKED
-transfer_started,false
-source_h20_status,EXP60C_H20_VPDATA_SUBSET_READY
-source_video_count,1100
-source_sha256_rows,1100
-source_decode_ok,1100
-target_path,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset
-target_parent_writable,false
-blocker,PAI user hj cannot create target under /mnt/nas/hj/H20_Video_inpainting_DPO/data/external because NAS path is root-owned and not writable.
-pai_manifest_generated,false
+field,value,notes
+status,EXP60C_PAI_VPDATA_SUBSET_READY,PAI/NAS subset is ready
+h20_source,/home/nvme01/H20_Video_inpainting_DPO/data/external/vpdata_exp60b_h20_staging/raw_subset,Read-only source used by rsync
+pai_target,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset,Final PAI/NAS raw video target
+train_count,1000,from PAI manifest
+test_count,100,from PAI manifest
+total_mp4_count,1100,from PAI raw subset
+raw_total_size_bytes,14460346432,sum of PAI MP4 sizes
+sha256,SHA256_MATCH,1100 rows checked on PAI
+decode_ok,1100,cv2:4.13.0
+decode_bad,0,OpenCV first-frame decode failures
+train_test_source_video_id_overlap,0,expected 0
+train_test_url_overlap,0,expected 0
+duplicate_source_video_id_total,0,expected 0
+duplicate_source_url_total,0,expected 0
+duplicate_planned_video_path_total,0,expected 0
+local_path_violation_count,0,expected 0
+caption_rows,1100,preserved in PAI manifests
+native_mask_path_rows,1100,references preserved in PAI manifests; mask files not materialized
+gpu_used,no,transfer and CPU verification only
+training_run,no,forbidden by protocol

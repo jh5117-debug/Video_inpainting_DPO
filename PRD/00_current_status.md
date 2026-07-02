@@ -2363,3 +2363,27 @@ NAS write permission and rerunning transfer/verification only.
 Next allowed action is transfer from H20 to PAI/NAS and PAI-side verification
 only. No mask generation, loser generation, DPO, training, or GPU use is
 authorized.
+
+## 2026-07-02 Exp60C PAI VPData Subset Transfer
+
+- Status: `EXP60C_PAI_VPDATA_SUBSET_READY`
+- H20 source:
+  `/home/nvme01/H20_Video_inpainting_DPO/data/external/vpdata_exp60b_h20_staging/raw_subset`
+- PAI/NAS target:
+  `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/vpdata_exp60b/raw_subset`
+- Transfer: rsync resume from H20 to PAI/NAS completed.
+- PAI raw videos: `1100`
+  - train manifest rows: `1000`
+  - test manifest rows: `100`
+  - total size: `14460346432` bytes (`14G` by `du -sh`)
+- PAI SHA256 check: `1100 / 1100` matched.
+- PAI OpenCV decode check: `1100 / 1100` passed.
+- Train/test overlap: `0` source_video_id overlap and `0` URL overlap.
+- Duplicate source/video/path checks: `0`.
+- PAI manifests contain only PAI/NAS paths, with no H20/HAL local path leakage:
+  - `manifests/exp60c_vpdata_train1000_sources_pai.jsonl`
+  - `manifests/exp60c_vpdata_test100_sources_pai.jsonl`
+
+No mask generation, loser generation, inference, DPO, training, GPU job, full
+VPData download, or VPData validation claim was made. Exp60C is now unblocked
+for the next separately gated milestone: PAI D3 mask generation only.

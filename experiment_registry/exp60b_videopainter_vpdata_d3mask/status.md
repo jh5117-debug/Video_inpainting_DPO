@@ -18,6 +18,7 @@ Status:
 - `EXP60C_H20_VPDATA_SUBSET_READY`
 - `EXP60C_TRANSFER_BLOCKED`
 - `EXP60C_PAI_TARGET_PERMISSION_RECOVERED`
+- `EXP60C_PAI_VPDATA_SUBSET_READY`
 
 Current continuation: H20 hf-mirror download completed partially: 1,089/1,100
 raw videos downloaded, 11 Pexels raw URLs failed. H20 clash proxy fallback was
@@ -33,6 +34,13 @@ same-split Pexels-only rows. H20 now has a complete 1,100-video subset with
 incomplete historical MP4 files. PAI/NAS transfer is blocked because the target
 NAS data directory is root-owned and not writable by user `hj`.
 
-Root-side permission recovery has now been applied. Codex verified the PAI/NAS
-target dirs exist, are owned by `hj:hj`, have mode `0770`, and pass read/write/
-execute/write_probe checks. Next milestone is transfer and PAI verification.
+Root-side permission recovery was applied and Codex verified the PAI/NAS target
+dirs exist, are owned by `hj:hj`, have mode `0770`, and pass read/write/execute/
+write_probe checks.
+
+Exp60C transfer is now complete. PAI/NAS has the repaired train1000/test100 raw
+subset with 1,100 MP4s, 1,100/1,100 SHA256 match, 1,100/1,100 OpenCV decode
+pass, no train/test overlap, no duplicate source IDs/URLs/paths, and PAI
+manifests with no H20/HAL path leakage. No mask generation, loser generation,
+inference, DPO, training, GPU use, or full VPData download ran. Next separately
+gated milestone is PAI D3 mask generation only.
