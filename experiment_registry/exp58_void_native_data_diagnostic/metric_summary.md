@@ -35,6 +35,18 @@ Exp58B Gate1 render:
 - Metadata: 3 objects, 1 removed, `target_hit=false`, camera motion `zoom_in`.
 - Compatibility fixes: `OpenEXR==3.2.10`, launcher-only EXR channel shim, static `imageio-ffmpeg`.
 
+Exp58B Gate8:
+
+- Samples: 8/8 rendered.
+- Decode pass: 8/8.
+- Frames/resolution/fps: 24 frames, 128x128, 8fps for every sample.
+- Quadmask values: 8/8 contain 0/63/127/255.
+- Object area range: 127 to 7331 pixels.
+- Overlap area range: 46 to 6095 pixels.
+- Affected area range: 1715 to 40515 pixels.
+- Background area range: 345378 to 391078 pixels.
+- Target-hit metadata: 0/8 true.
+
 Readback metrics:
 
 - Exp57 H20 best diagnostic `ATS_STRICT_Q2_T500_S0`: full -0.094041, object -0.473428, overlap -0.581142, affected -0.146322, boundary -0.081617, outside -0.005963.

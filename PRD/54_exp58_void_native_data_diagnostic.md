@@ -160,3 +160,9 @@ Milestone E status: `VOID_NATIVE_KUBRIC_GATE1_READY`.
 Gate1 generated exactly one official Kubric pair at `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000`. The first render attempt exposed an `OpenEXR==3.4.13` segfault during Kubric EXR postprocessing; Exp58B fixed this by using `OpenEXR==3.2.10` in the isolated env plus a launcher-only channel-name shim for Blender's uppercase EXR channels. A second attempt exposed broken PAI system ffmpeg (`libblas.so.3` missing); Exp58B fixed this by placing the static `imageio-ffmpeg` binary first on `PATH`.
 
 The final Gate1 sample decodes as 24 frames at 128x128/8fps. Aggregate mask values include 0/63/127/255. All visual evidence sheets were opened. This is a renderer smoke pass and not a data-mismatch or adapter-quality conclusion. Gate8 generation is now allowed, but only N=8 and still no VOID inference/training in Exp58B.
+
+Milestone F/G status: `VOID_DATA_MISMATCH_TEST_READY`.
+
+Gate8 generated exactly 8 native Kubric pairs under `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/gate8`. All samples decode as 24 frames at 128x128/8fps, and every aggregate mask contains values 0/63/127/255. `manifests/exp58b_void_native_kubric_gate8.jsonl` records `rgb_full`, `rgb_altered_physics` as the removed/altered winner path, `mask.mp4`, metadata, areas, generation seeds, and review pages.
+
+All eight review pages were opened. Caveat: every metadata file reports `target_hit=false`; the samples remain useful for native-data environment and initial VOR-vs-Kubric distribution diagnostics, but they do not establish adapter evidence. Exp58B stops before VOID inference, preference forward, one-step, or 10-step.

@@ -13,3 +13,5 @@ Exp58B Milestone C produced no videos, but it recovered the official Blender/`bp
 Exp58B Milestone D also produced no videos. It established a reproducible invocation path and local manifest route, so the next qualitative evidence must come from Gate1 render smoke.
 
 Exp58B Gate1 produced one native Kubric sample and all eight evidence sheets were opened. Visual review shows a valid low-resolution object-removal / altered-physics pair with non-empty object, affected/overlap, boundary, and outside regions. Gate1 is a renderer smoke pass only; it does not establish VOID adapter evidence.
+
+Exp58B Gate8 produced eight native Kubric samples and all eight review pages were opened. The set is technically valid for the next native-data diagnostic: object, overlap, affected, boundary, and outside regions are present across every sample. Visual caveat: all metadata reports `target_hit=false`, so this is not a claim of high-quality collision data or adapter evidence.

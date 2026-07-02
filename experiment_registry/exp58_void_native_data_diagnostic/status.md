@@ -31,3 +31,7 @@ An Exp58-only launcher now runs the unmodified official Kubric script under Blen
 Milestone E status: `VOID_NATIVE_KUBRIC_GATE1_READY`.
 
 Gate1 generated one official Kubric paired sample with 24 frames at 128x128. The final env uses `OpenEXR==3.2.10`, an Exp58B launcher-only EXR channel shim, and static `imageio-ffmpeg`. Aggregate mask values include 0/63/127/255, and all Gate1 evidence sheets were opened. No VOID inference, training, one-step, or 10-step has run.
+
+Final Exp58B status: `VOID_DATA_MISMATCH_TEST_READY`.
+
+Gate8 generated 8/8 official Kubric native paired samples. All decode, all aggregate masks contain 0/63/127/255, and all review pages were opened. The manifest is `manifests/exp58b_void_native_kubric_gate8.jsonl`. No VOID inference, training, one-step, or 10-step has run.

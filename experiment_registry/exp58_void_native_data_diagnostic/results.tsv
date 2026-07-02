@@ -12,3 +12,5 @@ Exp58B-B	EXP58B_KUBRIC_PYTHON_ENV_READY	Fresh PAI env imports TensorFlow 2.15.1,
 Exp58B-C	EXP58B_BLENDER_BPY_READY	Official Blender 3.6.23 runs headless from isolated PAI tools fallback; bpy, TensorFlow, TFDS, source Kubric, PyBullet, and kubric.renderer.Blender import through the Blender Python bridge.
 Exp58B-D	EXP58B_KUBRIC_INVOCATION_READY	Exp58-only launcher runs the unmodified official Kubric script under Blender Python; local official manifests load and num_pairs=0 dry-run passes without rendering.
 Exp58B-E	VOID_NATIVE_KUBRIC_GATE1_READY	One official Kubric pair rendered and encoded; 24 frames at 128x128, aggregate mask contains 0/63/127/255, all Gate1 evidence sheets opened, no inference or training run.
+Exp58B-F	VOID_NATIVE_KUBRIC_GATE8_READY	Eight official Kubric pairs rendered and encoded; 8/8 decode, 8/8 aggregate masks contain 0/63/127/255, all review pages opened.
+Exp58B-G	VOID_DATA_MISMATCH_TEST_READY	Final decision: native Kubric Gate8 exists and can be used for the next official VOID inference diagnostic; no inference, training, one-step, or 10-step run in Exp58B.

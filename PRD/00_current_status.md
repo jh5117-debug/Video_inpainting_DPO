@@ -47,6 +47,12 @@ Status: `VOID_NATIVE_KUBRIC_GATE1_READY`.
 
 Generated exactly one official Kubric paired sample at `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000`. Renderer compatibility fixes stayed inside Exp58B: isolated env `OpenEXR==3.2.10`, launcher-only EXR channel-name shim, and static `imageio-ffmpeg` on PATH because PAI system ffmpeg was missing `libblas.so.3`. Videos decode as 24 frames at 128x128/8fps; aggregate mask contains 0/63/127/255. All Gate1 evidence sheets were opened. No VOID inference, training, one-step, or 10-step was run. Gate8 generation is unlocked.
 
+## 2026-07-02 Exp58B Kubric Gate8
+
+Status: `VOID_DATA_MISMATCH_TEST_READY`.
+
+Generated exactly 8 official Kubric native pairs at `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/gate8`. All 8 decode, all are 24 frames at 128x128/8fps, and every aggregate mask contains 0/63/127/255. Review pages for all 8 samples were opened. Manifest: `manifests/exp58b_void_native_kubric_gate8.jsonl`. Caveat: all `metadata.json` files have `target_hit=false`, so Gate8 is native-data diagnostic material, not adapter evidence. No VOID inference, training, one-step, or 10-step was run.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.
