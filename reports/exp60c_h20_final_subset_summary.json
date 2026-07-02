@@ -1,0 +1,18 @@
+{
+  "status": "EXP60C_H20_VPDATA_SUBSET_READY",
+  "train_count": 1000,
+  "test_count": 100,
+  "total_count": 1100,
+  "replacement_count": 11,
+  "missing_sha_count": 0,
+  "train_test_overlap_count": 0,
+  "duplicate_train_source_ids": 0,
+  "duplicate_test_source_ids": 0,
+  "failed_url_remaining_count": 0,
+  "h20_decode_status": "EXP60C_H20_DECODE_PASS",
+  "full_vpdata_downloaded": false,
+  "h20_decode_ok": 1100,
+  "h20_decode_failed": 0,
+  "targeted_decode_repair_status": "EXP60C_H20_DECODE_REPAIR_READY",
+  "targeted_decode_repair_count": 6
+}

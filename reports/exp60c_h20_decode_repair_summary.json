@@ -1,0 +1,8 @@
+{
+  "status": "EXP60C_H20_DECODE_REPAIR_READY",
+  "repair_count": 6,
+  "repaired": 6,
+  "failed": 0,
+  "method": "targeted redownload of decode-failed files only; corrupt files retained with suffix",
+  "gpu_used": false
+}

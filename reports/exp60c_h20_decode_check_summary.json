@@ -1,0 +1,9 @@
+{
+  "status": "EXP60C_H20_DECODE_BLOCKED",
+  "time": "2026-07-02T21:36:15",
+  "video_count": 1100,
+  "decode_ok": 1094,
+  "decode_failed": 6,
+  "method": "opencv VideoCapture open + first frame read",
+  "gpu_used": false
+}

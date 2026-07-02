@@ -1,0 +1,9 @@
+{
+  "status": "EXP60C_H20_DECODE_PASS",
+  "time": "2026-07-02T21:44:22",
+  "video_count": 1100,
+  "decode_ok": 1100,
+  "decode_failed": 0,
+  "method": "opencv VideoCapture open + first frame read after targeted repair",
+  "gpu_used": false
+}
