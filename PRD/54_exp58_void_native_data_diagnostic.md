@@ -154,3 +154,9 @@ The three public official manifest JSON files were cached in NAS runtime storage
 - HDRI Haven: 509 assets.
 
 A no-render `--num_pairs 0` dry-run through Blender Python completed successfully, creating only the dry-run output directory. Gate1 should use the same launcher, local manifests, `--num_pairs 1`, and a low-resolution `--fast` smoke. If per-asset GCS tarball fetching fails during Gate1, mark that exact blocker; do not fake data.
+
+Milestone E status: `VOID_NATIVE_KUBRIC_GATE1_READY`.
+
+Gate1 generated exactly one official Kubric pair at `/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000`. The first render attempt exposed an `OpenEXR==3.4.13` segfault during Kubric EXR postprocessing; Exp58B fixed this by using `OpenEXR==3.2.10` in the isolated env plus a launcher-only channel-name shim for Blender's uppercase EXR channels. A second attempt exposed broken PAI system ffmpeg (`libblas.so.3` missing); Exp58B fixed this by placing the static `imageio-ffmpeg` binary first on `PATH`.
+
+The final Gate1 sample decodes as 24 frames at 128x128/8fps. Aggregate mask values include 0/63/127/255. All visual evidence sheets were opened. This is a renderer smoke pass and not a data-mismatch or adapter-quality conclusion. Gate8 generation is now allowed, but only N=8 and still no VOID inference/training in Exp58B.

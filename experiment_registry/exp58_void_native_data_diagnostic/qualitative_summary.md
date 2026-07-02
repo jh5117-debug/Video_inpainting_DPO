@@ -11,3 +11,5 @@ Final Exp58 visual status: no native Kubric evidence exists, so no visual promot
 Exp58B Milestone C produced no videos, but it recovered the official Blender/`bpy` renderer import path. Gate1 visual evidence is now the next required step before any Kubric Gate8 or data-mismatch claim.
 
 Exp58B Milestone D also produced no videos. It established a reproducible invocation path and local manifest route, so the next qualitative evidence must come from Gate1 render smoke.
+
+Exp58B Gate1 produced one native Kubric sample and all eight evidence sheets were opened. Visual review shows a valid low-resolution object-removal / altered-physics pair with non-empty object, affected/overlap, boundary, and outside regions. Gate1 is a renderer smoke pass only; it does not establish VOID adapter evidence.

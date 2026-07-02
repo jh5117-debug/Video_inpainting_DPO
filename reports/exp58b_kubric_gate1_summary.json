@@ -1,0 +1,48 @@
+{
+  "status": "VOID_NATIVE_KUBRIC_GATE1_READY",
+  "machine": "PAI",
+  "hostname": "dsw-753014-85f54df947-bkp7h",
+  "sample_count": 1,
+  "sample_path": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000",
+  "frames": 24,
+  "resolution": "128x128",
+  "fps": 8.0,
+  "metadata": {
+    "num_objects": 3,
+    "num_removed": 1,
+    "target_hit": false,
+    "background": "abandoned_games_room_02",
+    "camera_motion": "zoom_in"
+  },
+  "mask_values": {
+    "0": 1312,
+    "63": 420,
+    "127": 11797,
+    "255": 379687
+  },
+  "visual_review_opened": [
+    "side_by_side.jpg",
+    "temporal_strip_16f.jpg",
+    "object_crop_sheet.jpg",
+    "affected_overlap_crop_sheet.jpg",
+    "boundary_crop_sheet.jpg",
+    "outside_crop_sheet.jpg",
+    "temporal_diff_heatmap.jpg",
+    "mask_histogram_panel.jpg"
+  ],
+  "controlled_fixes": {
+    "openexr": "3.2.10",
+    "openexr_channel_shim": true,
+    "static_ffmpeg_from_imageio_ffmpeg": true
+  },
+  "safety": {
+    "void_inference_run": false,
+    "training_run": false,
+    "preference_forward_run": false,
+    "one_step_run": false,
+    "ten_step_run": false,
+    "vor_data_mixed": false,
+    "fake_data_created": false
+  },
+  "gate8_unlocked": true
+}

@@ -1,0 +1,11 @@
+sample_id,status,path,frames,width,height,fps,sha256_or_detail
+00000,rgb_full,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000/rgb_full.mp4,24,128,128,8.0,281de3ab8e1dc8aa4943b4a2e23b98575be6f3de3b646296836e34fd48956011
+00000,rgb_removed_objects_invisible,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000/rgb_removed_objects_invisible.mp4,24,128,128,8.0,ed2525ef9da56af286794b2e421ffcc73e8cce29c503aaa6a27074c6914cae90
+00000,rgb_altered_physics,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000/rgb_altered_physics.mp4,24,128,128,8.0,1e6300a459358ef1a26b2fd8e9a72ef24ea36f9e778be458af4530d01d66f131
+00000,mask,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000/mask.mp4,24,128,128,8.0,1ee8597e18e8b3ae8764314755243de8834f11686fb2990bbeb344022fb587e6
+00000,metadata,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate1/gate1/00000/metadata.json,NA,NA,NA,NA,be2e21b6f1480c925afbd2ea8f7775f5b5062b4a00135d256d8532e15ca05cb4
+00000,mask_value_0,aggregate,NA,NA,NA,NA,1312
+00000,mask_value_63,aggregate,NA,NA,NA,NA,420
+00000,mask_value_127,aggregate,NA,NA,NA,NA,11797
+00000,mask_value_255,aggregate,NA,NA,NA,NA,379687
+00000,target_hit,metadata,NA,NA,NA,NA,false

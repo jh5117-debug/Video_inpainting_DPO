@@ -27,6 +27,14 @@ Exp58B invocation audit:
 - Output path convention: `job_dir/out_prefix/00000` for real samples.
 - No native-data video metrics yet.
 
+Exp58B Gate1 render:
+
+- Samples: 1.
+- Frames/resolution/fps: 24 frames, 128x128, 8fps.
+- Aggregate mask counts: 0=1312, 63=420, 127=11797, 255=379687.
+- Metadata: 3 objects, 1 removed, `target_hit=false`, camera motion `zoom_in`.
+- Compatibility fixes: `OpenEXR==3.2.10`, launcher-only EXR channel shim, static `imageio-ffmpeg`.
+
 Readback metrics:
 
 - Exp57 H20 best diagnostic `ATS_STRICT_Q2_T500_S0`: full -0.094041, object -0.473428, overlap -0.581142, affected -0.146322, boundary -0.081617, outside -0.005963.

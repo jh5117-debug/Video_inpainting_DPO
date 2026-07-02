@@ -1,0 +1,9 @@
+sample_id,evidence,opened,visual_status,object_region,affected_overlap_region,boundary_region,outside_region,collapse,tone_shift,notes
+00000,side_by_side.jpg,yes,pass,visible,visible,visible,visible,no,no,full removed-invisible altered-physics and mask align at mid frame
+00000,temporal_strip_16f.jpg,yes,pass,visible,visible,visible,visible,no,no,camera zoom-in sequence decodes across 24 frames
+00000,object_crop_sheet.jpg,yes,pass,non_empty,NA,NA,NA,no,no,removed object mask region is present
+00000,affected_overlap_crop_sheet.jpg,yes,pass,NA,non_empty,NA,NA,no,no,aggregate mask includes 63 and 127 transition regions
+00000,boundary_crop_sheet.jpg,yes,pass,NA,NA,non_empty,NA,no,no,boundary crop present
+00000,outside_crop_sheet.jpg,yes,pass,NA,NA,NA,non_empty,no,no,background outside region present
+00000,temporal_diff_heatmap.jpg,yes,pass,visible,visible,visible,quiet_outside,no,no,diff concentrated around removed/interaction region
+00000,mask_histogram_panel.jpg,yes,pass,non_empty,non_empty,non_empty,non_empty,no,no,mask histogram contains 0/63/127/255
