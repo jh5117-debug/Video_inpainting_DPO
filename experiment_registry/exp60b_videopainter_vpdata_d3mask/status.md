@@ -5,8 +5,8 @@ Status:
 - `EXP60B_READBACK_DONE`
 - `EXP60B_VPDATA_AVAILABLE`
 - `EXP60B_PAI_GPU_READY`
-- `EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY`
+- `EXP60B_H20_READY_VIA_PAI_RELAY`
+- `EXP60B_VPDATA_SUBSET_PLAN_READY`
 
-Blocked next step: recover H20 SSH route or explicitly approve PAI/NAS-first
-selective download. Full VPData clone/download remains forbidden.
-
+Next step: launch guarded H20 Pexels-only train1000/test100 raw-video download
+through the PAI relay. Full VPData clone/download remains forbidden.

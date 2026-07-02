@@ -25,7 +25,8 @@ is reduced by a larger VPData subset with D3-style masks.
 
 ## Current Status
 
-Status: `EXP60B_READBACK_DONE`
+Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
+`EXP60B_VPDATA_SUBSET_PLAN_READY`
 
 Milestone A completed from the HAL Codex session:
 
@@ -38,18 +39,19 @@ Milestone A completed from the HAL Codex session:
   Exp60B boundary because they target full VPData.
 - PAI host `hj@47.103.26.60` is reachable and GPU0/GPU1 were idle during the
   readback probe.
-- H20 SSH alias was not resolvable from HAL, so H20 download is blocked until
-  the real H20 host/route is provided or recovered.
+- H20 SSH alias was not resolvable from HAL, but PAI relay to H20 is available:
+  `hj@47.103.26.60` -> `ubuntu@27.190.15.128`.
+- H20 `/home/nvme01` has 1.2T free, so storage passes the Exp60B hard stop.
+- A guarded Pexels-only train1000/test100 download plan has been generated.
 
 ## Required Next Gate
 
 Before any data download:
 
-1. Recover H20 SSH route or explicitly authorize PAI/NAS-first subset download.
+1. Launch H20 download through the recovered PAI relay.
 2. Implement a file-level and row-level subset downloader that downloads only
    train1000/test100 selected rows.
 3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as
    a full data checkout.
 4. Do not run official `VPData_download.py` unmodified, because it iterates all
    Pexels rows.
-

@@ -2,4 +2,6 @@ timestamp,host,check,status,detail
 2026-07-02T17:48:28+08:00,hal-9000,ssh_h20_alias,blocked,"ssh h20 failed: Temporary failure in name resolution"
 2026-07-02T17:48:28+08:00,hal-9000,h20_storage,not_checked,"No H20 route recovered from HAL; no download attempted"
 2026-07-02T17:48:28+08:00,hal-9000,h20_download,blocked,"Exp60B requires H20 download, but current session cannot reach H20"
-
+2026-07-02T17:59:02+08:00,instance-afs92r3e,pai_relay_ssh,ready,"PAI hj@47.103.26.60 can reach H20 ubuntu@27.190.15.128 using ~/.ssh/exp50_h20_relay_ed25519"
+2026-07-02T17:59:02+08:00,instance-afs92r3e,h20_storage,ready,"/home/nvme01 3.4T total, 1.2T available, 66% used; passes >800GB and >20% hard stop"
+2026-07-02T17:59:02+08:00,instance-afs92r3e,h20_download,ready_via_pai_relay,"Launch guarded Pexels-only train1000/test100 download after tooling commit is pushed"

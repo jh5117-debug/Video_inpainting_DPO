@@ -3,7 +3,8 @@
     "EXP60B_READBACK_DONE",
     "EXP60B_VPDATA_AVAILABLE",
     "EXP60B_PAI_GPU_READY",
-    "EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY"
+    "EXP60B_H20_READY_VIA_PAI_RELAY",
+    "EXP60B_VPDATA_SUBSET_PLAN_READY"
   ],
   "branch": "research/exp60b-videopainter-vpdata-d3mask-pai-20260702",
   "start_head": "568a7dfb48bcdfce893176a1dd48c653414a13a8",
@@ -17,9 +18,12 @@
     "selective_download_required": true
   },
   "h20": {
-    "reachable_from_current_session": false,
+    "reachable_from_current_session": true,
+    "route": "HAL -> PAI hj@47.103.26.60 -> H20 ubuntu@27.190.15.128",
+    "hostname": "instance-afs92r3e",
+    "home_nvme01_available": "1.2T",
     "download_attempted": false,
-    "blocker": "No H20 SSH route recovered from HAL; ssh h20 fails DNS resolution"
+    "blocker": null
   },
   "pai": {
     "host": "hj@47.103.26.60",
@@ -28,6 +32,13 @@
     "gpu1_ready": true,
     "nas_preferred": true
   },
-  "next_required_action": "Recover H20 route or authorize PAI/NAS-first selective VPData subset download; do not clone full VPData."
+  "subset_plan": {
+    "source_filter": "pexels_only",
+    "seed": 20260702,
+    "train_selected": 1000,
+    "test_selected": 100,
+    "train_test_overlap_count": 0,
+    "downloaded": 0
+  },
+  "next_required_action": "Launch guarded H20 raw-video download via PAI relay; do not clone full VPData."
 }
-

@@ -1,0 +1,32 @@
+{
+  "status": "EXP60B_VPDATA_SUBSET_PLAN_READY",
+  "download": false,
+  "source_filter": "pexels_only",
+  "seed": 20260702,
+  "train_manifest": "manifests/exp60b_vpdata_train1000_sources_h20.jsonl",
+  "test_manifest": "manifests/exp60b_vpdata_test100_sources_h20.jsonl",
+  "train_stats": {
+    "total_rows": 390509,
+    "eligible_unique_rows": 124426,
+    "selected_rows": 1000,
+    "pexels_rows_seen": 279283,
+    "videovo_rows_seen": 111226,
+    "unknown_rows_seen": 0,
+    "excluded_source_overlap_rows": 0
+  },
+  "test_stats": {
+    "total_rows": 568,
+    "eligible_unique_rows": 430,
+    "selected_rows": 100,
+    "pexels_rows_seen": 442,
+    "videovo_rows_seen": 126,
+    "unknown_rows_seen": 0,
+    "excluded_source_overlap_rows": 6
+  },
+  "train_selected": 1000,
+  "test_selected": 100,
+  "downloaded": 0,
+  "train_test_overlap_count": 0,
+  "native_masks": "audit-only planned shard references; not downloaded by default",
+  "full_vpdata_downloaded": false
+}

@@ -28,18 +28,38 @@ rows in `pexels.csv`, so it must not be run unmodified for Exp60B.
 
 ## Selective Download Feasibility
 
-Selective download is feasible in principle but needs a custom script:
+Selective download is feasible for a Pexels-only first subset and needs a
+custom script:
 
 1. Download only metadata CSV files first.
 2. Build deterministic train1000/test100 row lists using seed `20260702`.
-3. For VideoVo rows, download only required raw-video/mask zip shards.
-4. For Pexels rows, download only selected URLs from `pexels.csv`.
+3. For Pexels rows, download only selected URLs from `pexels.csv`.
+4. Exclude VideoVo rows for this first pass because VideoVo raw videos are
+   bundled as multi-GB zip shards.
 5. Verify no overlap by video id/source id/scene id before transfer.
+
+Generated plan:
+
+- `manifests/exp60b_vpdata_train1000_sources_h20.jsonl`
+- `manifests/exp60b_vpdata_test100_sources_h20.jsonl`
+- `reports/exp60b_vpdata_subset_plan.csv`
+- `reports/exp60b_vpdata_subset_plan_summary.json`
+
+Plan stats:
+
+- train CSV rows: 390,509.
+- train unique Pexels-eligible rows: 124,426.
+- train selected: 1,000.
+- test CSV rows: 568.
+- test unique Pexels-eligible rows after excluding train source overlap: 430.
+- test selected: 100.
+- train/test overlap: 0.
+- video downloads performed during plan generation: 0.
 
 ## Blockers
 
-The current HAL session cannot reach H20 via a configured alias or recovered
-host. H20 storage and download cannot be performed yet.
+HAL direct H20 SSH is intermittent, but PAI relay to H20 is available and H20
+storage passes the Exp60B hard-stop threshold. Download should be launched on
+H20 via PAI relay after this tooling commit is pushed.
 
-Status for download: `EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY`.
-
+Status for download: `EXP60B_H20_READY_VIA_PAI_RELAY`.

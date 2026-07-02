@@ -68,9 +68,17 @@ PAI host `hj@47.103.26.60` is reachable. During the probe, PAI GPU0 and GPU1
 reported 0 MiB used and 0% utilization. GPU2-GPU7 had unrelated lightweight
 processes and are out of scope.
 
-H20 was not reachable via aliases `h20` or `pai`; `pai` was recovered through
-the known IP, but no equivalent H20 route was found locally. H20 download is
-therefore blocked from this session until the real H20 host/route is supplied.
+H20 was not reachable via aliases `h20` or `pai`, and HAL direct SSH to the
+legacy H20 address is intermittent. A PAI relay route is available:
+
+- PAI: `hj@47.103.26.60`
+- H20 via PAI key: `ubuntu@27.190.15.128`
+- H20 hostname: `instance-afs92r3e`
+- H20 `/home/nvme01`: 3.4T total, 1.2T available, 66% used.
+
+This satisfies the Exp60B H20 storage hard stop (>800GB and >20% free), so H20
+download can proceed through the PAI relay after the selective downloader is
+pushed.
 
 ## Answers Required By Milestone A
 
@@ -81,19 +89,21 @@ therefore blocked from this session until the real H20 host/route is supplied.
    No gated access was observed from the public dataset page.
 
 3. Can we selectively download train1000 + test100?
-   Likely yes, but only with a custom selective downloader. A full clone or the
-   unmodified official Pexels downloader would exceed the boundary.
+   Yes for a Pexels-only first subset. Official train/test CSVs expose row
+   paths and `pexels.csv` maps those rows to raw video URLs. A full clone or
+   the unmodified official Pexels downloader would exceed the boundary.
 
 4. If full archive is required, can we range-select or partial-sync?
-   The Hugging Face tree exposes grouped mask/raw-video zip files and CSV files.
-   A downloader must select only zip groups and Pexels rows needed by the locked
-   subset.
+   Pexels rows can be selected and downloaded by URL. VideoVo raw videos and
+   native masks are grouped into large zip shards, so they are excluded from the
+   first bounded subset unless a later experiment explicitly authorizes
+   shard-level handling.
 
 5. What is official train/test split?
    Official files include `pexels_videovo_train_dataset.csv`,
    `pexels_videovo_val_dataset.csv`, and `pexels_videovo_test_dataset.csv`.
-   Exp60B must sample train1000 from train and test100 from val/test without
-   overlap.
+   The current deterministic plan samples train1000 from train and test100 from
+   test, filters to Pexels rows, and excludes train/test source overlap.
 
 6. What metadata fields exist?
    The Hugging Face viewer shows video file names, frame/time indices, mask id,
@@ -109,9 +119,8 @@ therefore blocked from this session until the real H20 host/route is supplied.
 
 9. Estimated storage for train1000 + test100.
    Not yet final because video length/resolution varies and Pexels raw videos
-   are URL-backed. The full dataset is about 1.87 TB, so a 1100-row subset plus
-   selected mask zips should be far smaller but still requires H20 free-space
-   checking before download.
+   are URL-backed. The generated plan contains 1100 Pexels raw-video URLs and
+   no native-mask zip downloads. H20 free-space checking passed via PAI relay.
 
 10. Why use DiffuEraser D3 masks, not VPData native masks?
     The goal is protocol equivalence with the main LoVI-DPO DiffuEraser line:
@@ -126,4 +135,3 @@ therefore blocked from this session until the real H20 host/route is supplied.
     This is a new data source and mask protocol. It must pass subset download,
     D3 mask equivalence, loser quality gates, larger pair selection, and 50-step
     smoke before any longer training.
-

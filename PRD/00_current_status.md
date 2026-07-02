@@ -2278,10 +2278,12 @@ No third-backbone DPO training, RC-FPO, or VideoPainter retraining was launched.
   - `EXP60B_READBACK_DONE`
   - `EXP60B_VPDATA_AVAILABLE`
   - `EXP60B_PAI_GPU_READY`
-  - `EXP60B_H20_DOWNLOAD_BLOCKED_CONNECTIVITY`
+  - `EXP60B_H20_READY_VIA_PAI_RELAY`
+  - `EXP60B_VPDATA_SUBSET_PLAN_READY`
 
 VPData is public on Hugging Face, but full clone/download is forbidden for
 Exp60B because the dataset is about 1.87 TB. The next step must be a selective
-train1000/test100 downloader. PAI GPU0/GPU1 were idle during the probe; H20
-download cannot start from this HAL session until the real H20 SSH route is
-recovered.
+train1000/test100 downloader. PAI GPU0/GPU1 were idle during the probe; H20 is
+reachable through the PAI relay and has 1.2T free under `/home/nvme01`. The
+Pexels-only train1000/test100 plan is ready; no raw video has been downloaded
+yet.
