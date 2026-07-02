@@ -2,4 +2,6 @@
 
 No Exp58 visual evidence has been generated yet.
 
+Milestone B produced no videos. Official Kubric Gate8 generation is blocked before rendering because the isolated environment lacks TensorFlow for `kubric` import and lacks Blender/`bpy` for the official VOID Kubric renderer.
+
 Readback visual pattern from Exp55-Exp57: VOR-derived VOID one-step candidates can preserve outside and sometimes improve object/full metrics, but visual review remains mixed or negative due to transition-region artifacts. Exp57 PAI and H20 did not produce one-step PASS evidence.

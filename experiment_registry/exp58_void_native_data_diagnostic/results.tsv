@@ -1,3 +1,4 @@
 milestone	status	summary
 A	EXP58_READBACK_DONE	Exp50-Exp57 readback and official VOID data-generation audit completed.
 Storage	EXP58_STORAGE_PAI_NAS_PREFERRED	PAI/NAS preferred for large data; requested PAI experiments output root is not writable by hj, but logs/runtime and PAI local home are writable.
+B	VOID_KUBRIC_ENV_BLOCKED	HAL wheelhouse relay and offline minimal install succeeded, but Kubric import requires TensorFlow and official VOID Kubric generation requires missing Blender/bpy.

@@ -5,6 +5,12 @@ Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`
 
 Exp58 starts from Exp57 core to test whether VOID's remaining failure is a VOR-to-VOID data mismatch. Official VOID docs confirm HUMOTO and Kubric counterfactual generation paths; HUMOTO remains blocked by manual HUMOTO/Mixamo/Blender assets, while Kubric may be feasible if isolated Kubric/PyBullet/Blender/GCS smoke passes. No training, no 10-step, no VOR-Eval, no hard comp, and no third-backbone claim.
 
+## 2026-07-02 Exp58 Kubric Environment Smoke
+
+Status: `VOID_KUBRIC_ENV_BLOCKED`.
+
+PAI direct pip install stalled on the `pybullet` wheel, so HAL relayed a 44-file Kubric wheelhouse to PAI runtime storage with SHA256 match. Offline install into `/home/hj/conda_envs/void_kubric_exp58` succeeded for the minimal packages, and the official GCS manifests are reachable. The generator remains blocked because `import kubric` requires TensorFlow and the official VOID Kubric renderer requires missing Blender/`bpy`. No Kubric data, inference, training, or 10-step was run.
+
 ## 2026-07-01 Exp53B Core Recovery Readback
 
 Status: `EXP53B_READY_FOR_CORE_CELLS`. H20 GPU/cache audit completed for Q2/T500 R1/R2 core cells only.

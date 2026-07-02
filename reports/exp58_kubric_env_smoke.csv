@@ -1,0 +1,21 @@
+check,status,detail
+pai_direct_full_install,blocked,full kubric dependency path backtracked and failed on old absl-py build
+pai_direct_minimal_install,blocked,stalled more than 17 minutes on pybullet wheel download
+hal_wheelhouse_download,pass,44 files downloaded for Python 3.10
+wheelhouse_transfer,pass,rsync to PAI runtime completed
+wheelhouse_sha256,pass,source and PAI manifests match
+offline_install,pass,minimal packages installed into /home/hj/conda_envs/void_kubric_exp58
+import_numpy,pass,2.2.6
+import_imageio,pass,2.37.3
+import_cv2,pass,4.13.0
+import_pybullet,pass,pybullet import ok
+import_google_cloud_storage,pass,import ok
+import_kubric,fail,"ModuleNotFoundError('No module named tensorflow')"
+import_kubric_pybullet,fail,"ModuleNotFoundError('No module named tensorflow')"
+import_kubric_blender,fail,"ModuleNotFoundError('No module named tensorflow')"
+import_bpy,fail,"ModuleNotFoundError('No module named bpy')"
+blender_executable,fail,not found on PAI PATH
+gcs_kubasic_manifest,pass,HTTP 200
+gcs_gso_manifest,pass,HTTP 200
+gcs_hdri_manifest,pass,HTTP 200
+kubric_gate8_generation,locked,requires TensorFlow-compatible Kubric import plus Blender/bpy

@@ -48,13 +48,30 @@ Current audit:
 | --- | --- | --- |
 | A | `EXP58_READBACK_DONE` | Data mismatch and storage readback completed. |
 | Storage | `EXP58_STORAGE_PAI_NAS_PREFERRED` | PAI/NAS preferred; requested PAI experiment output root is not writable by `hj`. |
-| B | pending | Isolated Kubric env smoke. |
-| C | pending | Generate VOID-native Kubric Gate8 if env/assets allow. |
-| D | pending | Official VOID inference on Kubric Gate8. |
-| E | pending | Kubric preference forward / zero-gap / one-step. |
-| F | pending | VOR-vs-Kubric comparison. |
-| G | pending | Final decision. |
+| B | `VOID_KUBRIC_ENV_BLOCKED` | PAI direct pip install stalled on `pybullet`; HAL wheelhouse relay succeeded, but `import kubric` still requires TensorFlow and official VOID Kubric generation requires missing Blender/`bpy`. |
+| C | locked | Cannot generate official Kubric Gate8 without a working Kubric + Blender/`bpy` environment. |
+| D | locked | No Kubric Gate8 exists. |
+| E | locked | No Kubric native data exists. |
+| F | locked | VOR-vs-Kubric comparison cannot be computed until native data exists. |
+| G | pending | Final decision will record native-data blocker and no 10-step. |
 
 ## Scientific Position
 
 VOID remains a VOR-OR inference baseline, same-model loser-generator candidate, and adapter-engineering candidate. Exp58 may support `VOID_DATA_MISMATCH_SUSPECTED` or confirm a native-data path, but it cannot claim third-backbone evidence without a later one-step PASS and aggregator-approved 10-step positive result.
+
+## Milestone B Result
+
+Status: `VOID_KUBRIC_ENV_BLOCKED`.
+
+The PAI isolated env is `/home/hj/conda_envs/void_kubric_exp58`. Direct PAI pip install stalled for more than 17 minutes on the `pybullet` wheel, so a HAL wheelhouse relay was used instead. The wheelhouse contains 44 files, is 275 MiB on PAI, and passed SHA256 verification.
+
+Offline install into the isolated env succeeded for the minimal runtime packages (`pybullet`, `imageio`, `opencv-python-headless`, `numpy`, `google-cloud-storage`, and related wheels). GCS access to the official Kubric default manifests succeeded for KuBasic, GSO, and HDRI Haven.
+
+The generator is still blocked:
+
+- `import kubric` fails with `ModuleNotFoundError("No module named 'tensorflow'")`.
+- `from kubric.simulator import PyBullet` and `from kubric.renderer import Blender` fail for the same missing TensorFlow dependency.
+- `import bpy` fails with `ModuleNotFoundError("No module named 'bpy'")`.
+- No `blender` executable was found on PAI.
+
+Because the official VOID Kubric script imports `bpy` directly and uses `kubric.renderer.Blender`, Exp58 cannot generate valid VOID-native Kubric data in the current environment. No fake data was created.

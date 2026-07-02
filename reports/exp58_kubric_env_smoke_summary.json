@@ -1,0 +1,35 @@
+{
+  "status": "VOID_KUBRIC_ENV_BLOCKED",
+  "exact_blocker": "VOID_KUBRIC_ENV_BLOCKED_TENSORFLOW_AND_BLENDER_BPY_MISSING",
+  "pai_env": "/home/hj/conda_envs/void_kubric_exp58",
+  "python": "3.10.19",
+  "hal_wheelhouse_files": 44,
+  "hal_wheelhouse_size": "276M",
+  "pai_wheelhouse_size": "275M",
+  "wheelhouse_sha256_match": true,
+  "offline_install_status": "pass",
+  "imports_ok": [
+    "numpy",
+    "imageio",
+    "cv2",
+    "pybullet",
+    "google.cloud.storage"
+  ],
+  "imports_failed": {
+    "kubric": "ModuleNotFoundError(\"No module named 'tensorflow'\")",
+    "kubric.simulator.PyBullet": "ModuleNotFoundError(\"No module named 'tensorflow'\")",
+    "kubric.renderer.Blender": "ModuleNotFoundError(\"No module named 'tensorflow'\")",
+    "bpy": "ModuleNotFoundError(\"No module named 'bpy'\")"
+  },
+  "blender_executable_found": false,
+  "gcs_manifests_reachable": {
+    "KuBasic": true,
+    "GSO": true,
+    "HDRI_haven": true
+  },
+  "kubric_gate8_generation_allowed": false,
+  "training_run": false,
+  "inference_run": false,
+  "ten_step_run": false,
+  "fake_data_created": false
+}
