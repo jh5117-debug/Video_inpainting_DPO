@@ -398,8 +398,22 @@ def main() -> int:
     write_jsonl(train_manifest, train_out)
     write_jsonl(test_manifest, test_out)
 
+    downloaded_count = sum(1 for r in train_out + test_out if r.get("download_status") == "DOWNLOADED")
+    selected_count = len(train_out) + len(test_out)
+    failed_count = sum(
+        1 for r in train_out + test_out
+        if r.get("download_status") not in {"DOWNLOADED", "PLANNED"}
+    )
+    if not args.download:
+        status = "EXP60B_VPDATA_SUBSET_PLAN_READY"
+    elif downloaded_count == selected_count:
+        status = "EXP60B_H20_VPDATA_SUBSET_READY"
+    elif downloaded_count > 0:
+        status = "EXP60B_H20_VPDATA_SUBSET_PARTIAL_SOURCE_URL_FAILURE"
+    else:
+        status = "EXP60B_H20_VPDATA_SUBSET_BLOCKED_SOURCE_URL"
     summary = {
-        "status": "EXP60B_H20_VPDATA_SUBSET_READY" if args.download else "EXP60B_VPDATA_SUBSET_PLAN_READY",
+        "status": status,
         "download": bool(args.download),
         "hf_endpoint": os.environ.get("HF_ENDPOINT"),
         "source_filter": args.source_filter,
@@ -410,7 +424,9 @@ def main() -> int:
         "test_stats": test_stats,
         "train_selected": len(train_out),
         "test_selected": len(test_out),
-        "downloaded": sum(1 for r in train_out + test_out if r.get("download_status") == "DOWNLOADED"),
+        "selected": selected_count,
+        "downloaded": downloaded_count,
+        "failed": failed_count,
         "train_test_overlap_count": 0,
         "native_masks": "audit-only planned shard references; not downloaded by default",
         "full_vpdata_downloaded": False,
