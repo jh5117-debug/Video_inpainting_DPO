@@ -50,5 +50,12 @@
     "staging_size": "about 14G",
     "full_vpdata_downloaded": false
   },
-  "next_required_action": "Run H20 clash proxy fallback with resume for the remaining Pexels raw URL failures; do not clone full VPData."
+  "h20_proxy_download": {
+    "selected": 1100,
+    "downloaded": 1089,
+    "failed": 11,
+    "status": "EXP60B_H20_VPDATA_SUBSET_BLOCKED_PROXY",
+    "full_vpdata_downloaded": false
+  },
+  "next_required_action": "Run HAL fallback for the same locked train1000/test100 plan; do not clone full VPData."
 }

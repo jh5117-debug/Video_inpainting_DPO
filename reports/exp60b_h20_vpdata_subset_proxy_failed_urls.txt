@@ -1,0 +1,11 @@
+train	train_pexels_000000089490_6198719_mask4	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/6198719/6198719-hd_2048_1080_30fps.mp4
+train	train_pexels_000000249517_10182994_mask1	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/10182994/10182994-hd_1920_1080_30fps.mp4
+train	train_pexels_000000318486_20634935_mask2	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/20634935/20634935-hd_1920_1080_60fps.mp4
+train	train_pexels_000000288053_15305718_mask4	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/15305718/15305718-hd_1920_1080_24fps.mp4
+train	train_pexels_000000301517_18040529_mask1	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/18040529/18040529-hd_1080_1920_60fps.mp4
+train	train_pexels_000000291031_15818386_mask2	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/15818386/15818386-hd_1920_1080_24fps.mp4
+train	train_pexels_000000292692_16192022_mask9	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/16192022/16192022-hd_1920_1080_24fps.mp4
+train	train_pexels_000000283023_14085166_mask6	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/14085166/14085166-hd_1920_1080_24fps.mp4
+train	train_pexels_000000288002_15292165_mask3	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/15292165/15292165-hd_1920_1080_30fps.mp4
+test	test_pexels_000000319521_20753537_mask18	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/20753537/20753537-hd_1920_1080_24fps.mp4
+test	test_pexels_000000299470_17716904_mask3	DOWNLOAD_FAILED:HTTPError:HTTP Error 403: Forbidden	https://videos.pexels.com/video-files/17716904/17716904-hd_1080_1920_30fps.mp4

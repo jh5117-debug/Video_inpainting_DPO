@@ -1,0 +1,36 @@
+{
+  "status": "EXP60B_H20_VPDATA_SUBSET_PARTIAL_SOURCE_URL_FAILURE",
+  "download": true,
+  "hf_endpoint": "https://huggingface.co",
+  "workers": 8,
+  "source_filter": "pexels_only",
+  "seed": 20260702,
+  "train_manifest": "/home/nvme01/H20_Video_inpainting_DPO_exp60b_vp_vpdata_transfer/manifests/exp60b_vpdata_train1000_sources_h20.jsonl",
+  "test_manifest": "/home/nvme01/H20_Video_inpainting_DPO_exp60b_vp_vpdata_transfer/manifests/exp60b_vpdata_test100_sources_h20.jsonl",
+  "train_stats": {
+    "total_rows": 390509,
+    "eligible_unique_rows": 124426,
+    "selected_rows": 1000,
+    "pexels_rows_seen": 279283,
+    "videovo_rows_seen": 111226,
+    "unknown_rows_seen": 0,
+    "excluded_source_overlap_rows": 0
+  },
+  "test_stats": {
+    "total_rows": 568,
+    "eligible_unique_rows": 430,
+    "selected_rows": 100,
+    "pexels_rows_seen": 442,
+    "videovo_rows_seen": 126,
+    "unknown_rows_seen": 0,
+    "excluded_source_overlap_rows": 6
+  },
+  "train_selected": 1000,
+  "test_selected": 100,
+  "selected": 1100,
+  "downloaded": 1089,
+  "failed": 11,
+  "train_test_overlap_count": 0,
+  "native_masks": "audit-only planned shard references; not downloaded by default",
+  "full_vpdata_downloaded": false
+}
