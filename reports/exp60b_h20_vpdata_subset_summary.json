@@ -1,0 +1,20 @@
+{
+  "status": "EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK",
+  "download_attempted": true,
+  "raw_videos_downloaded": 0,
+  "h20_worktree": "/home/nvme01/H20_Video_inpainting_DPO_exp60b_vp_vpdata_transfer",
+  "h20_head": "ea9c3e6b51fc4ee5f675d4f1a1a26f65495151e3",
+  "h20_storage_ready": true,
+  "h20_network_blocker": "urllib.error.URLError: [Errno 101] Network is unreachable",
+  "pai_network_blocker": "PAI cannot reach Hugging Face from urllib probe",
+  "plan_files_ready": true,
+  "train_plan_rows": 1000,
+  "test_plan_rows": 100,
+  "full_vpdata_downloaded": false,
+  "next_safe_options": [
+    "enable H20 outbound HTTPS and rerun guarded downloader",
+    "explicitly authorize HAL-first egress-enabled download and checksum transfer",
+    "provide internal mirror for selected raw videos"
+  ]
+}
+

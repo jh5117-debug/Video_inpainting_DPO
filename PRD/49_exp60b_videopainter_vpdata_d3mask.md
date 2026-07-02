@@ -26,7 +26,8 @@ is reduced by a larger VPData subset with D3-style masks.
 ## Current Status
 
 Status: `EXP60B_READBACK_DONE` / `EXP60B_H20_READY_VIA_PAI_RELAY` /
-`EXP60B_VPDATA_SUBSET_PLAN_READY`
+`EXP60B_VPDATA_SUBSET_PLAN_READY` /
+`EXP60B_H20_VPDATA_SUBSET_BLOCKED_NETWORK`
 
 Milestone A completed from the HAL Codex session:
 
@@ -43,12 +44,16 @@ Milestone A completed from the HAL Codex session:
   `hj@47.103.26.60` -> `ubuntu@27.190.15.128`.
 - H20 `/home/nvme01` has 1.2T free, so storage passes the Exp60B hard stop.
 - A guarded Pexels-only train1000/test100 download plan has been generated.
+- H20 official metadata download is blocked by outbound network:
+  `urllib.error.URLError: [Errno 101] Network is unreachable`.
+- PAI also cannot reach Hugging Face from the urllib probe.
 
 ## Required Next Gate
 
 Before any data download:
 
-1. Launch H20 download through the recovered PAI relay.
+1. Enable H20 outbound HTTPS, authorize HAL-first subset download, or provide
+   an internal mirror.
 2. Implement a file-level and row-level subset downloader that downloads only
    train1000/test100 selected rows.
 3. Do not run `git clone https://huggingface.co/datasets/TencentARC/VPData` as

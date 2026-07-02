@@ -1,0 +1,9 @@
+timestamp,host,step,status,detail
+2026-07-02T18:06:00+08:00,instance-afs92r3e,worktree,ready,"/home/nvme01/H20_Video_inpainting_DPO_exp60b_vp_vpdata_transfer at ea9c3e6"
+2026-07-02T18:06:00+08:00,instance-afs92r3e,storage,ready,"/home/nvme01 has 1.2T free"
+2026-07-02T18:06:00+08:00,instance-afs92r3e,module_tests,pass,"py_compile and unittest passed"
+2026-07-02T18:06:00+08:00,instance-afs92r3e,plan10_test5,blocked,"urllib.error.URLError: Network is unreachable while opening Hugging Face VPData CSV"
+2026-07-02T18:06:00+08:00,instance-afs92r3e,raw_video_download,not_run,"Blocked before download; no raw VPData videos downloaded"
+2026-07-02T18:06:00+08:00,dsw-753014-85f54df947-bkp7h,pai_hf_probe,blocked,"PAI urllib to Hugging Face returned Network is unreachable"
+2026-07-02T18:06:00+08:00,dsw-753014-85f54df947-bkp7h,pai_pexels_head,weak,"Pexels HEAD probe returned HTTP 403; no raw video GET attempted"
+
