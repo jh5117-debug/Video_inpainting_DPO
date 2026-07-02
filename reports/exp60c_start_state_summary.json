@@ -1,0 +1,17 @@
+{
+  "status": "EXP60C_FAILED_ROWS_AUDITED",
+  "branch": "research/exp60b-videopainter-vpdata-d3mask-pai-20260702",
+  "start_head": "efed1f8adad1de355c4f27a5843cfc058765af75",
+  "audit_time": "2026-07-02T15:22:05",
+  "h20_downloaded_mp4_count": 1089,
+  "h20_staging_size": "14G",
+  "failed_original_count": 11,
+  "failed_train_count": 9,
+  "failed_test_count": 2,
+  "failure_reason": "HTTP 403 Forbidden from videos.pexels.com on H20 hf-mirror route, H20 clash proxy route, and HAL probe",
+  "hfmirror_sha256_rows": 1089,
+  "proxy_sha256_rows": 1089,
+  "masks_losers_dpo_ran": false,
+  "training_ran": false,
+  "gpu_used": false
+}
