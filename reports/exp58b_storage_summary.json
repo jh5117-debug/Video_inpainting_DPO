@@ -1,0 +1,18 @@
+{
+  "status": "EXP58B_STORAGE_READY",
+  "pai_home_free": "5.0T",
+  "pai_nas_mounted": true,
+  "pai_workspace_usage": "98% used; avoided",
+  "data_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b",
+  "data_root_size": "1.4M",
+  "log_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp58_void_native_data_diagnostic/exp58b_kubric_env",
+  "log_root_size": "117K",
+  "runtime_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp58_void_native_data_diagnostic/exp58b_kubric_env",
+  "runtime_root_size": "538M",
+  "tools_fallback": "/home/hj/tools/void_kubric_exp58b",
+  "tools_fallback_size": "1.7G",
+  "env_fallback": "/home/hj/conda_envs/void_kubric_exp58b",
+  "env_fallback_size": "2.1G",
+  "h20_large_staging_retained": false,
+  "storage_blocker": false
+}

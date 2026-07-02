@@ -1,0 +1,41 @@
+{
+  "affected_area_max": 40515,
+  "affected_area_min": 1715,
+  "background_area_max": 391078,
+  "background_area_min": 345378,
+  "caveat": "All metadata target_hit values are false; use Gate8 as native-data generation diagnostic, not adapter evidence.",
+  "decode_pass": 8,
+  "frame_count_values": [
+    24
+  ],
+  "manifest": "manifests/exp58b_void_native_kubric_gate8.jsonl",
+  "object_area_max": 7331,
+  "object_area_min": 127,
+  "overlap_area_max": 6095,
+  "overlap_area_min": 46,
+  "quadmask_all_values_count": 8,
+  "resolution_values": [
+    "128x128"
+  ],
+  "safety": {
+    "fake_data_created": false,
+    "one_step_run": false,
+    "ten_step_run": false,
+    "training_run": false,
+    "void_inference_run": false,
+    "vor_data_mixed": false
+  },
+  "sample_count": 8,
+  "status": "VOID_NATIVE_KUBRIC_GATE8_READY",
+  "target_hit_true": 0,
+  "visual_pages_opened": [
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00000_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00001_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00002_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00003_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00004_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00005_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00006_review_page.jpg",
+    "/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b/gate8/review_pages/00007_review_page.jpg"
+  ]
+}

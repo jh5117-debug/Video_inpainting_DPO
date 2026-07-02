@@ -7,3 +7,9 @@ PAI,/mnt/nas/hj/conda_envs/void_kubric_exp58b,preferred_env_root,no,not writable
 PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b,data_output_root,yes,empty,EXP58B_STORAGE_READY
 PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp58_void_native_data_diagnostic/exp58b_kubric_env,log_root,yes,empty,EXP58B_STORAGE_READY
 PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp58_void_native_data_diagnostic/exp58b_kubric_env,runtime_root,yes,empty,EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/data/external/void/kubric_exp58b,final_data_root,yes,1.4M after Gate1/Gate8,EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp58_void_native_data_diagnostic/exp58b_kubric_env,final_log_root,yes,117K after Gate1/Gate8,EXP58B_STORAGE_READY
+PAI,/mnt/nas/hj/H20_Video_inpainting_DPO/runtime/exp58_void_native_data_diagnostic/exp58b_kubric_env,final_runtime_root,yes,538M includes wheelhouse/manifests,EXP58B_STORAGE_READY
+PAI,/home/hj/tools/void_kubric_exp58b,final_tools_fallback,yes,1.7G Blender/Kubric/tools,EXP58B_STORAGE_READY
+PAI,/home/hj/conda_envs/void_kubric_exp58b,final_env_fallback,yes,2.1G isolated env,EXP58B_STORAGE_READY
+H20,/home/nvme01,local_staging,not_used,no large staging retained,EXP58B_STORAGE_READY
