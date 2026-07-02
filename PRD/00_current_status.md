@@ -9,6 +9,8 @@ Milestone B status: `EXP59_OFFICIAL_INFERENCE_PROTOCOL_READY`. Official VOID pas
 
 Milestone C status: `EXP59_KUBRIC_INPUTS_READY`. Eight official input folders were materialized under the writable PAI/NAS runtime root. The requested `/experiments/dpo/exp59...` output root is not writable by `hj`, so official inference outputs will use the writable log/runtime fallback.
 
+Milestone D status: `VOID_KUBRIC_OFFICIAL_INFERENCE_PASS`. Official VOID pass1 ran on all 8 Kubric samples using PAI GPU0. The first attempt exposed a system ffmpeg `libblas.so.3` blocker; a run-local `imageio-ffmpeg` shim fixed decode without base-env changes. Final outputs include 8 raw mp4, 8 tuple mp4, and 8 evidence packs. No training, one-step, or 10-step was run.
+
 ## 2026-07-02 Exp58 VOID Native Data Diagnostic
 
 Status: `EXP58_READBACK_DONE`; storage status: `EXP58_STORAGE_PAI_NAS_PREFERRED`.

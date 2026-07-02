@@ -15,3 +15,9 @@ official_script_steps	30
 materialized_inputs	8
 materialization_status	EXP59_KUBRIC_INPUTS_READY
 experiments_dpo_output_root_writable	false
+official_inference_status	VOID_KUBRIC_OFFICIAL_INFERENCE_PASS
+raw_output_count	8
+tuple_output_count	8
+evidence_pack_count	8
+official_inference_gpu	PAI_GPU0
+first_attempt_blocker	system_ffmpeg_missing_libblas.so.3

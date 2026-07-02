@@ -1,0 +1,17 @@
+{
+  "end_time": "2026-07-02T13:22:39,142316431+08:00",
+  "evidence_root": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference/official_pass1_evidence",
+  "ffmpeg_shim": "ffmpeg version 7.0.2-static https://johnvansickle.com/ffmpeg/  Copyright (c) 2000-2024 the FFmpeg developers",
+  "first_attempt_blocker": "system_ffmpeg_missing_libblas.so.3",
+  "gpu": "PAI GPU0",
+  "one_step_run": false,
+  "output_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference/official_pass1_outputs",
+  "raw_output_count": 8,
+  "run_dir": "/mnt/nas/hj/H20_Video_inpainting_DPO/logs/autoresearch/exp59_void_kubric_gate8_inference/official_pass1_run_retry_ffmpeg",
+  "sample_count": 8,
+  "start_time": "2026-07-02T13:13:44,515089030+08:00",
+  "status": "VOID_KUBRIC_OFFICIAL_INFERENCE_PASS",
+  "ten_step_run": false,
+  "training_run": false,
+  "tuple_output_count": 8
+}
